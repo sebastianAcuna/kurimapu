@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+    <RelativeLayout
+
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:orientation="vertical"
+        android:padding="@dimen/padding"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".MainActivity"
+        android:id="@+id/relative">
+
+        <LinearLayout
+            android:id="@+id/container_first_line"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/linear_layout_visitas"
+
+
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/linear_sub_layout_visitas"
+
+                >
+
+                <TextView
+                    android:id="@+id/lbl_feno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estado Fenológico"/>
+
+
+                <Spinner
+                    android:id="@+id/sp_feno"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                style="@style/linear_sub_layout_visitas">
+                <TextView
+                    android:id="@+id/lbl_crecimiento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estado de Crecimiento "
+                    />
+
+                <Spinner
+                    android:id="@+id/sp_crecimiento"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                style="@style/linear_sub_layout_visitas">
+
+                <TextView
+                    android:id="@+id/lbl_malezas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estado Fenológico"/>
+
+                <Spinner
+                    android:id="@+id/sp_malezas"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/container_second_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/container_first_line"
+            style="@style/linear_layout_visitas">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/linear_sub_layout_visitas">
+
+                <TextView
+                    android:id="@+id/lbl_fitosanitario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estado Fitosanitario"/>
+
+
+                <Spinner
+                    android:id="@+id/sp_fito"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                style="@style/linear_sub_layout_visitas">
+
+                <TextView
+                    android:id="@+id/lbl_cosecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cosecha"/>
+
+                <Spinner
+                    android:id="@+id/sp_cosecha"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                style="@style/linear_sub_layout_visitas">
+
+                <TextView
+                    android:id="@+id/lbl_general_cultivo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estado General del Cultivo"/>
+
+                <Spinner
+                    android:id="@+id/sp_general_cultivo"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/lbl_humedad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estado Fenológico"
+            android:layout_below="@id/container_second_line"
+            android:layout_margin="@dimen/padding"/>
+
+
+        <Spinner
+            android:id="@+id/sp_humedad"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding"
+            android:layout_below="@id/lbl_humedad"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInp_obs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sp_humedad"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/padding">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_obs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Observación" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInp_recomendacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textInp_obs"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/padding">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_recomendacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="Recomendación" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/btn_guardar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/textInp_recomendacion"
+            android:layout_alignParentStart="true"
+            android:text="Guardar"
+            android:drawableStart="@drawable/ic_save"
+            android:layout_margin="@dimen/padding"
+            android:padding="@dimen/padding"
+
+            />
+
+
+        <Button
+            android:id="@+id/btn_volver"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/textInp_recomendacion"
+            android:text="Volver"
+            android:drawableStart="@drawable/ic_arrow_back"
+            android:layout_toEndOf="@id/btn_guardar"
+            android:padding="@dimen/padding"
+
+
+            />
+
+
+    </RelativeLayout>
+
+
+
+</ScrollView>

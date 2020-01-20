@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group>
+    <group android:checkableBehavior="single">
+
         <item
+            android:id="@+id/nv_inicio"
+            android:title="Inicio"
+            android:checked="true"
+            />
+
+
+        <item
+            android:id="@+id/nv_fichas"
             android:title="Fichas"
             android:checked="true"
             />
 
         <item
+            android:id="@+id/nv_visitas"
             android:title="Informe de visitas"
             android:checked="true"
             />
 
         <item
+            android:id="@+id/nv_salir"
             android:title="Salir"
             android:checked="true"
             />

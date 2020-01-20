@@ -1,3 +1,105 @@
 <resources>
-    <string name="app_name">curimapu</string>
+    <string name="app_name">CURIMAPU</string>
+
+
+    
+    
+    
+<!--    SPINNERS FORM  VISITA-->
+    <string-array name="fenologico">
+        <item>--Seleccione--</item>
+        <item>Siembra</item>
+        <item>Transplante</item>
+        <item>Vegetativo</item>
+        <item>pre-floración</item>
+        <item>Floración</item>
+        <item>LLenado</item>
+        <item>Pre-cosecha</item>
+        <item>Post-cosecha</item>
+        <item>Sin Especificar</item>
+    </string-array>
+
+
+    <string-array name="crecimiento">
+        <item>--Seleccione--</item>
+        <item>Excelente</item>
+        <item>Buena</item>
+        <item>Regular</item>
+        <item>Mala</item>
+        <item>Sin Especificar</item>
+    </string-array>
+
+    <string-array name="cosecha">
+        <item>--Seleccione--</item>
+        <item>Rechazada</item>
+        <item>Aprobada</item>
+        <item>Sin Especificar</item>
+    </string-array>
+
+    <string-array name="maleza">
+        <item>--Seleccione--</item>
+        <item>Baja</item>
+        <item>Regular</item>
+        <item>Alta</item>
+        <item>Sin Especificar</item>
+    </string-array>
+    
+    
+
+
+
+
+
+
+<!--    TABS -->
+    <string-array name="tabs">
+        <item>@string/uno</item>
+        <item>@string/dos</item>
+    </string-array>
+
+    <string name="uno">Formulario de visitas</string>
+    <string name="dos">FieldBook</string>
+
+    <string-array name="sub_tabs">
+        <item>@string/resumen</item>
+        <item>@string/sowing</item>
+        <item>@string/flowering</item>
+        <item>@string/harvest</item>
+    </string-array>
+
+    <string name="resumen">Resumen</string>
+    <string name="sowing">Sowing</string>
+    <string name="flowering">Flowering</string>
+    <string name="harvest">Harvest</string>
+
+
+
+
+<!--    TABLA -->
+
+    <string name="cliente">Cliente</string>
+    <string name="agricultor">Agricultor</string>
+    <string name="potrero">Potrero</string>
+    <string name="variedad">Variedad</string>
+    <string name="accion">Acción</string>
+    <string name="anteriores">Anteriores</string>
+
+
+    <string-array name="cabecera_informe">
+        <item>@string/cliente</item>
+        <item>@string/agricultor</item>
+        <item>@string/potrero</item>
+        <item>@string/variedad</item>
+        <item>@string/accion</item>
+        <item>@string/anteriores</item>
+    </string-array>
+
+
+
+
+
+
+<!--    MENU -->
+    <string name="open_drawer">Open navigation drawer</string>
+    <string name="close_drawer">Close navigation drawer</string>
 </resources>

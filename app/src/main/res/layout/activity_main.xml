@@ -7,7 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+
     tools:context=".MainActivity"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:openDrawer="start">
 
     <FrameLayout
@@ -22,6 +24,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/drawable_menu"
+        app:headerLayout="@layout/header_menu"
         >
 
         <LinearLayout
