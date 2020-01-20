@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:title="Fichas"
+            android:checked="true"
+            />
+
+        <item
+            android:title="Informe de visitas"
+            android:checked="true"
+            />
+
+        <item
+            android:title="Salir"
+            android:checked="true"
+            />
+
+    </group>
+
+</menu>
