@@ -7,8 +7,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.fragments.FragmentFichas;
-import cl.smapdev.curimapu.fragments.FragmentPrincipal;
 import cl.smapdev.curimapu.fragments.contratos.FragmentFlowering;
 import cl.smapdev.curimapu.fragments.contratos.FragmentHarvest;
 import cl.smapdev.curimapu.fragments.contratos.FragmentResumen;

@@ -3,7 +3,127 @@
 
 
     
-    
+
+
+
+    <!--FORM CICLO VIDA -->
+    <string name="format_date">dd/mm/yyyy</string>
+    <string name="format_set_input">Ingrese Valor</string>
+
+    <string name="propiedad">Propiedad</string>
+    <string name="valor">Valor</string>
+    <string name="coordenates">COORDENATES</string>
+    <string name="norting">Norting</string>
+    <string name="set_norting">Ingrese Norting</string>
+    <string name="easting">Easting</string>
+    <string name="set_easting">Ingrese Easting</string>
+    <string name="aviso_siembra">Aviso Siembra SAG</string>
+    <string name="siembra_sag">Siembra SAG</string>
+    <string name="crop_rotation">Crop Rotation</string>
+    <string name="t_2015">2015</string>
+    <string name="set_cultivo">Ingrese Cultivo</string>
+    <string name="t_2016">2016</string>
+    <string name="t_2017">2017</string>
+    <string name="t_2018">2018</string>
+    <string name="analisis_suelo">ANÁLISIS DE SUELO</string>
+    <string name="entregado">Entregado</string>
+    <string name="mezcla_aplicada">Tipo de Mezcla Aplicada</string>
+    <string name="cantidad_aplicada">Cantidad Aplicada</string>
+    <string name="insolation">Isolation</string>
+    <string name="meters">Meters</string>
+    <string name="lines">LINES</string>
+    <string name="female">Female</string>
+    <string name="sowing_lot">SOWING LOT</string>
+    <string name="real_sowing">Real Sowing Female (kg)</string>
+    <string name="sowing_start">SOWING DATE START</string>
+    <string name="sowing_end">SOWING DATE END</string>
+    <string name="sowing_seed_meter">SOWING SEED / METER</string>
+    <string name="row_distance">ROW DISTANCE (M)</string>
+    <string name="row_distance_min">Row Distance (m)</string>
+    <string name="spread">SPREAD UREA (N)</string>
+    <string name="dose_uno">Dose 1</string>
+    <string name="date_uno">Date 1</string>
+    <string name="dose_dos">Dose 2</string>
+    <string name="date_dos">Date 2</string>
+    <string name="sparying_date">HERBICIDE SPRAYING DATE</string>
+    <string name="name_uno">Name 1</string>
+    <string name="name_dos">Name 2</string>
+    <string name="name_tres">Name 3</string>
+    <string name="date_tres">Date 3</string>
+    <string name="emergence_herbicide">PRE EMERGENCE HERBICIDE</string>
+    <string name="dose">Dose</string>
+    <string name="water_lts">Water (Lts)</string>
+    <string name="plant_m">PLANT/M</string>
+    <string name="population">POPULATION (PLANTS/HA)</string>
+    <string name="basta_date">BASTA SPRAYING DATE</string>
+    <string name="basta_spray_uno">Basta Spray 1</string>
+    <string name="basta_spray_dos">Basta Spray 2</string>
+    <string name="basta_spray_tres">Basta Spray 3</string>
+    <string name="basta_spray_cuatro">Basta Spray 4</string>
+    <string name="basta_spray_cuatro_ha">Basta Spray 4 Ha</string>
+    <string name="titulo_largo_form">BRUCHUS PISORUM L. AND SCLEROTINIA PREVENTIVE APPLICATION</string>
+    <string name="product">Product</string>
+    <string name="dose_lt_ha">Dose (Lt/Ha)</string>
+    <string name="foliar_app">FOLIAR APPLICATION</string>
+    <string name="foliar">Foliar</string>
+    <string name="notice_sag">NOTICE SAG</string>
+    <string name="flowering_estim">Flowering estimation</string>
+    <string name="flowering_start">FLOWERING START</string>
+    <string name="flowering_end">FLOWERING END</string>
+    <string name="fertility">FERTILITY</string>
+    <string name="fungicide_app">FUNGICIDE APPLICATION</string>
+    <string name="fungicide">Fungicide</string>
+    <string name="plant_number_checked">Plant Number Checked</string>
+    <string name="check">Check</string>
+    <string name="main_characteristics">Main Characteristics</string>
+    <string name="insepection">INSPECTION</string>
+    <string name="insepection_s">Inspection</string>
+    <string name="dessicant_app">DESSICANT APPLICATION</string>
+    <string name="estimated_date">Estimated Date</string>
+    <string name="real_date">Real date</string>
+    <string name="observations">Observations</string>
+    <string name="swathing_date">SWATHING DATE</string>
+    <string name="swathing_date_s">Swathing Date</string>
+    <string name="yield_estimation">YIELD ESTIMATION PRE CLEAN</string>
+    <string name="kg_ha">Kg/Ha</string>
+    <string name="harvest_estimation">HARVEST ESTIMATION</string>
+    <string name="real_harvest_date">REAL HARVEST DATE</string>
+    <string name="beginning_date">Begining Date</string>
+    <string name="beginning_dep">BEGINING DEPURATION</string>
+    <string name="end_date">End Date</string>
+    <string name="harvest_machine">HARVEST MACHINE</string>
+    <string name="owner">Owner</string>
+    <string name="model">Model</string>
+    <string name="seed_hrv_mois">SEED HARVEST MOISTURE</string>
+    <string name="percent">%</string>
+    <string name="insecticide_app">INSECTICIDE APPLICATION</string>
+    <string name="off_type">OFF TYPE</string>
+
+
+
+
+
+    <string name="date">Date</string>
+    <string name="f">F</string>
+    <string name="seleccione_fecha">Seleccione fecha</string>
+
+
+
+
+
+
+
+    <!-- FOTOS DE MUESTRA -->
+    <string-array name="fotos">
+        <item>f1.jpg</item>
+        <item>f2.jpg</item>
+        <item>f3.jpg</item>
+        <item>f4.jpg</item>
+        <item>f5.jpg</item>
+    </string-array>
+
+
+
     
 <!--    SPINNERS FORM  VISITA-->
     <string-array name="fenologico">
@@ -102,4 +222,5 @@
 <!--    MENU -->
     <string name="open_drawer">Open navigation drawer</string>
     <string name="close_drawer">Close navigation drawer</string>
+
 </resources>

@@ -3,6 +3,10 @@ package cl.smapdev.curimapu.clases.utilidades;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Utilidades {
 
 
@@ -24,6 +28,24 @@ public class Utilidades {
 
         p.getTextBounds(texto, 0, texto.length(), bounds);
         return bounds.width();
+    }
+
+
+    public static String fechaActualConHora(){
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        return df.format(new Date());
+    }
+
+
+    public static String fechaActualSinHora(){
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return df.format(new Date());
+    }
+
+    public static String fechaActualInvSinHora(){
+        return new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
     }
 
 }

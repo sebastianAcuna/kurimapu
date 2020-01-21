@@ -21,8 +21,33 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="titles_forms">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="sub_titles_forms">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="input_date_forms">
+        <item name="android:enabled">false</item>
+        <item name="android:hint">@string/format_date</item>
+        <item name="android:inputType">date</item>
+    </style>
+
+    <style name="calendar_icon_forms">
+        <item name="android:tint">@color/colorAccent</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/ic_date_range</item>
+    </style>
+
+
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 </resources>
+
