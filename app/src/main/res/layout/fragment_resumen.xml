@@ -1,953 +1,1077 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView android:layout_width="match_parent"
+
+<RelativeLayout
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-    <RelativeLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_1"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Propiedad"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Valor"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_1"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_2"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Fecha"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="20-12-2019"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_2"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_3"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider2"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Estado Fenologógico"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="2Pre-cosecha"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_3"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_4"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider3"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Estado General"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Buena"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_4"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_5"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider4"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Estado de Crecimiento"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Buena"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider5"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_5"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_6"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider5"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Estado de Malezas"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Regular"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider6"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_6"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_7"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider6"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Estado Fitosanitario"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Buena"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider7"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_7"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_8"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider7"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Humedad del Suelo"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Buena"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider8"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_8"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_9"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider8"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Cosecha"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Sin Especificar"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider9"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_9"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_10"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider9"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Observaciones"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Cultivo previo a cosecha, último riego"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider10"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_10"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_11"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider10"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Recomendaciones"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Realizar último riego y programar aplicación de desecante reglone en dosis de 2L/ha."/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider11"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_11"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_12"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider11"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Anexo"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="20-AR0011"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider12"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_12"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_13"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider12"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Orden de Multiplicación"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="1996"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider13"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_13"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_14"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider13"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Client"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="VOLMORIN"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider14"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_14"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_15"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider14"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Especie"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="ARVEJA"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider15"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_15"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_16"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider15"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Variety"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="RC 3589"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider16"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_16"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_17"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider16"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Ready Batch (Costumer Lot)"/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider17"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_17"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_18"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider17"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="RAW Batch"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text=""/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider18"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_18"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_19"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider18"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Grower"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="VIÑA ERRAZURIZ DOMINGUEZ S.A."/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider19"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_19"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_20"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider19"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Predio"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Fundo Santa Berta"/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider20"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_20"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_21"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider20"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Potrero"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Pivote"/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider21"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_21"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_22"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider21"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Field SAG"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Pivote"/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider22"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_22"/>
-
-
-        <LinearLayout
-        android:id="@+id/cont_ly_23"
-        android:orientation="horizontal"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:fab="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/divider22"
+        android:layout_centerInParent="true"
         >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:text="Sag Register Number"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:text="71605 (IDASE)"/>
-
-    </LinearLayout>
-
-        <View
-            android:id="@+id/divider23"
+        <RelativeLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_23"/>
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/cont_ly_24"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider23"
-            >
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/cont_ly_1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Irrigation System (Sistema de Riego)"/>
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                >
 
-            <TextView
-                android:layout_width="0dp"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/propiedad"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="@string/valor"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_1"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Pivot"/>
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider"
+                >
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/fecha"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="20-12-2019"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
 
-        <View
-            android:id="@+id/divider24"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_24"/>
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_2"/>
 
-        <LinearLayout
-        android:id="@+id/cont_ly_25"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+
+            <LinearLayout
+                android:id="@+id/cont_ly_3"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider2"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/estado_fenolog_gico"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="2Pre-cosecha"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_3"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_4"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider3"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/estado_general"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Buena"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_4"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_5"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider4"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/estado_de_crecimiento"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Buena"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_5"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_6"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider5"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/estado_de_malezas"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Regular"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_6"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_7"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider6"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/estado_fitosanitario"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Buena"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider7"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_7"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_8"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider7"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/humedad_del_suelo"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Buena"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider8"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_8"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_9"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider8"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/cosecha"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Sin Especificar"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider9"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_9"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_10"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider9"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/observations"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Cultivo previo a cosecha, último riego"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider10"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_10"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_11"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider10"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/recomendaciones"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Realizar último riego y programar aplicación de desecante reglone en dosis de 2L/ha."
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider11"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_11"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_12"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider11"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/anexo"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="20-AR0011"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider12"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_12"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_13"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider12"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/orden_de_multiplicaci_n"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="1996"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider13"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_13"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_14"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider13"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/cliente"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="VOLMORIN"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider14"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_14"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_15"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider14"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/especie"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="ARVEJA"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider15"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_15"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_16"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider15"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/variedad"
+                    android:theme="@style/sub_titles_forms"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="RC 3589"
+                    android:theme="@style/sub_titles_forms"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider16"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_16"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_17"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider16"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Ready Batch (Costumer Lot)"
+                    android:theme="@style/titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider17"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_17"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_18"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider17"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="RAW Batch"
+                    android:theme="@style/titles_forms"/>
+
+
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider18"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_18"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_19"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider18"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/grower"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="VIÑA ERRAZURIZ DOMINGUEZ S.A."
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider19"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_19"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_20"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider19"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/predio"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Fundo Santa Berta"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider20"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_20"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_21"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider20"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/potrero"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Pivote"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider21"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_21"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_22"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider21"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/siembra_sag"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Pivote"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider22"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_22"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_23"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider22"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/sag_register_number"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="71605 (IDASE)"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider23"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_23"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_24"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider23"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/irrigation_system_sistema_de_riego"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Pivot"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider24"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_24"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_25"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider24"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/soil_type_tipo_de_suelo"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Loamy"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider25"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_25"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_26"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider25"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/production_location_localidad"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="San Nicolás"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider26"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_26"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_27"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider26"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/has_contrato"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="56.6"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider27"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_27"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_28"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider27"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/has_customer"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="5.36"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider28"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_28"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_29"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider28"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/fieldman"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="JULIETTE PEREZ GONZALEZ"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider29"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_29"/>
+
+
+            <LinearLayout
+                android:id="@+id/cont_ly_30"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider29"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/rch"
+                    android:theme="@style/sub_titles_forms"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="NA"
+                    android:theme="@style/sub_titles_forms"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider30"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_30"/>
+
+            <LinearLayout
+                android:id="@+id/cont_ly_31"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/divider30"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Puntos Anpros"
+                    android:theme="@style/titles_forms"/>
+
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider31"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/cont_ly_31"/>
+
+
+
+
+        </RelativeLayout>
+
+
+
+
+    </ScrollView>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/material_design_android_floating_action_menu"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/divider24"
-        >
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        fab:menu_animationDelayPerItem="55"
+        fab:menu_backgroundColor="@android:color/transparent"
+        fab:menu_buttonSpacing="0dp"
+        fab:menu_colorNormal="#da3c2f"
+        fab:menu_colorPressed="#dc4b3f"
+        fab:menu_colorRipple="#99d4d4d4"
+        fab:menu_fab_label="Seleccione acción"
+        fab:menu_fab_size="normal"
+        fab:menu_icon="@drawable/fab_add"
+        fab:menu_labels_colorNormal="#333"
+        fab:menu_labels_colorPressed="#444"
+        fab:menu_labels_colorRipple="#66efecec"
+        fab:menu_labels_cornerRadius="3dp"
+        fab:menu_labels_ellipsize="none"
+        fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+        fab:menu_labels_margin="0dp"
+        fab:menu_labels_maxLines="-1"
+        fab:menu_labels_padding="8dp"
+        fab:menu_labels_position="left"
+        fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+        fab:menu_labels_showShadow="true"
+        fab:menu_labels_singleLine="false"
+        fab:menu_labels_textColor="#f2f1f1"
+        fab:menu_labels_textSize="15sp"
+        fab:menu_openDirection="up"
+        fab:menu_shadowColor="#66aff198"
+        fab:menu_shadowRadius="4dp"
+        fab:menu_shadowXOffset="1dp"
+        fab:menu_shadowYOffset="4dp"
+        fab:menu_showShadow="true">
 
-        <TextView
-            android:layout_width="0dp"
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_item1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:text="Soil Type (Tipo de Suelo)"/>
+            android:src="@drawable/ic_camera"
+            fab:fab_label="Sacar foto Cliente"
+            fab:fab_size="mini" />
 
-        <TextView
-            android:layout_width="0dp"
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_item2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:text="Loamy"/>
+            android:src="@drawable/ic_attach_file"
+            fab:fab_label="Sacar foto Privada"
+            fab:fab_size="mini" />
 
-    </LinearLayout>
+    </com.github.clans.fab.FloatingActionMenu>
 
-        <View
-            android:id="@+id/divider25"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_25"/>
-
-        <LinearLayout
-        android:id="@+id/cont_ly_26"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/divider25"
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:text="Production Location (Localidad)"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:text="San Nicolás"/>
-
-    </LinearLayout>
-
-        <View
-            android:id="@+id/divider26"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_26"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_27"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider26"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Has Contrato"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="56.6"/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider27"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_27"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_28"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider27"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Has Customer"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="5.36"/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider28"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_28"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_29"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider28"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Fieldman"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="JULIETTE PEREZ GONZALEZ"/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider29"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_29"/>
-
-
-        <LinearLayout
-            android:id="@+id/cont_ly_30"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider29"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="RCH"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="NA"/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider30"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_30"/>
-
-        <LinearLayout
-            android:id="@+id/cont_ly_31"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/divider30"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Puntos Anpros"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text=""/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider31"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@id/cont_ly_31"/>
+</RelativeLayout>
 
 
 
-    </RelativeLayout>
-
-
-</ScrollView>

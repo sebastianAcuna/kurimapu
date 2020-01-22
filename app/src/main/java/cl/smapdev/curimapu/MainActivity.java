@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
           /*  if (Objects.equals(preferences.getString("rut_user", ""), "")){
                 cambiarFragment(new FragmentLogin(), Helper.FRG_LOGIN);
             }else{*/
-                cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO);
+                cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
                 navigationView.setCheckedItem(R.id.nv_inicio);
 //            }
         }
@@ -55,8 +55,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public void cambiarFragment(Fragment fragment, String tag){
+    public void cambiarFragment(Fragment fragment, String tag, int animIn, int animOut){
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(animIn, animOut)
                 .replace(R.id.container, fragment,tag)
                 .commit();
     }
@@ -69,14 +70,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id){
             case R.id.nv_inicio:
-                cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO);
+                cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
 
             case R.id.nv_fichas:
-                cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS);
+                cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
             case R.id.nv_visitas:
-                cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS);
+                cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
             case R.id.nv_salir:
                 break;

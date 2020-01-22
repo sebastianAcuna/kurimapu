@@ -152,7 +152,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:text="@string/observations"
                     android:theme="@style/sub_titles_forms"/>
 
@@ -187,7 +187,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
+                    android:layout_weight="1"
                     android:text="@string/swathing_date"
                     android:theme="@style/titles_forms"/>
 
@@ -207,7 +207,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:text="@string/swathing_date_s"
                     android:theme="@style/sub_titles_forms"/>
 
@@ -246,7 +246,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
+                    android:layout_weight="1"
                     android:text="@string/yield_estimation"
                     android:theme="@style/titles_forms"/>
 
@@ -355,7 +355,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:text="@string/date"
                     android:theme="@style/sub_titles_forms"/>
 
@@ -393,7 +393,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
+                    android:layout_weight="1"
                     android:text="@string/real_harvest_date"
                     android:theme="@style/titles_forms"/>
 
@@ -585,7 +585,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
+                    android:layout_weight="1"
                     android:text="@string/seed_hrv_mois"
                     android:theme="@style/titles_forms"/>
 
@@ -605,9 +605,9 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:text="@string/percent"
-                    android:theme="@style/titles_forms"/>
+                    android:theme="@style/sub_titles_forms"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_perent"
@@ -627,11 +627,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"/>
-
-
         </LinearLayout>
-
-
 
     </ScrollView>
     <LinearLayout

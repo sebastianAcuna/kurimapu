@@ -94,21 +94,24 @@ public class Tabla {
 
 
 
-            TextView cliente = new TextView(actividad);
+            TextView anexo = new TextView(actividad);
+            TextView variedad = new TextView(actividad);
+            TextView especie= new TextView(actividad);
             TextView agricultor = new TextView(actividad);
             TextView potrero = new TextView(actividad);
-            TextView variedad = new TextView(actividad);
+
             Button botonForm = new Button(actividad);
             Button botonVer = new Button(actividad);
 
-        cliente.setText(String.valueOf(ls[0]));
-        agricultor.setText(String.valueOf(ls[1]));
-        potrero.setText(String.valueOf(ls[2]));
-        variedad.setText(String.valueOf(ls[3]));
+            anexo.setText(String.valueOf(ls[0]));
+            variedad.setText(String.valueOf(ls[1]));
+            especie.setText(String.valueOf(ls[2]));
+            agricultor.setText(String.valueOf(ls[3]));
+            potrero.setText(String.valueOf(ls[4]));
 
 
 
-        cliente.setGravity(Gravity.CENTER_HORIZONTAL);
+        anexo.setGravity(Gravity.CENTER_HORIZONTAL);
         potrero.setGravity(Gravity.CENTER_HORIZONTAL);
         variedad.setGravity(Gravity.CENTER_HORIZONTAL);
 
@@ -123,7 +126,7 @@ public class Tabla {
             public void onClick(View view) {
                 MainActivity activity = (MainActivity) actividad;
                 if (activity != null){
-                    activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS);
+                    activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left,R.anim.slide_out_left);
                 }
 
             }
@@ -149,10 +152,10 @@ public class Tabla {
 
 //        botonVer.setBackgroundColor(botonVer.getContext().getResources().getColor(R.color.colorAccent));
 
-       layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(cliente.getText().toString()),
+       layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(anexo.getText().toString()),
                    TableRow.LayoutParams.WRAP_CONTENT);
 
-        cliente.setLayoutParams(layoutCelda);
+        anexo.setLayoutParams(layoutCelda);
 
 
         layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(agricultor.getText().toString()),
@@ -173,12 +176,14 @@ public class Tabla {
         variedad.setLayoutParams(layoutCelda);
 
 
-            fila.addView(cliente);
+            fila.addView(anexo);
+            fila.addView(variedad);
+            fila.addView(especie);
             fila.addView(agricultor);
             fila.addView(potrero);
-            fila.addView(variedad);
             fila.addView(botonForm);
             fila.addView(botonVer);
+
 
             FILAS++;
 

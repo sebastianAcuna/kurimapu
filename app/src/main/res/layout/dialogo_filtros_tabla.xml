@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding">
+
+
+
+    <LinearLayout
+        android:id="@+id/container_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical"
+        >
+        <TextView
+            android:id="@+id/lbl_anexo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="@string/anexo"
+            android:theme="@style/sub_titles_forms"
+
+
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInp_dialog_anexo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_dialog_anexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/format_set_input"
+                android:inputType="number"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/container_dos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical"
+        android:layout_below="@id/container_one"
+        >
+        <TextView
+            android:id="@+id/lbl_variedad"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:text="@string/variedad"
+            android:theme="@style/sub_titles_forms"
+
+            />
+
+        <Spinner
+            android:id="@+id/sp_dialog_variedad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/container_tres"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical"
+        android:layout_below="@id/container_dos"
+        >
+        <TextView
+            android:id="@+id/lbl_especie"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:text="@string/especie"
+            android:theme="@style/sub_titles_forms"
+
+            />
+
+        <Spinner
+            android:id="@+id/sp_dialog_especie"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_cuatro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical"
+        android:layout_below="@id/container_tres"
+        >
+        <TextView
+            android:id="@+id/lbl_agricultor"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:text="@string/agricultor"
+            android:theme="@style/sub_titles_forms"
+
+            />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInp_dialog_agricultor"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_dialog_agricultor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/format_set_input"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_cinco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical"
+        android:layout_below="@id/container_cuatro"
+        >
+        <TextView
+            android:id="@+id/lbl_potrero"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:text="@string/potrero"
+            android:theme="@style/sub_titles_forms"
+
+            />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInp_dialog_potrero"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_dialog_potero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/format_set_input"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_aplica_filtro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_dark"
+        android:layout_below="@id/container_cinco"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/padding"
+        android:text="Aplicar"/>
+
+    <Button
+        android:id="@+id/btn_cancela_filtro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/btn_aplica_filtro"
+        android:layout_marginTop="@dimen/padding"
+        android:text="Cancela"/>
+
+
+
+
+
+</RelativeLayout>
