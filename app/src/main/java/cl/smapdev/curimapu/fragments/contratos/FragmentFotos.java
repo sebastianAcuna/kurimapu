@@ -1,19 +1,28 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Objects;
@@ -82,7 +91,7 @@ public class FragmentFotos extends Fragment {
                             FotosListAdapter adapter = new FotosListAdapter(getResources().getStringArray(R.array.fotos), new FotosListAdapter.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(String fotos) {
-
+                                    showAlertForUpdate();
                                 }
                             }, new FotosListAdapter.OnItemLongClickListener() {
                                 @Override
@@ -95,5 +104,42 @@ public class FragmentFotos extends Fragment {
                     });
                 }
             });
+    }
+
+
+
+    private void showAlertForUpdate(){
+        View viewInfalted = LayoutInflater.from(Objects.requireNonNull(getActivity())).inflate(R.layout.alert_big_img,null);
+
+
+//        String titulo = "Editando " + fotos.getNombreFoto() + " de PAQUETE " + fotos.getEtiquetaPaquete();
+        final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+                .setView(viewInfalted)
+                .setPositiveButton("cerrar", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })/*.setNegativeButton("cancelar",null)*/.create();
+
+        final TextView txt = viewInfalted.findViewById(R.id.et_cambia_nombre_foto);
+        final ImageView imageView = viewInfalted.findViewById(R.id.img_alert_foto);
+        String medidaAMostrar = "Nombre prueba";
+        txt.setText(medidaAMostrar);
+        Picasso.get().load(R.drawable.f1).resize(720,800).centerInside().into(imageView);
+        builder.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder.dismiss();
+
+                    }
+                });
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
     }
 }

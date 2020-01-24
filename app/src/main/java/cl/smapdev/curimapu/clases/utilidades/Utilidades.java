@@ -15,6 +15,14 @@ public class Utilidades {
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
     public static final String FRAGMENT_VISITAS = "fragment_visitas";
     public static final String FRAGMENT_CONTRATOS = "fragment_contratos";
+    public static final String FRAGMENT_LOGIN = "fragment_login";
+
+
+
+
+    public static final String SHARED_NAME = "preference_app";
+    public static final String SHARED_USER = "user_name";
+
 
 
 

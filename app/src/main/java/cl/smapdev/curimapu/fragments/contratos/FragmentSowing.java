@@ -1,6 +1,13 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +16,38 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 
-public class FragmentSowing extends Fragment implements View.OnClickListener{
+public class FragmentSowing extends Fragment implements View.OnClickListener, LocationListener {
+
+
+    private String[] permissions = new String[]{
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+
+    private LocationManager locationManager;
+
 
 
     private EditText date_siembra_sag, date_sowing_female_start, date_sowing_female_end,date_date_one,date_date_two,date_herbicide_date_one,date_herbicide_date_two,date_herbicide_date_tres,
@@ -48,6 +76,48 @@ public class FragmentSowing extends Fragment implements View.OnClickListener{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bind(view);
+
+
+
+
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+            if (checkPermission()) {
+                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Permiso consedido", Toast.LENGTH_LONG).show();
+            } else {
+                requestPermission();
+            }
+        }
+
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,this);
+
+
+
+
+    }
+
+
+
+
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_COARSE_LOCATION);
+        int result1 = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_FINE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    }
+
+
+    private void requestPermission() {
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            Toast.makeText(getActivity(), "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+            }
+        }
     }
 
     private void levantarFecha(final EditText edit){
@@ -229,4 +299,24 @@ public class FragmentSowing extends Fragment implements View.OnClickListener{
 
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        et_norting.setText(String.valueOf(location.getLatitude()));
+        et_easting.setText(String.valueOf(location.getLongitude()));
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
 }
