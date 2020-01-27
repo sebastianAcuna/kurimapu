@@ -116,7 +116,7 @@ public class Tabla {
         variedad.setGravity(Gravity.CENTER_HORIZONTAL);
 
 
-        botonForm.setText("Formulario");
+        botonForm.setText(actividad.getResources().getText(R.string.form_form));
 
         Drawable img = botonForm.getContext().getResources().getDrawable( R.drawable.ic_assignment );
         botonForm.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
@@ -137,7 +137,7 @@ public class Tabla {
 
 
 
-        botonVer.setText("Ver");
+        botonVer.setText(actividad.getResources().getText(R.string.form_ver));
 
         Drawable imgVer = botonVer.getContext().getResources().getDrawable( R.drawable.ic_remove_red_eye );
         botonVer.setCompoundDrawablesWithIntrinsicBounds( imgVer, null, null, null);
@@ -158,10 +158,10 @@ public class Tabla {
         anexo.setLayoutParams(layoutCelda);
 
 
-        layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(agricultor.getText().toString()),
-                   TableRow.LayoutParams.WRAP_CONTENT);
-
-        agricultor.setLayoutParams(layoutCelda);
+//        layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(agricultor.getText().toString()),
+//                   TableRow.LayoutParams.WRAP_CONTENT);
+//
+//        agricultor.setLayoutParams(layoutCelda);
 
 
         layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(potrero.getText().toString()),

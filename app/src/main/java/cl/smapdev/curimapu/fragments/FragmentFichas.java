@@ -29,7 +29,7 @@ public class FragmentFichas extends Fragment {
 
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), "Fichas");
+            activity.updateView(getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_records));
         }
     }
 }

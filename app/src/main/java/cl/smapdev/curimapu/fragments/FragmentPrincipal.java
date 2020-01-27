@@ -36,7 +36,7 @@ public class FragmentPrincipal extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null){
             activity.setDrawerEnabled(true);
-            activity.updateView(getResources().getString(R.string.app_name), "inicio");
+            activity.updateView(getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_start));
         }
     }
 }

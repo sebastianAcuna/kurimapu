@@ -60,7 +60,7 @@ public class FragmentContratos extends Fragment {
 
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), "Contratos");
+            activity.updateView(getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_contracts));
         }
     }
 }

@@ -1,871 +1,861 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    >
+    android:baselineAligned="false">
+
+
     <ScrollView
         android:layout_width="0dp"
         android:layout_weight="0.5"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:orientation="vertical"
+
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
+
             <!-- propiedad-->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_01"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/propiedad"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/padding"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/propiedad"/>
+            <TextView
+                android:id="@+id/a_02_01"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/valor"
+                android:layout_toEndOf="@id/a_01_01"
+                android:layout_alignParentTop="true"
+                android:padding="@dimen/padding"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:text="@string/valor"/>
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_01"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/a_01_01"
                 />
 
             <!-- notice tag -->
-            <LinearLayout
-
-                android:orientation="horizontal"
+            <TextView
+                android:id="@+id/a_01_02"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/notice_sag"
+                android:theme="@style/titles_forms"
+                android:layout_below="@id/v_01"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/notice_sag"
-                    android:theme="@style/titles_forms"/>
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_02"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/a_01_02"
                 />
 
             <!-- Date -->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_03"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/date"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_date"
+                android:layout_below="@id/v_02"
+                android:layout_alignParentStart="true"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/date"
-                    android:theme="@style/sub_titles_forms"/>
+            <EditText
+                android:id="@+id/date_date"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:inputType="date"
+                android:importantForAutofill="no"
+                android:layout_toEndOf="@id/a_01_03"
+                android:layout_below="@id/v_02"
+                />
 
-                <EditText
-                    android:id="@+id/date_date"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:theme="@style/input_date_forms"
-                    />
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_date"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_toEndOf="@id/date_date"
+                android:layout_below="@id/v_02"
+                />
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_date"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_03"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_date"
+                android:layout_centerHorizontal="true"
                 />
 
             <!-- Flowing estimation -->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_04"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/flowering_estim"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_flowering"
+                android:layout_below="@id/v_03"
+                android:layout_alignParentStart="true"
+                />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/flowering_estim"
-                    android:theme="@style/sub_titles_forms"/>
+            <EditText
+                android:id="@+id/date_flowering"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:inputType="date"
+                android:importantForAutofill="no"
+                android:layout_toEndOf="@id/a_01_04"
+                android:layout_below="@id/v_03"/>
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_flowering"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_toEndOf="@id/date_flowering"
+                android:layout_below="@id/v_03"
+                />
 
-                <EditText
-                    android:id="@+id/date_flowering"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:theme="@style/input_date_forms" />
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_flowering"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_04"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_flowering"
                 />
 
             <!-- FLOWING START -->
-            <LinearLayout
 
-                android:orientation="horizontal"
+            <TextView
+                android:id="@+id/a_01_05"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/flowering_start"
+                android:theme="@style/titles_forms"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/v_04"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/flowering_start"
-                    android:theme="@style/titles_forms"/>
-            </LinearLayout>
             <View
+                android:id="@+id/v_05"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/a_01_05"
+                android:layout_centerHorizontal="true"
                 />
 
             <!-- F -->
-            <LinearLayout
 
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_06"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/f"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_f_start"
+                android:layout_below="@id/v_05"
+                android:layout_alignParentStart="true"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/f"
-                    android:theme="@style/sub_titles_forms"/>
+            <EditText
+                android:id="@+id/date_f_start"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:layout_toEndOf="@id/a_01_06"
+                android:layout_below="@id/v_05"
+                />
 
-                <EditText
-                    android:id="@+id/date_f_start"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:theme="@style/input_date_forms" />
-
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_start"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-            </LinearLayout>
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_start"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_toEndOf="@id/date_f_start"
+                android:layout_below="@id/v_05"
+                />
             <View
+                android:id="@+id/v_06"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_f_start"
+                android:layout_centerHorizontal="true"
                 />
 
             <!-- FLOWING END -->
-            <LinearLayout
-
-                android:orientation="horizontal"
+            <TextView
+                android:id="@+id/a_01_07"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/flowering_end"
+                android:theme="@style/titles_forms"
+                android:layout_below="@id/v_06"
+                android:layout_centerHorizontal="true"
+                />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/flowering_end"
-                    android:theme="@style/titles_forms"/>
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_07"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/a_01_07"
+                android:layout_centerHorizontal="true"
                 />
+
             <!-- F -->
-
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_08"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/f"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_f_end"
+                android:layout_below="@id/v_07"
+                android:layout_alignParentStart="true"
+                />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/f"
-                    android:theme="@style/sub_titles_forms"/>
+            <EditText
+                android:id="@+id/date_f_end"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:layout_toEndOf="@id/a_01_08"
+                android:layout_below="@id/v_07"/>
 
-                <EditText
-                    android:id="@+id/date_f_end"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:theme="@style/input_date_forms" />
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_end"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_end"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_toEndOf="@id/date_f_end"
+                android:layout_below="@id/v_07"
 
-                    />
+                />
 
-            </LinearLayout>
             <View
+                android:id="@+id/v_08"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_f_end"
+                android:layout_centerHorizontal="true"
                 />
+
 
             <!-- FERTILITY -->
-            <LinearLayout
-
-                android:orientation="horizontal"
+            <TextView
+                android:id="@+id/a_01_09"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/fertility"
+                android:theme="@style/titles_forms"
+                android:layout_below="@id/v_08"
+                android:layout_centerHorizontal="true"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/fertility"
-                    android:theme="@style/titles_forms"/>
 
-            </LinearLayout>
             <View
+                android:id="@+id/v_09"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/a_01_09"
+                android:layout_centerHorizontal="true"
                 />
 
             <!-- F -->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_10"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/f"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_fert_one"
+                android:layout_below="@id/v_09"
+                android:layout_alignParentStart="true"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/f"
-                    android:theme="@style/sub_titles_forms"/>
+            <EditText
+                android:id="@+id/date_fert_one"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:layout_toEndOf="@id/a_01_10"
+                android:layout_below="@id/v_09"/>
 
-                <EditText
-                    android:id="@+id/date_fert_one"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:theme="@style/input_date_forms" />
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_fert_one"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_fert_one"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_toEndOf="@id/date_fert_one"
+                android:layout_below="@id/v_09"
 
-                    />
-
-            </LinearLayout>
+                />
             <View
+                android:id="@+id/v_10"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_fert_one"
+                android:layout_centerHorizontal="true"
                 />
 
             <!-- F -->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_11"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/f"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_fert_two"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/v_10"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/f"
-                    android:theme="@style/sub_titles_forms"/>
+            <EditText
+                android:id="@+id/date_fert_two"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:layout_toEndOf="@id/a_01_11"
+                android:layout_below="@id/v_10"/>
 
-                <EditText
-                    android:id="@+id/date_fert_two"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:theme="@style/input_date_forms" />
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_fert_two"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_fert_two"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_toEndOf="@id/date_fert_two"
+                android:layout_below="@id/v_10"
 
-                    />
-
-            </LinearLayout>
+                />
             <View
+                android:id="@+id/v_11"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_fert_two"
                 />
 
             <!-- FUNGICIDE APPLICATION-->
-            <LinearLayout
-
-                android:orientation="horizontal"
+            <TextView
+                android:id="@+id/a_01_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/fungicide_app"
+                android:theme="@style/titles_forms"
+                android:layout_below="@id/v_11"
+                android:layout_centerHorizontal="true" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/fungicide_app"
-                    android:theme="@style/titles_forms"/>
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_12"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/a_01_12"
+                android:layout_centerHorizontal="true"
                 />
 
+
             <!-- FUNGICIDE -->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_13"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/fungicide"
+                android:theme="@style/sub_titles_forms"
+                android:layout_below="@id/v_12"
+                android:layout_alignParentStart="true" />
 
-                <TextView
-                    android:layout_width="0dp"
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInp_fungicide"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/a_01_13"
+                android:layout_below="@id/v_12">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_fungicide"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/fungicide"
-                    android:theme="@style/sub_titles_forms"/>
+                    android:hint="@string/format_set_input" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_fungicide"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.6"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_fungicide"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_13"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/textInp_fungicide"
+                android:layout_centerHorizontal="true"
                 />
 
             <!--DOSE -->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_14"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/dose"
+                android:theme="@style/sub_titles_forms"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/v_13" />
 
-                <TextView
-                    android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInp_doce"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v_13"
+                android:layout_toEndOf="@id/a_01_14">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_doce"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/dose"
-                    android:theme="@style/sub_titles_forms"/>
+                    android:hint="@string/format_set_input" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_doce"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.6"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_doce"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_14"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/textInp_doce"
+                android:layout_centerHorizontal="true"
                 />
 
             <!-- DATE -->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_15"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/date"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_fungicide"
+                android:layout_below="@id/v_14"
+                android:layout_alignParentStart="true" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/date"
-                    android:theme="@style/sub_titles_forms"/>
+            <EditText
+                android:id="@+id/date_fungicide"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:layout_toEndOf="@id/a_01_15"
+                android:layout_below="@id/v_14" />
 
-                <EditText
-                    android:id="@+id/date_fungicide"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:theme="@style/input_date_forms" />
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_fungicide"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_toEndOf="@id/date_fungicide"
+                android:layout_below="@id/v_14"
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_fungicide"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-            </LinearLayout>
+                />
             <View
+                android:id="@+id/v_15"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_fungicide"
                 />
 
             <!--INSECTICIDE APPLICATION-->
-            <LinearLayout
-
-                android:orientation="horizontal"
+            <TextView
+                android:id="@+id/a_01_16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/insecticide_app"
+                android:theme="@style/titles_forms"
+                android:layout_below="@id/v_15"
+                android:layout_centerHorizontal="true" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/insecticide_app"
-                    android:theme="@style/titles_forms"/>
-
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_16"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/a_01_16"
+                android:layout_centerHorizontal="true"
                 />
 
             <!-- DATE -->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_17"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/date"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_insecticide"
+                android:layout_below="@id/v_16"
+                android:layout_alignParentStart="true" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/date"
-                    android:theme="@style/sub_titles_forms"/>
+            <EditText
+                android:id="@+id/date_insecticide"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:layout_below="@id/v_16"
+                android:layout_toEndOf="@id/a_01_17"
+                />
 
-                <EditText
-                    android:id="@+id/date_insecticide"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:theme="@style/input_date_forms" />
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_insecticide"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_below="@id/v_16"
+                android:layout_toEndOf="@id/date_insecticide"
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_insecticide"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
+                />
 
-                    />
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_18"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_insecticide"
+                android:layout_centerHorizontal="true"
                 />
 
             <!-- BEGINNING DEPURATION -->
-            <LinearLayout
 
-                android:orientation="horizontal"
+            <TextView
+                android:id="@+id/a_01_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/beginning_dep"
-                    android:theme="@style/titles_forms"
-                    />
-
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
+                android:text="@string/beginning_dep"
+                android:theme="@style/titles_forms"
+                android:layout_below="@id/v_18"
+                android:layout_centerHorizontal="true"
                 />
 
-
-            <!-- DATE -->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/date"
-                    android:theme="@style/sub_titles_forms"/>
-
-                <EditText
-                    android:id="@+id/date_depuration"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:theme="@style/input_date_forms" />
-
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_depuration"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_19"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/a_01_18"
+                android:layout_centerHorizontal="true"
+                />
+
+            <!-- DATE -->
+            <TextView
+                android:id="@+id/a_01_19"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/date"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_depuration"
+                android:layout_below="@id/v_19"
+                android:layout_alignParentStart="true"
+                />
+
+            <EditText
+                android:id="@+id/date_depuration"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:layout_toEndOf="@id/a_01_19"
+                android:layout_below="@id/v_19"/>
+
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_depuration"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_toEndOf="@id/date_depuration"
+                android:layout_below="@id/v_19"
+
+                />
+
+            <View
+                android:id="@+id/v_20"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_depuration"
+                android:layout_centerHorizontal="true"
                 />
 
             <!-- OFF TYPE -->
-            <LinearLayout
 
-                android:orientation="horizontal"
+            <TextView
+                android:id="@+id/a_01_20"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/off_type"
+                android:theme="@style/titles_forms"
+                android:layout_below="@id/v_20"
+                android:layout_centerHorizontal="true" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/off_type"
-                    android:theme="@style/titles_forms"/>
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_21"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/a_01_20"
+                android:layout_centerHorizontal="true"
                 />
 
 
             <!-- DATE -->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_21"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/date"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_off_type"
+                android:layout_below="@id/v_21"
+                android:layout_alignParentStart="true" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/date"
-                    android:theme="@style/sub_titles_forms"/>
+            <EditText
+                android:id="@+id/date_off_type"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:layout_toEndOf="@id/a_01_21"
+                android:layout_below="@id/v_21"/>
 
-                <EditText
-                    android:id="@+id/date_off_type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:theme="@style/input_date_forms" />
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_off_type"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_toEndOf="@id/date_off_type"
+                android:layout_below="@id/v_21"
+                />
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_off_type"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
 
-                    />
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_22"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_off_type"
+                android:layout_centerHorizontal="true"
                 />
-
 
             <!-- PLANT NUMBER CHECKED-->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_22"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/plant_number_checked"
+                android:theme="@style/sub_titles_forms"
+                android:layout_below="@id/v_22"
+                android:layout_alignParentStart="true" />
 
-                <TextView
-                    android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInp_plant_number_checked"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/a_01_22"
+                android:layout_below="@id/v_22">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_plant_number_checked"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/plant_number_checked"
-                    android:theme="@style/sub_titles_forms"/>
+                    android:hint="@string/format_set_input"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_plant_number_checked"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.6"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_plant_number_checked"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
-                        android:inputType="number"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_23"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/textInp_plant_number_checked"
+                android:layout_centerHorizontal="true"
                 />
 
-
             <!-- CHECK-->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_23"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/check"
+                android:theme="@style/sub_titles_forms"
+                android:layout_below="@id/v_23"
+                android:layout_alignParentStart="true" />
 
-                <TextView
-                    android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInp_check"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/a_01_23"
+                android:layout_below="@id/v_23">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_check"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/check"
-                    android:theme="@style/sub_titles_forms"/>
+                    android:hint="@string/format_set_input"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_check"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.6"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_check"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
-                        android:inputType="number"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_24"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/textInp_check"
+                android:layout_centerHorizontal="true"
                 />
 
 
             <!-- MAIN CHARACTERISTICS-->
-            <LinearLayout
-
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_24"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/main_characteristics"
+                android:theme="@style/sub_titles_forms"
+                android:layout_below="@id/v_24"
+                android:layout_alignParentStart="true" />
 
-                <TextView
-                    android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInp_main_char"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/a_01_24"
+                android:layout_below="@id/v_24"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_main_char"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/main_characteristics"
-                    android:theme="@style/sub_titles_forms"/>
+                    android:hint="@string/format_set_input"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_main_char"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.6"
-                    android:layout_height="wrap_content">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_main_char"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
-                        android:inputType="number"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_25"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/textInp_main_char"
+                android:layout_centerHorizontal="true"
                 />
 
 
             <!-- INSPECTIONS-->
-            <LinearLayout
-
-                android:orientation="horizontal"
+            <TextView
+                android:id="@+id/a_01_25"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/insepection"
+                android:theme="@style/titles_forms"
+                android:layout_below="@id/v_25"
+                android:layout_centerHorizontal="true" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/insepection"
-                    android:theme="@style/titles_forms"/>
-
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_26"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/a_01_25"
+                android:layout_centerHorizontal="true"
                 />
 
             <!-- INSPECTIONS-->
-            <LinearLayout
 
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/a_01_26"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding">
+                android:text="@string/insepection_s"
+                android:theme="@style/sub_titles_forms"
+                android:labelFor="@id/date_inspection"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/v_26" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:text="@string/insepection_s"
-                    android:theme="@style/sub_titles_forms"/>
+            <EditText
 
-                <EditText
-                    android:id="@+id/date_inspection"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:theme="@style/input_date_forms" />
+                android:id="@+id/date_inspection"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/input_date_forms"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:layout_below="@id/v_26"
+                android:layout_toEndOf="@id/a_01_26"/>
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_inspection"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.1"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
+            <ImageButton
+                android:contentDescription="@string/seleccione_fecha"
+                android:id="@+id/btn_fecha_inspection"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:theme="@style/calendar_icon_forms"
+                android:layout_toEndOf="@id/date_inspection"
+                android:layout_below="@id/v_26"
+                />
 
-                    />
-
-            </LinearLayout>
             <View
+                android:id="@+id/v_27"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_below="@id/date_inspection"
+                android:layout_centerHorizontal="true"
                 />
-        </LinearLayout>
+
+        </RelativeLayout>
 
     </ScrollView>
     <LinearLayout
@@ -874,13 +864,10 @@
         android:layout_weight="0.5">
         <fragment
             android:id="@+id/container_fotos"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
             android:name="cl.smapdev.curimapu.fragments.contratos.FragmentFotos"
             tools:layout="@layout/fragment_fotos"/>
     </LinearLayout>
 
 </LinearLayout>
-
-

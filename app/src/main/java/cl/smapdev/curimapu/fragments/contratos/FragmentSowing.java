@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,11 +34,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 
 public class FragmentSowing extends Fragment implements View.OnClickListener, LocationListener {
+
+
+
+    private MainActivity activity = null;
 
 
     private String[] permissions = new String[]{
@@ -65,6 +71,16 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
     private DatePickerDialog datePickerDialog;
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        MainActivity a = (MainActivity) getActivity();
+        if (a != null) {
+            activity = a;
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,44 +96,65 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
 
 
 
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
-            if (checkPermission()) {
-                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Permiso consedido", Toast.LENGTH_LONG).show();
-            } else {
-                requestPermission();
+
+
+
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+                            if (checkPermission()) {
+                                requestPermission();
+                            }
+                        }
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,FragmentSowing.this);
+                    }
+                });
+
             }
-        }
+        });
 
 
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,this);
 
 
 
 
     }
 
-
-
-
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_COARSE_LOCATION);
-        int result1 = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_FINE_LOCATION);
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+
+
+        if (activity != null){
+            int result = ContextCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
+            int result1 = ContextCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+        }else{
+            return false;
+        }
+
+
     }
 
 
     private void requestPermission() {
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_FINE_LOCATION)) {
-            Toast.makeText(getActivity(), "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+        if (activity != null){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Toast.makeText(activity, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+                }
             }
         }
+
     }
 
     private void levantarFecha(final EditText edit){

@@ -182,7 +182,7 @@
         android:layout_below="@id/container_cinco"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/padding"
-        android:text="Aplicar"/>
+        android:text="@string/nav_save"/>
 
     <Button
         android:id="@+id/btn_cancela_filtro"
@@ -192,7 +192,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/btn_aplica_filtro"
         android:layout_marginTop="@dimen/padding"
-        android:text="Cancela"/>
+        android:text="@string/nav_cancel"/>
 
 
 

@@ -27,6 +27,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Objects;
 
+import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.FotosListAdapter;
 
@@ -36,6 +37,18 @@ public class FragmentFotos extends Fragment {
     private FloatingActionButton floatingActionButton1, floatingActionButton2;
 
     private RecyclerView recyclerView;
+    private MainActivity activity;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        MainActivity a = (MainActivity) getActivity();
+        if (a != null){
+            activity  =  a;
+        }
+    }
 
     @Nullable
     @Override
@@ -73,22 +86,22 @@ public class FragmentFotos extends Fragment {
     }
 
 
-    public void agregarImagenToList(){
+    private void agregarImagenToList(){
 
-        RecyclerView.LayoutManager lManager = new GridLayoutManager(getActivity(), 2);
+        RecyclerView.LayoutManager lManager = new GridLayoutManager(activity, 2);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(lManager);
 
-            AsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
+//            AsyncTask.execute(new Runnable() {
+//                @Override
+//                public void run() {
 //                    final List<Fotos> packageIn =  InfoPacking.myAppDB.myDao().getFotosById(ID_PAQUETE);
 
 
-                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            FotosListAdapter adapter = new FotosListAdapter(getResources().getStringArray(R.array.fotos), new FotosListAdapter.OnItemClickListener() {
+//                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+                            FotosListAdapter adapter = new FotosListAdapter(activity,getResources().getStringArray(R.array.fotos), new FotosListAdapter.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(String fotos) {
                                     showAlertForUpdate();
@@ -99,17 +112,19 @@ public class FragmentFotos extends Fragment {
 
                                 }
                             });
+
+
                             recyclerView.setAdapter(adapter);
                         }
-                    });
-                }
-            });
-    }
+//                    });
+//                }
+//            });
+//    }
 
 
 
     private void showAlertForUpdate(){
-        View viewInfalted = LayoutInflater.from(Objects.requireNonNull(getActivity())).inflate(R.layout.alert_big_img,null);
+        View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_big_img,null);
 
 
 //        String titulo = "Editando " + fotos.getNombreFoto() + " de PAQUETE " + fotos.getEtiquetaPaquete();

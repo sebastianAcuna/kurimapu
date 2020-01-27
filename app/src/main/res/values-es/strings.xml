@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CURIMAPU</string>
+
+    <!--FORM CICLO VIDA -->
+    <string name="format_date">dd/mm/yyyy</string>
+    <string name="format_set_input">Ingrese Valor</string>
+
+    <string name="propiedad">Propiedad</string>
+    <string name="valor">Valor</string>
+    <string name="coordenates">Cordenadas</string>
+    <string name="norting">Norte</string>
+    <string name="set_norting">Ingrese norte</string>
+    <string name="easting">Este</string>
+    <string name="set_easting">Ingrese Este</string>
+    <string name="aviso_siembra">Aviso Siembra SAG</string>
+    <string name="siembra_sag">Siembra SAG</string>
+    <string name="crop_rotation">Rotación de cultivos</string>
+    <string name="t_2015">2015</string>
+    <string name="set_cultivo">Ingrese Cultivo</string>
+    <string name="t_2016">2016</string>
+    <string name="t_2017">2017</string>
+    <string name="t_2018">2018</string>
+    <string name="analisis_suelo">análisis de suelo</string>
+    <string name="entregado">Entregado</string>
+    <string name="mezcla_aplicada">Tipo de Mezcla Aplicada</string>
+    <string name="cantidad_aplicada">Cantidad Aplicada</string>
+    <string name="insolation">Aislamiento</string>
+    <string name="meters">Metros</string>
+    <string name="lines">Líneas</string>
+    <string name="female">hembra</string>
+    <string name="sowing_lot">Lote de siembra</string>
+    <string name="real_sowing">Hembra real de siembra (kg)</string>
+    <string name="sowing_start">Fecha de inicio de siembra</string>
+    <string name="sowing_end">Fecha de termino de siembra</string>
+    <string name="sowing_seed_meter">sembrado de semillas / metros</string>
+    <string name="row_distance">distancia de fila (M)</string>
+    <string name="row_distance_min">distancia de fila (m)</string>
+    <string name="spread">esparcir urea (N)</string>
+    <string name="dose_uno">dosis 1</string>
+    <string name="date_uno">Fecha 1</string>
+    <string name="dose_dos">dosis 2</string>
+    <string name="date_dos">Fecha 2</string>
+    <string name="sparying_date">Fecha de pulverizacion de herbicidas</string>
+    <string name="name_uno">Nombre 1</string>
+    <string name="name_dos">Nombre 2</string>
+    <string name="name_tres">Nombre 3</string>
+    <string name="date_tres">Fecha 3</string>
+    <string name="emergence_herbicide">Herbicida de pre-emergencia</string>
+    <string name="dose">dosis</string>
+    <string name="water_lts">Agua (Lts)</string>
+    <string name="plant_m">Planta/M</string>
+    <string name="population">Población (Plantas/HA)</string>
+    <string name="basta_date">fecha de pulverización BASTA</string>
+    <string name="basta_spray_uno">Spray Basta 1</string>
+    <string name="basta_spray_dos">Spray Basta 2</string>
+    <string name="basta_spray_tres">Spray Basta 3</string>
+    <string name="basta_spray_cuatro">Spray Basta 4</string>
+    <string name="basta_spray_cuatro_ha">Spray Basta 4 Ha</string>
+    <string name="titulo_largo_form">bruchus pisorum l. y aplicación preventiva de esclerotonía</string>
+    <string name="product">Producto</string>
+    <string name="dose_lt_ha">dosis (Lt/Ha)</string>
+    <string name="foliar_app">aplicación foliar</string>
+    <string name="foliar">Foliar</string>
+    <string name="notice_sag">Aviso SAG</string>
+    <string name="flowering_estim">estimación de floración</string>
+    <string name="flowering_start">inicio de floración</string>
+    <string name="flowering_end">final de floración</string>
+    <string name="fertility">Fertilidad</string>
+    <string name="fungicide_app">aplicación de fungicidas</string>
+    <string name="fungicide">Fungicida</string>
+    <string name="plant_number_checked">número de planta verificado</string>
+    <string name="check">Verificado</string>
+    <string name="main_characteristics">características principales</string>
+    <string name="insepection">inspección</string>
+    <string name="insepection_s">inspección</string>
+    <string name="dessicant_app">aplicación desecante</string>
+    <string name="estimated_date">fecha estimada</string>
+    <string name="real_date">fecha real</string>
+    <string name="observations">Observaciones</string>
+    <string name="swathing_date">fecha de envainado</string>
+    <string name="swathing_date_s">fecha de envainado</string>
+    <string name="yield_estimation">Estimación del rendimiento pre-limpiada</string>
+    <string name="kg_ha">Kg/Ha</string>
+    <string name="harvest_estimation">Estimación de la cosecha </string>
+    <string name="real_harvest_date"> fecha real de cosecha</string>
+    <string name="beginning_date">Fecha de inicio</string>
+    <string name="beginning_dep">Principio de depuración</string>
+    <string name="end_date"> fecha de finalización </string>
+    <string name="harvest_machine">Máquina de cosecha </string>
+    <string name="owner">Dueño</string>
+    <string name="model">Modelo</string>
+    <string name="seed_hrv_mois">humedad de la cosecha de semillas</string>
+    <string name="percent">%</string>
+    <string name="insecticide_app">Aplicación de insecticida</string>
+    <string name="off_type">Fuera de tipo</string>
+
+
+
+
+
+    <string name="date">Fecha</string>
+    <string name="f">F</string>
+    <string name="seleccione_fecha">Seleccione fecha</string>
+
+
+
+
+
+
+
+    <!-- FOTOS DE MUESTRA -->
+    <string-array name="fotos">
+        <item>f1.jpg</item>
+        <item>f2.jpg</item>
+        <item>f3.jpg</item>
+        <item>f4.jpg</item>
+        <item>f5.jpg</item>
+    </string-array>
+
+
+
+    <string-array name="anos_toolbar">
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+    </string-array>
+
+
+
+
+    <!--    SPINNERS FORM  VISITA-->
+    <string-array name="fenologico">
+        <item>--Seleccione--</item>
+        <item>Siembra</item>
+        <item>Transplante</item>
+        <item>Vegetativo</item>
+        <item>pre-floración</item>
+        <item>Floración</item>
+        <item>LLenado</item>
+        <item>Pre-cosecha</item>
+        <item>Post-cosecha</item>
+        <item>Sin Especificar</item>
+    </string-array>
+
+
+    <string-array name="crecimiento">
+        <item>--Seleccione--</item>
+        <item>Excelente</item>
+        <item>Buena</item>
+        <item>Regular</item>
+        <item>Mala</item>
+        <item>Sin Especificar</item>
+    </string-array>
+
+    <string-array name="cosecha">
+        <item>--Seleccione--</item>
+        <item>Rechazada</item>
+        <item>Aprobada</item>
+        <item>Sin Especificar</item>
+    </string-array>
+
+    <string-array name="maleza">
+        <item>--Seleccione--</item>
+        <item>Baja</item>
+        <item>Regular</item>
+        <item>Alta</item>
+        <item>Sin Especificar</item>
+    </string-array>
+
+
+
+    <string name="subtitles_visit">Visitas</string>
+    <string name="subtitles_start">Inicio</string>
+    <string name="subtitles_records">Fichas</string>
+    <string name="subtitles_contracts">Contratos</string>
+    <string name="subtitles_salir">Salir</string>
+
+
+
+
+
+    <!--    TABS -->
+    <string-array name="tabs">
+        <item>@string/uno</item>
+        <item>@string/dos</item>
+    </string-array>
+
+    <string name="uno">Formulario de visitas</string>
+    <string name="dos">libro de campo</string>
+
+    <string-array name="sub_tabs">
+        <item>@string/resumen</item>
+        <item>@string/sowing</item>
+        <item>@string/flowering</item>
+        <item>@string/harvest</item>
+    </string-array>
+
+    <string name="resumen">Resumen</string>
+    <string name="sowing">Siembra</string>
+    <string name="flowering">Floración</string>
+    <string name="harvest">Cosecha</string>
+
+
+
+
+    <!--    TABLA -->
+
+
+    <string name="cliente">Cliente</string>
+    <string name="agricultor">Agricultor</string>
+    <string name="potrero">Potrero</string>
+    <string name="variedad">Variedad</string>
+    <string name="accion">Acción</string>
+    <string name="anteriores">Anteriores</string>
+
+
+    <string-array name="cabecera_informe">
+        <item>@string/anexo</item>
+        <item>@string/variedad</item>
+        <item>@string/especie</item>
+        <item>@string/agricultor</item>
+        <item>@string/potrero</item>
+        <item>@string/accion</item>
+        <item>@string/anteriores</item>
+    </string-array>
+
+
+
+
+    <!--    MENU -->
+    <string name="open_drawer">Abrir cajón de navegación</string>
+    <string name="close_drawer">Cerrar cajón de navegación</string>
+    <string name="fecha">Fecha</string>
+    <string name="estado_fenolog_gico">Estado Fenologógico</string>
+    <string name="estado_general">Estado General</string>
+    <string name="estado_de_crecimiento">Estado de Crecimiento</string>
+    <string name="estado_de_malezas">Estado de Malezas</string>
+    <string name="estado_fitosanitario">Estado Fitosanitario</string>
+    <string name="humedad_del_suelo">Humedad del Suelo</string>
+    <string name="cosecha">Cosecha</string>
+    <string name="recomendaciones">Recomendaciones</string>
+    <string name="anexo">Anexo</string>
+    <string name="orden_de_multiplicaci_n">Orden de Multiplicación</string>
+    <string name="especie">Especie</string>
+    <string name="grower">Cultivador</string>
+    <string name="predio">Predio</string>
+    <string name="sag_register_number">Numbero de registro SAG</string>
+    <string name="irrigation_system_sistema_de_riego">Sistema de Riego</string>
+    <string name="soil_type_tipo_de_suelo">Tipo de Suelo</string>
+    <string name="production_location_localidad">Localidad</string>
+    <string name="has_contrato">Tiene Contrato</string>
+    <string name="has_customer">Tiene Cliente</string>
+    <string name="fieldman">Hombre de campo</string>
+    <string name="rch">RCH</string>
+
+
+    <!--    NAVEGACION -->
+    <string name="nav_back">Volver</string>
+    <string name="nav_save">Guardar</string>
+    <string name="nav_applicar">Aplicar</string>
+    <string name="nav_cancel">Cancelar</string>
+    <string name="nav_take_pick_priv">Tomar foto privada</string>
+    <string name="nav_take_pick_public">Tomar foto publica</string>
+    <string name="nav_take_pick_action">seleccione acción</string>
+    <string name="fotos">fotos</string>
+    <string name="form_ver">Ver</string>
+    <string name="form_form">Formulario</string>
+</resources>

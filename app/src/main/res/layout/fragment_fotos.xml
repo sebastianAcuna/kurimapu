@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginBottom="11dp"
         android:layout_marginLeft="11dp"
         android:layout_marginRight="11dp"
@@ -26,7 +26,7 @@
         fab:menu_colorNormal="#da3c2f"
         fab:menu_colorPressed="#dc4b3f"
         fab:menu_colorRipple="#99d4d4d4"
-        fab:menu_fab_label="Seleccione acción"
+        fab:menu_fab_label="@string/nav_take_pick_action"
         fab:menu_fab_size="normal"
         fab:menu_icon="@drawable/fab_add"
         fab:menu_labels_colorNormal="#333"
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_camera"
-            fab:fab_label="Sacar foto Cliente"
+            fab:fab_label="@string/nav_take_pick_public"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -64,8 +64,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_attach_file"
-            fab:fab_label="Sacar foto Privada"
+            fab:fab_label="@string/nav_take_pick_priv"
             fab:fab_size="mini" />
+
 
     </com.github.clans.fab.FloatingActionMenu>
 

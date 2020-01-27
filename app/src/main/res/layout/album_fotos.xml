@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_margin="@dimen/padding"
+    android:layout_margin="6dp"
     android:elevation="@dimen/padding">
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:layout_height="200dp"
             android:scaleType="fitCenter"
             android:id="@+id/album"
-            android:contentDescription="fotos" />
+            android:contentDescription="@string/fotos" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,8 +29,6 @@
             android:textStyle="bold"
             android:id="@+id/album_text"
             />
-
-
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

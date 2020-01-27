@@ -22,7 +22,9 @@ public class DialogFilterTables extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+
         View view = inflater.inflate(R.layout.dialogo_filtros_tabla, null);
+
         builder.setView(view);
 
 

@@ -24,14 +24,12 @@ import java.util.Objects;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.Tabla;
-import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.fragments.dialogos.DialogFilterTables;
 
 public class FragmentVisitas extends Fragment {
 
     private View view;
-    private Toolbar toolbar;
 
     @Nullable
     @Override
@@ -45,7 +43,7 @@ public class FragmentVisitas extends Fragment {
 
 
         Spinner spinner_toolbar = (Spinner) view.findViewById(R.id.spinner_toolbar);
-        toolbar = view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
 
 
         cargarInforme();
@@ -81,7 +79,7 @@ public class FragmentVisitas extends Fragment {
 
 
 
-    void cargarInforme(){
+    private void cargarInforme(){
         Tabla tabla = new Tabla((TableLayout) view.findViewById(R.id.tabla), getActivity());
         tabla.removeViews();
 
@@ -169,7 +167,7 @@ public class FragmentVisitas extends Fragment {
         super.onActivityCreated(savedInstanceState);
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), "Visitas");
+            activity.updateView(getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_visit));
         }
     }
 }

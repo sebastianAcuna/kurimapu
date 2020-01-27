@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.adapters;
 
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +24,15 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
     private String[] images;
     private OnItemClickListener itemClickListener;
     private OnItemLongClickListener itemLongClickListener;
+    private Context context;
 
     public FotosListAdapter(){}
 
-    public FotosListAdapter(/*List<Fotos>*/ String[] images , OnItemClickListener itemClickListener , OnItemLongClickListener itemLongClickListener){
+    public FotosListAdapter(/*List<Fotos>*/ Context context, String[] images , OnItemClickListener itemClickListener , OnItemLongClickListener itemLongClickListener){
         this.images = images;
         this.itemClickListener = itemClickListener;
         this.itemLongClickListener = itemLongClickListener;
+        this.context = context;
     }
 
 
@@ -45,7 +48,7 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        holder.bind(images[position], itemClickListener, itemLongClickListener);
+        holder.bind(images[position], itemClickListener, itemLongClickListener,context);
         }
 
 
@@ -70,7 +73,7 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
             imageTitle = itemView.findViewById(R.id.album_text);
         }
 
-        void bind(/*final Fotos*/ final String fotos, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener){
+        void bind(/*final Fotos*/ final String fotos, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener, Context context){
 
             String nombre_fto;
 
@@ -81,29 +84,33 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
             }*/
 //            if(fotos.getNombreFoto() != null) { nombre_fto = fotos.getNombreFoto();}else{ nombre_fto = "Imagen default";}
 
-            Resources resources = itemView.getContext().getResources();
-            final int resourceId = resources.getIdentifier(fotos, "drawable",
-                    itemView.getContext().getPackageName());
 
-            Picasso.get().load(R.drawable.f1).resize(800,600).centerCrop().into(imageView);
-            imageTitle.setText("nombre prueba");
-            imageTitle.setEnabled(false);
+            if (context != null){
+                Picasso.get().load(R.drawable.f1).resize(800,600).centerCrop().into(imageView);
+                imageTitle.setText("nombre prueba");
+                imageTitle.setEnabled(false);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClickListener.onItemClick(fotos);
-                }
-            });
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        itemClickListener.onItemClick(fotos);
+                    }
+                });
 
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    itemLongClickListener.onItemLongClick(fotos);
-                    return true;
-                }
-            });
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        itemLongClickListener.onItemLongClick(fotos);
+                        return true;
+                    }
+                });
+
+            }
+
+
+
+
         }
     }
 }

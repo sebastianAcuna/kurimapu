@@ -41,7 +41,7 @@
                     android:id="@+id/lbl_feno"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Estado Fenológico"/>
+                    android:text="@string/estado_fenolog_gico"/>
 
 
                 <Spinner
@@ -60,7 +60,7 @@
                     android:id="@+id/lbl_crecimiento"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Estado de Crecimiento "
+                    android:text="@string/estado_de_crecimiento"
                     />
 
                 <Spinner
@@ -80,7 +80,7 @@
                     android:id="@+id/lbl_malezas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Estado Fenológico"/>
+                    android:text="@string/estado_fenolog_gico"/>
 
                 <Spinner
                     android:id="@+id/sp_malezas"
@@ -112,7 +112,7 @@
                     android:id="@+id/lbl_fitosanitario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Estado Fitosanitario"/>
+                    android:text="@string/estado_fitosanitario"/>
 
 
                 <Spinner
@@ -132,7 +132,7 @@
                     android:id="@+id/lbl_cosecha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cosecha"/>
+                    android:text="@string/cosecha"/>
 
                 <Spinner
                     android:id="@+id/sp_cosecha"
@@ -151,7 +151,7 @@
                     android:id="@+id/lbl_general_cultivo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Estado General del Cultivo"/>
+                    android:text="@string/estado_general"/>
 
                 <Spinner
                     android:id="@+id/sp_general_cultivo"
@@ -166,7 +166,7 @@
             android:id="@+id/lbl_humedad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Estado Fenológico"
+            android:text="@string/estado_fenolog_gico"
             android:layout_below="@id/container_second_line"
             android:layout_margin="@dimen/padding"/>
 
@@ -192,7 +192,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
-                android:hint="Observación" />
+                android:hint="@string/observations" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -208,7 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
-                android:hint="Recomendación" />
+                android:hint="@string/recomendaciones" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -219,7 +219,7 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@id/textInp_recomendacion"
             android:layout_alignParentStart="true"
-            android:text="Guardar"
+            android:text="@string/nav_save"
             android:drawableStart="@drawable/ic_save"
             android:layout_margin="@dimen/padding"
             android:padding="@dimen/padding"
@@ -233,7 +233,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_below="@id/textInp_recomendacion"
-            android:text="Volver"
+            android:text="@string/nav_back"
             android:drawableStart="@drawable/ic_arrow_back"
             android:layout_toEndOf="@id/btn_guardar"
             android:padding="@dimen/padding"
@@ -248,7 +248,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="11dp"
             android:layout_marginLeft="11dp"
             android:layout_marginRight="11dp"
@@ -258,7 +258,7 @@
             fab:menu_colorNormal="#da3c2f"
             fab:menu_colorPressed="#dc4b3f"
             fab:menu_colorRipple="#99d4d4d4"
-            fab:menu_fab_label="Seleccione acción"
+            fab:menu_fab_label="@string/nav_take_pick_action"
             fab:menu_fab_size="normal"
             fab:menu_icon="@drawable/fab_add"
             fab:menu_labels_colorNormal="#333"
@@ -288,7 +288,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_camera"
-                fab:fab_label="Sacar foto Cliente"
+                fab:fab_label="@string/nav_take_pick_public"
                 fab:fab_size="mini" />
 
             <com.github.clans.fab.FloatingActionButton
@@ -296,7 +296,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_attach_file"
-                fab:fab_label="Sacar foto Privada"
+                fab:fab_label="@string/nav_take_pick_priv"
                 fab:fab_size="mini" />
 
         </com.github.clans.fab.FloatingActionMenu>
