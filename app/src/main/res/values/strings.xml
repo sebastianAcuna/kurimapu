@@ -113,6 +113,7 @@
     <string name="subtitles_start">Start</string>
     <string name="subtitles_records">Records</string>
     <string name="subtitles_contracts">Contracts</string>
+    <string name="subtitles_config">configurations</string>
     <string name="subtitles_salir">Log out</string>
 
 
@@ -126,6 +127,14 @@
         <item>f4.jpg</item>
         <item>f5.jpg</item>
     </string-array>
+
+    <integer-array name="fotos_id">
+        <item>@drawable/f1</item>
+        <item>@drawable/f2</item>
+        <item>@drawable/f3</item>
+        <item>@drawable/f4</item>
+        <item>@drawable/f5</item>
+    </integer-array>
 
 
 
@@ -276,6 +285,23 @@
 
     <string name="form_ver">Watch</string>
     <string name="form_form">Form</string>
+
+
+
+
+    <string name="select_language">Select Language</string>
+    <string name="tema">Dark theme</string>
+    <string name="tema_desc">select for change to dark mode</string>
+
+    <string-array name="idiomas">
+        <item >English</item>
+        <item >Spanish</item>
+    </string-array>
+
+    <string-array name="id_idiomas">
+        <item>eng</item>
+        <item>esp</item>
+    </string-array>
 
 
 </resources>

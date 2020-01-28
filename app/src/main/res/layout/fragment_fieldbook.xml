@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@android:color/white"
+        android:background="@color/subToolbarColor"
         android:elevation="80dp">
 
         <com.google.android.material.tabs.TabLayout
@@ -26,6 +26,7 @@
             app:tabGravity="fill"
             app:tabIndicatorHeight="5dp"
             app:tabMode="fixed"
+            app:tabTextColor="@color/secondaryText"
             app:tabSelectedTextColor="@color/colorAccent" />
 
     </com.google.android.material.appbar.AppBarLayout>

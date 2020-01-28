@@ -63,14 +63,6 @@
                 android:layout_below="@id/divider"
                 android:layout_toEndOf="@id/v_01_02"/>
 
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/fecha_resumen"
-                android:layout_centerHorizontal="true"
-                />
 
             <TextView
                 android:id="@+id/v_01_03"
@@ -78,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/estado_fenolog_gico"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider2"
+                android:layout_below="@id/fecha_resumen"
                 android:layout_alignParentStart="true"
                 />
             <TextView
@@ -87,17 +79,9 @@
                 android:layout_height="wrap_content"
                 android:text="Pre-cosecha"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider2"
+                android:layout_below="@id/fecha_resumen"
                 android:layout_toEndOf="@id/v_01_03"/>
 
-
-            <View
-                android:id="@+id/divider3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/estado_fenologico"
-                android:layout_centerHorizontal="true"/>
 
 
             <TextView
@@ -106,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/estado_general"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider3"
+                android:layout_below="@id/estado_fenologico"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -115,17 +99,8 @@
                 android:layout_height="wrap_content"
                 android:text="Buena"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider3"
+                android:layout_below="@id/estado_fenologico"
                 android:layout_toEndOf="@id/v_01_04"/>
-
-
-            <View
-                android:id="@+id/divider4"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/estado_general"
-                android:layout_centerHorizontal="true"/>
 
 
             <TextView
@@ -134,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/estado_de_crecimiento"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider4"
+                android:layout_below="@id/estado_general"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -143,16 +118,9 @@
                 android:layout_height="wrap_content"
                 android:text="Buena"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider4"
+                android:layout_below="@id/estado_general"
                 android:layout_toEndOf="@id/v_01_05"/>
 
-            <View
-                android:id="@+id/divider5"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/estado_crecimiento"
-                android:layout_centerHorizontal="true"/>
 
 
             <TextView
@@ -161,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/estado_de_malezas"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider5"
+                android:layout_below="@id/estado_crecimiento"
                 android:layout_alignParentStart="true"/>
             <TextView
                 android:id="@+id/estado_maleza"
@@ -170,15 +138,7 @@
                 android:text="Regular"
                 android:theme="@style/sub_titles_forms"
                 android:layout_toEndOf="@id/v_01_06"
-                android:layout_below="@id/divider5"/>
-
-            <View
-                android:id="@+id/divider6"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/estado_maleza"
-                android:layout_centerHorizontal="true"/>
+                android:layout_below="@id/estado_crecimiento"/>
 
 
 
@@ -188,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/estado_fitosanitario"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider6"
+                android:layout_below="@id/estado_maleza"
                 android:layout_alignParentStart="true"
                 />
 
@@ -198,16 +158,9 @@
                 android:layout_height="wrap_content"
                 android:text="Buena"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider6"
+                android:layout_below="@id/estado_maleza"
                 android:layout_toEndOf="@id/v_01_07"/>
 
-            <View
-                android:id="@+id/divider7"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/estado_fito"
-                android:layout_centerHorizontal="true"/>
 
 
             <TextView
@@ -216,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/humedad_del_suelo"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider7"
+                android:layout_below="@id/estado_fito"
                 android:layout_alignParentStart="true"/>
 
 
@@ -226,16 +179,9 @@
                 android:layout_height="wrap_content"
                 android:text="Buena"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider7"
+                android:layout_below="@id/estado_fito"
                 android:layout_toEndOf="@id/v_01_08"/>
 
-            <View
-                android:id="@+id/divider8"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/humedad_suelo"
-                android:layout_centerHorizontal="true"/>
 
 
             <TextView
@@ -244,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/cosecha"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider8"
+                android:layout_below="@id/humedad_suelo"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -253,16 +199,9 @@
                 android:layout_height="wrap_content"
                 android:text="Sin Especificar"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider8"
+                android:layout_below="@id/humedad_suelo"
                 android:layout_toEndOf="@id/v_01_09"/>
 
-            <View
-                android:id="@+id/divider9"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/cosecha"
-                android:layout_centerHorizontal="true"/>
 
 
             <TextView
@@ -271,7 +210,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/observations"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider9"
+                android:layout_below="@id/cosecha"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -280,17 +219,9 @@
                 android:layout_height="wrap_content"
                 android:text="Cultivo previo a cosecha, último riego"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider9"
+                android:layout_below="@id/cosecha"
                 android:layout_toEndOf="@id/v_01_10"/>
 
-
-            <View
-                android:id="@+id/divider10"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/observation"
-                android:layout_centerHorizontal="true"/>
 
 
             <TextView
@@ -299,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/recomendaciones"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider10"
+                android:layout_below="@id/observation"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -308,16 +239,8 @@
                 android:layout_height="wrap_content"
                 android:text="Realizar último riego y programar aplicación de desecante reglone en dosis de 2L/ha."
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider10"
+                android:layout_below="@id/observation"
                 android:layout_toEndOf="@id/v_01_11"/>
-
-
-            <View
-                android:id="@+id/divider11"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/recomendaciones"/>
 
             <TextView
                 android:id="@+id/v_01_12"
@@ -325,7 +248,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/anexo"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider11"
+                android:layout_below="@id/recomendaciones"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -334,16 +257,8 @@
                 android:layout_height="wrap_content"
                 android:text="20-AR0011"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider11"
+                android:layout_below="@id/recomendaciones"
                 android:layout_toEndOf="@id/v_01_12"/>
-
-            <View
-                android:id="@+id/divider12"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/anexo"/>
-
 
             <TextView
                 android:id="@+id/v_01_13"
@@ -351,7 +266,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/orden_de_multiplicaci_n"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider12"
+                android:layout_below="@id/anexo"
                 android:layout_alignParentStart="true"/>
             <TextView
                 android:id="@+id/orden_culplica"
@@ -359,16 +274,8 @@
                 android:layout_height="wrap_content"
                 android:text="1996"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider12"
+                android:layout_below="@id/anexo"
                 android:layout_toEndOf="@id/v_01_13"/>
-
-            <View
-                android:id="@+id/divider13"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/orden_culplica"/>
-
 
             <TextView
                 android:id="@+id/v_01_14"
@@ -376,7 +283,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/cliente"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider13"
+                android:layout_below="@id/orden_culplica"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -385,16 +292,9 @@
                 android:layout_height="wrap_content"
                 android:text="VOLMORIN"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider13"
+                android:layout_below="@id/orden_culplica"
                 android:layout_toEndOf="@id/v_01_14"/>
 
-            <View
-                android:id="@+id/divider14"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/cliente"
-                android:layout_centerHorizontal="true"/>
 
             <TextView
                 android:id="@+id/v_01_15"
@@ -402,7 +302,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/especie"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider14"
+                android:layout_below="@id/cliente"
                 android:layout_alignParentStart="true"/>
 
 
@@ -412,16 +312,8 @@
                 android:layout_height="wrap_content"
                 android:text="ARVEJA"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider14"
+                android:layout_below="@id/cliente"
                 android:layout_toEndOf="@id/v_01_15"/>
-
-            <View
-                android:id="@+id/divider15"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/especie"
-                android:layout_centerHorizontal="true"/>
 
 
 
@@ -431,7 +323,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/variedad"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider15"
+                android:layout_below="@id/especie"
                 android:layout_alignParentStart="true"/>
             <TextView
                 android:id="@+id/variedad"
@@ -439,7 +331,7 @@
                 android:layout_height="wrap_content"
                 android:text="RC 3589"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider15"
+                android:layout_below="@id/especie"
                 android:layout_toEndOf="@id/v_01_16"/>
 
             <View
@@ -503,12 +395,6 @@
                 android:layout_below="@id/divider18"
                 android:layout_toEndOf="@id/v_01_19"/>
 
-            <View
-                android:id="@+id/divider19"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/grower"/>
 
 
             <TextView
@@ -517,7 +403,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/predio"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider19"
+                android:layout_below="@id/grower"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -526,16 +412,9 @@
                 android:layout_height="wrap_content"
                 android:text="Fundo Santa Berta"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider19"
+                android:layout_below="@id/grower"
                 android:layout_toEndOf="@id/v_01_20"/>
 
-
-            <View
-                android:id="@+id/divider20"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/predio"/>
 
 
             <TextView
@@ -544,7 +423,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/potrero"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider20"/>
+                android:layout_below="@id/predio"/>
 
             <TextView
                 android:id="@+id/potrero"
@@ -552,15 +431,8 @@
                 android:layout_height="wrap_content"
                 android:text="Pivote"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider20"
+                android:layout_below="@id/predio"
                 android:layout_toEndOf="@id/v_01_21"/>
-
-            <View
-                android:id="@+id/divider21"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/potrero"/>
 
             <TextView
                 android:id="@+id/v_01_22"
@@ -568,7 +440,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/siembra_sag"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider21"
+                android:layout_below="@id/potrero"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -577,16 +449,8 @@
                 android:layout_height="wrap_content"
                 android:text="Pivote"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider21"
+                android:layout_below="@id/potrero"
                 android:layout_toEndOf="@id/v_01_22"/>
-
-            <View
-                android:id="@+id/divider22"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/siembra_sag"
-                android:layout_centerHorizontal="true"/>
 
 
 
@@ -596,7 +460,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/sag_register_number"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider22"
+                android:layout_below="@id/siembra_sag"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -605,17 +469,8 @@
                 android:layout_height="wrap_content"
                 android:text="71605 (IDASE)"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider22"
+                android:layout_below="@id/siembra_sag"
                 android:layout_toEndOf="@id/v_01_23"/>
-
-
-            <View
-                android:id="@+id/divider23"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/sag_register_number"
-                android:layout_centerHorizontal="true"/>
 
 
             <TextView
@@ -624,7 +479,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/irrigation_system_sistema_de_riego"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider23"
+                android:layout_below="@id/sag_register_number"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -633,16 +488,8 @@
                 android:layout_height="wrap_content"
                 android:text="Pivot"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider23"
+                android:layout_below="@id/sag_register_number"
                 android:layout_toEndOf="@id/v_01_24"/>
-
-
-            <View
-                android:id="@+id/divider24"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/irrigation_system"/>
 
 
             <TextView
@@ -651,7 +498,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/soil_type_tipo_de_suelo"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider24"
+                android:layout_below="@id/irrigation_system"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -661,15 +508,7 @@
                 android:text="Loamy"
                 android:theme="@style/sub_titles_forms"
                 android:layout_toEndOf="@id/v_01_25"
-                android:layout_below="@id/divider24"/>
-
-
-            <View
-                android:id="@+id/divider25"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/soil_type"/>
+                android:layout_below="@id/irrigation_system"/>
 
 
 
@@ -679,7 +518,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/production_location_localidad"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider25"
+                android:layout_below="@id/soil_type"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -688,17 +527,8 @@
                 android:layout_height="wrap_content"
                 android:text="San Nicolás"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider25"
+                android:layout_below="@id/soil_type"
                 android:layout_toEndOf="@id/v_01_26"/>
-
-
-            <View
-                android:id="@+id/divider26"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/production_location"
-                android:layout_centerHorizontal="true"/>
 
 
 
@@ -708,7 +538,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/has_contrato"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider26"
+                android:layout_below="@id/production_location"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -717,16 +547,9 @@
                 android:layout_height="wrap_content"
                 android:text="56.6"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider26"
+                android:layout_below="@id/production_location"
                 android:layout_toEndOf="@id/v_01_27"/>
 
-            <View
-                android:id="@+id/divider27"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/has_contrato"
-                android:layout_centerHorizontal="true"/>
 
 
 
@@ -737,7 +560,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/has_customer"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider27"
+                android:layout_below="@id/has_contrato"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -746,15 +569,9 @@
                 android:layout_height="wrap_content"
                 android:text="5.36"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider27"
+                android:layout_below="@id/has_contrato"
                 android:layout_toEndOf="@id/v_01_28"/>
 
-            <View
-                android:id="@+id/divider28"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/has_customer"/>
 
 
             <TextView
@@ -763,7 +580,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/fieldman"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider28"
+                android:layout_below="@id/has_customer"
                 android:layout_alignParentStart="true"
                 />
 
@@ -773,16 +590,8 @@
                 android:layout_height="wrap_content"
                 android:text="JULIETTE PEREZ GONZALEZ"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider28"
+                android:layout_below="@id/has_customer"
                 android:layout_toEndOf="@id/v_01_29"/>
-
-            <View
-                android:id="@+id/divider29"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/fieldman"
-                android:layout_centerHorizontal="true"/>
 
 
             <TextView
@@ -791,7 +600,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/rch"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider29"
+                android:layout_below="@id/fieldman"
                 android:layout_alignParentStart="true"/>
 
             <TextView
@@ -800,7 +609,7 @@
                 android:layout_height="wrap_content"
                 android:text="NA"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider29"
+                android:layout_below="@id/fieldman"
                 android:layout_toEndOf="@id/v_01_30"/>
 
 

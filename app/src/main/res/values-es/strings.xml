@@ -177,6 +177,7 @@
     <string name="subtitles_start">Inicio</string>
     <string name="subtitles_records">Fichas</string>
     <string name="subtitles_contracts">Contratos</string>
+    <string name="subtitles_config">configuraciones</string>
     <string name="subtitles_salir">Salir</string>
 
 
@@ -269,4 +270,19 @@
     <string name="fotos">fotos</string>
     <string name="form_ver">Ver</string>
     <string name="form_form">Formulario</string>
+
+
+    <string name="select_language">Seleccione idioma</string>
+    <string name="tema">Tema oscuro</string>
+    <string name="tema_desc">seleccione para cambiar al modo oscuro</string>
+
+    <string-array name="idiomas">
+        <item >Ingles</item>
+        <item >Español</item>
+    </string-array>
+
+    <string-array name="id_idiomas">
+        <item>eng</item>
+        <item>spa</item>
+    </string-array>
 </resources>

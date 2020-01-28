@@ -88,7 +88,15 @@ public class FragmentFotos extends Fragment {
 
     private void agregarImagenToList(){
 
-        RecyclerView.LayoutManager lManager = new GridLayoutManager(activity, 2);
+        RecyclerView.LayoutManager lManager = null;
+        if (activity != null){
+            if(activity.getRotation(activity).equals("v")){
+                lManager = new GridLayoutManager(activity, 3);
+            }else{
+                lManager = new GridLayoutManager(activity, 2);
+            }
+        }
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(lManager);
 
@@ -101,14 +109,18 @@ public class FragmentFotos extends Fragment {
 //                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
 //                        @Override
 //                        public void run() {
-                            FotosListAdapter adapter = new FotosListAdapter(activity,getResources().getStringArray(R.array.fotos), new FotosListAdapter.OnItemClickListener() {
+
+                            int[] myImageList = new int[]{R.drawable.f1, R.drawable.f2,R.drawable.f3, R.drawable.f4,R.drawable.f5 };
+
+
+                            FotosListAdapter adapter = new FotosListAdapter(activity,myImageList, new FotosListAdapter.OnItemClickListener() {
                                 @Override
-                                public void onItemClick(String fotos) {
-                                    showAlertForUpdate();
+                                public void onItemClick(int fotos) {
+                                    showAlertForUpdate(fotos);
                                 }
                             }, new FotosListAdapter.OnItemLongClickListener() {
                                 @Override
-                                public void onItemLongClick(String fotos) {
+                                public void onItemLongClick(int fotos) {
 
                                 }
                             });
@@ -123,7 +135,7 @@ public class FragmentFotos extends Fragment {
 
 
 
-    private void showAlertForUpdate(){
+    private void showAlertForUpdate(int idFoto){
         View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_big_img,null);
 
 
@@ -140,7 +152,7 @@ public class FragmentFotos extends Fragment {
         final ImageView imageView = viewInfalted.findViewById(R.id.img_alert_foto);
         String medidaAMostrar = "Nombre prueba";
         txt.setText(medidaAMostrar);
-        Picasso.get().load(R.drawable.f1).resize(720,800).centerInside().into(imageView);
+        Picasso.get().load(idFoto).resize(720,800).centerInside().into(imageView);
         builder.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {

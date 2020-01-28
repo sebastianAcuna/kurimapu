@@ -16,6 +16,7 @@ public class Utilidades {
     public static final String FRAGMENT_VISITAS = "fragment_visitas";
     public static final String FRAGMENT_CONTRATOS = "fragment_contratos";
     public static final String FRAGMENT_LOGIN = "fragment_login";
+    public static final String FRAGMENT_CONFIG = "fragment_config";
 
 
 

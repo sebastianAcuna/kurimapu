@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Idioma" >
+
+            <ListPreference
+                android:key="lang"
+                android:title="@string/select_language"
+                android:entries="@array/idiomas"
+                android:entryValues="@array/id_idiomas"
+                android:summary=""/>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="Tema" >
+
+        <SwitchPreference
+            android:key="tema"
+            android:title="@string/tema"
+            android:summary="@string/tema_desc"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

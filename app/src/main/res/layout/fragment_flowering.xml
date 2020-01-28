@@ -14,8 +14,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -54,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/notice_sag"
-                android:theme="@style/titles_forms"
+                style="@style/titles_forms"
                 android:layout_below="@id/v_01"/>
 
             <View
@@ -71,7 +69,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_date"
                 android:layout_below="@id/v_02"
                 android:layout_alignParentStart="true"/>
@@ -80,31 +78,11 @@
                 android:id="@+id/date_date"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:inputType="date"
                 android:importantForAutofill="no"
                 android:layout_toEndOf="@id/a_01_03"
                 android:layout_below="@id/v_02"
-                />
-
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_date"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_toEndOf="@id/date_date"
-                android:layout_below="@id/v_02"
-                />
-
-            <View
-                android:id="@+id/v_03"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/date_date"
-                android:layout_centerHorizontal="true"
                 />
 
             <!-- Flowing estimation -->
@@ -113,9 +91,9 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/flowering_estim"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_flowering"
-                android:layout_below="@id/v_03"
+                android:layout_below="@id/date_date"
                 android:layout_alignParentStart="true"
                 />
 
@@ -123,21 +101,11 @@
                 android:id="@+id/date_flowering"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:inputType="date"
                 android:importantForAutofill="no"
                 android:layout_toEndOf="@id/a_01_04"
-                android:layout_below="@id/v_03"/>
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_flowering"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_toEndOf="@id/date_flowering"
-                android:layout_below="@id/v_03"
-                />
+                android:layout_below="@id/date_date"/>
 
             <View
                 android:id="@+id/v_04"
@@ -154,7 +122,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/flowering_start"
-                android:theme="@style/titles_forms"
+                style="@style/titles_forms"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/v_04"/>
 
@@ -174,7 +142,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/f"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_f_start"
                 android:layout_below="@id/v_05"
                 android:layout_alignParentStart="true"/>
@@ -183,23 +151,13 @@
                 android:id="@+id/date_f_start"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:importantForAutofill="no"
                 android:inputType="date"
                 android:layout_toEndOf="@id/a_01_06"
                 android:layout_below="@id/v_05"
                 />
 
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_start"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_toEndOf="@id/date_f_start"
-                android:layout_below="@id/v_05"
-                />
             <View
                 android:id="@+id/v_06"
                 android:layout_width="match_parent"
@@ -215,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/flowering_end"
-                android:theme="@style/titles_forms"
+                style="@style/titles_forms"
                 android:layout_below="@id/v_06"
                 android:layout_centerHorizontal="true"
                 />
@@ -235,7 +193,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/f"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_f_end"
                 android:layout_below="@id/v_07"
                 android:layout_alignParentStart="true"
@@ -245,23 +203,11 @@
                 android:id="@+id/date_f_end"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:importantForAutofill="no"
                 android:inputType="date"
                 android:layout_toEndOf="@id/a_01_08"
                 android:layout_below="@id/v_07"/>
-
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_end"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_toEndOf="@id/date_f_end"
-                android:layout_below="@id/v_07"
-
-                />
 
             <View
                 android:id="@+id/v_08"
@@ -279,7 +225,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/fertility"
-                android:theme="@style/titles_forms"
+                style="@style/titles_forms"
                 android:layout_below="@id/v_08"
                 android:layout_centerHorizontal="true"/>
 
@@ -299,7 +245,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/f"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_fert_one"
                 android:layout_below="@id/v_09"
                 android:layout_alignParentStart="true"/>
@@ -308,31 +254,11 @@
                 android:id="@+id/date_fert_one"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:importantForAutofill="no"
                 android:inputType="date"
                 android:layout_toEndOf="@id/a_01_10"
                 android:layout_below="@id/v_09"/>
-
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_fert_one"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_toEndOf="@id/date_fert_one"
-                android:layout_below="@id/v_09"
-
-                />
-            <View
-                android:id="@+id/v_10"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/date_fert_one"
-                android:layout_centerHorizontal="true"
-                />
 
             <!-- F -->
             <TextView
@@ -340,32 +266,21 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/f"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_fert_two"
                 android:layout_alignParentStart="true"
-                android:layout_below="@id/v_10"/>
+                android:layout_below="@id/date_fert_one"/>
 
             <EditText
                 android:id="@+id/date_fert_two"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:importantForAutofill="no"
                 android:inputType="date"
                 android:layout_toEndOf="@id/a_01_11"
-                android:layout_below="@id/v_10"/>
+                android:layout_below="@id/date_fert_one"/>
 
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_fert_two"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_toEndOf="@id/date_fert_two"
-                android:layout_below="@id/v_10"
-
-                />
             <View
                 android:id="@+id/v_11"
                 android:layout_width="match_parent"
@@ -380,7 +295,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/fungicide_app"
-                android:theme="@style/titles_forms"
+                style="@style/titles_forms"
                 android:layout_below="@id/v_11"
                 android:layout_centerHorizontal="true" />
 
@@ -400,7 +315,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/fungicide"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:layout_below="@id/v_12"
                 android:layout_alignParentStart="true" />
 
@@ -419,14 +334,6 @@
                     android:hint="@string/format_set_input" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <View
-                android:id="@+id/v_13"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/textInp_fungicide"
-                android:layout_centerHorizontal="true"
-                />
 
             <!--DOSE -->
             <TextView
@@ -434,15 +341,15 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/dose"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:layout_alignParentStart="true"
-                android:layout_below="@id/v_13" />
+                android:layout_below="@id/textInp_fungicide" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInp_doce"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/v_13"
+                android:layout_below="@id/textInp_fungicide"
                 android:layout_toEndOf="@id/a_01_14">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -452,14 +359,6 @@
                     android:hint="@string/format_set_input" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <View
-                android:id="@+id/v_14"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/textInp_doce"
-                android:layout_centerHorizontal="true"
-                />
 
             <!-- DATE -->
             <TextView
@@ -467,32 +366,21 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_fungicide"
-                android:layout_below="@id/v_14"
+                android:layout_below="@id/textInp_doce"
                 android:layout_alignParentStart="true" />
 
             <EditText
                 android:id="@+id/date_fungicide"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:importantForAutofill="no"
                 android:inputType="date"
                 android:layout_toEndOf="@id/a_01_15"
-                android:layout_below="@id/v_14" />
+                android:layout_below="@id/textInp_doce" />
 
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_fungicide"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_toEndOf="@id/date_fungicide"
-                android:layout_below="@id/v_14"
-
-                />
             <View
                 android:id="@+id/v_15"
                 android:layout_width="match_parent"
@@ -507,7 +395,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/insecticide_app"
-                android:theme="@style/titles_forms"
+                style="@style/titles_forms"
                 android:layout_below="@id/v_15"
                 android:layout_centerHorizontal="true" />
 
@@ -526,7 +414,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_insecticide"
                 android:layout_below="@id/v_16"
                 android:layout_alignParentStart="true" />
@@ -535,23 +423,11 @@
                 android:id="@+id/date_insecticide"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:importantForAutofill="no"
                 android:inputType="date"
                 android:layout_below="@id/v_16"
                 android:layout_toEndOf="@id/a_01_17"
-                />
-
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_insecticide"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_below="@id/v_16"
-                android:layout_toEndOf="@id/date_insecticide"
-
                 />
 
             <View
@@ -570,7 +446,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/beginning_dep"
-                android:theme="@style/titles_forms"
+                style="@style/titles_forms"
                 android:layout_below="@id/v_18"
                 android:layout_centerHorizontal="true"
                 />
@@ -590,7 +466,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_depuration"
                 android:layout_below="@id/v_19"
                 android:layout_alignParentStart="true"
@@ -600,23 +476,11 @@
                 android:id="@+id/date_depuration"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:importantForAutofill="no"
                 android:inputType="date"
                 android:layout_toEndOf="@id/a_01_19"
                 android:layout_below="@id/v_19"/>
-
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_depuration"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_toEndOf="@id/date_depuration"
-                android:layout_below="@id/v_19"
-
-                />
 
             <View
                 android:id="@+id/v_20"
@@ -634,7 +498,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/off_type"
-                android:theme="@style/titles_forms"
+                style="@style/titles_forms"
                 android:layout_below="@id/v_20"
                 android:layout_centerHorizontal="true" />
 
@@ -654,7 +518,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_off_type"
                 android:layout_below="@id/v_21"
                 android:layout_alignParentStart="true" />
@@ -663,32 +527,12 @@
                 android:id="@+id/date_off_type"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:importantForAutofill="no"
                 android:inputType="date"
                 android:layout_toEndOf="@id/a_01_21"
                 android:layout_below="@id/v_21"/>
 
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_off_type"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_toEndOf="@id/date_off_type"
-                android:layout_below="@id/v_21"
-                />
-
-
-            <View
-                android:id="@+id/v_22"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/date_off_type"
-                android:layout_centerHorizontal="true"
-                />
 
             <!-- PLANT NUMBER CHECKED-->
             <TextView
@@ -696,8 +540,8 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/plant_number_checked"
-                android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/v_22"
+                style="@style/sub_titles_forms"
+                android:layout_below="@id/date_off_type"
                 android:layout_alignParentStart="true" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -705,7 +549,7 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/a_01_22"
-                android:layout_below="@id/v_22">
+                android:layout_below="@id/date_off_type">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_plant_number_checked"
@@ -714,14 +558,6 @@
                     android:hint="@string/format_set_input"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <View
-                android:id="@+id/v_23"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/textInp_plant_number_checked"
-                android:layout_centerHorizontal="true"
-                />
 
             <!-- CHECK-->
             <TextView
@@ -729,8 +565,8 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/check"
-                android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/v_23"
+                style="@style/sub_titles_forms"
+                android:layout_below="@id/textInp_plant_number_checked"
                 android:layout_alignParentStart="true" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -738,7 +574,7 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/a_01_23"
-                android:layout_below="@id/v_23">
+                android:layout_below="@id/textInp_plant_number_checked">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_check"
@@ -747,14 +583,6 @@
                     android:hint="@string/format_set_input"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <View
-                android:id="@+id/v_24"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/textInp_check"
-                android:layout_centerHorizontal="true"
-                />
 
 
             <!-- MAIN CHARACTERISTICS-->
@@ -763,8 +591,8 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/main_characteristics"
-                android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/v_24"
+                style="@style/sub_titles_forms"
+                android:layout_below="@id/textInp_check"
                 android:layout_alignParentStart="true" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -772,7 +600,7 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/a_01_24"
-                android:layout_below="@id/v_24"
+                android:layout_below="@id/textInp_check"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -799,7 +627,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/insepection"
-                android:theme="@style/titles_forms"
+                style="@style/titles_forms"
                 android:layout_below="@id/v_25"
                 android:layout_centerHorizontal="true" />
 
@@ -819,7 +647,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/insepection_s"
-                android:theme="@style/sub_titles_forms"
+                style="@style/sub_titles_forms"
                 android:labelFor="@id/date_inspection"
                 android:layout_alignParentStart="true"
                 android:layout_below="@id/v_26" />
@@ -829,31 +657,11 @@
                 android:id="@+id/date_inspection"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:theme="@style/input_date_forms"
+                style="@style/input_date_forms"
                 android:importantForAutofill="no"
                 android:inputType="date"
                 android:layout_below="@id/v_26"
                 android:layout_toEndOf="@id/a_01_26"/>
-
-            <ImageButton
-                android:contentDescription="@string/seleccione_fecha"
-                android:id="@+id/btn_fecha_inspection"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:theme="@style/calendar_icon_forms"
-                android:layout_toEndOf="@id/date_inspection"
-                android:layout_below="@id/v_26"
-                />
-
-            <View
-                android:id="@+id/v_27"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_below="@id/date_inspection"
-                android:layout_centerHorizontal="true"
-                />
 
         </RelativeLayout>
 

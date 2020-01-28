@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    >
+    android:baselineAligned="false">
     <ScrollView
         android:layout_width="0dp"
         android:layout_weight="0.5"
@@ -23,14 +23,16 @@
                     android:layout_height="wrap_content"
                     android:text="@string/propiedad"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"/>
+                    android:layout_alignParentStart="true"
+                    android:padding="@dimen/padding"/>
 
                 <TextView
                     android:id="@+id/x_02_01"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/valor"
-                    android:layout_toEndOf="@id/x_01_01"/>
+                    android:layout_toEndOf="@id/x_01_01"
+                    android:padding="@dimen/padding"/>
 
                 <View
                     android:id="@+id/p_01"
@@ -43,10 +45,10 @@
                 <!-- notice tag -->
                 <TextView
                     android:id="@+id/x_01_02"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/coordenates"
-                    android:theme="@style/titles_forms"
+                    style="@style/titles_forms"
                     android:layout_alignParentStart="true"
                     android:layout_below="@id/p_01"/>
 
@@ -63,12 +65,16 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/norting"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_02"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_norting"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/x_01_03"
+                    android:layout_below="@id/p_02">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_norting"
@@ -76,21 +82,23 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/set_norting" />
                 </com.google.android.material.textfield.TextInputLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+
                 <!-- EASTING -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_04"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/easting"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_norting"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_easting"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInp_norting"
+                    android:layout_toEndOf="@id/x_01_04">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_easting"
@@ -100,74 +108,98 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_04"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/textInp_easting"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- SIEMBRA SAG -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_05"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/aviso_siembra"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_04"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_05"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_05"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- SIEMBRA SAG -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_06"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/siembra_sag"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_05"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_siembra_sag"
+                    />
 
                 <EditText
                     android:id="@+id/date_siembra_sag"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
-
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_fecha_siembra_sag"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/p_05"
+                    android:layout_toEndOf="@id/x_01_06"
                     />
 
+
                 <View
+                    android:id="@+id/p_06"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/date_siembra_sag"
+                    android:layout_centerHorizontal="true"/>
 
 
                 <!-- CROP ROTATION -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_07"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/crop_rotation"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_06"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_07"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_07"
+                    android:layout_centerHorizontal="true"/>
                 <!-- 2015 -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_08"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/t_2015"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_07"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_2015"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_07"
+                    android:layout_toEndOf="@id/x_01_08">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_2015"
@@ -176,24 +208,23 @@
                         android:hint="@string/set_cultivo" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
-
-
 
                 <!-- 2016 -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_09"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/t_2016"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_2015"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_2016"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInp_2015"
+                    android:layout_toEndOf="@id/x_01_09">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_2016"
@@ -202,21 +233,23 @@
                         android:hint="@string/set_cultivo" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+
                 <!-- 2017 -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_10"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/t_2017"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_2016"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_2017"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInp_2016"
+                    android:layout_toEndOf="@id/x_01_10">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_2017"
@@ -225,21 +258,22 @@
                         android:hint="@string/set_cultivo" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
                 <!-- 2018 -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_11"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/t_2018"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_2017"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_2018"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInp_2017"
+                    android:layout_toEndOf="@id/x_01_11">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_2018"
@@ -249,34 +283,49 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_11"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/textInp_2018"
+                    android:layout_centerHorizontal="true"/>
 
 
                 <!-- ANÁLISIS DE SUELO-->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_12"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/analisis_suelo"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_11"
+                    android:layout_alignParentStart="true"/>
+
                 <View
+                    android:id="@+id/p_12"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_12"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- ENTREGADO -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_13"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/entregado"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_12"
+                    android:layout_alignParentStart="true"/>
 
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_entregado"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_12"
+                    android:layout_toEndOf="@id/x_01_13">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_entregado"
@@ -285,23 +334,23 @@
                         android:hint="@string/format_set_input" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
-
                 <!--TIPO DE MEZCLA APLICADA -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_14"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/mezcla_aplicada"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_entregado"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_tipo_mezcla"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInp_entregado"
+                    android:layout_toEndOf="@id/x_01_14">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_tipo_mezcla"
@@ -310,23 +359,24 @@
                         android:hint="@string/format_set_input" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
 
 
                 <!-- CANTIDAD APLICADA -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_15"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/cantidad_aplicada"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_tipo_mezcla"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_cant_aplicada"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInp_tipo_mezcla"
+                    android:layout_toEndOf="@id/x_01_15">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_cant_aplicada"
@@ -336,35 +386,47 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_15"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/textInp_cant_aplicada"/>
 
-                <!--INSOLATION-->
+                <!--ISOLATION-->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_16"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/insolation"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_15"
+                    android:layout_alignParentStart="true"/>
 
                 <View
                     android:id="@+id/divider16_showin"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_16"
+                    android:layout_centerHorizontal="true"/>
 
 
                 <!-- METERS -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_17"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/meters"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/divider16_showin"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_meters"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider16_showin"
+                    android:layout_toEndOf="@id/x_01_17">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_meters"
@@ -374,36 +436,50 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_17"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/textInp_meters"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- LINES -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_18"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lines"
-                    android:theme="@style/titles_forms"
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_17"
+                    android:layout_alignParentStart="true"
                     />
 
                 <View
+                    android:id="@+id/p_18"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_18"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- Female -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_19"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/female"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_18"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_lines_female"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_18"
+                    android:layout_toEndOf="@id/x_01_19">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_lines_female"
@@ -413,34 +489,48 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_19"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/textInp_lines_female"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- SHOWING LOT -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_20"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/sowing_lot"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_19"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_20"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_20"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- FEMALE -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_21"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/female"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_20"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_showing_female"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_20"
+                    android:layout_toEndOf="@id/x_01_21">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_showing_female"
@@ -449,24 +539,23 @@
                         android:hint="@string/format_set_input" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
-
-
                 <!-- REAL SHOWING FEMALE -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_22"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/real_sowing"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_showing_female"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_real_sowing"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInp_showing_female"
+                    android:layout_toEndOf="@id/x_01_22">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_real_sowing"
@@ -477,115 +566,144 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_22"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider" />
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/textInp_real_sowing"
+                    android:layout_centerHorizontal="true"/>
 
 
                 <!-- SOWING DATE START-->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_23"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/sowing_start"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_22"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_23"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider" />
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_23"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- FEMALE -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_24"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/female"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_23"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_sowing_female_start"/>
 
                 <EditText
                     android:id="@+id/date_sowing_female_start"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/p_23"
+                    android:layout_toEndOf="@id/x_01_24"/>
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_sowing_female_start"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
 
                 <View
+                    android:id="@+id/p_24"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/date_sowing_female_start"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- SOWING DATE END-->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_25"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/sowing_end"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_24"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_25"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_25"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- FEMALE-->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_26"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/female"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:labelFor="@id/date_sowing_female_end"
+                    android:layout_below="@id/p_25"
+                    android:layout_alignParentStart="true"/>
 
                 <EditText
                     android:id="@+id/date_sowing_female_end"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
+                    style="@style/input_date_forms"
+                    android:importantForAutofill="no"
+                    android:inputType="date"
+                    android:layout_below="@id/p_25"
+                    android:layout_toEndOf="@id/x_01_25"/>
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_sowing_female_end"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
                 <View
+                    android:id="@+id/p_26"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/date_sowing_female_end"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- SOWING SEED  / METER-->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_27"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/sowing_seed_meter"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_26"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_27"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_27"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- F-->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_28"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/f"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_27"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_sowin_seed_f"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_27"
+                    android:layout_toEndOf="@id/x_01_28">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_sowin_seed_f"
@@ -596,37 +714,51 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_28"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_28"
+                    android:layout_centerHorizontal="true"/>
 
 
                 <!-- ROW DISTANCE (M)-->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_29"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/row_distance"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_28"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_29"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_29"
+                    android:layout_centerHorizontal="true"/>
 
 
                 <!-- Row Distance (m)-->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_30"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/row_distance_min"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_29"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_row_distance"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_29"
+                    android:layout_toEndOf="@id/x_01_30">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_row_distance"
@@ -638,37 +770,51 @@
 
 
                 <View
+                    android:id="@+id/p_30"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_30"
+                    android:layout_centerHorizontal="true"/>
 
                 <!-- SPREAD UREA (N)-->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_31"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/spread"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_30"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_31"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_31"
+                    android:layout_centerHorizontal="true"/>
 
 
                 <!-- Dose 1 -->
 
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_32"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/dose_uno"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_31"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_dose_one"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_31"
+                    android:layout_toEndOf="@id/x_01_32">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_dose_one"
@@ -678,54 +824,46 @@
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
-
-
                 <!-- Date 1 -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_33"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/date_uno"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_dose_one"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_date_one"/>
 
                 <EditText
                     android:id="@+id/date_date_one"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
-
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_date_one"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"/>
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/textInp_dose_one"
+                    android:layout_toEndOf="@id/x_01_33"/>
 
 
                 <!-- Dose 2 -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_34"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/dose_dos"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/date_date_one"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_dose_two"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date_date_one"
+                    android:layout_toEndOf="@id/x_01_34">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_dose_two"
@@ -735,69 +873,73 @@
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
-
                 <!-- Date 2 -->
 
                 <TextView
-                android:layout_width="0dp"
+                    android:id="@+id/x_01_35"
+                    android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/date_dos"
-                android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_dose_two"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_date_two"/>
 
                 <EditText
                     android:id="@+id/date_date_two"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/textInp_dose_two"
+                    android:layout_toEndOf="@id/x_01_35"/>
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_date_two"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
 
                 <View
-
+                    android:id="@+id/p_35"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/date_date_two"
+                    android:layout_centerHorizontal="true"
                     />
                 <!-- HERBICIDE SPRAYING DATE -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_36"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/sparying_date"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_35"
+                    android:layout_alignParentStart="true"/>
 
                 <View
-
+                    android:id="@+id/p_36"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_36"
+                    android:layout_centerHorizontal="true"
                     />
 
                 <!-- Name 1 -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_37"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/name_uno"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_36"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_name_one"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_36"
+                    android:layout_toEndOf="@id/x_01_37">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_name_one"
@@ -807,55 +949,46 @@
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
                 <!-- Date 1 -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_38"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/date_uno"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_name_one"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_herbicide_date_one"/>
 
                 <EditText
                     android:id="@+id/date_herbicide_date_one"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/textInp_name_one"
+                    android:layout_toEndOf="@id/x_01_38"/>
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_herbicide_date_one"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
                 <!-- Name 2 -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_39"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/name_dos"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/date_herbicide_date_one"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_name_two"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date_herbicide_date_one"
+                    android:layout_toEndOf="@id/x_01_39">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_name_two"
@@ -865,54 +998,45 @@
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
                 <!-- Date 2 -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_40"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/date_dos"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_name_two"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_herbicide_date_two"/>
 
                 <EditText
                     android:id="@+id/date_herbicide_date_two"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_toEndOf="@id/x_01_40"
+                    android:layout_below="@id/textInp_name_two"/>
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_herbicide_date_two"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
                 <!-- Name 3 -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_41"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/name_tres"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/date_herbicide_date_two"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_name_tres"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date_herbicide_date_two"
+                    android:layout_toEndOf="@id/x_01_41">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_name_tres"
@@ -922,103 +1046,100 @@
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
-
 
                 <!-- Date 3 -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_42"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/date_tres"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_name_tres"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_herbicide_date_tres"/>
 
                 <EditText
                     android:id="@+id/date_herbicide_date_tres"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
-
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_herbicide_date_tres"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/textInp_name_tres"
+                    android:layout_toEndOf="@id/x_01_42"/>
 
                 <View
-
+                    android:id="@+id/p_42"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/date_herbicide_date_tres"
+                    android:layout_centerHorizontal="true"
                     />
 
 
                 <!-- PRE EMERGENCE HERBICIDE -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_43"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/emergence_herbicide"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_42"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_44"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_43"
+                    android:layout_centerHorizontal="true"
                     />
 
 
                 <!-- Date  -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_44"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_44"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_emergence_date"/>
 
                 <EditText
                     android:id="@+id/date_emergence_date"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/p_44"
+                    android:layout_toEndOf="@id/x_01_44"/>
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_emergence_date"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
 
                 <!-- Dose -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_45"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/dose"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/date_emergence_date"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_emergence_dose"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date_emergence_date"
+                    android:layout_toEndOf="@id/x_01_45">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_emergence_dose"
@@ -1028,24 +1149,24 @@
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
                 <!-- Water (Lts) -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_46"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/water_lts"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_emergence_dose"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_water_lts"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInp_emergence_dose"
+                    android:layout_toEndOf="@id/x_01_46">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_water_lts"
@@ -1056,36 +1177,50 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_47"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/textInp_water_lts"
+                    android:layout_centerHorizontal="true"
                     />
 
                 <!-- PLANT/M -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_48"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/plant_m"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_47"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_48"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_48"
+                    android:layout_centerHorizontal="true"
                     />
 
 
                 <!-- F -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_49"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/f"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_48"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_f_plant"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_48"
+                    android:layout_toEndOf="@id/x_01_49">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_f_plant"
@@ -1096,38 +1231,52 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_49"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_49"
+                    android:layout_centerHorizontal="true"
                     />
 
 
                 <!-- POPULATION (PLANTS/HA) -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_50"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/population"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_49"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_50"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_50"
+                    android:layout_centerHorizontal="true"
                     />
 
                 <!-- F -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_51"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/f"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_50"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_f_population"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_50"
+                    android:layout_toEndOf="@id/x_01_51">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_f_population"
@@ -1138,247 +1287,231 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_51"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_51"
+                    android:layout_centerHorizontal="true"
                     />
 
                 <!-- BASTA SPRAYING DATE -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_52"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/basta_date"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_51"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_52"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_52"
+                    android:layout_centerHorizontal="true"
                     />
 
 
                 <!-- Basta Spray 1 -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_53"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/basta_spray_uno"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_52"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_spray_uno"/>
 
 
                 <EditText
                     android:id="@+id/date_spray_uno"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
-
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_spray_uno"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/p_52"
+                    android:layout_toEndOf="@id/x_01_53"/>
 
 
                 <!-- Basta Spray 2 -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_54"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/basta_spray_dos"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/date_spray_uno"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_spray_dos"/>
 
 
                 <EditText
                     android:id="@+id/date_spray_dos"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/date_spray_uno"
+                    android:layout_toEndOf="@id/x_01_54"/>
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_spray_dos"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
 
                 <!-- Basta Spray 3 -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_55"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/basta_spray_tres"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/date_spray_dos"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_spray_tres"/>
 
 
                 <EditText
                     android:id="@+id/date_spray_tres"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
-
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_spray_tres"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/date_spray_dos"
+                    android:layout_toEndOf="@id/x_01_55"/>
 
 
                 <!-- Basta Spray 4 -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_56"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/basta_spray_cuatro"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/date_spray_tres"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_spray_cuatro"/>
 
 
                 <EditText
                     android:id="@+id/date_spray_cuatro"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/date_spray_tres"
+                    android:layout_toEndOf="@id/x_01_56"/>
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_spray_cuatro"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
 
                 <!-- Basta Spray 4 Ha -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_57"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/basta_spray_cuatro_ha"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/date_spray_cuatro"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_spray_cuatro_ha"/>
 
 
                 <EditText
                     android:id="@+id/date_spray_cuatro_ha"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
-
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_spray_cuatro_ha"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/date_spray_cuatro"
+                    android:layout_toEndOf="@id/x_01_57"/>
 
 
                 <View
+                    android:id="@+id/p_57"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_57"
+                    android:layout_centerHorizontal="true"
                     />
 
 
                 <!-- Basta Spray 4 Ha -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_58"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/titulo_largo_form"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_57"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_58"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_58"
+                    android:layout_centerHorizontal="true"
                     />
 
 
                 <!-- Date -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_59"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_58"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_bruchus"/>
 
 
                 <EditText
                     android:id="@+id/date_bruchus"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/p_58"
+                    android:layout_toEndOf="@id/x_01_59"/>
 
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_bruchus"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
 
                 <!-- Product -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_60"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/product"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/date_bruchus"
+                    android:layout_alignParentStart="true"/>
 
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_producto_bruchus"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date_bruchus"
+                    android:layout_toEndOf="@id/x_01_60">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_producto_bruchus"
@@ -1388,25 +1521,24 @@
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
-
 
                 <!-- Dose (Lt/Ha) -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_61"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/dose_lt_ha"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_producto_bruchus"
+                    android:layout_alignParentStart="true"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_dose_lt_ha"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInp_producto_bruchus"
+                    android:layout_toEndOf="@id/x_01_61">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_dose_lt_ha"
@@ -1417,9 +1549,12 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
+                    android:id="@+id/p_61"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_61"
+                    android:layout_centerHorizontal="true"
                     />
 
 
@@ -1427,30 +1562,41 @@
                 <!-- FOLIAR APPLICATION -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_62"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/foliar_app"
-                    android:theme="@style/titles_forms"/>
+                    style="@style/titles_forms"
+                    android:layout_below="@id/p_61"
+                    android:layout_alignParentStart="true"/>
 
                 <View
+                    android:id="@+id/p_62"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
+                    android:layout_below="@id/x_01_62"
+                    android:layout_centerHorizontal="true"
                     />
 
                 <!-- Foliar -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_63"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/foliar"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/p_62"
+                    android:layout_alignParentStart="true"/>
 
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_foliar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/p_62"
+                    android:layout_toEndOf="@id/x_01_63">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_foliar"
@@ -1460,26 +1606,26 @@
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
 
                 <!-- Dose -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_64"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/dose"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_foliar"
+                    android:layout_alignParentStart="true"/>
 
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_dose_foliar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInp_foliar"
+                    android:layout_toEndOf="@id/x_01_64">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_dose_foliar"
@@ -1489,43 +1635,30 @@
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
 
 
                 <!-- Dose -->
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/x_01_65"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
-                    android:theme="@style/sub_titles_forms"/>
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/textInp_dose_foliar"
+                    android:layout_alignParentStart="true"
+                    android:labelFor="@id/date_date_foliar"/>
 
 
                 <EditText
                     android:id="@+id/date_date_foliar"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:theme="@style/input_date_forms" />
-
-                <ImageButton
-                    android:contentDescription="@string/seleccione_fecha"
-                    android:id="@+id/btn_date_foliar"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:theme="@style/calendar_icon_forms"
-
-                    />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    />
+                    style="@style/input_date_forms"
+                    android:inputType="date"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/textInp_dose_foliar"
+                    android:layout_toEndOf="@id/x_01_65"/>
 
             </RelativeLayout>
 

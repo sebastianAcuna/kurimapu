@@ -21,14 +21,14 @@ import cl.smapdev.curimapu.R;
 public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.ImageViewHolder> {
 
 //    private List<Fotos> images;
-    private String[] images;
+    private int[] images;
     private OnItemClickListener itemClickListener;
     private OnItemLongClickListener itemLongClickListener;
     private Context context;
 
     public FotosListAdapter(){}
 
-    public FotosListAdapter(/*List<Fotos>*/ Context context, String[] images , OnItemClickListener itemClickListener , OnItemLongClickListener itemLongClickListener){
+    public FotosListAdapter(/*List<Fotos>*/ Context context, int[] images , OnItemClickListener itemClickListener , OnItemLongClickListener itemLongClickListener){
         this.images = images;
         this.itemClickListener = itemClickListener;
         this.itemLongClickListener = itemLongClickListener;
@@ -36,8 +36,8 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
     }
 
 
-    public interface OnItemClickListener{ void onItemClick(/*Fotos fotos*/ String foto); }
-    public interface OnItemLongClickListener{ void onItemLongClick(/*Fotos fotos*/ String foto);}
+    public interface OnItemClickListener{ void onItemClick(/*Fotos fotos*/ int foto); }
+    public interface OnItemLongClickListener{ void onItemLongClick(/*Fotos fotos*/ int foto);}
 
     @NonNull
     @Override
@@ -73,7 +73,7 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
             imageTitle = itemView.findViewById(R.id.album_text);
         }
 
-        void bind(/*final Fotos*/ final String fotos, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener, Context context){
+        void bind(/*final Fotos*/ final int fotos, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener, Context context){
 
             String nombre_fto;
 
@@ -85,8 +85,10 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
 //            if(fotos.getNombreFoto() != null) { nombre_fto = fotos.getNombreFoto();}else{ nombre_fto = "Imagen default";}
 
 
+
+
             if (context != null){
-                Picasso.get().load(R.drawable.f1).resize(800,600).centerCrop().into(imageView);
+                Picasso.get().load(fotos).resize(800,600).centerCrop().into(imageView);
                 imageTitle.setText("nombre prueba");
                 imageTitle.setEnabled(false);
 

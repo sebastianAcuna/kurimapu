@@ -60,7 +60,7 @@ public class FragmentLogin extends Fragment {
 
 
 
-    void comprobar(){
+    private void comprobar(){
         String user = user_login.getText().toString();
         String pass = pass_login.getText().toString();
 

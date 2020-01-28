@@ -38,9 +38,10 @@ import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
+import static androidx.core.content.ContextCompat.checkSelfPermission;
 
-public class FragmentSowing extends Fragment implements View.OnClickListener, LocationListener {
 
+public class FragmentSowing extends Fragment implements View.OnFocusChangeListener, LocationListener {
 
 
     private MainActivity activity = null;
@@ -55,17 +56,16 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
     private LocationManager locationManager;
 
 
+    private EditText date_siembra_sag, date_sowing_female_start, date_sowing_female_end, date_date_one, date_date_two, date_herbicide_date_one, date_herbicide_date_two, date_herbicide_date_tres,
+            date_emergence_date, date_spray_uno, date_spray_dos, date_spray_tres, date_spray_cuatro, date_spray_cuatro_ha, date_bruchus, date_date_foliar;
 
-    private EditText date_siembra_sag, date_sowing_female_start, date_sowing_female_end,date_date_one,date_date_two,date_herbicide_date_one,date_herbicide_date_two,date_herbicide_date_tres,
-            date_emergence_date,date_spray_uno,date_spray_dos,date_spray_tres,date_spray_cuatro,date_spray_cuatro_ha,date_bruchus,date_date_foliar;
-
-    private ImageButton btn_fecha_siembra_sag, btn_sowing_female_start, btn_sowing_female_end,btn_date_one,btn_date_two,btn_herbicide_date_one,btn_herbicide_date_two,btn_herbicide_date_tres,
-            btn_emergence_date,btn_spray_uno,btn_spray_dos,btn_spray_tres,btn_spray_cuatro,btn_spray_cuatro_ha,btn_bruchus,btn_date_foliar;
+    /*private ImageButton btn_fecha_siembra_sag, btn_sowing_female_start, btn_sowing_female_end,btn_date_one,btn_date_two,btn_herbicide_date_one,btn_herbicide_date_two,btn_herbicide_date_tres,
+            btn_emergence_date,btn_spray_uno,btn_spray_dos,btn_spray_tres,btn_spray_cuatro,btn_spray_cuatro_ha,btn_bruchus,btn_date_foliar;*/
 
 
-    private EditText et_norting ,et_easting, et_2015, et_2016, et_2017, et_2018, et_entregado,
-    et_tipo_mezcla, et_cant_aplicada, et_meters, et_lines_female, et_showing_female,et_real_sowing,et_sowin_seed_f,et_row_distance,et_dose_one,et_dose_two,et_name_one,et_name_two,
-    et_name_tres,et_emergence_dose,et_water_lts,et_f_plant,et_f_population,et_producto_bruchus,et_dose_lt_ha,et_foliar,et_dose_foliar;
+    private EditText et_norting, et_easting, et_2015, et_2016, et_2017, et_2018, et_entregado,
+            et_tipo_mezcla, et_cant_aplicada, et_meters, et_lines_female, et_showing_female, et_real_sowing, et_sowin_seed_f, et_row_distance, et_dose_one, et_dose_two, et_name_one, et_name_two,
+            et_name_tres, et_emergence_dose, et_water_lts, et_f_plant, et_f_population, et_producto_bruchus, et_dose_lt_ha, et_foliar, et_dose_foliar;
 
 
     private DatePickerDialog datePickerDialog;
@@ -94,12 +94,6 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
         bind(view);
 
 
-
-
-
-
-
-
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -107,13 +101,13 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
-                            if (checkPermission()) {
-                                requestPermission();
-                            }
+
+                        if (checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                            requestPermission();
+                            return;
                         }
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,FragmentSowing.this);
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, FragmentSowing.this);
                     }
                 });
 
@@ -132,8 +126,8 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
 
 
         if (activity != null){
-            int result = ContextCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
-            int result1 = ContextCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+            int result = checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
+            int result1 = checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
             return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
         }else{
             return false;
@@ -150,7 +144,7 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
                 Toast.makeText(activity, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
                 }
             }
         }
@@ -184,62 +178,6 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
         datePickerDialog.show();
     }
 
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()){
-            case R.id.btn_fecha_siembra_sag:
-                levantarFecha(date_siembra_sag);
-                break;
-            case R.id.btn_sowing_female_start:
-                levantarFecha(date_sowing_female_start);
-                break;
-            case R.id.btn_sowing_female_end:
-                levantarFecha(date_sowing_female_end);
-                break;
-            case R.id.btn_date_one:
-                levantarFecha(date_date_one);
-                break;
-            case R.id.btn_date_two:
-                levantarFecha(date_date_two);
-                break;
-            case R.id.btn_herbicide_date_one:
-                levantarFecha(date_herbicide_date_one);
-                break;
-            case R.id.btn_herbicide_date_two:
-                levantarFecha(date_herbicide_date_two);
-                break;
-            case R.id.btn_herbicide_date_tres:
-                levantarFecha(date_herbicide_date_tres);
-                break;
-            case R.id.btn_emergence_date:
-                levantarFecha(date_emergence_date);
-                break;
-            case R.id.btn_spray_uno:
-                levantarFecha(date_spray_uno);
-                break;
-            case R.id.btn_spray_dos:
-                levantarFecha(date_spray_dos);
-                break;
-            case R.id.btn_spray_tres:
-                levantarFecha(date_spray_tres);
-                break;
-            case R.id.btn_spray_cuatro:
-                levantarFecha(date_spray_cuatro);
-                break;
-            case R.id.btn_spray_cuatro_ha:
-                levantarFecha(date_spray_cuatro_ha);
-                break;
-            case R.id.btn_bruchus:
-                levantarFecha(date_bruchus);
-                break;
-            case R.id.btn_date_foliar:
-                levantarFecha(date_date_foliar);
-                break;
-        }
-
-    }
-
 
     private void bind(View view){
 
@@ -265,7 +203,7 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
 
 
         /* BOTON PARA LEVANTAR CALENDARIO*/
-        btn_fecha_siembra_sag = view.findViewById(R.id.btn_fecha_siembra_sag);
+/*        btn_fecha_siembra_sag = view.findViewById(R.id.btn_fecha_siembra_sag);
         btn_sowing_female_start = view.findViewById(R.id.btn_sowing_female_start);
         btn_sowing_female_end = view.findViewById(R.id.btn_sowing_female_end);
         btn_date_one = view.findViewById(R.id.btn_date_one);
@@ -280,7 +218,7 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
         btn_spray_cuatro = view.findViewById(R.id.btn_spray_cuatro);
         btn_spray_cuatro_ha = view.findViewById(R.id.btn_spray_cuatro_ha);
         btn_bruchus = view.findViewById(R.id.btn_bruchus);
-        btn_date_foliar = view.findViewById(R.id.btn_date_foliar);
+        btn_date_foliar = view.findViewById(R.id.btn_date_foliar);*/
 
 
 
@@ -315,24 +253,23 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
 
 
 
-
-        btn_fecha_siembra_sag.setOnClickListener(this);
-        btn_sowing_female_start.setOnClickListener(this);
-        btn_sowing_female_end.setOnClickListener(this);
-        btn_date_one.setOnClickListener(this);
-        btn_date_two.setOnClickListener(this);
-        btn_herbicide_date_one.setOnClickListener(this);
-        btn_herbicide_date_two.setOnClickListener(this);
-        btn_herbicide_date_tres.setOnClickListener(this);
-        btn_emergence_date.setOnClickListener(this);
-        btn_spray_uno.setOnClickListener(this);
-        btn_spray_dos.setOnClickListener(this);
-        btn_spray_tres.setOnClickListener(this);
-        btn_spray_cuatro.setOnClickListener(this);
-        btn_spray_cuatro_ha.setOnClickListener(this);
-        btn_bruchus.setOnClickListener(this);
-        btn_date_foliar.setOnClickListener(this);
-        btn_date_foliar.setOnClickListener(this);
+        date_siembra_sag.setOnFocusChangeListener(this);
+        date_sowing_female_start.setOnFocusChangeListener(this);
+        date_sowing_female_end.setOnFocusChangeListener(this);
+        date_date_one.setOnFocusChangeListener(this);
+        date_date_two.setOnFocusChangeListener(this);
+        date_herbicide_date_one.setOnFocusChangeListener(this);
+        date_herbicide_date_two.setOnFocusChangeListener(this);
+        date_herbicide_date_tres.setOnFocusChangeListener(this);
+        date_emergence_date.setOnFocusChangeListener(this);
+        date_spray_uno.setOnFocusChangeListener(this);
+        date_spray_dos.setOnFocusChangeListener(this);
+        date_spray_tres.setOnFocusChangeListener(this);
+        date_spray_cuatro.setOnFocusChangeListener(this);
+        date_spray_cuatro_ha.setOnFocusChangeListener(this);
+        date_bruchus.setOnFocusChangeListener(this);
+        date_date_foliar.setOnFocusChangeListener(this);
+        date_date_foliar.setOnFocusChangeListener(this);
 
     }
 
@@ -355,5 +292,59 @@ public class FragmentSowing extends Fragment implements View.OnClickListener, Lo
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+        switch (view.getId()){
+            case R.id.date_siembra_sag:
+                if(b) levantarFecha(date_siembra_sag);
+                break;
+            case R.id.date_sowing_female_start:
+                if(b) levantarFecha(date_sowing_female_start);
+                break;
+            case R.id.date_sowing_female_end:
+                if(b) levantarFecha(date_sowing_female_end);
+                break;
+            case R.id.date_date_one:
+                if(b) levantarFecha(date_date_one);
+                break;
+            case R.id.date_date_two:
+                if(b) levantarFecha(date_date_two);
+                break;
+            case R.id.date_herbicide_date_one:
+                if(b) levantarFecha(date_herbicide_date_one);
+                break;
+            case R.id.date_herbicide_date_two:
+                if(b) levantarFecha(date_herbicide_date_two);
+                break;
+            case R.id.date_herbicide_date_tres:
+                if(b) levantarFecha(date_herbicide_date_tres);
+                break;
+            case R.id.date_emergence_date:
+                if(b) levantarFecha(date_emergence_date);
+                break;
+            case R.id.date_spray_uno:
+                if(b) levantarFecha(date_spray_uno);
+                break;
+            case R.id.date_spray_dos:
+                if(b) levantarFecha(date_spray_dos);
+                break;
+            case R.id.date_spray_tres:
+                if(b) levantarFecha(date_spray_tres);
+                break;
+            case R.id.date_spray_cuatro:
+                if(b) levantarFecha(date_spray_cuatro);
+                break;
+            case R.id.date_spray_cuatro_ha:
+                if(b) levantarFecha(date_spray_cuatro_ha);
+                break;
+            case R.id.date_bruchus:
+                if(b) levantarFecha(date_bruchus);
+                break;
+            case R.id.date_date_foliar:
+                if(b) levantarFecha(date_date_foliar);
+                break;
+        }
     }
 }
