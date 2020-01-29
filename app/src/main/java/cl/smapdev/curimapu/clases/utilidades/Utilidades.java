@@ -23,6 +23,7 @@ public class Utilidades {
 
     public static final String SHARED_NAME = "preference_app";
     public static final String SHARED_USER = "user_name";
+    public static final String SHARED_PREFERENCE = "frg_preference";
 
 
 

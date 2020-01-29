@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,9 @@ import java.util.Objects;
 import cl.smapdev.curimapu.R;
 
 public class DialogFilterTables extends DialogFragment {
+
+
+    Button buttonCancel;
 
 
     @NonNull
@@ -28,7 +32,15 @@ public class DialogFilterTables extends DialogFragment {
         builder.setView(view);
 
 
+        buttonCancel = (Button) view.findViewById(R.id.btn_cancela_filtro);
 
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
         return builder.create();
     }
 

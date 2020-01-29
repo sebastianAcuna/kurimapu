@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -48,9 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String ss = prefs.getString("lang", "eng");
@@ -73,12 +71,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         boolean aa = prefs.getBoolean("tema", false);
 
-        if(!aa){
-            setTheme(R.style.AppTheme);
 
-        }else{
-            setTheme(R.style.ThemeSecundary);
-        }
+        AppCompatDelegate.setDefaultNightMode((!aa) ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
+        setTheme((!aa) ? R.style.AppTheme : R.style.ThemeSecundary);
+
+
+        super.onCreate(savedInstanceState);
+
+
 
         setContentView(R.layout.activity_main);
 
@@ -131,18 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public android.app.Fragment getVisibleFragmentPreference(){
 
-        android.app.FragmentManager fragmentManager = getFragmentManager();
-
-        List<android.app.Fragment> fragments = fragmentManager.getFragments();
-        for(android.app.Fragment fragment : fragments){
-            if(fragment != null && fragment.isVisible())
-                return fragment;
-        }
-        return null;
-    }
 
 
     @Override
@@ -163,45 +152,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         int id = item.getItemId();
-        Fragment  fragment = null;
 
         switch (id){
             case R.id.nv_inicio:
-                if (getVisibleFragmentPreference() != null && getVisibleFragmentPreference().getTag().equals(Utilidades.FRAGMENT_CONFIG)){
-                    getFragmentManager().beginTransaction().remove(getVisibleFragmentPreference()).commit();
-                }
                 cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
 
             case R.id.nv_fichas:
-                if (getVisibleFragmentPreference() != null && getVisibleFragmentPreference().getTag().equals(Utilidades.FRAGMENT_CONFIG)){
-                    getFragmentManager().beginTransaction().remove(getVisibleFragmentPreference()).commit();
-                }
                 cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
             case R.id.nv_visitas:
-
-
-                if (getVisibleFragmentPreference() != null && getVisibleFragmentPreference().getTag().equals(Utilidades.FRAGMENT_CONFIG)){
-                    getFragmentManager().beginTransaction().remove(getVisibleFragmentPreference()).commit();
-                }
                 cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
 
             case R.id.nv_configs:
-
-                if (!getVisibleFragment().getTag().equals(Utilidades.FRAGMENT_CONFIG)){
-                    getSupportFragmentManager().beginTransaction().remove(getVisibleFragment()).commit();
-                }
-
-                getFragmentManager().beginTransaction().replace(R.id.container, new FragmentConfigs(),Utilidades.FRAGMENT_CONFIG).commit();
+                cambiarFragment(new FragmentConfigs(), Utilidades.FRAGMENT_CONFIG, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
+
             case R.id.nv_salir:
                 if (shared != null){
                     shared.edit().remove(Utilidades.SHARED_USER).apply();
-                    if (getVisibleFragmentPreference() != null && getVisibleFragmentPreference().getTag().equals(Utilidades.FRAGMENT_CONFIG)){
-                        getFragmentManager().beginTransaction().remove(getVisibleFragmentPreference()).commit();
-                    }
                     cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_LOGIN, R.anim.slide_in_right, R.anim.slide_out_right);
                 }
 
@@ -234,18 +204,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (rotation) {
             case Surface.ROTATION_0:
             case Surface.ROTATION_180:
-                return "v";
+                return "h";
             case Surface.ROTATION_90:
             case Surface.ROTATION_270:
             default:
-                return "h";
+                return "v";
+
         }
     }
 
     public void restart(){
-        Intent refresh = new Intent(MainActivity.this, MainActivity.class);
-        startActivity(refresh);
-        finish();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            recreate();
+        }else{
+            Intent refresh = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(refresh);
+            finish();
+        }
+
     }
     public void setLocale(Locale locale) {
 
@@ -264,9 +241,54 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (!locale.equals(Locale.getDefault())) {
 
-            Intent refresh = new Intent(MainActivity.this, MainActivity.class);
-            startActivity(refresh);
-            finish();
+            restart();
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else{
+            Fragment fragment = getVisibleFragment();
+            if (fragment != null && fragment.getTag() != null) {
+                switch (fragment.getTag()) {
+                    case Utilidades.FRAGMENT_INICIO:
+                    case Utilidades.FRAGMENT_LOGIN:
+                        salirApp();
+                        break;
+                    case Utilidades.FRAGMENT_CONTRATOS:
+                        cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_right, R.anim.slide_out_right);
+                        cambiarNavigation(R.id.nv_visitas);
+                        break;
+                    case Utilidades.FRAGMENT_CONFIG:
+                    case Utilidades.FRAGMENT_FICHAS:
+                    case Utilidades.FRAGMENT_VISITAS:
+                        cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_right, R.anim.slide_out_right);
+                        cambiarNavigation(R.id.nv_inicio);
+                    break;
+                    default:
+                        super.onBackPressed();
+                    break;
+
+                }
+            }
+        }
+
+
+    }
+
+    void salirApp(){
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
+
+    public void cambiarNavigation(int id){
+        if (navigationView != null){
+            navigationView.setCheckedItem(id);
         }
     }
 }

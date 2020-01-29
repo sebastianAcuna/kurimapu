@@ -3,30 +3,64 @@ package cl.smapdev.curimapu.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Locale;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 
-public class FragmentConfigs extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class FragmentConfigs extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private MainActivity activity = null;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+
+
+
         addPreferencesFromResource(R.xml.configuraciones);
+
+
+
+
 
         MainActivity a = (MainActivity) getActivity();
         if (a != null){
             activity = a;
         }
+
+
+
+
+
     }
 
 /*    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
+        assert root != null;
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar((Toolbar) root.findViewById(R.id.toolbar));
+        ActionBar actionBar = activity.getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("settings");
+        setHasOptionsMenu(true);
+        return root;
+    }*/
+
+    /*    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         // calculate margins

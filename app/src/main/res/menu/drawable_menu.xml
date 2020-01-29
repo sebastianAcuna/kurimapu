@@ -7,6 +7,7 @@
             android:id="@+id/nv_inicio"
             android:title="@string/subtitles_start"
             android:checked="true"
+            android:icon="@drawable/ic_home"
             />
 
 
@@ -14,24 +15,28 @@
             android:id="@+id/nv_fichas"
             android:title="@string/subtitles_records"
             android:checked="true"
+            android:icon="@drawable/ic_archive"
             />
 
         <item
             android:id="@+id/nv_visitas"
             android:title="@string/subtitles_visit"
             android:checked="true"
+            android:icon="@drawable/ic_date_range"
             />
 
         <item
             android:id="@+id/nv_configs"
             android:title="@string/subtitles_config"
             android:checked="true"
+            android:icon="@drawable/ic_settings"
             />
 
         <item
             android:id="@+id/nv_salir"
             android:title="@string/subtitles_salir"
             android:checked="true"
+            android:icon="@drawable/ic_keyboard_return"
             />
 
     </group>
