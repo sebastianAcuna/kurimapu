@@ -225,8 +225,6 @@
             android:padding="@dimen/padding"
 
             />
-
-
         <Button
             android:id="@+id/btn_volver"
             android:layout_width="150dp"
@@ -237,8 +235,6 @@
             android:drawableStart="@drawable/ic_arrow_back"
             android:layout_toEndOf="@id/btn_guardar"
             android:padding="@dimen/padding"
-
-
             />
 
 

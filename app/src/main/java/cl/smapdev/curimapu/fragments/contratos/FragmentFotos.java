@@ -1,9 +1,12 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ import java.util.Objects;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.FotosListAdapter;
+import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class FragmentFotos extends Fragment {
 
@@ -39,14 +43,20 @@ public class FragmentFotos extends Fragment {
     private RecyclerView recyclerView;
     private MainActivity activity;
 
+    private SharedPreferences prefs;
+    private boolean isLoaded =false,isVisibleToUser;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         MainActivity a = (MainActivity) getActivity();
-        if (a != null){
-            activity  =  a;
+        if (a != null) {
+            activity = a;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_PREFERENCE, Context.MODE_PRIVATE);
         }
     }
 
@@ -57,15 +67,31 @@ public class FragmentFotos extends Fragment {
     }
 
 
+
+    @Override
+
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        this.isVisibleToUser=isVisibleToUser;
+        if(isVisibleToUser && isAdded() ){
+            agregarImagenToList();
+            isLoaded =true;
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if(isVisibleToUser && (!isLoaded)){
+            agregarImagenToList();
+            isLoaded=true;
+        }
 
         materialDesignFAM = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu);
         floatingActionButton1 = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_item1);
         floatingActionButton2 = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_item2);
         recyclerView = (RecyclerView) view.findViewById(R.id.lista_fotos);
-
 
 
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
@@ -81,12 +107,25 @@ public class FragmentFotos extends Fragment {
             }
         });
 
-        agregarImagenToList();
+
 
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+
+    }
+
+
+
+
     private void agregarImagenToList(){
+
+        Log.e("RESUMEN FOTOS", "MESNAJE RESUMEN FOTOS " + prefs.getInt("tab", 0));
 
         RecyclerView.LayoutManager lManager = null;
         if (activity != null){
