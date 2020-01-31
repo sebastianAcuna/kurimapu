@@ -66,7 +66,6 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
         ImageView imageView;
         TextView imageTitle;
 
-
         ImageViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.album);
@@ -74,18 +73,6 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
         }
 
         void bind(/*final Fotos*/ final int fotos, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener, Context context){
-
-            String nombre_fto;
-
-           /* if(fotos.getRuta() != null) {
-                Picasso.get().load("file:///"+fotos.getRuta()).resize(800,600).centerCrop().into(imageView);
-            }else{
-                Picasso.get().load(R.drawable.default_image).resize(800,600).centerCrop().into(imageView);
-            }*/
-//            if(fotos.getNombreFoto() != null) { nombre_fto = fotos.getNombreFoto();}else{ nombre_fto = "Imagen default";}
-
-
-
 
             if (context != null){
                 Picasso.get().load(fotos).resize(800,600).centerCrop().into(imageView);

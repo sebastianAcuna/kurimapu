@@ -528,12 +528,15 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.5">
-        <fragment
-            android:id="@+id/container_fotos"
+        <FrameLayout
+            android:id="@+id/container_fotos_harvest"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            />
+       <!-- <fragment
+
             android:name="cl.smapdev.curimapu.fragments.contratos.FragmentFotos"
-            tools:layout="@layout/fragment_fotos"/>
+            tools:layout="@layout/fragment_fotos"/>-->
     </LinearLayout>
 
 </LinearLayout>

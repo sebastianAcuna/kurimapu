@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,6 +58,18 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         setOnclick();
 
 
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (activity != null){
+                Toast.makeText(activity, "Visible flowering", Toast.LENGTH_SHORT).show();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_flowering, FragmentFotos.getInstance(3), Utilidades.FRAGMENT_FOTOS).commit();
+            }
+        }
     }
 
 

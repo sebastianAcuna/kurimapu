@@ -7,14 +7,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.adapters.FotosListAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
@@ -23,6 +27,17 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     private Spinner sp_fenologico,sp_cosecha,sp_crecimiento,sp_fito,sp_general_cultivo,sp_humedad,sp_malezas;
     private Button btn_guardar, btn_volver;
+
+    private MainActivity activity;
+
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MainActivity a = (MainActivity) getActivity();
+        if ( a != null) activity = a;
+    }
 
     @Nullable
     @Override
@@ -34,37 +49,41 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bind(view);
+
         cargarSpinners();
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (activity != null){
+//            Toast.makeText(activity, "Visible resumen form visitas resumen", Toast.LENGTH_SHORT).show();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumen, new FragmentFotosResumen(), Utilidades.FRAGMENT_FOTOS_RESUMEN).commit();
+        }
+    }
 
     private void cargarSpinners(){
 
-        sp_fenologico.setAdapter(new SpinnerAdapter(getActivity(),R.layout.spinner_template_view, getResources().getStringArray(R.array.fenologico)));
-        sp_cosecha.setAdapter(new SpinnerAdapter(getActivity(),R.layout.spinner_template_view, getResources().getStringArray(R.array.cosecha)));
-        sp_crecimiento.setAdapter(new SpinnerAdapter(getActivity(),R.layout.spinner_template_view, getResources().getStringArray(R.array.crecimiento)));
-        sp_fito.setAdapter(new SpinnerAdapter(getActivity(),R.layout.spinner_template_view, getResources().getStringArray(R.array.crecimiento)));
-        sp_general_cultivo.setAdapter(new SpinnerAdapter(getActivity(),R.layout.spinner_template_view, getResources().getStringArray(R.array.crecimiento)));
-        sp_humedad.setAdapter(new SpinnerAdapter(getActivity(),R.layout.spinner_template_view, getResources().getStringArray(R.array.crecimiento)));
-        sp_malezas.setAdapter(new SpinnerAdapter(getActivity(),R.layout.spinner_template_view, getResources().getStringArray(R.array.maleza)));
+        sp_fenologico.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, getResources().getStringArray(R.array.fenologico)));
+        sp_cosecha.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, getResources().getStringArray(R.array.cosecha)));
+        sp_crecimiento.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, getResources().getStringArray(R.array.crecimiento)));
+        sp_fito.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, getResources().getStringArray(R.array.crecimiento)));
+        sp_general_cultivo.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, getResources().getStringArray(R.array.crecimiento)));
+        sp_humedad.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, getResources().getStringArray(R.array.crecimiento)));
+        sp_malezas.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, getResources().getStringArray(R.array.maleza)));
+
+    }
 
 
-//        sp_fenologico.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.fenologico)));
-
-//        sp_cosecha.setAdapter( new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cosecha)));
-//
-//        sp_crecimiento.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.crecimiento)));
-//
-//        sp_fito.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.crecimiento)));
-//
-//        sp_general_cultivo.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.crecimiento)));
-//
-//        sp_humedad.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.crecimiento)));
-//
-//        sp_malezas.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.maleza)));
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (activity != null){
+//                Toast.makeText(activity, "Visible resumen form visitas visible", Toast.LENGTH_SHORT).show();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumen, new FragmentFotosResumen(), Utilidades.FRAGMENT_FOTOS_RESUMEN).commit();
+            }
+        }
     }
 
     @Override
@@ -85,6 +104,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
 
 
+
+
     private void bind(View view){
         sp_fenologico = (Spinner) view.findViewById(R.id.sp_feno);
         sp_cosecha = (Spinner) view.findViewById(R.id.sp_cosecha);
@@ -95,9 +116,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         sp_malezas = (Spinner) view.findViewById(R.id.sp_malezas);
         btn_guardar = (Button) view.findViewById(R.id.btn_guardar);
         btn_volver = (Button) view.findViewById(R.id.btn_volver);
-
-
-
 
         btn_volver.setOnClickListener(this);
         btn_guardar.setOnClickListener(this);

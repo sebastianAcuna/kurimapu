@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,13 +15,25 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
 
+import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.SubTabsAdapters;
 import cl.smapdev.curimapu.clases.adapters.TabsAdapters;
+import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class FragmentFieldbook extends Fragment {
 
     private ViewPager viewPager;
+    private MainActivity activity;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MainActivity a = (MainActivity) getActivity();
+
+        if (a!=null) activity = a;
+    }
 
     @Nullable
     @Override
@@ -48,4 +61,16 @@ public class FragmentFieldbook extends Fragment {
 
 
     }
+
+
+  /*  @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (activity != null){
+//                Toast.makeText(activity, "Visible resumen", Toast.LENGTH_SHORT).show();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumenes, new FragmentFotos(), Utilidades.FRAGMENT_FOTOS).commit();
+            }
+        }
+    }*/
 }

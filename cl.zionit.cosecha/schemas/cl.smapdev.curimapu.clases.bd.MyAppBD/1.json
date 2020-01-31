@@ -1,0 +1,81 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "1d14f89a7a45f9086f4d9bc74cff071c",
+    "entities": [
+      {
+        "tableName": "fotos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_foto` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ficha` INTEGER NOT NULL, `nombre_foto` TEXT, `fieldbook` INTEGER NOT NULL, `vista` INTEGER NOT NULL, `plano` INTEGER NOT NULL, `fecha` TEXT, `hora` TEXT, `favorita` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id_foto",
+            "columnName": "id_foto",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_ficha",
+            "columnName": "id_ficha",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre_foto",
+            "columnName": "nombre_foto",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fieldbook",
+            "columnName": "fieldbook",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vista",
+            "columnName": "vista",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plano",
+            "columnName": "plano",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fecha",
+            "columnName": "fecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hora",
+            "columnName": "hora",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "favorita",
+            "columnName": "favorita",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_foto"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1d14f89a7a45f9086f4d9bc74cff071c\")"
+    ]
+  }
+}

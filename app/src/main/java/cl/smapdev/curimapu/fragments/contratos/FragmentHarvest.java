@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
@@ -25,9 +27,29 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
 
     private EditText et_observation_harvest,et_kg_ha,et_observation_yield,et_owner,et_model,et_percent;
 
+    private MainActivity activity = null;
+
+    private boolean fragmentResume=false;
+    private boolean fragmentVisible=false;
+    private boolean fragmentOnCreated=false;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MainActivity a = (MainActivity) getActivity();
+        if (a != null) activity = a;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        //Initialize variables
+       /* if (!fragmentResume && fragmentVisible){
+            // only when first time fragment is created
+            //myUIUpdate();
+        }*/
         return inflater.inflate(R.layout.fragment_harvest, container, false);
     }
 
@@ -48,6 +70,23 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (activity != null){
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_harvest, FragmentFotos.getInstance(4), Utilidades.FRAGMENT_FOTOS).commit();
+            }
+        }
+    }
 
 
 

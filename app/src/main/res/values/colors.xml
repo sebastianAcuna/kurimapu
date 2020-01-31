@@ -3,6 +3,7 @@
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#FF5252</color>
+    <color name="colorAccentDark">#b14141</color>
     <color name="lightPrimaryColor">#BBDEFB</color>
     <color name="primaryText">#212121</color>
     <color name="secondaryText">#757575</color>
@@ -11,4 +12,9 @@
     <color name="subToolbarColor">#FFFFFF</color>
     <color name="toolbarColor">#2196F3</color>
     <color name="colorBackground">#FFFFFF</color>
+    <color name="colorAlwaysGrey">#757575</color>
+    <color name="colorAlwaysGreyDark">#393939</color>
+
+    <color name="transparentBlack">#80000000</color>
+
 </resources>

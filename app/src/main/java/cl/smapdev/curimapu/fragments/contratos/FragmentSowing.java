@@ -115,11 +115,17 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         });
 
 
+    }
 
 
-
-
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (activity != null){
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_sowing, FragmentFotos.getInstance(2), Utilidades.FRAGMENT_FOTOS).commit();
+            }
+        }
     }
 
     private boolean checkPermission() {
@@ -150,6 +156,8 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         }
 
     }
+
+
 
     private void levantarFecha(final EditText edit){
         String fecha = Utilidades.fechaActualSinHora();

@@ -105,10 +105,6 @@
 
 
 
-
-
-
-
     <!-- FOTOS DE MUESTRA -->
     <string-array name="fotos">
         <item>f1.jpg</item>
@@ -181,9 +177,6 @@
     <string name="subtitles_salir">Salir</string>
 
 
-
-
-
     <!--    TABS -->
     <string-array name="tabs">
         <item>@string/uno</item>
@@ -201,11 +194,9 @@
     </string-array>
 
     <string name="resumen">Resumen</string>
-    <string name="sowing">Siembra</string>
+    <string name="sowing">Siembra/Vegetación</string>
     <string name="flowering">Floración</string>
     <string name="harvest">Cosecha</string>
-
-
 
 
     <!--    TABLA -->
