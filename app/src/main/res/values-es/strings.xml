@@ -276,4 +276,16 @@
         <item>eng</item>
         <item>esp</item>
     </string-array>
+
+
+    <string name="title_dialog_fav">¡Atención!</string>
+    <string name="message_fav">Se ha marcado como favorita</string>
+    <string name="message_fav_remove">Se ha eliminado de favoritos</string>
+    <string name="message_dialog_fav">No puedes seleccionar como favorita más de 3 fotos</string>
+
+
+
+    <string name="title_dialog_agron">Hey!</string>
+    <string name="message_dialog_agron">Sólo puedes tomar 2 fotos</string>
+    <string name="message_dialog_btn_ok">Entiendo</string>
 </resources>

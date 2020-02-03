@@ -20,6 +20,7 @@ public class Fotos {
     private String fecha;
     private String hora;
     private boolean favorita;
+    private String ruta;
 
 
 
@@ -94,5 +95,13 @@ public class Fotos {
 
     public void setFavorita(boolean favorita) {
         this.favorita = favorita;
+    }
+
+    public String getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
     }
 }

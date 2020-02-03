@@ -31,7 +31,7 @@
         android:id="@+id/titulo_clientes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fotos Agronomos"
+        android:text="Fotos Clientes"
         android:gravity="center"
         android:textAppearance="?android:textAppearanceLarge"
         android:layout_below="@id/fotos_agronomos"
@@ -87,22 +87,22 @@
         fab:menu_shadowYOffset="4dp"
         fab:menu_showShadow="true">
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/material_design_floating_action_menu_item1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_camera"
-            fab:fab_label="@string/nav_take_pick_public"
-            fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/material_design_floating_action_menu_item2"
+            android:id="@+id/material_private"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_attach_file"
             fab:fab_label="@string/nav_take_pick_priv"
-            fab:fab_size="mini" />
+            fab:fab_size="normal" />
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_public"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_camera"
+            fab:fab_label="@string/nav_take_pick_public"
+            fab:fab_size="normal" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

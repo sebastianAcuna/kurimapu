@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_margin="@dimen/padding"
+    android:elevation="@dimen/padding">
+
+    <RelativeLayout
+
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding">
+
+
+        <TextView
+            android:id="@+id/lbl_region_fichas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Region : "
+            android:layout_alignParentTop="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_region_fichas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Region del Biobío"
+            android:layout_toEndOf="@id/lbl_region_fichas"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/padding"
+            />
+
+       <TextView
+            android:id="@+id/lbl_comuna_fichas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="comuna : "
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/tv_region_fichas"
+            />
+
+        <TextView
+            android:id="@+id/tv_comuna_fichas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Los Ángeles"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/lbl_comuna_fichas"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/padding"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_agricultor_fichas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre Agricultor"
+            android:layout_below="@id/lbl_region_fichas"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/tv_agricultor_fichas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SOC AGRICOLA SAN LUIS DE PAL-PAL LIMITADA"
+            android:layout_below="@id/lbl_agricultor_fichas"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/padding"
+            />
+
+        <TextView
+            android:id="@+id/lbl_negocio_fichas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="oferta de negocio : "
+            android:layout_below="@id/tv_agricultor_fichas"
+            android:layout_alignParentStart="true"
+            />
+        <TextView
+            android:id="@+id/tv_negocio_fichas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/lbl_negocio_fichas"
+            android:layout_below="@id/tv_agricultor_fichas"
+            android:text="ARVEJA 3300kg, 0.7USD/ha"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/padding"
+            />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

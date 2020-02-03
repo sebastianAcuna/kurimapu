@@ -46,10 +46,6 @@ public class FragmentContratos extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        if (activity != null){
-//            Toast.makeText(activity, "Visible resumen contratos", Toast.LENGTH_SHORT).show();
-//            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumen, new FragmentFotosResumen(), Utilidades.FRAGMENT_FOTOS_RESUMEN).commit();
-//        }
     }
 
     @Override
@@ -69,8 +65,7 @@ public class FragmentContratos extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
-                Toast.makeText(activity, "Visible resumen contratos", Toast.LENGTH_SHORT).show();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumen, new FragmentFotosResumen(), Utilidades.FRAGMENT_FOTOS_RESUMEN).commit();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumen, FragmentFotosResumen.getInstance(0), Utilidades.FRAGMENT_FOTOS_RESUMEN).commit();
             }
         }
     }

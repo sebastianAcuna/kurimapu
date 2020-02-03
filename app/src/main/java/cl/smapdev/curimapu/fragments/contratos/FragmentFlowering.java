@@ -66,7 +66,6 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
-                Toast.makeText(activity, "Visible flowering", Toast.LENGTH_SHORT).show();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_flowering, FragmentFotos.getInstance(3), Utilidades.FRAGMENT_FOTOS).commit();
             }
         }
@@ -103,8 +102,6 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         }
 
     }
-
-
 
     private void setOnclick(){
         date_date.setOnFocusChangeListener(this);

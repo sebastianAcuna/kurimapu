@@ -17,18 +17,19 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.Fotos;
 
 public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.ImageViewHolder> {
 
-//    private List<Fotos> images;
-    private int[] images;
+    private List<Fotos> images;
+//    private int[] images;
     private OnItemClickListener itemClickListener;
     private OnItemLongClickListener itemLongClickListener;
     private Context context;
 
     public FotosListAdapter(){}
 
-    public FotosListAdapter(/*List<Fotos>*/ Context context, int[] images , OnItemClickListener itemClickListener , OnItemLongClickListener itemLongClickListener){
+    public FotosListAdapter(List<Fotos> images, Context context, OnItemClickListener itemClickListener , OnItemLongClickListener itemLongClickListener){
         this.images = images;
         this.itemClickListener = itemClickListener;
         this.itemLongClickListener = itemLongClickListener;
@@ -36,8 +37,8 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
     }
 
 
-    public interface OnItemClickListener{ void onItemClick(/*Fotos fotos*/ int foto); }
-    public interface OnItemLongClickListener{ void onItemLongClick(/*Fotos fotos*/ int foto);}
+    public interface OnItemClickListener{ void onItemClick(Fotos fotos); }
+    public interface OnItemLongClickListener{ void onItemLongClick(Fotos fotos);}
 
     @NonNull
     @Override
@@ -48,14 +49,14 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        holder.bind(images[position], itemClickListener, itemLongClickListener,context);
+        holder.bind(images.get(position), itemClickListener, itemLongClickListener,context);
         }
 
 
     @Override
     public int getItemCount() {
         if (images != null){
-            return images.length;
+            return images.size();
         }else{
             return 0;
         }
@@ -65,18 +66,29 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
 
         ImageView imageView;
         TextView imageTitle;
+        ImageView imageViewStar;
 
         ImageViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.album);
             imageTitle = itemView.findViewById(R.id.album_text);
+            imageViewStar = itemView.findViewById(R.id.star);
         }
 
-        void bind(/*final Fotos*/ final int fotos, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener, Context context){
+        void bind(final Fotos fotos, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener, Context context){
 
             if (context != null){
-                Picasso.get().load(fotos).resize(800,600).centerCrop().into(imageView);
-                imageTitle.setText("nombre prueba");
+
+
+                if (fotos.isFavorita()){
+                    imageViewStar.setVisibility(View.VISIBLE);
+                }else{
+                    imageViewStar.setVisibility(View.INVISIBLE);
+                }
+
+//
+                Picasso.get().load("file:///"+fotos.getRuta()).resize(800,600).centerCrop().into(imageView);
+                imageTitle.setText(fotos.getNombre_foto());
                 imageTitle.setEnabled(false);
 
                 itemView.setOnClickListener(new View.OnClickListener() {

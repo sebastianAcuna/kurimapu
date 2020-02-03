@@ -54,11 +54,10 @@ public class Tabla {
         String[] arraycabecera = rs.getStringArray(recursocabecera);
         COLUMNAS = arraycabecera.length;
 
-        for(int i = 0; i < arraycabecera.length; i++)
-        {
+        for (String s : arraycabecera) {
             TextView texto = new TextView(actividad);
-            layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(arraycabecera[i]), TableRow.LayoutParams.WRAP_CONTENT);
-            texto.setText(arraycabecera[i]);
+            layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(s), TableRow.LayoutParams.WRAP_CONTENT);
+            texto.setText(s);
             texto.setGravity(Gravity.CENTER_HORIZONTAL);
             texto.setTextAppearance(actividad, android.R.style.TextAppearance_Small);
             texto.setBackgroundResource(R.drawable.margenes_cabecera);

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -63,10 +64,12 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
             btn_emergence_date,btn_spray_uno,btn_spray_dos,btn_spray_tres,btn_spray_cuatro,btn_spray_cuatro_ha,btn_bruchus,btn_date_foliar;*/
 
 
-    private EditText et_norting, et_easting, et_2015, et_2016, et_2017, et_2018, et_entregado,
+    private EditText  et_2015, et_2016, et_2017, et_2018, et_entregado,
             et_tipo_mezcla, et_cant_aplicada, et_meters, et_lines_female, et_showing_female, et_real_sowing, et_sowin_seed_f, et_row_distance, et_dose_one, et_dose_two, et_name_one, et_name_two,
             et_name_tres, et_emergence_dose, et_water_lts, et_f_plant, et_f_population, et_producto_bruchus, et_dose_lt_ha, et_foliar, et_dose_foliar;
 
+
+    private TextView et_norting, et_easting;
 
     private DatePickerDialog datePickerDialog;
 
@@ -94,25 +97,25 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         bind(view);
 
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        if (checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                            requestPermission();
-                            return;
-                        }
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, FragmentSowing.this);
-                    }
-                });
-
-            }
-        });
+//        AsyncTask.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+//                activity.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        if (checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//                            requestPermission();
+//                            return;
+//                        }
+//                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, FragmentSowing.this);
+//                    }
+//                });
+//
+//            }
+//        });
 
 
     }
@@ -128,34 +131,34 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         }
     }
 
-    private boolean checkPermission() {
-
-
-        if (activity != null){
-            int result = checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
-            int result1 = checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
-            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
-        }else{
-            return false;
-        }
-
-
-    }
-
-
-    private void requestPermission() {
-
-        if (activity != null){
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                Toast.makeText(activity, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-                }
-            }
-        }
-
-    }
+//    private boolean checkPermission() {
+//
+//
+//        if (activity != null){
+//            int result = checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
+//            int result1 = checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+//            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+//        }else{
+//            return false;
+//        }
+//
+//
+//    }
+//
+//
+//    private void requestPermission() {
+//
+//        if (activity != null){
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
+//                Toast.makeText(activity, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+//            } else {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+//                }
+//            }
+//        }
+//
+//    }
 
 
 
@@ -229,13 +232,16 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         btn_date_foliar = view.findViewById(R.id.btn_date_foliar);*/
 
 
-
+        /* TextView */
         et_norting = view.findViewById(R.id.et_norting);
         et_easting = view.findViewById(R.id.et_easting);
-        et_2015 = view.findViewById(R.id.et_2015);
-        et_2016 = view.findViewById(R.id.et_2016);
-        et_2017 = view.findViewById(R.id.et_2017);
-        et_2018 = view.findViewById(R.id.et_2018);
+
+
+
+//        et_2015 = view.findViewById(R.id.et_2015);
+//        et_2016 = view.findViewById(R.id.et_2016);
+//        et_2017 = view.findViewById(R.id.et_2017);
+//        et_2018 = view.findViewById(R.id.et_2018);
         et_entregado = view.findViewById(R.id.et_entregado);
         et_tipo_mezcla = view.findViewById(R.id.et_tipo_mezcla);
         et_cant_aplicada = view.findViewById(R.id.et_cant_aplicada);

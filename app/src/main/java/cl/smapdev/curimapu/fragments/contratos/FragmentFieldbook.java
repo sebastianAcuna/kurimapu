@@ -51,7 +51,7 @@ public class FragmentFieldbook extends Fragment {
     }
 
 
-    void cargarTabs(){
+    private void cargarTabs(){
         viewPager.setAdapter(new SubTabsAdapters(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
                 Objects.requireNonNull(getContext())));
 
@@ -61,16 +61,4 @@ public class FragmentFieldbook extends Fragment {
 
 
     }
-
-
-  /*  @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (activity != null){
-//                Toast.makeText(activity, "Visible resumen", Toast.LENGTH_SHORT).show();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumenes, new FragmentFotos(), Utilidades.FRAGMENT_FOTOS).commit();
-            }
-        }
-    }*/
 }

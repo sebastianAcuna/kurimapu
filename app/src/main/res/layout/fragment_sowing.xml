@@ -69,19 +69,15 @@
                     android:layout_below="@id/p_02"
                     android:layout_alignParentStart="true"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_norting"
+                <TextView
+                    android:id="@+id/et_norting"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
+                    style="@style/sub_titles_forms"
                     android:layout_toEndOf="@id/x_01_03"
-                    android:layout_below="@id/p_02">
+                    android:layout_below="@id/p_02"
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_norting"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/set_norting" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    />
 
                 <!-- EASTING -->
                 <TextView
@@ -89,30 +85,28 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/easting"
+
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_norting"
+                    android:layout_below="@id/et_norting"
                     android:layout_alignParentStart="true"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_easting"
+
+                <TextView
+                    android:id="@+id/et_easting"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textInp_norting"
-                    android:layout_toEndOf="@id/x_01_04">
+                    style="@style/sub_titles_forms"
+                    android:layout_below="@id/et_norting"
+                    android:layout_toEndOf="@id/x_01_04"
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_easting"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/set_easting" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    />
 
                 <View
                     android:id="@+id/p_04"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
-                    android:layout_below="@id/textInp_easting"
+                    android:layout_below="@id/et_easting"
                     android:layout_centerHorizontal="true"/>
 
                 <!-- SIEMBRA SAG -->
@@ -184,110 +178,21 @@
                     android:background="?android:attr/listDivider"
                     android:layout_below="@id/x_01_07"
                     android:layout_centerHorizontal="true"/>
-                <!-- 2015 -->
-                <TextView
-                    android:id="@+id/x_01_08"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/t_2015"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_07"
-                    android:layout_alignParentStart="true"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_2015"
-                    android:layout_width="200dp"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_crop"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_07"
-                    android:layout_toEndOf="@id/x_01_08">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_2015"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/set_cultivo" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <!-- 2016 -->
-                <TextView
-                    android:id="@+id/x_01_09"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/t_2016"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_2015"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_2016"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textInp_2015"
-                    android:layout_toEndOf="@id/x_01_09">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_2016"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/set_cultivo" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <!-- 2017 -->
-                <TextView
-                    android:id="@+id/x_01_10"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/t_2017"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_2016"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_2017"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textInp_2016"
-                    android:layout_toEndOf="@id/x_01_10">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_2017"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/set_cultivo" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- 2018 -->
-                <TextView
-                    android:id="@+id/x_01_11"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/t_2018"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_2017"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_2018"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textInp_2017"
-                    android:layout_toEndOf="@id/x_01_11">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_2018"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/set_cultivo" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_centerHorizontal="true"
+                    />
 
                 <View
                     android:id="@+id/p_11"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
-                    android:layout_below="@id/textInp_2018"
+                    android:layout_below="@id/recycler_crop"
                     android:layout_centerHorizontal="true"/>
 
 

@@ -10,6 +10,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.room.Room;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import cl.smapdev.curimapu.clases.bd.MyAppBD;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentConfigs;
 import cl.smapdev.curimapu.fragments.FragmentFichas;
@@ -44,11 +46,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private SharedPreferences shared;
 
+    public static MyAppBD myAppDB;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        .addMigrations(Migrations.MIGRATION_1_TO_2,Migrations.MIGRATION_2_TO_3).
+        myAppDB = Room.databaseBuilder(getApplicationContext(),MyAppBD.class,"curimapu.db").allowMainThreadQueries().build();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String ss = prefs.getString("lang", "eng");
