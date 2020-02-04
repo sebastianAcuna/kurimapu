@@ -126,11 +126,12 @@
     </string-array>
 
 
+    <string name="select">--Seleccione--</string>
 
 
     <!--    SPINNERS FORM  VISITA-->
     <string-array name="fenologico">
-        <item>--Seleccione--</item>
+        <item>@string/select</item>
         <item>Siembra</item>
         <item>Transplante</item>
         <item>Vegetativo</item>
@@ -144,7 +145,7 @@
 
 
     <string-array name="crecimiento">
-        <item>--Seleccione--</item>
+        <item>@string/select</item>
         <item>Excelente</item>
         <item>Buena</item>
         <item>Regular</item>
@@ -153,14 +154,14 @@
     </string-array>
 
     <string-array name="cosecha">
-        <item>--Seleccione--</item>
+        <item>@string/select</item>
         <item>Rechazada</item>
         <item>Aprobada</item>
         <item>Sin Especificar</item>
     </string-array>
 
     <string-array name="maleza">
-        <item>--Seleccione--</item>
+        <item>@string/select</item>
         <item>Baja</item>
         <item>Regular</item>
         <item>Alta</item>
@@ -277,6 +278,14 @@
         <item>esp</item>
     </string-array>
 
+
+    <string-array name="asociacion_agricultor">
+        <item>@string/asoc_new_farmer</item>
+        <item>@string/asoc_older_farmer</item>
+    </string-array>
+
+    <string name="asoc_new_farmer">-- Nuevo Agricultor --</string>
+    <string name="asoc_older_farmer">-- Agricultor Registrado --</string>
 
     <string name="title_dialog_fav">¡Atención!</string>
     <string name="message_fav">Se ha marcado como favorita</string>

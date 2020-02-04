@@ -11,19 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.Fichas;
 import cl.smapdev.curimapu.clases.adapters.viewHolders.FichasViewHolder;
+import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 
 public class FichasAdapter extends RecyclerView.Adapter<FichasViewHolder> {
 
-    private List<Fichas> elements;
-    private List<Fichas> mfilter;
+    private List<FichasCompletas> elements;
+    private List<FichasCompletas> mfilter;
     private OnItemClickListener itemClickListener;
     private OnItemLongClickListener itemLongClickListener;
     private Context context;
 
 
-    public FichasAdapter(List<Fichas> elements,OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener, Context context) {
+    public FichasAdapter(List<FichasCompletas> elements,OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener, Context context) {
         this.elements = elements;
         this.mfilter = elements;
         this.itemClickListener = itemClickListener;
@@ -31,8 +31,8 @@ public class FichasAdapter extends RecyclerView.Adapter<FichasViewHolder> {
         this.context = context;
     }
 
-    public interface OnItemClickListener{ void onItemClick(Fichas fichas); }
-    public interface OnItemLongClickListener{ void onItemLongClick(Fichas fichas);}
+    public interface OnItemClickListener{ void onItemClick(FichasCompletas fichas); }
+    public interface OnItemLongClickListener{ void onItemLongClick(FichasCompletas fichas);}
 
 
 

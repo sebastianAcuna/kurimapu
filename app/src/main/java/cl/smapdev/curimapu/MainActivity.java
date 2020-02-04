@@ -232,21 +232,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     public void setLocale(Locale locale) {
 
-//        Locale.setDefault(locale);
-
         Resources resources = getResources();
         Configuration conf = resources.getConfiguration();
         conf.locale = locale;
         resources.updateConfiguration(conf, resources.getDisplayMetrics());
 
 
-//        Resources res = getResources();
-//        Configuration config = new Configuration(res.getConfiguration());
-//        config.setLocale(locale);
-//        createConfigurationContext(config);
-
         if (!locale.equals(Locale.getDefault())) {
-
             restart();
         }
     }
@@ -268,6 +260,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_right, R.anim.slide_out_right);
                         cambiarNavigation(R.id.nv_visitas);
                         break;
+
+                    case Utilidades.FRAGMENT_CREA_FICHA:
+                        cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_right, R.anim.slide_out_right);
+                        cambiarNavigation(R.id.nv_fichas);
+                        break;
                     case Utilidades.FRAGMENT_CONFIG:
                     case Utilidades.FRAGMENT_FICHAS:
                     case Utilidades.FRAGMENT_VISITAS:
@@ -281,8 +278,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }
-
-
     }
 
     void salirApp(){

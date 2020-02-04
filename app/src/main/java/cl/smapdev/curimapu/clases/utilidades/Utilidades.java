@@ -20,17 +20,10 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.exifinterface.media.ExifInterface;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import cl.smapdev.curimapu.R;
 
@@ -46,6 +39,7 @@ public class Utilidades {
     public static final String FRAGMENT_CONFIG = "fragment_config";
     public static final String FRAGMENT_FOTOS = "fragment_fotos";
     public static final String FRAGMENT_FOTOS_RESUMEN = "fragment_fotos_resumen";
+    public static final String FRAGMENT_CREA_FICHA = "fragment_crea_ficha";
 
 
 
@@ -158,5 +152,50 @@ public class Utilidades {
         });
         builder.setCancelable(false);
         builder.show();
+    }
+
+
+    static public String formatear(String rut){
+        int cont=0;
+        String format;
+        if(rut.length() == 0){
+            return "";
+        }else{
+            rut = rut.replace(".", "");
+            rut = rut.replace("-", "");
+            format = "-"+rut.substring(rut.length()-1);
+            for(int i = rut.length()-2;i>=0;i--){
+                format = rut.substring(i, i+1) + format;
+                cont++;
+                if(cont == 3 && i != 0){
+                    format = "."+format;
+                    cont = 0;
+                }
+            }
+            return format;
+        }
+    }
+    public static boolean validarRut(String rut) {
+
+        boolean validacion = false;
+        try {
+            rut =  rut.toUpperCase();
+            rut = rut.replace(".", "");
+            rut = rut.replace("-", "");
+            int rutAux = Integer.parseInt(rut.substring(0, rut.length() - 1));
+
+            char dv = rut.charAt(rut.length() - 1);
+
+            int m = 0, s = 1;
+            for (; rutAux != 0; rutAux /= 10) {
+                s = (s + rutAux % 10 * (9 - m++ % 6)) % 11;
+            }
+            if (dv == (char) (s != 0 ? s + 47 : 75)) {
+                validacion = true;
+            }
+
+        } catch (Exception e) {
+        }
+        return validacion;
     }
 }

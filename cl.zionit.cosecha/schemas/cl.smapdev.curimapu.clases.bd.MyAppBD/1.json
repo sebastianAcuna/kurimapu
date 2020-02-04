@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "73ff851b4ae639599017264e526b6070",
+    "identityHash": "7f65d66416cc1476c3e76afff9b606ba",
     "entities": [
       {
         "tableName": "fotos",
@@ -77,11 +77,211 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "fichas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_ficha` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `anno` INTEGER NOT NULL, `rut_agricultor_fichas` TEXT, `oferta_negocio` TEXT, `localidad` TEXT, `has_disponible` REAL NOT NULL, `observaciones` TEXT, `norting` REAL NOT NULL, `easting` REAL NOT NULL, `activa` INTEGER NOT NULL, `subida` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id_ficha",
+            "columnName": "id_ficha",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "anno",
+            "columnName": "anno",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rut_agricultor_fichas",
+            "columnName": "rut_agricultor_fichas",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "oferta_negocio",
+            "columnName": "oferta_negocio",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "localidad",
+            "columnName": "localidad",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "has_disponible",
+            "columnName": "has_disponible",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "observaciones",
+            "columnName": "observaciones",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "norting",
+            "columnName": "norting",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "easting",
+            "columnName": "easting",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "activa",
+            "columnName": "activa",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subida",
+            "columnName": "subida",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_ficha"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "agricultor",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rut_agricultor` TEXT NOT NULL, `nombre_agricultor` TEXT, `telefono_agricultor` TEXT, `administrador_agricultor` TEXT, `telefono_admin_agricultor` TEXT, `region_agricultor` INTEGER NOT NULL, `comuna_agricultor` INTEGER NOT NULL, `agricultor_subido` INTEGER NOT NULL, PRIMARY KEY(`rut_agricultor`))",
+        "fields": [
+          {
+            "fieldPath": "rut_agricultor",
+            "columnName": "rut_agricultor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre_agricultor",
+            "columnName": "nombre_agricultor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "telefono_agricultor",
+            "columnName": "telefono_agricultor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "administrador_agricultor",
+            "columnName": "administrador_agricultor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "telefono_admin_agricultor",
+            "columnName": "telefono_admin_agricultor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "region_agricultor",
+            "columnName": "region_agricultor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comuna_agricultor",
+            "columnName": "comuna_agricultor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "agricultor_subido",
+            "columnName": "agricultor_subido",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "rut_agricultor"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "region",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_region` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `desc_region` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_region",
+            "columnName": "id_region",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "desc_region",
+            "columnName": "desc_region",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_region"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "comuna",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_comuna` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `desc_comuna` TEXT, `id_region_comuna` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id_comuna",
+            "columnName": "id_comuna",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "desc_comuna",
+            "columnName": "desc_comuna",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id_region_comuna",
+            "columnName": "id_region_comuna",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_comuna"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"73ff851b4ae639599017264e526b6070\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7f65d66416cc1476c3e76afff9b606ba\")"
     ]
   }
 }

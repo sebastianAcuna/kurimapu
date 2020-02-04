@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.Fichas;
 import cl.smapdev.curimapu.clases.adapters.FichasAdapter;
+import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 
 public class FichasViewHolder extends RecyclerView.ViewHolder {
 
@@ -26,10 +26,14 @@ public class FichasViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void bind(final Fichas fichas, final FichasAdapter.OnItemClickListener itemClickListener, final FichasAdapter.OnItemLongClickListener itemLongClickListener, Context context){
+    public void bind(final FichasCompletas fichas, final FichasAdapter.OnItemClickListener itemClickListener, final FichasAdapter.OnItemLongClickListener itemLongClickListener, Context context){
 
         if (context != null){
 
+            tv_region_fichas.setText(fichas.getRegion().getDesc_region());
+            tv_agricultor_fichas.setText(fichas.getAgricultor().getNombre_agricultor());
+            tv_comuna_fichas.setText(fichas.getComuna().getDesc_comuna());
+            tv_negocio_fichas.setText(fichas.getFichas().getOferta_negocio());
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

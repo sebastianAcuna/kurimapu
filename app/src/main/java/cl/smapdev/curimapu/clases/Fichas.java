@@ -10,7 +10,7 @@ public class Fichas {
     @PrimaryKey(autoGenerate = true)
     private int id_ficha;
     private int anno;
-    private String rut_agricultor;
+    private String rut_agricultor_fichas;
     private String oferta_negocio;
     private String localidad;
     private double has_disponible;
@@ -20,6 +20,22 @@ public class Fichas {
     private int activa; /* 0 : provisoria, 1: activa, 2: rechazada */
     private boolean subida; /* true : subida, false : no subida */
 
+
+    public Fichas() {
+    }
+
+//    public Fichas(int anno, String rut_agricultor_fichas, String oferta_negocio, String localidad, double has_disponible, String observaciones, double norting, double easting, int activa, boolean subida) {
+//        this.anno = anno;
+//        this.rut_agricultor_fichas = rut_agricultor_fichas;
+//        this.oferta_negocio = oferta_negocio;
+//        this.localidad = localidad;
+//        this.has_disponible = has_disponible;
+//        this.observaciones = observaciones;
+//        this.norting = norting;
+//        this.easting = easting;
+//        this.activa = activa;
+//        this.subida = subida;
+//    }
 
     public int getId_ficha() {
         return id_ficha;
@@ -37,12 +53,12 @@ public class Fichas {
         this.anno = anno;
     }
 
-    public String getRut_agricultor() {
-        return rut_agricultor;
+    public String getRut_agricultor_fichas() {
+        return rut_agricultor_fichas;
     }
 
-    public void setRut_agricultor(String rut_agricultor) {
-        this.rut_agricultor = rut_agricultor;
+    public void setRut_agricultor_fichas(String rut_agricultor_fichas) {
+        this.rut_agricultor_fichas = rut_agricultor_fichas;
     }
 
     public String getOferta_negocio() {
