@@ -16,6 +16,9 @@
     <color name="colorAlwaysGreyDark">#393939</color>
     <color name="colorGold">#e5c100</color>
 
+
+    <color name="colorGreenLight">#94ec5d</color>
+
     <color name="transparentBlack">#80000000</color>
 
 </resources>

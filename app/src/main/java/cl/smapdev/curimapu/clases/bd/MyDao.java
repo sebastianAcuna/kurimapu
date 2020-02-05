@@ -1,9 +1,12 @@
 package cl.smapdev.curimapu.clases.bd;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Update;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
@@ -87,6 +90,10 @@ public interface MyDao {
             "WHERE anno = :year ")
     List<FichasCompletas> getFichasByYear(int year);
 
+
+
+    @RawQuery
+    List<FichasCompletas> getFichasFilter(SupportSQLiteQuery query);
 
 
 

@@ -49,7 +49,6 @@ public class FragmentVisitas extends Fragment {
         cargarInforme();
 
 
-
         spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, getResources().getStringArray(R.array.anos_toolbar)));
 
 

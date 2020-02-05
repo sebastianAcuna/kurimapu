@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "comuna")
@@ -15,10 +16,12 @@ public class Comuna {
     public Comuna() {
     }
 
-//    public Comuna(String desc_comuna, int id_region_comuna) {
-//        this.desc_comuna = desc_comuna;
-//        this.id_region_comuna = id_region_comuna;
-//    }
+
+    @Ignore
+    public Comuna(String desc_comuna, int id_region_comuna) {
+        this.desc_comuna = desc_comuna;
+        this.id_region_comuna = id_region_comuna;
+    }
 
     public int getId_comuna() {
         return id_comuna;

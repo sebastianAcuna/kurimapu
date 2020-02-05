@@ -2,6 +2,7 @@ package cl.smapdev.curimapu.clases;
 
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "region")
@@ -17,6 +18,11 @@ public class Region {
     @PrimaryKey(autoGenerate = true)
     private int id_region;
     private String desc_region;
+
+    @Ignore
+    public Region(String desc_region) {
+        this.desc_region = desc_region;
+    }
 
 
     public int getId_region() {

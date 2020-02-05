@@ -163,10 +163,7 @@ public class FragmentCreaFicha extends Fragment {
 
 
         if (activity != null){
-
             client = LocationServices.getFusedLocationProviderClient(activity);
-
-
 
         }
 
@@ -221,8 +218,6 @@ public class FragmentCreaFicha extends Fragment {
                     comunaList = MainActivity.myAppDB.myDao().getComunaByRegion(idRegion);
                     cargarComuna();
                 }
-
-
             }
 
             @Override

@@ -37,23 +37,33 @@ public class FragmentPrincipal extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
+        if(MainActivity.myAppDB.myDao().getComunas().size() <= 0){
 
-//        MainActivity.myAppDB.myDao().insertRegion(new Region("Región del Maule"));
-//        MainActivity.myAppDB.myDao().insertRegion(new Region("Región del Biobío"));
-//        MainActivity.myAppDB.myDao().insertRegion(new Region("Región del la Araucanía"));
-//        MainActivity.myAppDB.myDao().insertRegion(new Region("Región del los Rios"));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Talca", 1));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Constitución", 1));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Concepcion", 2));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Los Ángeles", 2));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Mulchén", 2));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Temuco", 3));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Angól", 3));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Villa Rica", 3));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Valdivia", 4));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Rio Bueno", 4));
+            MainActivity.myAppDB.myDao().insertComuna(new Comuna("Los Lagos", 4));
+        }
+
+
+        if (MainActivity.myAppDB.myDao().getRegiones().size() <= 0){
+                MainActivity.myAppDB.myDao().insertRegion(new Region("Región del Maule"));
+                MainActivity.myAppDB.myDao().insertRegion(new Region("Región del Biobío"));
+                MainActivity.myAppDB.myDao().insertRegion(new Region("Región del la Araucanía"));
+                MainActivity.myAppDB.myDao().insertRegion(new Region("Región del los Rios"));
+        }
+
+
+
 //
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Talca", 1));
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Constitución", 1));
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Concepcion", 2));
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Los Ángeles", 2));
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Mulchén", 2));
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Temuco", 3));
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Angól", 3));
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Villa Rica", 3));
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Valdivia", 4));
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Rio Bueno", 4));
-//        MainActivity.myAppDB.myDao().insertComuna(new Comuna("Los Lagos", 4));
+
 //
 //
 //        MainActivity.myAppDB.myDao().insertAgricultor(new Agricultor("96.611.780-k","COMERCIAL LT LTDA.","966764273","NN","NN",2,4,false));
