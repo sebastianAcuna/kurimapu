@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.clases;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "agricultor")
@@ -22,16 +23,17 @@ public class Agricultor {
     public Agricultor() {
     }
 
-//    public Agricultor(@NonNull String rut_agricultor, String nombre_agricultor, String telefono_agricultor, String administrador_agricultor, String telefono_admin_agricultor, int region_agricultor, int comuna_agricultor, boolean agricultor_subido) {
-//        this.rut_agricultor = rut_agricultor;
-//        this.nombre_agricultor = nombre_agricultor;
-//        this.telefono_agricultor = telefono_agricultor;
-//        this.administrador_agricultor = administrador_agricultor;
-//        this.telefono_admin_agricultor = telefono_admin_agricultor;
-//        this.region_agricultor = region_agricultor;
-//        this.comuna_agricultor = comuna_agricultor;
-//        this.agricultor_subido = agricultor_subido;
-//    }
+    @Ignore
+    public Agricultor(@NonNull String rut_agricultor, String nombre_agricultor, String telefono_agricultor, String administrador_agricultor, String telefono_admin_agricultor, int region_agricultor, int comuna_agricultor, boolean agricultor_subido) {
+        this.rut_agricultor = rut_agricultor;
+        this.nombre_agricultor = nombre_agricultor;
+        this.telefono_agricultor = telefono_agricultor;
+        this.administrador_agricultor = administrador_agricultor;
+        this.telefono_admin_agricultor = telefono_admin_agricultor;
+        this.region_agricultor = region_agricultor;
+        this.comuna_agricultor = comuna_agricultor;
+        this.agricultor_subido = agricultor_subido;
+    }
 
     public String getRut_agricultor() {
         return rut_agricultor;

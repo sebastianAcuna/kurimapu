@@ -7,12 +7,40 @@
     android:padding="@dimen/padding">
 
 
+    <LinearLayout
+        android:id="@+id/container_plus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        >
+        <TextView
+            android:id="@+id/lbl_year"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:text="Año"
+            android:theme="@style/sub_titles_forms"
+
+            />
+
+        <Spinner
+            android:id="@+id/sp_dialog_year"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/container_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/container_plus"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
         android:gravity="start|center_vertical"

@@ -76,7 +76,7 @@ public class FragmentFotosResumen  extends Fragment {
     private FotosListAdapter adapterAgronomo;
     private FotosListAdapter adapterCliente;
 
-
+//todo pasar a form visitas todo este puto fragment
 
     public static FragmentFotosResumen getInstance(int fieldbook){
 

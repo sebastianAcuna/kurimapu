@@ -10,12 +10,16 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
+import cl.smapdev.curimapu.Variedad;
 import cl.smapdev.curimapu.clases.Agricultor;
+import cl.smapdev.curimapu.clases.AnexoContrato;
 import cl.smapdev.curimapu.clases.Comuna;
+import cl.smapdev.curimapu.clases.Especie;
 import cl.smapdev.curimapu.clases.Fichas;
 import cl.smapdev.curimapu.clases.Fotos;
 import cl.smapdev.curimapu.clases.Region;
 import cl.smapdev.curimapu.clases.relaciones.AgricultorCompleto;
+import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 
 @Dao
@@ -95,8 +99,88 @@ public interface MyDao {
     @RawQuery
     List<FichasCompletas> getFichasFilter(SupportSQLiteQuery query);
 
+    /* ANEXOS*/
+
+    @Query("SELECT " +
+            "anexo_contrato.id_anexo_contrato, " +
+            "anexo_contrato.anexo_contrato, " +
+            "anexo_contrato.id_especie_anexo, " +
+            "anexo_contrato.id_variedad_anexo, " +
+            "anexo_contrato.id_ficha_contrato, " +
+            "anexo_contrato.protero," +
+            "anexo_contrato.rut_agricultor_anexo, " +
+            "agricultor.nombre_agricultor," +
+            "agricultor.telefono_agricultor," +
+            "agricultor.administrador_agricultor," +
+            "agricultor.telefono_admin_agricultor," +
+            "agricultor.region_agricultor," +
+            "agricultor.comuna_agricultor," +
+            "agricultor.agricultor_subido," +
+            "agricultor.rut_agricultor, " +
+            "especie.desc_especie, " +
+            "variedad.desc_variedad, " +
+            "fichas.anno " +
+            "FROM anexo_contrato " +
+            "INNER JOIN agricultor ON (agricultor.rut_agricultor = anexo_contrato.rut_agricultor_anexo) " +
+            "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
+            "INNER JOIN variedad ON (variedad.id_variedad = anexo_contrato.id_variedad_anexo) " +
+            "INNER JOIN fichas ON (fichas.id_ficha= anexo_contrato.id_ficha_contrato) " +
+            "")
+    List<AnexoCompleto> getAnexos();
+
+    @Query("SELECT " +
+            "anexo_contrato.id_anexo_contrato, " +
+            "anexo_contrato.anexo_contrato, " +
+            "anexo_contrato.id_especie_anexo, " +
+            "anexo_contrato.id_variedad_anexo, " +
+            "anexo_contrato.id_ficha_contrato, " +
+            "anexo_contrato.protero," +
+            "anexo_contrato.rut_agricultor_anexo, " +
+            "agricultor.nombre_agricultor," +
+            "agricultor.telefono_agricultor," +
+            "agricultor.administrador_agricultor," +
+            "agricultor.telefono_admin_agricultor," +
+            "agricultor.region_agricultor," +
+            "agricultor.comuna_agricultor," +
+            "agricultor.agricultor_subido," +
+            "agricultor.rut_agricultor, " +
+            "especie.desc_especie, " +
+            "variedad.desc_variedad, " +
+            "fichas.anno " +
+            "FROM anexo_contrato " +
+            "INNER JOIN agricultor ON (agricultor.rut_agricultor = anexo_contrato.rut_agricultor_anexo) " +
+            "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
+            "INNER JOIN variedad ON (variedad.id_variedad = anexo_contrato.id_variedad_anexo) " +
+            "INNER JOIN fichas ON (fichas.id_ficha= anexo_contrato.id_ficha_contrato) " +
+            "WHERE fichas.anno = :year")
+    List<AnexoCompleto> getAnexosByYear(int year);
+
+    @Insert
+    void insertAnexo(AnexoContrato anexoContrato);
+
+    @RawQuery
+    List<AnexoCompleto> getAnexosFilter(SupportSQLiteQuery query);
 
 
+    /* ESPECIE*/
+    @Query("SELECT * FROM especie")
+    List<Especie> getEspecies();
+
+    @Insert
+    void insertEspecie(Especie especie);
+
+
+    /*VARIEDAD*/
+    @Query("SELECT  * FROM variedad")
+    List<Variedad> getVariedades();
+
+    @Query("SELECT * FROM variedad WHERE id_especie_variedad = :idEspecie")
+    List<Variedad> getVariedadesByEspecie(int idEspecie);
+
+    @Insert
+    void insertVariedad(Variedad variedad);
+
+    /* AGRICULTOR*/
     @Insert
     void insertAgricultor(Agricultor agricultor);
 

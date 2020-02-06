@@ -6,11 +6,41 @@
     android:layout_height="match_parent"
     android:padding="@dimen/padding">
 
+
+    <LinearLayout
+        android:id="@+id/container_plus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+
+        >
+        <TextView
+            android:id="@+id/lbl_year"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:text="Año"
+            android:theme="@style/sub_titles_forms"
+
+            />
+
+        <Spinner
+            android:id="@+id/sp_dialog_year"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/container_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/container_plus"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
         android:gravity="start|center_vertical"
@@ -37,7 +67,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/format_set_input"
-                android:inputType="number"/>
+                android:inputType="textPersonName"
+                android:maxLines="1"/>
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
@@ -131,6 +162,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/format_set_input"
+                android:inputType="text"
+                android:maxLines="1"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -167,17 +200,65 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/format_set_input"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/lbl_grupos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Estado"
+        android:layout_below="@id/container_cinco"
+        android:layout_alignParentStart="true"
+        android:paddingStart="@dimen/padding"/>
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/lbl_grupos">
+
+        <RadioButton
+            android:id="@+id/radio_todos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:checked="true"
+            android:text="Todos" />
+
+        <RadioButton
+            android:id="@+id/radio_inactiva"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:text="Inactiva" />
+
+        <RadioButton
+            android:id="@+id/radio_activa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:text="Activa" />
+
+        <RadioButton
+            android:id="@+id/radio_rechazada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:text="Rechazada" />
+    </RadioGroup>
 
     <Button
         android:id="@+id/btn_aplica_filtro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_green_dark"
-        android:layout_below="@id/container_cinco"
+        android:layout_below="@id/radio_group"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/padding"
         android:text="Filtrar"/>

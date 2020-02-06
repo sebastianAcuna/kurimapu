@@ -22,6 +22,8 @@ import androidx.exifinterface.media.ExifInterface;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -48,6 +50,20 @@ public class Utilidades {
     public static final String SHARED_USER = "user_name";
     public static final String SHARED_PREFERENCE = "frg_preference";
     public static final String SELECTED_ANO = "selected_ano";
+
+    /*DIALOGO FILTRO FICHAS*/
+    public static final String SHARED_FILTER_FICHAS_REGION = "filter_fichas_region";
+    public static final String SHARED_FILTER_FICHAS_COMUNA = "filter_fichas_comuna";
+    public static final String SHARED_FILTER_FICHAS_RADIO = "filter_fichas_radio";
+    public static final String SHARED_FILTER_FICHAS_YEAR = "filter_fichas_anno";
+    public static final String SHARED_FILTER_FICHAS_HA = "filter_fichas_ha";
+    public static final String SHARED_FILTER_FICHAS_NOMB_AG = "filter_fichas_nom_ag";
+    public static final String SHARED_FILTER_FICHAS_OF_NEG = "filter_fichas_of_neg";
+
+
+    public static final String SHARED_FILTER_VISITAS_YEAR = "filter_visitas_anno";
+    public static final String SHARED_FILTER_VISITAS_ESPECIE = "filter_visitas_especie";
+    public static final String SHARED_FILTER_VISITAS_VARIEDAD = "filter_visitas_variedad";
 
 
 
@@ -198,5 +214,13 @@ public class Utilidades {
         } catch (Exception e) {
         }
         return validacion;
+    }
+
+    public static Object[] appendValue(Object[] obj, Object newObj) {
+
+        ArrayList<Object> temp = new ArrayList<Object>(Arrays.asList(obj));
+        temp.add(newObj);
+        return temp.toArray();
+
     }
 }

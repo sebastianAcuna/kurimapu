@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7f65d66416cc1476c3e76afff9b606ba",
+    "identityHash": "41fd110c2ddf3fbb1bb64e055b8e1b9c",
     "entities": [
       {
         "tableName": "fotos",
@@ -277,11 +277,125 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "anexo_contrato",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `anexo_contrato` TEXT, `id_variedad_anexo` INTEGER NOT NULL, `id_especie_anexo` INTEGER NOT NULL, `rut_agricultor_anexo` TEXT, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id_anexo_contrato",
+            "columnName": "id_anexo_contrato",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "anexo_contrato",
+            "columnName": "anexo_contrato",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id_variedad_anexo",
+            "columnName": "id_variedad_anexo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_especie_anexo",
+            "columnName": "id_especie_anexo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rut_agricultor_anexo",
+            "columnName": "rut_agricultor_anexo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "protero",
+            "columnName": "protero",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id_ficha_contrato",
+            "columnName": "id_ficha_contrato",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_anexo_contrato"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "especie",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_especie` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `desc_especie` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_especie",
+            "columnName": "id_especie",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "desc_especie",
+            "columnName": "desc_especie",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_especie"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "variedad",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_variedad` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_especie_variedad` INTEGER NOT NULL, `desc_variedad` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_variedad",
+            "columnName": "id_variedad",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_especie_variedad",
+            "columnName": "id_especie_variedad",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "desc_variedad",
+            "columnName": "desc_variedad",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_variedad"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7f65d66416cc1476c3e76afff9b606ba\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"41fd110c2ddf3fbb1bb64e055b8e1b9c\")"
     ]
   }
 }

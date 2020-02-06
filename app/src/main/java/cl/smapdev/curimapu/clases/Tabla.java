@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentContratos;
 
@@ -83,7 +84,7 @@ public class Tabla {
      * Agrega una fila a la tabla
      * @param ls Elementos de la fila
      **/
-    public void agregarFilaTabla(String[] ls)
+    public void agregarFilaTabla(AnexoCompleto ls)
     {
 
         TableRow.LayoutParams layoutCelda;
@@ -102,11 +103,11 @@ public class Tabla {
             Button botonForm = new Button(actividad);
             Button botonVer = new Button(actividad);
 
-            anexo.setText(String.valueOf(ls[0]));
-            variedad.setText(String.valueOf(ls[1]));
-            especie.setText(String.valueOf(ls[2]));
-            agricultor.setText(String.valueOf(ls[3]));
-            potrero.setText(String.valueOf(ls[4]));
+            anexo.setText(String.valueOf(ls.getAnexoContrato().getAnexo_contrato()));
+            variedad.setText(String.valueOf(ls.getVariedad().getDesc_variedad()));
+            especie.setText(String.valueOf(ls.getEspecie().getDesc_especie()));
+            agricultor.setText(String.valueOf(ls.getAgricultor().getNombre_agricultor()));
+            potrero.setText(String.valueOf(ls.getAnexoContrato().getProtero()));
 
 
 
@@ -169,10 +170,10 @@ public class Tabla {
         potrero.setLayoutParams(layoutCelda);
 
 
-        layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(variedad.getText().toString()),
+/*        layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(variedad.getText().toString()),
                 TableRow.LayoutParams.WRAP_CONTENT);
 
-        variedad.setLayoutParams(layoutCelda);
+        variedad.setLayoutParams(layoutCelda);*/
 
 
             fila.addView(anexo);
