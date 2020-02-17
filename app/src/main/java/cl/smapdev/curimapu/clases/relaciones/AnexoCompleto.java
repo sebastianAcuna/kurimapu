@@ -4,10 +4,10 @@ import androidx.room.Embedded;
 
 import java.io.Serializable;
 
-import cl.smapdev.curimapu.Variedad;
-import cl.smapdev.curimapu.clases.Agricultor;
-import cl.smapdev.curimapu.clases.AnexoContrato;
-import cl.smapdev.curimapu.clases.Especie;
+import cl.smapdev.curimapu.clases.tablas.Variedad;
+import cl.smapdev.curimapu.clases.tablas.Agricultor;
+import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
+import cl.smapdev.curimapu.clases.tablas.Especie;
 
 public class AnexoCompleto implements Serializable {
 

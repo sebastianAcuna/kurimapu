@@ -1,6 +1,5 @@
 package cl.smapdev.curimapu.clases.bd;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -10,17 +9,18 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
-import cl.smapdev.curimapu.Variedad;
-import cl.smapdev.curimapu.clases.Agricultor;
-import cl.smapdev.curimapu.clases.AnexoContrato;
-import cl.smapdev.curimapu.clases.Comuna;
-import cl.smapdev.curimapu.clases.Especie;
-import cl.smapdev.curimapu.clases.Fichas;
-import cl.smapdev.curimapu.clases.Fotos;
-import cl.smapdev.curimapu.clases.Region;
+import cl.smapdev.curimapu.clases.tablas.Variedad;
+import cl.smapdev.curimapu.clases.tablas.Agricultor;
+import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
+import cl.smapdev.curimapu.clases.tablas.Comuna;
+import cl.smapdev.curimapu.clases.tablas.Especie;
+import cl.smapdev.curimapu.clases.tablas.Fichas;
+import cl.smapdev.curimapu.clases.tablas.Fotos;
+import cl.smapdev.curimapu.clases.tablas.Region;
 import cl.smapdev.curimapu.clases.relaciones.AgricultorCompleto;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
+import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 
 @Dao
 public interface MyDao {
@@ -98,6 +98,31 @@ public interface MyDao {
 
     @RawQuery
     List<FichasCompletas> getFichasFilter(SupportSQLiteQuery query);
+
+
+    /* VISITAS TEMP*/
+    @Query("SELECT * FROM temp_visitas ")
+    TempVisitas getTempFichas();
+
+    @Update
+    void updateTempVisitas(TempVisitas tempVisitas);
+
+    @Insert
+    long setTempVisitas(TempVisitas tempVisitas);
+
+
+    @Query("DELETE FROM temp_visitas")
+    void deleteTempVisitas();
+
+    @Query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='temp_visitas'")
+    void resetTempVisitas();
+
+
+
+
+
+
+
 
     /* ANEXOS*/
 

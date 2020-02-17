@@ -1,6 +1,8 @@
 package cl.smapdev.curimapu.clases;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
@@ -30,6 +32,7 @@ public class Tabla {
     private Activity actividad;
     private Resources rs;
     private int FILAS, COLUMNAS; // Filas y columnas de nuestra tabla
+    private SharedPreferences prefs;
 
 
     public Tabla(TableLayout tabla, Activity actividad) {
@@ -38,6 +41,8 @@ public class Tabla {
         rs = this.actividad.getResources();
         FILAS = COLUMNAS = 0;
         filas = new ArrayList<TableRow>();
+
+        prefs = this.actividad.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
     }
 
 
@@ -84,7 +89,7 @@ public class Tabla {
      * Agrega una fila a la tabla
      * @param ls Elementos de la fila
      **/
-    public void agregarFilaTabla(AnexoCompleto ls)
+    public void agregarFilaTabla(final AnexoCompleto ls)
     {
 
         TableRow.LayoutParams layoutCelda;
@@ -126,6 +131,14 @@ public class Tabla {
             public void onClick(View view) {
                 MainActivity activity = (MainActivity) actividad;
                 if (activity != null){
+                    MainActivity.myAppDB.myDao().deleteTempVisitas();
+                    MainActivity.myAppDB.myDao().resetTempVisitas();
+                    if (prefs != null){
+
+                        prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls.getAnexoContrato().getId_ficha_contrato()).apply();
+                        prefs.edit().putInt(Utilidades.SHARED_VISIT_ANEXO_ID, ls.getAnexoContrato().getId_anexo_contrato()).apply();
+                    }
+
                     activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left,R.anim.slide_out_left);
                 }
 

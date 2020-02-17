@@ -28,7 +28,6 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +35,10 @@ import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.Agricultor;
-import cl.smapdev.curimapu.clases.Comuna;
-import cl.smapdev.curimapu.clases.Fichas;
-import cl.smapdev.curimapu.clases.Region;
+import cl.smapdev.curimapu.clases.tablas.Agricultor;
+import cl.smapdev.curimapu.clases.tablas.Comuna;
+import cl.smapdev.curimapu.clases.tablas.Fichas;
+import cl.smapdev.curimapu.clases.tablas.Region;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.relaciones.AgricultorCompleto;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
@@ -122,7 +121,6 @@ public class FragmentCreaFicha extends Fragment {
         super.onCreate(savedInstanceState);
 
         activity = (MainActivity)  getActivity();
-
 
         regionList = MainActivity.myAppDB.myDao().getRegiones();
         comunaList = MainActivity.myAppDB.myDao().getComunas();
@@ -383,9 +381,9 @@ public class FragmentCreaFicha extends Fragment {
 
 
         if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro) &&  !TextUtils.isEmpty(fonoAgro) && !TextUtils.isEmpty(admin) && !TextUtils.isEmpty(fonoAdmin)
-        && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) && !TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting) && !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
+        && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
         && idAnno > 0 && idRegion > 0 && idComuna > 0){
-
+//            !TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting) &&
 
             if (Utilidades.validarRut(Utilidades.formatear(rutAgro))){
 
@@ -414,8 +412,13 @@ public class FragmentCreaFicha extends Fragment {
                 fichas.setObservaciones(observacion);
                 fichas.setSubida(false);
                 fichas.setOferta_negocio(oferta);
-                fichas.setEasting(Double.parseDouble(easting));
-                fichas.setNorting(Double.parseDouble(norting));
+
+
+                if (!TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting)){
+                    fichas.setEasting(Double.parseDouble(easting));
+                    fichas.setNorting(Double.parseDouble(norting));
+                }
+
                 fichas.setRut_agricultor_fichas(rutAgro);
 
                 if(MainActivity.myAppDB.myDao().insertFicha(fichas) > 0){
@@ -460,9 +463,10 @@ public class FragmentCreaFicha extends Fragment {
         String norting = et_northing_agricultor.getText().toString();
 
         if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro) &&  !TextUtils.isEmpty(fonoAgro) && !TextUtils.isEmpty(admin) && !TextUtils.isEmpty(fonoAdmin)
-                && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) && !TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting) && !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
+                && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
                 && idAnno > 0 && idRegion > 0 && idComuna > 0){
 
+//            !TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting) &&
 
             Fichas fichas = fichasCompletas.getFichas();
 
@@ -471,8 +475,13 @@ public class FragmentCreaFicha extends Fragment {
             fichas.setLocalidad(localidad);
             fichas.setObservaciones(observacion);
             fichas.setOferta_negocio(oferta);
-            fichas.setEasting(Double.parseDouble(easting));
-            fichas.setNorting(Double.parseDouble(norting));
+
+            if (!TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting)){
+                fichas.setEasting(Double.parseDouble(easting));
+                fichas.setNorting(Double.parseDouble(norting));
+            }
+
+
 
             if(MainActivity.myAppDB.myDao().updateFicha(fichas) > 0){
                 Snackbar.make(Objects.requireNonNull(getView()), "Se modifico la ficha de manera correcta", Snackbar.LENGTH_SHORT).show();

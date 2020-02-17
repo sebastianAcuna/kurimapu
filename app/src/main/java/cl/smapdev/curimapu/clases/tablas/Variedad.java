@@ -1,4 +1,4 @@
-package cl.smapdev.curimapu;
+package cl.smapdev.curimapu.clases.tablas;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;

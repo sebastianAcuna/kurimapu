@@ -1,6 +1,5 @@
 package cl.smapdev.curimapu.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,18 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.Variedad;
-import cl.smapdev.curimapu.clases.Agricultor;
-import cl.smapdev.curimapu.clases.AnexoContrato;
-import cl.smapdev.curimapu.clases.Comuna;
-import cl.smapdev.curimapu.clases.Especie;
-import cl.smapdev.curimapu.clases.Fichas;
-import cl.smapdev.curimapu.clases.Region;
+import cl.smapdev.curimapu.clases.tablas.Variedad;
+import cl.smapdev.curimapu.clases.tablas.Agricultor;
+import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
+import cl.smapdev.curimapu.clases.tablas.Comuna;
+import cl.smapdev.curimapu.clases.tablas.Especie;
+import cl.smapdev.curimapu.clases.tablas.Region;
 
 public class FragmentPrincipal extends Fragment {
 

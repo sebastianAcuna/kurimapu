@@ -66,6 +66,10 @@ public class Utilidades {
     public static final String SHARED_FILTER_VISITAS_VARIEDAD = "filter_visitas_variedad";
 
 
+    public static final String SHARED_VISIT_FICHA_ID = "shared_visit_ficha_id";
+    public static final String SHARED_VISIT_ANEXO_ID = "shared_visit_anexo_id";
+
+
 
 
     public static final String DIRECTORIO_IMAGEN = "curimapu_imagenes";

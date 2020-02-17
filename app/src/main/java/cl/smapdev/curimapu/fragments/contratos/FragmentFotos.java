@@ -49,7 +49,7 @@ import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.Fotos;
+import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.adapters.FotosListAdapter;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 

@@ -2,9 +2,9 @@ package cl.smapdev.curimapu.clases.relaciones;
 
 import androidx.room.Embedded;
 
-import cl.smapdev.curimapu.clases.Agricultor;
-import cl.smapdev.curimapu.clases.Comuna;
-import cl.smapdev.curimapu.clases.Region;
+import cl.smapdev.curimapu.clases.tablas.Agricultor;
+import cl.smapdev.curimapu.clases.tablas.Comuna;
+import cl.smapdev.curimapu.clases.tablas.Region;
 
 public class AgricultorCompleto {
 

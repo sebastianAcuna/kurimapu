@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "41fd110c2ddf3fbb1bb64e055b8e1b9c",
+    "identityHash": "22357b9a0ba36ee3b35685af321e5669",
     "entities": [
       {
         "tableName": "fotos",
@@ -391,11 +391,589 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "temp_visitas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` INTEGER NOT NULL, `phenological_state_temp_visita` INTEGER NOT NULL, `growth_status_temp_visita` INTEGER NOT NULL, `weed_state_temp_visita` INTEGER NOT NULL, `phytosanitary_state_temp_visita` INTEGER NOT NULL, `harvest_temp_visita` INTEGER NOT NULL, `overall_status_temp_visita` INTEGER NOT NULL, `humidity_floor_temp_visita` INTEGER NOT NULL, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_temp_visita",
+            "columnName": "id_temp_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_anexo_temp_visita",
+            "columnName": "id_anexo_temp_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "phenological_state_temp_visita",
+            "columnName": "phenological_state_temp_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "growth_status_temp_visita",
+            "columnName": "growth_status_temp_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weed_state_temp_visita",
+            "columnName": "weed_state_temp_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "phytosanitary_state_temp_visita",
+            "columnName": "phytosanitary_state_temp_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "harvest_temp_visita",
+            "columnName": "harvest_temp_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "overall_status_temp_visita",
+            "columnName": "overall_status_temp_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "humidity_floor_temp_visita",
+            "columnName": "humidity_floor_temp_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "observation_temp_visita",
+            "columnName": "observation_temp_visita",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "recomendation_temp_visita",
+            "columnName": "recomendation_temp_visita",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_temp_visita"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "temp_flowering",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_flowering` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_flowering` INTEGER NOT NULL, `date_notice_sag_temp_flowering` TEXT, `flowering_estimation_temp_flowering` TEXT, `flowering_start_temp_flowering` TEXT, `flowering_end_temp_flowering` TEXT, `fertility_1_temp_flowering` TEXT, `fertility_2_temp_flowering` TEXT, `fungicide_name_temp_flowering` TEXT, `dose_fungicide_temp_flowering` TEXT, `date_funficide_temp_flowering` TEXT, `date_insecticide_temp_flowering` TEXT, `date_beginning_depuration_temp_flowering` TEXT, `date_off_type_temp_flowering` TEXT, `plant_number_checked_temp_flowering` TEXT, `check_temp_flowering` TEXT, `main_characteristic_temp_flowering` TEXT, `date_inspection_temp_flowering` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_temp_flowering",
+            "columnName": "id_temp_flowering",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_anexo_temp_flowering",
+            "columnName": "id_anexo_temp_flowering",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date_notice_sag_temp_flowering",
+            "columnName": "date_notice_sag_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "flowering_estimation_temp_flowering",
+            "columnName": "flowering_estimation_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "flowering_start_temp_flowering",
+            "columnName": "flowering_start_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "flowering_end_temp_flowering",
+            "columnName": "flowering_end_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fertility_1_temp_flowering",
+            "columnName": "fertility_1_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fertility_2_temp_flowering",
+            "columnName": "fertility_2_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fungicide_name_temp_flowering",
+            "columnName": "fungicide_name_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dose_fungicide_temp_flowering",
+            "columnName": "dose_fungicide_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_funficide_temp_flowering",
+            "columnName": "date_funficide_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_insecticide_temp_flowering",
+            "columnName": "date_insecticide_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_beginning_depuration_temp_flowering",
+            "columnName": "date_beginning_depuration_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_off_type_temp_flowering",
+            "columnName": "date_off_type_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "plant_number_checked_temp_flowering",
+            "columnName": "plant_number_checked_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "check_temp_flowering",
+            "columnName": "check_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "main_characteristic_temp_flowering",
+            "columnName": "main_characteristic_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_inspection_temp_flowering",
+            "columnName": "date_inspection_temp_flowering",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_temp_flowering"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "temp_harvest",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_harvest` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_harvest` INTEGER NOT NULL, `estimated_date_temp_harvest` TEXT, `real_date_temp_harvest` TEXT, `observation_dessicant_temp_harvest` TEXT, `swathing_date_temp_harvest` TEXT, `kg_ha_yield_temp_harvest` TEXT, `observation_yield_temp_harvest` TEXT, `date_harvest_estimation_temp_harvest` TEXT, `beginning_date_temp_harvest` TEXT, `end_date_temp_harvest` TEXT, `owner_machine_temp_harvest` TEXT, `model_machine_temp_harvest` TEXT, `porcent_temp_harvest` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id_temp_harvest",
+            "columnName": "id_temp_harvest",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_anexo_temp_harvest",
+            "columnName": "id_anexo_temp_harvest",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estimated_date_temp_harvest",
+            "columnName": "estimated_date_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "real_date_temp_harvest",
+            "columnName": "real_date_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "observation_dessicant_temp_harvest",
+            "columnName": "observation_dessicant_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "swathing_date_temp_harvest",
+            "columnName": "swathing_date_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "kg_ha_yield_temp_harvest",
+            "columnName": "kg_ha_yield_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "observation_yield_temp_harvest",
+            "columnName": "observation_yield_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_harvest_estimation_temp_harvest",
+            "columnName": "date_harvest_estimation_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "beginning_date_temp_harvest",
+            "columnName": "beginning_date_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "end_date_temp_harvest",
+            "columnName": "end_date_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "owner_machine_temp_harvest",
+            "columnName": "owner_machine_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "model_machine_temp_harvest",
+            "columnName": "model_machine_temp_harvest",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "porcent_temp_harvest",
+            "columnName": "porcent_temp_harvest",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_temp_harvest"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "temp_sowing",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_sowing` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_sowing` INTEGER NOT NULL, `sag_planting_temp_sowing` TEXT, `delivered_temp_sowing` TEXT, `type_of_mixture_applied_temp_sowing` TEXT, `amount_applied_temp_sowing` TEXT, `meters_isoliation_temp_sowing` INTEGER NOT NULL, `south_temp_sowing` TEXT, `north_temp_sowing` TEXT, `east_temp_sowing` TEXT, `west_temp_sowing` TEXT, `female_lines_temp_sowing` TEXT, `female_sowing_lot_temp_sowing` TEXT, `real_sowing_female_temp_sowing` REAL NOT NULL, `female_sowing_date_start_temp_sowing` TEXT, `female_sowing_date_end_temp_sowing` TEXT, `sowing_seed_meter_temp_sowing` REAL NOT NULL, `row_distance_temp_sowing` REAL NOT NULL, `dose_1_temp_sowing` TEXT, `date_1_temp_sowing` TEXT, `dose_2_temp_sowing` TEXT, `date_2_temp_sowing` TEXT, `name_1_herb_temp_sowing` TEXT, `date_1_herb_temp_sowing` TEXT, `name_2_herb_temp_sowing` TEXT, `date_2_herb_temp_sowing` TEXT, `name_3_herb_temp_sowing` TEXT, `date_3_herb_temp_sowing` TEXT, `date_pre_emergence_temp_sowing` TEXT, `dose_pre_emergence_temp_sowing` TEXT, `water_pre_emergence_temp_sowing` REAL NOT NULL, `plant_m_temp_sowing` REAL NOT NULL, `population_plants_ha_temp_sowing` REAL NOT NULL, `basta_spray_1_temp_sowing` TEXT, `basta_spray_2_temp_sowing` TEXT, `basta_spray_3_temp_sowing` TEXT, `basta_spray_4_temp_sowing` TEXT, `basta_splat_4_ha_temp_sowing` TEXT, `date_nombre_largo_temp_sowing` TEXT, `product_nombre_largo_temp_sowing` TEXT, `dose_nombre_largo_temp_sowing` TEXT, `foliar_temp_sowing` TEXT, `dose_foliar_temp_sowing` TEXT, `date_foliar_temp_sowing` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_temp_sowing",
+            "columnName": "id_temp_sowing",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_anexo_temp_sowing",
+            "columnName": "id_anexo_temp_sowing",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sag_planting_temp_sowing",
+            "columnName": "sag_planting_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "delivered_temp_sowing",
+            "columnName": "delivered_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type_of_mixture_applied_temp_sowing",
+            "columnName": "type_of_mixture_applied_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "amount_applied_temp_sowing",
+            "columnName": "amount_applied_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "meters_isoliation_temp_sowing",
+            "columnName": "meters_isoliation_temp_sowing",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "south_temp_sowing",
+            "columnName": "south_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "north_temp_sowing",
+            "columnName": "north_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "east_temp_sowing",
+            "columnName": "east_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "west_temp_sowing",
+            "columnName": "west_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "female_lines_temp_sowing",
+            "columnName": "female_lines_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "female_sowing_lot_temp_sowing",
+            "columnName": "female_sowing_lot_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "real_sowing_female_temp_sowing",
+            "columnName": "real_sowing_female_temp_sowing",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "female_sowing_date_start_temp_sowing",
+            "columnName": "female_sowing_date_start_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "female_sowing_date_end_temp_sowing",
+            "columnName": "female_sowing_date_end_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sowing_seed_meter_temp_sowing",
+            "columnName": "sowing_seed_meter_temp_sowing",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "row_distance_temp_sowing",
+            "columnName": "row_distance_temp_sowing",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dose_1_temp_sowing",
+            "columnName": "dose_1_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_1_temp_sowing",
+            "columnName": "date_1_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dose_2_temp_sowing",
+            "columnName": "dose_2_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_2_temp_sowing",
+            "columnName": "date_2_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name_1_herb_temp_sowing",
+            "columnName": "name_1_herb_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_1_herb_temp_sowing",
+            "columnName": "date_1_herb_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name_2_herb_temp_sowing",
+            "columnName": "name_2_herb_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_2_herb_temp_sowing",
+            "columnName": "date_2_herb_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name_3_herb_temp_sowing",
+            "columnName": "name_3_herb_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_3_herb_temp_sowing",
+            "columnName": "date_3_herb_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_pre_emergence_temp_sowing",
+            "columnName": "date_pre_emergence_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dose_pre_emergence_temp_sowing",
+            "columnName": "dose_pre_emergence_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "water_pre_emergence_temp_sowing",
+            "columnName": "water_pre_emergence_temp_sowing",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plant_m_temp_sowing",
+            "columnName": "plant_m_temp_sowing",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "population_plants_ha_temp_sowing",
+            "columnName": "population_plants_ha_temp_sowing",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "basta_spray_1_temp_sowing",
+            "columnName": "basta_spray_1_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "basta_spray_2_temp_sowing",
+            "columnName": "basta_spray_2_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "basta_spray_3_temp_sowing",
+            "columnName": "basta_spray_3_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "basta_spray_4_temp_sowing",
+            "columnName": "basta_spray_4_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "basta_splat_4_ha_temp_sowing",
+            "columnName": "basta_splat_4_ha_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_nombre_largo_temp_sowing",
+            "columnName": "date_nombre_largo_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "product_nombre_largo_temp_sowing",
+            "columnName": "product_nombre_largo_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dose_nombre_largo_temp_sowing",
+            "columnName": "dose_nombre_largo_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "foliar_temp_sowing",
+            "columnName": "foliar_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dose_foliar_temp_sowing",
+            "columnName": "dose_foliar_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_foliar_temp_sowing",
+            "columnName": "date_foliar_temp_sowing",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_temp_sowing"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"41fd110c2ddf3fbb1bb64e055b8e1b9c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"22357b9a0ba36ee3b35685af321e5669\")"
     ]
   }
 }

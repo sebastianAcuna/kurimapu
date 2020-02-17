@@ -1,4 +1,4 @@
-package cl.smapdev.curimapu.clases;
+package cl.smapdev.curimapu.clases.sincronizacion;
 
 import android.app.Service;
 import android.content.Intent;

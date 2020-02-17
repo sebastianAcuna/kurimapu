@@ -1,4 +1,4 @@
-package cl.smapdev.curimapu.clases;
+package cl.smapdev.curimapu.clases.tablas;
 
 
 import androidx.annotation.NonNull;

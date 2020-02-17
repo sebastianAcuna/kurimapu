@@ -2,7 +2,6 @@ package cl.smapdev.curimapu.clases.adapters;
 
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.Fotos;
+import cl.smapdev.curimapu.clases.tablas.Fotos;
 
 public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.ImageViewHolder> {
 

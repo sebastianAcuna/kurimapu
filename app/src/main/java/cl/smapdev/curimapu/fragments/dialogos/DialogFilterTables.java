@@ -27,13 +27,11 @@ import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.Variedad;
-import cl.smapdev.curimapu.clases.Especie;
+import cl.smapdev.curimapu.clases.tablas.Variedad;
+import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
-
-import static cl.smapdev.curimapu.fragments.dialogos.DialogFilterFichas.LLAVE_ENVIO_OBJECTO;
 
 public class DialogFilterTables extends DialogFragment {
     public static final String LLAVE_FILTER_TABLAS = "llave_filter_tablas";
