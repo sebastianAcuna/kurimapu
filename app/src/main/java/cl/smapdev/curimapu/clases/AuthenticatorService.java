@@ -22,6 +22,8 @@ public class AuthenticatorService extends Service {
     /*
      * When the system binds to this Service to make the RPC call
      * return the authenticator's IBinder.
+     * https://academiaandroid.com/ejemplo-uso-sync-adapter-en-proyecto-android/
+     * https://github.com/aamatte/tutorial-sync-adapter/wiki/Content-provider
      */
     @Nullable
     @Override
