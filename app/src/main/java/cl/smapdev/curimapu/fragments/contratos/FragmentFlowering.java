@@ -1,6 +1,8 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.temporales.TempFlowering;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class FragmentFlowering extends Fragment implements View.OnFocusChangeListener/*, DatePickerDialog.OnDateSetListener*/{
@@ -31,6 +34,9 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
 
     private MainActivity activity = null;
 
+    private SharedPreferences prefs;
+
+    private TempFlowering temp_flowering;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +45,10 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
          MainActivity a = (MainActivity) getActivity();
          if(a != null){
              activity = a;
+
          }
+
+         prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
     }
 
     @Nullable
@@ -66,11 +75,58 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
+
+
+
+                temp_flowering  = (temp_flowering != null) ? temp_flowering : MainActivity.myAppDB.myDao().getTempFlowering(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+
+
+                if (temp_flowering == null) {
+                    temp_flowering = new TempFlowering();
+                    if (prefs != null) {
+                        temp_flowering.setId_anexo_temp_flowering(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+                    }
+                    MainActivity.myAppDB.myDao().setTempFlowering(temp_flowering);
+                    temp_flowering = MainActivity.myAppDB.myDao().getTempFlowering(temp_flowering.getId_anexo_temp_flowering());
+                    if (temp_flowering != null){
+                        loadUiData();
+                    }
+                }else{
+                    loadUiData();
+                }
+
+
+
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_flowering, FragmentFotos.getInstance(3), Utilidades.FRAGMENT_FOTOS).commit();
             }
         }
     }
 
+
+
+    private void loadUiData(){
+
+        date_date.setText(temp_flowering.getDate_notice_sag_temp_flowering());
+        date_flowering.setText(temp_flowering.getFlowering_estimation_temp_flowering());
+        date_f_start.setText(temp_flowering.getFlowering_start_temp_flowering());
+        date_f_end.setText(temp_flowering.getFlowering_end_temp_flowering());
+        date_fert_one.setText(temp_flowering.getFertility_1_temp_flowering());
+        date_fert_two.setText(temp_flowering.getFertility_2_temp_flowering());
+        date_fungicide.setText(temp_flowering.getDate_funficide_temp_flowering());
+        date_insecticide.setText(temp_flowering.getDate_insecticide_temp_flowering());
+        date_depuration.setText(temp_flowering.getDate_beginning_depuration_temp_flowering());
+        date_off_type.setText(temp_flowering.getDate_off_type_temp_flowering());
+        date_inspection.setText(temp_flowering.getDate_inspection_temp_flowering());
+
+
+        /* ET TEXTO */
+
+        et_fungicide.setText(temp_flowering.getFungicide_name_temp_flowering());
+        et_doce.setText(temp_flowering.getDose_fungicide_temp_flowering());
+        et_plant_number_checked.setText(temp_flowering.getPlant_number_checked_temp_flowering());
+        et_check.setText(temp_flowering.getCheck_temp_flowering());
+        et_main_char.setText(temp_flowering.getMain_characteristic_temp_flowering());
+    }
 
     private void levantarFecha(final EditText edit){
         String fecha = Utilidades.fechaActualSinHora();
@@ -115,6 +171,16 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         date_depuration.setOnFocusChangeListener(this);
         date_off_type.setOnFocusChangeListener(this);
         date_inspection.setOnFocusChangeListener(this);
+
+
+        et_fungicide.setOnFocusChangeListener(this);
+        et_doce.setOnFocusChangeListener(this);
+        et_plant_number_checked.setOnFocusChangeListener(this);
+        et_check.setOnFocusChangeListener(this);
+        et_main_char.setOnFocusChangeListener(this);
+
+
+
     }
 
     private void bind(View view){
@@ -144,6 +210,15 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         btn_fecha_depuration = view.findViewById(R.id.btn_fecha_depuration);
         btn_fecha_off_type = view.findViewById(R.id.btn_fecha_off_type);
         btn_fecha_inspection = view.findViewById(R.id.btn_fecha_inspection);*/
+
+      /*EDIT TEXT */
+        et_fungicide = (EditText) view.findViewById(R.id.et_fungicide);
+        et_doce = (EditText) view.findViewById(R.id.et_doce);
+        et_plant_number_checked = (EditText) view.findViewById(R.id.et_plant_number_checked);
+        et_check = (EditText) view.findViewById(R.id.et_check);
+        et_main_char = (EditText) view.findViewById(R.id.et_main_char);
+
+
     }
 
     @Override
@@ -152,37 +227,68 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         switch (view.getId()){
             case R.id.date_date:
                 if(b) levantarFecha(date_date);
+                else temp_flowering.setDate_notice_sag_temp_flowering(date_date.getText().toString());
                 break;
             case R.id.date_flowering:
                 if(b) levantarFecha(date_flowering);
+                else temp_flowering.setFlowering_estimation_temp_flowering(date_flowering.getText().toString());
                 break;
             case R.id.date_f_start:
                 if(b) levantarFecha(date_f_start);
+                else temp_flowering.setFlowering_start_temp_flowering(date_f_start.getText().toString());
                 break;
             case R.id.date_f_end:
                 if(b) levantarFecha(date_f_end);
+                else temp_flowering.setFlowering_end_temp_flowering(date_f_end.getText().toString());
                 break;
             case R.id.date_fert_one:
                 if(b) levantarFecha(date_fert_one);
+                else temp_flowering.setFertility_1_temp_flowering(date_fert_one.getText().toString());
                 break;
             case R.id.date_fert_two:
                 if(b) levantarFecha(date_fert_two);
+                else temp_flowering.setFertility_2_temp_flowering(date_fert_two.getText().toString());
                 break;
             case R.id.date_fungicide:
                 if(b) levantarFecha(date_fungicide);
+                else temp_flowering.setDate_funficide_temp_flowering(date_fungicide.getText().toString());
                 break;
             case R.id.date_insecticide:
                 if(b) levantarFecha(date_insecticide);
+                else temp_flowering.setDate_insecticide_temp_flowering(date_insecticide.getText().toString());
                 break;
             case R.id.date_depuration:
                 if(b) levantarFecha(date_depuration);
+                else temp_flowering.setDate_beginning_depuration_temp_flowering(date_depuration.getText().toString());
                 break;
             case R.id.date_off_type:
                 if(b) levantarFecha(date_off_type);
+                else temp_flowering.setDate_off_type_temp_flowering(date_off_type.getText().toString());
                 break;
             case R.id.date_inspection:
                 if(b) levantarFecha(date_inspection);
+                else temp_flowering.setDate_inspection_temp_flowering(date_inspection.getText().toString());
                 break;
+
+            case R.id.et_fungicide:
+                if (!b) temp_flowering.setFungicide_name_temp_flowering(et_fungicide.getText().toString());
+                break;
+            case R.id.et_doce:
+                if (!b) temp_flowering.setDose_fungicide_temp_flowering(et_doce.getText().toString());
+                break;
+            case R.id.et_plant_number_checked:
+                if (!b) temp_flowering.setPlant_number_checked_temp_flowering(et_plant_number_checked.getText().toString());
+                break;
+            case R.id.et_check:
+                if (!b) temp_flowering.setCheck_temp_flowering(et_check.getText().toString());
+                break;
+            case R.id.et_main_char:
+                if (!b) temp_flowering.setMain_characteristic_temp_flowering(et_main_char.getText().toString());
+                break;
+        }
+
+        if (!b){
+            MainActivity.myAppDB.myDao().updateTempFlowering(temp_flowering);
         }
 
     }

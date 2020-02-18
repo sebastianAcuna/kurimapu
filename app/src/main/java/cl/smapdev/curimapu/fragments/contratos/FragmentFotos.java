@@ -96,8 +96,10 @@ public class FragmentFotos extends Fragment {
         MainActivity a = (MainActivity) getActivity();
         if (a != null) {
             activity = a;
-            prefs = activity.getSharedPreferences(Utilidades.SHARED_PREFERENCE, Context.MODE_PRIVATE);
+
         }
+
+
     }
 
     @Override
@@ -108,6 +110,9 @@ public class FragmentFotos extends Fragment {
         if (bundle != null){
             this.fieldbook = bundle.getInt(FIELDBOOKKEY);
         }
+
+
+        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
 
         Log.e("PRIMERO", "onStart");
         agregarImagenToList();
@@ -284,7 +289,7 @@ public class FragmentFotos extends Fragment {
         fotos.setNombre_foto(path.getName());
         fotos.setFavorita(false);
         fotos.setPlano(0);
-        fotos.setId_ficha(0);
+        fotos.setId_ficha(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
         fotos.setVista(prefs.getInt(Utilidades.VISTA_FOTOS, 0));
         fotos.setRuta(path.getAbsolutePath());
 
@@ -359,7 +364,9 @@ public class FragmentFotos extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(lManager);
 
-        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByField(fieldbook);
+        final int oreg =prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0);
+
+        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(fieldbook, "",oreg);
 
         adapterFotos = new FotosListAdapter(myImageList,activity, new FotosListAdapter.OnItemClickListener() {
             @Override
@@ -371,7 +378,7 @@ public class FragmentFotos extends Fragment {
             public void onItemLongClick(Fotos fotos) {
 
                 if (!fotos.isFavorita()){
-                    int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(fieldbook,0);
+                    int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(fieldbook,oreg);
 
                     if (favoritas < 3){
                         cambiarFavorita(fotos);

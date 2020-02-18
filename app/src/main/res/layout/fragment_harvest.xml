@@ -134,13 +134,14 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/lbl_01_05"
-                android:layout_below="@id/date_real_date">
+                android:layout_below="@id/date_real_date"
+                android:hint="@string/format_set_input">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_observation_harvest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/format_set_input" />
+                     />
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -238,13 +239,14 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/view_008"
-                android:layout_toEndOf="@id/lbl_01_09">
+                android:layout_toEndOf="@id/lbl_01_09"
+                android:hint="@string/format_set_input" >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_kg_ha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/format_set_input" />
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -265,13 +267,14 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/lbl_01_10"
-                android:layout_below="@id/textInp_kg_ha">
+                android:layout_below="@id/textInp_kg_ha"
+                android:hint="@string/format_set_input" >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_observation_yield"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/format_set_input" />
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -436,13 +439,14 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/lbl_01_17"
-                android:layout_below="@id/view_016" >
+                android:layout_below="@id/view_016"
+                android:hint="@string/format_set_input">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_owner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/format_set_input" />
+                     />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -462,13 +466,14 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/lbl_01_18"
-                android:layout_below="@id/textInp_owner" >
+                android:layout_below="@id/textInp_owner"
+                android:hint="@string/format_set_input">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_model"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/format_set_input" />
+                     />
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -513,13 +518,15 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/lbl_01_20"
-                android:layout_below="@id/view_019" >
+                android:layout_below="@id/view_019"
+                android:hint="@string/format_set_input">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_percent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/format_set_input" />
+
+                    android:inputType="numberDecimal"/>
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
 

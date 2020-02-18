@@ -52,6 +52,7 @@
                 android:layout_weight="0.3"
                 android:orientation="vertical"
                 android:gravity="start"
+                android:visibility="gone"
                 >
 
                 <TextView
@@ -73,7 +74,6 @@
                 android:layout_weight="0.3"
                 android:orientation="vertical"
                 android:gravity="start"
-                android:visibility="invisible"
                 >
 
                 <TextView

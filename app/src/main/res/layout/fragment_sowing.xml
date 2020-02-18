@@ -230,13 +230,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_12"
-                    android:layout_toEndOf="@id/x_01_13">
+                    android:layout_toEndOf="@id/x_01_13"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_entregado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input" />
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--TIPO DE MEZCLA APLICADA -->
@@ -255,13 +256,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textInp_entregado"
-                    android:layout_toEndOf="@id/x_01_14">
+                    android:layout_toEndOf="@id/x_01_14"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_tipo_mezcla"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input" />
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -281,13 +283,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textInp_tipo_mezcla"
-                    android:layout_toEndOf="@id/x_01_15">
+                    android:layout_toEndOf="@id/x_01_15"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_cant_aplicada"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input" />
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
@@ -324,20 +327,23 @@
                     android:text="@string/meters"
                     style="@style/sub_titles_forms"
                     android:layout_below="@id/divider16_showin"
-                    android:layout_alignParentStart="true"/>
+                    android:layout_alignParentStart="true"
+                    />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_meters"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/divider16_showin"
-                    android:layout_toEndOf="@id/x_01_17">
+                    android:layout_toEndOf="@id/x_01_17"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_meters"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input" />
+
+                        android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
@@ -384,13 +390,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_18"
-                    android:layout_toEndOf="@id/x_01_19">
+                    android:layout_toEndOf="@id/x_01_19"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_lines_female"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input" />
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
@@ -435,13 +442,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_20"
-                    android:layout_toEndOf="@id/x_01_21">
+                    android:layout_toEndOf="@id/x_01_21"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_showing_female"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input" />
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- REAL SHOWING FEMALE -->
@@ -460,14 +468,15 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textInp_showing_female"
-                    android:layout_toEndOf="@id/x_01_22">
+                    android:layout_toEndOf="@id/x_01_22"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_real_sowing"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
-                        android:inputType="number"/>
+
+                        android:inputType="numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
@@ -608,14 +617,15 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_27"
-                    android:layout_toEndOf="@id/x_01_28">
+                    android:layout_toEndOf="@id/x_01_28"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_sowin_seed_f"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
-                        android:inputType="number"/>
+
+                        android:inputType="numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
@@ -663,14 +673,15 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_29"
-                    android:layout_toEndOf="@id/x_01_30">
+                    android:layout_toEndOf="@id/x_01_30"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_row_distance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
-                        android:inputType="number"/>
+
+                        android:inputType="numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -719,13 +730,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_31"
-                    android:layout_toEndOf="@id/x_01_32">
+                    android:layout_toEndOf="@id/x_01_32"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_dose_one"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
+
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -768,13 +780,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/date_date_one"
-                    android:layout_toEndOf="@id/x_01_34">
+                    android:layout_toEndOf="@id/x_01_34"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_dose_two"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
+
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -844,13 +857,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_36"
-                    android:layout_toEndOf="@id/x_01_37">
+                    android:layout_toEndOf="@id/x_01_37"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_name_one"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
+
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -893,13 +907,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/date_herbicide_date_one"
-                    android:layout_toEndOf="@id/x_01_39">
+                    android:layout_toEndOf="@id/x_01_39"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_name_two"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
+
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -941,13 +956,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/date_herbicide_date_two"
-                    android:layout_toEndOf="@id/x_01_41">
+                    android:layout_toEndOf="@id/x_01_41"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_name_tres"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
+
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -1044,13 +1060,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/date_emergence_date"
-                    android:layout_toEndOf="@id/x_01_45">
+                    android:layout_toEndOf="@id/x_01_45"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_emergence_dose"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
+
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -1071,14 +1088,15 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textInp_emergence_dose"
-                    android:layout_toEndOf="@id/x_01_46">
+                    android:layout_toEndOf="@id/x_01_46"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_water_lts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
-                        android:inputType="number"/>
+
+                        android:inputType="numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
@@ -1125,14 +1143,15 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_48"
-                    android:layout_toEndOf="@id/x_01_49">
+                    android:layout_toEndOf="@id/x_01_49"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_f_plant"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
-                        android:inputType="number"/>
+
+                        android:inputType="numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
@@ -1181,14 +1200,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_50"
-                    android:layout_toEndOf="@id/x_01_51">
+                    android:layout_toEndOf="@id/x_01_51"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_f_population"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
-                        android:inputType="number"/>
+                        android:inputType="numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <View
@@ -1416,13 +1435,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/date_bruchus"
-                    android:layout_toEndOf="@id/x_01_60">
+                    android:layout_toEndOf="@id/x_01_60"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_producto_bruchus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
+
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -1443,13 +1463,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textInp_producto_bruchus"
-                    android:layout_toEndOf="@id/x_01_61">
+                    android:layout_toEndOf="@id/x_01_61"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_dose_lt_ha"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
+
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -1501,13 +1522,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/p_62"
-                    android:layout_toEndOf="@id/x_01_63">
+                    android:layout_toEndOf="@id/x_01_63"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_foliar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
+
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -1530,13 +1552,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textInp_foliar"
-                    android:layout_toEndOf="@id/x_01_64">
+                    android:layout_toEndOf="@id/x_01_64"
+                    android:hint="@string/format_set_input">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_dose_foliar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/format_set_input"
+
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 

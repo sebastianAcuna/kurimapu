@@ -1,8 +1,11 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +18,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.temporales.TempHarvest;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class FragmentHarvest extends Fragment implements View.OnFocusChangeListener {
@@ -26,30 +32,24 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
 //    private ImageButton btn_estimated_date,btn_real_date,btn_swatching_date,btn_date_harvest,btn_begining_date,btn_end_date;
 
     private EditText et_observation_harvest,et_kg_ha,et_observation_yield,et_owner,et_model,et_percent;
-
     private MainActivity activity = null;
 
-    private boolean fragmentResume=false;
-    private boolean fragmentVisible=false;
-    private boolean fragmentOnCreated=false;
+    private SharedPreferences prefs;
 
+
+    private TempHarvest temp_harvest;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MainActivity a = (MainActivity) getActivity();
         if (a != null) activity = a;
+        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        //Initialize variables
-       /* if (!fragmentResume && fragmentVisible){
-            // only when first time fragment is created
-            //myUIUpdate();
-        }*/
         return inflater.inflate(R.layout.fragment_harvest, container, false);
     }
 
@@ -59,12 +59,11 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
 
         bind(view);
 
-        date_estimated_date.setOnFocusChangeListener(this);
-        date_real_date.setOnFocusChangeListener(this);
-        date_swatching_date.setOnFocusChangeListener(this);
-        date_date_harvest.setOnFocusChangeListener(this);
-        date_begining_date.setOnFocusChangeListener(this);
-        date_end_date.setOnFocusChangeListener(this);
+
+
+
+
+
 //        date_end_date.setKeyListener(null);
 
 
@@ -82,13 +81,54 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if (activity != null){
+
+            Log.e("ON VISIBLE", "VISIBLE");
+            if (activity != null) {
+
+
+                temp_harvest  = (temp_harvest != null) ? temp_harvest : MainActivity.myAppDB.myDao().getTempHarvest(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+
+
+                if (temp_harvest == null) {
+                    temp_harvest = new TempHarvest();
+                    if (prefs != null) {
+                        temp_harvest.setId_anexo_temp_harvest(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+                    }
+                    MainActivity.myAppDB.myDao().setTempHarvest(temp_harvest);
+                    temp_harvest = MainActivity.myAppDB.myDao().getTempHarvest(temp_harvest.getId_anexo_temp_harvest());
+
+                    if (temp_harvest != null){
+                        loadUiData();
+                    }
+                }else{
+                    loadUiData();
+                }
+
+
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_harvest, FragmentFotos.getInstance(4), Utilidades.FRAGMENT_FOTOS).commit();
+
             }
         }
     }
 
 
+    private void loadUiData(){
+
+        date_estimated_date.setText(temp_harvest.getEstimated_date_temp_harvest());
+        date_real_date.setText(temp_harvest.getReal_date_temp_harvest());
+        date_swatching_date.setText(temp_harvest.getSwathing_date_temp_harvest());
+        date_date_harvest.setText(temp_harvest.getDate_harvest_estimation_temp_harvest());
+        date_begining_date.setText(temp_harvest.getBeginning_date_temp_harvest());
+        date_end_date.setText(temp_harvest.getEnd_date_temp_harvest());
+
+        /* ET TEXTO */
+        et_observation_harvest.setText(temp_harvest.getObservation_dessicant_temp_harvest());
+        et_kg_ha.setText(temp_harvest.getKg_ha_yield_temp_harvest());
+        et_observation_yield.setText(temp_harvest.getObservation_yield_temp_harvest());
+        et_owner.setText(temp_harvest.getOwner_machine_temp_harvest());
+        et_model.setText(temp_harvest.getModel_machine_temp_harvest());
+        et_percent.setText(String.valueOf(temp_harvest.getPorcent_temp_harvest()));
+    }
 
     private void levantarFecha(final EditText edit){
         String fecha = Utilidades.fechaActualSinHora();
@@ -135,6 +175,11 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
         btn_begining_date  = (ImageButton) view.findViewById(R.id.btn_begining_date);*/
 //        btn_end_date  = (ImageButton) view.findViewById(R.id.btn_end_date);
 
+
+        /* ET CONTAINER*/
+
+
+
         /* ET TEXTO */
         et_observation_harvest  = (EditText) view.findViewById(R.id.et_observation_harvest);
         et_kg_ha  = (EditText) view.findViewById(R.id.et_kg_ha);
@@ -142,6 +187,26 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
         et_owner  = (EditText) view.findViewById(R.id.et_owner);
         et_model  = (EditText) view.findViewById(R.id.et_model);
         et_percent  = (EditText) view.findViewById(R.id.et_percent);
+
+
+
+
+
+        date_estimated_date.setOnFocusChangeListener(this);
+        date_real_date.setOnFocusChangeListener(this);
+        date_swatching_date.setOnFocusChangeListener(this);
+        date_date_harvest.setOnFocusChangeListener(this);
+        date_begining_date.setOnFocusChangeListener(this);
+        date_end_date.setOnFocusChangeListener(this);
+
+
+        et_observation_harvest.setOnFocusChangeListener(this);
+        et_kg_ha.setOnFocusChangeListener(this);
+        et_observation_yield.setOnFocusChangeListener(this);
+        et_owner.setOnFocusChangeListener(this);
+        et_model.setOnFocusChangeListener(this);
+        et_percent.setOnFocusChangeListener(this);
+
     }
 
     @Override
@@ -150,22 +215,54 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
 
             case R.id.date_estimated_date:
                 if(b)levantarFecha(date_estimated_date);
+                else temp_harvest.setEstimated_date_temp_harvest(date_estimated_date.getText().toString());
                 break;
             case R.id.date_real_date:
                 if(b)levantarFecha(date_real_date);
+                else temp_harvest.setReal_date_temp_harvest(date_real_date.getText().toString());
                 break;
             case R.id.date_swatching_date:
                 if(b)levantarFecha(date_swatching_date);
+                else temp_harvest.setSwathing_date_temp_harvest(date_swatching_date.getText().toString());
                 break;
             case R.id.date_date_harvest:
                 if(b)levantarFecha(date_date_harvest);
+                else temp_harvest.setDate_harvest_estimation_temp_harvest(date_date_harvest.getText().toString());
                 break;
             case R.id.date_begining_date:
                 if(b)levantarFecha(date_begining_date);
+                else temp_harvest.setBeginning_date_temp_harvest(date_begining_date.getText().toString());
                 break;
             case R.id.date_end_date:
                 if(b)levantarFecha(date_end_date);
+                else temp_harvest.setEnd_date_temp_harvest(date_end_date.getText().toString());
                 break;
+            case R.id.et_observation_harvest:
+                if(!b) temp_harvest.setObservation_dessicant_temp_harvest(et_observation_harvest.getText().toString());
+                break;
+            case R.id.et_kg_ha:
+                if(!b) temp_harvest.setKg_ha_yield_temp_harvest(et_kg_ha.getText().toString());
+                break;
+            case R.id.et_observation_yield:
+                if(!b) temp_harvest.setObservation_yield_temp_harvest(et_observation_yield.getText().toString());
+                break;
+            case R.id.et_owner:
+                if(!b) temp_harvest.setOwner_machine_temp_harvest(et_owner.getText().toString());
+                break;
+            case R.id.et_model:
+                if(!b) temp_harvest.setModel_machine_temp_harvest(et_model.getText().toString());
+                break;
+            case R.id.et_percent:
+                if(!b) temp_harvest.setPorcent_temp_harvest(Double.parseDouble(et_percent.getText().toString()));
+                break;
+
         }
+
+
+        if (!b){
+            MainActivity.myAppDB.myDao().updateTempHarvest(temp_harvest);
+        }
+
+
     }
 }

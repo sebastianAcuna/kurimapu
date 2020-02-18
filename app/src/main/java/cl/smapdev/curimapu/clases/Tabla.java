@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -13,12 +14,15 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 
-
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
+import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentContratos;
 
@@ -120,7 +124,6 @@ public class Tabla {
         potrero.setGravity(Gravity.CENTER_HORIZONTAL);
         variedad.setGravity(Gravity.CENTER_HORIZONTAL);
 
-
         botonForm.setText(actividad.getResources().getText(R.string.form_form));
 
         Drawable img = botonForm.getContext().getResources().getDrawable( R.drawable.ic_assignment );
@@ -131,8 +134,39 @@ public class Tabla {
             public void onClick(View view) {
                 MainActivity activity = (MainActivity) actividad;
                 if (activity != null){
+
                     MainActivity.myAppDB.myDao().deleteTempVisitas();
                     MainActivity.myAppDB.myDao().resetTempVisitas();
+
+                    MainActivity.myAppDB.myDao().deleteTempHarvest();
+                    MainActivity.myAppDB.myDao().resetTempHarvest();
+
+                    MainActivity.myAppDB.myDao().deleteTempFlowering();
+                    MainActivity.myAppDB.myDao().resetTempFlowering();
+
+                    MainActivity.myAppDB.myDao().deleteTempSowing();
+                    MainActivity.myAppDB.myDao().resetTempSowing();
+
+
+                    List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
+                    if (fotos.size() > 0){
+                        for (Fotos fts : fotos){
+                            try{
+                                File file = new File(fts.getRuta());
+                                if (file.exists()) {
+                                    boolean eliminado = file.delete();
+                                    if (eliminado){
+                                        MainActivity.myAppDB.myDao().deleteFotos(fts);
+                                    }
+                                }
+                            }catch (Exception e){
+                                Log.e("ERROR DELETING", Objects.requireNonNull(e.getMessage()));
+                            }
+                        }
+                    }
+
+
+
                     if (prefs != null){
 
                         prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls.getAnexoContrato().getId_ficha_contrato()).apply();

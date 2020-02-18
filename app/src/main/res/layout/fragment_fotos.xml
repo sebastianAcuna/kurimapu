@@ -52,7 +52,7 @@
         fab:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/material_private"
+            android:id="@+id/material_public"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_camera"
@@ -60,12 +60,13 @@
             fab:fab_size="normal" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/material_public"
+            android:id="@+id/material_private"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_attach_file"
             fab:fab_label="@string/nav_take_pick_priv"
-            fab:fab_size="normal" />
+            fab:fab_size="normal"
+            android:visibility="gone"/>
 
 
     </com.github.clans.fab.FloatingActionMenu>

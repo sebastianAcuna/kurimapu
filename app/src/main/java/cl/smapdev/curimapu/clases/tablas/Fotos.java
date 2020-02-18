@@ -21,9 +21,16 @@ public class Fotos {
     private String hora;
     private boolean favorita;
     private String ruta;
+    private int id_visita_foto;
 
 
+    public int getId_visita_foto() {
+        return id_visita_foto;
+    }
 
+    public void setId_visita_foto(int id_visita_foto) {
+        this.id_visita_foto = id_visita_foto;
+    }
 
     public int getId_foto() {
         return id_foto;

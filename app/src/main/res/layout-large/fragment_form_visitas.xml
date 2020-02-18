@@ -227,7 +227,7 @@
             android:id="@+id/titulo_agronomo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fotos Agronomos"
+            android:text="Fotos Agricultor"
             android:gravity="center"
             android:textAppearance="?android:textAppearanceLarge"
             android:layout_below="@id/textInp_recomendacion"

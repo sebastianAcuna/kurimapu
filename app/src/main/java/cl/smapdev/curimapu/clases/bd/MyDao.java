@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.bd;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.RawQuery;
@@ -9,6 +10,9 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
+import cl.smapdev.curimapu.clases.tablas.Flowering;
+import cl.smapdev.curimapu.clases.tablas.Harvest;
+import cl.smapdev.curimapu.clases.tablas.Sowing;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
@@ -20,6 +24,10 @@ import cl.smapdev.curimapu.clases.tablas.Region;
 import cl.smapdev.curimapu.clases.relaciones.AgricultorCompleto;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
+import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.temporales.TempFlowering;
+import cl.smapdev.curimapu.clases.temporales.TempHarvest;
+import cl.smapdev.curimapu.clases.temporales.TempSowing;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 
 @Dao
@@ -33,8 +41,14 @@ public interface MyDao {
     @Query("SELECT  * FROM fotos WHERE fieldbook  = :field ")
     List<Fotos> getFotosByField(int field);
 
-    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND vista = :view")
-    List<Fotos> getFotosByFieldAndView(int field, int view);
+    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha")
+    List<Fotos> getFotosByFieldAndView(int field, int view, int ficha);
+
+    @Query("SELECT  * FROM fotos WHERE vista = :view AND id_ficha = :ficha")
+    List<Fotos> getFotosByFieldAndView(int view, int ficha);
+
+    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND nombre_foto != :nonn AND id_ficha = :ficha")
+    List<Fotos> getFotosByFieldAndView(int field, String nonn, int ficha);
 
     @Query("SELECT  COUNT(id_foto) FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha")
     int getCantAgroByFieldViewAndFicha(int field, int view, int ficha);
@@ -48,8 +62,23 @@ public interface MyDao {
     @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha = :idFicha AND favorita = 1")
     int getCantFavoritasByFieldbookAndFicha(int fieldbook, int idFicha);
 
+
+    @Query("SELECT COUNT(favorita) FROM fotos WHERE id_ficha = :idFicha AND favorita = 1")
+    int getCantFavoritasByFieldbookAndFicha(int idFicha);
+
+
     @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha = :idFicha AND vista = :view AND favorita = 1")
     int getCantFavoritasByFieldbookFichaAndVista(int fieldbook, int idFicha, int view);
+
+
+    @Query("SELECT  * FROM fotos WHERE id_visita_foto = :id_visita")
+    List<Fotos> getFotosByIdVisita(int id_visita);
+
+    @Query("SELECT COUNT(id_foto)  FROM fotos WHERE id_ficha = :idFicha ")
+    int getCantFotos(int idFicha);
+
+    @Delete
+    void deleteFotos(Fotos fotos);
 
 
 
@@ -117,8 +146,96 @@ public interface MyDao {
     @Query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='temp_visitas'")
     void resetTempVisitas();
 
+    @Query("SELECT  COUNT(*) FROM temp_visitas WHERE id_anexo_temp_visita = :idFicha")
+    int getCantTempVisitas(int idFicha);
 
 
+
+    /* HARVEST TEMP */
+    @Query("SELECT * FROM temp_harvest WHERE id_anexo_temp_harvest = :anexo")
+    TempHarvest getTempHarvest(int anexo);
+
+    @Update
+    void updateTempHarvest(TempHarvest tempHarvest);
+
+    @Insert
+    long setTempHarvest(TempHarvest tempHarvest);
+
+
+    @Query("DELETE FROM temp_harvest")
+    void deleteTempHarvest();
+
+    @Query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='temp_harvest'")
+    void resetTempHarvest();
+
+    @Query("SELECT  COUNT(id_temp_harvest) FROM temp_harvest WHERE id_anexo_temp_harvest = :idFicha")
+    int getCantTempHarvest(int idFicha);
+
+
+    /* SOWING TEMP */
+    @Query("SELECT * FROM temp_sowing WHERE id_anexo_temp_sowing = :anexo")
+    TempSowing getTempSowing(int anexo);
+
+
+
+    @Update
+    void updateTempSowing(TempSowing tempSowing);
+
+    @Insert
+    long setTempSowing(TempSowing tempSowing);
+
+
+    @Query("DELETE FROM temp_sowing")
+    void deleteTempSowing();
+
+    @Query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='temp_sowing'")
+    void resetTempSowing();
+
+    @Query("SELECT  COUNT(id_temp_sowing) FROM temp_sowing WHERE id_anexo_temp_sowing = :idFicha")
+    int getCantTempSowing(int idFicha);
+
+
+
+    /* FLOWERING TEMP */
+    @Query("SELECT * FROM temp_flowering WHERE id_anexo_temp_flowering = :anexo")
+    TempFlowering getTempFlowering(int anexo);
+
+    @Update
+    void updateTempFlowering(TempFlowering tempFlowering);
+
+    @Insert
+    long setTempFlowering(TempFlowering tempFlowering);
+
+
+    @Query("DELETE FROM temp_flowering")
+    void deleteTempFlowering();
+
+    @Query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='temp_flowering'")
+    void resetTempFlowering();
+
+    @Query("SELECT  COUNT(id_temp_flowering) FROM temp_flowering WHERE id_anexo_temp_flowering = :idFicha")
+    int getCantTempFlowering(int idFicha);
+
+
+
+
+    /* VISITAS */
+
+    @Insert
+    long setVisita(Visitas visitas);
+
+
+    /* SOWING */
+    @Insert
+    long setSowing(Sowing sowing);
+
+    /* FLOWERING */
+    @Insert
+    long setFlowering(Flowering flowering);
+
+    /* HARVEST */
+    @Insert
+    long setHarvest(Harvest harvest);
 
 
 

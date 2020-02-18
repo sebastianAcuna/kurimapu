@@ -582,6 +582,7 @@ public class FragmentCreaFicha extends Fragment {
         sp_year.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, getResources().getStringArray(R.array.anos_toolbar)));
         sp_year.setSelection(getResources().getStringArray(R.array.anos_toolbar).length - 1);
         sp_asoc_agr.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, getResources().getStringArray(R.array.asociacion_agricultor)));
+        sp_asoc_agr.setSelection(1);
 
 
         List<Agricultor> agricultorList = MainActivity.myAppDB.myDao().getAgricultores();
