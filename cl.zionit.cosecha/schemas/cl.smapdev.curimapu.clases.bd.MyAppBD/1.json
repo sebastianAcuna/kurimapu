@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "801aa0eefd1a62b253ff720f26f575a1",
+    "identityHash": "fc530b20812e09b7ef1cd82cfbc1452c",
     "entities": [
       {
         "tableName": "fotos",
@@ -400,7 +400,7 @@
       },
       {
         "tableName": "temp_visitas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` INTEGER NOT NULL, `phenological_state_temp_visita` INTEGER NOT NULL, `growth_status_temp_visita` INTEGER NOT NULL, `weed_state_temp_visita` INTEGER NOT NULL, `phytosanitary_state_temp_visita` INTEGER NOT NULL, `harvest_temp_visita` INTEGER NOT NULL, `overall_status_temp_visita` INTEGER NOT NULL, `humidity_floor_temp_visita` INTEGER NOT NULL, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` INTEGER NOT NULL, `phenological_state_temp_visita` INTEGER NOT NULL, `growth_status_temp_visita` INTEGER NOT NULL, `weed_state_temp_visita` INTEGER NOT NULL, `phytosanitary_state_temp_visita` INTEGER NOT NULL, `harvest_temp_visita` INTEGER NOT NULL, `overall_status_temp_visita` INTEGER NOT NULL, `humidity_floor_temp_visita` INTEGER NOT NULL, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT, `etapa_temp_visitas` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id_temp_visita",
@@ -467,6 +467,12 @@
             "columnName": "recomendation_temp_visita",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "etapa_temp_visitas",
+            "columnName": "etapa_temp_visitas",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -978,7 +984,7 @@
       },
       {
         "tableName": "visitas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_visita` INTEGER NOT NULL, `phenological_state_visita` INTEGER NOT NULL, `growth_status_visita` INTEGER NOT NULL, `weed_state_visita` INTEGER NOT NULL, `phytosanitary_state_visita` INTEGER NOT NULL, `harvest_visita` INTEGER NOT NULL, `overall_status_visita` INTEGER NOT NULL, `humidity_floor_visita` INTEGER NOT NULL, `observation_visita` TEXT, `recomendation_visita` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_visita` INTEGER NOT NULL, `phenological_state_visita` INTEGER NOT NULL, `growth_status_visita` INTEGER NOT NULL, `weed_state_visita` INTEGER NOT NULL, `phytosanitary_state_visita` INTEGER NOT NULL, `harvest_visita` INTEGER NOT NULL, `overall_status_visita` INTEGER NOT NULL, `humidity_floor_visita` INTEGER NOT NULL, `observation_visita` TEXT, `recomendation_visita` TEXT, `estado_server_visitas` INTEGER NOT NULL, `estado_visita` INTEGER NOT NULL, `etapa_visitas` INTEGER NOT NULL, `fecha_visita` TEXT, `hora_visita` TEXT, `temporada` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id_visita",
@@ -1045,6 +1051,42 @@
             "columnName": "recomendation_visita",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "estado_server_visitas",
+            "columnName": "estado_server_visitas",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estado_visita",
+            "columnName": "estado_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "etapa_visitas",
+            "columnName": "etapa_visitas",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fecha_visita",
+            "columnName": "fecha_visita",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hora_visita",
+            "columnName": "hora_visita",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "temporada",
+            "columnName": "temporada",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -1593,7 +1635,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"801aa0eefd1a62b253ff720f26f575a1\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"fc530b20812e09b7ef1cd82cfbc1452c\")"
     ]
   }
 }

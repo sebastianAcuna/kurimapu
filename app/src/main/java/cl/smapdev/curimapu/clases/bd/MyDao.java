@@ -8,8 +8,11 @@ import androidx.room.RawQuery;
 import androidx.room.Update;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
+import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.Flowering;
 import cl.smapdev.curimapu.clases.tablas.Harvest;
 import cl.smapdev.curimapu.clases.tablas.Sowing;
@@ -41,17 +44,25 @@ public interface MyDao {
     @Query("SELECT  * FROM fotos WHERE fieldbook  = :field ")
     List<Fotos> getFotosByField(int field);
 
-    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha")
+    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha AND id_visita_foto = 0")
     List<Fotos> getFotosByFieldAndView(int field, int view, int ficha);
 
-    @Query("SELECT  * FROM fotos WHERE vista = :view AND id_ficha = :ficha")
+    @Query("SELECT  * FROM fotos WHERE vista = :view AND id_ficha = :ficha AND id_visita_foto = 0")
     List<Fotos> getFotosByFieldAndView(int view, int ficha);
 
-    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND nombre_foto != :nonn AND id_ficha = :ficha")
+    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND nombre_foto != :nonn AND id_ficha = :ficha AND id_visita_foto = 0")
     List<Fotos> getFotosByFieldAndView(int field, String nonn, int ficha);
 
-    @Query("SELECT  COUNT(id_foto) FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha")
+    @Query("SELECT  COUNT(id_foto) FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha AND id_visita_foto = 0")
     int getCantAgroByFieldViewAndFicha(int field, int view, int ficha);
+
+    @Query("SELECT * FROM fotos WHERE id_ficha = :idFicha AND id_visita_foto = :idVisita AND favorita = 1 ORDER BY fecha DESC LIMIT 1")
+    Fotos getFoto(int idFicha, int idVisita);
+
+    @Query("UPDATE fotos SET id_visita_foto = :idVisita WHERE id_ficha = :idAnexo AND id_visita_foto = 0")
+    void updateFotosWithVisita(int idVisita, int idAnexo);
+
+
 
     @Update
     void updateFavorita(Fotos fotos);
@@ -177,6 +188,10 @@ public interface MyDao {
     TempSowing getTempSowing(int anexo);
 
 
+    @Query("SELECT COUNT(*) as todos , etapa_visitas FROM visitas WHERE id_anexo_visita = :idAnexo GROUP BY etapa_visitas")
+    List<CantidadVisitas> getCantidadVisitas(int idAnexo);
+
+
 
     @Update
     void updateTempSowing(TempSowing tempSowing);
@@ -225,6 +240,26 @@ public interface MyDao {
     long setVisita(Visitas visitas);
 
 
+
+    @Query("SELECT * FROM visitas INNER JOIN anexo_contrato ON (anexo_contrato.id_anexo_contrato = visitas.id_anexo_visita) " +
+            "INNER JOIN agricultor ON (agricultor.rut_agricultor = anexo_contrato.rut_agricultor_anexo) " +
+            "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
+            "INNER JOIN variedad ON (variedad.id_variedad = anexo_contrato.id_variedad_anexo) " +
+            "INNER JOIN fichas ON (fichas.id_ficha= anexo_contrato.id_ficha_contrato) " +
+            "WHERE id_anexo_visita = :idAnexo AND temporada = :anno " +
+            "ORDER BY fecha_visita, hora_visita DESC")
+    List<VisitasCompletas> getVisitasCompletas(int idAnexo, int anno);
+
+    @Query("SELECT * FROM visitas INNER JOIN anexo_contrato ON (anexo_contrato.id_anexo_contrato = visitas.id_anexo_visita) " +
+            "INNER JOIN agricultor ON (agricultor.rut_agricultor = anexo_contrato.rut_agricultor_anexo) " +
+            "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
+            "INNER JOIN variedad ON (variedad.id_variedad = anexo_contrato.id_variedad_anexo) " +
+            "INNER JOIN fichas ON (fichas.id_ficha= anexo_contrato.id_ficha_contrato) " +
+            "WHERE id_anexo_visita = :idAnexo AND visitas.etapa_visitas = :etapa AND temporada = :anno " +
+            "ORDER BY fecha_visita, hora_visita DESC")
+    List<VisitasCompletas> getVisitasCompletas(int idAnexo, int etapa, int anno);
+
+
     /* SOWING */
     @Insert
     long setSowing(Sowing sowing);
@@ -236,6 +271,9 @@ public interface MyDao {
     /* HARVEST */
     @Insert
     long setHarvest(Harvest harvest);
+
+
+
 
 
 

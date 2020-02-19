@@ -192,7 +192,7 @@ public class FragmentFichas extends Fragment {
 
         RecyclerView.LayoutManager lManager = null;
         if (activity != null){
-                lManager = new GridLayoutManager(activity, 3);
+                lManager = new GridLayoutManager(activity, 2);
         }
         id_lista_fichas.setHasFixedSize(true);
         id_lista_fichas.setLayoutManager(lManager);

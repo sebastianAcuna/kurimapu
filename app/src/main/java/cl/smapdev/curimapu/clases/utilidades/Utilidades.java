@@ -1,19 +1,12 @@
 package cl.smapdev.curimapu.clases.utilidades;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.hardware.Camera;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 
 
@@ -42,6 +35,7 @@ public class Utilidades {
     public static final String FRAGMENT_FOTOS = "fragment_fotos";
     public static final String FRAGMENT_FOTOS_RESUMEN = "fragment_fotos_resumen";
     public static final String FRAGMENT_CREA_FICHA = "fragment_crea_ficha";
+    public static final String FRAGMENT_LIST_VISITS = "fragment_list_visits";
 
 
 
@@ -97,26 +91,119 @@ public class Utilidades {
             case 6:
                 res = 3;
                 break;
-
             case 7:
             case 8:
-            case 9:
                 res = 4;
                 break;
+            case 9:
+                res = 5;
+                break;
+
         }
 
 
         return res;
     }
+    public static String getStateString(int position){
 
-    public static int obtenerAnchoPixelesTexto(String texto)
-    {
+        String estado;
+
+        switch (position){
+            case 0:
+            default:
+                estado = "All";
+                break;
+            case 1:
+                estado = "Resumen";
+                break;
+            case 2:
+                estado = "Sowing";
+                break;
+            case 3:
+                estado = "Flowering";
+                break;
+            case 4:
+                estado = "Harvest";
+                break;
+            case 5:
+                estado = "Unspecified";
+            break;
+        }
+
+        return estado;
+    }
+    public static String getStateDetailString(int position){
+
+        String estado;
+
+        switch (position){
+            case 0:
+            default:
+                estado = "none";
+                break;
+            case 1:
+                estado = "Sowing";
+                break;
+            case 2:
+                estado = "Transplant";
+                break;
+            case 3:
+                estado = "Vegetative";
+                break;
+            case 4:
+                estado = "pre-flowering";
+                break;
+            case 5:
+                estado = "flowering";
+                break;
+            case 6:
+                estado = "Fill";
+                break;
+            case 7:
+                estado = "Pre-Harvest";
+                break;
+            case 8:
+                estado = "Post-harvest";
+                break;
+            case 9:
+                estado = "Unspecified";
+                break;
+        }
+
+        return estado;
+    }
+
+
+
+    public static int obtenerAnchoPixelesTexto(String texto){
         Paint p = new Paint();
         Rect bounds = new Rect();
         p.setTextSize(50);
 
         p.getTextBounds(texto, 0, texto.length(), bounds);
         return bounds.width();
+    }
+
+
+
+    public static String voltearFechaBD(String fecha){
+        if (fecha != null && fecha.length() > 0) {
+            String[] date = fecha.split("-");
+            return date[2] + "-" + date[1] + "-" + date[0];
+        }else{
+            return "";
+        }
+    }
+
+    public static String voltearFechaVista(String fecha){
+        if (fecha != null && fecha.length() > 0){
+            String[] date = fecha.split("-");
+            return date[2]+"-"+date[1]+"-"+date[0];
+        }else{
+            return "";
+        }
+
+
     }
 
 
@@ -174,7 +261,6 @@ public class Utilidades {
         else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
         return 0;
     }
-
 
 
     public static void avisoListo(Activity activity, String title, String message, String textButton) {

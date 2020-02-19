@@ -29,11 +29,13 @@ import android.view.WindowManager;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 import cl.smapdev.curimapu.clases.bd.MyAppBD;
+import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentConfigs;
 import cl.smapdev.curimapu.fragments.FragmentFichas;
@@ -96,6 +98,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         super.onCreate(savedInstanceState);
+
+
+
+
+
+
+
 
 
 
@@ -264,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         salirApp();
                         break;
                     case Utilidades.FRAGMENT_CONTRATOS:
+                    case Utilidades.FRAGMENT_LIST_VISITS:
                         cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_right, R.anim.slide_out_right);
                         cambiarNavigation(R.id.nv_visitas);
                         break;

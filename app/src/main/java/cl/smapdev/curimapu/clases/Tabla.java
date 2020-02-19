@@ -25,6 +25,7 @@ import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentContratos;
+import cl.smapdev.curimapu.fragments.contratos.FragmentListVisits;
 
 import static cl.smapdev.curimapu.clases.utilidades.Utilidades.obtenerAnchoPixelesTexto;
 
@@ -168,7 +169,6 @@ public class Tabla {
 
 
                     if (prefs != null){
-
                         prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls.getAnexoContrato().getId_ficha_contrato()).apply();
                         prefs.edit().putInt(Utilidades.SHARED_VISIT_ANEXO_ID, ls.getAnexoContrato().getId_anexo_contrato()).apply();
                     }
@@ -179,10 +179,6 @@ public class Tabla {
             }
         });
 
-//        botonForm.setBackgroundColor(botonForm.getContext().getResources().getColor(R.color.colorPrimaryDark));
-
-
-
 
         botonVer.setText(actividad.getResources().getText(R.string.form_ver));
 
@@ -192,6 +188,16 @@ public class Tabla {
         botonVer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                MainActivity activity = (MainActivity) actividad;
+                if (activity != null) {
+                    if (prefs != null) {
+                        prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls.getAnexoContrato().getId_ficha_contrato()).apply();
+                        prefs.edit().putInt(Utilidades.SHARED_VISIT_ANEXO_ID, ls.getAnexoContrato().getId_anexo_contrato()).apply();
+                    }
+
+                    activity.cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_left, R.anim.slide_out_left);
+                }
 
             }
         });

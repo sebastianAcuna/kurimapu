@@ -106,6 +106,8 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         bind(view);
 
 
+        cargarTemp();
+
 
 //        AsyncTask.execute(new Runnable() {
 //            @Override
@@ -136,30 +138,33 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
-
-                temp_sowing  = (temp_sowing != null) ? temp_sowing : MainActivity.myAppDB.myDao().getTempSowing(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
-
-
-                if (temp_sowing == null) {
-                    temp_sowing = new TempSowing();
-                    if (prefs != null) {
-                        temp_sowing.setId_anexo_temp_sowing(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
-                    }
-                    MainActivity.myAppDB.myDao().setTempSowing(temp_sowing);
-                    temp_sowing = MainActivity.myAppDB.myDao().getTempSowing(temp_sowing.getId_anexo_temp_sowing());
-
-                    if (temp_sowing != null){
-                        loadUiData();
-                    }
-                }else{
-                    loadUiData();
-                }
-
-
-
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_sowing, FragmentFotos.getInstance(2), Utilidades.FRAGMENT_FOTOS).commit();
+                    cargarTemp();
             }
         }
+    }
+
+    private void cargarTemp(){
+        temp_sowing  = (temp_sowing != null) ? temp_sowing : MainActivity.myAppDB.myDao().getTempSowing(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+
+
+        if (temp_sowing == null) {
+            temp_sowing = new TempSowing();
+            if (prefs != null) {
+                temp_sowing.setId_anexo_temp_sowing(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+            }
+            MainActivity.myAppDB.myDao().setTempSowing(temp_sowing);
+            temp_sowing = MainActivity.myAppDB.myDao().getTempSowing(temp_sowing.getId_anexo_temp_sowing());
+
+            if (temp_sowing != null){
+                loadUiData();
+            }
+        }else{
+            loadUiData();
+        }
+
+
+
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_sowing, FragmentFotos.getInstance(2), Utilidades.FRAGMENT_FOTOS).commit();
     }
 
 //    private boolean checkPermission() {
@@ -194,22 +199,22 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
 
     private void loadUiData(){
 
-        date_siembra_sag.setText(temp_sowing.getSag_planting_temp_sowing());
-        date_sowing_female_start.setText(temp_sowing.getFemale_sowing_date_start_temp_sowing());
-        date_sowing_female_end.setText(temp_sowing.getFemale_sowing_date_end_temp_sowing());
-        date_date_one.setText(temp_sowing.getDate_1_temp_sowing());
-        date_date_two.setText(temp_sowing.getDate_2_temp_sowing());
-        date_herbicide_date_one.setText(temp_sowing.getDate_1_herb_temp_sowing());
-        date_herbicide_date_two.setText(temp_sowing.getDate_2_herb_temp_sowing());
-        date_herbicide_date_tres.setText(temp_sowing.getDate_3_herb_temp_sowing());
-        date_emergence_date.setText(temp_sowing.getDate_pre_emergence_temp_sowing());
-        date_spray_uno.setText(temp_sowing.getBasta_spray_1_temp_sowing());
-        date_spray_dos.setText(temp_sowing.getBasta_spray_2_temp_sowing());
-        date_spray_tres.setText(temp_sowing.getBasta_spray_3_temp_sowing());
-        date_spray_cuatro.setText(temp_sowing.getBasta_spray_4_temp_sowing());
-        date_spray_cuatro_ha.setText(temp_sowing.getBasta_splat_4_ha_temp_sowing());
-        date_bruchus.setText(temp_sowing.getDate_nombre_largo_temp_sowing());
-        date_date_foliar.setText(temp_sowing.getDate_foliar_temp_sowing());
+        date_siembra_sag.setText(Utilidades.voltearFechaVista(temp_sowing.getSag_planting_temp_sowing()));
+        date_sowing_female_start.setText(Utilidades.voltearFechaVista(temp_sowing.getFemale_sowing_date_start_temp_sowing()));
+        date_sowing_female_end.setText(Utilidades.voltearFechaVista(temp_sowing.getFemale_sowing_date_end_temp_sowing()));
+        date_date_one.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_1_temp_sowing()));
+        date_date_two.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_2_temp_sowing()));
+        date_herbicide_date_one.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_1_herb_temp_sowing()));
+        date_herbicide_date_two.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_2_herb_temp_sowing()));
+        date_herbicide_date_tres.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_3_herb_temp_sowing()));
+        date_emergence_date.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_pre_emergence_temp_sowing()));
+        date_spray_uno.setText(Utilidades.voltearFechaVista(temp_sowing.getBasta_spray_1_temp_sowing()));
+        date_spray_dos.setText(Utilidades.voltearFechaVista(temp_sowing.getBasta_spray_2_temp_sowing()));
+        date_spray_tres.setText(Utilidades.voltearFechaVista(temp_sowing.getBasta_spray_3_temp_sowing()));
+        date_spray_cuatro.setText(Utilidades.voltearFechaVista(temp_sowing.getBasta_spray_4_temp_sowing()));
+        date_spray_cuatro_ha.setText(Utilidades.voltearFechaVista(temp_sowing.getBasta_splat_4_ha_temp_sowing()));
+        date_bruchus.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_nombre_largo_temp_sowing()));
+        date_date_foliar.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_foliar_temp_sowing()));
 
 
 
@@ -421,67 +426,67 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         switch (view.getId()){
             case R.id.date_siembra_sag:
                 if(b) levantarFecha(date_siembra_sag);
-                else temp_sowing.setSag_planting_temp_sowing(date_siembra_sag.getText().toString());
+                else temp_sowing.setSag_planting_temp_sowing(Utilidades.voltearFechaBD(date_siembra_sag.getText().toString()));
                 break;
             case R.id.date_sowing_female_start:
                 if(b) levantarFecha(date_sowing_female_start);
-                else temp_sowing.setFemale_sowing_date_start_temp_sowing(date_sowing_female_start.getText().toString());
+                else temp_sowing.setFemale_sowing_date_start_temp_sowing(Utilidades.voltearFechaBD(date_sowing_female_start.getText().toString()));
                 break;
             case R.id.date_sowing_female_end:
                 if(b) levantarFecha(date_sowing_female_end);
-                else temp_sowing.setFemale_sowing_date_end_temp_sowing(date_sowing_female_end.getText().toString());
+                else temp_sowing.setFemale_sowing_date_end_temp_sowing(Utilidades.voltearFechaBD(date_sowing_female_end.getText().toString()));
                 break;
             case R.id.date_date_one:
                 if(b) levantarFecha(date_date_one);
-                else temp_sowing.setDose_1_temp_sowing(date_date_one.getText().toString());
+                else temp_sowing.setDose_1_temp_sowing(Utilidades.voltearFechaBD(date_date_one.getText().toString()));
                 break;
             case R.id.date_date_two:
                 if(b) levantarFecha(date_date_two);
-                else temp_sowing.setDose_2_temp_sowing(date_date_two.getText().toString());
+                else temp_sowing.setDose_2_temp_sowing(Utilidades.voltearFechaBD(date_date_two.getText().toString()));
                 break;
             case R.id.date_herbicide_date_one:
                 if(b) levantarFecha(date_herbicide_date_one);
-                else temp_sowing.setDate_1_herb_temp_sowing(date_herbicide_date_one.getText().toString());
+                else temp_sowing.setDate_1_herb_temp_sowing(Utilidades.voltearFechaBD(date_herbicide_date_one.getText().toString()));
                 break;
             case R.id.date_herbicide_date_two:
                 if(b) levantarFecha(date_herbicide_date_two);
-                else temp_sowing.setDate_2_herb_temp_sowing(date_herbicide_date_two.getText().toString());
+                else temp_sowing.setDate_2_herb_temp_sowing(Utilidades.voltearFechaBD(date_herbicide_date_two.getText().toString()));
                 break;
             case R.id.date_herbicide_date_tres:
                 if(b) levantarFecha(date_herbicide_date_tres);
-                else temp_sowing.setDate_3_herb_temp_sowing(date_herbicide_date_tres.getText().toString());
+                else temp_sowing.setDate_3_herb_temp_sowing(Utilidades.voltearFechaBD(date_herbicide_date_tres.getText().toString()));
                 break;
             case R.id.date_emergence_date:
                 if(b) levantarFecha(date_emergence_date);
-                else temp_sowing.setDate_pre_emergence_temp_sowing(date_emergence_date.getText().toString());
+                else temp_sowing.setDate_pre_emergence_temp_sowing(Utilidades.voltearFechaBD(date_emergence_date.getText().toString()));
                 break;
             case R.id.date_spray_uno:
                 if(b) levantarFecha(date_spray_uno);
-                else temp_sowing.setBasta_spray_1_temp_sowing(date_spray_uno.getText().toString());
+                else temp_sowing.setBasta_spray_1_temp_sowing(Utilidades.voltearFechaBD(date_spray_uno.getText().toString()));
                 break;
             case R.id.date_spray_dos:
                 if(b) levantarFecha(date_spray_dos);
-                else temp_sowing.setBasta_spray_2_temp_sowing(date_spray_dos.getText().toString());
+                else temp_sowing.setBasta_spray_2_temp_sowing(Utilidades.voltearFechaBD(date_spray_dos.getText().toString()));
                 break;
             case R.id.date_spray_tres:
                 if(b) levantarFecha(date_spray_tres);
-                else temp_sowing.setBasta_spray_3_temp_sowing(date_spray_tres.getText().toString());
+                else temp_sowing.setBasta_spray_3_temp_sowing(Utilidades.voltearFechaBD(date_spray_tres.getText().toString()));
                 break;
             case R.id.date_spray_cuatro:
                 if(b) levantarFecha(date_spray_cuatro);
-                else temp_sowing.setBasta_spray_4_temp_sowing(date_spray_cuatro.getText().toString());
+                else temp_sowing.setBasta_spray_4_temp_sowing(Utilidades.voltearFechaBD(date_spray_cuatro.getText().toString()));
                 break;
             case R.id.date_spray_cuatro_ha:
                 if(b) levantarFecha(date_spray_cuatro_ha);
-                else temp_sowing.setBasta_splat_4_ha_temp_sowing(date_spray_cuatro_ha.getText().toString());
+                else temp_sowing.setBasta_splat_4_ha_temp_sowing(Utilidades.voltearFechaBD(date_spray_cuatro_ha.getText().toString()));
                 break;
             case R.id.date_bruchus:
                 if(b) levantarFecha(date_bruchus);
-                else temp_sowing.setDate_nombre_largo_temp_sowing(date_bruchus.getText().toString());
+                else temp_sowing.setDate_nombre_largo_temp_sowing(Utilidades.voltearFechaBD(date_bruchus.getText().toString()));
                 break;
             case R.id.date_date_foliar:
                 if(b) levantarFecha(date_date_foliar);
-                else temp_sowing.setDate_foliar_temp_sowing(date_date_foliar.getText().toString());
+                else temp_sowing.setDate_foliar_temp_sowing(Utilidades.voltearFechaBD(date_date_foliar.getText().toString()));
                 break;
             case R.id.et_entregado:
                 if(!b) temp_sowing.setDelivered_temp_sowing(et_entregado.getText().toString());

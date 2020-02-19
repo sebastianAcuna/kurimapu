@@ -26,7 +26,6 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
     private OnItemLongClickListener itemLongClickListener;
     private Context context;
 
-    public FotosListAdapter(){}
 
     public FotosListAdapter(List<Fotos> images, Context context, OnItemClickListener itemClickListener , OnItemLongClickListener itemLongClickListener){
         this.images = images;

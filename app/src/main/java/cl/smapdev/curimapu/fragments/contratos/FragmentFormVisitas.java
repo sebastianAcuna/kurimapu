@@ -358,6 +358,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             switch (adapterView.getId()) {
                 case R.id.sp_feno:
                     temp_visitas.setPhenological_state_temp_visita(i);
+                    temp_visitas.setEtapa_temp_visitas(Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
                     break;
                 case R.id.sp_cosecha:
                     temp_visitas.setHarvest_temp_visita(i);
@@ -552,8 +553,24 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         visitas.setPhytosanitary_state_visita(temp_visitas.getPhytosanitary_state_temp_visita());
                         visitas.setRecomendation_visita(temp_visitas.getRecomendation_temp_visita());
                         visitas.setWeed_state_visita(temp_visitas.getWeed_state_temp_visita());
+                        visitas.setEstado_server_visitas(0);
+                        visitas.setEstado_visita(2);
+                        visitas.setEtapa_visitas(temp_visitas.getEtapa_temp_visitas());
+
+
+                        String fecha = Utilidades.fechaActualConHora();
+
+                        String[] fechaHora = fecha.split(" ");
+
+                        String[] temporada = fechaHora[0].split("-");
+
+                        visitas.setHora_visita(fechaHora[1]);
+                        visitas.setFecha_visita(fechaHora[0]);
+                        visitas.setTemporada(Integer.parseInt(temporada[0]));
 
                         long idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
+
+                        MainActivity.myAppDB.myDao().updateFotosWithVisita((int) idVisita, temp_visitas.getId_anexo_temp_visita());
 
                         try{
                             TempSowing tempSowing =  MainActivity.myAppDB.myDao().getTempSowing(temp_visitas.getId_anexo_temp_visita());
@@ -673,8 +690,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         }catch (SQLiteException e){
                             problema = true;
                         }
-
-
 
                         if(!problema){
                             showAlertForSave("Genial", "Se guardo todo como corresponde");

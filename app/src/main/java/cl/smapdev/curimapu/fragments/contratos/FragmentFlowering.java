@@ -66,6 +66,7 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         bind(view);
         setOnclick();
 
+        cargarTemp();
 
     }
 
@@ -76,47 +77,51 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         if (isVisibleToUser) {
             if (activity != null){
 
+                cargarTemp();
 
-
-                temp_flowering  = (temp_flowering != null) ? temp_flowering : MainActivity.myAppDB.myDao().getTempFlowering(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
-
-
-                if (temp_flowering == null) {
-                    temp_flowering = new TempFlowering();
-                    if (prefs != null) {
-                        temp_flowering.setId_anexo_temp_flowering(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
-                    }
-                    MainActivity.myAppDB.myDao().setTempFlowering(temp_flowering);
-                    temp_flowering = MainActivity.myAppDB.myDao().getTempFlowering(temp_flowering.getId_anexo_temp_flowering());
-                    if (temp_flowering != null){
-                        loadUiData();
-                    }
-                }else{
-                    loadUiData();
-                }
-
-
-
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_flowering, FragmentFotos.getInstance(3), Utilidades.FRAGMENT_FOTOS).commit();
             }
         }
     }
 
 
 
+    private void cargarTemp(){
+        temp_flowering  = (temp_flowering != null) ? temp_flowering : MainActivity.myAppDB.myDao().getTempFlowering(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+
+
+        if (temp_flowering == null) {
+            temp_flowering = new TempFlowering();
+            if (prefs != null) {
+                temp_flowering.setId_anexo_temp_flowering(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+            }
+            MainActivity.myAppDB.myDao().setTempFlowering(temp_flowering);
+            temp_flowering = MainActivity.myAppDB.myDao().getTempFlowering(temp_flowering.getId_anexo_temp_flowering());
+            if (temp_flowering != null){
+                loadUiData();
+            }
+        }else{
+            loadUiData();
+        }
+
+
+
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_flowering, FragmentFotos.getInstance(3), Utilidades.FRAGMENT_FOTOS).commit();
+    }
+
+
     private void loadUiData(){
 
-        date_date.setText(temp_flowering.getDate_notice_sag_temp_flowering());
-        date_flowering.setText(temp_flowering.getFlowering_estimation_temp_flowering());
-        date_f_start.setText(temp_flowering.getFlowering_start_temp_flowering());
-        date_f_end.setText(temp_flowering.getFlowering_end_temp_flowering());
-        date_fert_one.setText(temp_flowering.getFertility_1_temp_flowering());
-        date_fert_two.setText(temp_flowering.getFertility_2_temp_flowering());
-        date_fungicide.setText(temp_flowering.getDate_funficide_temp_flowering());
-        date_insecticide.setText(temp_flowering.getDate_insecticide_temp_flowering());
-        date_depuration.setText(temp_flowering.getDate_beginning_depuration_temp_flowering());
-        date_off_type.setText(temp_flowering.getDate_off_type_temp_flowering());
-        date_inspection.setText(temp_flowering.getDate_inspection_temp_flowering());
+        date_date.setText(Utilidades.voltearFechaVista(temp_flowering.getDate_notice_sag_temp_flowering()));
+        date_flowering.setText(Utilidades.voltearFechaVista(temp_flowering.getFlowering_estimation_temp_flowering()));
+        date_f_start.setText(Utilidades.voltearFechaVista(temp_flowering.getFlowering_start_temp_flowering()));
+        date_f_end.setText(Utilidades.voltearFechaVista(temp_flowering.getFlowering_end_temp_flowering()));
+        date_fert_one.setText(Utilidades.voltearFechaVista(temp_flowering.getFertility_1_temp_flowering()));
+        date_fert_two.setText(Utilidades.voltearFechaVista(temp_flowering.getFertility_2_temp_flowering()));
+        date_fungicide.setText(Utilidades.voltearFechaVista(temp_flowering.getDate_funficide_temp_flowering()));
+        date_insecticide.setText(Utilidades.voltearFechaVista(temp_flowering.getDate_insecticide_temp_flowering()));
+        date_depuration.setText(Utilidades.voltearFechaVista(temp_flowering.getDate_beginning_depuration_temp_flowering()));
+        date_off_type.setText(Utilidades.voltearFechaVista(temp_flowering.getDate_off_type_temp_flowering()));
+        date_inspection.setText(Utilidades.voltearFechaVista(temp_flowering.getDate_inspection_temp_flowering()));
 
 
         /* ET TEXTO */
@@ -227,47 +232,47 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         switch (view.getId()){
             case R.id.date_date:
                 if(b) levantarFecha(date_date);
-                else temp_flowering.setDate_notice_sag_temp_flowering(date_date.getText().toString());
+                else temp_flowering.setDate_notice_sag_temp_flowering(Utilidades.voltearFechaBD(date_date.getText().toString()));
                 break;
             case R.id.date_flowering:
                 if(b) levantarFecha(date_flowering);
-                else temp_flowering.setFlowering_estimation_temp_flowering(date_flowering.getText().toString());
+                else temp_flowering.setFlowering_estimation_temp_flowering(Utilidades.voltearFechaBD(date_flowering.getText().toString()));
                 break;
             case R.id.date_f_start:
                 if(b) levantarFecha(date_f_start);
-                else temp_flowering.setFlowering_start_temp_flowering(date_f_start.getText().toString());
+                else temp_flowering.setFlowering_start_temp_flowering(Utilidades.voltearFechaBD(date_f_start.getText().toString()));
                 break;
             case R.id.date_f_end:
                 if(b) levantarFecha(date_f_end);
-                else temp_flowering.setFlowering_end_temp_flowering(date_f_end.getText().toString());
+                else temp_flowering.setFlowering_end_temp_flowering(Utilidades.voltearFechaBD(date_f_end.getText().toString()));
                 break;
             case R.id.date_fert_one:
                 if(b) levantarFecha(date_fert_one);
-                else temp_flowering.setFertility_1_temp_flowering(date_fert_one.getText().toString());
+                else temp_flowering.setFertility_1_temp_flowering(Utilidades.voltearFechaBD(date_fert_one.getText().toString()));
                 break;
             case R.id.date_fert_two:
                 if(b) levantarFecha(date_fert_two);
-                else temp_flowering.setFertility_2_temp_flowering(date_fert_two.getText().toString());
+                else temp_flowering.setFertility_2_temp_flowering(Utilidades.voltearFechaBD(date_fert_two.getText().toString()));
                 break;
             case R.id.date_fungicide:
                 if(b) levantarFecha(date_fungicide);
-                else temp_flowering.setDate_funficide_temp_flowering(date_fungicide.getText().toString());
+                else temp_flowering.setDate_funficide_temp_flowering(Utilidades.voltearFechaBD(date_fungicide.getText().toString()));
                 break;
             case R.id.date_insecticide:
                 if(b) levantarFecha(date_insecticide);
-                else temp_flowering.setDate_insecticide_temp_flowering(date_insecticide.getText().toString());
+                else temp_flowering.setDate_insecticide_temp_flowering(Utilidades.voltearFechaBD(date_insecticide.getText().toString()));
                 break;
             case R.id.date_depuration:
                 if(b) levantarFecha(date_depuration);
-                else temp_flowering.setDate_beginning_depuration_temp_flowering(date_depuration.getText().toString());
+                else temp_flowering.setDate_beginning_depuration_temp_flowering(Utilidades.voltearFechaBD(date_depuration.getText().toString()));
                 break;
             case R.id.date_off_type:
                 if(b) levantarFecha(date_off_type);
-                else temp_flowering.setDate_off_type_temp_flowering(date_off_type.getText().toString());
+                else temp_flowering.setDate_off_type_temp_flowering(Utilidades.voltearFechaBD(date_off_type.getText().toString()));
                 break;
             case R.id.date_inspection:
                 if(b) levantarFecha(date_inspection);
-                else temp_flowering.setDate_inspection_temp_flowering(date_inspection.getText().toString());
+                else temp_flowering.setDate_inspection_temp_flowering(Utilidades.voltearFechaBD(date_inspection.getText().toString()));
                 break;
 
             case R.id.et_fungicide:

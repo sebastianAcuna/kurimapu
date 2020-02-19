@@ -41,6 +41,9 @@ public class Harvest {
     private double porcent_temp_harvest;
 
 
+
+
+
     public int getId_temp_harvest() {
         return id_temp_harvest;
     }

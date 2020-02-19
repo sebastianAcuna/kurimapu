@@ -83,7 +83,7 @@ public class FragmentContratos extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_contracts));
+            activity.updateView(getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_visit));
         }
     }
 

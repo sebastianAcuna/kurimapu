@@ -22,6 +22,67 @@ public class Visitas {
     private String recomendation_visita;
 
 
+
+    private int estado_server_visitas;
+    private int estado_visita;
+
+    private int etapa_visitas;
+
+
+    private String fecha_visita;
+    private String hora_visita;
+
+
+    private int temporada;
+
+    public int getTemporada() {
+        return temporada;
+    }
+
+    public void setTemporada(int temporada) {
+        this.temporada = temporada;
+    }
+
+    public String getFecha_visita() {
+        return fecha_visita;
+    }
+
+    public void setFecha_visita(String fecha_visita) {
+        this.fecha_visita = fecha_visita;
+    }
+
+    public String getHora_visita() {
+        return hora_visita;
+    }
+
+    public void setHora_visita(String hora_visita) {
+        this.hora_visita = hora_visita;
+    }
+
+    public int getEtapa_visitas() {
+        return etapa_visitas;
+    }
+
+    public void setEtapa_visitas(int etapa_visitas) {
+        this.etapa_visitas = etapa_visitas;
+    }
+
+    public int getEstado_visita() {
+        return estado_visita;
+    }
+
+    public void setEstado_visita(int estado_visita) {
+        this.estado_visita = estado_visita;
+    }
+
+    public int getEstado_server_visitas() {
+        return estado_server_visitas;
+    }
+
+    public void setEstado_server_visitas(int estado_server_visitas) {
+        this.estado_server_visitas = estado_server_visitas;
+    }
+
     public int getId_visita() {
         return id_visita;
     }
