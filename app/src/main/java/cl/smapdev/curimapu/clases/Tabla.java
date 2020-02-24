@@ -110,8 +110,11 @@ public class Tabla {
             TextView agricultor = new TextView(actividad);
             TextView potrero = new TextView(actividad);
 
-            Button botonForm = new Button(actividad);
-            Button botonVer = new Button(actividad);
+        Button botonForm = new Button(actividad);
+        Button botonVer = new Button(actividad);
+
+
+
 
             anexo.setText(String.valueOf(ls.getAnexoContrato().getAnexo_contrato()));
             variedad.setText(String.valueOf(ls.getVariedad().getDesc_variedad()));
@@ -126,9 +129,9 @@ public class Tabla {
         variedad.setGravity(Gravity.CENTER_HORIZONTAL);
 
         botonForm.setText(actividad.getResources().getText(R.string.form_form));
-
         Drawable img = botonForm.getContext().getResources().getDrawable( R.drawable.ic_assignment );
         botonForm.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
+
 
         botonForm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,16 +140,16 @@ public class Tabla {
                 if (activity != null){
 
                     MainActivity.myAppDB.myDao().deleteTempVisitas();
-                    MainActivity.myAppDB.myDao().resetTempVisitas();
+//                    MainActivity.myAppDB.myDao().resetTempVisitas();
 
                     MainActivity.myAppDB.myDao().deleteTempHarvest();
-                    MainActivity.myAppDB.myDao().resetTempHarvest();
+//                    MainActivity.myAppDB.myDao().resetTempHarvest();
 
                     MainActivity.myAppDB.myDao().deleteTempFlowering();
-                    MainActivity.myAppDB.myDao().resetTempFlowering();
+//                    MainActivity.myAppDB.myDao().resetTempFlowering();
 
                     MainActivity.myAppDB.myDao().deleteTempSowing();
-                    MainActivity.myAppDB.myDao().resetTempSowing();
+//                    MainActivity.myAppDB.myDao().resetTempSowing();
 
 
                     List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
@@ -171,6 +174,7 @@ public class Tabla {
                     if (prefs != null){
                         prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls.getAnexoContrato().getId_ficha_contrato()).apply();
                         prefs.edit().putInt(Utilidades.SHARED_VISIT_ANEXO_ID, ls.getAnexoContrato().getId_anexo_contrato()).apply();
+                        prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
                     }
 
                     activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left,R.anim.slide_out_left);

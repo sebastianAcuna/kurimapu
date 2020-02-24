@@ -62,6 +62,7 @@ public class Utilidades {
 
     public static final String SHARED_VISIT_FICHA_ID = "shared_visit_ficha_id";
     public static final String SHARED_VISIT_ANEXO_ID = "shared_visit_anexo_id";
+    public static final String SHARED_VISIT_VISITA_ID = "shared_visit_visita_id";
 
 
 

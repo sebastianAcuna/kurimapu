@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <RelativeLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/padding"
-
     >
 
 
@@ -36,31 +35,48 @@
         android:textColor="@color/primaryText"
         />
 
-
-    <EditText
-        android:id="@+id/user_login"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/container_user_login"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_login"
         android:hint="User"
         android:layout_margin="@dimen/padding"
-        android:layout_centerHorizontal="true"
-        android:maxLines="1"
-        android:inputType="textPersonName"
+        android:layout_centerHorizontal="true">
 
-        />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLines="1"
+            android:inputType="textPersonName"
 
-    <EditText
-        android:id="@+id/pass_login"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/container_pass_login"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/user_login"
-        android:layout_margin="@dimen/padding"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@id/container_user_login"
         android:hint="Password"
-        android:inputType="numberPassword"
-        android:maxLines="1"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/padding"
+        app:helperText="ejemplo : 1632"
+        app:passwordToggleEnabled="true"
+
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/pass_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLines="1"
+            android:inputType="numberPassword"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -70,7 +86,7 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/pass_login"
+        android:layout_below="@id/container_pass_login"
         android:layout_marginTop="@dimen/padding"
         />
 

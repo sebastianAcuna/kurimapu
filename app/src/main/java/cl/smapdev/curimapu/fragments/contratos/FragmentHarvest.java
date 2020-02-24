@@ -110,11 +110,13 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
             loadUiData();
         }
 
-        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_harvest, FragmentFotos.getInstance(4), Utilidades.FRAGMENT_FOTOS).commit();
+
     }
 
 
     private void loadUiData(){
+
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_harvest, FragmentFotos.getInstance(4), Utilidades.FRAGMENT_FOTOS).commit();
 
         date_estimated_date.setText(Utilidades.voltearFechaVista(temp_harvest.getEstimated_date_temp_harvest()));
         date_real_date.setText(Utilidades.voltearFechaVista(temp_harvest.getReal_date_temp_harvest()));
@@ -130,6 +132,23 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
         et_owner.setText(temp_harvest.getOwner_machine_temp_harvest());
         et_model.setText(temp_harvest.getModel_machine_temp_harvest());
         et_percent.setText(String.valueOf(temp_harvest.getPorcent_temp_harvest()));
+
+
+
+        if(temp_harvest.getAction_temp_harvest() == 2){
+            date_estimated_date.setEnabled(false);
+            date_real_date.setEnabled(false);
+            date_swatching_date.setEnabled(false);
+            date_date_harvest.setEnabled(false);
+            date_begining_date.setEnabled(false);
+            date_end_date.setEnabled(false);
+            et_observation_harvest.setEnabled(false);
+            et_kg_ha.setEnabled(false);
+            et_observation_yield.setEnabled(false);
+            et_owner.setEnabled(false);
+            et_model.setEnabled(false);
+            et_percent.setEnabled(false);
+        }
     }
 
     private void levantarFecha(final EditText edit){
@@ -189,6 +208,14 @@ public class FragmentHarvest extends Fragment implements View.OnFocusChangeListe
         et_owner  = (EditText) view.findViewById(R.id.et_owner);
         et_model  = (EditText) view.findViewById(R.id.et_model);
         et_percent  = (EditText) view.findViewById(R.id.et_percent);
+
+
+        et_observation_harvest.setSelectAllOnFocus(true);
+        et_kg_ha.setSelectAllOnFocus(true);
+        et_observation_yield.setSelectAllOnFocus(true);
+        et_owner.setSelectAllOnFocus(true);
+        et_model.setSelectAllOnFocus(true);
+        et_percent.setSelectAllOnFocus(true);
 
 
 

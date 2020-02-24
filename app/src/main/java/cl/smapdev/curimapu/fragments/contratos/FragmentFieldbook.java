@@ -52,7 +52,7 @@ public class FragmentFieldbook extends Fragment {
 
 
     private void cargarTabs(){
-        viewPager.setAdapter(new SubTabsAdapters(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
+        viewPager.setAdapter(new SubTabsAdapters(getChildFragmentManager(),
                 Objects.requireNonNull(getContext())));
 
         TabLayout tabLayout = (TabLayout) Objects.requireNonNull(getView()).findViewById(R.id.tab_sub_layout);

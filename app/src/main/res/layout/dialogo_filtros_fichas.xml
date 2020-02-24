@@ -1,280 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/padding">
-
-
-    <LinearLayout
-        android:id="@+id/container_plus"
+<ScrollView android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="start|center_vertical"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:padding="@dimen/padding">
 
-        >
-        <TextView
-            android:id="@+id/lbl_year"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
+
+        <LinearLayout
+            android:id="@+id/container_plus"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Año"
-            android:theme="@style/sub_titles_forms"
+            android:orientation="horizontal"
+            android:gravity="start|center_vertical"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
 
-            />
-
-        <Spinner
-            android:id="@+id/sp_dialog_year"
-            android:layout_width="0dp"
-            android:layout_weight="0.8"
-            android:layout_height="wrap_content"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/container_one"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/container_plus"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:gravity="start|center_vertical"
-        >
-        <TextView
-            android:id="@+id/lbl_anexo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:text="Nombre Agricultor"
-            android:theme="@style/sub_titles_forms"
-
-
-            />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInp_dialog_nombre_ag"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_dialog_nombre_ag"
-                android:layout_width="match_parent"
+            >
+            <TextView
+                android:id="@+id/lbl_year"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
                 android:layout_height="wrap_content"
-                android:hint="@string/format_set_input"
-                android:inputType="textPersonName"
-                android:maxLines="1"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="Año"
+                android:theme="@style/sub_titles_forms"
 
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/container_dos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:gravity="start|center_vertical"
-        android:layout_below="@id/container_one"
-        >
-        <TextView
-            android:id="@+id/lbl_variedad"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="wrap_content"
-            android:text="Region"
-            android:theme="@style/sub_titles_forms"
-
-            />
-
-        <Spinner
-            android:id="@+id/sp_dialog_region"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/container_tres"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:gravity="start|center_vertical"
-        android:layout_below="@id/container_dos"
-        >
-        <TextView
-            android:id="@+id/lbl_especie"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="wrap_content"
-            android:text="Comuna"
-            android:theme="@style/sub_titles_forms"
-
-            />
-
-        <Spinner
-            android:id="@+id/sp_dialog_comuna"
-            android:layout_width="0dp"
-            android:layout_weight="0.8"
-            android:layout_height="wrap_content"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/container_cuatro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:gravity="start|center_vertical"
-        android:layout_below="@id/container_tres"
-        >
-        <TextView
-            android:id="@+id/lbl_agricultor"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="wrap_content"
-            android:text="Oferta de negocio"
-            android:theme="@style/sub_titles_forms"
-
-            />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInp_dialog_of_neg"
-            android:layout_width="0dp"
-            android:layout_weight="0.8"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_dialog_of_neg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/format_set_input"
-                android:inputType="text"
-                android:maxLines="1"
                 />
-        </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/container_cinco"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:gravity="start|center_vertical"
-        android:layout_below="@id/container_cuatro"
-        >
-        <TextView
-            android:id="@+id/lbl_potrero"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="wrap_content"
-            android:text="Ha / disponibles"
-            android:theme="@style/sub_titles_forms"
-
-            />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInp_dialog_ha_disp"
-            android:layout_width="0dp"
-            android:layout_weight="0.8"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_dialog_ha_disp"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/sp_dialog_year"
+                android:layout_width="0dp"
+                android:layout_weight="0.8"
                 android:layout_height="wrap_content"
-                android:hint="@string/format_set_input"
-                android:inputType="numberDecimal"
-                android:maxLines="1"
                 />
-        </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
-    <TextView
-        android:id="@+id/lbl_grupos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Estado"
-        android:layout_below="@id/container_cinco"
-        android:layout_alignParentStart="true"
-        android:paddingStart="@dimen/padding"/>
+        </LinearLayout>
 
-    <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:layout_below="@id/lbl_grupos">
+        <LinearLayout
+            android:id="@+id/container_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/container_plus"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:gravity="start|center_vertical"
+            >
+            <TextView
+                android:id="@+id/lbl_anexo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:text="Nombre Agricultor"
+                android:theme="@style/sub_titles_forms"
 
-        <RadioButton
-            android:id="@+id/radio_todos"
+
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInp_dialog_nombre_ag"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_dialog_nombre_ag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/format_set_input"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/container_dos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:gravity="start|center_vertical"
+            android:layout_below="@id/container_one"
+            >
+            <TextView
+                android:id="@+id/lbl_variedad"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_height="wrap_content"
+                android:text="Region"
+                android:theme="@style/sub_titles_forms"
+
+                />
+
+            <Spinner
+                android:id="@+id/sp_dialog_region"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/container_tres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:gravity="start|center_vertical"
+            android:layout_below="@id/container_dos"
+            >
+            <TextView
+                android:id="@+id/lbl_especie"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_height="wrap_content"
+                android:text="Comuna"
+                android:theme="@style/sub_titles_forms"
+
+                />
+
+            <Spinner
+                android:id="@+id/sp_dialog_comuna"
+                android:layout_width="0dp"
+                android:layout_weight="0.8"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_cuatro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:gravity="start|center_vertical"
+            android:layout_below="@id/container_tres"
+            >
+            <TextView
+                android:id="@+id/lbl_agricultor"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_height="wrap_content"
+                android:text="Oferta de negocio"
+                android:theme="@style/sub_titles_forms"
+
+                />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInp_dialog_of_neg"
+                android:layout_width="0dp"
+                android:layout_weight="0.8"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_dialog_of_neg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/format_set_input"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_cinco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:gravity="start|center_vertical"
+            android:layout_below="@id/container_cuatro"
+            >
+            <TextView
+                android:id="@+id/lbl_potrero"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_height="wrap_content"
+                android:text="Ha / disponibles"
+                android:theme="@style/sub_titles_forms"
+
+                />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInp_dialog_ha_disp"
+                android:layout_width="0dp"
+                android:layout_weight="0.8"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_dialog_ha_disp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/format_set_input"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/lbl_grupos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding"
-            android:checked="true"
-            android:text="Todos" />
+            android:text="Estado"
+            android:layout_below="@id/container_cinco"
+            android:layout_alignParentStart="true"
+            android:paddingStart="@dimen/padding"/>
 
-        <RadioButton
-            android:id="@+id/radio_inactiva"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding"
-            android:text="Inactiva" />
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_below="@id/lbl_grupos">
 
-        <RadioButton
-            android:id="@+id/radio_activa"
-            android:layout_width="wrap_content"
+            <RadioButton
+                android:id="@+id/radio_todos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
+                android:checked="true"
+                android:text="Todos" />
+
+            <RadioButton
+                android:id="@+id/radio_inactiva"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
+                android:text="Inactiva" />
+
+            <RadioButton
+                android:id="@+id/radio_activa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
+                android:text="Activa" />
+
+            <RadioButton
+                android:id="@+id/radio_rechazada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
+                android:text="Rechazada" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btn_aplica_filtro"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding"
-            android:text="Activa" />
+            android:background="@android:color/holo_green_dark"
+            android:layout_below="@id/radio_group"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/padding"
+            android:text="Filtrar"/>
 
-        <RadioButton
-            android:id="@+id/radio_rechazada"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_cancela_filtro"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding"
-            android:text="Rechazada" />
-    </RadioGroup>
-
-    <Button
-        android:id="@+id/btn_aplica_filtro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_dark"
-        android:layout_below="@id/radio_group"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/padding"
-        android:text="Filtrar"/>
-
-    <Button
-        android:id="@+id/btn_cancela_filtro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/btn_aplica_filtro"
-        android:layout_marginTop="@dimen/padding"
-        android:text="@string/nav_cancel"/>
+            android:background="@color/colorAccent"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/btn_aplica_filtro"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/nav_cancel"/>
 
 
 
 
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

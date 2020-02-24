@@ -8,25 +8,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
-import okhttp3.internal.Util;
 
 
 public class FragmentLogin extends Fragment {
 
-    private EditText user_login, pass_login;
-    private Button btn_login;
+    private TextInputEditText user_login, pass_login;
     private SharedPreferences shared;
 
+    private MainActivity activity;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        activity = (MainActivity) getActivity();
+
+    }
 
     @Nullable
     @Override
@@ -40,12 +49,12 @@ public class FragmentLogin extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        user_login = (EditText) view.findViewById(R.id.user_login);
-        pass_login = (EditText) view.findViewById(R.id.pass_login);
-        btn_login= (Button) view.findViewById(R.id.btn_login);
+        user_login = (TextInputEditText) view.findViewById(R.id.user_login);
+        pass_login = (TextInputEditText) view.findViewById(R.id.pass_login);
+        Button btn_login = (Button) view.findViewById(R.id.btn_login);
 
 
-        shared = getActivity().getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        shared = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
 
 
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +94,6 @@ public class FragmentLogin extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
 
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null){

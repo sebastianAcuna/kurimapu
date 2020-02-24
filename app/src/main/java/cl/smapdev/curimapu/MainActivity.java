@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             languageToLoad2  = "ES";
         }
 
+        prefs.edit().putString("lang","eng").apply();
+
         Locale locale = new Locale(languageToLoad,languageToLoad2);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -129,8 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
-
-
 
 
 

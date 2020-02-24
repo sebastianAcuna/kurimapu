@@ -24,7 +24,7 @@ public class Visitas {
 
 
     private int estado_server_visitas;
-    private int estado_visita;
+    private int estado_visita; /* 0 : abierta; 1: editable/ en confeccion ; 2:cerrada */
 
     private int etapa_visitas;
 

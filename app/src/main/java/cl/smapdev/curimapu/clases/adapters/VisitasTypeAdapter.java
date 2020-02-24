@@ -8,17 +8,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.Etapas;
 import cl.smapdev.curimapu.clases.adapters.viewHolders.VisitasTypeViewHolder;
 
 public class VisitasTypeAdapter extends RecyclerView.Adapter<VisitasTypeViewHolder> {
 
-    private String[] elements;
+    private ArrayList<Etapas> elements;
     private Context context;
     private OnItemClickListener cLickListener;
     private int idAnexo;
 
-    public VisitasTypeAdapter(String[] elements, Context context, OnItemClickListener cLickListener, int idAnexo) {
+    public VisitasTypeAdapter(ArrayList<Etapas> elements, Context context, OnItemClickListener cLickListener, int idAnexo) {
         this.elements = elements;
         this.context = context;
         this.cLickListener = cLickListener;
@@ -38,11 +41,11 @@ public class VisitasTypeAdapter extends RecyclerView.Adapter<VisitasTypeViewHold
 
     @Override
     public void onBindViewHolder(@NonNull VisitasTypeViewHolder holder, int position) {
-        holder.bind(elements[position], context, cLickListener, idAnexo);
+        holder.bind(elements.get(position), context, cLickListener, idAnexo);
     }
 
     @Override
     public int getItemCount() {
-        return elements.length;
+        return elements.size();
     }
 }

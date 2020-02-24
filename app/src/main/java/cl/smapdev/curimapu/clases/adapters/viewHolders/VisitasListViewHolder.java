@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -19,9 +20,9 @@ import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class VisitasListViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView nombre_agricultor, nombre_etapa, nombre_detalle_etapa;
+    private TextView nombre_agricultor, nombre_etapa, nombre_detalle_etapa,fecha_lista_visitas,hora_lista_visitas;
     private ImageView imagen_referencial;
-
+    private CardView cardview_visitas;
 
     public VisitasListViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -30,11 +31,14 @@ public class VisitasListViewHolder extends RecyclerView.ViewHolder {
         nombre_agricultor  = itemView.findViewById(R.id.nombre_agricultor);
         nombre_etapa  = itemView.findViewById(R.id.nombre_etapa);
         nombre_detalle_etapa  = itemView.findViewById(R.id.nombre_detalle_etapa);
+        fecha_lista_visitas  = itemView.findViewById(R.id.fecha_lista_visitas);
+        cardview_visitas  = itemView.findViewById(R.id.cardview_visitas);
+        hora_lista_visitas  = itemView.findViewById(R.id.hora_lista_visitas);
 
     }
 
 
-    public void bind(final VisitasCompletas elem, final VisitasListAdapter.OnItemClickListener clickListener, VisitasListAdapter.OnItemLongClickListener longClickListener, Context context){
+    public void bind(final VisitasCompletas elem, final VisitasListAdapter.OnItemClickListener clickListener, final VisitasListAdapter.OnItemLongClickListener longClickListener, Context context){
 
         if (context != null){
 
@@ -50,17 +54,32 @@ public class VisitasListViewHolder extends RecyclerView.ViewHolder {
                         clickListener.onItemClick(view, elem, fotos);
                     }
                 });
+
+
             }
 
+            cardview_visitas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.onItemClick(view, elem, null);
+                }
+            });
 
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    longClickListener.onItemLongClick(view, elem, null);
+                    return false;
+                }
+            });
+
+
+            hora_lista_visitas.setText(elem.getVisitas().getHora_visita());
+            fecha_lista_visitas.setText(Utilidades.voltearFechaVista(elem.getVisitas().getFecha_visita()));
             nombre_agricultor.setText(elem.getAnexoCompleto().getAgricultor().getNombre_agricultor());
-
             nombre_etapa.setText(Utilidades.getStateString(elem.getVisitas().getEtapa_visitas()));
-
             nombre_detalle_etapa.setText(Utilidades.getStateDetailString(elem.getVisitas().getPhenological_state_visita()));
-
-
-
 
         }
 

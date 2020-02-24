@@ -44,17 +44,17 @@ public interface MyDao {
     @Query("SELECT  * FROM fotos WHERE fieldbook  = :field ")
     List<Fotos> getFotosByField(int field);
 
-    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha AND id_visita_foto = 0")
-    List<Fotos> getFotosByFieldAndView(int field, int view, int ficha);
+    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha AND id_visita_foto = :idVisita")
+    List<Fotos> getFotosByFieldAndView(int field, int view, int ficha, int idVisita);
 
-    @Query("SELECT  * FROM fotos WHERE vista = :view AND id_ficha = :ficha AND id_visita_foto = 0")
-    List<Fotos> getFotosByFieldAndView(int view, int ficha);
+    @Query("SELECT  * FROM fotos WHERE vista = :view AND id_ficha = :ficha AND id_visita_foto = :idVisita")
+    List<Fotos> getFotosByFieldAndView(int view, int ficha, int idVisita);
 
-    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND nombre_foto != :nonn AND id_ficha = :ficha AND id_visita_foto = 0")
-    List<Fotos> getFotosByFieldAndView(int field, String nonn, int ficha);
+    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND nombre_foto != :nonn AND id_ficha = :ficha AND id_visita_foto = :idVisita")
+    List<Fotos> getFotosByFieldAndView(int field, String nonn, int ficha, int idVisita);
 
-    @Query("SELECT  COUNT(id_foto) FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha AND id_visita_foto = 0")
-    int getCantAgroByFieldViewAndFicha(int field, int view, int ficha);
+    @Query("SELECT  COUNT(id_foto) FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha AND id_visita_foto = :idVisita")
+    int getCantAgroByFieldViewAndFicha(int field, int view, int ficha, int idVisita);
 
     @Query("SELECT * FROM fotos WHERE id_ficha = :idFicha AND id_visita_foto = :idVisita AND favorita = 1 ORDER BY fecha DESC LIMIT 1")
     Fotos getFoto(int idFicha, int idVisita);
@@ -70,23 +70,23 @@ public interface MyDao {
     @Query("SELECT  * FROM fotos WHERE id_foto = :idFoto")
     Fotos getFotosById(int idFoto);
 
-    @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha = :idFicha AND favorita = 1")
-    int getCantFavoritasByFieldbookAndFicha(int fieldbook, int idFicha);
+    @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha = :idFicha AND favorita = 1 AND id_visita_foto = :idVisita ")
+    int getCantFavoritasByFieldbookAndFicha(int fieldbook, int idFicha, int idVisita);
 
 
-    @Query("SELECT COUNT(favorita) FROM fotos WHERE id_ficha = :idFicha AND favorita = 1")
-    int getCantFavoritasByFieldbookAndFicha(int idFicha);
+    @Query("SELECT COUNT(favorita) FROM fotos WHERE id_ficha = :idFicha AND favorita = 1 AND id_visita_foto = :idVisita ")
+    int getCantFavoritasByFieldbookAndFicha(int idFicha, int idVisita);
 
 
-    @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha = :idFicha AND vista = :view AND favorita = 1")
-    int getCantFavoritasByFieldbookFichaAndVista(int fieldbook, int idFicha, int view);
+    @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha = :idFicha AND vista = :view AND favorita = 1 AND id_visita_foto = :idVisita ")
+    int getCantFavoritasByFieldbookFichaAndVista(int fieldbook, int idFicha, int view, int idVisita);
 
 
     @Query("SELECT  * FROM fotos WHERE id_visita_foto = :id_visita")
     List<Fotos> getFotosByIdVisita(int id_visita);
 
-    @Query("SELECT COUNT(id_foto)  FROM fotos WHERE id_ficha = :idFicha ")
-    int getCantFotos(int idFicha);
+    @Query("SELECT COUNT(id_foto)  FROM fotos WHERE id_ficha = :idFicha AND id_visita_foto = :idVisita ")
+    int getCantFotos(int idFicha, int idVisita);
 
     @Delete
     void deleteFotos(Fotos fotos);
@@ -154,8 +154,6 @@ public interface MyDao {
     @Query("DELETE FROM temp_visitas")
     void deleteTempVisitas();
 
-    @Query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='temp_visitas'")
-    void resetTempVisitas();
 
     @Query("SELECT  COUNT(*) FROM temp_visitas WHERE id_anexo_temp_visita = :idFicha")
     int getCantTempVisitas(int idFicha);
@@ -176,8 +174,6 @@ public interface MyDao {
     @Query("DELETE FROM temp_harvest")
     void deleteTempHarvest();
 
-    @Query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='temp_harvest'")
-    void resetTempHarvest();
 
     @Query("SELECT  COUNT(id_temp_harvest) FROM temp_harvest WHERE id_anexo_temp_harvest = :idFicha")
     int getCantTempHarvest(int idFicha);
@@ -188,8 +184,12 @@ public interface MyDao {
     TempSowing getTempSowing(int anexo);
 
 
-    @Query("SELECT COUNT(*) as todos , etapa_visitas FROM visitas WHERE id_anexo_visita = :idAnexo GROUP BY etapa_visitas")
-    List<CantidadVisitas> getCantidadVisitas(int idAnexo);
+    @Query("SELECT COUNT(*) as todos , etapa_visitas, estado_visita FROM visitas WHERE id_anexo_visita = :idAnexo AND visitas.temporada = :temporada GROUP BY etapa_visitas")
+    List<CantidadVisitas> getCantidadVisitas(int idAnexo, int temporada);
+
+
+    @Query("SELECT COUNT(visitas.id_visita) AS todos, etapa_visitas, estado_visita FROM visitas WHERE temporada = :temporada GROUP BY estado_visita")
+    List<CantidadVisitas> getCantidadVisitasByEstado(int temporada);
 
 
 
@@ -203,8 +203,6 @@ public interface MyDao {
     @Query("DELETE FROM temp_sowing")
     void deleteTempSowing();
 
-    @Query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='temp_sowing'")
-    void resetTempSowing();
 
     @Query("SELECT  COUNT(id_temp_sowing) FROM temp_sowing WHERE id_anexo_temp_sowing = :idFicha")
     int getCantTempSowing(int idFicha);
@@ -225,8 +223,6 @@ public interface MyDao {
     @Query("DELETE FROM temp_flowering")
     void deleteTempFlowering();
 
-    @Query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='temp_flowering'")
-    void resetTempFlowering();
 
     @Query("SELECT  COUNT(id_temp_flowering) FROM temp_flowering WHERE id_anexo_temp_flowering = :idFicha")
     int getCantTempFlowering(int idFicha);
@@ -260,17 +256,51 @@ public interface MyDao {
     List<VisitasCompletas> getVisitasCompletas(int idAnexo, int etapa, int anno);
 
 
+    @Update
+    void updateVisita(Visitas visitas);
+
+
+    @Query("SELECT  estado_visita FROM visitas WHERE id_visita = :idVisita ")
+    int getEstadoVisita(int idVisita);
+
+
+
     /* SOWING */
     @Insert
     long setSowing(Sowing sowing);
+
+    @Update
+    void updateSowing(Sowing sowing);
+
+
+    @Query("SELECT * FROM sowing WHERE id_anexo_sowing = :idAnexo AND id_visita_sowing = :idVisita")
+    Sowing getSowing(int idVisita, int idAnexo);
+
+
+
 
     /* FLOWERING */
     @Insert
     long setFlowering(Flowering flowering);
 
+    @Query("SELECT  * FROM flowering WHERE id_anexo_flowering = :idAnexo AND id_visita_flowering = :idVisita")
+    Flowering getFlowering(int idVisita, int idAnexo);
+
+    @Update
+    void updateFlowering(Flowering flowering);
+
+
     /* HARVEST */
     @Insert
     long setHarvest(Harvest harvest);
+
+    @Query("SELECT  * FROM harvest WHERE id_anexo_temp_harvest = :idAnexo AND id_visita_harvest = :idVisita")
+    Harvest getharvest(int idVisita, int idAnexo);
+
+    @Update
+    void updateHarvest(Harvest harvest);
+
+
 
 
 

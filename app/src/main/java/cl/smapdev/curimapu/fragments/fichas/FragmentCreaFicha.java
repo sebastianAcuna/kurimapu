@@ -35,6 +35,7 @@ import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
@@ -579,9 +580,9 @@ public class FragmentCreaFicha extends Fragment {
 
 
     private void setAdapters(){
-        sp_year.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, getResources().getStringArray(R.array.anos_toolbar)));
+        sp_year.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, getResources().getStringArray(R.array.anos_toolbar)));
         sp_year.setSelection(getResources().getStringArray(R.array.anos_toolbar).length - 1);
-        sp_asoc_agr.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, getResources().getStringArray(R.array.asociacion_agricultor)));
+        sp_asoc_agr.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, getResources().getStringArray(R.array.asociacion_agricultor)));
         sp_asoc_agr.setSelection(1);
 
 
@@ -599,7 +600,7 @@ public class FragmentCreaFicha extends Fragment {
 
 
             }
-            sp_agric.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, str));
+            sp_agric.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, str));
 
         }
 
@@ -617,7 +618,7 @@ public class FragmentCreaFicha extends Fragment {
                 contador++;
             }
 
-            sp_region_agricultor.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, rg));
+            sp_region_agricultor.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
             sp_region_agricultor.setSelection(0);
 
         }
@@ -648,7 +649,7 @@ public class FragmentCreaFicha extends Fragment {
 
             }
 
-            sp_comuna_agricultor.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, rg));
+            sp_comuna_agricultor.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
             sp_comuna_agricultor.setSelection(selectable);
         }
     }

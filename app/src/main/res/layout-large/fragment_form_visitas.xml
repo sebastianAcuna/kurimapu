@@ -85,7 +85,7 @@
                     android:id="@+id/lbl_malezas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/estado_fenolog_gico"
+                    android:text="@string/estado_de_malezas"
                     android:textSize="18dp"/>
 
                 <Spinner
@@ -176,7 +176,7 @@
             android:id="@+id/lbl_humedad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/estado_fenolog_gico"
+            android:text="@string/humedad_del_suelo"
             android:layout_below="@id/container_second_line"
             android:layout_margin="@dimen/padding"
             android:textSize="18dp"/>

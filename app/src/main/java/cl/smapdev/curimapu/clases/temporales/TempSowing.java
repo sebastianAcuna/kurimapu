@@ -31,6 +31,17 @@ public class TempSowing {
 
 
 
+    private int action_temp_sowing;
+
+
+    public int getAction_temp_sowing() {
+        return action_temp_sowing;
+    }
+
+    public void setAction_temp_sowing(int action_temp_sowing) {
+        this.action_temp_sowing = action_temp_sowing;
+    }
+
     /* LINES */
     private String female_lines_temp_sowing;
 

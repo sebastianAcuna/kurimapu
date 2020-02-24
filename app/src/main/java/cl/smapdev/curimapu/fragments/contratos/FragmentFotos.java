@@ -72,7 +72,7 @@ public class FragmentFotos extends Fragment {
 
     private File fileImagen;
 
-    private int fieldbook;
+    private int fieldbook, estado_visita = 0;
 
 
 //    private boolean isLoaded =false,isVisibleToUser;
@@ -114,7 +114,10 @@ public class FragmentFotos extends Fragment {
 
         prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
 
-        Log.e("PRIMERO", "onStart");
+        estado_visita = MainActivity.myAppDB.myDao().getEstadoVisita(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+
+
+        //Log.e("PRIMERO", "onStart");
         agregarImagenToList();
     }
 
@@ -170,14 +173,22 @@ public class FragmentFotos extends Fragment {
 
         material_private.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                abrirCamara(1);
+                if (estado_visita == 2){
+                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes agregar mas fotos.","entiendo");
+                }else{
+                    abrirCamara(1);
+                }
+
 
             }
         });
         material_public.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                abrirCamara(0);
-
+                if (estado_visita == 2){
+                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes agregar mas fotos.","entiendo");
+                }else{
+                    abrirCamara(0);
+                }
             }
         });
 
@@ -292,6 +303,7 @@ public class FragmentFotos extends Fragment {
         fotos.setId_ficha(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
         fotos.setVista(prefs.getInt(Utilidades.VISTA_FOTOS, 0));
         fotos.setRuta(path.getAbsolutePath());
+        fotos.setId_visita_foto(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
 
         MainActivity.myAppDB.myDao().insertFotos(fotos);
 
@@ -345,7 +357,6 @@ public class FragmentFotos extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
 
@@ -365,8 +376,11 @@ public class FragmentFotos extends Fragment {
         recyclerView.setLayoutManager(lManager);
 
         final int oreg =prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0);
+        final int idVisi =prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0);
 
-        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(fieldbook, "",oreg);
+
+
+        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(fieldbook, "",oreg, idVisi );
 
         adapterFotos = new FotosListAdapter(myImageList,activity, new FotosListAdapter.OnItemClickListener() {
             @Override
@@ -377,17 +391,22 @@ public class FragmentFotos extends Fragment {
             @Override
             public void onItemLongClick(Fotos fotos) {
 
-                if (!fotos.isFavorita()){
-                    int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(fieldbook,oreg);
-
-                    if (favoritas < 3){
-                        cambiarFavorita(fotos);
-                    }else{
-                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_fav),getResources().getString(R.string.message_dialog_fav),getResources().getString(R.string.message_dialog_btn_ok));
-                    }
+                if (estado_visita == 2){
+                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes cambiar el estado de las fotos.","entiendo");
                 }else{
-                    cambiarFavorita(fotos);
+                    if (!fotos.isFavorita()){
+                        int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(fieldbook,oreg, idVisi);
+
+                        if (favoritas < 3){
+                            cambiarFavorita(fotos);
+                        }else{
+                            Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_fav),getResources().getString(R.string.message_dialog_fav),getResources().getString(R.string.message_dialog_btn_ok));
+                        }
+                    }else{
+                        cambiarFavorita(fotos);
+                    }
                 }
+
 
 
 

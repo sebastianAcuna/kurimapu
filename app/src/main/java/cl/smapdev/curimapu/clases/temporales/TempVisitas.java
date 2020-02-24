@@ -22,6 +22,17 @@ public class TempVisitas {
     private String recomendation_temp_visita;
 
 
+    private int action_temp_visita; /* 0 insert ; 1 update; 2 finished */
+
+
+    public int getAction_temp_visita() {
+        return action_temp_visita;
+    }
+
+    public void setAction_temp_visita(int action_temp_visita) {
+        this.action_temp_visita = action_temp_visita;
+    }
+
     private int etapa_temp_visitas;
 
 

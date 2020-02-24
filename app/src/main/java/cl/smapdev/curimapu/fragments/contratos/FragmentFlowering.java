@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,11 +106,18 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
 
 
 
-        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_flowering, FragmentFotos.getInstance(3), Utilidades.FRAGMENT_FOTOS).commit();
+
     }
 
 
     private void loadUiData(){
+
+        try{
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_flowering, FragmentFotos.getInstance(3), Utilidades.FRAGMENT_FOTOS).commit();
+        }catch (IllegalArgumentException e){
+            Log.e("ILEGAL EXCEPTION SOWING", e.getMessage());
+        }
+
 
         date_date.setText(Utilidades.voltearFechaVista(temp_flowering.getDate_notice_sag_temp_flowering()));
         date_flowering.setText(Utilidades.voltearFechaVista(temp_flowering.getFlowering_estimation_temp_flowering()));
@@ -131,6 +139,25 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         et_plant_number_checked.setText(temp_flowering.getPlant_number_checked_temp_flowering());
         et_check.setText(temp_flowering.getCheck_temp_flowering());
         et_main_char.setText(temp_flowering.getMain_characteristic_temp_flowering());
+
+        if (temp_flowering.getAction_temp_flowering() == 2){
+            date_date.setEnabled(false);
+            date_flowering.setEnabled(false);
+            date_f_start.setEnabled(false);
+            date_f_end.setEnabled(false);
+            date_fert_one.setEnabled(false);
+            date_fert_two.setEnabled(false);
+            date_fungicide.setEnabled(false);
+            date_insecticide.setEnabled(false);
+            date_depuration.setEnabled(false);
+            date_off_type.setEnabled(false);
+            date_inspection.setEnabled(false);
+            et_fungicide.setEnabled(false);
+            et_doce.setEnabled(false);
+            et_plant_number_checked.setEnabled(false);
+            et_check.setEnabled(false);
+            et_main_char.setEnabled(false);
+        }
     }
 
     private void levantarFecha(final EditText edit){
@@ -222,6 +249,13 @@ public class FragmentFlowering extends Fragment implements View.OnFocusChangeLis
         et_plant_number_checked = (EditText) view.findViewById(R.id.et_plant_number_checked);
         et_check = (EditText) view.findViewById(R.id.et_check);
         et_main_char = (EditText) view.findViewById(R.id.et_main_char);
+
+
+        et_fungicide.setSelectAllOnFocus(true);
+        et_doce.setSelectAllOnFocus(true);
+        et_plant_number_checked.setSelectAllOnFocus(true);
+        et_check.setSelectAllOnFocus(true);
+        et_main_char.setSelectAllOnFocus(true);
 
 
     }

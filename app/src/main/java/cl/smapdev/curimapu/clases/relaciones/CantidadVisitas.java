@@ -1,5 +1,7 @@
 package cl.smapdev.curimapu.clases.relaciones;
 
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.SerializedName;
 
 public class CantidadVisitas {
@@ -8,6 +10,18 @@ public class CantidadVisitas {
 
 
     private int etapa_visitas;
+
+
+    private int estado_visita;
+
+
+    public int getEstado_visita() {
+        return estado_visita;
+    }
+
+    public void setEstado_visita(int estado_visita) {
+        this.estado_visita = estado_visita;
+    }
 
     public int getTodos() {
         return todos;

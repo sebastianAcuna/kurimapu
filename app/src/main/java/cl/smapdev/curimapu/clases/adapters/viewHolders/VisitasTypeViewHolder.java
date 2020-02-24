@@ -12,8 +12,10 @@ import java.util.List;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.Etapas;
 import cl.smapdev.curimapu.clases.adapters.VisitasTypeAdapter;
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
+import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class VisitasTypeViewHolder extends RecyclerView.ViewHolder {
 
@@ -28,37 +30,39 @@ public class VisitasTypeViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void bind(final String el, Context context, final VisitasTypeAdapter.OnItemClickListener cLickListener, int idAnexo){
+    public void bind(final Etapas el, Context context, final VisitasTypeAdapter.OnItemClickListener cLickListener, int idAnexo){
 
         if (context != null){
-            nombre_field.setText(el);
+            nombre_field.setText(el.getDescEtapa());
+
+            preferences = context.getSharedPreferences(Utilidades.SHARED_NAME, 0);
+
+            String[] annos = context.getResources().getStringArray(R.array.anos_toolbar);
+
+            List<CantidadVisitas> integers = MainActivity.myAppDB.myDao().getCantidadVisitas(idAnexo, Integer.parseInt(annos[preferences.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, 5)]));
+
+            int cantidadTotal = 0;
+            if (integers.size() > 0){
+                for (CantidadVisitas c : integers){
+                    cantidadTotal+=c.getTodos();
+                }
+            }
 
 
-            List<CantidadVisitas> integers = MainActivity.myAppDB.myDao().getCantidadVisitas(idAnexo);
 
-            int etapa = 0;
+            if (el.isEtapaSelected()){
+                cantidad_type.setBackground(context.getDrawable(R.drawable.rounded_dark));
+            }
+
+
             if (integers.size() > 0) {
-                switch (el) {
-                    case "All":
-                        cantidad_type.setText(String.valueOf(integers.size()));
-                        break;
-                    case "Sowing":
-                        etapa = 2;
-                        break;
-                    case "Flowering":
-                        etapa = 3;
-                        break;
-                    case "Harvest":
-                        etapa = 4;
-                        break;
-                    case "Unspecified":
-                        etapa = 5;
-                        break;
+                if (el.getNumeroEtapa() == 0) {
+                    cantidad_type.setText(String.valueOf(cantidadTotal));
                 }
 
 
                 for (CantidadVisitas cantidadVisitas : integers) {
-                    if (cantidadVisitas.getEtapa_visitas() == etapa) {
+                    if (cantidadVisitas.getEtapa_visitas() == el.getNumeroEtapa()) {
                         cantidad_type.setText(String.valueOf(cantidadVisitas.getTodos()));
                     }
                 }
@@ -67,12 +71,12 @@ public class VisitasTypeViewHolder extends RecyclerView.ViewHolder {
             }
 
 
-            final int finalEtapa = etapa;
+//            final int finalEtapa = etapa;
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    cLickListener.onItemClick(finalEtapa);
+                    cLickListener.onItemClick(el.getNumeroEtapa());
                 }
             });
 

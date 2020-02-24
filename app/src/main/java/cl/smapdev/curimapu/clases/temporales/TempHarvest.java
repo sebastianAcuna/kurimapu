@@ -39,6 +39,18 @@ public class TempHarvest {
     private double porcent_temp_harvest;
 
 
+
+    private int action_temp_harvest;
+
+
+    public int getAction_temp_harvest() {
+        return action_temp_harvest;
+    }
+
+    public void setAction_temp_harvest(int action_temp_harvest) {
+        this.action_temp_harvest = action_temp_harvest;
+    }
+
     public int getId_temp_harvest() {
         return id_temp_harvest;
     }

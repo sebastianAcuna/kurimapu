@@ -145,6 +145,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             temp_visitas = new TempVisitas();
             if (prefs != null){
                 temp_visitas.setId_anexo_temp_visita(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+                temp_visitas.setId_temp_visita(0);
             }
             MainActivity.myAppDB.myDao().setTempVisitas(temp_visitas);
             temp_visitas = MainActivity.myAppDB.myDao().getTempFichas();
@@ -159,11 +160,16 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         material_private.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                int cantidaAgr = MainActivity.myAppDB.myDao().getCantAgroByFieldViewAndFicha(0, 2, temp_visitas.getId_anexo_temp_visita());
+                int cantidaAgr = MainActivity.myAppDB.myDao().getCantAgroByFieldViewAndFicha(0, 2, temp_visitas.getId_anexo_temp_visita(), temp_visitas.getId_temp_visita());
                 if (cantidaAgr > 2){
                     Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.message_dialog_agron),getResources().getString(R.string.message_dialog_btn_ok));
                 }else{
-                    abrirCamara(2);
+                    if (temp_visitas.getAction_temp_visita() == 2){
+                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes agregar mas fotos.","entiendo");
+                    }else{
+                        abrirCamara(2);
+                    }
+
                 }
 
 
@@ -173,7 +179,12 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             public void onClick(View v) {
 
                 if (sp_fenologico.getSelectedItemPosition() > 0){
-                    abrirCamara(0);
+                    if (temp_visitas.getAction_temp_visita() == 2){
+                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes agregar mas fotos.","entiendo");
+                    }else{
+                        abrirCamara(0);
+                    }
+
                 }else{
                     Utilidades.avisoListo(activity, "Falta algo!", "Debes seleccionar un estado fenologico primero","entiendo");
                 }
@@ -202,6 +213,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private void accionSpinners(){
         if (temp_visitas != null){
 
+
             sp_fenologico.setSelection(temp_visitas.getPhenological_state_temp_visita());
             sp_cosecha.setSelection(temp_visitas.getHarvest_temp_visita());
             sp_crecimiento.setSelection(temp_visitas.getGrowth_status_temp_visita());
@@ -212,6 +224,19 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
             et_obs.setText(temp_visitas.getObservation_temp_visita());
             et_recomendacion.setText(temp_visitas.getRecomendation_temp_visita());
+
+            if (temp_visitas.getAction_temp_visita() == 2){
+                sp_fenologico.setEnabled(false);
+                sp_cosecha.setEnabled(false);
+                sp_crecimiento.setEnabled(false);
+                sp_fito.setEnabled(false);
+                sp_general_cultivo.setEnabled(false);
+                sp_humedad.setEnabled(false);
+                sp_malezas.setEnabled(false);
+                et_obs.setEnabled(false);
+                et_recomendacion.setEnabled(false);
+                btn_guardar.setEnabled(false);
+            }
 
         }
     }
@@ -503,6 +528,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         fotos.setId_ficha(temp_visitas.getId_anexo_temp_visita());
         fotos.setVista(prefs.getInt(Utilidades.VISTA_FOTOS, 0));
         fotos.setRuta(path.getAbsolutePath());
+        fotos.setId_visita_foto(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+
 
         MainActivity.myAppDB.myDao().insertFotos(fotos);
 
@@ -522,21 +549,21 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private void setOnSave(){
 
         if (temp_visitas != null) {
-            int fotos = MainActivity.myAppDB.myDao().getCantFotos(temp_visitas.getId_anexo_temp_visita());
+            int fotos = MainActivity.myAppDB.myDao().getCantFotos(temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
             if (fotos <= 0) {
                 Utilidades.avisoListo(activity, "Falta algo", "Debes tomar al menos una foto", "entiendo");
             } else {
-                int favs = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(temp_visitas.getId_anexo_temp_visita());
+                int favs = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
                 if (favs <= 0) {
                     Utilidades.avisoListo(activity, "Falta algo", "Debes seleccionar como favorita al menos una foto (manten precionada la foto para marcar)", "entiendo");
                 } else {
-                    int sow = MainActivity.myAppDB.myDao().getCantTempSowing(temp_visitas.getId_anexo_temp_visita());
+                    /*int sow = MainActivity.myAppDB.myDao().getCantTempSowing(temp_visitas.getId_anexo_temp_visita());
                     int flow = MainActivity.myAppDB.myDao().getCantTempFlowering(temp_visitas.getId_anexo_temp_visita());
                     int har = MainActivity.myAppDB.myDao().getCantTempHarvest(temp_visitas.getId_anexo_temp_visita());
 
                     if (sow <= 0 && flow <= 0 && har <= 0) {
                         Utilidades.avisoListo(activity, "Falta algo", "Debes seleccionar como favorita al menos una foto (manten precionada la foto para marcar)", "entiendo");
-                    } else {
+                    } else {*/
 //                    todo do save
 
 
@@ -554,7 +581,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         visitas.setRecomendation_visita(temp_visitas.getRecomendation_temp_visita());
                         visitas.setWeed_state_visita(temp_visitas.getWeed_state_temp_visita());
                         visitas.setEstado_server_visitas(0);
-                        visitas.setEstado_visita(2);
+                        visitas.setEstado_visita(0);
                         visitas.setEtapa_visitas(temp_visitas.getEtapa_temp_visitas());
 
 
@@ -568,7 +595,18 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         visitas.setFecha_visita(fechaHora[0]);
                         visitas.setTemporada(Integer.parseInt(temporada[0]));
 
-                        long idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
+                        long idVisita = 0;
+
+                        if (prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0)  > 0 ){
+
+                            idVisita = prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0);
+                            visitas.setId_visita((int) idVisita);
+                            MainActivity.myAppDB.myDao().updateVisita(visitas);
+
+                        }else{
+                            idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
+                        }
+
 
                         MainActivity.myAppDB.myDao().updateFotosWithVisita((int) idVisita, temp_visitas.getId_anexo_temp_visita());
 
@@ -622,7 +660,17 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                                 sowing.setWater_pre_emergence_sowing(tempSowing.getWater_pre_emergence_temp_sowing());
                                 sowing.setWest_sowing(tempSowing.getWest_temp_sowing());
 
-                                long idSowing = MainActivity.myAppDB.myDao().setSowing(sowing);
+
+
+
+                                if (temp_visitas.getId_temp_visita()  > 0 ) {
+
+                                    sowing.setId_visita_sowing((int)idVisita);
+                                    MainActivity.myAppDB.myDao().updateSowing(sowing);
+                                }else{
+                                    long idSowing = MainActivity.myAppDB.myDao().setSowing(sowing);
+                                }
+
 
                             }
                         }catch (SQLiteException e){
@@ -656,7 +704,14 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                                 flowering.setPlant_number_checked_flowering(tempFlowering.getPlant_number_checked_temp_flowering());
 
 
-                                long idFlowing = MainActivity.myAppDB.myDao().setFlowering(flowering);
+                                if (temp_visitas.getId_temp_visita()  > 0 ) {
+
+                                    flowering.setId_visita_flowering((int) idVisita);
+                                    MainActivity.myAppDB.myDao().updateFlowering(flowering);
+                                }else{
+                                    long idFlowing = MainActivity.myAppDB.myDao().setFlowering(flowering);
+                                }
+
                             }
                         }catch (SQLiteException e){
                             problema = true;
@@ -684,8 +739,13 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                                 harvest.setReal_date_temp_harvest(tempHarvest.getReal_date_temp_harvest());
                                 harvest.setSwathing_date_temp_harvest(tempHarvest.getSwathing_date_temp_harvest());
 
+                                if (temp_visitas.getId_temp_visita()  > 0 ) {
 
-                                long idHarvest = MainActivity.myAppDB.myDao().setHarvest(harvest);
+                                    harvest.setId_visita_harvest((int) idVisita);
+                                    MainActivity.myAppDB.myDao().updateHarvest(harvest);
+                                }else {
+                                    long idHarvest = MainActivity.myAppDB.myDao().setHarvest(harvest);
+                                }
                             }
                         }catch (SQLiteException e){
                             problema = true;
@@ -696,14 +756,9 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         }else{
                             Utilidades.avisoListo(activity, "Algo pasó!", "Hubo un problema al guardar, vuelva a intentarlo", "entiendo");
                         }
-
-
-
                     }
                 }
-            }
-
-
+//            }
         }else{
             Utilidades.avisoListo(activity, "Falta algo", "Algo salio mal, por favor revise el fieldbook", "entiendo");
         }
@@ -770,7 +825,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
 
 //        int[] myImageList = new int[]{R.drawable.f1, R.drawable.f2 };
-        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, 2, temp_visitas.getId_anexo_temp_visita());
+        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, 2, temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
 
 
         adapterAgronomo = new FotosListAdapter(myImageList,activity, new FotosListAdapter.OnItemClickListener() {
@@ -782,17 +837,22 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             @Override
             public void onItemLongClick(Fotos fotos) {
 
-                if (!fotos.isFavorita()){
-                    int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookFichaAndVista(0, temp_visitas.getId_anexo_temp_visita(),2);
-
-                    if (favoritas < 3){
-                        cambiarFavorita(fotos);
-                    }else{
-                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_fav),getResources().getString(R.string.message_dialog_fav),getResources().getString(R.string.message_dialog_btn_ok));
-                    }
+                if (temp_visitas.getAction_temp_visita() == 2){
+                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes cambiar el estado de las fotos.","entiendo");
                 }else{
-                    cambiarFavorita(fotos);
+                    if (!fotos.isFavorita()){
+                        int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookFichaAndVista(0, temp_visitas.getId_anexo_temp_visita(),2, temp_visitas.getId_temp_visita());
+
+                        if (favoritas < 3){
+                            cambiarFavorita(fotos);
+                        }else{
+                            Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_fav),getResources().getString(R.string.message_dialog_fav),getResources().getString(R.string.message_dialog_btn_ok));
+                        }
+                    }else{
+                        cambiarFavorita(fotos);
+                    }
                 }
+
 
             }
         });
@@ -840,7 +900,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         rwCliente.setLayoutManager(lManager);
 
 
-        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, temp_visitas.getId_anexo_temp_visita());
+        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
 //        int[] myImageList = new int[]{R.drawable.f1, R.drawable.f2,R.drawable.f3, R.drawable.f4,R.drawable.f5 };
 
         if (myImageList.size() > 0) sp_fenologico.setEnabled(false);
@@ -853,19 +913,24 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         }, new FotosListAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(Fotos fotos) {
-
-                if (!fotos.isFavorita()){
-                    int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookFichaAndVista(0, temp_visitas.getId_anexo_temp_visita(), 0);
-
-
-                    if (favoritas < 3){
-                        cambiarFavorita(fotos);
-                    }else{
-                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_fav),getResources().getString(R.string.message_dialog_fav),getResources().getString(R.string.message_dialog_btn_ok));
-                    }
+                if (temp_visitas.getAction_temp_visita() == 2){
+                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes cambiar el estado de las fotos.","entiendo");
                 }else{
-                    cambiarFavorita(fotos);
+                    if (!fotos.isFavorita()){
+                        int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookFichaAndVista(0, temp_visitas.getId_anexo_temp_visita(), 0, temp_visitas.getId_temp_visita());
+
+
+                        if (favoritas < 3){
+
+                            cambiarFavorita(fotos);
+                        }else{
+                            Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_fav),getResources().getString(R.string.message_dialog_fav),getResources().getString(R.string.message_dialog_btn_ok));
+                        }
+                    }else{
+                        cambiarFavorita(fotos);
+                    }
                 }
+
 
             }
         });

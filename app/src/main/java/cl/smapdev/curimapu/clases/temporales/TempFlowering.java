@@ -47,6 +47,17 @@ public class TempFlowering {
     private String date_inspection_temp_flowering;
 
 
+    private int action_temp_flowering;
+
+
+    public int getAction_temp_flowering() {
+        return action_temp_flowering;
+    }
+
+    public void setAction_temp_flowering(int action_temp_flowering) {
+        this.action_temp_flowering = action_temp_flowering;
+    }
+
     public int getId_temp_flowering() {
         return id_temp_flowering;
     }

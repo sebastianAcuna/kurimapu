@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fc530b20812e09b7ef1cd82cfbc1452c",
+    "identityHash": "f4ad0857318e5b68cdc0966edb6c34d6",
     "entities": [
       {
         "tableName": "fotos",
@@ -400,7 +400,7 @@
       },
       {
         "tableName": "temp_visitas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` INTEGER NOT NULL, `phenological_state_temp_visita` INTEGER NOT NULL, `growth_status_temp_visita` INTEGER NOT NULL, `weed_state_temp_visita` INTEGER NOT NULL, `phytosanitary_state_temp_visita` INTEGER NOT NULL, `harvest_temp_visita` INTEGER NOT NULL, `overall_status_temp_visita` INTEGER NOT NULL, `humidity_floor_temp_visita` INTEGER NOT NULL, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT, `etapa_temp_visitas` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` INTEGER NOT NULL, `phenological_state_temp_visita` INTEGER NOT NULL, `growth_status_temp_visita` INTEGER NOT NULL, `weed_state_temp_visita` INTEGER NOT NULL, `phytosanitary_state_temp_visita` INTEGER NOT NULL, `harvest_temp_visita` INTEGER NOT NULL, `overall_status_temp_visita` INTEGER NOT NULL, `humidity_floor_temp_visita` INTEGER NOT NULL, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT, `action_temp_visita` INTEGER NOT NULL, `etapa_temp_visitas` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id_temp_visita",
@@ -469,6 +469,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "action_temp_visita",
+            "columnName": "action_temp_visita",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "etapa_temp_visitas",
             "columnName": "etapa_temp_visitas",
             "affinity": "INTEGER",
@@ -486,7 +492,7 @@
       },
       {
         "tableName": "temp_flowering",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_flowering` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_flowering` INTEGER NOT NULL, `date_notice_sag_temp_flowering` TEXT, `flowering_estimation_temp_flowering` TEXT, `flowering_start_temp_flowering` TEXT, `flowering_end_temp_flowering` TEXT, `fertility_1_temp_flowering` TEXT, `fertility_2_temp_flowering` TEXT, `fungicide_name_temp_flowering` TEXT, `dose_fungicide_temp_flowering` TEXT, `date_funficide_temp_flowering` TEXT, `date_insecticide_temp_flowering` TEXT, `date_beginning_depuration_temp_flowering` TEXT, `date_off_type_temp_flowering` TEXT, `plant_number_checked_temp_flowering` TEXT, `check_temp_flowering` TEXT, `main_characteristic_temp_flowering` TEXT, `date_inspection_temp_flowering` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_flowering` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_flowering` INTEGER NOT NULL, `date_notice_sag_temp_flowering` TEXT, `flowering_estimation_temp_flowering` TEXT, `flowering_start_temp_flowering` TEXT, `flowering_end_temp_flowering` TEXT, `fertility_1_temp_flowering` TEXT, `fertility_2_temp_flowering` TEXT, `fungicide_name_temp_flowering` TEXT, `dose_fungicide_temp_flowering` TEXT, `date_funficide_temp_flowering` TEXT, `date_insecticide_temp_flowering` TEXT, `date_beginning_depuration_temp_flowering` TEXT, `date_off_type_temp_flowering` TEXT, `plant_number_checked_temp_flowering` TEXT, `check_temp_flowering` TEXT, `main_characteristic_temp_flowering` TEXT, `date_inspection_temp_flowering` TEXT, `action_temp_flowering` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id_temp_flowering",
@@ -595,6 +601,12 @@
             "columnName": "date_inspection_temp_flowering",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "action_temp_flowering",
+            "columnName": "action_temp_flowering",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -608,7 +620,7 @@
       },
       {
         "tableName": "temp_harvest",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_harvest` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_harvest` INTEGER NOT NULL, `estimated_date_temp_harvest` TEXT, `real_date_temp_harvest` TEXT, `observation_dessicant_temp_harvest` TEXT, `swathing_date_temp_harvest` TEXT, `kg_ha_yield_temp_harvest` TEXT, `observation_yield_temp_harvest` TEXT, `date_harvest_estimation_temp_harvest` TEXT, `beginning_date_temp_harvest` TEXT, `end_date_temp_harvest` TEXT, `owner_machine_temp_harvest` TEXT, `model_machine_temp_harvest` TEXT, `porcent_temp_harvest` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_harvest` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_harvest` INTEGER NOT NULL, `estimated_date_temp_harvest` TEXT, `real_date_temp_harvest` TEXT, `observation_dessicant_temp_harvest` TEXT, `swathing_date_temp_harvest` TEXT, `kg_ha_yield_temp_harvest` TEXT, `observation_yield_temp_harvest` TEXT, `date_harvest_estimation_temp_harvest` TEXT, `beginning_date_temp_harvest` TEXT, `end_date_temp_harvest` TEXT, `owner_machine_temp_harvest` TEXT, `model_machine_temp_harvest` TEXT, `porcent_temp_harvest` REAL NOT NULL, `action_temp_harvest` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id_temp_harvest",
@@ -693,6 +705,12 @@
             "columnName": "porcent_temp_harvest",
             "affinity": "REAL",
             "notNull": true
+          },
+          {
+            "fieldPath": "action_temp_harvest",
+            "columnName": "action_temp_harvest",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -706,7 +724,7 @@
       },
       {
         "tableName": "temp_sowing",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_sowing` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_sowing` INTEGER NOT NULL, `sag_planting_temp_sowing` TEXT, `delivered_temp_sowing` TEXT, `type_of_mixture_applied_temp_sowing` TEXT, `amount_applied_temp_sowing` TEXT, `meters_isoliation_temp_sowing` INTEGER NOT NULL, `south_temp_sowing` TEXT, `north_temp_sowing` TEXT, `east_temp_sowing` TEXT, `west_temp_sowing` TEXT, `female_lines_temp_sowing` TEXT, `female_sowing_lot_temp_sowing` TEXT, `real_sowing_female_temp_sowing` REAL NOT NULL, `female_sowing_date_start_temp_sowing` TEXT, `female_sowing_date_end_temp_sowing` TEXT, `sowing_seed_meter_temp_sowing` REAL NOT NULL, `row_distance_temp_sowing` REAL NOT NULL, `dose_1_temp_sowing` TEXT, `date_1_temp_sowing` TEXT, `dose_2_temp_sowing` TEXT, `date_2_temp_sowing` TEXT, `name_1_herb_temp_sowing` TEXT, `date_1_herb_temp_sowing` TEXT, `name_2_herb_temp_sowing` TEXT, `date_2_herb_temp_sowing` TEXT, `name_3_herb_temp_sowing` TEXT, `date_3_herb_temp_sowing` TEXT, `date_pre_emergence_temp_sowing` TEXT, `dose_pre_emergence_temp_sowing` TEXT, `water_pre_emergence_temp_sowing` REAL NOT NULL, `plant_m_temp_sowing` REAL NOT NULL, `population_plants_ha_temp_sowing` REAL NOT NULL, `basta_spray_1_temp_sowing` TEXT, `basta_spray_2_temp_sowing` TEXT, `basta_spray_3_temp_sowing` TEXT, `basta_spray_4_temp_sowing` TEXT, `basta_splat_4_ha_temp_sowing` TEXT, `date_nombre_largo_temp_sowing` TEXT, `product_nombre_largo_temp_sowing` TEXT, `dose_nombre_largo_temp_sowing` TEXT, `foliar_temp_sowing` TEXT, `dose_foliar_temp_sowing` TEXT, `date_foliar_temp_sowing` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_sowing` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_sowing` INTEGER NOT NULL, `sag_planting_temp_sowing` TEXT, `delivered_temp_sowing` TEXT, `type_of_mixture_applied_temp_sowing` TEXT, `amount_applied_temp_sowing` TEXT, `meters_isoliation_temp_sowing` INTEGER NOT NULL, `south_temp_sowing` TEXT, `north_temp_sowing` TEXT, `east_temp_sowing` TEXT, `west_temp_sowing` TEXT, `action_temp_sowing` INTEGER NOT NULL, `female_lines_temp_sowing` TEXT, `female_sowing_lot_temp_sowing` TEXT, `real_sowing_female_temp_sowing` REAL NOT NULL, `female_sowing_date_start_temp_sowing` TEXT, `female_sowing_date_end_temp_sowing` TEXT, `sowing_seed_meter_temp_sowing` REAL NOT NULL, `row_distance_temp_sowing` REAL NOT NULL, `dose_1_temp_sowing` TEXT, `date_1_temp_sowing` TEXT, `dose_2_temp_sowing` TEXT, `date_2_temp_sowing` TEXT, `name_1_herb_temp_sowing` TEXT, `date_1_herb_temp_sowing` TEXT, `name_2_herb_temp_sowing` TEXT, `date_2_herb_temp_sowing` TEXT, `name_3_herb_temp_sowing` TEXT, `date_3_herb_temp_sowing` TEXT, `date_pre_emergence_temp_sowing` TEXT, `dose_pre_emergence_temp_sowing` TEXT, `water_pre_emergence_temp_sowing` REAL NOT NULL, `plant_m_temp_sowing` REAL NOT NULL, `population_plants_ha_temp_sowing` REAL NOT NULL, `basta_spray_1_temp_sowing` TEXT, `basta_spray_2_temp_sowing` TEXT, `basta_spray_3_temp_sowing` TEXT, `basta_spray_4_temp_sowing` TEXT, `basta_splat_4_ha_temp_sowing` TEXT, `date_nombre_largo_temp_sowing` TEXT, `product_nombre_largo_temp_sowing` TEXT, `dose_nombre_largo_temp_sowing` TEXT, `foliar_temp_sowing` TEXT, `dose_foliar_temp_sowing` TEXT, `date_foliar_temp_sowing` TEXT)",
         "fields": [
           {
             "fieldPath": "id_temp_sowing",
@@ -773,6 +791,12 @@
             "columnName": "west_temp_sowing",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "action_temp_sowing",
+            "columnName": "action_temp_sowing",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "female_lines_temp_sowing",
@@ -1635,7 +1659,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"fc530b20812e09b7ef1cd82cfbc1452c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f4ad0857318e5b68cdc0966edb6c34d6\")"
     ]
   }
 }

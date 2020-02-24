@@ -106,7 +106,10 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         bind(view);
 
 
-        cargarTemp();
+        //if (view.findViewById(R.id.container_fotos_sowing) != null){
+            cargarTemp();
+        //}
+
 
 
 //        AsyncTask.execute(new Runnable() {
@@ -151,6 +154,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
             temp_sowing = new TempSowing();
             if (prefs != null) {
                 temp_sowing.setId_anexo_temp_sowing(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+
             }
             MainActivity.myAppDB.myDao().setTempSowing(temp_sowing);
             temp_sowing = MainActivity.myAppDB.myDao().getTempSowing(temp_sowing.getId_anexo_temp_sowing());
@@ -162,9 +166,6 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
             loadUiData();
         }
 
-
-
-        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_sowing, FragmentFotos.getInstance(2), Utilidades.FRAGMENT_FOTOS).commit();
     }
 
 //    private boolean checkPermission() {
@@ -198,7 +199,12 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
 
 
     private void loadUiData(){
+        try{
 
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_sowing, FragmentFotos.getInstance(2), Utilidades.FRAGMENT_FOTOS).commit();
+        }catch (IllegalArgumentException e){
+            Log.e("ILEGAL EXCEPTION SOWING", e.getMessage());
+        }
         date_siembra_sag.setText(Utilidades.voltearFechaVista(temp_sowing.getSag_planting_temp_sowing()));
         date_sowing_female_start.setText(Utilidades.voltearFechaVista(temp_sowing.getFemale_sowing_date_start_temp_sowing()));
         date_sowing_female_end.setText(Utilidades.voltearFechaVista(temp_sowing.getFemale_sowing_date_end_temp_sowing()));
@@ -247,6 +253,48 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         et_water_lts.setText(String.valueOf(temp_sowing.getWater_pre_emergence_temp_sowing()));
         et_f_plant.setText(String.valueOf(temp_sowing.getPlant_m_temp_sowing()));
         et_f_population.setText(String.valueOf(temp_sowing.getPopulation_plants_ha_temp_sowing()));
+
+
+        if (temp_sowing.getAction_temp_sowing() == 2){
+            et_f_population.setEnabled(false);
+            et_f_plant.setEnabled(false);
+            et_water_lts.setEnabled(false);
+            et_row_distance.setEnabled(false);
+            et_sowin_seed_f.setEnabled(false);
+            et_real_sowing.setEnabled(false);
+            et_meters.setEnabled(false);
+            et_dose_foliar.setEnabled(false);
+            et_foliar.setEnabled(false);
+            et_dose_lt_ha.setEnabled(false);
+            et_producto_bruchus.setEnabled(false);
+            et_emergence_dose.setEnabled(false);
+            et_name_tres.setEnabled(false);
+            et_name_two.setEnabled(false);
+            et_name_one.setEnabled(false);
+            et_dose_two.setEnabled(false);
+            et_dose_one.setEnabled(false);
+            et_showing_female.setEnabled(false);
+            et_lines_female.setEnabled(false);
+            et_cant_aplicada.setEnabled(false);
+            et_tipo_mezcla.setEnabled(false);
+            et_entregado.setEnabled(false);
+            date_siembra_sag.setEnabled(false);
+            date_sowing_female_start.setEnabled(false);
+            date_sowing_female_end.setEnabled(false);
+            date_date_one.setEnabled(false);
+            date_date_two.setEnabled(false);
+            date_herbicide_date_one.setEnabled(false);
+            date_herbicide_date_two.setEnabled(false);
+            date_herbicide_date_tres.setEnabled(false);
+            date_emergence_date.setEnabled(false);
+            date_spray_uno.setEnabled(false);
+            date_spray_dos.setEnabled(false);
+            date_spray_tres.setEnabled(false);
+            date_spray_cuatro.setEnabled(false);
+            date_spray_cuatro_ha.setEnabled(false);
+            date_bruchus.setEnabled(false);
+            date_date_foliar.setEnabled(false);
+        }
 
     }
 
@@ -353,6 +401,32 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         et_dose_lt_ha = view.findViewById(R.id.et_dose_lt_ha);
         et_foliar = view.findViewById(R.id.et_foliar);
         et_dose_foliar = view.findViewById(R.id.et_dose_foliar);
+
+
+        et_dose_foliar.setSelectAllOnFocus(true);
+        et_foliar.setSelectAllOnFocus(true);
+        et_dose_lt_ha.setSelectAllOnFocus(true);
+        et_producto_bruchus.setSelectAllOnFocus(true);
+        et_f_population.setSelectAllOnFocus(true);
+        et_f_plant.setSelectAllOnFocus(true);
+        et_water_lts.setSelectAllOnFocus(true);
+        et_emergence_dose.setSelectAllOnFocus(true);
+        et_name_tres.setSelectAllOnFocus(true);
+        et_name_two.setSelectAllOnFocus(true);
+        et_name_one.setSelectAllOnFocus(true);
+        et_dose_two.setSelectAllOnFocus(true);
+        et_dose_one.setSelectAllOnFocus(true);
+        et_row_distance.setSelectAllOnFocus(true);
+        et_sowin_seed_f.setSelectAllOnFocus(true);
+        et_real_sowing.setSelectAllOnFocus(true);
+        et_showing_female.setSelectAllOnFocus(true);
+        et_lines_female.setSelectAllOnFocus(true);
+        et_meters.setSelectAllOnFocus(true);
+        et_cant_aplicada.setSelectAllOnFocus(true);
+        et_tipo_mezcla.setSelectAllOnFocus(true);
+        et_entregado.setSelectAllOnFocus(true);
+        et_easting.setSelectAllOnFocus(true);
+        et_norting.setSelectAllOnFocus(true);
 
 
 
