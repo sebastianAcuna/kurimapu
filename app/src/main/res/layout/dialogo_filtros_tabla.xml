@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent" android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -62,14 +63,23 @@
                 android:id="@+id/textInp_dialog_anexo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.8">
+                android:layout_weight="0.8"
+                app:endIconMode="clear_text"
+                app:counterEnabled="true"
+                app:counterMaxLength="50"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                app:helperText="Ingrese numero de anexo"
+                android:hint="@string/format_set_input">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_dialog_anexo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/format_set_input"
-                    android:inputType="number"/>
+                    android:inputType="text"
+                    android:maxLength="50"
+                    android:maxLines="1"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -156,13 +166,21 @@
                 android:id="@+id/textInp_dialog_agricultor"
                 android:layout_width="0dp"
                 android:layout_weight="0.8"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                app:errorEnabled="true"
+                app:counterEnabled="true"
+                app:counterMaxLength="50"
+                app:helperText="ingrese al agricultor"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_dialog_agricultor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/format_set_input"
+                    android:maxLength="50"
+                    android:maxLines="1"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -192,13 +210,22 @@
                 android:id="@+id/textInp_dialog_potrero"
                 android:layout_width="0dp"
                 android:layout_weight="0.8"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                app:errorEnabled="true"
+                app:counterEnabled="true"
+                app:counterMaxLength="50"
+                app:boxStrokeColor="@color/colorAccent"
+                app:helperText="ingrese paddock"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_dialog_potero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/format_set_input"
+                    android:maxLength="50"
+                    android:maxLines="1"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -208,7 +235,7 @@
             android:id="@+id/btn_aplica_filtro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_green_dark"
+
             android:layout_below="@id/container_cinco"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/padding"
@@ -218,15 +245,12 @@
             android:id="@+id/btn_cancela_filtro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+            android:textColor="@color/colorAccent"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/btn_aplica_filtro"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_marginTop="@dimen/padding"
             android:text="@string/nav_cancel"/>
-
-
-
-
 
     </RelativeLayout>
 

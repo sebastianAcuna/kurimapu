@@ -85,7 +85,7 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
                 }
 
 //
-                Picasso.get().load("file:///"+fotos.getRuta()).resize(800,600).centerCrop().into(imageView);
+                Picasso.get().load("file:///"+fotos.getRuta()).resize(300,200).centerCrop().into(imageView);
                 imageTitle.setText(fotos.getNombre_foto());
                 imageTitle.setEnabled(false);
 

@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+<RadioGroup android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <RadioButton
             android:id="@+id/radio_inactiva"
@@ -34,4 +27,3 @@
             android:layout_margin="@dimen/padding"
             android:text="Rechazada" />
     </RadioGroup>
-</LinearLayout>

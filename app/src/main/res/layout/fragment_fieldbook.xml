@@ -27,7 +27,9 @@
             app:tabIndicatorHeight="5dp"
             app:tabMode="fixed"
             app:tabTextColor="@color/secondaryText"
-            app:tabSelectedTextColor="@color/colorAccent" />
+            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabIndicatorColor="@color/colorAccent"
+            />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,7 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_sub_pager"
             android:layout_width="match_parent"
@@ -44,11 +45,6 @@
             />
 
     </LinearLayout>
-
-
-
-
-
-    </LinearLayout>
+</LinearLayout>
 
 

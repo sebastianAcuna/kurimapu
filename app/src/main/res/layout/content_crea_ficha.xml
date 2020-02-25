@@ -7,347 +7,270 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:orientation="vertical"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding"
-        android:elevation="@dimen/padding"
-        >
-        <LinearLayout
-            android:id="@+id/container_1"
-            android:layout_width="match_parent"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/lbl_year"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:baselineAligned="false"
-            android:padding="@dimen/padding">
+            android:text="Año"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/cont_rut_agricultor"/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-
-                <TextView
-                    android:id="@+id/lbl_year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Año"/>
-
-                <Spinner
-                    android:id="@+id/sp_year"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/asoc_agro"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                android:visibility="gone"
-                >
-
-                <TextView
-                    android:id="@+id/lbl_asoc_agr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Asociación Agricultor"/>
-
-                <Spinner
-                    android:id="@+id/sp_asoc_agr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/older_agr"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-
-                <TextView
-                    android:id="@+id/lbl_agric"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Agricultor"/>
-
-                <Spinner
-                    android:id="@+id/sp_agric"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/container_2"
-            android:layout_width="match_parent"
+        <Spinner
+            android:id="@+id/sp_year"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/container_1"
-            android:padding="@dimen/padding">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cont_rut_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_rut_agricultor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:hint="Rut Agricultor" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cont_nombre_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_nombre_agricultor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:maxLines="1"
-                        android:hint="Nombre Agricultor" />
-                </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintHorizontal_weight="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_year"
+            app:layout_constraintEnd_toStartOf="@id/sp_agric"
+            />
 
 
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cont_telef_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_telef_agricultor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:maxLines="1"
-                        android:hint="Teléfono Agricultor" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-        <!--CONTAINER 3-->
-        <LinearLayout
-            android:id="@+id/container_3"
-            android:layout_width="match_parent"
+<!--        <TextView
+            android:id="@+id/lbl_asoc_agr"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/container_2"
-            android:padding="@dimen/padding">
+            android:text="Asociación Agricultor"
+            app:layout_constraintStart_toEndOf="@id/sp_year"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cont_admin_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_admin_agricultor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:maxLines="1"
-                        android:hint="Administrador" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cont_tel_admin_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_tel_admin_agricultor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:maxLines="1"
-                        android:hint="Teléfono Admin." />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cont_oferta_neg_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_oferta_neg_agricultor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:hint="Oferta Negocio" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-        <!--CONTAINER 4-->
-        <LinearLayout
-            android:id="@+id/container_4"
-            android:layout_width="match_parent"
+        <Spinner
+            android:id="@+id/sp_asoc_agr"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/container_3"
-            android:padding="@dimen/padding">
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintTop_toBottomOf="@id/lbl_asoc_agr"
+            app:layout_constraintStart_toEndOf="@id/sp_year"
+            app:layout_constraintEnd_toStartOf="@id/sp_agric"/>-->
 
-            <LinearLayout
-                android:layout_width="0dp"
+        <TextView
+            android:id="@+id/lbl_agric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agricultor"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/sp_agric"
+            />
+
+        <Spinner
+            android:id="@+id/sp_agric"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.5"
+            app:layout_constraintTop_toBottomOf="@id/lbl_agric"
+            app:layout_constraintStart_toEndOf="@id/sp_year"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_rut_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            android:layout_margin="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:hint="Rut Agricultor"
+            app:layout_constraintTop_toBottomOf="@id/sp_year"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cont_nombre_agricultor"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_rut_agricultor"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
+                android:inputType="text"
+                android:enabled="false"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cont_localidad_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_localidad_agricultor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:hint="Localidad" />
-                </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_nombre_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:hint="Nombre Agricultor"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toEndOf="@id/cont_rut_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/sp_agric"
+            app:layout_constraintEnd_toStartOf="@id/cont_telef_agricultor">
 
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_nombre_agricultor"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-                <TextView
-                    android:id="@+id/lbl_region_agricultor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Región"/>
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:enabled="false"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <Spinner
-                    android:id="@+id/sp_region_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_telef_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            android:hint="Teléfono Agricultor"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toEndOf="@id/cont_nombre_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/sp_agric"
+            app:layout_constraintEnd_toEndOf="parent">
 
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_telef_agricultor"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-
-                <TextView
-                    android:id="@+id/lbl_comuna_agricultor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Comuna"/>
-                <Spinner
-                    android:id="@+id/sp_comuna_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                android:inputType="phone"
+                android:maxLines="1"
+                android:enabled="false"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-            </LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_admin_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            android:hint="Administrador"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cont_rut_agricultor"
+            app:layout_constraintEnd_toStartOf="@id/cont_tel_admin_agricultor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_admin_agricultor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:enabled="false"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-        </LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_tel_admin_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            android:hint="Teléfono Admin."
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toEndOf="@id/cont_admin_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/cont_nombre_agricultor"
+            app:layout_constraintEnd_toStartOf="@id/cont_oferta_neg_agricultor"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_tel_admin_agricultor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:enabled="false"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_oferta_neg_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:hint="Oferta Negocio"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toEndOf="@id/cont_tel_admin_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/cont_telef_agricultor"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_oferta_neg_agricultor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_localidad_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:hint="Localidad"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cont_admin_agricultor"
+            app:layout_constraintEnd_toStartOf="@id/sp_region_agricultor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_localidad_agricultor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lbl_region_agricultor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Región"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="@id/sp_region_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/cont_tel_admin_agricultor"/>
+
+        <Spinner
+            android:id="@+id/sp_region_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintTop_toBottomOf="@id/lbl_region_agricultor"
+            app:layout_constraintStart_toEndOf="@id/cont_localidad_agricultor"
+            app:layout_constraintEnd_toStartOf="@id/sp_comuna_agricultor"/>
+
+        <TextView
+            android:id="@+id/lbl_comuna_agricultor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comuna"
+            app:layout_constraintStart_toStartOf="@id/sp_comuna_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/cont_oferta_neg_agricultor"/>
+        <Spinner
+            android:id="@+id/sp_comuna_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintTop_toBottomOf="@id/lbl_comuna_agricultor"
+            app:layout_constraintStart_toEndOf="@id/sp_region_agricultor"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cont_has_disp_agricultor"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/container_4"
-            android:layout_alignParentStart="true"
-            android:padding="@dimen/padding">
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cont_localidad_agricultor">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_has_disp_agricultor"
@@ -363,98 +286,84 @@
             android:id="@+id/cont_obs_agricultor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cont_has_disp_agricultor"
-            android:layout_alignParentStart="true"
-            android:padding="@dimen/padding">
+            android:padding="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:hint="Observaciones"
+            app:counterMaxLength="200"
+
+            app:counterEnabled="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cont_has_disp_agricultor">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_obs_agricultor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
-                android:hint="Observaciones" />
+                android:maxLength="200"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <!--CONTAINER 5-->
-        <LinearLayout
-            android:id="@+id/container_5"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_northing_agricultor"
+            android:layout_width="0dp"
+            app:layout_constraintHorizontal_weight="0.3"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/cont_obs_agricultor"
-            android:padding="@dimen/padding">
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:hint="norting"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cont_obs_agricultor"
+            app:layout_constraintEnd_toStartOf="@id/cont_easting_agricultor">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_northing_agricultor"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
+                android:enabled="false"
+                android:inputType="numberDecimal"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cont_northing_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_northing_agricultor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:inputType="numberDecimal"
-                        android:hint="norting" />
-                </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_easting_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:hint="easting"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toEndOf="@id/cont_northing_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/cont_obs_agricultor"
+            app:layout_constraintEnd_toStartOf="@id/btn_save_agricultor">
 
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_easting_agricultor"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="start"
-                >
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cont_easting_agricultor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_easting_agricultor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:inputType="numberDecimal"
-                        android:hint="easting" />
-                </com.google.android.material.textfield.TextInputLayout>
+                android:enabled="false"
+                android:inputType="numberDecimal"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:gravity="center"
-                >
+        <Button
+            android:id="@+id/btn_save_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_margin="10dp"
+            android:layout_marginTop="8dp"
+            android:text="Guardar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintStart_toEndOf="@id/cont_easting_agricultor"
+            app:layout_constraintTop_toTopOf="@id/cont_easting_agricultor"
+            app:layout_constraintBottom_toBottomOf="@id/cont_easting_agricultor"/>
 
-                <Button
-                    android:id="@+id/btn_save_agricultor"
-                    android:layout_width="200dp"
-                    android:layout_height="70dp"
-                    android:text="Guardar"
-                    />
-
-
-            </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </LinearLayout>
-
-
-
-    </RelativeLayout>
 
 </ScrollView>

@@ -56,13 +56,13 @@ public class FragmentCreaFicha extends Fragment {
     };
 
     private MainActivity activity;
-    private Spinner sp_year, sp_asoc_agr, sp_agric,sp_region_agricultor,sp_comuna_agricultor;
+    private Spinner sp_year/*, sp_asoc_agr*/, sp_agric,sp_region_agricultor,sp_comuna_agricultor;
 
     private EditText et_rut_agricultor, et_nombre_agricultor,et_telef_agricultor,et_admin_agricultor,
             et_tel_admin_agricultor,et_oferta_neg_agricultor,et_localidad_agricultor,et_has_disp_agricultor,et_obs_agricultor,
             et_northing_agricultor,et_easting_agricultor;
 
-    private LinearLayout older_agr,asoc_agro;
+//    private LinearLayout older_agr,asoc_agro;
 
     private Button btn_save_agricultor;
 
@@ -193,7 +193,7 @@ public class FragmentCreaFicha extends Fragment {
 
 
 
-        sp_asoc_agr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+/*        sp_asoc_agr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (sp_asoc_agr.getSelectedItem().toString().equals(getResources().getString(R.string.asoc_older_farmer))){
@@ -207,7 +207,7 @@ public class FragmentCreaFicha extends Fragment {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
+        });*/
 
         sp_region_agricultor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -287,7 +287,7 @@ public class FragmentCreaFicha extends Fragment {
         if (fichasCompletas != null){
             btn_save_agricultor.setText("Editar");
 
-            asoc_agro.setVisibility(View.INVISIBLE);
+//            asoc_agro.setVisibility(View.INVISIBLE);
 
 
             sp_region_agricultor.setEnabled(false);
@@ -390,7 +390,7 @@ public class FragmentCreaFicha extends Fragment {
 
                 rutAgro = Utilidades.formatear(rutAgro);
 
-                if (sp_asoc_agr.getSelectedItem().toString().equals(getResources().getString(R.string.asoc_new_farmer))){
+/*                if (sp_asoc_agr.getSelectedItem().toString().equals(getResources().getString(R.string.asoc_new_farmer))){
 
                     Agricultor agricultor = new Agricultor();
                     agricultor.setRut_agricultor(rutAgro);
@@ -403,7 +403,7 @@ public class FragmentCreaFicha extends Fragment {
                     agricultor.setAgricultor_subido(false);
 
                     MainActivity.myAppDB.myDao().insertAgricultor(agricultor);
-                }
+                }*/
 
                 Fichas fichas = new Fichas();
                 fichas.setActiva(0);
@@ -582,8 +582,8 @@ public class FragmentCreaFicha extends Fragment {
     private void setAdapters(){
         sp_year.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, getResources().getStringArray(R.array.anos_toolbar)));
         sp_year.setSelection(getResources().getStringArray(R.array.anos_toolbar).length - 1);
-        sp_asoc_agr.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, getResources().getStringArray(R.array.asociacion_agricultor)));
-        sp_asoc_agr.setSelection(1);
+/*        sp_asoc_agr.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, getResources().getStringArray(R.array.asociacion_agricultor)));
+        sp_asoc_agr.setSelection(1);*/
 
 
         List<Agricultor> agricultorList = MainActivity.myAppDB.myDao().getAgricultores();
@@ -668,14 +668,14 @@ public class FragmentCreaFicha extends Fragment {
 
 
         sp_year = (Spinner) view.findViewById(R.id.sp_year);
-        sp_asoc_agr = (Spinner) view.findViewById(R.id.sp_asoc_agr);
+//        sp_asoc_agr = (Spinner) view.findViewById(R.id.sp_asoc_agr);
         sp_agric = (Spinner) view.findViewById(R.id.sp_agric);
         sp_region_agricultor = (Spinner) view.findViewById(R.id.sp_region_agricultor);
         sp_comuna_agricultor = (Spinner) view.findViewById(R.id.sp_comuna_agricultor);
 
 
-        older_agr = (LinearLayout) view.findViewById(R.id.older_agr);
-        asoc_agro = (LinearLayout) view.findViewById(R.id.asoc_agro);
+//        older_agr = (LinearLayout) view.findViewById(R.id.older_agr);
+//        asoc_agro = (LinearLayout) view.findViewById(R.id.asoc_agro);
 
         et_rut_agricultor = (EditText) view.findViewById(R.id.et_rut_agricultor);
         et_nombre_agricultor = (EditText) view.findViewById(R.id.et_nombre_agricultor);

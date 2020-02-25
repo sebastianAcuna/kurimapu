@@ -450,10 +450,10 @@ public class FragmentFotos extends Fragment {
                     }
                 })/*.setNegativeButton("cancelar",null)*/.create();
 
-        final TextView txt = viewInfalted.findViewById(R.id.et_cambia_nombre_foto);
+//        final TextView txt = viewInfalted.findViewById(R.id.et_cambia_nombre_foto);
         final ImageView imageView = viewInfalted.findViewById(R.id.img_alert_foto);
-        String medidaAMostrar = "Nombre prueba";
-        txt.setText(medidaAMostrar);
+
+//        txt.setText(medidaAMostrar);
         Picasso.get().load("file:///"+foto.getRuta()).into(imageView);
         builder.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

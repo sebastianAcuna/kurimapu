@@ -77,6 +77,7 @@ public class DialogFilterFichas extends DialogFragment {
         builder.setView(view);
 
         builder.setTitle("Filtros para Ficha");
+        
 
         bind(view);
 

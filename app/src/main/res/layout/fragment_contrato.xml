@@ -11,7 +11,9 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:background="@color/subToolbarColor">
+
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -26,7 +28,11 @@
             android:layout_height="wrap_content"
             android:background="@color/toolbarColor"
             app:tabGravity="fill"
-            android:layout_gravity="start"/>
+            android:layout_gravity="top"
+            app:tabMode="fixed"
+            app:tabTextColor="@color/secondaryText"
+            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabIndicatorColor="@color/colorAccent"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
