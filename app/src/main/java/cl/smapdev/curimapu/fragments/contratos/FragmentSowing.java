@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -39,6 +40,8 @@ import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.adapters.CropRotationAdapter;
+import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.temporales.TempSowing;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
@@ -60,16 +63,17 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
     private LocationManager locationManager;
 
 
-    private EditText date_siembra_sag, date_sowing_female_start, date_sowing_female_end, date_date_one, date_date_two, date_herbicide_date_one, date_herbicide_date_two, date_herbicide_date_tres,
-            date_emergence_date, date_spray_uno, date_spray_dos, date_spray_tres, date_spray_cuatro, date_spray_cuatro_ha, date_bruchus, date_date_foliar;
+    private EditText date_siembra_sag, date_sowing_female_start, date_sowing_female_end, date_date_foliar;
 
     /*private ImageButton btn_fecha_siembra_sag, btn_sowing_female_start, btn_sowing_female_end,btn_date_one,btn_date_two,btn_herbicide_date_one,btn_herbicide_date_two,btn_herbicide_date_tres,
             btn_emergence_date,btn_spray_uno,btn_spray_dos,btn_spray_tres,btn_spray_cuatro,btn_spray_cuatro_ha,btn_bruchus,btn_date_foliar;*/
 
 
     private EditText  et_2015, et_2016, et_2017, et_2018, et_entregado,
-            et_tipo_mezcla, et_cant_aplicada, et_meters, et_lines_female, et_showing_female, et_real_sowing, et_sowin_seed_f, et_row_distance, et_dose_one, et_dose_two, et_name_one, et_name_two,
-            et_name_tres, et_emergence_dose, et_water_lts, et_f_plant, et_f_population, et_producto_bruchus, et_dose_lt_ha, et_foliar, et_dose_foliar;
+            et_tipo_mezcla, et_cant_aplicada, et_meters, et_lines_female, et_showing_female, et_real_sowing, et_sowin_seed_f, et_row_distance, et_f_plant, et_f_population,  et_foliar, et_dose_foliar;
+
+
+    private RecyclerView recycler_crop;
 
 
     private TextView et_norting, et_easting;
@@ -198,6 +202,14 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
 //    }
 
 
+    private void cargarCrop(){
+
+        List<CropRotation> cropList = MainActivity.myAppDB.myDao().getCropRotation(temp_sowing.getId_anexo_temp_sowing());
+        CropRotationAdapter cropAdapter = new CropRotationAdapter(cropList, activity);
+        recycler_crop.setAdapter(cropAdapter);
+    }
+
+
     private void loadUiData(){
         try{
 
@@ -205,10 +217,14 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         }catch (IllegalArgumentException e){
             Log.e("ILEGAL EXCEPTION SOWING", e.getMessage());
         }
+
+
+        cargarCrop();
+
         date_siembra_sag.setText(Utilidades.voltearFechaVista(temp_sowing.getSag_planting_temp_sowing()));
         date_sowing_female_start.setText(Utilidades.voltearFechaVista(temp_sowing.getFemale_sowing_date_start_temp_sowing()));
         date_sowing_female_end.setText(Utilidades.voltearFechaVista(temp_sowing.getFemale_sowing_date_end_temp_sowing()));
-        date_date_one.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_1_temp_sowing()));
+/*        date_date_one.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_1_temp_sowing()));
         date_date_two.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_2_temp_sowing()));
         date_herbicide_date_one.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_1_herb_temp_sowing()));
         date_herbicide_date_two.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_2_herb_temp_sowing()));
@@ -219,7 +235,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         date_spray_tres.setText(Utilidades.voltearFechaVista(temp_sowing.getBasta_spray_3_temp_sowing()));
         date_spray_cuatro.setText(Utilidades.voltearFechaVista(temp_sowing.getBasta_spray_4_temp_sowing()));
         date_spray_cuatro_ha.setText(Utilidades.voltearFechaVista(temp_sowing.getBasta_splat_4_ha_temp_sowing()));
-        date_bruchus.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_nombre_largo_temp_sowing()));
+        date_bruchus.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_nombre_largo_temp_sowing()));*/
         date_date_foliar.setText(Utilidades.voltearFechaVista(temp_sowing.getDate_foliar_temp_sowing()));
 
 
@@ -234,14 +250,14 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         et_cant_aplicada.setText(temp_sowing.getAmount_applied_temp_sowing());
         et_lines_female.setText(temp_sowing.getFemale_lines_temp_sowing());
         et_showing_female.setText(temp_sowing.getFemale_sowing_lot_temp_sowing());
-        et_dose_one.setText(temp_sowing.getDose_1_temp_sowing());
+/*        et_dose_one.setText(temp_sowing.getDose_1_temp_sowing());
         et_dose_two.setText(temp_sowing.getDose_2_temp_sowing());
         et_name_one.setText(temp_sowing.getName_1_herb_temp_sowing());
         et_name_two.setText(temp_sowing.getName_2_herb_temp_sowing());
         et_name_tres.setText(temp_sowing.getName_3_herb_temp_sowing());
         et_emergence_dose.setText(temp_sowing.getDose_pre_emergence_temp_sowing());
         et_producto_bruchus.setText(temp_sowing.getProduct_nombre_largo_temp_sowing());
-        et_dose_lt_ha.setText(temp_sowing.getDose_nombre_largo_temp_sowing());
+        et_dose_lt_ha.setText(temp_sowing.getDose_nombre_largo_temp_sowing());*/
         et_foliar.setText(temp_sowing.getFoliar_temp_sowing());
         et_dose_foliar.setText(temp_sowing.getDose_foliar_temp_sowing());
 
@@ -250,7 +266,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         et_real_sowing.setText(String.valueOf(temp_sowing.getReal_sowing_female_temp_sowing()));
         et_sowin_seed_f.setText(String.valueOf(temp_sowing.getSowing_seed_meter_temp_sowing()));
         et_row_distance.setText(String.valueOf(temp_sowing.getRow_distance_temp_sowing()));
-        et_water_lts.setText(String.valueOf(temp_sowing.getWater_pre_emergence_temp_sowing()));
+//        et_water_lts.setText(String.valueOf(temp_sowing.getWater_pre_emergence_temp_sowing()));
         et_f_plant.setText(String.valueOf(temp_sowing.getPlant_m_temp_sowing()));
         et_f_population.setText(String.valueOf(temp_sowing.getPopulation_plants_ha_temp_sowing()));
 
@@ -258,21 +274,21 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         if (temp_sowing.getAction_temp_sowing() == 2){
             et_f_population.setEnabled(false);
             et_f_plant.setEnabled(false);
-            et_water_lts.setEnabled(false);
+//            et_water_lts.setEnabled(false);
             et_row_distance.setEnabled(false);
             et_sowin_seed_f.setEnabled(false);
             et_real_sowing.setEnabled(false);
             et_meters.setEnabled(false);
             et_dose_foliar.setEnabled(false);
             et_foliar.setEnabled(false);
-            et_dose_lt_ha.setEnabled(false);
+/*            et_dose_lt_ha.setEnabled(false);
             et_producto_bruchus.setEnabled(false);
             et_emergence_dose.setEnabled(false);
             et_name_tres.setEnabled(false);
             et_name_two.setEnabled(false);
             et_name_one.setEnabled(false);
             et_dose_two.setEnabled(false);
-            et_dose_one.setEnabled(false);
+            et_dose_one.setEnabled(false);*/
             et_showing_female.setEnabled(false);
             et_lines_female.setEnabled(false);
             et_cant_aplicada.setEnabled(false);
@@ -281,7 +297,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
             date_siembra_sag.setEnabled(false);
             date_sowing_female_start.setEnabled(false);
             date_sowing_female_end.setEnabled(false);
-            date_date_one.setEnabled(false);
+/*            date_date_one.setEnabled(false);
             date_date_two.setEnabled(false);
             date_herbicide_date_one.setEnabled(false);
             date_herbicide_date_two.setEnabled(false);
@@ -292,7 +308,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
             date_spray_tres.setEnabled(false);
             date_spray_cuatro.setEnabled(false);
             date_spray_cuatro_ha.setEnabled(false);
-            date_bruchus.setEnabled(false);
+            date_bruchus.setEnabled(false);*/
             date_date_foliar.setEnabled(false);
         }
 
@@ -333,7 +349,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         date_siembra_sag = view.findViewById(R.id.date_siembra_sag);
         date_sowing_female_start = view.findViewById(R.id.date_sowing_female_start);
         date_sowing_female_end = view.findViewById(R.id.date_sowing_female_end);
-        date_date_one = view.findViewById(R.id.date_date_one);
+/*        date_date_one = view.findViewById(R.id.date_date_one);
         date_date_two = view.findViewById(R.id.date_date_two);
         date_herbicide_date_one = view.findViewById(R.id.date_herbicide_date_one);
         date_herbicide_date_two = view.findViewById(R.id.date_herbicide_date_two);
@@ -344,9 +360,12 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         date_spray_tres = view.findViewById(R.id.date_spray_tres);
         date_spray_cuatro = view.findViewById(R.id.date_spray_cuatro);
         date_spray_cuatro_ha = view.findViewById(R.id.date_spray_cuatro_ha);
-        date_bruchus = view.findViewById(R.id.date_bruchus);
+        date_bruchus = view.findViewById(R.id.date_bruchus);*/
         date_date_foliar = view.findViewById(R.id.date_date_foliar);
 
+
+        /*RECYCLERS*/
+        recycler_crop = view.findViewById(R.id.recycler_crop);
 
 
         /* BOTON PARA LEVANTAR CALENDARIO*/
@@ -387,35 +406,35 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         et_real_sowing = view.findViewById(R.id.et_real_sowing);
         et_sowin_seed_f = view.findViewById(R.id.et_sowin_seed_f);
         et_row_distance = view.findViewById(R.id.et_row_distance);
-        et_dose_one = view.findViewById(R.id.et_dose_one);
+/*        et_dose_one = view.findViewById(R.id.et_dose_one);
         et_dose_two = view.findViewById(R.id.et_dose_two);
         et_name_one = view.findViewById(R.id.et_name_one);
         et_name_two = view.findViewById(R.id.et_name_two);
 
         et_name_tres = view.findViewById(R.id.et_name_tres);
         et_emergence_dose = view.findViewById(R.id.et_emergence_dose);
-        et_water_lts = view.findViewById(R.id.et_water_lts);
+        et_water_lts = view.findViewById(R.id.et_water_lts);*/
         et_f_plant = view.findViewById(R.id.et_f_plant);
         et_f_population = view.findViewById(R.id.et_f_population);
-        et_producto_bruchus = view.findViewById(R.id.et_producto_bruchus);
-        et_dose_lt_ha = view.findViewById(R.id.et_dose_lt_ha);
+/*        et_producto_bruchus = view.findViewById(R.id.et_producto_bruchus);
+        et_dose_lt_ha = view.findViewById(R.id.et_dose_lt_ha);*/
         et_foliar = view.findViewById(R.id.et_foliar);
         et_dose_foliar = view.findViewById(R.id.et_dose_foliar);
 
 
         et_dose_foliar.setSelectAllOnFocus(true);
         et_foliar.setSelectAllOnFocus(true);
-        et_dose_lt_ha.setSelectAllOnFocus(true);
-        et_producto_bruchus.setSelectAllOnFocus(true);
+/*        et_dose_lt_ha.setSelectAllOnFocus(true);
+        et_producto_bruchus.setSelectAllOnFocus(true);*/
         et_f_population.setSelectAllOnFocus(true);
         et_f_plant.setSelectAllOnFocus(true);
-        et_water_lts.setSelectAllOnFocus(true);
+/*        et_water_lts.setSelectAllOnFocus(true);
         et_emergence_dose.setSelectAllOnFocus(true);
         et_name_tres.setSelectAllOnFocus(true);
         et_name_two.setSelectAllOnFocus(true);
         et_name_one.setSelectAllOnFocus(true);
         et_dose_two.setSelectAllOnFocus(true);
-        et_dose_one.setSelectAllOnFocus(true);
+        et_dose_one.setSelectAllOnFocus(true);*/
         et_row_distance.setSelectAllOnFocus(true);
         et_sowin_seed_f.setSelectAllOnFocus(true);
         et_real_sowing.setSelectAllOnFocus(true);
@@ -433,7 +452,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         date_siembra_sag.setOnFocusChangeListener(this);
         date_sowing_female_start.setOnFocusChangeListener(this);
         date_sowing_female_end.setOnFocusChangeListener(this);
-        date_date_one.setOnFocusChangeListener(this);
+/*        date_date_one.setOnFocusChangeListener(this);
         date_date_two.setOnFocusChangeListener(this);
         date_herbicide_date_one.setOnFocusChangeListener(this);
         date_herbicide_date_two.setOnFocusChangeListener(this);
@@ -444,7 +463,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         date_spray_tres.setOnFocusChangeListener(this);
         date_spray_cuatro.setOnFocusChangeListener(this);
         date_spray_cuatro_ha.setOnFocusChangeListener(this);
-        date_bruchus.setOnFocusChangeListener(this);
+        date_bruchus.setOnFocusChangeListener(this);*/
         date_date_foliar.setOnFocusChangeListener(this);
 
 
@@ -457,17 +476,17 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         et_real_sowing.setOnFocusChangeListener(this);
         et_sowin_seed_f.setOnFocusChangeListener(this);
         et_row_distance.setOnFocusChangeListener(this);
-        et_dose_one.setOnFocusChangeListener(this);
+/*        et_dose_one.setOnFocusChangeListener(this);
         et_dose_two.setOnFocusChangeListener(this);
         et_name_one.setOnFocusChangeListener(this);
         et_name_two.setOnFocusChangeListener(this);
         et_name_tres.setOnFocusChangeListener(this);
         et_emergence_dose.setOnFocusChangeListener(this);
-        et_water_lts.setOnFocusChangeListener(this);
+        et_water_lts.setOnFocusChangeListener(this);*/
         et_f_plant.setOnFocusChangeListener(this);
         et_f_population.setOnFocusChangeListener(this);
-        et_producto_bruchus.setOnFocusChangeListener(this);
-        et_dose_lt_ha.setOnFocusChangeListener(this);
+/*        et_producto_bruchus.setOnFocusChangeListener(this);
+        et_dose_lt_ha.setOnFocusChangeListener(this);*/
         et_foliar.setOnFocusChangeListener(this);
         et_dose_foliar.setOnFocusChangeListener(this);
 
@@ -510,7 +529,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
                 if(b) levantarFecha(date_sowing_female_end);
                 else temp_sowing.setFemale_sowing_date_end_temp_sowing(Utilidades.voltearFechaBD(date_sowing_female_end.getText().toString()));
                 break;
-            case R.id.date_date_one:
+/*            case R.id.date_date_one:
                 if(b) levantarFecha(date_date_one);
                 else temp_sowing.setDose_1_temp_sowing(Utilidades.voltearFechaBD(date_date_one.getText().toString()));
                 break;
@@ -557,7 +576,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
             case R.id.date_bruchus:
                 if(b) levantarFecha(date_bruchus);
                 else temp_sowing.setDate_nombre_largo_temp_sowing(Utilidades.voltearFechaBD(date_bruchus.getText().toString()));
-                break;
+                break;*/
             case R.id.date_date_foliar:
                 if(b) levantarFecha(date_date_foliar);
                 else temp_sowing.setDate_foliar_temp_sowing(Utilidades.voltearFechaBD(date_date_foliar.getText().toString()));
@@ -589,7 +608,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
             case R.id.et_row_distance:
                 if(!b) temp_sowing.setRow_distance_temp_sowing(Double.parseDouble(et_row_distance.getText().toString()));
                 break;
-            case R.id.et_dose_one:
+/*            case R.id.et_dose_one:
                 if(!b) temp_sowing.setDose_1_temp_sowing(et_dose_one.getText().toString());
                 break;
             case R.id.et_dose_two:
@@ -597,31 +616,31 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
                 break;
             case R.id.et_name_one:
                 if(!b) temp_sowing.setName_1_herb_temp_sowing(et_name_one.getText().toString());
-                break;
-            case R.id.et_name_two:
+                break;*/
+            /*case R.id.et_name_two:
                 if(!b) temp_sowing.setName_2_herb_temp_sowing(et_name_two.getText().toString());
-                break;
-            case R.id.et_name_tres:
+                break;*/
+            /*case R.id.et_name_tres:
                 if(!b) temp_sowing.setName_3_herb_temp_sowing(et_name_tres.getText().toString());
-                break;
-            case R.id.et_emergence_dose:
+                break;*/
+            /*case R.id.et_emergence_dose:
                 if(!b) temp_sowing.setDose_pre_emergence_temp_sowing(et_emergence_dose.getText().toString());
-                break;
-            case R.id.et_water_lts:
+                break;*/
+            /*case R.id.et_water_lts:
                 if(!b) temp_sowing.setWater_pre_emergence_temp_sowing(Double.parseDouble(et_water_lts.getText().toString()));
-                break;
+                break;*/
             case R.id.et_f_plant:
                 if(!b) temp_sowing.setPlant_m_temp_sowing(Double.parseDouble(et_f_plant.getText().toString()));
                 break;
             case R.id.et_f_population:
                 if(!b) temp_sowing.setPopulation_plants_ha_temp_sowing(Double.parseDouble(et_f_population.getText().toString()));
                 break;
-            case R.id.et_producto_bruchus:
+            /*case R.id.et_producto_bruchus:
                 if(!b) temp_sowing.setProduct_nombre_largo_temp_sowing(et_producto_bruchus.getText().toString());
-                break;
-            case R.id.et_dose_lt_ha:
+                break;*/
+            /*case R.id.et_dose_lt_ha:
                 if(!b) temp_sowing.setDose_nombre_largo_temp_sowing(et_dose_lt_ha.getText().toString());
-                break;
+                break;*/
             case R.id.et_foliar:
                 if(!b) temp_sowing.setFoliar_temp_sowing(et_foliar.getText().toString());
                 break;

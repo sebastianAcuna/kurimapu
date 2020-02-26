@@ -8,30 +8,33 @@
     android:baselineAligned="false">
     <ScrollView
         android:layout_width="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.6"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <!-- propiedad-->
                 <TextView
                     android:id="@+id/x_01_01"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/propiedad"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/x_02_01"
                     android:padding="@dimen/padding"/>
 
                 <TextView
                     android:id="@+id/x_02_01"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/valor"
-                    android:layout_toEndOf="@id/x_01_01"
+                    app:layout_constraintStart_toEndOf="@id/x_01_01"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:padding="@dimen/padding"/>
 
                 <View
@@ -39,1456 +42,836 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_01"
-                    android:layout_centerHorizontal="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_01"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
 
                 <!-- notice tag -->
                 <TextView
                     android:id="@+id/x_01_02"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/coordenates"
                     style="@style/titles_forms"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@id/p_01"/>
-
-                <View
-                    android:id="@+id/p_02"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_02"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/p_01"/>
 
                 <!-- NORTING -->
                 <TextView
                     android:id="@+id/x_01_03"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/norting"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_02"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_02"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_norting"/>
 
                 <TextView
                     android:id="@+id/et_norting"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     style="@style/sub_titles_forms"
-                    android:layout_toEndOf="@id/x_01_03"
-                    android:layout_below="@id/p_02"
+                    app:layout_constraintStart_toEndOf="@id/x_01_03"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_02"
+                    app:layout_constraintEnd_toEndOf="parent"
 
                     />
 
                 <!-- EASTING -->
                 <TextView
                     android:id="@+id/x_01_04"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/easting"
-
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/et_norting"
-                    android:layout_alignParentStart="true"/>
-
-
+                    app:layout_constraintTop_toBottomOf="@id/et_norting"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_easting"
+                    />
                 <TextView
                     android:id="@+id/et_easting"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/et_norting"
-                    android:layout_toEndOf="@id/x_01_04"
-
+                    app:layout_constraintTop_toBottomOf="@id/et_norting"
+                    app:layout_constraintStart_toEndOf="@id/x_01_04"
+                    app:layout_constraintEnd_toEndOf="parent"
                     />
-
-                <View
-                    android:id="@+id/p_04"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/et_easting"
-                    android:layout_centerHorizontal="true"/>
 
                 <!-- SIEMBRA SAG -->
                 <TextView
                     android:id="@+id/x_01_05"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/aviso_siembra"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_04"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_easting"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_05"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_05"
-                    android:layout_centerHorizontal="true"/>
 
                 <!-- SIEMBRA SAG -->
 
                 <TextView
                     android:id="@+id/x_01_06"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/siembra_sag"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_05"
-                    android:layout_alignParentStart="true"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_05"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/date_siembra_sag"
                     android:labelFor="@id/date_siembra_sag"
                     />
 
                 <EditText
                     android:id="@+id/date_siembra_sag"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     style="@style/input_date_forms"
                     android:inputType="date"
                     android:importantForAutofill="no"
-                    android:layout_below="@id/p_05"
-                    android:layout_toEndOf="@id/x_01_06"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_05"
+                    app:layout_constraintStart_toEndOf="@id/x_01_06"
+                    app:layout_constraintEnd_toEndOf="parent"
                     />
 
-
-                <View
-                    android:id="@+id/p_06"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/date_siembra_sag"
-                    android:layout_centerHorizontal="true"/>
 
 
                 <!-- CROP ROTATION -->
                 <TextView
                     android:id="@+id/x_01_07"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/crop_rotation"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_06"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/date_siembra_sag"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_07"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_07"
-                    android:layout_centerHorizontal="true"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_crop"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/p_07"
-                    android:layout_centerHorizontal="true"
+                    android:layout_margin="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_07"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     />
 
-                <View
-                    android:id="@+id/p_11"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/recycler_crop"
-                    android:layout_centerHorizontal="true"/>
 
 
                 <!-- ANÁLISIS DE SUELO-->
                 <TextView
                     android:id="@+id/x_01_12"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/analisis_suelo"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_11"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/recycler_crop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_12"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_12"
-                    android:layout_centerHorizontal="true"/>
+
 
                 <!-- ENTREGADO -->
                 <TextView
                     android:id="@+id/x_01_13"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/entregado"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_12"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_12"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_entregado"/>
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_entregado"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/p_12"
-                    android:layout_toEndOf="@id/x_01_13"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_entregado"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
+
+                    <EditText
                         android:id="@+id/et_entregado"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:inputType="text"
+                        android:importantForAutofill="no"
+                        android:hint="@string/format_set_input"
+                        app:layout_constraintTop_toBottomOf="@id/x_01_12"
+                        app:layout_constraintStart_toEndOf="@id/x_01_13"
+                        app:layout_constraintEnd_toEndOf="parent"
                          />
-                </com.google.android.material.textfield.TextInputLayout>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
                 <!--TIPO DE MEZCLA APLICADA -->
 
                 <TextView
                     android:id="@+id/x_01_14"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/mezcla_aplicada"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_entregado"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_entregado"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_tipo_mezcla"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_tipo_mezcla"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textInp_entregado"
-                    android:layout_toEndOf="@id/x_01_14"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_tipo_mezcla"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
+
+                    <EditText
                         android:id="@+id/et_tipo_mezcla"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:inputType="text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="@string/format_set_input"
+                        android:importantForAutofill="no"
+                        app:layout_constraintTop_toBottomOf="@id/et_entregado"
+                        app:layout_constraintStart_toEndOf="@id/x_01_14"
                          />
-                </com.google.android.material.textfield.TextInputLayout>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
 
 
                 <!-- CANTIDAD APLICADA -->
                 <TextView
                     android:id="@+id/x_01_15"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/cantidad_aplicada"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_tipo_mezcla"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_tipo_mezcla"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_cant_aplicada"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_cant_aplicada"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textInp_tipo_mezcla"
-                    android:layout_toEndOf="@id/x_01_15"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_cant_aplicada"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    -->
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <EditText
                         android:id="@+id/et_cant_aplicada"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:inputType="text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:importantForAutofill="no"
+                        android:hint="@string/format_set_input"
+                        app:layout_constraintTop_toBottomOf="@id/et_tipo_mezcla"
+                        app:layout_constraintStart_toEndOf="@id/x_01_15"
                          />
-                </com.google.android.material.textfield.TextInputLayout>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
-                <View
-                    android:id="@+id/p_15"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/textInp_cant_aplicada"/>
+
 
                 <!--ISOLATION-->
 
                 <TextView
                     android:id="@+id/x_01_16"
                     style="@style/titles_forms"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/p_15"
-                    android:layout_alignParentStart="true"
+                    app:layout_constraintTop_toBottomOf="@id/et_cant_aplicada"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="3dp"
                     android:layout_marginTop="-5dp"
                     android:text="@string/insolation" />
 
-                <View
-                    android:id="@+id/divider16_showin"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_16"
-                    android:layout_centerHorizontal="true"/>
+
 
 
                 <!-- METERS -->
                 <TextView
                     android:id="@+id/x_01_17"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/meters"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/divider16_showin"
-                    android:layout_alignParentStart="true"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_meters"
                     />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_meters"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/divider16_showin"
-                    android:layout_toEndOf="@id/x_01_17"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_meters"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
+
+                    <EditText
                         android:id="@+id/et_meters"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:inputType="number"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:inputType="number"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="@string/format_set_input"
+                        app:layout_constraintTop_toBottomOf="@id/x_01_16"
+                        android:importantForAutofill="no"
+                        app:layout_constraintStart_toEndOf="@id/x_01_17"/>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
-                <View
-                    android:id="@+id/p_17"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/textInp_meters"
-                    android:layout_centerHorizontal="true"/>
+
 
                 <!-- LINES -->
 
                 <TextView
                     android:id="@+id/x_01_18"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/lines"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_17"
-                    android:layout_alignParentStart="true"
+                    app:layout_constraintTop_toBottomOf="@id/et_meters"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     />
 
-                <View
-                    android:id="@+id/p_18"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_18"
-                    android:layout_centerHorizontal="true"/>
+
 
                 <!-- Female -->
 
                 <TextView
                     android:id="@+id/x_01_19"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/female"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_18"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_18"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_lines_female"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_lines_female"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/p_18"
-                    android:layout_toEndOf="@id/x_01_19"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_lines_female"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
+
+                    <EditText
                         android:id="@+id/et_lines_female"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:inputType="text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="@string/format_set_input"
+                        app:layout_constraintTop_toBottomOf="@id/x_01_18"
+                        android:importantForAutofill="no"
+                        app:layout_constraintStart_toEndOf="@id/x_01_19"
                          />
-                </com.google.android.material.textfield.TextInputLayout>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
-                <View
-                    android:id="@+id/p_19"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/textInp_lines_female"
-                    android:layout_centerHorizontal="true"/>
+
 
                 <!-- SHOWING LOT -->
 
                 <TextView
                     android:id="@+id/x_01_20"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/sowing_lot"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_19"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_lines_female"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_20"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_20"
-                    android:layout_centerHorizontal="true"/>
+
 
                 <!-- FEMALE -->
                 <TextView
                     android:id="@+id/x_01_21"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/female"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_20"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_20"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_showing_female"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_showing_female"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/p_20"
-                    android:layout_toEndOf="@id/x_01_21"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_showing_female"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
+
+                    <EditText
                         android:id="@+id/et_showing_female"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:inputType="text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="@string/format_set_input"
+                        app:layout_constraintTop_toBottomOf="@id/x_01_20"
+                        app:layout_constraintStart_toEndOf="@id/x_01_21"
+                        android:importantForAutofill="no"
                          />
-                </com.google.android.material.textfield.TextInputLayout>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
                 <!-- REAL SHOWING FEMALE -->
 
                 <TextView
                     android:id="@+id/x_01_22"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/real_sowing"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_showing_female"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_showing_female"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_real_sowing"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_real_sowing"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textInp_showing_female"
-                    android:layout_toEndOf="@id/x_01_22"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_real_sowing"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
+
+                    <EditText
                         android:id="@+id/et_real_sowing"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:inputType="numberDecimal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="@string/format_set_input"
+                        app:layout_constraintTop_toBottomOf="@id/et_showing_female"
+                        app:layout_constraintStart_toEndOf="@id/x_01_22"
+                        android:importantForAutofill="no"
+                        />
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
-                <View
-                    android:id="@+id/p_22"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/textInp_real_sowing"
-                    android:layout_centerHorizontal="true"/>
+
 
 
                 <!-- SOWING DATE START-->
                 <TextView
                     android:id="@+id/x_01_23"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/sowing_start"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_22"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_real_sowing"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_23"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_23"
-                    android:layout_centerHorizontal="true"/>
+
 
                 <!-- FEMALE -->
                 <TextView
                     android:id="@+id/x_01_24"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/female"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_23"
-                    android:layout_alignParentStart="true"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_23"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/date_sowing_female_start"
                     android:labelFor="@id/date_sowing_female_start"/>
 
                 <EditText
                     android:id="@+id/date_sowing_female_start"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     style="@style/input_date_forms"
                     android:inputType="date"
                     android:importantForAutofill="no"
-                    android:layout_below="@id/p_23"
-                    android:layout_toEndOf="@id/x_01_24"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_23"
+                    app:layout_constraintStart_toEndOf="@id/x_01_24"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
 
-                <View
-                    android:id="@+id/p_24"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/date_sowing_female_start"
-                    android:layout_centerHorizontal="true"/>
+
 
                 <!-- SOWING DATE END-->
                 <TextView
                     android:id="@+id/x_01_25"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/sowing_end"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_24"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/date_sowing_female_start"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_25"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_25"
-                    android:layout_centerHorizontal="true"/>
 
                 <!-- FEMALE-->
                 <TextView
                     android:id="@+id/x_01_26"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/female"
                     style="@style/sub_titles_forms"
                     android:labelFor="@id/date_sowing_female_end"
-                    android:layout_below="@id/p_25"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_25"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/date_sowing_female_end"/>
 
                 <EditText
                     android:id="@+id/date_sowing_female_end"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     style="@style/input_date_forms"
                     android:importantForAutofill="no"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:inputType="date"
-                    android:layout_below="@id/p_25"
-                    android:layout_toEndOf="@id/x_01_26"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_25"
+                    app:layout_constraintStart_toEndOf="@id/x_01_26"/>
 
-                <View
-                    android:id="@+id/p_26"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/date_sowing_female_end"
-                    android:layout_centerHorizontal="true"/>
 
                 <!-- SOWING SEED  / METER-->
 
                 <TextView
                     android:id="@+id/x_01_27"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/sowing_seed_meter"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_26"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/date_sowing_female_end"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_27"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_27"
-                    android:layout_centerHorizontal="true"/>
 
                 <!-- F-->
 
                 <TextView
                     android:id="@+id/x_01_28"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/f"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_27"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_27"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_sowin_seed_f"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_sowin_seed_f"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/p_27"
-                    android:layout_toEndOf="@id/x_01_28"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_sowin_seed_f"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                  >-->
+
+                    <EditText
                         android:id="@+id/et_sowin_seed_f"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:hint="@string/format_set_input"
+                        android:inputType="numberDecimal"
+                        app:layout_constraintTop_toBottomOf="@id/x_01_27"
+                        app:layout_constraintStart_toEndOf="@id/x_01_28"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:importantForAutofill="no"
+                        />
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
-                        android:inputType="numberDecimal"/>
-                </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:id="@+id/p_28"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_28"
-                    android:layout_centerHorizontal="true"/>
 
 
                 <!-- ROW DISTANCE (M)-->
 
                 <TextView
                     android:id="@+id/x_01_29"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/row_distance"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_28"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_sowin_seed_f"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_29"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_29"
-                    android:layout_centerHorizontal="true"/>
+
 
 
                 <!-- Row Distance (m)-->
 
                 <TextView
                     android:id="@+id/x_01_30"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/row_distance_min"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_29"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_29"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_row_distance"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_row_distance"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/p_29"
-                    android:layout_toEndOf="@id/x_01_30"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_row_distance"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    -->
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <EditText
                         android:id="@+id/et_row_distance"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:hint="@string/format_set_input"
+                        android:inputType="numberDecimal"
+                        app:layout_constraintTop_toBottomOf="@id/x_01_29"
+                        app:layout_constraintStart_toEndOf="@id/x_01_30"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:importantForAutofill="no"/>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
-                        android:inputType="numberDecimal"/>
-                </com.google.android.material.textfield.TextInputLayout>
 
 
-                <View
-                    android:id="@+id/p_30"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_30"
-                    android:layout_centerHorizontal="true"/>
 
                 <!-- SPREAD UREA (N)-->
 
                 <TextView
                     android:id="@+id/x_01_31"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/spread"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_30"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_row_distance"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
 
-                <View
-                    android:id="@+id/p_31"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_31"
-                    android:layout_centerHorizontal="true"/>
+
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/spread_urea_list"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_31"
+                    />
+
 
 
                 <!-- Dose 1 -->
 
-
-                <TextView
-                    android:id="@+id/x_01_32"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dose_uno"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_31"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_dose_one"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/p_31"
-                    android:layout_toEndOf="@id/x_01_32"
-                    android:hint="@string/format_set_input">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_dose_one"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Date 1 -->
-
-                <TextView
-                    android:id="@+id/x_01_33"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/date_uno"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_dose_one"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_date_one"/>
-
-                <EditText
-                    android:id="@+id/date_date_one"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/textInp_dose_one"
-                    android:layout_toEndOf="@id/x_01_33"/>
-
-
-                <!-- Dose 2 -->
-
-                <TextView
-                    android:id="@+id/x_01_34"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dose_dos"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/date_date_one"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_dose_two"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/date_date_one"
-                    android:layout_toEndOf="@id/x_01_34"
-                    android:hint="@string/format_set_input">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_dose_two"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Date 2 -->
-
-                <TextView
-                    android:id="@+id/x_01_35"
-                    android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="@string/date_dos"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_dose_two"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_date_two"/>
-
-                <EditText
-                    android:id="@+id/date_date_two"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/textInp_dose_two"
-                    android:layout_toEndOf="@id/x_01_35"/>
-
-
-                <View
-                    android:id="@+id/p_35"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/date_date_two"
-                    android:layout_centerHorizontal="true"
-                    />
                 <!-- HERBICIDE SPRAYING DATE -->
                 <TextView
                     android:id="@+id/x_01_36"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/sparying_date"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_35"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/spread_urea_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_36"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_36"
-                    android:layout_centerHorizontal="true"
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/herbicide_sprating_list"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_36"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
                     />
 
                 <!-- Name 1 -->
 
-                <TextView
-                    android:id="@+id/x_01_37"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/name_uno"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_36"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_name_one"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/p_36"
-                    android:layout_toEndOf="@id/x_01_37"
-                    android:hint="@string/format_set_input">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_name_one"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <!-- Date 1 -->
-
-                <TextView
-                    android:id="@+id/x_01_38"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/date_uno"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_name_one"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_herbicide_date_one"/>
-
-                <EditText
-                    android:id="@+id/date_herbicide_date_one"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/textInp_name_one"
-                    android:layout_toEndOf="@id/x_01_38"/>
-
-
-                <!-- Name 2 -->
-                <TextView
-                    android:id="@+id/x_01_39"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/name_dos"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/date_herbicide_date_one"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_name_two"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/date_herbicide_date_one"
-                    android:layout_toEndOf="@id/x_01_39"
-                    android:hint="@string/format_set_input">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_name_two"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <!-- Date 2 -->
-                <TextView
-                    android:id="@+id/x_01_40"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/date_dos"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_name_two"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_herbicide_date_two"/>
-
-                <EditText
-                    android:id="@+id/date_herbicide_date_two"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_toEndOf="@id/x_01_40"
-                    android:layout_below="@id/textInp_name_two"/>
-
-
-                <!-- Name 3 -->
-                <TextView
-                    android:id="@+id/x_01_41"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/name_tres"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/date_herbicide_date_two"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_name_tres"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/date_herbicide_date_two"
-                    android:layout_toEndOf="@id/x_01_41"
-                    android:hint="@string/format_set_input">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_name_tres"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <!-- Date 3 -->
-
-                <TextView
-                    android:id="@+id/x_01_42"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/date_tres"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_name_tres"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_herbicide_date_tres"/>
-
-                <EditText
-                    android:id="@+id/date_herbicide_date_tres"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/textInp_name_tres"
-                    android:layout_toEndOf="@id/x_01_42"/>
-
-                <View
-                    android:id="@+id/p_42"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/date_herbicide_date_tres"
-                    android:layout_centerHorizontal="true"
-                    />
 
 
                 <!-- PRE EMERGENCE HERBICIDE -->
 
                 <TextView
                     android:id="@+id/x_01_43"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/emergence_herbicide"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_42"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/herbicide_sprating_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_44"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_43"
-                    android:layout_centerHorizontal="true"
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/pre_emergence_list"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_43"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     />
 
 
                 <!-- Date  -->
 
-                <TextView
-                    android:id="@+id/x_01_44"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/date"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_44"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_emergence_date"/>
 
-                <EditText
-                    android:id="@+id/date_emergence_date"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/p_44"
-                    android:layout_toEndOf="@id/x_01_44"/>
-
-
-
-                <!-- Dose -->
-                <TextView
-                    android:id="@+id/x_01_45"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dose"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/date_emergence_date"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_emergence_dose"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/date_emergence_date"
-                    android:layout_toEndOf="@id/x_01_45"
-                    android:hint="@string/format_set_input">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_emergence_dose"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <!-- Water (Lts) -->
-
-                <TextView
-                    android:id="@+id/x_01_46"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/water_lts"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_emergence_dose"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_water_lts"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textInp_emergence_dose"
-                    android:layout_toEndOf="@id/x_01_46"
-                    android:hint="@string/format_set_input"
-                    app:helperText="Ingrese valor en litros">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_water_lts"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:inputType="numberDecimal"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <View
-                    android:id="@+id/p_47"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/textInp_water_lts"
-                    android:layout_centerHorizontal="true"
-                    />
 
                 <!-- PLANT/M -->
                 <TextView
                     android:id="@+id/x_01_48"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/plant_m"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_47"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/pre_emergence_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_48"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_48"
-                    android:layout_centerHorizontal="true"
-                    />
 
 
                 <!-- F -->
                 <TextView
                     android:id="@+id/x_01_49"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/f"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_48"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintEnd_toStartOf="@id/et_f_plant"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_48"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_f_plant"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/p_48"
-                    android:layout_toEndOf="@id/x_01_49"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_f_plant"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
+
+                    <EditText
                         android:id="@+id/et_f_plant"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:hint="@string/format_set_input"
+                        android:importantForAutofill="no"
+                        app:layout_constraintTop_toBottomOf="@id/x_01_48"
+                        app:layout_constraintStart_toEndOf="@id/x_01_49"/>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
-                        android:inputType="numberDecimal"/>
-                </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:id="@+id/p_49"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_49"
-                    android:layout_centerHorizontal="true"
-                    />
 
 
                 <!-- POPULATION (PLANTS/HA) -->
 
                 <TextView
                     android:id="@+id/x_01_50"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/population"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_49"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_f_plant"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_50"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_50"
-                    android:layout_centerHorizontal="true"
-                    />
+
 
                 <!-- F -->
 
                 <TextView
                     android:id="@+id/x_01_51"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/f"
+                    app:layout_constraintEnd_toStartOf="@id/et_f_population"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_50"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_50"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_f_population"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/p_50"
-                    android:layout_toEndOf="@id/x_01_51"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_f_population"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                   -->
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <EditText
                         android:id="@+id/et_f_population"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:importantForAutofill="no"
+                        android:inputType="numberDecimal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/x_01_50"
+                        app:layout_constraintStart_toEndOf="@id/x_01_51"
+                        android:hint="@string/format_set_input"/>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
-                <View
-                    android:id="@+id/p_51"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_51"
-                    android:layout_centerHorizontal="true"
-                    />
 
                 <!-- BASTA SPRAYING DATE -->
 
                 <TextView
                     android:id="@+id/x_01_52"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/basta_date"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_51"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_f_population"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_52"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_52"
-                    android:layout_centerHorizontal="true"
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/basta_spray_list"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_52"
+
                     />
 
 
-                <!-- Basta Spray 1 -->
-
-                <TextView
-                    android:id="@+id/x_01_53"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/basta_spray_uno"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_52"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_spray_uno"/>
-
-
-                <EditText
-                    android:id="@+id/date_spray_uno"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/p_52"
-                    android:layout_toEndOf="@id/x_01_53"/>
-
-
-                <!-- Basta Spray 2 -->
-
-                <TextView
-                    android:id="@+id/x_01_54"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/basta_spray_dos"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/date_spray_uno"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_spray_dos"/>
-
-
-                <EditText
-                    android:id="@+id/date_spray_dos"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/date_spray_uno"
-                    android:layout_toEndOf="@id/x_01_54"/>
-
-
-
-                <!-- Basta Spray 3 -->
-
-                <TextView
-                    android:id="@+id/x_01_55"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/basta_spray_tres"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/date_spray_dos"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_spray_tres"/>
-
-
-                <EditText
-                    android:id="@+id/date_spray_tres"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/date_spray_dos"
-                    android:layout_toEndOf="@id/x_01_55"/>
-
-
-                <!-- Basta Spray 4 -->
-
-                <TextView
-                    android:id="@+id/x_01_56"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/basta_spray_cuatro"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/date_spray_tres"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_spray_cuatro"/>
-
-
-                <EditText
-                    android:id="@+id/date_spray_cuatro"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/date_spray_tres"
-                    android:layout_toEndOf="@id/x_01_56"/>
-
-
-
-                <!-- Basta Spray 4 Ha -->
-
-                <TextView
-                    android:id="@+id/x_01_57"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/basta_spray_cuatro_ha"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/date_spray_cuatro"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_spray_cuatro_ha"/>
-
-
-                <EditText
-                    android:id="@+id/date_spray_cuatro_ha"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/date_spray_cuatro"
-                    android:layout_toEndOf="@id/x_01_57"/>
-
-
-                <View
-                    android:id="@+id/p_57"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_57"
-                    android:layout_centerHorizontal="true"
-                    />
 
 
                 <!-- Basta Spray 4 Ha -->
 
                 <TextView
                     android:id="@+id/x_01_58"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/titulo_largo_form"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_57"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/basta_spray_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_58"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_58"
-                    android:layout_centerHorizontal="true"
-                    />
+
 
 
                 <!-- Date -->
 
-                <TextView
-                    android:id="@+id/x_01_59"
-                    android:layout_width="200dp"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/bruchus_list"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/date"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_58"
-                    android:layout_alignParentStart="true"
-                    android:labelFor="@id/date_bruchus"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/x_01_58"
 
-
-                <EditText
-                    android:id="@+id/date_bruchus"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    style="@style/input_date_forms"
-                    android:inputType="date"
-                    android:importantForAutofill="no"
-                    android:layout_below="@id/p_58"
-                    android:layout_toEndOf="@id/x_01_59"/>
-
-
-
-                <!-- Product -->
-
-                <TextView
-                    android:id="@+id/x_01_60"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/product"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/date_bruchus"
-                    android:layout_alignParentStart="true"/>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_producto_bruchus"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/date_bruchus"
-                    android:layout_toEndOf="@id/x_01_60"
-                    android:hint="@string/format_set_input">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_producto_bruchus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <!-- Dose (Lt/Ha) -->
-
-                <TextView
-                    android:id="@+id/x_01_61"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dose_lt_ha"
-                    style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_producto_bruchus"
-                    android:layout_alignParentStart="true"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_dose_lt_ha"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textInp_producto_bruchus"
-                    android:layout_toEndOf="@id/x_01_61"
-                    android:hint="@string/format_set_input">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_dose_lt_ha"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:inputType="number"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <View
-                    android:id="@+id/p_61"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_61"
-                    android:layout_centerHorizontal="true"
                     />
+
 
 
 
@@ -1496,49 +879,48 @@
 
                 <TextView
                     android:id="@+id/x_01_62"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/foliar_app"
                     style="@style/titles_forms"
-                    android:layout_below="@id/p_61"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/bruchus_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-                <View
-                    android:id="@+id/p_62"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_below="@id/x_01_62"
-                    android:layout_centerHorizontal="true"
-                    />
 
                 <!-- Foliar -->
 
                 <TextView
                     android:id="@+id/x_01_63"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/foliar"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/p_62"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/x_01_62"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_foliar"/>
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_foliar"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/p_62"
-                    android:layout_toEndOf="@id/x_01_63"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_foliar"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
+
+                    <EditText
                         android:id="@+id/et_foliar"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:hint="@string/format_set_input"
+                        android:inputType="text"
+                        app:layout_constraintTop_toBottomOf="@id/x_01_62"
+                        app:layout_constraintStart_toEndOf="@id/x_01_63"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:importantForAutofill="no"
+                        />
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
 
 
@@ -1546,62 +928,68 @@
 
                 <TextView
                     android:id="@+id/x_01_64"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/dose"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_foliar"
-                    android:layout_alignParentStart="true"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_foliar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/et_dose_foliar"
+                    />
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInp_dose_foliar"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textInp_foliar"
-                    android:layout_toEndOf="@id/x_01_64"
-                    android:hint="@string/format_set_input">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/textInp_dose_foliar"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+<!--                    >-->
+
+                    <EditText
                         android:id="@+id/et_dose_foliar"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:hint="@string/format_set_input"
+                        app:layout_constraintTop_toBottomOf="@id/et_foliar"
+                        app:layout_constraintStart_toEndOf="@id/x_01_64"
+                        app:layout_constraintEnd_toEndOf="parent"
 
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-
+                        android:importantForAutofill="no" />
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
                 <!-- Dose -->
-
                 <TextView
                     android:id="@+id/x_01_65"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
                     style="@style/sub_titles_forms"
-                    android:layout_below="@id/textInp_dose_foliar"
-                    android:layout_alignParentStart="true"
+                    app:layout_constraintTop_toBottomOf="@id/et_dose_foliar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/date_date_foliar"
                     android:labelFor="@id/date_date_foliar"/>
 
 
                 <EditText
                     android:id="@+id/date_date_foliar"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     style="@style/input_date_forms"
                     android:inputType="date"
                     android:importantForAutofill="no"
-                    android:layout_below="@id/textInp_dose_foliar"
-                    android:layout_toEndOf="@id/x_01_65"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_dose_foliar"
+                    app:layout_constraintStart_toEndOf="@id/x_01_65"/>
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.5">
+        android:layout_weight="0.4">
         <FrameLayout
             android:id="@+id/container_fotos_sowing"
             android:layout_width="match_parent"

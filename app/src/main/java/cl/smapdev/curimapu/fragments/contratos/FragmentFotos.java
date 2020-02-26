@@ -364,11 +364,11 @@ public class FragmentFotos extends Fragment {
 
         RecyclerView.LayoutManager lManager = null;
         if (activity != null){
-            if(activity.getRotation(activity).equals("v")){
-                lManager = new GridLayoutManager(activity, 3);
-            }else{
+//            if(activity.getRotation(activity).equals("v")){
+//                lManager = new GridLayoutManager(activity, 3);
+//            }else{
                 lManager = new GridLayoutManager(activity, 2);
-            }
+//            }
         }
 
 

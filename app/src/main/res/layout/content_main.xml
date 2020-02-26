@@ -10,8 +10,9 @@
     android:padding="@dimen/padding"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    android:id="@+id/relative">
+    android:id="@+id/relative_constraint_principal">
 
+<!--
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/left_graphic"
         android:layout_width="0dp"
@@ -83,6 +84,7 @@
 
 
 
+-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

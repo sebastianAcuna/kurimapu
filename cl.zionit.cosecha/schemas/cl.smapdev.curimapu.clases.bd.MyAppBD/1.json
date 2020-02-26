@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f4ad0857318e5b68cdc0966edb6c34d6",
+    "identityHash": "229b3a77ff36b656f3db8f84d405d1df",
     "entities": [
       {
         "tableName": "fotos",
@@ -1655,11 +1655,55 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "crop_rotation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_crop_rotation` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `temporada_crop_rotation` INTEGER NOT NULL, `cultivo_crop_rotation` TEXT, `id_ficha_crop_rotation` INTEGER NOT NULL, `id_anexo_crop_rotation` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id_crop_rotation",
+            "columnName": "id_crop_rotation",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "temporada_crop_rotation",
+            "columnName": "temporada_crop_rotation",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cultivo_crop_rotation",
+            "columnName": "cultivo_crop_rotation",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id_ficha_crop_rotation",
+            "columnName": "id_ficha_crop_rotation",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_anexo_crop_rotation",
+            "columnName": "id_anexo_crop_rotation",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_crop_rotation"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f4ad0857318e5b68cdc0966edb6c34d6\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"229b3a77ff36b656f3db8f84d405d1df\")"
     ]
   }
 }

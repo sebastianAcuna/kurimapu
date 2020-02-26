@@ -1,39 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    xmlns:fab="http://schemas.android.com/apk/res-auto">
-
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_weight="0.5"
-        android:layout_height="wrap_content"
-        >
-        <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-
             <TextView
                 android:id="@+id/v_01_01"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/propiedad"
                 android:padding="@dimen/padding"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/v_02_01"/>
 
             <TextView
                 android:id="@+id/v_02_01"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/valor"
                 android:padding="@dimen/padding"
-                android:layout_toEndOf="@id/v_01_01"
-                android:layout_alignParentTop="true"/>
+                app:layout_constraintStart_toEndOf="@id/v_01_01"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <View
@@ -41,532 +33,594 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:layout_below="@id/v_01_01"
-                android:layout_centerHorizontal="true"/>
+                app:layout_constraintTop_toBottomOf="@id/v_01_01"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <TextView
                 android:id="@+id/v_01_02"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/fecha"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/divider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fecha_resumen"/>
 
             <TextView
                 android:id="@+id/fecha_resumen"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="20-12-2019"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider"
-                android:layout_toEndOf="@id/v_01_02"/>
+                app:layout_constraintTop_toBottomOf="@id/divider"
+                app:layout_constraintStart_toEndOf="@id/v_01_02"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <TextView
                 android:id="@+id/v_01_03"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_fenolog_gico"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/fecha_resumen"
-                android:layout_alignParentStart="true"
+                app:layout_constraintTop_toBottomOf="@id/fecha_resumen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/estado_fenologico"
                 />
             <TextView
                 android:id="@+id/estado_fenologico"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Pre-cosecha"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/fecha_resumen"
-                android:layout_toEndOf="@id/v_01_03"/>
+                app:layout_constraintTop_toBottomOf="@id/fecha_resumen"
+                app:layout_constraintStart_toEndOf="@id/v_01_03"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_04"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_general"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/estado_fenologico"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/estado_fenologico"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/estado_general"/>
 
             <TextView
                 android:id="@+id/estado_general"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Buena"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/estado_fenologico"
-                android:layout_toEndOf="@id/v_01_04"/>
+                app:layout_constraintTop_toBottomOf="@id/estado_fenologico"
+                app:layout_constraintStart_toEndOf="@id/v_01_04"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <TextView
                 android:id="@+id/v_01_05"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_de_crecimiento"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/estado_general"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintEnd_toStartOf="@id/estado_crecimiento"
+                app:layout_constraintTop_toBottomOf="@id/estado_general"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
                 android:id="@+id/estado_crecimiento"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Buena"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/estado_general"
-                android:layout_toEndOf="@id/v_01_05"/>
+                app:layout_constraintTop_toBottomOf="@id/estado_general"
+                app:layout_constraintStart_toEndOf="@id/v_01_05"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_06"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_de_malezas"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/estado_crecimiento"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintEnd_toStartOf="@id/estado_maleza"
+                app:layout_constraintTop_toBottomOf="@id/estado_crecimiento"
+                app:layout_constraintStart_toStartOf="parent"/>
             <TextView
                 android:id="@+id/estado_maleza"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Regular"
                 android:theme="@style/sub_titles_forms"
-                android:layout_toEndOf="@id/v_01_06"
-                android:layout_below="@id/estado_crecimiento"/>
+                app:layout_constraintStart_toEndOf="@id/v_01_06"
+                app:layout_constraintTop_toBottomOf="@id/estado_crecimiento"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_07"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_fitosanitario"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/estado_maleza"
-                android:layout_alignParentStart="true"
+                app:layout_constraintTop_toBottomOf="@id/estado_maleza"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/estado_fito"
                 />
 
             <TextView
                 android:id="@+id/estado_fito"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Buena"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/estado_maleza"
-                android:layout_toEndOf="@id/v_01_07"/>
+                app:layout_constraintTop_toBottomOf="@id/estado_maleza"
+                app:layout_constraintStart_toEndOf="@id/v_01_07"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_08"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/humedad_del_suelo"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/estado_fito"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/estado_fito"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/humedad_suelo"/>
 
 
             <TextView
                 android:id="@+id/humedad_suelo"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Buena"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/estado_fito"
-                android:layout_toEndOf="@id/v_01_08"/>
+                app:layout_constraintTop_toBottomOf="@id/estado_fito"
+                app:layout_constraintStart_toEndOf="@id/v_01_08"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
 
 
             <TextView
                 android:id="@+id/v_01_09"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/cosecha"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/humedad_suelo"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/humedad_suelo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/cosecha"/>
 
             <TextView
                 android:id="@+id/cosecha"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Sin Especificar"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/humedad_suelo"
-                android:layout_toEndOf="@id/v_01_09"/>
+                app:layout_constraintTop_toBottomOf="@id/humedad_suelo"
+                app:layout_constraintStart_toEndOf="@id/v_01_09"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_10"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/observations"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/cosecha"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/cosecha"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/observation"/>
 
             <TextView
                 android:id="@+id/observation"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Cultivo previo a cosecha, último riego"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/cosecha"
-                android:layout_toEndOf="@id/v_01_10"/>
+                app:layout_constraintTop_toBottomOf="@id/cosecha"
+                app:layout_constraintStart_toEndOf="@id/v_01_10"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_11"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/recomendaciones"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/observation"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/observation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/recomendaciones"/>
 
             <TextView
                 android:id="@+id/recomendaciones"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Realizar último riego y programar aplicación de desecante reglone en dosis de 2L/ha."
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/observation"
-                android:layout_toEndOf="@id/v_01_11"/>
+                app:layout_constraintTop_toBottomOf="@id/observation"
+                app:layout_constraintStart_toEndOf="@id/v_01_11"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
                 android:id="@+id/v_01_12"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/anexo"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/recomendaciones"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/recomendaciones"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/anexo"/>
 
             <TextView
                 android:id="@+id/anexo"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="20-AR0011"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/recomendaciones"
-                android:layout_toEndOf="@id/v_01_12"/>
+                app:layout_constraintTop_toBottomOf="@id/recomendaciones"
+                app:layout_constraintStart_toEndOf="@id/v_01_12"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
                 android:id="@+id/v_01_13"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/orden_de_multiplicaci_n"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/anexo"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/anexo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/orden_culplica"/>
             <TextView
                 android:id="@+id/orden_culplica"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="1996"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/anexo"
-                android:layout_toEndOf="@id/v_01_13"/>
+                app:layout_constraintTop_toBottomOf="@id/anexo"
+                app:layout_constraintStart_toEndOf="@id/v_01_13"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
                 android:id="@+id/v_01_14"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/cliente"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/orden_culplica"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/orden_culplica"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/cliente"/>
 
             <TextView
                 android:id="@+id/cliente"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="VOLMORIN"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/orden_culplica"
-                android:layout_toEndOf="@id/v_01_14"/>
+                app:layout_constraintTop_toBottomOf="@id/orden_culplica"
+                app:layout_constraintStart_toEndOf="@id/v_01_14"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <TextView
                 android:id="@+id/v_01_15"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/especie"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/cliente"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/cliente"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/especie"/>
 
 
             <TextView
                 android:id="@+id/especie"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="ARVEJA"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/cliente"
-                android:layout_toEndOf="@id/v_01_15"/>
+                app:layout_constraintTop_toBottomOf="@id/cliente"
+                app:layout_constraintStart_toEndOf="@id/v_01_15"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_16"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/variedad"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/especie"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/especie"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/variedad"/>
             <TextView
                 android:id="@+id/variedad"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="RC 3589"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/especie"
-                android:layout_toEndOf="@id/v_01_16"/>
+                app:layout_constraintTop_toBottomOf="@id/especie"
+                app:layout_constraintStart_toEndOf="@id/v_01_16"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <View
                 android:id="@+id/divider16"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:layout_below="@id/variedad"/>
+                app:layout_constraintTop_toBottomOf="@id/variedad"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <TextView
                 android:id="@+id/v_01_17"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Ready Batch (Costumer Lot)"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider16"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/divider16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ready_batch"
+                />
 
             <TextView
                 android:id="@+id/ready_batch"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider16"
-                android:layout_toEndOf="@id/v_01_17"/>
+                app:layout_constraintTop_toBottomOf="@id/divider16"
+                app:layout_constraintStart_toEndOf="@id/v_01_17"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
             <View
                 android:id="@+id/divider17"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:layout_below="@id/v_01_17"
-                android:layout_centerHorizontal="true"/>
+                app:layout_constraintTop_toBottomOf="@id/v_01_17"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <TextView
                 android:id="@+id/v_01_18"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="RAW Batch"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider17"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/divider17"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/raw_batch"/>
 
             <TextView
                 android:id="@+id/raw_batch"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider17"
-                android:layout_toEndOf="@id/v_01_18"/>
+                app:layout_constraintTop_toBottomOf="@id/divider17"
+                app:layout_constraintStart_toEndOf="@id/v_01_18"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <View
                 android:id="@+id/divider18"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:layout_below="@id/v_01_18"/>
+                app:layout_constraintTop_toBottomOf="@id/v_01_18"/>
 
 
             <TextView
                 android:id="@+id/v_01_19"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/grower"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider18"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/divider18"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grower"/>
 
             <TextView
                 android:id="@+id/grower"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="VIÑA ERRAZURIZ DOMINGUEZ S.A."
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/divider18"
-                android:layout_toEndOf="@id/v_01_19"/>
+                app:layout_constraintTop_toBottomOf="@id/divider18"
+                app:layout_constraintStart_toEndOf="@id/v_01_19"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_20"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/predio"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/grower"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/grower"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/predio"/>
 
             <TextView
                 android:id="@+id/predio"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Fundo Santa Berta"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/grower"
-                android:layout_toEndOf="@id/v_01_20"/>
+                app:layout_constraintTop_toBottomOf="@id/grower"
+                app:layout_constraintStart_toEndOf="@id/v_01_20"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_21"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/potrero"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/predio"/>
+                app:layout_constraintTop_toBottomOf="@id/predio"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/potrero"
+                />
 
             <TextView
                 android:id="@+id/potrero"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Pivote"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/predio"
-                android:layout_toEndOf="@id/v_01_21"/>
+                app:layout_constraintTop_toBottomOf="@id/predio"
+                app:layout_constraintStart_toEndOf="@id/v_01_21"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
                 android:id="@+id/v_01_22"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/siembra_sag"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/potrero"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/potrero"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/siembra_sag"/>
 
             <TextView
                 android:id="@+id/siembra_sag"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Pivote"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/potrero"
-                android:layout_toEndOf="@id/v_01_22"/>
+                app:layout_constraintTop_toBottomOf="@id/potrero"
+                app:layout_constraintStart_toEndOf="@id/v_01_22"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_23"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/sag_register_number"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/siembra_sag"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/siembra_sag"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sag_register_number"/>
 
             <TextView
                 android:id="@+id/sag_register_number"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="71605 (IDASE)"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/siembra_sag"
-                android:layout_toEndOf="@id/v_01_23"/>
+                app:layout_constraintTop_toBottomOf="@id/siembra_sag"
+                app:layout_constraintStart_toEndOf="@id/v_01_23"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
 
             <TextView
                 android:id="@+id/v_01_24"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/irrigation_system_sistema_de_riego"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/sag_register_number"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/sag_register_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/irrigation_system"/>
 
             <TextView
                 android:id="@+id/irrigation_system"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Pivot"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/sag_register_number"
-                android:layout_toEndOf="@id/v_01_24"/>
+                app:layout_constraintTop_toBottomOf="@id/sag_register_number"
+                app:layout_constraintStart_toEndOf="@id/v_01_24"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <TextView
                 android:id="@+id/v_01_25"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/soil_type_tipo_de_suelo"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/irrigation_system"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/irrigation_system"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/soil_type"/>
 
             <TextView
                 android:id="@+id/soil_type"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Loamy"
                 android:theme="@style/sub_titles_forms"
-                android:layout_toEndOf="@id/v_01_25"
-                android:layout_below="@id/irrigation_system"/>
+                app:layout_constraintStart_toEndOf="@id/v_01_25"
+                app:layout_constraintTop_toBottomOf="@id/irrigation_system"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_26"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/production_location_localidad"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/soil_type"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/soil_type"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/production_location"/>
 
             <TextView
                 android:id="@+id/production_location"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="San Nicolás"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/soil_type"
-                android:layout_toEndOf="@id/v_01_26"/>
+                app:layout_constraintTop_toBottomOf="@id/soil_type"
+                app:layout_constraintStart_toEndOf="@id/v_01_26"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_27"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/has_contrato"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/production_location"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/production_location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/has_contrato"/>
 
             <TextView
                 android:id="@+id/has_contrato"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="56.6"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/production_location"
-                android:layout_toEndOf="@id/v_01_27"/>
+                app:layout_constraintTop_toBottomOf="@id/production_location"
+                app:layout_constraintStart_toEndOf="@id/v_01_27"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
@@ -574,61 +628,67 @@
 
             <TextView
                 android:id="@+id/v_01_28"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/has_customer"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/has_contrato"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/has_contrato"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/has_customer"/>
 
             <TextView
                 android:id="@+id/has_customer"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="5.36"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/has_contrato"
-                android:layout_toEndOf="@id/v_01_28"/>
+                app:layout_constraintTop_toBottomOf="@id/has_contrato"
+                app:layout_constraintStart_toEndOf="@id/v_01_28"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
             <TextView
                 android:id="@+id/v_01_29"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/fieldman"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/has_customer"
-                android:layout_alignParentStart="true"
+                app:layout_constraintTop_toBottomOf="@id/has_customer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fieldman"
                 />
 
             <TextView
                 android:id="@+id/fieldman"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="JULIETTE PEREZ GONZALEZ"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/has_customer"
-                android:layout_toEndOf="@id/v_01_29"/>
+                app:layout_constraintTop_toBottomOf="@id/has_customer"
+                app:layout_constraintStart_toEndOf="@id/v_01_29"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <TextView
                 android:id="@+id/v_01_30"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/rch"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/fieldman"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/fieldman"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/rch"/>
 
             <TextView
                 android:id="@+id/rch"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="NA"
                 android:theme="@style/sub_titles_forms"
-                android:layout_below="@id/fieldman"
-                android:layout_toEndOf="@id/v_01_30"/>
+                app:layout_constraintTop_toBottomOf="@id/fieldman"
+                app:layout_constraintStart_toEndOf="@id/v_01_30"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <View
@@ -636,34 +696,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:layout_below="@id/rch"
-                android:layout_centerHorizontal="true"/>
+                app:layout_constraintTop_toBottomOf="@id/rch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <TextView
                 android:id="@+id/v_01_31"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Puntos Anpros"
                 android:theme="@style/titles_forms"
-                android:layout_below="@id/divider30"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/divider30"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5">
-        <FrameLayout
-            android:id="@+id/container_fotos_resumenes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
-
-</LinearLayout>
 
 
 

@@ -42,7 +42,7 @@ public class FragmentResumen extends Fragment {
     public void onResume() {
         super.onResume();
         if (activity != null){
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumenes, FragmentFotos.getInstance(1), Utilidades.FRAGMENT_FOTOS).commit();
+            //activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumenes, FragmentFotos.getInstance(1), Utilidades.FRAGMENT_FOTOS).commit();
         }
     }
 
@@ -52,7 +52,7 @@ public class FragmentResumen extends Fragment {
         if (isVisibleToUser) {
             if (activity != null){
 //                Toast.makeText(activity, "Visible resumen", Toast.LENGTH_SHORT).show();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumenes, FragmentFotos.getInstance(1), Utilidades.FRAGMENT_FOTOS).commit();
+                //activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumenes, FragmentFotos.getInstance(1), Utilidades.FRAGMENT_FOTOS).commit();
             }
         }
     }

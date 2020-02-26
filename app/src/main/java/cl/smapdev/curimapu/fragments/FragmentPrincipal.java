@@ -5,9 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
 import com.anychart.APIlib;
@@ -34,12 +38,16 @@ import java.util.List;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
+import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
 import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.tablas.Region;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class FragmentPrincipal extends Fragment {
 
@@ -81,6 +89,12 @@ public class FragmentPrincipal extends Fragment {
                     MainActivity.myAppDB.myDao().insertRegion(new Region("Región del Biobío"));
                     MainActivity.myAppDB.myDao().insertRegion(new Region("Región del la Araucanía"));
                     MainActivity.myAppDB.myDao().insertRegion(new Region("Región del los Rios"));
+                }
+
+                if (MainActivity.myAppDB.myDao().getCropRotation().size() <= 0){
+                    MainActivity.myAppDB.myDao().insertCrop(new CropRotation(2020,"Arvejas",1));
+                    MainActivity.myAppDB.myDao().insertCrop(new CropRotation(2020,"Canola",1));
+                    MainActivity.myAppDB.myDao().insertCrop(new CropRotation(2020,"Maiz",1));
                 }
 
                 if (MainActivity.myAppDB.myDao().getEspecies().size() <= 0 ){
@@ -138,6 +152,58 @@ public class FragmentPrincipal extends Fragment {
                 }
             }
         });
+
+
+        ConstraintLayout constraintLayout = (ConstraintLayout) view.findViewById(R.id.relative_constraint_principal);
+        ConstraintSet constraintSet = new ConstraintSet();
+
+        TextView textview1 = new TextView(getActivity());
+        textview1.setId(View.generateViewId());
+        textview1.setText("PROBANDO ESTA SHIET");
+
+
+
+//        textview1.setWidth(WRAP_CONTENT);
+//        textview1.setHeight(WRAP_CONTENT);
+
+        constraintLayout.addView(textview1,0);
+        ViewGroup.LayoutParams params = textview1.getLayoutParams();
+// Changes the height an
+// d width to the specified *pixels*
+        params.height = WRAP_CONTENT;
+        params.width = 0;
+        textview1.setLayoutParams(params);
+
+        EditText textview2 = new EditText(getActivity());
+
+
+        textview2.setId(View.generateViewId());
+        textview2.setText("PROBANDO OTRA  SHIET");
+//        textview2.setBackgroundColor(getResources().getColor(R.color.colorGold));
+        constraintLayout.addView(textview2,1);
+
+
+        ViewGroup.LayoutParams params2 = textview2.getLayoutParams();
+// Changes the height an
+// d width to the specified *pixels*
+        params2.height = WRAP_CONTENT;
+        params2.width = 0;
+        textview2.setLayoutParams(params2);
+
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(textview1.getId(), ConstraintSet.TOP,constraintLayout.getId(),ConstraintSet.TOP,60);
+        constraintSet.connect(textview1.getId(), ConstraintSet.START,constraintLayout.getId(),ConstraintSet.START,60);
+        constraintSet.connect(textview1.getId(), ConstraintSet.END,textview2.getId(),ConstraintSet.START,60);
+
+
+        constraintSet.connect(textview2.getId(), ConstraintSet.START,textview1.getId(),ConstraintSet.END,60);
+        constraintSet.connect(textview2.getId(), ConstraintSet.TOP,constraintLayout.getId(),ConstraintSet.TOP,60);
+        constraintSet.connect(textview2.getId(), ConstraintSet.END,constraintLayout.getId(),ConstraintSet.END,60);
+        constraintSet.applyTo(constraintLayout);
+
+
+
+
 
 /*
         List<CantidadVisitas>cantidadVisitas = MainActivity.myAppDB.myDao().getCantidadVisitasByEstado(2020);

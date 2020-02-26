@@ -13,6 +13,7 @@ import java.util.List;
 
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
+import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Flowering;
 import cl.smapdev.curimapu.clases.tablas.Harvest;
 import cl.smapdev.curimapu.clases.tablas.Sowing;
@@ -275,6 +276,16 @@ public interface MyDao {
 
     @Query("SELECT * FROM sowing WHERE id_anexo_sowing = :idAnexo AND id_visita_sowing = :idVisita")
     Sowing getSowing(int idVisita, int idAnexo);
+
+    @Query("SELECT * FROM crop_rotation WHERE id_anexo_crop_rotation = :idAnexo")
+    List<CropRotation> getCropRotation(int idAnexo);
+
+    @Query("SELECT * FROM crop_rotation")
+    List<CropRotation> getCropRotation();
+
+    @Insert
+    void insertCrop(CropRotation cropRotation);
+
 
 
 
