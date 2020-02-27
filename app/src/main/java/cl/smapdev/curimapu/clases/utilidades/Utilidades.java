@@ -1,16 +1,26 @@
 package cl.smapdev.curimapu.clases.utilidades;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.exifinterface.media.ExifInterface;
 
 import java.io.IOException;
@@ -18,9 +28,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class Utilidades {
 
@@ -63,6 +79,7 @@ public class Utilidades {
     public static final String SHARED_VISIT_FICHA_ID = "shared_visit_ficha_id";
     public static final String SHARED_VISIT_ANEXO_ID = "shared_visit_anexo_id";
     public static final String SHARED_VISIT_VISITA_ID = "shared_visit_visita_id";
+    public static final String SHARED_VISIT_MATERIAL_ID = "shared_visit_material_id";
 
 
 
@@ -346,4 +363,206 @@ public class Utilidades {
         return temp.toArray();
 
     }
+
+
+    public static ArrayList<ArrayList<Integer>> cargarUI(View view, int idConstraint, Activity activity, int idMaterial, int idEtapa){
+
+        ArrayList<Integer> id_generica = new ArrayList<>();
+        ArrayList<Integer> id_importante =  new ArrayList<>();
+        ArrayList<ArrayList<Integer>> genn = new ArrayList<>();
+
+
+
+        List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByMateriales(idMaterial);
+        if (list.size() > 0){
+
+            ConstraintLayout constraintLayout = (ConstraintLayout) view.findViewById(idConstraint);
+            ConstraintSet constraintSet = new ConstraintSet();
+
+            TextView prop = new TextView(new ContextThemeWrapper(activity, R.style.sub_titles_forms), null, 0);
+            prop.setId(View.generateViewId());
+            prop.setText(activity.getResources().getString(R.string.propiedad));
+
+            constraintLayout.addView(prop,0);
+            ViewGroup.LayoutParams propParam = prop.getLayoutParams();
+            propParam.height = WRAP_CONTENT;
+            propParam.width = 0;
+
+            prop.setLayoutParams(propParam);
+
+//            TextView value = new TextView(new ContextThemeWrapper(getActivity(), R.style.titles_forms), null, 0);
+            TextView value = new TextView(new ContextThemeWrapper(activity, R.style.sub_titles_forms), null, 0);
+            value.setId(View.generateViewId());
+            value.setText(activity.getResources().getString(R.string.valor));
+            constraintLayout.addView(value,1);
+            ViewGroup.LayoutParams valueParam = value.getLayoutParams();
+            valueParam.height = WRAP_CONTENT;
+            valueParam.width = 0;
+//            value.setPadding(32,32,32,32);
+            value.setLayoutParams(valueParam);
+
+            constraintSet.clone(constraintLayout);
+
+
+            constraintSet.connect(prop.getId(), ConstraintSet.TOP,constraintLayout.getId(),ConstraintSet.TOP,0);
+            constraintSet.connect(prop.getId(), ConstraintSet.START,constraintLayout.getId(),ConstraintSet.START,0);
+            constraintSet.connect(prop.getId(), ConstraintSet.END,value.getId(),ConstraintSet.START,0);
+
+            constraintSet.connect(value.getId(), ConstraintSet.START,prop.getId(),ConstraintSet.END,0);
+            constraintSet.connect(value.getId(), ConstraintSet.TOP,constraintLayout.getId(),ConstraintSet.TOP,0);
+            constraintSet.connect(value.getId(), ConstraintSet.END,constraintLayout.getId(),ConstraintSet.END,0);
+
+            constraintSet.applyTo(constraintLayout);
+
+            TextView tvOld = prop;
+
+            ArrayList<String> propiedades = new ArrayList<>();
+            for (pro_cli_mat fs : list) {
+                if (!propiedades.contains(fs.getNombre_en())){
+                    propiedades.add(fs.getNombre_en());
+                }
+            }
+
+            int cont = 2;
+            ArrayList<String> titulosUsados  = new ArrayList<>();
+
+            for (pro_cli_mat fs : list) {
+
+                if (!titulosUsados.contains(fs.getNombre_en())) {
+
+                    titulosUsados.add(fs.getNombre_en());
+
+                    TextView tvTitle = new TextView(new ContextThemeWrapper(activity, R.style.titles_forms), null, 0);
+
+                    int id = View.generateViewId();
+                    id_generica.add(id);
+                    id_importante.add(fs.getId_prop_mat_cli());
+                    tvTitle.setId(id);
+
+                    tvTitle.setText(fs.getNombre_en());
+                    constraintLayout.addView(tvTitle, cont);
+                    ViewGroup.LayoutParams paramTitle = tvTitle.getLayoutParams();
+                    paramTitle.height = WRAP_CONTENT;
+                    paramTitle.width = 0;
+                    tvTitle.setLayoutParams(paramTitle);
+
+                    constraintSet.clone(constraintLayout);
+                    constraintSet.connect(tvTitle.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                    constraintSet.connect(tvTitle.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
+                    constraintSet.connect(tvTitle.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
+
+                    constraintSet.applyTo(constraintLayout);
+
+                    cont++;
+                    tvOld = tvTitle;
+
+                }
+
+                TextView tv = new TextView(new ContextThemeWrapper(activity, R.style.sub_titles_forms), null, 0);
+
+                tv.setId(View.generateViewId());
+                tv.setText(fs.getNombre_elemento());
+                constraintLayout.addView(tv, cont);
+                ViewGroup.LayoutParams param = tv.getLayoutParams();
+                param.height = WRAP_CONTENT;
+                param.width = 0;
+                tv.setLayoutParams(param);
+
+
+                if (TextUtils.isEmpty(fs.getTipo_cambio())){
+                    TextView et = new TextView(new ContextThemeWrapper(activity, R.style.sub_titles_forms), null, 0);
+
+                    int id = View.generateViewId();
+                    id_generica.add(id);
+                    id_importante.add(fs.getId_prop_mat_cli());
+                    et.setId(id);
+
+                    et.setText(fs.getNombre_elemento());
+                    constraintLayout.addView(et, cont);
+                    ViewGroup.LayoutParams paramEditText = et.getLayoutParams();
+                    param.height = WRAP_CONTENT;
+                    param.width = 0;
+                    et.setLayoutParams(paramEditText);
+
+                    constraintSet.clone(constraintLayout);
+                    /* PROP */
+                    constraintSet.connect(tv.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                    constraintSet.connect(tv.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
+                    constraintSet.connect(tv.getId(), ConstraintSet.END, et.getId(), ConstraintSet.START, 0);
+                    /* VAL */
+                    constraintSet.connect(et.getId(), ConstraintSet.TOP,tvOld.getId(),ConstraintSet.BOTTOM,0);
+                    constraintSet.connect(et.getId(), ConstraintSet.START,tv.getId(),ConstraintSet.END,0);
+                    constraintSet.connect(et.getId(), ConstraintSet.END,constraintLayout.getId(),ConstraintSet.END,0);
+
+                }else{
+
+                    EditText et = null;
+                    switch (fs.getTipo_cambio()){
+                        case "TEXT":
+                        case "INT":
+                        case "DECIMAL":
+                        default:
+                            et  = new EditText(activity);
+                            break;
+                        case "DATE":
+                            et = new EditText(new ContextThemeWrapper(activity, R.style.input_date_forms));
+                            break;
+                    }
+
+                    int id = View.generateViewId();
+                    id_generica.add(id);
+                    id_importante.add(fs.getId_prop_mat_cli());
+                    et.setId(id);
+
+                    constraintLayout.addView(et, cont);
+
+                    ViewGroup.LayoutParams paramEditText = et.getLayoutParams();
+                    paramEditText.height = WRAP_CONTENT;
+                    paramEditText.width = 0;
+                    et.setLayoutParams(paramEditText);
+
+                    switch (fs.getTipo_cambio()){
+                        case "TEXT":
+                            et.setInputType(InputType.TYPE_CLASS_TEXT);
+                            break;
+                        case "DATE":
+                            et.setInputType(InputType.TYPE_CLASS_DATETIME);
+                            break;
+                        case "INT":
+                            et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            break;
+                        case "DECIMAL":
+                            et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            break;
+                    }
+                    constraintSet.clone(constraintLayout);
+                    /* PROP */
+                    constraintSet.connect(tv.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                    constraintSet.connect(tv.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
+                    constraintSet.connect(tv.getId(), ConstraintSet.END, et.getId(), ConstraintSet.START, 0);
+                    /* VAL */
+                    constraintSet.connect(et.getId(), ConstraintSet.TOP,tvOld.getId(),ConstraintSet.BOTTOM,0);
+                    constraintSet.connect(et.getId(), ConstraintSet.START,tv.getId(),ConstraintSet.END,0);
+                    constraintSet.connect(et.getId(), ConstraintSet.END,constraintLayout.getId(),ConstraintSet.END,0);
+                }
+
+
+
+                constraintSet.applyTo(constraintLayout);
+                tvOld = tv;
+                cont++;
+            }
+
+
+        }
+        genn.add(id_generica);
+        genn.add(id_importante);
+
+
+
+        return genn;
+    }
+
+
+
 }

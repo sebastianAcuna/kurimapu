@@ -17,6 +17,7 @@ import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Flowering;
 import cl.smapdev.curimapu.clases.tablas.Harvest;
 import cl.smapdev.curimapu.clases.tablas.Sowing;
+import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
@@ -29,6 +30,7 @@ import cl.smapdev.curimapu.clases.relaciones.AgricultorCompleto;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
 import cl.smapdev.curimapu.clases.temporales.TempFlowering;
 import cl.smapdev.curimapu.clases.temporales.TempHarvest;
 import cl.smapdev.curimapu.clases.temporales.TempSowing;
@@ -310,6 +312,29 @@ public interface MyDao {
 
     @Update
     void updateHarvest(Harvest harvest);
+
+    /* pro_cli_mat  */
+
+    @Insert
+    List<Long> insertInterfaz(List<pro_cli_mat> pro_cli_mats);
+
+    @Query("DELETE FROM pro_cli_mat")
+    void deleteProCliMat();
+
+    @Query("SELECT  * FROM pro_cli_mat WHERE id_materiales = :idMaterial")
+    List<pro_cli_mat> getProCliMatByMateriales(int idMaterial);
+
+
+    /* temporadas */
+    @Insert
+    List<Long> insertTemporada(List<Temporada> temporadas);
+
+    @Query("DELETE FROM temporada ")
+    void deleteTemporadas();
+
+
+
+
 
 
 

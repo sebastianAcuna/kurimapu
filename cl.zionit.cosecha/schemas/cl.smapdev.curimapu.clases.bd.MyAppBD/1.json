@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "229b3a77ff36b656f3db8f84d405d1df",
+    "identityHash": "502b1402c39962ca6bd798fb946b13e9",
     "entities": [
       {
         "tableName": "fotos",
@@ -1699,11 +1699,135 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "pro_cli_mat",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_prop_mat_cli` INTEGER NOT NULL, `id_cli` INTEGER NOT NULL, `id_materiales` INTEGER NOT NULL, `id_prop` INTEGER NOT NULL, `id_etapa` INTEGER NOT NULL, `id_tempo` INTEGER NOT NULL, `nombre_es` TEXT, `nombre_en` TEXT, `nombre_elemento` TEXT, `aplica` TEXT, `orden` INTEGER NOT NULL, `tipo_cambio` TEXT, PRIMARY KEY(`id_prop_mat_cli`))",
+        "fields": [
+          {
+            "fieldPath": "id_prop_mat_cli",
+            "columnName": "id_prop_mat_cli",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_cli",
+            "columnName": "id_cli",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_materiales",
+            "columnName": "id_materiales",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_prop",
+            "columnName": "id_prop",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_etapa",
+            "columnName": "id_etapa",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_tempo",
+            "columnName": "id_tempo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre_es",
+            "columnName": "nombre_es",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_en",
+            "columnName": "nombre_en",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_elemento",
+            "columnName": "nombre_elemento",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "aplica",
+            "columnName": "aplica",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "orden",
+            "columnName": "orden",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipo_cambio",
+            "columnName": "tipo_cambio",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_prop_mat_cli"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "temporada",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_tempo_tempo` INTEGER NOT NULL, `nombre_tempo` TEXT, `desde_tempo` TEXT, `hasta_tempo` TEXT, PRIMARY KEY(`id_tempo_tempo`))",
+        "fields": [
+          {
+            "fieldPath": "id_tempo_tempo",
+            "columnName": "id_tempo_tempo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre_tempo",
+            "columnName": "nombre_tempo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "desde_tempo",
+            "columnName": "desde_tempo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hasta_tempo",
+            "columnName": "hasta_tempo",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_tempo_tempo"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"229b3a77ff36b656f3db8f84d405d1df\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"502b1402c39962ca6bd798fb946b13e9\")"
     ]
   }
 }

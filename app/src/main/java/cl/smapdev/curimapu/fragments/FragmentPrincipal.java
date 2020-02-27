@@ -1,5 +1,6 @@
 package cl.smapdev.curimapu.fragments;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +40,9 @@ import java.util.List;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
+import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
+import cl.smapdev.curimapu.clases.retrofit.ApiService;
+import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
@@ -45,6 +50,9 @@ import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
 import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.tablas.Region;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -92,9 +100,9 @@ public class FragmentPrincipal extends Fragment {
                 }
 
                 if (MainActivity.myAppDB.myDao().getCropRotation().size() <= 0){
-                    MainActivity.myAppDB.myDao().insertCrop(new CropRotation(2020,"Arvejas",1));
-                    MainActivity.myAppDB.myDao().insertCrop(new CropRotation(2020,"Canola",1));
-                    MainActivity.myAppDB.myDao().insertCrop(new CropRotation(2020,"Maiz",1));
+                    MainActivity.myAppDB.myDao().insertCrop(new CropRotation(1,"Arvejas",1));
+                    MainActivity.myAppDB.myDao().insertCrop(new CropRotation(1,"Canola",1));
+                    MainActivity.myAppDB.myDao().insertCrop(new CropRotation(1,"Maiz",1));
                 }
 
                 if (MainActivity.myAppDB.myDao().getEspecies().size() <= 0 ){
@@ -154,6 +162,9 @@ public class FragmentPrincipal extends Fragment {
         });
 
 
+
+
+
         ConstraintLayout constraintLayout = (ConstraintLayout) view.findViewById(R.id.relative_constraint_principal);
         ConstraintSet constraintSet = new ConstraintSet();
 
@@ -176,8 +187,7 @@ public class FragmentPrincipal extends Fragment {
 
         EditText textview2 = new EditText(getActivity());
 
-
-        textview2.setId(View.generateViewId());
+        textview2.setId(60);
         textview2.setText("PROBANDO OTRA  SHIET");
 //        textview2.setBackgroundColor(getResources().getColor(R.color.colorGold));
         constraintLayout.addView(textview2,1);
@@ -335,6 +345,96 @@ public class FragmentPrincipal extends Fragment {
 //
 
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new descargar().execute();
+    }
+
+    public class descargar extends AsyncTask<Void, Integer, Boolean>{
+
+        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.setTitle("Espere un momento...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            final boolean[] problema = {false};
+
+            ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+            Call<GsonDescargas> call = apiService.descargarDatos();
+            call.enqueue(new Callback<GsonDescargas>() {
+                @Override
+                public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
+
+                    GsonDescargas gsonDescargas  = response.body();
+                    if (gsonDescargas != null){
+
+                        if (gsonDescargas.getPro_cli_matList().size() > 0){
+                            MainActivity.myAppDB.myDao().deleteProCliMat();
+                            List<Long> inserts  = MainActivity.myAppDB.myDao().insertInterfaz(gsonDescargas.getPro_cli_matList());
+                            for (long l : inserts){
+                                if (l <= 0) {
+                                    problema[0] = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (gsonDescargas.getTemporadas().size() > 0){
+                            MainActivity.myAppDB.myDao().deleteTemporadas();
+                            List<Long> inserts  = MainActivity.myAppDB.myDao().insertTemporada(gsonDescargas.getTemporadas());
+                            for (long l : inserts){
+                                if (l <= 0) {
+                                    problema[0] = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
+                    System.out.println(t.getMessage());
+                }
+            });
+
+            return problema[0];
+        }
+
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+            if (aBoolean){
+                Toast.makeText(getActivity(), "Todo descargado con exito", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getActivity(), "No se pudo descargar todo", Toast.LENGTH_SHORT).show();
+            }
+
+
+            progressDialog.dismiss();
+        }
+    }
+
 
 
     @Override
