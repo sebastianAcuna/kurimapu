@@ -2,6 +2,7 @@ package cl.smapdev.curimapu.clases.utilidades;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -9,10 +10,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -365,25 +368,34 @@ public class Utilidades {
     }
 
 
-    public static ArrayList<ArrayList<Integer>> cargarUI(View view, int idConstraint, Activity activity, int idMaterial, int idEtapa){
+    public static ArrayList<ArrayList> cargarUI(View view, int idConstraint, Activity activity, int idMaterial, int idEtapa, ArrayList<ArrayList> all){
 
         ArrayList<Integer> id_generica = new ArrayList<>();
         ArrayList<Integer> id_importante =  new ArrayList<>();
-        ArrayList<ArrayList<Integer>> genn = new ArrayList<>();
+        ArrayList<EditText> editTexts =  new ArrayList<>();
+        ArrayList<TextView> textViews =  new ArrayList<>();
+        ArrayList<ArrayList> genn = new ArrayList<>();
 
 
 
         List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByMateriales(idMaterial);
-        if (list.size() > 0){
+        if (list.size() > 0) {
 
             ConstraintLayout constraintLayout = (ConstraintLayout) view.findViewById(idConstraint);
             ConstraintSet constraintSet = new ConstraintSet();
 
             TextView prop = new TextView(new ContextThemeWrapper(activity, R.style.sub_titles_forms), null, 0);
             prop.setId(View.generateViewId());
+
+            if (view.findViewWithTag("PROPERTIES_" + idMaterial + "_" + idEtapa) == null) {
+
+
+
+            prop.setTag("PROPERTIES_" + idMaterial + "_" + idEtapa);
+
             prop.setText(activity.getResources().getString(R.string.propiedad));
 
-            constraintLayout.addView(prop,0);
+            constraintLayout.addView(prop, 0);
             ViewGroup.LayoutParams propParam = prop.getLayoutParams();
             propParam.height = WRAP_CONTENT;
             propParam.width = 0;
@@ -394,7 +406,7 @@ public class Utilidades {
             TextView value = new TextView(new ContextThemeWrapper(activity, R.style.sub_titles_forms), null, 0);
             value.setId(View.generateViewId());
             value.setText(activity.getResources().getString(R.string.valor));
-            constraintLayout.addView(value,1);
+            constraintLayout.addView(value, 1);
             ViewGroup.LayoutParams valueParam = value.getLayoutParams();
             valueParam.height = WRAP_CONTENT;
             valueParam.width = 0;
@@ -404,13 +416,13 @@ public class Utilidades {
             constraintSet.clone(constraintLayout);
 
 
-            constraintSet.connect(prop.getId(), ConstraintSet.TOP,constraintLayout.getId(),ConstraintSet.TOP,0);
-            constraintSet.connect(prop.getId(), ConstraintSet.START,constraintLayout.getId(),ConstraintSet.START,0);
-            constraintSet.connect(prop.getId(), ConstraintSet.END,value.getId(),ConstraintSet.START,0);
+            constraintSet.connect(prop.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP, 0);
+            constraintSet.connect(prop.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
+            constraintSet.connect(prop.getId(), ConstraintSet.END, value.getId(), ConstraintSet.START, 0);
 
-            constraintSet.connect(value.getId(), ConstraintSet.START,prop.getId(),ConstraintSet.END,0);
-            constraintSet.connect(value.getId(), ConstraintSet.TOP,constraintLayout.getId(),ConstraintSet.TOP,0);
-            constraintSet.connect(value.getId(), ConstraintSet.END,constraintLayout.getId(),ConstraintSet.END,0);
+            constraintSet.connect(value.getId(), ConstraintSet.START, prop.getId(), ConstraintSet.END, 0);
+            constraintSet.connect(value.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP, 0);
+            constraintSet.connect(value.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
 
             constraintSet.applyTo(constraintLayout);
 
@@ -418,13 +430,13 @@ public class Utilidades {
 
             ArrayList<String> propiedades = new ArrayList<>();
             for (pro_cli_mat fs : list) {
-                if (!propiedades.contains(fs.getNombre_en())){
+                if (!propiedades.contains(fs.getNombre_en())) {
                     propiedades.add(fs.getNombre_en());
                 }
             }
 
             int cont = 2;
-            ArrayList<String> titulosUsados  = new ArrayList<>();
+            ArrayList<String> titulosUsados = new ArrayList<>();
 
             for (pro_cli_mat fs : list) {
 
@@ -435,9 +447,10 @@ public class Utilidades {
                     TextView tvTitle = new TextView(new ContextThemeWrapper(activity, R.style.titles_forms), null, 0);
 
                     int id = View.generateViewId();
-                    id_generica.add(id);
-                    id_importante.add(fs.getId_prop_mat_cli());
                     tvTitle.setId(id);
+                    id_generica.add(tvTitle.getId());
+                    id_importante.add(fs.getId_prop_mat_cli());
+
 
                     tvTitle.setText(fs.getNombre_en());
                     constraintLayout.addView(tvTitle, cont);
@@ -469,13 +482,14 @@ public class Utilidades {
                 tv.setLayoutParams(param);
 
 
-                if (TextUtils.isEmpty(fs.getTipo_cambio())){
+                if (TextUtils.isEmpty(fs.getTipo_cambio())) {
                     TextView et = new TextView(new ContextThemeWrapper(activity, R.style.sub_titles_forms), null, 0);
 
                     int id = View.generateViewId();
-                    id_generica.add(id);
-                    id_importante.add(fs.getId_prop_mat_cli());
                     et.setId(id);
+                    id_generica.add(et.getId());
+                    id_importante.add(fs.getId_prop_mat_cli());
+
 
                     et.setText(fs.getNombre_elemento());
                     constraintLayout.addView(et, cont);
@@ -490,19 +504,21 @@ public class Utilidades {
                     constraintSet.connect(tv.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
                     constraintSet.connect(tv.getId(), ConstraintSet.END, et.getId(), ConstraintSet.START, 0);
                     /* VAL */
-                    constraintSet.connect(et.getId(), ConstraintSet.TOP,tvOld.getId(),ConstraintSet.BOTTOM,0);
-                    constraintSet.connect(et.getId(), ConstraintSet.START,tv.getId(),ConstraintSet.END,0);
-                    constraintSet.connect(et.getId(), ConstraintSet.END,constraintLayout.getId(),ConstraintSet.END,0);
+                    constraintSet.connect(et.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                    constraintSet.connect(et.getId(), ConstraintSet.START, tv.getId(), ConstraintSet.END, 0);
+                    constraintSet.connect(et.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
 
-                }else{
+                    textViews.add(et);
+
+                } else {
 
                     EditText et = null;
-                    switch (fs.getTipo_cambio()){
+                    switch (fs.getTipo_cambio()) {
                         case "TEXT":
                         case "INT":
                         case "DECIMAL":
                         default:
-                            et  = new EditText(activity);
+                            et = new EditText(activity);
                             break;
                         case "DATE":
                             et = new EditText(new ContextThemeWrapper(activity, R.style.input_date_forms));
@@ -510,9 +526,11 @@ public class Utilidades {
                     }
 
                     int id = View.generateViewId();
-                    id_generica.add(id);
-                    id_importante.add(fs.getId_prop_mat_cli());
                     et.setId(id);
+                    int idNed = et.getId();
+                    id_generica.add(et.getId());
+                    id_importante.add(fs.getId_prop_mat_cli());
+
 
                     constraintLayout.addView(et, cont);
 
@@ -521,12 +539,14 @@ public class Utilidades {
                     paramEditText.width = 0;
                     et.setLayoutParams(paramEditText);
 
-                    switch (fs.getTipo_cambio()){
+
+                    switch (fs.getTipo_cambio()) {
                         case "TEXT":
                             et.setInputType(InputType.TYPE_CLASS_TEXT);
                             break;
                         case "DATE":
                             et.setInputType(InputType.TYPE_CLASS_DATETIME);
+
                             break;
                         case "INT":
                             et.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -541,22 +561,35 @@ public class Utilidades {
                     constraintSet.connect(tv.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
                     constraintSet.connect(tv.getId(), ConstraintSet.END, et.getId(), ConstraintSet.START, 0);
                     /* VAL */
-                    constraintSet.connect(et.getId(), ConstraintSet.TOP,tvOld.getId(),ConstraintSet.BOTTOM,0);
-                    constraintSet.connect(et.getId(), ConstraintSet.START,tv.getId(),ConstraintSet.END,0);
-                    constraintSet.connect(et.getId(), ConstraintSet.END,constraintLayout.getId(),ConstraintSet.END,0);
+                    constraintSet.connect(et.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                    constraintSet.connect(et.getId(), ConstraintSet.START, tv.getId(), ConstraintSet.END, 0);
+                    constraintSet.connect(et.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
+
+
+                    editTexts.add(et);
                 }
 
 
-
                 constraintSet.applyTo(constraintLayout);
+
+
                 tvOld = tv;
                 cont++;
             }
+            }else{
+                if (all.size() > 0){
+                    id_generica = (ArrayList<Integer>) all.get(0);
+                    id_importante = (ArrayList<Integer>) all.get(1);
+                    textViews = (ArrayList<TextView>) all.get(2);
+                    editTexts = (ArrayList<EditText>) all.get(3);
+                }
 
-
+            }
         }
         genn.add(id_generica);
         genn.add(id_importante);
+        genn.add(textViews);
+        genn.add(editTexts);
 
 
 
@@ -564,5 +597,16 @@ public class Utilidades {
     }
 
 
+    public static void hideKeyboard(Context ctx) {
+        InputMethodManager inputManager = (InputMethodManager) ctx
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View v = ((Activity) ctx).getCurrentFocus();
+        if (v == null)
+            return;
+
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
 
 }

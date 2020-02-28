@@ -163,58 +163,6 @@ public class FragmentPrincipal extends Fragment {
 
 
 
-
-
-        ConstraintLayout constraintLayout = (ConstraintLayout) view.findViewById(R.id.relative_constraint_principal);
-        ConstraintSet constraintSet = new ConstraintSet();
-
-        TextView textview1 = new TextView(getActivity());
-        textview1.setId(View.generateViewId());
-        textview1.setText("PROBANDO ESTA SHIET");
-
-
-
-//        textview1.setWidth(WRAP_CONTENT);
-//        textview1.setHeight(WRAP_CONTENT);
-
-        constraintLayout.addView(textview1,0);
-        ViewGroup.LayoutParams params = textview1.getLayoutParams();
-// Changes the height an
-// d width to the specified *pixels*
-        params.height = WRAP_CONTENT;
-        params.width = 0;
-        textview1.setLayoutParams(params);
-
-        EditText textview2 = new EditText(getActivity());
-
-        textview2.setId(60);
-        textview2.setText("PROBANDO OTRA  SHIET");
-//        textview2.setBackgroundColor(getResources().getColor(R.color.colorGold));
-        constraintLayout.addView(textview2,1);
-
-
-        ViewGroup.LayoutParams params2 = textview2.getLayoutParams();
-// Changes the height an
-// d width to the specified *pixels*
-        params2.height = WRAP_CONTENT;
-        params2.width = 0;
-        textview2.setLayoutParams(params2);
-
-        constraintSet.clone(constraintLayout);
-        constraintSet.connect(textview1.getId(), ConstraintSet.TOP,constraintLayout.getId(),ConstraintSet.TOP,60);
-        constraintSet.connect(textview1.getId(), ConstraintSet.START,constraintLayout.getId(),ConstraintSet.START,60);
-        constraintSet.connect(textview1.getId(), ConstraintSet.END,textview2.getId(),ConstraintSet.START,60);
-
-
-        constraintSet.connect(textview2.getId(), ConstraintSet.START,textview1.getId(),ConstraintSet.END,60);
-        constraintSet.connect(textview2.getId(), ConstraintSet.TOP,constraintLayout.getId(),ConstraintSet.TOP,60);
-        constraintSet.connect(textview2.getId(), ConstraintSet.END,constraintLayout.getId(),ConstraintSet.END,60);
-        constraintSet.applyTo(constraintLayout);
-
-
-
-
-
 /*
         List<CantidadVisitas>cantidadVisitas = MainActivity.myAppDB.myDao().getCantidadVisitasByEstado(2020);
 

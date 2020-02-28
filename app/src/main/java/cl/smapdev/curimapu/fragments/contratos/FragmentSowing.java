@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,6 +41,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -95,9 +97,11 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
 
     private View Globalview;
 
-    private ArrayList<ArrayList<Integer>> global = null;
+    private ArrayList<ArrayList> global = null;
     private ArrayList<Integer> id_importante = null;
     private ArrayList<Integer> id_generica = null;
+    private ArrayList<TextView> textViews = null;
+    private ArrayList<EditText> editTexts  = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,6 +117,8 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         id_importante = new ArrayList<>();
         global = new ArrayList<>();
         id_generica = new ArrayList<>();
+        textViews = new ArrayList<>();
+        editTexts = new ArrayList<>();
     }
 
     @Nullable
@@ -126,7 +132,8 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bind(view);
-        global = Utilidades.cargarUI(Globalview,R.id.relative_constraint_sowing, getActivity(), prefs.getInt(Utilidades.SHARED_VISIT_MATERIAL_ID,0), 0);
+        global = Utilidades.cargarUI(Globalview,R.id.relative_constraint_sowing, getActivity(), prefs.getInt(Utilidades.SHARED_VISIT_MATERIAL_ID,0), 0, global);
+        setearOnFocus();
     }
 
     @Override
@@ -134,13 +141,70 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
-                global = Utilidades.cargarUI(Globalview,R.id.relative_constraint_sowing, getActivity(), prefs.getInt(Utilidades.SHARED_VISIT_MATERIAL_ID,0), 0);
+                global = Utilidades.cargarUI(Globalview,R.id.relative_constraint_sowing, getActivity(), prefs.getInt(Utilidades.SHARED_VISIT_MATERIAL_ID,0), 0,global);
+
+                setearOnFocus();
             }
         }
     }
 
 
 
+    private void setearOnFocus(){
+        if (global != null && global.size() > 0){
+            try{
+                editTexts = (ArrayList<EditText>) global.get(3);
+                id_generica = (ArrayList<Integer>) global.get(0);
+                id_importante = (ArrayList<Integer>) global.get(1);
+
+                if (editTexts != null && editTexts.size() > 0){
+                    for (int i = 0; i < editTexts.size(); i++){
+//                    for (final EditText et : editTexts){
+
+                        final int finalI = i;
+                        editTexts.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                            @Override
+                            public void onFocusChange(View view, boolean b) {
+                                if (id_generica.contains(editTexts.get(finalI).getId())){
+                                    int index = id_generica.indexOf(editTexts.get(finalI).getId());
+                                        switch (editTexts.get(finalI).getInputType()){
+                                            case InputType.TYPE_CLASS_TEXT:
+                                            case InputType.TYPE_CLASS_NUMBER :
+                                            case InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL:
+                                                if (!b){
+                                                    Toast.makeText(activity,
+                                                            "guardo en bd edittext con id " + editTexts.get(finalI).getId() + " con la importante " + id_importante.get(index) +
+                                                                    " y con valor " + editTexts.get(finalI).getText().toString() , Toast.LENGTH_SHORT).show();
+                                                }
+                                                break;
+                                            case InputType.TYPE_CLASS_DATETIME:
+                                                /*InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);*/
+
+
+                                                /*InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                                imm.showSoftInput(editTexts.get(finalI), InputMethodManager.SHOW_IMPLICIT);*/
+                                                if (b){ levantarFecha(editTexts.get(finalI));  }
+                                                else { Toast.makeText(activity,
+                                                        "guardo en bd edittext con id " + editTexts.get(finalI).getId() + " con la importante " + id_importante.get(index) +
+                                                                " y con valor " + editTexts.get(finalI).getText().toString() , Toast.LENGTH_SHORT).show(); }
+                                                break;
+                                        }
+                                }
+                            }
+                        });
+                    }
+                }
+            }catch (Exception e){
+                Log.e("ERROR ARRAY EDIT TEXT", e.getMessage());
+            }
+        }
+        try{
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_sowing, FragmentFotos.getInstance(2), Utilidades.FRAGMENT_FOTOS).commit();
+        }catch (IllegalArgumentException e){
+            Log.e("ILEGAL EXCEPTION SOWING", e.getMessage());
+        }
+    }
 
 
     private void cargarTemp(){
@@ -174,12 +238,7 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
 
 
     private void loadUiData(){
-        try{
 
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_sowing, FragmentFotos.getInstance(2), Utilidades.FRAGMENT_FOTOS).commit();
-        }catch (IllegalArgumentException e){
-            Log.e("ILEGAL EXCEPTION SOWING", e.getMessage());
-        }
 
 /*
         cargarCrop();
@@ -232,6 +291,8 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
     }
 
     private void levantarFecha(final EditText edit){
+
+
         String fecha = Utilidades.fechaActualSinHora();
         String[] fechaRota = fecha.split("-");
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
@@ -251,11 +312,13 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
                 else dia = String.valueOf(dayOfMonth);
 
                 String finalDate = dia + "-" + mes + "-" + year;
+//                edit.setHint("");
                 edit.setText(finalDate);
             }
         }, Integer.parseInt(fechaRota[0]), (Integer.parseInt(fechaRota[1]) - 1), Integer.parseInt(fechaRota[2]));
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
+
     }
 
 
@@ -331,6 +394,8 @@ public class FragmentSowing extends Fragment implements View.OnFocusChangeListen
 
     @Override
     public void onFocusChange(View view, boolean b) {
+
+
        /* switch (view.getId()){
             case R.id.date_siembra_sag:
                 if(b) levantarFecha(date_siembra_sag);
