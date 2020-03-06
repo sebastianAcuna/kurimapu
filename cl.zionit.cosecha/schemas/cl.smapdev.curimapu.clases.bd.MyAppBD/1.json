@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "502b1402c39962ca6bd798fb946b13e9",
+    "identityHash": "20e974bbb0759c98089064136f02226b",
     "entities": [
       {
         "tableName": "fotos",
@@ -86,7 +86,7 @@
       },
       {
         "tableName": "fichas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_ficha` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `anno` INTEGER NOT NULL, `rut_agricultor_fichas` TEXT, `oferta_negocio` TEXT, `localidad` TEXT, `has_disponible` REAL NOT NULL, `observaciones` TEXT, `norting` REAL NOT NULL, `easting` REAL NOT NULL, `activa` INTEGER NOT NULL, `subida` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_ficha` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `anno` INTEGER NOT NULL, `id_agricultor_ficha` INTEGER NOT NULL, `oferta_negocio` TEXT, `id_region_ficha` INTEGER NOT NULL, `id_comuna_ficha` INTEGER NOT NULL, `localidad` TEXT, `has_disponible` REAL NOT NULL, `observaciones` TEXT, `norting` REAL NOT NULL, `easting` REAL NOT NULL, `activa` INTEGER NOT NULL, `subida` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id_ficha",
@@ -101,16 +101,28 @@
             "notNull": true
           },
           {
-            "fieldPath": "rut_agricultor_fichas",
-            "columnName": "rut_agricultor_fichas",
-            "affinity": "TEXT",
-            "notNull": false
+            "fieldPath": "id_agricultor_ficha",
+            "columnName": "id_agricultor_ficha",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "oferta_negocio",
             "columnName": "oferta_negocio",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "id_region_ficha",
+            "columnName": "id_region_ficha",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_comuna_ficha",
+            "columnName": "id_comuna_ficha",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "localidad",
@@ -166,8 +178,14 @@
       },
       {
         "tableName": "agricultor",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rut_agricultor` TEXT NOT NULL, `nombre_agricultor` TEXT, `telefono_agricultor` TEXT, `administrador_agricultor` TEXT, `telefono_admin_agricultor` TEXT, `region_agricultor` INTEGER NOT NULL, `comuna_agricultor` INTEGER NOT NULL, `agricultor_subido` INTEGER NOT NULL, PRIMARY KEY(`rut_agricultor`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_agricultor` INTEGER NOT NULL, `rut_agricultor` TEXT NOT NULL, `nombre_agricultor` TEXT, `telefono_agricultor` TEXT, `administrador_agricultor` TEXT, `telefono_admin_agricultor` TEXT, `region_agricultor` INTEGER NOT NULL, `comuna_agricultor` INTEGER NOT NULL, `agricultor_subido` INTEGER NOT NULL, PRIMARY KEY(`id_agricultor`))",
         "fields": [
+          {
+            "fieldPath": "id_agricultor",
+            "columnName": "id_agricultor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "rut_agricultor",
             "columnName": "rut_agricultor",
@@ -219,7 +237,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "rut_agricultor"
+            "id_agricultor"
           ],
           "autoGenerate": false
         },
@@ -228,7 +246,7 @@
       },
       {
         "tableName": "region",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_region` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `desc_region` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_region` INTEGER NOT NULL, `desc_region` TEXT, `id_pais` INTEGER NOT NULL, PRIMARY KEY(`id_region`))",
         "fields": [
           {
             "fieldPath": "id_region",
@@ -241,20 +259,26 @@
             "columnName": "desc_region",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "id_pais",
+            "columnName": "id_pais",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
             "id_region"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "comuna",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_comuna` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `desc_comuna` TEXT, `id_region_comuna` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_comuna` INTEGER NOT NULL, `desc_comuna` TEXT, `id_provincia_comuna` INTEGER NOT NULL, PRIMARY KEY(`id_comuna`))",
         "fields": [
           {
             "fieldPath": "id_comuna",
@@ -269,8 +293,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "id_region_comuna",
-            "columnName": "id_region_comuna",
+            "fieldPath": "id_provincia_comuna",
+            "columnName": "id_provincia_comuna",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -279,14 +303,14 @@
           "columnNames": [
             "id_comuna"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "anexo_contrato",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `anexo_contrato` TEXT, `id_variedad_anexo` INTEGER NOT NULL, `id_especie_anexo` INTEGER NOT NULL, `rut_agricultor_anexo` TEXT, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` INTEGER NOT NULL, `anexo_contrato` TEXT, `id_variedad_anexo` INTEGER NOT NULL, `temporada_anexo` TEXT, `id_especie_anexo` INTEGER NOT NULL, `id_agricultor_anexo` INTEGER NOT NULL, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL, PRIMARY KEY(`id_anexo_contrato`))",
         "fields": [
           {
             "fieldPath": "id_anexo_contrato",
@@ -307,16 +331,22 @@
             "notNull": true
           },
           {
+            "fieldPath": "temporada_anexo",
+            "columnName": "temporada_anexo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "id_especie_anexo",
             "columnName": "id_especie_anexo",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "rut_agricultor_anexo",
-            "columnName": "rut_agricultor_anexo",
-            "affinity": "TEXT",
-            "notNull": false
+            "fieldPath": "id_agricultor_anexo",
+            "columnName": "id_agricultor_anexo",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "protero",
@@ -335,14 +365,14 @@
           "columnNames": [
             "id_anexo_contrato"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "especie",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_especie` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `desc_especie` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_especie` INTEGER NOT NULL, `desc_especie` TEXT, PRIMARY KEY(`id_especie`))",
         "fields": [
           {
             "fieldPath": "id_especie",
@@ -361,14 +391,14 @@
           "columnNames": [
             "id_especie"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "variedad",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_variedad` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_especie_variedad` INTEGER NOT NULL, `desc_variedad` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_variedad` INTEGER NOT NULL, `id_especie_variedad` INTEGER NOT NULL, `desc_variedad` TEXT, `desc_hibrido_variedad` TEXT, PRIMARY KEY(`id_variedad`))",
         "fields": [
           {
             "fieldPath": "id_variedad",
@@ -387,20 +417,26 @@
             "columnName": "desc_variedad",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "desc_hibrido_variedad",
+            "columnName": "desc_hibrido_variedad",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
             "id_variedad"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "temp_visitas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` INTEGER NOT NULL, `phenological_state_temp_visita` INTEGER NOT NULL, `growth_status_temp_visita` INTEGER NOT NULL, `weed_state_temp_visita` INTEGER NOT NULL, `phytosanitary_state_temp_visita` INTEGER NOT NULL, `harvest_temp_visita` INTEGER NOT NULL, `overall_status_temp_visita` INTEGER NOT NULL, `humidity_floor_temp_visita` INTEGER NOT NULL, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT, `action_temp_visita` INTEGER NOT NULL, `etapa_temp_visitas` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` INTEGER NOT NULL, `phenological_state_temp_visita` TEXT, `growth_status_temp_visita` TEXT, `weed_state_temp_visita` TEXT, `phytosanitary_state_temp_visita` TEXT, `harvest_temp_visita` TEXT, `overall_status_temp_visita` TEXT, `humidity_floor_temp_visita` TEXT, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT, `obs_fito` TEXT, `obs_creci` TEXT, `obs_maleza` TEXT, `obs_cosecha` TEXT, `obs_overall` TEXT, `obs_humedad` TEXT, `action_temp_visita` INTEGER NOT NULL, `etapa_temp_visitas` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id_temp_visita",
@@ -417,44 +453,44 @@
           {
             "fieldPath": "phenological_state_temp_visita",
             "columnName": "phenological_state_temp_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "growth_status_temp_visita",
             "columnName": "growth_status_temp_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "weed_state_temp_visita",
             "columnName": "weed_state_temp_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "phytosanitary_state_temp_visita",
             "columnName": "phytosanitary_state_temp_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "harvest_temp_visita",
             "columnName": "harvest_temp_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "overall_status_temp_visita",
             "columnName": "overall_status_temp_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "humidity_floor_temp_visita",
             "columnName": "humidity_floor_temp_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "observation_temp_visita",
@@ -465,6 +501,42 @@
           {
             "fieldPath": "recomendation_temp_visita",
             "columnName": "recomendation_temp_visita",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_fito",
+            "columnName": "obs_fito",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_creci",
+            "columnName": "obs_creci",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_maleza",
+            "columnName": "obs_maleza",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_cosecha",
+            "columnName": "obs_cosecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_overall",
+            "columnName": "obs_overall",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_humedad",
+            "columnName": "obs_humedad",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -723,292 +795,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "temp_sowing",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_sowing` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_sowing` INTEGER NOT NULL, `sag_planting_temp_sowing` TEXT, `delivered_temp_sowing` TEXT, `type_of_mixture_applied_temp_sowing` TEXT, `amount_applied_temp_sowing` TEXT, `meters_isoliation_temp_sowing` INTEGER NOT NULL, `south_temp_sowing` TEXT, `north_temp_sowing` TEXT, `east_temp_sowing` TEXT, `west_temp_sowing` TEXT, `action_temp_sowing` INTEGER NOT NULL, `female_lines_temp_sowing` TEXT, `female_sowing_lot_temp_sowing` TEXT, `real_sowing_female_temp_sowing` REAL NOT NULL, `female_sowing_date_start_temp_sowing` TEXT, `female_sowing_date_end_temp_sowing` TEXT, `sowing_seed_meter_temp_sowing` REAL NOT NULL, `row_distance_temp_sowing` REAL NOT NULL, `dose_1_temp_sowing` TEXT, `date_1_temp_sowing` TEXT, `dose_2_temp_sowing` TEXT, `date_2_temp_sowing` TEXT, `name_1_herb_temp_sowing` TEXT, `date_1_herb_temp_sowing` TEXT, `name_2_herb_temp_sowing` TEXT, `date_2_herb_temp_sowing` TEXT, `name_3_herb_temp_sowing` TEXT, `date_3_herb_temp_sowing` TEXT, `date_pre_emergence_temp_sowing` TEXT, `dose_pre_emergence_temp_sowing` TEXT, `water_pre_emergence_temp_sowing` REAL NOT NULL, `plant_m_temp_sowing` REAL NOT NULL, `population_plants_ha_temp_sowing` REAL NOT NULL, `basta_spray_1_temp_sowing` TEXT, `basta_spray_2_temp_sowing` TEXT, `basta_spray_3_temp_sowing` TEXT, `basta_spray_4_temp_sowing` TEXT, `basta_splat_4_ha_temp_sowing` TEXT, `date_nombre_largo_temp_sowing` TEXT, `product_nombre_largo_temp_sowing` TEXT, `dose_nombre_largo_temp_sowing` TEXT, `foliar_temp_sowing` TEXT, `dose_foliar_temp_sowing` TEXT, `date_foliar_temp_sowing` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "id_temp_sowing",
-            "columnName": "id_temp_sowing",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "id_anexo_temp_sowing",
-            "columnName": "id_anexo_temp_sowing",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "sag_planting_temp_sowing",
-            "columnName": "sag_planting_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "delivered_temp_sowing",
-            "columnName": "delivered_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "type_of_mixture_applied_temp_sowing",
-            "columnName": "type_of_mixture_applied_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "amount_applied_temp_sowing",
-            "columnName": "amount_applied_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "meters_isoliation_temp_sowing",
-            "columnName": "meters_isoliation_temp_sowing",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "south_temp_sowing",
-            "columnName": "south_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "north_temp_sowing",
-            "columnName": "north_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "east_temp_sowing",
-            "columnName": "east_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "west_temp_sowing",
-            "columnName": "west_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "action_temp_sowing",
-            "columnName": "action_temp_sowing",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "female_lines_temp_sowing",
-            "columnName": "female_lines_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "female_sowing_lot_temp_sowing",
-            "columnName": "female_sowing_lot_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "real_sowing_female_temp_sowing",
-            "columnName": "real_sowing_female_temp_sowing",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "female_sowing_date_start_temp_sowing",
-            "columnName": "female_sowing_date_start_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "female_sowing_date_end_temp_sowing",
-            "columnName": "female_sowing_date_end_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "sowing_seed_meter_temp_sowing",
-            "columnName": "sowing_seed_meter_temp_sowing",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "row_distance_temp_sowing",
-            "columnName": "row_distance_temp_sowing",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "dose_1_temp_sowing",
-            "columnName": "dose_1_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "date_1_temp_sowing",
-            "columnName": "date_1_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "dose_2_temp_sowing",
-            "columnName": "dose_2_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "date_2_temp_sowing",
-            "columnName": "date_2_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "name_1_herb_temp_sowing",
-            "columnName": "name_1_herb_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "date_1_herb_temp_sowing",
-            "columnName": "date_1_herb_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "name_2_herb_temp_sowing",
-            "columnName": "name_2_herb_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "date_2_herb_temp_sowing",
-            "columnName": "date_2_herb_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "name_3_herb_temp_sowing",
-            "columnName": "name_3_herb_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "date_3_herb_temp_sowing",
-            "columnName": "date_3_herb_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "date_pre_emergence_temp_sowing",
-            "columnName": "date_pre_emergence_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "dose_pre_emergence_temp_sowing",
-            "columnName": "dose_pre_emergence_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "water_pre_emergence_temp_sowing",
-            "columnName": "water_pre_emergence_temp_sowing",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "plant_m_temp_sowing",
-            "columnName": "plant_m_temp_sowing",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "population_plants_ha_temp_sowing",
-            "columnName": "population_plants_ha_temp_sowing",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "basta_spray_1_temp_sowing",
-            "columnName": "basta_spray_1_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "basta_spray_2_temp_sowing",
-            "columnName": "basta_spray_2_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "basta_spray_3_temp_sowing",
-            "columnName": "basta_spray_3_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "basta_spray_4_temp_sowing",
-            "columnName": "basta_spray_4_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "basta_splat_4_ha_temp_sowing",
-            "columnName": "basta_splat_4_ha_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "date_nombre_largo_temp_sowing",
-            "columnName": "date_nombre_largo_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "product_nombre_largo_temp_sowing",
-            "columnName": "product_nombre_largo_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "dose_nombre_largo_temp_sowing",
-            "columnName": "dose_nombre_largo_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "foliar_temp_sowing",
-            "columnName": "foliar_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "dose_foliar_temp_sowing",
-            "columnName": "dose_foliar_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "date_foliar_temp_sowing",
-            "columnName": "date_foliar_temp_sowing",
-            "affinity": "TEXT",
-            "notNull": false
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "id_temp_sowing"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
         "tableName": "visitas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_visita` INTEGER NOT NULL, `phenological_state_visita` INTEGER NOT NULL, `growth_status_visita` INTEGER NOT NULL, `weed_state_visita` INTEGER NOT NULL, `phytosanitary_state_visita` INTEGER NOT NULL, `harvest_visita` INTEGER NOT NULL, `overall_status_visita` INTEGER NOT NULL, `humidity_floor_visita` INTEGER NOT NULL, `observation_visita` TEXT, `recomendation_visita` TEXT, `estado_server_visitas` INTEGER NOT NULL, `estado_visita` INTEGER NOT NULL, `etapa_visitas` INTEGER NOT NULL, `fecha_visita` TEXT, `hora_visita` TEXT, `temporada` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_visita` INTEGER NOT NULL, `phenological_state_visita` TEXT, `growth_status_visita` TEXT, `weed_state_visita` TEXT, `phytosanitary_state_visita` TEXT, `harvest_visita` TEXT, `overall_status_visita` TEXT, `humidity_floor_visita` TEXT, `observation_visita` TEXT, `recomendation_visita` TEXT, `estado_server_visitas` INTEGER NOT NULL, `estado_visita` INTEGER NOT NULL, `etapa_visitas` INTEGER NOT NULL, `fecha_visita` TEXT, `hora_visita` TEXT, `temporada` INTEGER NOT NULL, `obs_fito` TEXT, `obs_creci` TEXT, `obs_maleza` TEXT, `obs_cosecha` TEXT, `obs_overall` TEXT, `obs_humedad` TEXT)",
         "fields": [
           {
             "fieldPath": "id_visita",
@@ -1025,44 +813,44 @@
           {
             "fieldPath": "phenological_state_visita",
             "columnName": "phenological_state_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "growth_status_visita",
             "columnName": "growth_status_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "weed_state_visita",
             "columnName": "weed_state_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "phytosanitary_state_visita",
             "columnName": "phytosanitary_state_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "harvest_visita",
             "columnName": "harvest_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "overall_status_visita",
             "columnName": "overall_status_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "humidity_floor_visita",
             "columnName": "humidity_floor_visita",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "observation_visita",
@@ -1111,6 +899,42 @@
             "columnName": "temporada",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "obs_fito",
+            "columnName": "obs_fito",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_creci",
+            "columnName": "obs_creci",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_maleza",
+            "columnName": "obs_maleza",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_cosecha",
+            "columnName": "obs_cosecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_overall",
+            "columnName": "obs_overall",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obs_humedad",
+            "columnName": "obs_humedad",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -1658,7 +1482,7 @@
       },
       {
         "tableName": "crop_rotation",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_crop_rotation` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `temporada_crop_rotation` INTEGER NOT NULL, `cultivo_crop_rotation` TEXT, `id_ficha_crop_rotation` INTEGER NOT NULL, `id_anexo_crop_rotation` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_crop_rotation` INTEGER NOT NULL, `temporada_crop_rotation` INTEGER NOT NULL, `cultivo_crop_rotation` TEXT, `id_ficha_crop_rotation` INTEGER NOT NULL, `id_anexo_crop_rotation` INTEGER NOT NULL, PRIMARY KEY(`id_crop_rotation`))",
         "fields": [
           {
             "fieldPath": "id_crop_rotation",
@@ -1695,14 +1519,14 @@
           "columnNames": [
             "id_crop_rotation"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "pro_cli_mat",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_prop_mat_cli` INTEGER NOT NULL, `id_cli` INTEGER NOT NULL, `id_materiales` INTEGER NOT NULL, `id_prop` INTEGER NOT NULL, `id_etapa` INTEGER NOT NULL, `id_tempo` INTEGER NOT NULL, `nombre_es` TEXT, `nombre_en` TEXT, `nombre_elemento` TEXT, `aplica` TEXT, `orden` INTEGER NOT NULL, `tipo_cambio` TEXT, PRIMARY KEY(`id_prop_mat_cli`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_prop_mat_cli` INTEGER NOT NULL, `id_cli` INTEGER NOT NULL, `id_materiales` INTEGER NOT NULL, `id_prop` INTEGER NOT NULL, `id_etapa` INTEGER NOT NULL, `id_tempo` INTEGER NOT NULL, `nombre_es` TEXT, `nombre_en` TEXT, `nombre_elemento` TEXT, `aplica` TEXT, `orden` INTEGER NOT NULL, `tipo_cambio` TEXT, `es_lista` TEXT, PRIMARY KEY(`id_prop_mat_cli`))",
         "fields": [
           {
             "fieldPath": "id_prop_mat_cli",
@@ -1775,6 +1599,12 @@
             "columnName": "tipo_cambio",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "es_lista",
+            "columnName": "es_lista",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -1823,11 +1653,87 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "detalle_visita_prop",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_det_vis_prop_detalle` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_visita_detalle` INTEGER NOT NULL, `id_prop_mat_cli_detalle` INTEGER NOT NULL, `valor_detalle` TEXT, `estado_detalle` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id_det_vis_prop_detalle",
+            "columnName": "id_det_vis_prop_detalle",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_visita_detalle",
+            "columnName": "id_visita_detalle",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_prop_mat_cli_detalle",
+            "columnName": "id_prop_mat_cli_detalle",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "valor_detalle",
+            "columnName": "valor_detalle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado_detalle",
+            "columnName": "estado_detalle",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_det_vis_prop_detalle"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "provincia",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_provincia` INTEGER NOT NULL, `nombre_provincia` TEXT, `id_region_provincia` INTEGER NOT NULL, PRIMARY KEY(`id_provincia`))",
+        "fields": [
+          {
+            "fieldPath": "id_provincia",
+            "columnName": "id_provincia",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre_provincia",
+            "columnName": "nombre_provincia",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id_region_provincia",
+            "columnName": "id_region_provincia",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_provincia"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"502b1402c39962ca6bd798fb946b13e9\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"20e974bbb0759c98089064136f02226b\")"
     ]
   }
 }

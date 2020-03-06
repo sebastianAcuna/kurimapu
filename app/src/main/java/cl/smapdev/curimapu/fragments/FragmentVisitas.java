@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,6 +32,7 @@ import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.Tabla;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
+import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.dialogos.DialogFilterTables;
 
@@ -42,6 +44,12 @@ public class FragmentVisitas extends Fragment {
     private MainActivity activity;
     private SharedPreferences prefs;
     private Spinner spinner_toolbar;
+
+
+    private ArrayList<Integer> id_temporadas = new ArrayList<>();
+    private ArrayList<String> desc_temporadas = new ArrayList<>();
+
+    private List<Temporada> temporadaList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,13 +76,23 @@ public class FragmentVisitas extends Fragment {
         spinner_toolbar = (Spinner) view.findViewById(R.id.spinner_toolbar);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
 
+
+        temporadaList = MainActivity.myAppDB.myDao().getTemporada();
+        if (temporadaList.size() > 0){
+            for (Temporada t : temporadaList){
+                id_temporadas.add(t.getId_tempo_tempo());
+                desc_temporadas.add(t.getNombre_tempo());
+            }
+        }
+
+        setHasOptionsMenu(true);
+
+        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, temporadaList));
+
         if (activity != null){
             tabla = new Tabla((TableLayout) view.findViewById(R.id.tabla),activity);
 
         }
-
-        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, getResources().getStringArray(R.array.anos_toolbar)));
-
 
         recargarYear();
         spinner_toolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -83,19 +101,20 @@ public class FragmentVisitas extends Fragment {
 
                 if (spinner_toolbar.getTag() != null ){
                     if (Integer.parseInt(spinner_toolbar.getTag().toString()) != i){
-                        prefs.edit().putInt(Utilidades.SELECTED_ANO, Integer.parseInt(spinner_toolbar.getSelectedItem().toString())).apply();
+
+                        prefs.edit().putInt(Utilidades.SELECTED_ANO,id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                         prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
 
-                        cargarInforme(MainActivity.myAppDB.myDao().getAnexosByYear(Integer.parseInt(spinner_toolbar.getSelectedItem().toString())));
-                        spinner_toolbar.setTag(null);
+                        cargarInforme(MainActivity.myAppDB.myDao().getAnexosByYear(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
+
                     }else{
                         spinner_toolbar.setTag(null);
                     }
                 }else{
-                    prefs.edit().putInt(Utilidades.SELECTED_ANO, Integer.parseInt(spinner_toolbar.getSelectedItem().toString())).apply();
+                    prefs.edit().putInt(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                     prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
 
-                    cargarInforme(MainActivity.myAppDB.myDao().getAnexosByYear(Integer.parseInt(spinner_toolbar.getSelectedItem().toString())));
+                    cargarInforme(MainActivity.myAppDB.myDao().getAnexosByYear(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
                 }
 
             }
@@ -106,15 +125,15 @@ public class FragmentVisitas extends Fragment {
             }
         });
 
-
-        cargarInforme( MainActivity.myAppDB.myDao().getAnexosByYear(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, activity.getResources().getStringArray(R.array.anos_toolbar).length - 1)));
-
-
-        setHasOptionsMenu(true);
+        if (temporadaList.size() > 0){
+            cargarInforme( MainActivity.myAppDB.myDao().getAnexosByYear(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo())));
+        }
     }
 
     private void recargarYear(){
-        spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, activity.getResources().getStringArray(R.array.anos_toolbar).length - 1));
+        if (temporadaList.size() > 0){
+            spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.size() - 1));
+        }
     }
 
 
@@ -125,18 +144,17 @@ public class FragmentVisitas extends Fragment {
         menu.clear();
         inflater.inflate(R.menu.menu_vistas, menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_vistas_filter:
-
                 DialogFilterTables dialogo = new DialogFilterTables();
                 dialogo.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "DIALOGO");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
 
@@ -153,8 +171,8 @@ public class FragmentVisitas extends Fragment {
             if (intent != null && context != null){
                 List<AnexoCompleto> trabajo = (List<AnexoCompleto>) intent.getSerializableExtra(DialogFilterTables.LLAVE_FILTER_TABLAS);
                 if (trabajo != null ){
-                    spinner_toolbar.setTag(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, activity.getResources().getStringArray(R.array.anos_toolbar).length - 1));
-                    spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, activity.getResources().getStringArray(R.array.anos_toolbar).length - 1));
+                    spinner_toolbar.setTag(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo()));
+                    spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo()));
                     cargarInforme(trabajo);
                 }
             }

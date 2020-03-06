@@ -4,13 +4,20 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "crop_rotation")
 public class CropRotation {
 
-    @PrimaryKey(autoGenerate = true)
+
+    @PrimaryKey()
+    @SerializedName("id_his_pre")
     private int id_crop_rotation;
+    @SerializedName("anno")
     private int temporada_crop_rotation;
+    @SerializedName("descripcion")
     private String cultivo_crop_rotation;
+    @SerializedName("id_ficha")
     private int id_ficha_crop_rotation;
     private int id_anexo_crop_rotation;
 

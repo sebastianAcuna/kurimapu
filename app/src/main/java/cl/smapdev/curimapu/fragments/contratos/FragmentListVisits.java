@@ -44,9 +44,7 @@ import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Harvest;
 import cl.smapdev.curimapu.clases.tablas.Sowing;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
-import cl.smapdev.curimapu.clases.temporales.TempFlowering;
 import cl.smapdev.curimapu.clases.temporales.TempHarvest;
-import cl.smapdev.curimapu.clases.temporales.TempSowing;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentContratos;
@@ -99,8 +97,8 @@ public class FragmentListVisits extends Fragment {
         etapasArrayList.add(new Etapas(4, "Harvest", false));
         etapasArrayList.add(new Etapas(5, "Unspecified", false));
 
-
-        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),Integer.parseInt(annos[annos.length -1]));
+        String[] years = Utilidades.getAnoCompleto(Integer.parseInt(annos[annos.length -1]));
+        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),years[0], years[1]);
 
     }
 
@@ -128,7 +126,7 @@ public class FragmentListVisits extends Fragment {
 
 
 
-        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, annos));
+//        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, annos));
 
 
 
@@ -151,10 +149,12 @@ public class FragmentListVisits extends Fragment {
 
                     prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
 
+                    String[] el = Utilidades.getAnoCompleto(annoSelected);
+
                     if (etapaSelected > 0){
-                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),etapaSelected,annoSelected);
+                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),el[0],el[1]);
                     }else{
-                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),annoSelected);
+                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),el[0],el[1]);
                     }
 
                     cargarListaChica();
@@ -207,11 +207,11 @@ public class FragmentListVisits extends Fragment {
                     case 5: po = 4;break;
                 }
 
-
+                String[] years = Utilidades.getAnoCompleto(annoSelected);
                 etapaSelected = position;
                 if (position > 0){
 
-                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0), position, annoSelected);
+                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0), position, years[0], years[1]);
                     for (Etapas et : etapasArrayList){
                         if (et.getNumeroEtapa() == po){
 
@@ -223,7 +223,7 @@ public class FragmentListVisits extends Fragment {
 
 
                 }else{
-                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),annoSelected);
+                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),years[0],years[1]);
                 }
 
 
@@ -336,10 +336,8 @@ public class FragmentListVisits extends Fragment {
                                     MainActivity.myAppDB.myDao().deleteTempHarvest();
 //                    MainActivity.myAppDB.myDao().resetTempHarvest();
 
-                                    MainActivity.myAppDB.myDao().deleteTempFlowering();
-//                    MainActivity.myAppDB.myDao().resetTempFlowering();
 
-                                    MainActivity.myAppDB.myDao().deleteTempSowing();
+                                    MainActivity.myAppDB.myDao().deleteDetalleVacios();
 //                    MainActivity.myAppDB.myDao().resetTempSowing();
 
                                     TempVisitas tempVisitas = new TempVisitas();
@@ -358,89 +356,6 @@ public class FragmentListVisits extends Fragment {
                                     tempVisitas.setAction_temp_visita(visitasCompletas.getVisitas().getEstado_visita());
 
                                     MainActivity.myAppDB.myDao().setTempVisitas(tempVisitas);
-
-
-                                    Sowing sowing = MainActivity.myAppDB.myDao().getSowing(visitasCompletas.getVisitas().getId_visita(), visitasCompletas.getVisitas().getId_anexo_visita());
-                                    if (sowing != null) {
-                                        TempSowing tempSowing = new TempSowing();
-                                        tempSowing.setAmount_applied_temp_sowing(sowing.getAmount_applied_sowing());
-                                        tempSowing.setBasta_splat_4_ha_temp_sowing(sowing.getBasta_splat_4_ha_sowing());
-                                        tempSowing.setBasta_spray_1_temp_sowing(sowing.getBasta_spray_1_sowing());
-                                        tempSowing.setBasta_spray_2_temp_sowing(sowing.getBasta_spray_2_sowing());
-                                        tempSowing.setBasta_spray_3_temp_sowing(sowing.getBasta_spray_3_sowing());
-                                        tempSowing.setBasta_spray_4_temp_sowing(sowing.getBasta_spray_4_sowing());
-                                        tempSowing.setDate_1_herb_temp_sowing(sowing.getDate_1_herb_sowing());
-                                        tempSowing.setDate_1_temp_sowing(sowing.getDate_1_sowing());
-                                        tempSowing.setDate_2_herb_temp_sowing(sowing.getDate_2_herb_sowing());
-                                        tempSowing.setDate_2_temp_sowing(sowing.getDate_2_sowing());
-                                        tempSowing.setDate_3_herb_temp_sowing(sowing.getDate_3_herb_sowing());
-                                        tempSowing.setDate_foliar_temp_sowing(sowing.getDate_foliar_sowing());
-                                        tempSowing.setDate_nombre_largo_temp_sowing(sowing.getDate_nombre_largo_sowing());
-                                        tempSowing.setDate_pre_emergence_temp_sowing(sowing.getDate_pre_emergence_sowing());
-                                        tempSowing.setDelivered_temp_sowing(sowing.getDelivered_sowing());
-                                        tempSowing.setDose_1_temp_sowing(sowing.getDose_1_sowing());
-                                        tempSowing.setDose_2_temp_sowing(sowing.getDose_2_sowing());
-                                        tempSowing.setDose_foliar_temp_sowing(sowing.getDose_foliar_sowing());
-                                        tempSowing.setDose_nombre_largo_temp_sowing(sowing.getDose_nombre_largo_sowing());
-                                        tempSowing.setDose_pre_emergence_temp_sowing(sowing.getDose_pre_emergence_sowing());
-                                        tempSowing.setEast_temp_sowing(sowing.getEast_sowing());
-                                        tempSowing.setFemale_lines_temp_sowing(sowing.getFemale_lines_sowing());
-                                        tempSowing.setFemale_sowing_date_end_temp_sowing(sowing.getFemale_sowing_date_end_sowing());
-                                        tempSowing.setFemale_sowing_date_start_temp_sowing(sowing.getFemale_sowing_date_start_sowing());
-                                        tempSowing.setFemale_sowing_lot_temp_sowing(sowing.getFemale_sowing_lot_sowing());
-                                        tempSowing.setFoliar_temp_sowing(sowing.getFoliar_sowing());
-                                        tempSowing.setId_anexo_temp_sowing(sowing.getId_anexo_sowing());
-                                        tempSowing.setMeters_isoliation_temp_sowing(sowing.getMeters_isoliation_sowing());
-                                        tempSowing.setName_1_herb_temp_sowing(sowing.getName_1_herb_sowing());
-                                        tempSowing.setName_2_herb_temp_sowing(sowing.getName_2_herb_sowing());
-                                        tempSowing.setName_3_herb_temp_sowing(sowing.getName_3_herb_sowing());
-                                        tempSowing.setNorth_temp_sowing(sowing.getNorth_sowing());
-                                        tempSowing.setPlant_m_temp_sowing(sowing.getPlant_m_sowing());
-                                        tempSowing.setPopulation_plants_ha_temp_sowing(sowing.getPopulation_plants_ha_sowing());
-                                        tempSowing.setProduct_nombre_largo_temp_sowing(sowing.getProduct_nombre_largo_sowing());
-                                        tempSowing.setReal_sowing_female_temp_sowing(sowing.getReal_sowing_female_sowing());
-                                        tempSowing.setRow_distance_temp_sowing(sowing.getRow_distance_sowing());
-                                        tempSowing.setSag_planting_temp_sowing(tempSowing.getSag_planting_temp_sowing());
-                                        tempSowing.setSouth_temp_sowing(sowing.getSouth_sowing());
-                                        tempSowing.setSowing_seed_meter_temp_sowing(sowing.getSowing_seed_meter_sowing());
-                                        tempSowing.setType_of_mixture_applied_temp_sowing(sowing.getType_of_mixture_applied_sowing());
-                                        tempSowing.setWater_pre_emergence_temp_sowing(sowing.getWater_pre_emergence_sowing());
-                                        tempSowing.setWest_temp_sowing(sowing.getWest_sowing());
-                                        tempSowing.setAction_temp_sowing(visitasCompletas.getVisitas().getEstado_visita());
-                                        tempSowing.setId_temp_sowing(sowing.getId_sowing());
-
-
-                                        MainActivity.myAppDB.myDao().setTempSowing(tempSowing);
-                                    }
-
-                                    Flowering flowering = MainActivity.myAppDB.myDao().getFlowering(visitasCompletas.getVisitas().getId_visita(), visitasCompletas.getVisitas().getId_anexo_visita());
-                                    if (flowering != null) {
-                                        TempFlowering tempFlowering = new TempFlowering();
-
-                                        tempFlowering.setCheck_temp_flowering(flowering.getCheck_flowering());
-                                        tempFlowering.setDate_beginning_depuration_temp_flowering(flowering.getDate_beginning_depuration_flowering());
-                                        tempFlowering.setDate_funficide_temp_flowering(flowering.getDate_funficide_flowering());
-                                        tempFlowering.setDate_insecticide_temp_flowering(flowering.getDate_insecticide_flowering());
-                                        tempFlowering.setDate_inspection_temp_flowering(flowering.getDate_inspection_flowering());
-                                        tempFlowering.setDate_notice_sag_temp_flowering(flowering.getDate_notice_sag_flowering());
-                                        tempFlowering.setDate_off_type_temp_flowering(flowering.getDate_off_type_flowering());
-                                        tempFlowering.setDose_fungicide_temp_flowering(flowering.getDose_fungicide_flowering());
-
-                                        tempFlowering.setFertility_1_temp_flowering(flowering.getFertility_1_flowering());
-                                        tempFlowering.setFertility_2_temp_flowering(flowering.getFertility_2_flowering());
-                                        tempFlowering.setFlowering_end_temp_flowering(flowering.getFlowering_end_flowering());
-                                        tempFlowering.setFlowering_estimation_temp_flowering(flowering.getFlowering_estimation_flowering());
-                                        tempFlowering.setFlowering_start_temp_flowering(flowering.getFlowering_start_flowering());
-                                        tempFlowering.setFungicide_name_temp_flowering(flowering.getFungicide_name_flowering());
-                                        tempFlowering.setId_anexo_temp_flowering(flowering.getId_anexo_flowering());
-
-                                        tempFlowering.setMain_characteristic_temp_flowering(flowering.getMain_characteristic_flowering());
-                                        tempFlowering.setPlant_number_checked_temp_flowering(flowering.getPlant_number_checked_flowering());
-                                        tempFlowering.setAction_temp_flowering(visitasCompletas.getVisitas().getEstado_visita());
-                                        tempFlowering.setId_temp_flowering(flowering.getId_flowering());
-
-                                        MainActivity.myAppDB.myDao().setTempFlowering(tempFlowering);
-                                    }
 
                                     Harvest harvest = MainActivity.myAppDB.myDao().getharvest(visitasCompletas.getVisitas().getId_visita(), visitasCompletas.getVisitas().getId_anexo_visita());
                                     if (harvest != null) {

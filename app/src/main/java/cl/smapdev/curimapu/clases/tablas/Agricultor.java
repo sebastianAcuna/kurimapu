@@ -6,24 +6,36 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "agricultor")
 public class Agricultor {
 
-    @PrimaryKey
+    @SerializedName("id_agric")
+    @PrimaryKey()
+    private int id_agricultor;
     @NonNull
+    @SerializedName("rut")
     private String rut_agricultor;
+    @SerializedName("razon_social")
     private String nombre_agricultor;
+    @SerializedName("telefono")
     private String telefono_agricultor;
+    @SerializedName("nombre_ac")
     private String administrador_agricultor;
+    @SerializedName("telefono_ac")
     private String telefono_admin_agricultor;
+    @SerializedName("id_region")
     private int region_agricultor;
+    @SerializedName("id_comuna")
     private int comuna_agricultor;
-    private boolean agricultor_subido; /* true : subido, false : no subido*/
+    @SerializedName("agricultor_subido")
+    private boolean agricultor_subido; /* true : subido, false : no subido */
 
     public Agricultor() {
     }
 
-    @Ignore
+/*    @Ignore
     public Agricultor(@NonNull String rut_agricultor, String nombre_agricultor, String telefono_agricultor, String administrador_agricultor, String telefono_admin_agricultor, int region_agricultor, int comuna_agricultor, boolean agricultor_subido) {
         this.rut_agricultor = rut_agricultor;
         this.nombre_agricultor = nombre_agricultor;
@@ -33,6 +45,14 @@ public class Agricultor {
         this.region_agricultor = region_agricultor;
         this.comuna_agricultor = comuna_agricultor;
         this.agricultor_subido = agricultor_subido;
+    }*/
+
+
+    public int getId_agricultor() {
+        return id_agricultor;
+    }
+    public void setId_agricultor(int id_agricultor) {
+        this.id_agricultor = id_agricultor;
     }
 
     public String getRut_agricultor() {

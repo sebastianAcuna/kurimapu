@@ -7,15 +7,15 @@ import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Update;
 import androidx.sqlite.db.SupportSQLiteQuery;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
+import cl.smapdev.curimapu.clases.relaciones.DetalleCampo;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Flowering;
 import cl.smapdev.curimapu.clases.tablas.Harvest;
+import cl.smapdev.curimapu.clases.tablas.Provincia;
 import cl.smapdev.curimapu.clases.tablas.Sowing;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
@@ -30,10 +30,10 @@ import cl.smapdev.curimapu.clases.relaciones.AgricultorCompleto;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
 import cl.smapdev.curimapu.clases.temporales.TempFlowering;
 import cl.smapdev.curimapu.clases.temporales.TempHarvest;
-import cl.smapdev.curimapu.clases.temporales.TempSowing;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 
 @Dao
@@ -102,14 +102,17 @@ public interface MyDao {
 
     @Insert
     long insertFicha(Fichas fichas);
+    @Insert
+    List<Long> insertFicha(List<Fichas> fichas);
 
     @Update
     int updateFicha(Fichas fichas);
 
+
     @Query("SELECT " +
             "fichas.id_ficha, " +
             "fichas.anno, " +
-            "fichas.rut_agricultor_fichas, " +
+            "fichas.id_agricultor_ficha, " +
             "fichas.oferta_negocio, " +
             "fichas.localidad," +
             "fichas.has_disponible," +
@@ -130,13 +133,20 @@ public interface MyDao {
             "region.desc_region," +
             "comuna.id_comuna," +
             "comuna.desc_comuna," +
-            "comuna.id_region_comuna FROM fichas " +
-            "INNER JOIN agricultor ON (agricultor.rut_agricultor = fichas.rut_agricultor_fichas) " +
-            "INNER JOIN region ON (region.id_region = agricultor.region_agricultor)" +
-            "INNER JOIN comuna ON (comuna.id_comuna = agricultor.comuna_agricultor)" +
+            "comuna.id_provincia_comuna, " +
+            "provincia.id_provincia, " +
+            "provincia.nombre_provincia, " +
+            "provincia.id_region_provincia " +
+            "FROM fichas " +
+            "INNER JOIN agricultor ON (agricultor.id_agricultor = fichas.id_agricultor_ficha) " +
+            "INNER JOIN comuna ON (comuna.id_comuna = fichas.id_comuna_ficha)" +
+            "INNER JOIN region ON (region.id_region = fichas.id_region_ficha)" +
+            "INNER JOIN provincia ON (provincia.id_provincia = comuna.id_provincia_comuna)" +
             "WHERE anno = :year ")
     List<FichasCompletas> getFichasByYear(int year);
 
+    @Query("DELETE FROM fichas WHERE subida = 1 ")
+    void deleteFichas();
 
 
     @RawQuery
@@ -183,8 +193,23 @@ public interface MyDao {
 
 
     /* SOWING TEMP */
-    @Query("SELECT * FROM temp_sowing WHERE id_anexo_temp_sowing = :anexo")
-    TempSowing getTempSowing(int anexo);
+    @Query("SELECT valor_detalle FROM detalle_visita_prop where id_prop_mat_cli_detalle = :idProp AND id_visita_detalle = :idVisita")
+    String getDatoDetalle(int idProp, int idVisita);
+
+    @Query("SELECT id_det_vis_prop_detalle FROM detalle_visita_prop where id_prop_mat_cli_detalle = :idProp AND id_visita_detalle = :idVisita")
+    int getIdDatoDetalle(int idProp, int idVisita);
+
+    @Insert
+    void insertDatoDetalle(detalle_visita_prop detalle_visita_prop);
+    @Update
+    void updateDatoDetalle(detalle_visita_prop detalle_visita_prop);
+
+    @Query("UPDATE detalle_visita_prop SET  id_visita_detalle =  :idVisita ")
+    void updateDetallesToVisits(int idVisita);
+
+    @Query("DELETE FROM detalle_visita_prop WHERE id_visita_detalle = 0")
+    void deleteDetalleVacios();
+
 
 
     @Query("SELECT COUNT(*) as todos , etapa_visitas, estado_visita FROM visitas WHERE id_anexo_visita = :idAnexo AND visitas.temporada = :temporada GROUP BY etapa_visitas")
@@ -195,68 +220,33 @@ public interface MyDao {
     List<CantidadVisitas> getCantidadVisitasByEstado(int temporada);
 
 
-
-    @Update
-    void updateTempSowing(TempSowing tempSowing);
-
-    @Insert
-    long setTempSowing(TempSowing tempSowing);
-
-
-    @Query("DELETE FROM temp_sowing")
-    void deleteTempSowing();
-
-
-    @Query("SELECT  COUNT(id_temp_sowing) FROM temp_sowing WHERE id_anexo_temp_sowing = :idFicha")
-    int getCantTempSowing(int idFicha);
-
-
-
-    /* FLOWERING TEMP */
-    @Query("SELECT * FROM temp_flowering WHERE id_anexo_temp_flowering = :anexo")
-    TempFlowering getTempFlowering(int anexo);
-
-    @Update
-    void updateTempFlowering(TempFlowering tempFlowering);
-
-    @Insert
-    long setTempFlowering(TempFlowering tempFlowering);
-
-
-    @Query("DELETE FROM temp_flowering")
-    void deleteTempFlowering();
-
-
-    @Query("SELECT  COUNT(id_temp_flowering) FROM temp_flowering WHERE id_anexo_temp_flowering = :idFicha")
-    int getCantTempFlowering(int idFicha);
-
-
-
-
     /* VISITAS */
 
     @Insert
     long setVisita(Visitas visitas);
 
+    @Insert
+    List<Long> setVisita(List<Visitas> visitas);
+
 
 
     @Query("SELECT * FROM visitas INNER JOIN anexo_contrato ON (anexo_contrato.id_anexo_contrato = visitas.id_anexo_visita) " +
-            "INNER JOIN agricultor ON (agricultor.rut_agricultor = anexo_contrato.rut_agricultor_anexo) " +
+            "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_anexo_contrato) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN variedad ON (variedad.id_variedad = anexo_contrato.id_variedad_anexo) " +
             "INNER JOIN fichas ON (fichas.id_ficha= anexo_contrato.id_ficha_contrato) " +
-            "WHERE id_anexo_visita = :idAnexo AND temporada = :anno " +
+            "WHERE id_anexo_visita = :idAnexo AND fecha_visita BETWEEN :annoDesde AND  :annoHasta " +
             "ORDER BY fecha_visita, hora_visita DESC")
-    List<VisitasCompletas> getVisitasCompletas(int idAnexo, int anno);
+    List<VisitasCompletas> getVisitasCompletas(int idAnexo, String annoDesde, String annoHasta);
 
     @Query("SELECT * FROM visitas INNER JOIN anexo_contrato ON (anexo_contrato.id_anexo_contrato = visitas.id_anexo_visita) " +
-            "INNER JOIN agricultor ON (agricultor.rut_agricultor = anexo_contrato.rut_agricultor_anexo) " +
+            "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_anexo_contrato) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN variedad ON (variedad.id_variedad = anexo_contrato.id_variedad_anexo) " +
             "INNER JOIN fichas ON (fichas.id_ficha= anexo_contrato.id_ficha_contrato) " +
-            "WHERE id_anexo_visita = :idAnexo AND visitas.etapa_visitas = :etapa AND temporada = :anno " +
+            "WHERE id_anexo_visita = :idAnexo AND visitas.etapa_visitas = :etapa AND fecha_visita BETWEEN :annoDesde AND  :annoHasta " +
             "ORDER BY fecha_visita, hora_visita DESC")
-    List<VisitasCompletas> getVisitasCompletas(int idAnexo, int etapa, int anno);
+    List<VisitasCompletas> getVisitasCompletas(int idAnexo, int etapa, String annoDesde, String annoHasta);
 
 
     @Update
@@ -266,6 +256,9 @@ public interface MyDao {
     @Query("SELECT  estado_visita FROM visitas WHERE id_visita = :idVisita ")
     int getEstadoVisita(int idVisita);
 
+
+    @Query("DELETE FROM visitas WHERE estado_server_visitas = 1")
+    void deleteVisitas();
 
 
     /* SOWING */
@@ -279,15 +272,50 @@ public interface MyDao {
     @Query("SELECT * FROM sowing WHERE id_anexo_sowing = :idAnexo AND id_visita_sowing = :idVisita")
     Sowing getSowing(int idVisita, int idAnexo);
 
-    @Query("SELECT * FROM crop_rotation WHERE id_anexo_crop_rotation = :idAnexo")
-    List<CropRotation> getCropRotation(int idAnexo);
+    @Query("SELECT * FROM crop_rotation WHERE id_ficha_crop_rotation = :idFicha")
+    List<CropRotation> getCropRotation(int idFicha);
 
     @Query("SELECT * FROM crop_rotation")
     List<CropRotation> getCropRotation();
 
-    @Insert
-    void insertCrop(CropRotation cropRotation);
+    @Query("DELETE FROM crop_rotation")
+    void deleteCrops();
 
+    @Insert
+    List<Long> insertCrop(List<CropRotation> cropRotation);
+
+
+
+    /* DETALLE*/
+    @Query("DELETE FROM detalle_visita_prop WHERE estado_detalle = 1")
+    void deleteDetalle();
+
+
+    @Insert
+    List<Long> insertDetalle(List<detalle_visita_prop> detalle_visita_props);
+
+
+    @Query("SELECT " +
+            "detalle_visita_prop.valor_detalle, " +
+            "detalle_visita_prop.id_prop_mat_cli_detalle, " +
+            "pro_cli_mat.nombre_elemento " +
+            "FROM detalle_visita_prop " +
+            "INNER JOIN pro_cli_mat ON ( pro_cli_mat.id_prop_mat_cli = detalle_visita_prop.id_prop_mat_cli_detalle ) " +
+            "WHERE detalle_visita_prop.id_visita_detalle = :id_visita AND pro_cli_mat.id_prop = :id_prop " +
+            "ORDER BY pro_cli_mat.id_prop_mat_cli ASC")
+    List<DetalleCampo> detalleCampo(int id_visita, int id_prop);
+
+
+    @Query("SELECT group_concat(valor_detalle ||'--'|| pro_cli_mat.nombre_elemento,'&&')" +
+            "FROM visitas " +
+            "LEFT JOIN detalle_visita_prop ON (detalle_visita_prop.id_visita_detalle = visitas.id_visita) " +
+            "LEFT JOIN pro_cli_mat ON (pro_cli_mat.id_prop_mat_cli = detalle_visita_prop.id_prop_mat_cli_detalle) " +
+            "WHERE visitas.id_anexo_visita = :idAnexo AND pro_cli_mat.id_prop = :idProp GROUP BY id_visita ORDER BY visitas.id_anexo_visita, detalle_visita_prop.id_prop_mat_cli_detalle ASC")
+    List<String> getDetalleCampo(int idAnexo, int idProp);
+
+
+    @Query("SELECT COUNT(id_prop_mat_cli) FROM pro_cli_mat WHERE id_prop = :idEtapa")
+    int getCorteCabecera(int idEtapa);
 
 
 
@@ -321,28 +349,22 @@ public interface MyDao {
     @Query("DELETE FROM pro_cli_mat")
     void deleteProCliMat();
 
-    @Query("SELECT  * FROM pro_cli_mat WHERE id_materiales = :idMaterial")
-    List<pro_cli_mat> getProCliMatByMateriales(int idMaterial);
+    @Query("SELECT  * FROM pro_cli_mat WHERE id_materiales = :idMaterial AND id_etapa = :idEtapa ORDER BY orden ASC ")
+    List<pro_cli_mat> getProCliMatByMateriales(int idMaterial, int idEtapa);
+
+    @Query("SELECT  * FROM pro_cli_mat WHERE id_prop = :idProp ORDER BY orden ASC ")
+    List<pro_cli_mat> getProCliMatByIdProp(int idProp);
 
 
     /* temporadas */
     @Insert
     List<Long> insertTemporada(List<Temporada> temporadas);
 
+    @Query("SELECT  * FROM temporada ")
+    List<Temporada> getTemporada();
+
     @Query("DELETE FROM temporada ")
     void deleteTemporadas();
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /* ANEXOS*/
@@ -354,7 +376,7 @@ public interface MyDao {
             "anexo_contrato.id_variedad_anexo, " +
             "anexo_contrato.id_ficha_contrato, " +
             "anexo_contrato.protero," +
-            "anexo_contrato.rut_agricultor_anexo, " +
+            "anexo_contrato.id_agricultor_anexo, " +
             "agricultor.nombre_agricultor," +
             "agricultor.telefono_agricultor," +
             "agricultor.administrador_agricultor," +
@@ -367,7 +389,7 @@ public interface MyDao {
             "variedad.desc_variedad, " +
             "fichas.anno " +
             "FROM anexo_contrato " +
-            "INNER JOIN agricultor ON (agricultor.rut_agricultor = anexo_contrato.rut_agricultor_anexo) " +
+            "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN variedad ON (variedad.id_variedad = anexo_contrato.id_variedad_anexo) " +
             "INNER JOIN fichas ON (fichas.id_ficha= anexo_contrato.id_ficha_contrato) " +
@@ -381,7 +403,7 @@ public interface MyDao {
             "anexo_contrato.id_variedad_anexo, " +
             "anexo_contrato.id_ficha_contrato, " +
             "anexo_contrato.protero," +
-            "anexo_contrato.rut_agricultor_anexo, " +
+            "anexo_contrato.id_agricultor_anexo, " +
             "agricultor.nombre_agricultor," +
             "agricultor.telefono_agricultor," +
             "agricultor.administrador_agricultor," +
@@ -394,7 +416,7 @@ public interface MyDao {
             "variedad.desc_variedad, " +
             "fichas.anno " +
             "FROM anexo_contrato " +
-            "INNER JOIN agricultor ON (agricultor.rut_agricultor = anexo_contrato.rut_agricultor_anexo) " +
+            "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN variedad ON (variedad.id_variedad = anexo_contrato.id_variedad_anexo) " +
             "INNER JOIN fichas ON (fichas.id_ficha= anexo_contrato.id_ficha_contrato) " +
@@ -404,8 +426,15 @@ public interface MyDao {
     @Insert
     void insertAnexo(AnexoContrato anexoContrato);
 
+    @Insert
+    List<Long> insertAnexo(List<AnexoContrato> anexoContrato);
+
     @RawQuery
     List<AnexoCompleto> getAnexosFilter(SupportSQLiteQuery query);
+
+
+    @Query("DELETE FROM anexo_contrato")
+    void deleteAnexos();
 
 
     /* ESPECIE*/
@@ -414,6 +443,12 @@ public interface MyDao {
 
     @Insert
     void insertEspecie(Especie especie);
+    @Insert
+    List<Long> insertEspecie(List<Especie> especie);
+
+    @Query("DELETE FROM especie")
+    void deleteEspecie();
+
 
 
     /*VARIEDAD*/
@@ -425,23 +460,38 @@ public interface MyDao {
 
     @Insert
     void insertVariedad(Variedad variedad);
+    @Insert
+    List<Long> insertVariedad(List<Variedad> variedad);
+
+    @Query("DELETE FROM variedad")
+    void deleteVariedad();
+
 
     /* AGRICULTOR*/
     @Insert
     void insertAgricultor(Agricultor agricultor);
 
+    @Insert
+    List<Long> insertAgricultor(List<Agricultor> agricultor);
+
     @Query("SELECT  * FROM agricultor")
     List<Agricultor> getAgricultores();
 
 
-    @Query("SELECT  * FROM agricultor WHERE rut_agricultor = :rut")
+    @Query("SELECT  * FROM agricultor INNER JOIN comuna ON comuna.id_comuna = agricultor.comuna_agricultor WHERE rut_agricultor = :rut")
     AgricultorCompleto getAgricultorByRut(String rut);
+
+    @Query("DELETE FROM agricultor")
+    void deleteAgricultores();
+
+    @Query("SELECT id_agricultor FROM agricultor WHERE rut_agricultor = :rutAgri")
+    int getIdAgricutorByRut(String rutAgri);
 
 
 
 
     @Insert
-    void insertRegiones(List<Region> regiones);
+    List<Long> insertRegiones(List<Region> regiones);
 
     @Insert
     void insertRegion(Region regiones);
@@ -449,11 +499,33 @@ public interface MyDao {
     @Query("SELECT * FROM region ")
     List<Region> getRegiones();
 
+    @Query("DELETE FROM region")
+    void deleteRegiones();
 
 
 
     @Insert
-    void insertComunas(List<Comuna> comunas);
+    List<Long> insertProvincias(List<Provincia> provincias);
+
+    @Insert
+    void insertProvincia(Provincia provincia);
+
+    @Query("SELECT * FROM provincia ")
+    List<Provincia> getProvincias();
+
+
+    @Query("SELECT * FROM provincia WHERE id_region_provincia = :region")
+    List<Provincia> getProvinciaByRegion(int region);
+
+    @Query("DELETE FROM provincia")
+    void deleteProvincia();
+
+
+
+
+
+    @Insert
+    List<Long> insertComunas(List<Comuna> comunas);
 
     @Insert
     void insertComuna(Comuna comunas);
@@ -462,8 +534,13 @@ public interface MyDao {
     List<Comuna> getComunas();
 
 
-    @Query("SELECT * FROM comuna WHERE id_region_comuna = :region")
-    List<Comuna> getComunaByRegion(int region);
+    @Query("SELECT * FROM comuna WHERE id_provincia_comuna = :provincia")
+    List<Comuna> getComunaByProvincia(int provincia);
+
+
+    @Query("DELETE FROM comuna")
+    void deleteComuna();
+
 
 
 }

@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class pro_cli_mat {
 
     @PrimaryKey
+    @SerializedName("id_prop_mat_cli")
     private int id_prop_mat_cli;
 
     @SerializedName("id_cli")
@@ -39,7 +40,17 @@ public class pro_cli_mat {
     @SerializedName("tipo_campo")
     private String tipo_cambio;
 
+    @SerializedName("es_lista")
+    private String es_lista;
 
+
+    public String getEs_lista() {
+        return es_lista;
+    }
+
+    public void setEs_lista(String es_lista) {
+        this.es_lista = es_lista;
+    }
 
     public int getId_prop_mat_cli() {
         return id_prop_mat_cli;

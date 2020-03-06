@@ -9,7 +9,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "fotos")
 public class Fotos {
 
-
     @PrimaryKey(autoGenerate = true)
     private int id_foto;
     private int id_ficha;

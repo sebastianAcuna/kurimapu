@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.clans.fab.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +39,7 @@ import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.adapters.FichasAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
+import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.dialogos.DialogFilterFichas;
 import cl.smapdev.curimapu.fragments.fichas.FragmentCreaFicha;
@@ -53,6 +55,12 @@ public class FragmentFichas extends Fragment {
     private Spinner spinner_toolbar;
 
     private SharedPreferences prefs;
+
+    private ArrayList<Integer> id_temporadas = new ArrayList<>();
+    private ArrayList<String> desc_temporadas = new ArrayList<>();
+
+    private List<Temporada> temporadaList;
+
 
 
     @Override
@@ -81,12 +89,18 @@ public class FragmentFichas extends Fragment {
         spinner_toolbar = (Spinner) view.findViewById(R.id.spinner_toolbar);
         fb_add_ficha = (FloatingActionButton) view.findViewById(R.id.fb_add_ficha);
 
-
+        temporadaList = MainActivity.myAppDB.myDao().getTemporada();
+        if (temporadaList.size() > 0){
+            for (Temporada t : temporadaList){
+                id_temporadas.add(t.getId_tempo_tempo());
+                desc_temporadas.add(t.getNombre_tempo());
+            }
+        }
 
         setHasOptionsMenu(true);
 
 
-        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, getResources().getStringArray(R.array.anos_toolbar)));
+        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, temporadaList));
 
 
         //spinner_toolbar.setSelection(getResources().getStringArray(R.array.anos_toolbar).length - 1);
@@ -97,18 +111,21 @@ public class FragmentFichas extends Fragment {
 
                 if (spinner_toolbar.getTag() != null ){
                     if (Integer.parseInt(spinner_toolbar.getTag().toString()) != i){
-                        prefs.edit().putInt(Utilidades.SELECTED_ANO, Integer.parseInt(spinner_toolbar.getSelectedItem().toString())).apply();
+
+
+                        prefs.edit().putInt(Utilidades.SELECTED_ANO,id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                         prefs.edit().putInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, i).apply();
 
-                        cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(Integer.parseInt(spinner_toolbar.getSelectedItem().toString())));
+                        cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
                     }else{
                         spinner_toolbar.setTag(null);
                     }
                 }else{
-                    prefs.edit().putInt(Utilidades.SELECTED_ANO, Integer.parseInt(spinner_toolbar.getSelectedItem().toString())).apply();
+
+                    prefs.edit().putInt(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                     prefs.edit().putInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, i).apply();
 
-                    cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(Integer.parseInt(spinner_toolbar.getSelectedItem().toString())));
+                    cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
                 }
 
             }
@@ -127,7 +144,10 @@ public class FragmentFichas extends Fragment {
             }
         });
 
-        cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(prefs.getInt(Utilidades.SELECTED_ANO, 2020)));
+        if (temporadaList.size() > 0){
+            cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(prefs.getInt(Utilidades.SELECTED_ANO, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo())));
+        }
+
     }
 
 
@@ -141,7 +161,6 @@ public class FragmentFichas extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_vistas_filter:
-
                 DialogFilterFichas dialogo = new DialogFilterFichas();
                 dialogo.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "DIALOGO_FICHAS");
                 return true;
@@ -165,8 +184,8 @@ public class FragmentFichas extends Fragment {
             if (intent != null && context != null){
                 List<FichasCompletas> trabajo = (List<FichasCompletas>) intent.getSerializableExtra(DialogFilterFichas.LLAVE_ENVIO_OBJECTO);
                 if (trabajo != null ){
-                    spinner_toolbar.setTag(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, activity.getResources().getStringArray(R.array.anos_toolbar).length - 1));
-                    spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, activity.getResources().getStringArray(R.array.anos_toolbar).length - 1));
+                    spinner_toolbar.setTag(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, temporadaList.size() - 1));
+                    spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, temporadaList.size() - 1));
                     cargarLista(trabajo);
                 }
             }
@@ -174,10 +193,11 @@ public class FragmentFichas extends Fragment {
         }
     }
 
-
-
     private void recargarYear(){
-        spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, activity.getResources().getStringArray(R.array.anos_toolbar).length - 1));
+        if (temporadaList.size() > 0){
+            spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, temporadaList.size() - 1));
+        }
+
     }
 
 
@@ -202,13 +222,12 @@ public class FragmentFichas extends Fragment {
         fichasAdapter = new FichasAdapter(fichasCompletas, new FichasAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(FichasCompletas fichas) {
-                avisoActivaFicha("Seleccione estado de ficha", fichas);
+                activity.cambiarFragment(FragmentCreaFicha.getInstance(fichas), Utilidades.FRAGMENT_CREA_FICHA,  R.anim.slide_in_left, R.anim.slide_out_left);
+                //avisoActivaFicha("Seleccione estado de ficha", fichas);
             }
         }, new FichasAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(FichasCompletas fichas) {
-
-                activity.cambiarFragment(FragmentCreaFicha.getInstance(fichas), Utilidades.FRAGMENT_CREA_FICHA,  R.anim.slide_in_left, R.anim.slide_out_left);
 
             }
         },activity);
@@ -281,14 +300,13 @@ public class FragmentFichas extends Fragment {
 
 
         switch (completas.getFichas().getActiva()){
-            case 0:
-
+            case 1:
                 ra.setChecked(true);
                 break;
-            case 1:
+            case 2:
                 rb.setChecked(true);
                 break;
-            case 2:
+            case 3:
                 rc.setChecked(true);
                 break;
         }
@@ -322,7 +340,7 @@ public class FragmentFichas extends Fragment {
                     public void onClick(View v) {
                         Fichas fichas = completas.getFichas();
                         if (fichas != null){
-                            int estado = (ra.isChecked()) ? 0 : (rb.isChecked()) ? 1 : 2;
+                            int estado = (ra.isChecked()) ? 1 : (rb.isChecked()) ? 2 : 3;
                             fichas.setActiva(estado);
                             MainActivity.myAppDB.myDao().updateFicha(fichas);
 

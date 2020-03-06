@@ -45,6 +45,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -52,6 +53,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -64,9 +67,6 @@ import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Harvest;
 import cl.smapdev.curimapu.clases.tablas.Sowing;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
-import cl.smapdev.curimapu.clases.temporales.TempFlowering;
-import cl.smapdev.curimapu.clases.temporales.TempHarvest;
-import cl.smapdev.curimapu.clases.temporales.TempSowing;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
@@ -85,11 +85,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     private TempVisitas temp_visitas;
 
-    private String[] fenologico, cosecha, crecimiento, maleza;
+    private ArrayList<String> fenologico = new ArrayList<>(), cosecha = new ArrayList<>(), crecimiento = new ArrayList<>(), maleza = new ArrayList<>();
 
-    private EditText et_obs, et_recomendacion;
-
-
+    private TextInputLayout obs_growth, obs_weed, obs_fito,obs_harvest,obs_overall, obs_humedad;
+    private EditText et_obs, et_recomendacion, et_obs_growth, et_obs_weed, et_obs_fito, et_obs_harvest, et_obs_overall,et_obs_humedad;
 
     /* IMAGENES */
     private RecyclerView rwAgronomo, rwCliente;
@@ -115,10 +114,14 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
 
 
-        fenologico = getResources().getStringArray(R.array.fenologico);
-        cosecha = getResources().getStringArray(R.array.cosecha);
-        crecimiento = getResources().getStringArray(R.array.crecimiento);
-        maleza = getResources().getStringArray(R.array.maleza);
+        fenologico.addAll(Arrays.asList(getResources().getStringArray(R.array.fenologico)));
+        cosecha.addAll(Arrays.asList(getResources().getStringArray(R.array.cosecha)));
+        crecimiento.addAll(Arrays.asList(getResources().getStringArray(R.array.crecimiento)));
+        maleza.addAll(Arrays.asList(getResources().getStringArray(R.array.maleza)));
+
+
+//        crecimiento = getResources().getStringArray(R.array.crecimiento);
+//        maleza = getResources().getStringArray(R.array.maleza);
 
 
 
@@ -136,10 +139,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         super.onViewCreated(view, savedInstanceState);
         bind(view);
 
-
-   /*     if (prefs != null && prefs.getInt(Utilidades.SHARED_VISIT_FICHA_ID, 0) > 0){
-            temp_visitas = MainActivity.myAppDB.myDao().getTempFichas();
-        }*/
 
         if (temp_visitas == null){
             temp_visitas = new TempVisitas();
@@ -194,9 +193,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
 
 
-
-
-
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
             if (!checkPermission()) {
@@ -213,14 +209,13 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private void accionSpinners(){
         if (temp_visitas != null){
 
-
-            sp_fenologico.setSelection(temp_visitas.getPhenological_state_temp_visita());
-            sp_cosecha.setSelection(temp_visitas.getHarvest_temp_visita());
-            sp_crecimiento.setSelection(temp_visitas.getGrowth_status_temp_visita());
-            sp_fito.setSelection(temp_visitas.getPhytosanitary_state_temp_visita());
-            sp_general_cultivo.setSelection(temp_visitas.getOverall_status_temp_visita());
-            sp_humedad.setSelection(temp_visitas.getHumidity_floor_temp_visita());
-            sp_malezas.setSelection(temp_visitas.getWeed_state_temp_visita());
+            sp_fenologico.setSelection(fenologico.indexOf(temp_visitas.getPhenological_state_temp_visita()));
+            sp_cosecha.setSelection(cosecha.indexOf(temp_visitas.getHarvest_temp_visita()));
+            sp_crecimiento.setSelection(crecimiento.indexOf(temp_visitas.getGrowth_status_temp_visita()));
+            sp_fito.setSelection(crecimiento.indexOf(temp_visitas.getPhytosanitary_state_temp_visita()));
+            sp_general_cultivo.setSelection(crecimiento.indexOf(temp_visitas.getOverall_status_temp_visita()));
+            sp_humedad.setSelection(crecimiento.indexOf(temp_visitas.getHumidity_floor_temp_visita()));
+            sp_malezas.setSelection(maleza.indexOf(temp_visitas.getWeed_state_temp_visita()));
 
             et_obs.setText(temp_visitas.getObservation_temp_visita());
             et_recomendacion.setText(temp_visitas.getRecomendation_temp_visita());
@@ -263,10 +258,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     }
 
 
-
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -289,7 +280,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         sp_malezas.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, maleza));
 
         accionSpinners();
-
 
     }
 
@@ -341,15 +331,23 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         sp_malezas = (Spinner) view.findViewById(R.id.sp_malezas);
         btn_guardar = (Button) view.findViewById(R.id.btn_guardar);
 
-
         et_obs = (EditText) view.findViewById(R.id.et_obs);
         et_recomendacion = (EditText) view.findViewById(R.id.et_recomendacion);
+        et_obs_fito = (EditText) view.findViewById(R.id.et_obs_fito);
+        et_obs_growth = (EditText) view.findViewById(R.id.et_obs_growth);
+        et_obs_harvest = (EditText) view.findViewById(R.id.et_obs_harvest);
+        et_obs_overall = (EditText) view.findViewById(R.id.et_obs_overall);
+        et_obs_weed = (EditText) view.findViewById(R.id.et_obs_weed);
+        et_obs_humedad = (EditText) view.findViewById(R.id.et_obs_humedad);
 
-
+        obs_growth = (TextInputLayout) view.findViewById(R.id.obs_growth);
+        obs_weed = (TextInputLayout) view.findViewById(R.id.obs_weed);
+        obs_fito = (TextInputLayout) view.findViewById(R.id.obs_fito);
+        obs_harvest = (TextInputLayout) view.findViewById(R.id.obs_harvest);
+        obs_overall = (TextInputLayout) view.findViewById(R.id.obs_overall);
+        obs_humedad = (TextInputLayout) view.findViewById(R.id.obs_humedad);
 
         btn_volver = (Button) view.findViewById(R.id.btn_volver);
-
-
 
         sp_fenologico.setOnItemSelectedListener(this);
         sp_malezas.setOnItemSelectedListener(this);
@@ -359,14 +357,18 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         sp_crecimiento.setOnItemSelectedListener(this);
         sp_cosecha.setOnItemSelectedListener(this);
 
-
         et_recomendacion.setOnFocusChangeListener(this);
         et_obs.setOnFocusChangeListener(this);
+        et_obs_growth.setOnFocusChangeListener(this);
+        et_obs_weed.setOnFocusChangeListener(this);
+        et_obs_overall.setOnFocusChangeListener(this);
+        et_obs_harvest.setOnFocusChangeListener(this);
+        et_obs_fito.setOnFocusChangeListener(this);
+        et_obs_humedad.setOnFocusChangeListener(this);
 
 
         btn_volver.setOnClickListener(this);
         btn_guardar.setOnClickListener(this);
-
 
 
         rwAgronomo = (RecyclerView) view.findViewById(R.id.fotos_agronomos);
@@ -379,37 +381,94 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (i > 0) {
-
             switch (adapterView.getId()) {
                 case R.id.sp_feno:
-                    temp_visitas.setPhenological_state_temp_visita(i);
+                    temp_visitas.setPhenological_state_temp_visita(fenologico.get(i));
                     temp_visitas.setEtapa_temp_visitas(Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
                     break;
                 case R.id.sp_cosecha:
-                    temp_visitas.setHarvest_temp_visita(i);
+                    if (i != 2){
+                        obs_harvest.setVisibility(View.VISIBLE);
+                    }else{
+                        obs_harvest.setVisibility(View.INVISIBLE);
+                    }
+                    temp_visitas.setHarvest_temp_visita(cosecha.get(i));
                     break;
                 case R.id.sp_crecimiento:
-                    temp_visitas.setGrowth_status_temp_visita(i);
+                    if (i > 3){
+                        obs_growth.setVisibility(View.VISIBLE);
+                    }else{
+                        obs_growth.setVisibility(View.INVISIBLE);
+                    }
+                    temp_visitas.setGrowth_status_temp_visita(crecimiento.get(i));
                     break;
                 case R.id.sp_fito:
-                    temp_visitas.setPhytosanitary_state_temp_visita(i);
+                    if (i > 3){
+                        obs_fito.setVisibility(View.VISIBLE);
+                    }else{
+                        obs_fito.setVisibility(View.INVISIBLE);
+                    }
+                    temp_visitas.setPhytosanitary_state_temp_visita(crecimiento.get(i));
                     break;
                 case R.id.sp_general_cultivo:
-                    temp_visitas.setOverall_status_temp_visita(i);
+                    if (i > 3){
+                        obs_overall.setVisibility(View.VISIBLE);
+                    }else{
+                        obs_overall.setVisibility(View.INVISIBLE);
+                    }
+                    temp_visitas.setOverall_status_temp_visita(crecimiento.get(i));
                     break;
                 case R.id.sp_humedad:
-                    temp_visitas.setHumidity_floor_temp_visita(i);
+                    if (i > 3){
+                        obs_humedad.setVisibility(View.VISIBLE);
+                    }else{
+                        obs_humedad.setVisibility(View.INVISIBLE);
+                    }
+                    temp_visitas.setHumidity_floor_temp_visita(crecimiento.get(i));
                     break;
                 case R.id.sp_malezas:
-                    temp_visitas.setWeed_state_temp_visita(i);
+                    if (i > 2){
+                        obs_weed.setVisibility(View.VISIBLE);
+                    }else{
+                        obs_weed.setVisibility(View.INVISIBLE);
+                    }
+                    temp_visitas.setWeed_state_temp_visita(maleza.get(i));
                     break;
             }
             MainActivity.myAppDB.myDao().updateTempVisitas(temp_visitas);
+        }else{
+            switch (adapterView.getId()) {
+                case R.id.sp_feno:
+                    temp_visitas.setPhenological_state_temp_visita("");
+                    temp_visitas.setEtapa_temp_visitas(Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
+                    break;
+                case R.id.sp_cosecha:
+                    obs_harvest.setVisibility(View.INVISIBLE);
+                    temp_visitas.setHarvest_temp_visita("");
+                    break;
+                case R.id.sp_crecimiento:
+                    obs_growth.setVisibility(View.INVISIBLE);
+                    temp_visitas.setGrowth_status_temp_visita("");
+                    break;
+                case R.id.sp_fito:
+                    obs_fito.setVisibility(View.INVISIBLE);
+                    temp_visitas.setPhytosanitary_state_temp_visita("");
+                    break;
+                case R.id.sp_general_cultivo:
+                    obs_overall.setVisibility(View.INVISIBLE);
+                    temp_visitas.setOverall_status_temp_visita("");
+                    break;
+                case R.id.sp_humedad:
+                    obs_humedad.setVisibility(View.INVISIBLE);
+                    temp_visitas.setHumidity_floor_temp_visita("");
+                    break;
+                case R.id.sp_malezas:
+                    obs_weed.setVisibility(View.INVISIBLE);
+                    temp_visitas.setWeed_state_temp_visita("");
+                    break;
+            }
         }
-
-
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -426,14 +485,30 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 case R.id.et_recomendacion:
                     temp_visitas.setRecomendation_temp_visita(et_recomendacion.getText().toString());
                     break;
+                case R.id.et_obs_growth:
+                    temp_visitas.setObs_creci(et_obs_growth.getText().toString());
+                    break;
+                case R.id.et_obs_weed:
+                    temp_visitas.setObs_maleza(et_obs_weed.getText().toString());
+                    break;
+                case R.id.et_obs_fito:
+                    temp_visitas.setObs_fito(et_obs_fito.getText().toString());
+                    break;
+                case R.id.et_obs_harvest:
+                    temp_visitas.setObs_cosecha(et_obs_harvest.getText().toString());
+                    break;
+                case R.id.et_obs_overall:
+                    temp_visitas.setObs_overall(et_obs_overall.getText().toString());
+                    break;
+                case R.id.et_obs_humedad:
+                    temp_visitas.setObs_humedad(et_obs_humedad.getText().toString());
+                    break;
+
             }
 
             MainActivity.myAppDB.myDao().updateTempVisitas(temp_visitas);
         }
     }
-
-
-
 
 
     /* IMAGENES */
@@ -544,10 +619,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     }
 
 
-
-
     private void setOnSave(){
-
         if (temp_visitas != null) {
             int fotos = MainActivity.myAppDB.myDao().getCantFotos(temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
             if (fotos <= 0) {
@@ -557,17 +629,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 if (favs <= 0) {
                     Utilidades.avisoListo(activity, "Falta algo", "Debes seleccionar como favorita al menos una foto (manten precionada la foto para marcar)", "entiendo");
                 } else {
-                    /*int sow = MainActivity.myAppDB.myDao().getCantTempSowing(temp_visitas.getId_anexo_temp_visita());
-                    int flow = MainActivity.myAppDB.myDao().getCantTempFlowering(temp_visitas.getId_anexo_temp_visita());
-                    int har = MainActivity.myAppDB.myDao().getCantTempHarvest(temp_visitas.getId_anexo_temp_visita());
-
-                    if (sow <= 0 && flow <= 0 && har <= 0) {
-                        Utilidades.avisoListo(activity, "Falta algo", "Debes seleccionar como favorita al menos una foto (manten precionada la foto para marcar)", "entiendo");
-                    } else {*/
 //                    todo do save
-
-
-                        boolean problema = false;
 
                         Visitas visitas = new Visitas();
                         visitas.setGrowth_status_visita(temp_visitas.getGrowth_status_temp_visita());
@@ -584,11 +646,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         visitas.setEstado_visita(0);
                         visitas.setEtapa_visitas(temp_visitas.getEtapa_temp_visitas());
 
-
                         String fecha = Utilidades.fechaActualConHora();
-
                         String[] fechaHora = fecha.split(" ");
-
                         String[] temporada = fechaHora[0].split("-");
 
                         visitas.setHora_visita(fechaHora[1]);
@@ -607,158 +666,12 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                             idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
                         }
 
-
                         MainActivity.myAppDB.myDao().updateFotosWithVisita((int) idVisita, temp_visitas.getId_anexo_temp_visita());
+                        MainActivity.myAppDB.myDao().updateDetallesToVisits((int) idVisita);
 
-                        try{
-                            TempSowing tempSowing =  MainActivity.myAppDB.myDao().getTempSowing(temp_visitas.getId_anexo_temp_visita());
-                            if (tempSowing != null){
-                                Sowing sowing = new Sowing();
-                                sowing.setAmount_applied_sowing(tempSowing.getAmount_applied_temp_sowing());
-                                sowing.setBasta_splat_4_ha_sowing(tempSowing.getBasta_splat_4_ha_temp_sowing());
-                                sowing.setBasta_spray_1_sowing(tempSowing.getBasta_spray_1_temp_sowing());
-                                sowing.setBasta_spray_2_sowing(tempSowing.getBasta_spray_2_temp_sowing());
-                                sowing.setBasta_spray_3_sowing(tempSowing.getBasta_spray_3_temp_sowing());
-                                sowing.setBasta_spray_4_sowing(tempSowing.getBasta_spray_4_temp_sowing());
-                                sowing.setDate_1_herb_sowing(tempSowing.getDate_1_herb_temp_sowing());
-                                sowing.setDate_1_sowing(tempSowing.getDate_1_temp_sowing());
-                                sowing.setDate_2_herb_sowing(tempSowing.getDate_2_herb_temp_sowing());
-                                sowing.setDate_2_sowing(tempSowing.getDate_2_temp_sowing());
-                                sowing.setDate_3_herb_sowing(tempSowing.getDate_3_herb_temp_sowing());
-                                sowing.setDate_foliar_sowing(tempSowing.getDate_foliar_temp_sowing());
-                                sowing.setDate_nombre_largo_sowing(tempSowing.getDate_nombre_largo_temp_sowing());
-                                sowing.setDate_pre_emergence_sowing(tempSowing.getDate_pre_emergence_temp_sowing());
-                                sowing.setDelivered_sowing(tempSowing.getDelivered_temp_sowing());
-                                sowing.setDose_1_sowing(tempSowing.getDose_1_temp_sowing());
-                                sowing.setDose_2_sowing(tempSowing.getDose_2_temp_sowing());
-                                sowing.setDose_foliar_sowing(tempSowing.getDose_foliar_temp_sowing());
-                                sowing.setDose_nombre_largo_sowing(tempSowing.getDose_nombre_largo_temp_sowing());
-                                sowing.setDose_pre_emergence_sowing(tempSowing.getDose_pre_emergence_temp_sowing());
-                                sowing.setEast_sowing(tempSowing.getEast_temp_sowing());
-                                sowing.setEstado_server_sowing(0);
-                                sowing.setFemale_lines_sowing(tempSowing.getFemale_lines_temp_sowing());
-                                sowing.setFemale_sowing_date_end_sowing(tempSowing.getFemale_sowing_date_end_temp_sowing());
-                                sowing.setFemale_sowing_date_start_sowing(tempSowing.getFemale_sowing_date_start_temp_sowing());
-                                sowing.setFemale_sowing_lot_sowing(tempSowing.getFemale_sowing_lot_temp_sowing());
-                                sowing.setFoliar_sowing(tempSowing.getFoliar_temp_sowing());
-                                sowing.setId_anexo_sowing(tempSowing.getId_anexo_temp_sowing());
-                                sowing.setId_visita_sowing((int) idVisita);
-                                sowing.setMeters_isoliation_sowing(tempSowing.getMeters_isoliation_temp_sowing());
-                                sowing.setName_1_herb_sowing(tempSowing.getName_1_herb_temp_sowing());
-                                sowing.setName_2_herb_sowing(tempSowing.getName_2_herb_temp_sowing());
-                                sowing.setName_3_herb_sowing(tempSowing.getName_3_herb_temp_sowing());
-                                sowing.setNorth_sowing(tempSowing.getNorth_temp_sowing());
-                                sowing.setPlant_m_sowing(tempSowing.getPlant_m_temp_sowing());
-                                sowing.setPopulation_plants_ha_sowing(tempSowing.getPopulation_plants_ha_temp_sowing());
-                                sowing.setProduct_nombre_largo_sowing(tempSowing.getProduct_nombre_largo_temp_sowing());
-                                sowing.setReal_sowing_female_sowing(tempSowing.getReal_sowing_female_temp_sowing());
-                                sowing.setRow_distance_sowing(tempSowing.getRow_distance_temp_sowing());
-                                sowing.setSag_planting_sowing(tempSowing.getSag_planting_temp_sowing());
-                                sowing.setSouth_sowing(tempSowing.getSouth_temp_sowing());
-                                sowing.setSowing_seed_meter_sowing(tempSowing.getSowing_seed_meter_temp_sowing());
-                                sowing.setType_of_mixture_applied_sowing(tempSowing.getType_of_mixture_applied_temp_sowing());
-                                sowing.setWater_pre_emergence_sowing(tempSowing.getWater_pre_emergence_temp_sowing());
-                                sowing.setWest_sowing(tempSowing.getWest_temp_sowing());
-
-
-
-
-                                if (temp_visitas.getId_temp_visita()  > 0 ) {
-
-                                    sowing.setId_visita_sowing((int)idVisita);
-                                    MainActivity.myAppDB.myDao().updateSowing(sowing);
-                                }else{
-                                    long idSowing = MainActivity.myAppDB.myDao().setSowing(sowing);
-                                }
-
-
-                            }
-                        }catch (SQLiteException e){
-                            problema = true;
-                        }
-
-
-                        try{
-                            TempFlowering tempFlowering = MainActivity.myAppDB.myDao().getTempFlowering(temp_visitas.getId_anexo_temp_visita());
-                            if (tempFlowering != null){
-                                Flowering flowering = new Flowering();
-
-                                flowering.setCheck_flowering(tempFlowering.getCheck_temp_flowering());
-                                flowering.setDate_beginning_depuration_flowering(tempFlowering.getDate_beginning_depuration_temp_flowering());
-                                flowering.setDate_funficide_flowering(tempFlowering.getDate_funficide_temp_flowering());
-                                flowering.setDate_insecticide_flowering(tempFlowering.getDate_insecticide_temp_flowering());
-                                flowering.setDate_inspection_flowering(tempFlowering.getDate_inspection_temp_flowering());
-                                flowering.setDate_notice_sag_flowering(tempFlowering.getDate_notice_sag_temp_flowering());
-                                flowering.setDate_off_type_flowering(tempFlowering.getDate_off_type_temp_flowering());
-                                flowering.setDose_fungicide_flowering(tempFlowering.getDose_fungicide_temp_flowering());
-                                flowering.setEstado_server_flowering(0);
-                                flowering.setFertility_1_flowering(tempFlowering.getFertility_1_temp_flowering());
-                                flowering.setFertility_2_flowering(tempFlowering.getFertility_2_temp_flowering());
-                                flowering.setFlowering_end_flowering(tempFlowering.getFlowering_end_temp_flowering());
-                                flowering.setFlowering_estimation_flowering(tempFlowering.getFlowering_estimation_temp_flowering());
-                                flowering.setFlowering_start_flowering(tempFlowering.getFlowering_start_temp_flowering());
-                                flowering.setFungicide_name_flowering(tempFlowering.getFungicide_name_temp_flowering());
-                                flowering.setId_anexo_flowering(tempFlowering.getId_anexo_temp_flowering());
-                                flowering.setId_visita_flowering((int) idVisita);
-                                flowering.setMain_characteristic_flowering(tempFlowering.getMain_characteristic_temp_flowering());
-                                flowering.setPlant_number_checked_flowering(tempFlowering.getPlant_number_checked_temp_flowering());
-
-
-                                if (temp_visitas.getId_temp_visita()  > 0 ) {
-
-                                    flowering.setId_visita_flowering((int) idVisita);
-                                    MainActivity.myAppDB.myDao().updateFlowering(flowering);
-                                }else{
-                                    long idFlowing = MainActivity.myAppDB.myDao().setFlowering(flowering);
-                                }
-
-                            }
-                        }catch (SQLiteException e){
-                            problema = true;
-                        }
-
-
-                        try {
-                            TempHarvest tempHarvest = MainActivity.myAppDB.myDao().getTempHarvest(temp_visitas.getId_anexo_temp_visita());
-                            if (tempHarvest != null){
-                                Harvest harvest = new Harvest();
-
-                                harvest.setBeginning_date_temp_harvest(tempHarvest.getBeginning_date_temp_harvest());
-                                harvest.setDate_harvest_estimation_temp_harvest(tempHarvest.getDate_harvest_estimation_temp_harvest());
-                                harvest.setEnd_date_temp_harvest(tempHarvest.getEnd_date_temp_harvest());
-                                harvest.setEstado_server_harvest(0);
-                                harvest.setEstimated_date_temp_harvest(tempHarvest.getEstimated_date_temp_harvest());
-                                harvest.setId_anexo_temp_harvest(tempHarvest.getId_anexo_temp_harvest());
-                                harvest.setId_visita_harvest((int) idVisita);
-                                harvest.setKg_ha_yield_temp_harvest(tempHarvest.getKg_ha_yield_temp_harvest());
-                                harvest.setModel_machine_temp_harvest(tempHarvest.getModel_machine_temp_harvest());
-                                harvest.setObservation_dessicant_temp_harvest(tempHarvest.getObservation_dessicant_temp_harvest());
-                                harvest.setObservation_yield_temp_harvest(tempHarvest.getObservation_yield_temp_harvest());
-                                harvest.setOwner_machine_temp_harvest(tempHarvest.getOwner_machine_temp_harvest());
-                                harvest.setPorcent_temp_harvest(tempHarvest.getPorcent_temp_harvest());
-                                harvest.setReal_date_temp_harvest(tempHarvest.getReal_date_temp_harvest());
-                                harvest.setSwathing_date_temp_harvest(tempHarvest.getSwathing_date_temp_harvest());
-
-                                if (temp_visitas.getId_temp_visita()  > 0 ) {
-
-                                    harvest.setId_visita_harvest((int) idVisita);
-                                    MainActivity.myAppDB.myDao().updateHarvest(harvest);
-                                }else {
-                                    long idHarvest = MainActivity.myAppDB.myDao().setHarvest(harvest);
-                                }
-                            }
-                        }catch (SQLiteException e){
-                            problema = true;
-                        }
-
-                        if(!problema){
-                            showAlertForSave("Genial", "Se guardo todo como corresponde");
-                        }else{
-                            Utilidades.avisoListo(activity, "Algo pasó!", "Hubo un problema al guardar, vuelva a intentarlo", "entiendo");
-                        }
+                        showAlertForSave("Genial", "Se guardo todo como corresponde");
                     }
                 }
-//            }
         }else{
             Utilidades.avisoListo(activity, "Falta algo", "Algo salio mal, por favor revise el fieldbook", "entiendo");
         }

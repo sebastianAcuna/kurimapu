@@ -12,13 +12,11 @@ public class Temporada {
     @PrimaryKey
     private int id_tempo_tempo;
 
-
     @SerializedName("nombre")
     private String nombre_tempo;
 
     @SerializedName("desde")
     private String desde_tempo;
-
 
     @SerializedName("hasta")
     private String hasta_tempo;

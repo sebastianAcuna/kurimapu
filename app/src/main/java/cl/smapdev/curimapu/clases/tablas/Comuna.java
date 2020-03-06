@@ -4,24 +4,23 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "comuna")
 public class Comuna {
 
-    @PrimaryKey(autoGenerate = true)
+    @SerializedName("id_comuna")
+    @PrimaryKey()
     private int id_comuna;
+    @SerializedName("nombre")
     private String desc_comuna;
-    private int id_region_comuna;
+    @SerializedName("id_provincia")
+    private int id_provincia_comuna;
 
 
     public Comuna() {
     }
 
-
-    @Ignore
-    public Comuna(String desc_comuna, int id_region_comuna) {
-        this.desc_comuna = desc_comuna;
-        this.id_region_comuna = id_region_comuna;
-    }
 
     public int getId_comuna() {
         return id_comuna;
@@ -39,11 +38,12 @@ public class Comuna {
         this.desc_comuna = desc_comuna;
     }
 
-    public int getId_region_comuna() {
-        return id_region_comuna;
+
+    public int getId_provincia_comuna() {
+        return id_provincia_comuna;
     }
 
-    public void setId_region_comuna(int id_region_comuna) {
-        this.id_region_comuna = id_region_comuna;
+    public void setId_provincia_comuna(int id_provincia_comuna) {
+        this.id_provincia_comuna = id_provincia_comuna;
     }
 }

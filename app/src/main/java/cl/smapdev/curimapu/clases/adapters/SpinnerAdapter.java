@@ -10,14 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 
+import java.util.ArrayList;
+
 import cl.smapdev.curimapu.R;
 
 public class SpinnerAdapter extends ArrayAdapter<String> {
 
-    private String[] objects;
+    private ArrayList<String> objects;
     private Context context;
 
-    public SpinnerAdapter(@NonNull Context context, int resource, @NonNull String[] objects) {
+    public SpinnerAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects) {
         super(context, resource,  objects);
 
         this.context = context;
@@ -43,7 +45,7 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
         View row=inflater.inflate(resourceId, parent, false);
         TextView titulo = (TextView) row.findViewById(R.id.titulo);
 //        titulo.setTextSize(10);
-        titulo.setText(objects[position]);
+        titulo.setText(objects.get(position));
         return row;
     }
 }

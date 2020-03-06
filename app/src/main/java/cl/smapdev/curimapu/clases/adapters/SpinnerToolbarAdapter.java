@@ -9,23 +9,21 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.tablas.Temporada;
 
-public class SpinnerToolbarAdapter extends ArrayAdapter<String> {
+public class SpinnerToolbarAdapter extends ArrayAdapter<Temporada> {
 
-    private String[] objects;
+    private List<Temporada> objects;
     private Context context;
 
-
-    public SpinnerToolbarAdapter(@NonNull Context context, int resource, @NonNull String[] objects) {
-        super(context, resource,  objects);
-
-
-        this.context = context;
+    public SpinnerToolbarAdapter(@NonNull Context context, int resource, @NonNull List<Temporada> objects) {
+        super(context, resource, objects);
         this.objects = objects;
+        this.context = context;
     }
-
-
 
 
     @NonNull
@@ -45,7 +43,7 @@ public class SpinnerToolbarAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(  Context.LAYOUT_INFLATER_SERVICE );
         View row=inflater.inflate(resourceId, parent, false);
         TextView titulo = (TextView) row.findViewById(R.id.titulo);
-        titulo.setText(objects[position]);
+        titulo.setText(objects.get(position).getNombre_tempo());
         return row;
     }
 }

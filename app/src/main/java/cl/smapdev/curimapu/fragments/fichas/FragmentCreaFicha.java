@@ -29,7 +29,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,10 +41,12 @@ import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
+import cl.smapdev.curimapu.clases.tablas.Provincia;
 import cl.smapdev.curimapu.clases.tablas.Region;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.relaciones.AgricultorCompleto;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
+import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentFichas;
 
@@ -56,7 +60,7 @@ public class FragmentCreaFicha extends Fragment {
     };
 
     private MainActivity activity;
-    private Spinner sp_year/*, sp_asoc_agr*/, sp_agric,sp_region_agricultor,sp_comuna_agricultor;
+    private Spinner sp_year/*, sp_asoc_agr*/, sp_agric,sp_region_agricultor,sp_comuna_agricultor, sp_provincia_agricultor;
 
     private EditText et_rut_agricultor, et_nombre_agricultor,et_telef_agricultor,et_admin_agricultor,
             et_tel_admin_agricultor,et_oferta_neg_agricultor,et_localidad_agricultor,et_has_disp_agricultor,et_obs_agricultor,
@@ -69,10 +73,12 @@ public class FragmentCreaFicha extends Fragment {
 
     private List<Region> regionList;
     private List<Comuna> comunaList;
+    private List<Provincia> provinciaList;
+    private List<Temporada> years;
 
-    private String [] years;
 
-    private int idComuna, idRegion, idAnno;
+
+    private int idComuna, idRegion, idAnno, idProvincia;
 
 
     private FusedLocationProviderClient client;
@@ -83,6 +89,9 @@ public class FragmentCreaFicha extends Fragment {
     private ArrayList<String> rutAgricultores = new ArrayList<>();
     private ArrayList<Integer> idRegiones = new ArrayList<>();
     private ArrayList<Integer> idComunas = new ArrayList<>();
+    private ArrayList<Integer> idProvincias = new ArrayList<>();
+    private ArrayList<Integer> idTemporadas = new ArrayList<>();
+
 
     private FichasCompletas fichasCompletas;
 
@@ -125,13 +134,15 @@ public class FragmentCreaFicha extends Fragment {
 
         regionList = MainActivity.myAppDB.myDao().getRegiones();
         comunaList = MainActivity.myAppDB.myDao().getComunas();
-
-
-        years = getResources().getStringArray(R.array.anos_toolbar);
+        provinciaList = MainActivity.myAppDB.myDao().getProvincias();
+        years = MainActivity.myAppDB.myDao().getTemporada();
 
         if (savedInstanceState != null && savedInstanceState.getSerializable(VIENE_A_EDITAR) != null){
             fichasCompletas = (FichasCompletas) savedInstanceState.getSerializable(VIENE_A_EDITAR);
         }
+
+
+
 
     }
 
@@ -182,7 +193,7 @@ public class FragmentCreaFicha extends Fragment {
         sp_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                idAnno = Integer.parseInt(years[i]);
+                idAnno = idTemporadas.get(i);
             }
 
             @Override
@@ -214,8 +225,8 @@ public class FragmentCreaFicha extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i > 0){
                     idRegion = idRegiones.get(i);
-                    comunaList = MainActivity.myAppDB.myDao().getComunaByRegion(idRegion);
-                    cargarComuna();
+                    provinciaList = MainActivity.myAppDB.myDao().getProvinciaByRegion(idRegion);
+                    cargarProvincia();
                 }
             }
 
@@ -239,6 +250,20 @@ public class FragmentCreaFicha extends Fragment {
             }
         });
 
+        sp_provincia_agricultor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                idProvincia = idProvincias.get(i);
+                comunaList = MainActivity.myAppDB.myDao().getComunaByProvincia(idProvincia);
+                cargarComuna();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         sp_comuna_agricultor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -252,6 +277,8 @@ public class FragmentCreaFicha extends Fragment {
 
             }
         });
+
+
 
 
         btn_save_agricultor.setOnClickListener(new View.OnClickListener() {
@@ -290,14 +317,17 @@ public class FragmentCreaFicha extends Fragment {
 //            asoc_agro.setVisibility(View.INVISIBLE);
 
 
-            sp_region_agricultor.setEnabled(false);
-            sp_region_agricultor.setSelection(idRegiones.indexOf(fichasCompletas.getAgricultor().getRegion_agricultor()));
+//            sp_region_agricultor.setEnabled(false);
+            sp_region_agricultor.setSelection(idRegiones.indexOf(fichasCompletas.getRegion().getId_region()));
 
 
 
 
-            sp_comuna_agricultor.setEnabled(false);
-            idComuna = fichasCompletas.getAgricultor().getComuna_agricultor();
+//            sp_comuna_agricultor.setEnabled(false);
+            idComuna = fichasCompletas.getComuna().getId_comuna();
+
+            idProvincia = fichasCompletas.getComuna().getId_provincia_comuna();
+            sp_provincia_agricultor.setSelection(idProvincias.indexOf(idProvincia));
 
             cargarComuna();
             sp_comuna_agricultor.setSelection(idComunas.indexOf(idComuna));
@@ -386,9 +416,9 @@ public class FragmentCreaFicha extends Fragment {
         && idAnno > 0 && idRegion > 0 && idComuna > 0){
 //            !TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting) &&
 
-            if (Utilidades.validarRut(Utilidades.formatear(rutAgro))){
+//            if (Utilidades.validarRut(Utilidades.formatear(rutAgro))){
 
-                rutAgro = Utilidades.formatear(rutAgro);
+//                rutAgro = Utilidades.formatear(rutAgro);
 
 /*                if (sp_asoc_agr.getSelectedItem().toString().equals(getResources().getString(R.string.asoc_new_farmer))){
 
@@ -406,13 +436,15 @@ public class FragmentCreaFicha extends Fragment {
                 }*/
 
                 Fichas fichas = new Fichas();
-                fichas.setActiva(0);
+                fichas.setActiva(1);
                 fichas.setAnno(idAnno);
                 fichas.setHas_disponible(Double.parseDouble(has));
                 fichas.setLocalidad(localidad);
                 fichas.setObservaciones(observacion);
                 fichas.setSubida(false);
                 fichas.setOferta_negocio(oferta);
+                fichas.setId_region_ficha(idRegion);
+                fichas.setId_comuna_ficha(idComuna);
 
 
                 if (!TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting)){
@@ -420,7 +452,7 @@ public class FragmentCreaFicha extends Fragment {
                     fichas.setNorting(Double.parseDouble(norting));
                 }
 
-                fichas.setRut_agricultor_fichas(rutAgro);
+                fichas.setId_agricultor_ficha(MainActivity.myAppDB.myDao().getIdAgricutorByRut(rutAgro));
 
                 if(MainActivity.myAppDB.myDao().insertFicha(fichas) > 0){
                     Snackbar.make(Objects.requireNonNull(getView()), "Se creo la ficha de manera correcta", Snackbar.LENGTH_SHORT).show();
@@ -430,9 +462,9 @@ public class FragmentCreaFicha extends Fragment {
                     }
                 }
 
-            }else{
-                //todo muestra dialogo
-            }
+//            }else{
+//                //todo muestra dialogo
+//            }
 
         }else{
             Utilidades.avisoListo(activity, "Falto algo", "Debe completar todos los campos", "OK");
@@ -476,6 +508,8 @@ public class FragmentCreaFicha extends Fragment {
             fichas.setLocalidad(localidad);
             fichas.setObservaciones(observacion);
             fichas.setOferta_negocio(oferta);
+            fichas.setId_comuna_ficha(idComuna);
+            fichas.setId_region_ficha(idRegion);
 
             if (!TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting)){
                 fichas.setEasting(Double.parseDouble(easting));
@@ -563,14 +597,25 @@ public class FragmentCreaFicha extends Fragment {
                 et_tel_admin_agricultor.setText(agricultor.getAgricultor().getTelefono_admin_agricultor());
                 et_tel_admin_agricultor.setEnabled(false);
 
-                idRegion = agricultor.getAgricultor().getRegion_agricultor();
-                sp_region_agricultor.setSelection(idRegiones.indexOf(idRegion));
 
-                comunaList = MainActivity.myAppDB.myDao().getComunaByRegion(agricultor.getAgricultor().getRegion_agricultor());
-                idComuna = agricultor.getAgricultor().getComuna_agricultor();
+                if (fichasCompletas != null){
+                    idRegion = fichasCompletas.getRegion().getId_region();
+                    sp_region_agricultor.setSelection(idRegiones.indexOf(idRegion));
 
-                cargarComuna();
-                sp_comuna_agricultor.setSelection(idComunas.indexOf(idComuna));
+
+                    idProvincia  = fichasCompletas.getComuna().getId_provincia_comuna();
+                    sp_provincia_agricultor.setSelection(idProvincias.indexOf(idProvincia));
+
+
+
+                    comunaList = MainActivity.myAppDB.myDao().getComunaByProvincia(fichasCompletas.getComuna().getId_provincia_comuna());
+                    idComuna = fichasCompletas.getComuna().getId_comuna();
+
+                    cargarComuna();
+                    sp_comuna_agricultor.setSelection(idComunas.indexOf(idComuna));
+                }
+
+
 
 
             }
@@ -580,21 +625,35 @@ public class FragmentCreaFicha extends Fragment {
 
 
     private void setAdapters(){
-        sp_year.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, getResources().getStringArray(R.array.anos_toolbar)));
-        sp_year.setSelection(getResources().getStringArray(R.array.anos_toolbar).length - 1);
+
+        if (years.size() > 0){
+            ArrayList<String> str = new ArrayList<>();
+            int contador = 0;
+            for (Temporada t : years){
+                str.add(t.getNombre_tempo());
+                idTemporadas.add(contador, t.getId_tempo_tempo());
+                contador++;
+            }
+
+            sp_year.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, str));
+            sp_year.setSelection(years.size() - 1);
+        }
+
+
+
 /*        sp_asoc_agr.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, getResources().getStringArray(R.array.asociacion_agricultor)));
         sp_asoc_agr.setSelection(1);*/
 
 
         List<Agricultor> agricultorList = MainActivity.myAppDB.myDao().getAgricultores();
         if (agricultorList.size() > 0){
-            String[] str = new String[agricultorList.size() + 1];
+            ArrayList<String> str = new ArrayList<>();
             int contador = 0;
-            str[contador] = getResources().getString(R.string.select);
+            str.add(getResources().getString(R.string.select));
             rutAgricultores.add(contador,"");
             contador++;
             for (Agricultor fs : agricultorList){
-                str[contador] = fs.getNombre_agricultor();
+                str.add(fs.getNombre_agricultor());
                 rutAgricultores.add(contador,fs.getRut_agricultor());
                 contador++;
 
@@ -606,14 +665,14 @@ public class FragmentCreaFicha extends Fragment {
 
 
         if (regionList != null && regionList.size() > 0){
-            String[] rg = new String[regionList.size() + 1];
+            ArrayList<String> rg = new ArrayList<>();
             int contador = 0;
-            rg[contador] = getResources().getString(R.string.select);
+            rg.add(getResources().getString(R.string.select));
             idRegiones.add(contador,0);
             contador++;
 
             for (Region re : regionList){
-                rg[contador] = re.getDesc_region();
+                rg.add(re.getDesc_region());
                 idRegiones.add(contador, re.getId_region());
                 contador++;
             }
@@ -622,7 +681,7 @@ public class FragmentCreaFicha extends Fragment {
             sp_region_agricultor.setSelection(0);
 
         }
-
+        cargarProvincia();
         cargarComuna();
 
     }
@@ -630,15 +689,16 @@ public class FragmentCreaFicha extends Fragment {
 
     private void cargarComuna(){
         if (comunaList != null && comunaList.size() > 0){
-            String[] rg = new String[comunaList.size() + 1];
+            ArrayList<String> rg = new ArrayList<>();
             int contador = 0;
-            rg[contador] = getResources().getString(R.string.select);
+            rg.add(getResources().getString(R.string.select));
             idComunas.add(contador,0);
             contador++;
             int selectable = 0;
             for (Comuna re : comunaList){
-                rg[contador] = re.getDesc_comuna();
+                rg.add(re.getDesc_comuna());
                 idComunas.add(contador, re.getId_comuna());
+
 
                 if (idComuna == re.getId_comuna()){
                     selectable = contador;
@@ -651,6 +711,32 @@ public class FragmentCreaFicha extends Fragment {
 
             sp_comuna_agricultor.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
             sp_comuna_agricultor.setSelection(selectable);
+        }
+    }
+
+    private void cargarProvincia(){
+        if (provinciaList != null && provinciaList.size() > 0){
+            ArrayList<String> rg = new ArrayList<>();
+            int contador = 0;
+            rg.add(getResources().getString(R.string.select));
+            idProvincias.add(contador,0);
+            contador++;
+            int selectable = 0;
+            for (Provincia re : provinciaList){
+                rg.add(re.getNombre_provincia());
+                idProvincias.add(contador, re.getId_provincia());
+
+                if (idProvincia == re.getId_provincia()){
+                    selectable = contador;
+                }
+
+                contador++;
+
+
+            }
+
+            sp_provincia_agricultor.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_provincia_agricultor.setSelection(selectable);
         }
     }
 
@@ -672,6 +758,7 @@ public class FragmentCreaFicha extends Fragment {
         sp_agric = (Spinner) view.findViewById(R.id.sp_agric);
         sp_region_agricultor = (Spinner) view.findViewById(R.id.sp_region_agricultor);
         sp_comuna_agricultor = (Spinner) view.findViewById(R.id.sp_comuna_agricultor);
+        sp_provincia_agricultor = (Spinner) view.findViewById(R.id.sp_provincia_agricultor);
 
 
 //        older_agr = (LinearLayout) view.findViewById(R.id.older_agr);

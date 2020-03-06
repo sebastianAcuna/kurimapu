@@ -139,17 +139,9 @@ public class Tabla {
                 MainActivity activity = (MainActivity) actividad;
                 if (activity != null){
 
+                    /* eliminara detalles de las propiedades (todas)*/
                     MainActivity.myAppDB.myDao().deleteTempVisitas();
-//                    MainActivity.myAppDB.myDao().resetTempVisitas();
-
-                    MainActivity.myAppDB.myDao().deleteTempHarvest();
-//                    MainActivity.myAppDB.myDao().resetTempHarvest();
-
-                    MainActivity.myAppDB.myDao().deleteTempFlowering();
-//                    MainActivity.myAppDB.myDao().resetTempFlowering();
-
-                    MainActivity.myAppDB.myDao().deleteTempSowing();
-//                    MainActivity.myAppDB.myDao().resetTempSowing();
+                    MainActivity.myAppDB.myDao().deleteDetalleVacios();
 
 
                     List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);

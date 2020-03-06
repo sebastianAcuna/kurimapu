@@ -79,7 +79,7 @@ public class VisitasListViewHolder extends RecyclerView.ViewHolder {
             fecha_lista_visitas.setText(Utilidades.voltearFechaVista(elem.getVisitas().getFecha_visita()));
             nombre_agricultor.setText(elem.getAnexoCompleto().getAgricultor().getNombre_agricultor());
             nombre_etapa.setText(Utilidades.getStateString(elem.getVisitas().getEtapa_visitas()));
-            nombre_detalle_etapa.setText(Utilidades.getStateDetailString(elem.getVisitas().getPhenological_state_visita()));
+            nombre_detalle_etapa.setText(elem.getVisitas().getPhenological_state_visita());
 
         }
 

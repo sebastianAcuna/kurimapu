@@ -4,38 +4,70 @@ package cl.smapdev.curimapu.clases.tablas;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "fichas")
 public class Fichas {
 
     @PrimaryKey(autoGenerate = true)
+    @SerializedName("id_ficha")
     private int id_ficha;
+    @SerializedName("id_tempo")
     private int anno;
-    private String rut_agricultor_fichas;
+
+    @SerializedName("id_agric")
+    private int id_agricultor_ficha;
+
+    @SerializedName("oferta_de_negocio")
     private String oferta_negocio;
+
+    @SerializedName("id_region")
+    private int id_region_ficha;
+
+    @SerializedName("id_comuna")
+    private int id_comuna_ficha;
+
+    @SerializedName("localidad")
     private String localidad;
+
+    @SerializedName("ha_disponibles")
     private double has_disponible;
+
+    @SerializedName("obs")
     private String observaciones;
+
+//    @SerializedName("")
     private double norting;
+
+//    @SerializedName("")
     private double easting;
-    private int activa; /* 0 : provisoria, 1: activa, 2: rechazada */
+
+    @SerializedName("id_est_fic")
+    private int activa; /* 1 : confeccion, 2: activa, 3: rechazada */
+
+    @SerializedName("subida")
     private boolean subida; /* true : subida, false : no subida */
 
 
     public Fichas() {
     }
 
-//    public Fichas(int anno, String rut_agricultor_fichas, String oferta_negocio, String localidad, double has_disponible, String observaciones, double norting, double easting, int activa, boolean subida) {
-//        this.anno = anno;
-//        this.rut_agricultor_fichas = rut_agricultor_fichas;
-//        this.oferta_negocio = oferta_negocio;
-//        this.localidad = localidad;
-//        this.has_disponible = has_disponible;
-//        this.observaciones = observaciones;
-//        this.norting = norting;
-//        this.easting = easting;
-//        this.activa = activa;
-//        this.subida = subida;
-//    }
+
+    public int getId_region_ficha() {
+        return id_region_ficha;
+    }
+
+    public void setId_region_ficha(int id_region_ficha) {
+        this.id_region_ficha = id_region_ficha;
+    }
+
+    public int getId_comuna_ficha() {
+        return id_comuna_ficha;
+    }
+
+    public void setId_comuna_ficha(int id_comuna_ficha) {
+        this.id_comuna_ficha = id_comuna_ficha;
+    }
 
     public int getId_ficha() {
         return id_ficha;
@@ -53,12 +85,13 @@ public class Fichas {
         this.anno = anno;
     }
 
-    public String getRut_agricultor_fichas() {
-        return rut_agricultor_fichas;
+
+    public int getId_agricultor_ficha() {
+        return id_agricultor_ficha;
     }
 
-    public void setRut_agricultor_fichas(String rut_agricultor_fichas) {
-        this.rut_agricultor_fichas = rut_agricultor_fichas;
+    public void setId_agricultor_ficha(int id_agricultor_ficha) {
+        this.id_agricultor_ficha = id_agricultor_ficha;
     }
 
     public String getOferta_negocio() {

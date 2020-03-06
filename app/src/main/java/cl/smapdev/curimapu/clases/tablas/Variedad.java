@@ -4,28 +4,34 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "variedad")
 public class Variedad {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
+    @SerializedName("id_materiales")
     private int id_variedad;
-
-
+    @SerializedName("id_esp")
     private int id_especie_variedad;
 
-
+    @SerializedName("nom_fantasia")
     private String desc_variedad;
 
+    @SerializedName("nom_hibrido")
+    private String desc_hibrido_variedad;
 
     public Variedad() {
     }
 
-    @Ignore
-    public Variedad(int id_especie_variedad, String desc_variedad) {
-        this.id_especie_variedad = id_especie_variedad;
-        this.desc_variedad = desc_variedad;
+
+    public String getDesc_hibrido_variedad() {
+        return desc_hibrido_variedad;
     }
 
+    public void setDesc_hibrido_variedad(String desc_hibrido_variedad) {
+        this.desc_hibrido_variedad = desc_hibrido_variedad;
+    }
 
     public int getId_variedad() {
         return id_variedad;

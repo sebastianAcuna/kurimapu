@@ -4,22 +4,19 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "especie")
 public class Especie {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
+    @SerializedName("id_esp")
     private int id_especie;
-
+    @SerializedName("nombre")
     private String desc_especie;
 
 
     public Especie() {
-    }
-
-    @Ignore
-    public Especie(String desc_especie) {
-
-        this.desc_especie = desc_especie;
     }
 
 

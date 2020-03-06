@@ -74,10 +74,6 @@ public class FragmentFotos extends Fragment {
 
     private int fieldbook, estado_visita = 0;
 
-
-//    private boolean isLoaded =false,isVisibleToUser;
-
-
     static FragmentFotos getInstance(int fieldbook){
 
         FragmentFotos fragment = new FragmentFotos();
@@ -117,7 +113,6 @@ public class FragmentFotos extends Fragment {
         estado_visita = MainActivity.myAppDB.myDao().getEstadoVisita(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
 
 
-        //Log.e("PRIMERO", "onStart");
         agregarImagenToList();
     }
 
