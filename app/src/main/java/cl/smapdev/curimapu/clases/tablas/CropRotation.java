@@ -14,22 +14,17 @@ public class CropRotation {
     @SerializedName("id_his_pre")
     private int id_crop_rotation;
     @SerializedName("anno")
-    private int temporada_crop_rotation;
+    private String temporada_crop_rotation;
     @SerializedName("descripcion")
     private String cultivo_crop_rotation;
     @SerializedName("id_ficha")
     private int id_ficha_crop_rotation;
-    private int id_anexo_crop_rotation;
+
+    private String id_anexo_crop_rotation;
 
     public CropRotation() {
     }
 
-    @Ignore
-    public CropRotation(int temporada_crop_rotation, String cultivo_crop_rotation, int id_anexo_crop_rotation) {
-        this.temporada_crop_rotation = temporada_crop_rotation;
-        this.cultivo_crop_rotation = cultivo_crop_rotation;
-        this.id_anexo_crop_rotation = id_anexo_crop_rotation;
-    }
 
     public int getId_crop_rotation() {
         return id_crop_rotation;
@@ -39,12 +34,20 @@ public class CropRotation {
         this.id_crop_rotation = id_crop_rotation;
     }
 
-    public int getTemporada_crop_rotation() {
+    public String getTemporada_crop_rotation() {
         return temporada_crop_rotation;
     }
 
-    public void setTemporada_crop_rotation(int temporada_crop_rotation) {
+    public void setTemporada_crop_rotation(String temporada_crop_rotation) {
         this.temporada_crop_rotation = temporada_crop_rotation;
+    }
+
+    public String getId_anexo_crop_rotation() {
+        return id_anexo_crop_rotation;
+    }
+
+    public void setId_anexo_crop_rotation(String id_anexo_crop_rotation) {
+        this.id_anexo_crop_rotation = id_anexo_crop_rotation;
     }
 
     public String getCultivo_crop_rotation() {
@@ -63,11 +66,4 @@ public class CropRotation {
         this.id_ficha_crop_rotation = id_ficha_crop_rotation;
     }
 
-    public int getId_anexo_crop_rotation() {
-        return id_anexo_crop_rotation;
-    }
-
-    public void setId_anexo_crop_rotation(int id_anexo_crop_rotation) {
-        this.id_anexo_crop_rotation = id_anexo_crop_rotation;
-    }
 }

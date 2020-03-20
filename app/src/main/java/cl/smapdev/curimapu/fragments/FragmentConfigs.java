@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.fragments;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
@@ -36,8 +37,34 @@ public class FragmentConfigs extends PreferenceFragmentCompat implements SharedP
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
 
         if (activity != null){
+
+
+//            if (s.equals("lang")){
+                String ss = sharedPreferences.getString("lang", "esp");
+
+
+                String languageToLoad = "";
+                String languageToLoad2 = "";
+                if (ss.equals("eng")){
+                    languageToLoad = "en_US";
+                }else{
+                    languageToLoad  = "es";
+                    languageToLoad2  = "ES";
+                }
+
+
+                Locale locale = new Locale(languageToLoad,languageToLoad2);
+                Locale.setDefault(locale);
+                Configuration config = new Configuration();
+                config.locale = locale;
+                activity.getResources().updateConfiguration(config,activity.getResources().getDisplayMetrics());
+//            }
+
+            activity.restart();
+        }
+      /*  if (activity != null){
             if (s.equals("lang")){
-                String id = sharedPreferences.getString(s,"eng");
+               *//* String id = sharedPreferences.getString(s,"eng");
                 switch (id){
                     case "eng":
                         Locale localeEN = new Locale("en_US");
@@ -47,13 +74,12 @@ public class FragmentConfigs extends PreferenceFragmentCompat implements SharedP
                         Locale localeES = new Locale("es", "ES");
                         activity.setLocale(localeES);
                         break;
-                }
+                }*//*
+               activity.restart();
             }else if(s.equals("tema")){
-
                 activity.restart();
-
             }
-        }
+        }*/
 
     }
 

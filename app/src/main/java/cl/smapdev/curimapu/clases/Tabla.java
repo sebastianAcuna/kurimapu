@@ -165,8 +165,8 @@ public class Tabla {
 
                     if (prefs != null){
                         prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls.getAnexoContrato().getId_ficha_contrato()).apply();
-                        prefs.edit().putInt(Utilidades.SHARED_VISIT_MATERIAL_ID, ls.getAnexoContrato().getId_variedad_anexo()).apply();
-                        prefs.edit().putInt(Utilidades.SHARED_VISIT_ANEXO_ID, ls.getAnexoContrato().getId_anexo_contrato()).apply();
+                        prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, ls.getAnexoContrato().getId_especie_anexo()).apply();
+                        prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, ls.getAnexoContrato().getId_anexo_contrato()).apply();
                         prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
                     }
 
@@ -187,10 +187,11 @@ public class Tabla {
             public void onClick(View view) {
 
                 MainActivity activity = (MainActivity) actividad;
+
                 if (activity != null) {
                     if (prefs != null) {
                         prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls.getAnexoContrato().getId_ficha_contrato()).apply();
-                        prefs.edit().putInt(Utilidades.SHARED_VISIT_ANEXO_ID, ls.getAnexoContrato().getId_anexo_contrato()).apply();
+                        prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, ls.getAnexoContrato().getId_anexo_contrato()).apply();
                     }
 
                     activity.cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_left, R.anim.slide_out_left);

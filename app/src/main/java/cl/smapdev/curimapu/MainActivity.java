@@ -36,6 +36,7 @@ import java.util.Objects;
 
 import cl.smapdev.curimapu.clases.bd.MyAppBD;
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
+import cl.smapdev.curimapu.clases.sincronizacion.ServiceSync;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentConfigs;
 import cl.smapdev.curimapu.fragments.FragmentFichas;
@@ -52,15 +53,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static MyAppBD myAppDB;
 
-    // Constants
-    // The authority for the sync adapter's content provider
-    public static final String AUTHORITY = "cl.smapdev.curimapu.clases.sincronizacion.StubProvider";
-    // An account type, in the form of a domain name
-    public static final String ACCOUNT_TYPE = "smapdev.cl";
-    // The account name
-    public static final String ACCOUNT = "dummyaccount";
-    // Instance fields
-    Account mAccount;
 
 
 
@@ -73,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String ss = prefs.getString("lang", "eng");
-        String languageToLoad = "";
+        String languageToLoad;
         String languageToLoad2 = "";
         if (ss.equals("eng")){
             languageToLoad = "en_US";
@@ -82,13 +74,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             languageToLoad2  = "ES";
         }
 
-        prefs.edit().putString("lang","eng").apply();
+        //prefs.edit().putString("lang","eng").apply();
 
         Locale locale = new Locale(languageToLoad,languageToLoad2);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+        getResources().updateConfiguration(config,getResources().getDisplayMetrics());
 
 
 
@@ -130,6 +122,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
+
+
+
     }
 
 
@@ -165,6 +160,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void cambiarFragment(Fragment fragment, String tag, int animIn, int animOut){
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(animIn, animOut)
+
+                .replace(R.id.container, fragment,tag)
+                .commit();
+    }
+
+    public void cambiarFragmentFoto(Fragment fragment, String tag, int animIn, int animOut){
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(animIn, animOut)
+                .addToBackStack(null)
                 .replace(R.id.container, fragment,tag)
                 .commit();
     }
@@ -288,6 +292,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_right, R.anim.slide_out_right);
                         cambiarNavigation(R.id.nv_inicio);
                     break;
+                   /* case Utilidades.FRAGMENT_TAKE_PHOTO:
+
+                        break;*/
                     default:
                         super.onBackPressed();
                     break;

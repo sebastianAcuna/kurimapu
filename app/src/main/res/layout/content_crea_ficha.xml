@@ -16,7 +16,7 @@
             android:id="@+id/lbl_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Temporada"
+            android:text="@string/temporada"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="@id/sp_year"
             android:textAppearance="?android:textAppearanceMedium"
@@ -37,14 +37,14 @@
             android:id="@+id/lbl_agric"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Agricultor"
+            android:text="@string/agricultor"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="@id/sp_agric"
             android:textAppearance="?android:textAppearanceMedium"
 
             />
 
-        <Spinner
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/sp_agric"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,14 +52,25 @@
             android:layout_marginHorizontal="@dimen/padding"
             app:layout_constraintTop_toBottomOf="@id/lbl_agric"
             app:layout_constraintStart_toEndOf="@id/sp_year"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
+<!--        <Spinner-->
+<!--            android:id="@+id/sp_agric"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintHorizontal_weight="0.5"-->
+<!--            android:layout_marginHorizontal="@dimen/padding"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/lbl_agric"-->
+<!--            app:layout_constraintStart_toEndOf="@id/sp_year"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
 
 
         <TextView
             android:id="@+id/titulo_agricultor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="DATOS AGRICULTOR"
+            android:text="@string/datos_agricultor"
             app:layout_constraintTop_toBottomOf="@id/sp_agric"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +98,7 @@
             app:layout_constraintHorizontal_weight="0.3"
             android:layout_margin="10dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="Rut Agricultor"
+            android:hint="@string/rut_agricultor"
             app:layout_constraintTop_toBottomOf="@id/divider6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/cont_nombre_agricultor"
@@ -110,7 +121,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.3"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="Nombre Agricultor"
+            android:hint="@string/nombre_agricultor"
             android:layout_margin="10dp"
             app:layout_constraintStart_toEndOf="@id/cont_rut_agricultor"
             app:layout_constraintTop_toBottomOf="@id/divider6"
@@ -131,7 +142,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.3"
-            android:hint="Teléfono Agricultor"
+            android:hint="@string/tel_agricultor"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_margin="10dp"
             app:layout_constraintStart_toEndOf="@id/cont_nombre_agricultor"
@@ -156,7 +167,7 @@
             app:layout_constraintHorizontal_weight="0.3"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_margin="10dp"
-            android:hint="Administrador"
+            android:hint="@string/admin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cont_rut_agricultor"
             app:layout_constraintEnd_toStartOf="@id/cont_tel_admin_agricultor">
@@ -177,7 +188,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.3"
-            android:hint="Teléfono Admin."
+            android:hint="@string/admin_telephone"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_margin="10dp"
             app:layout_constraintStart_toEndOf="@id/cont_admin_agricultor"
@@ -200,7 +211,7 @@
             android:id="@+id/titulo_fichas"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="DATOS FICHA"
+            android:text="@string/datos_ficha"
             app:layout_constraintTop_toBottomOf="@id/cont_tel_admin_agricultor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -230,7 +241,7 @@
             android:id="@+id/lbl_region_agricultor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Región"
+            android:text="@string/region"
             android:textAppearance="?android:textAppearanceMedium"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
@@ -251,7 +262,7 @@
             android:id="@+id/lbl_provincia_agricultor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Provincia"
+            android:text="@string/provincia"
             android:textAppearance="?android:textAppearanceMedium"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@id/sp_provincia_agricultor"
@@ -270,7 +281,7 @@
             android:id="@+id/lbl_comuna_agricultor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Comuna"
+            android:text="@string/comuna"
             android:textAppearance="?android:textAppearanceMedium"
             app:layout_constraintStart_toStartOf="@id/sp_comuna_agricultor"
             app:layout_constraintTop_toBottomOf="@id/divider5"
@@ -292,7 +303,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.3"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="Oferta Negocio"
+            android:hint="@string/oferta_negocio"
             android:layout_margin="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sp_region_agricultor"
@@ -315,7 +326,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.3"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="Localidad"
+            android:hint="@string/localidad"
             android:layout_margin="10dp"
             app:layout_constraintStart_toEndOf="@id/cont_oferta_neg_agricultor"
             app:layout_constraintTop_toBottomOf="@id/sp_region_agricultor"
@@ -340,7 +351,9 @@
             android:layout_margin="10dp"
             app:layout_constraintStart_toEndOf="@id/cont_localidad_agricultor"
             app:layout_constraintTop_toBottomOf="@id/sp_region_agricultor"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="@string/ha_disp"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_has_disp_agricultor"
@@ -348,7 +361,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
-                android:hint="Ha / disponibles" />
+                 />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -358,7 +371,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="Observaciones"
+            android:hint="@string/observations"
             app:counterMaxLength="200"
 
             app:counterEnabled="true"
@@ -381,7 +394,7 @@
             app:layout_constraintHorizontal_weight="0.3"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="norting"
+            android:hint="@string/norting"
             android:layout_margin="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cont_obs_agricultor"
@@ -403,7 +416,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.3"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="easting"
+            android:hint="@string/easting"
             android:layout_margin="10dp"
             app:layout_constraintStart_toEndOf="@id/cont_northing_agricultor"
             app:layout_constraintTop_toBottomOf="@id/cont_obs_agricultor"
@@ -425,7 +438,7 @@
             android:layout_height="70dp"
             android:layout_margin="10dp"
             android:layout_marginTop="8dp"
-            android:text="Guardar"
+            android:text="@string/nav_save"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="0.3"
             app:layout_constraintStart_toEndOf="@id/cont_easting_agricultor"

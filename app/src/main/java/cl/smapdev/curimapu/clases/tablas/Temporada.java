@@ -1,5 +1,6 @@
 package cl.smapdev.curimapu.clases.tablas;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -10,7 +11,8 @@ public class Temporada {
 
     @SerializedName("id_tempo")
     @PrimaryKey
-    private int id_tempo_tempo;
+    @NonNull
+    private String id_tempo_tempo;
 
     @SerializedName("nombre")
     private String nombre_tempo;
@@ -22,11 +24,11 @@ public class Temporada {
     private String hasta_tempo;
 
 
-    public int getId_tempo_tempo() {
+    public String getId_tempo_tempo() {
         return id_tempo_tempo;
     }
 
-    public void setId_tempo_tempo(int id_tempo_tempo) {
+    public void setId_tempo_tempo(String id_tempo_tempo) {
         this.id_tempo_tempo = id_tempo_tempo;
     }
 

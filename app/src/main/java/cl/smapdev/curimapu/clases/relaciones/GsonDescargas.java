@@ -8,13 +8,24 @@ import java.util.List;
 
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
+import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Especie;
+import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
+import cl.smapdev.curimapu.clases.tablas.Lotes;
+import cl.smapdev.curimapu.clases.tablas.Maquinaria;
+import cl.smapdev.curimapu.clases.tablas.Predios;
 import cl.smapdev.curimapu.clases.tablas.Provincia;
 import cl.smapdev.curimapu.clases.tablas.Region;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
+import cl.smapdev.curimapu.clases.tablas.TipoRiego;
+import cl.smapdev.curimapu.clases.tablas.TipoSuelo;
+import cl.smapdev.curimapu.clases.tablas.TipoTenenciaMaquinaria;
+import cl.smapdev.curimapu.clases.tablas.TipoTenenciaTerreno;
+import cl.smapdev.curimapu.clases.tablas.UnidadMedida;
+import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
@@ -22,6 +33,9 @@ import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
 
 public class GsonDescargas {
 
+
+    @SerializedName("id")
+    private int id_dispo;
 
     @SerializedName("array_detalle_prop")
     @Embedded
@@ -76,6 +90,159 @@ public class GsonDescargas {
     @Embedded
     private List<Fichas> fichasList;
 
+    @SerializedName("array_um")
+    @Embedded
+    private List<UnidadMedida> unidadMedidas;
+
+    @SerializedName("array_usuarios")
+    @Embedded
+    private List<Usuario> usuarios;
+
+    @SerializedName("problemas")
+    @Embedded
+    private List<Respuesta> respuestas;
+
+    @SerializedName("array_predios")
+    @Embedded
+    private List<Predios> predios;
+
+
+    @SerializedName("array_lotes")
+    @Embedded
+    private List<Lotes> lotes;
+
+    @SerializedName("array_tipo_riego")
+    @Embedded
+    private List<TipoRiego> tipoRiegos;
+
+    @SerializedName("array_tipo_suelo")
+    @Embedded
+    private List<TipoSuelo> tipoSuelos;
+
+    @SerializedName("array_maquinaria")
+    @Embedded
+    private List<Maquinaria> maquinarias;
+
+    @SerializedName("array_tipo_maquinaria")
+    @Embedded
+    private List<TipoTenenciaMaquinaria> tipoTenenciaMaquinarias;
+
+    @SerializedName("array_tipo_tenencia_terreno")
+    @Embedded
+    private List<TipoTenenciaTerreno> tipoTenenciaTerrenos;
+
+    @SerializedName("array_ficha_maquinaria")
+    @Embedded
+    private List<FichaMaquinaria> fichaMaquinarias;
+
+    @SerializedName("array_clientes")
+    @Embedded
+    private List<Clientes> clientes;
+
+
+    public List<Clientes> getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(List<Clientes> clientes) {
+        this.clientes = clientes;
+    }
+
+    public List<Predios> getPredios() {
+        return predios;
+    }
+
+    public void setPredios(List<Predios> predios) {
+        this.predios = predios;
+    }
+
+    public List<Lotes> getLotes() {
+        return lotes;
+    }
+
+    public void setLotes(List<Lotes> lotes) {
+        this.lotes = lotes;
+    }
+
+    public List<TipoRiego> getTipoRiegos() {
+        return tipoRiegos;
+    }
+
+    public void setTipoRiegos(List<TipoRiego> tipoRiegos) {
+        this.tipoRiegos = tipoRiegos;
+    }
+
+    public List<TipoSuelo> getTipoSuelos() {
+        return tipoSuelos;
+    }
+
+    public void setTipoSuelos(List<TipoSuelo> tipoSuelos) {
+        this.tipoSuelos = tipoSuelos;
+    }
+
+    public List<Maquinaria> getMaquinarias() {
+        return maquinarias;
+    }
+
+    public void setMaquinarias(List<Maquinaria> maquinarias) {
+        this.maquinarias = maquinarias;
+    }
+
+    public List<TipoTenenciaMaquinaria> getTipoTenenciaMaquinarias() {
+        return tipoTenenciaMaquinarias;
+    }
+
+    public void setTipoTenenciaMaquinarias(List<TipoTenenciaMaquinaria> tipoTenenciaMaquinarias) {
+        this.tipoTenenciaMaquinarias = tipoTenenciaMaquinarias;
+    }
+
+    public List<TipoTenenciaTerreno> getTipoTenenciaTerrenos() {
+        return tipoTenenciaTerrenos;
+    }
+
+    public void setTipoTenenciaTerrenos(List<TipoTenenciaTerreno> tipoTenenciaTerrenos) {
+        this.tipoTenenciaTerrenos = tipoTenenciaTerrenos;
+    }
+
+    public List<FichaMaquinaria> getFichaMaquinarias() {
+        return fichaMaquinarias;
+    }
+
+    public void setFichaMaquinarias(List<FichaMaquinaria> fichaMaquinarias) {
+        this.fichaMaquinarias = fichaMaquinarias;
+    }
+
+    public int getId_dispo() {
+        return id_dispo;
+    }
+
+    public void setId_dispo(int id_dispo) {
+        this.id_dispo = id_dispo;
+    }
+
+    public List<Respuesta> getRespuestas() {
+        return respuestas;
+    }
+
+    public void setRespuestas(List<Respuesta> respuestas) {
+        this.respuestas = respuestas;
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public List<UnidadMedida> getUnidadMedidas() {
+        return unidadMedidas;
+    }
+
+    public void setUnidadMedidas(List<UnidadMedida> unidadMedidas) {
+        this.unidadMedidas = unidadMedidas;
+    }
 
     public List<Fichas> getFichasList() {
         return fichasList;
@@ -179,5 +346,33 @@ public class GsonDescargas {
 
     public void setTemporadas(List<Temporada> temporadas) {
         this.temporadas = temporadas;
+    }
+
+
+    public static int[] sizeELements(GsonDescargas gs){
+
+        int[] res = {0,0};
+
+        if (gs != null) {
+
+            if (gs.getAgricultorList() != null && gs.getAgricultorList().size() > 0) res[0]+=gs.getAgricultorList().size(); res[1]++;
+            if (gs.getUsuarios() != null && gs.getUsuarios().size() > 0) res[0]+=gs.getUsuarios().size(); res[1]++;
+            if (gs.getPro_cli_matList() != null && gs.getPro_cli_matList().size() > 0) res[0]+=gs.getPro_cli_matList().size(); res[1]++;
+            if (gs.getUnidadMedidas() != null && gs.getUnidadMedidas().size() > 0) res[0]+=gs.getUnidadMedidas().size(); res[1]++;
+            if (gs.getFichasList() != null && gs.getFichasList().size() > 0) res[0]+=gs.getFichasList().size(); res[1]++;
+            if (gs.getVariedadList() != null && gs.getVariedadList().size() > 0) res[0]+=gs.getVariedadList().size(); res[1]++;
+            if (gs.getEspecieList() != null && gs.getEspecieList().size() > 0) res[0]+=gs.getEspecieList().size(); res[1]++;
+            if (gs.getAnexoContratoList() != null && gs.getAnexoContratoList().size() > 0) res[0]+=gs.getAnexoContratoList().size(); res[1]++;
+            if (gs.getComunaList() != null && gs.getComunaList().size() > 0) res[0]+=gs.getComunaList().size(); res[1]++;
+            if (gs.getProvinciaList() != null && gs.getProvinciaList().size() > 0) res[0]+=gs.getProvinciaList().size(); res[1]++;
+            if (gs.getRegionList() != null && gs.getRegionList().size() > 0) res[0]+=gs.getRegionList().size(); res[1]++;
+            if (gs.getVisitasList() != null && gs.getVisitasList().size() > 0) res[0]+=gs.getVisitasList().size(); res[1]++;
+            if (gs.getDetalle_visita_props() != null && gs.getDetalle_visita_props().size() > 0) res[0]+=gs.getDetalle_visita_props().size(); res[1]++;
+            if (gs.getCropRotations() != null && gs.getCropRotations().size() > 0) res[0]+=gs.getCropRotations().size(); res[1]++;
+            if (gs.getTemporadas() != null && gs.getTemporadas().size() > 0) res[0]+=gs.getTemporadas().size(); res[1]++;
+
+        }
+        return res;
+
     }
 }

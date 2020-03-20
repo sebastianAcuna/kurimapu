@@ -1,62 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minWidth="900dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding">
 
 
-        <LinearLayout
-            android:id="@+id/container_plus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="start|center_vertical"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            >
             <TextView
                 android:id="@+id/lbl_year"
                 android:layout_width="0dp"
-                android:layout_weight="0.2"
                 android:layout_height="wrap_content"
-                android:text="Año"
+                android:text="@string/anno"
                 android:theme="@style/sub_titles_forms"
-
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@id/sp_dialog_year"
+                app:layout_constraintEnd_toEndOf="@id/sp_dialog_year"
                 />
 
             <Spinner
                 android:id="@+id/sp_dialog_year"
                 android:layout_width="0dp"
-                android:layout_weight="0.8"
                 android:layout_height="wrap_content"
-                />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/container_one"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/container_plus"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:gravity="start|center_vertical"
-            >
-            <TextView
-                android:id="@+id/lbl_anexo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:text="@string/anexo"
-                android:theme="@style/sub_titles_forms"
-
-
+                app:layout_constraintTop_toBottomOf="@id/lbl_year"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -70,7 +42,11 @@
                 app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                 app:helperText="Ingrese numero de anexo"
-                android:hint="@string/format_set_input">
+                android:hint="@string/anexo"
+                app:layout_constraintTop_toBottomOf="@id/sp_dialog_year"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_dialog_anexo"
@@ -82,47 +58,31 @@
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/container_dos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:gravity="start|center_vertical"
-            android:layout_below="@id/container_one"
-            >
             <TextView
                 android:id="@+id/lbl_variedad"
                 android:layout_width="0dp"
-                android:layout_weight="0.2"
                 android:layout_height="wrap_content"
                 android:text="@string/variedad"
                 android:theme="@style/sub_titles_forms"
+                app:layout_constraintTop_toBottomOf="@id/textInp_dialog_anexo"
+                app:layout_constraintStart_toStartOf="@id/sp_dialog_variedad"
+                app:layout_constraintEnd_toEndOf="@id/sp_dialog_variedad"
 
                 />
 
             <Spinner
                 android:id="@+id/sp_dialog_variedad"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.8"
+                android:layout_height="50dp"
+                app:layout_constraintHorizontal_weight="0.5"
+                app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/sp_dialog_especie"
                 />
 
-        </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/container_tres"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:gravity="start|center_vertical"
-            android:layout_below="@id/container_dos"
-            >
             <TextView
                 android:id="@+id/lbl_especie"
                 android:layout_width="0dp"
@@ -130,86 +90,53 @@
                 android:layout_height="wrap_content"
                 android:text="@string/especie"
                 android:theme="@style/sub_titles_forms"
-
+                app:layout_constraintTop_toBottomOf="@id/textInp_dialog_anexo"
+                app:layout_constraintStart_toStartOf="@id/sp_dialog_especie"
+                app:layout_constraintEnd_toEndOf="@id/sp_dialog_especie"
                 />
 
             <Spinner
                 android:id="@+id/sp_dialog_especie"
                 android:layout_width="0dp"
-                android:layout_weight="0.8"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                app:layout_constraintHorizontal_weight="0.5"
+                app:layout_constraintTop_toBottomOf="@id/lbl_especie"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_dialog_variedad"
                 />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_cuatro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:gravity="start|center_vertical"
-            android:layout_below="@id/container_tres"
-            >
-            <TextView
-                android:id="@+id/lbl_agricultor"
-                android:layout_width="0dp"
-                android:layout_weight="0.2"
-                android:layout_height="wrap_content"
-                android:text="@string/agricultor"
-                android:theme="@style/sub_titles_forms"
-
-                />
-
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInp_dialog_agricultor"
                 android:layout_width="0dp"
-                android:layout_weight="0.8"
+                app:layout_constraintHorizontal_weight="0.5"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                 app:errorEnabled="true"
                 app:counterEnabled="true"
                 app:counterMaxLength="50"
                 app:helperText="ingrese al agricultor"
-                app:endIconMode="clear_text">
+                app:endIconMode="clear_text"
+                android:hint="@string/agricultor"
+                android:layout_margin="2dp"
+                app:layout_constraintTop_toBottomOf="@id/sp_dialog_especie"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/textInp_dialog_potrero"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_dialog_agricultor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/format_set_input"
                     android:maxLength="50"
                     android:maxLines="1"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_cinco"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:gravity="start|center_vertical"
-            android:layout_below="@id/container_cuatro"
-            >
-            <TextView
-                android:id="@+id/lbl_potrero"
-                android:layout_width="0dp"
-                android:layout_weight="0.2"
-                android:layout_height="wrap_content"
-                android:text="@string/potrero"
-                android:theme="@style/sub_titles_forms"
-
-                />
 
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInp_dialog_potrero"
                 android:layout_width="0dp"
-                android:layout_weight="0.8"
+                app:layout_constraintHorizontal_weight="0.5"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                 app:errorEnabled="true"
@@ -217,41 +144,48 @@
                 app:counterMaxLength="50"
                 app:boxStrokeColor="@color/colorAccent"
                 app:helperText="ingrese paddock"
-                app:endIconMode="clear_text">
+                app:endIconMode="clear_text"
+                android:hint="@string/potrero"
+                android:layout_margin="2dp"
+                app:layout_constraintTop_toBottomOf="@id/sp_dialog_variedad"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textInp_dialog_agricultor"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_dialog_potero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/format_set_input"
                     android:maxLength="50"
                     android:maxLines="1"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
+
 
         <Button
             android:id="@+id/btn_aplica_filtro"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-
-            android:layout_below="@id/container_cinco"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/padding"
-            android:text="@string/nav_save"/>
+            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_potrero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_cancela_filtro"
+            android:layout_margin="2dp"
+            android:text="@string/filter"/>
 
         <Button
             android:id="@+id/btn_cancela_filtro"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/btn_aplica_filtro"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_marginTop="@dimen/padding"
-            android:text="@string/nav_cancel"/>
+            android:layout_margin="2dp"
+            android:text="@string/nav_cancel"
+            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_potrero"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_aplica_filtro"
+            />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

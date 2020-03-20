@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.fragments.contratos.FragmentHarvest;
 import cl.smapdev.curimapu.fragments.contratos.FragmentResumen;
 import cl.smapdev.curimapu.fragments.contratos.FragmentSowing;
 
@@ -33,7 +32,8 @@ public class SubTabsAdapters extends FragmentStatePagerAdapter {
             case 2:
                 return FragmentSowing.getInstance(3);
             case 3:
-                return new FragmentHarvest();
+                return FragmentSowing.getInstance(4);
+//                return FragmentSowing.getInstance(4);
         }
     }
 

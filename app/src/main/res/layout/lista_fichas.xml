@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/padding"
     android:elevation="@dimen/padding">
 
-    <RelativeLayout
-
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/padding">
@@ -17,47 +16,53 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_radio_button_unchecked_black_24dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="activated" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_comuna_fichas"
+            android:contentDescription="@string/accion" />
 
 
         <TextView
             android:id="@+id/lbl_region_fichas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Region : "
-            android:layout_alignParentTop="true"
+            android:text="@string/region"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_region_fichas"
+            app:layout_constraintBottom_toBottomOf="@id/tv_region_fichas"
+            app:layout_constraintEnd_toStartOf="@id/tv_region_fichas"
             />
 
         <TextView
             android:id="@+id/tv_region_fichas"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Region del Biobío"
-            android:layout_toEndOf="@id/lbl_region_fichas"
             android:textStyle="bold"
-            android:layout_marginEnd="@dimen/padding"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_region_fichas"
+            app:layout_constraintEnd_toStartOf="@id/lbl_comuna_fichas"
             />
 
        <TextView
             android:id="@+id/lbl_comuna_fichas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="comuna : "
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@id/tv_region_fichas"
+            android:text="@string/comuna"
+            app:layout_constraintStart_toEndOf="@id/tv_region_fichas"
+            app:layout_constraintTop_toTopOf="@id/tv_comuna_fichas"
+            app:layout_constraintBottom_toBottomOf="@id/tv_comuna_fichas"
+           app:layout_constraintEnd_toStartOf="@id/tv_comuna_fichas"
+
             />
 
         <TextView
             android:id="@+id/tv_comuna_fichas"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Los Ángeles"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@id/lbl_comuna_fichas"
             android:textStyle="bold"
-            android:layout_marginEnd="@dimen/padding"
+            app:layout_constraintStart_toEndOf="@id/lbl_comuna_fichas"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/img_activated"
             />
 
 
@@ -65,38 +70,42 @@
             android:id="@+id/lbl_agricultor_fichas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre Agricultor"
-            android:layout_below="@id/lbl_region_fichas"
-            android:layout_alignParentStart="true"/>
+            android:text="@string/nombre_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/tv_comuna_fichas"
+            app:layout_constraintStart_toStartOf="parent"
+            />
 
         <TextView
             android:id="@+id/tv_agricultor_fichas"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="SOC AGRICOLA SAN LUIS DE PAL-PAL LIMITADA"
-            android:layout_below="@id/lbl_agricultor_fichas"
             android:textStyle="bold"
             android:layout_marginEnd="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/lbl_agricultor_fichas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             />
 
         <TextView
             android:id="@+id/lbl_negocio_fichas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="oferta de negocio : "
-            android:layout_below="@id/tv_agricultor_fichas"
-            android:layout_alignParentStart="true"
+            android:text="@string/oferta_negocio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_negocio_fichas"
+            app:layout_constraintBottom_toBottomOf="@id/tv_negocio_fichas"
+            app:layout_constraintEnd_toStartOf="@id/tv_negocio_fichas"
             />
         <TextView
             android:id="@+id/tv_negocio_fichas"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/lbl_negocio_fichas"
-            android:layout_below="@id/tv_agricultor_fichas"
-            android:text="ARVEJA 3300kg, 0.7USD/ha"
             android:textStyle="bold"
-            android:layout_marginEnd="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/tv_agricultor_fichas"
+            app:layout_constraintStart_toEndOf="@id/lbl_negocio_fichas"
+            app:layout_constraintEnd_toEndOf="parent"
+
             />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

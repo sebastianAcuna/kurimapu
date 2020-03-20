@@ -19,9 +19,9 @@ public class VisitasTypeAdapter extends RecyclerView.Adapter<VisitasTypeViewHold
     private ArrayList<Etapas> elements;
     private Context context;
     private OnItemClickListener cLickListener;
-    private int idAnexo;
+    private String idAnexo;
 
-    public VisitasTypeAdapter(ArrayList<Etapas> elements, Context context, OnItemClickListener cLickListener, int idAnexo) {
+    public VisitasTypeAdapter(ArrayList<Etapas> elements, Context context, OnItemClickListener cLickListener, String idAnexo) {
         this.elements = elements;
         this.context = context;
         this.cLickListener = cLickListener;

@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -24,12 +23,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,13 +35,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
@@ -52,7 +47,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,15 +56,12 @@ import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.FotosListAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
-import cl.smapdev.curimapu.clases.tablas.Flowering;
+import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
-import cl.smapdev.curimapu.clases.tablas.Harvest;
-import cl.smapdev.curimapu.clases.tablas.Sowing;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
-import okhttp3.internal.Util;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -143,18 +134,14 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         if (temp_visitas == null){
             temp_visitas = new TempVisitas();
             if (prefs != null){
-                temp_visitas.setId_anexo_temp_visita(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+                temp_visitas.setId_anexo_temp_visita(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                 temp_visitas.setId_temp_visita(0);
             }
             MainActivity.myAppDB.myDao().setTempVisitas(temp_visitas);
             temp_visitas = MainActivity.myAppDB.myDao().getTempFichas();
         }
 
-
-
         cargarSpinners();
-
-
 
         material_private.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -164,9 +151,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                     Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.message_dialog_agron),getResources().getString(R.string.message_dialog_btn_ok));
                 }else{
                     if (temp_visitas.getAction_temp_visita() == 2){
-                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes agregar mas fotos.","entiendo");
+                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
                     }else{
-                        abrirCamara(2);
+                        activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(0, 2), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
+                        //abrirCamara(2);
                     }
 
                 }
@@ -179,13 +167,14 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
                 if (sp_fenologico.getSelectedItemPosition() > 0){
                     if (temp_visitas.getAction_temp_visita() == 2){
-                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes agregar mas fotos.","entiendo");
+                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
                     }else{
-                        abrirCamara(0);
+                        activity.cambiarFragmentFoto(FragmentTakePicture.getInstance((prefs.getInt(Utilidades.VISTA_FOTOS,0) == 2) ? 0 : Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()), 0), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
+                        //abrirCamara(0);
                     }
 
                 }else{
-                    Utilidades.avisoListo(activity, "Falta algo!", "Debes seleccionar un estado fenologico primero","entiendo");
+                    Utilidades.avisoListo(activity, getResources().getString(R.string.falta_algo), getResources().getString(R.string.pheno_first),getResources().getString(R.string.entiendo));
                 }
 
             }
@@ -220,6 +209,14 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             et_obs.setText(temp_visitas.getObservation_temp_visita());
             et_recomendacion.setText(temp_visitas.getRecomendation_temp_visita());
 
+            et_obs_harvest.setText(temp_visitas.getObs_cosecha());
+            et_obs_overall.setText(temp_visitas.getObs_overall());
+            et_obs_humedad.setText(temp_visitas.getObs_humedad());
+            et_obs_weed.setText(temp_visitas.getObs_maleza());
+            et_obs_fito.setText(temp_visitas.getObs_fito());
+            et_obs_growth.setText(temp_visitas.getObs_creci());
+
+
             if (temp_visitas.getAction_temp_visita() == 2){
                 sp_fenologico.setEnabled(false);
                 sp_cosecha.setEnabled(false);
@@ -231,14 +228,19 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 et_obs.setEnabled(false);
                 et_recomendacion.setEnabled(false);
                 btn_guardar.setEnabled(false);
+
+                et_obs_fito.setEnabled(false);
+                et_obs_overall.setEnabled(false);
+                et_obs_humedad.setEnabled(false);
+                et_obs_weed.setEnabled(false);
+                et_obs_fito.setEnabled(false);
+                et_obs_growth.setEnabled(false);
+                et_obs_harvest.setEnabled(false);
+
             }
 
         }
     }
-
-
-
-
 
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -562,6 +564,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 }
 
 
+            if (bm != null){
                 Bitmap src = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), m, true);
 
                 ByteArrayOutputStream bos = null;
@@ -576,13 +579,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                     fos.close();
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("ERROR -- FOTOS", e.getLocalizedMessage());
                 }
-
-
+            }
                 guardarBD(fileImagen);
-
-
             }
 
         }
@@ -627,7 +627,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             } else {
                 int favs = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
                 if (favs <= 0) {
-                    Utilidades.avisoListo(activity, "Falta algo", "Debes seleccionar como favorita al menos una foto (manten precionada la foto para marcar)", "entiendo");
+                    Utilidades.avisoListo(activity, "Falta algo", "Debes seleccionar como favorita al menos una foto (manten presionada la foto para marcar)", "entiendo");
                 } else {
 //                    todo do save
 
@@ -643,16 +643,19 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         visitas.setRecomendation_visita(temp_visitas.getRecomendation_temp_visita());
                         visitas.setWeed_state_visita(temp_visitas.getWeed_state_temp_visita());
                         visitas.setEstado_server_visitas(0);
-                        visitas.setEstado_visita(0);
+                        visitas.setEstado_visita(2);
                         visitas.setEtapa_visitas(temp_visitas.getEtapa_temp_visitas());
+
+
+                        AnexoContrato an = MainActivity.myAppDB.myDao().getAnexos(temp_visitas.getId_anexo_temp_visita());
+                        visitas.setTemporada(an.getTemporada_anexo());
 
                         String fecha = Utilidades.fechaActualConHora();
                         String[] fechaHora = fecha.split(" ");
-                        String[] temporada = fechaHora[0].split("-");
 
                         visitas.setHora_visita(fechaHora[1]);
                         visitas.setFecha_visita(fechaHora[0]);
-                        visitas.setTemporada(Integer.parseInt(temporada[0]));
+
 
                         long idVisita = 0;
 

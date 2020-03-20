@@ -1,5 +1,6 @@
 package cl.smapdev.curimapu.clases.tablas;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -11,22 +12,23 @@ public class AnexoContrato {
 
     @PrimaryKey()
     @SerializedName("id_ac")
-    private int id_anexo_contrato;
+    @NonNull
+    private String id_anexo_contrato;
 
     @SerializedName("num_anexo")
     private String anexo_contrato;
 
     @SerializedName("id_materiales")
-    private int id_variedad_anexo;
+    private String id_variedad_anexo;
 
     @SerializedName("id_tempo")
     private String temporada_anexo;
 
     @SerializedName("id_esp")
-    private int id_especie_anexo;
+    private String id_especie_anexo;
 
     @SerializedName("id_agric")
-    private int  id_agricultor_anexo;
+    private String  id_agricultor_anexo;
 
     @SerializedName("nombre_potrero")
     private String protero;
@@ -53,13 +55,6 @@ public class AnexoContrato {
         this.id_ficha_contrato = id_ficha_contrato;
     }
 
-    public int getId_anexo_contrato() {
-        return id_anexo_contrato;
-    }
-
-    public void setId_anexo_contrato(int id_anexo_contrato) {
-        this.id_anexo_contrato = id_anexo_contrato;
-    }
 
     public String getAnexo_contrato() {
         return anexo_contrato;
@@ -69,28 +64,13 @@ public class AnexoContrato {
         this.anexo_contrato = anexo_contrato;
     }
 
-    public int getId_variedad_anexo() {
-        return id_variedad_anexo;
-    }
 
-    public void setId_variedad_anexo(int id_variedad_anexo) {
-        this.id_variedad_anexo = id_variedad_anexo;
-    }
-
-    public int getId_especie_anexo() {
+    public String getId_especie_anexo() {
         return id_especie_anexo;
     }
 
-    public void setId_especie_anexo(int id_especie_anexo) {
+    public void setId_especie_anexo(String id_especie_anexo) {
         this.id_especie_anexo = id_especie_anexo;
-    }
-
-    public int getId_agricultor_anexo() {
-        return id_agricultor_anexo;
-    }
-
-    public void setId_agricultor_anexo(int id_agricultor_anexo) {
-        this.id_agricultor_anexo = id_agricultor_anexo;
     }
 
     public String getProtero() {
@@ -99,5 +79,29 @@ public class AnexoContrato {
 
     public void setProtero(String protero) {
         this.protero = protero;
+    }
+
+    public String getId_anexo_contrato() {
+        return id_anexo_contrato;
+    }
+
+    public void setId_anexo_contrato(String id_anexo_contrato) {
+        this.id_anexo_contrato = id_anexo_contrato;
+    }
+
+    public String getId_variedad_anexo() {
+        return id_variedad_anexo;
+    }
+
+    public void setId_variedad_anexo(String id_variedad_anexo) {
+        this.id_variedad_anexo = id_variedad_anexo;
+    }
+
+    public String getId_agricultor_anexo() {
+        return id_agricultor_anexo;
+    }
+
+    public void setId_agricultor_anexo(String id_agricultor_anexo) {
+        this.id_agricultor_anexo = id_agricultor_anexo;
     }
 }

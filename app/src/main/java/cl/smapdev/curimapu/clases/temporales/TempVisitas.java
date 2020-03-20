@@ -8,7 +8,7 @@ public class TempVisitas {
 
     @PrimaryKey(autoGenerate = true)
     private int id_temp_visita;
-    private int id_anexo_temp_visita;
+    private String id_anexo_temp_visita;
 
 
     private String phenological_state_temp_visita;
@@ -108,11 +108,11 @@ public class TempVisitas {
         this.id_temp_visita = id_temp_visita;
     }
 
-    public int getId_anexo_temp_visita() {
+    public String getId_anexo_temp_visita() {
         return id_anexo_temp_visita;
     }
 
-    public void setId_anexo_temp_visita(int id_anexo_temp_visita) {
+    public void setId_anexo_temp_visita(String id_anexo_temp_visita) {
         this.id_anexo_temp_visita = id_anexo_temp_visita;
     }
 

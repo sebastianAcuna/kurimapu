@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="900dp"
+    android:minHeight="300dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -9,47 +12,6 @@
         android:padding="@dimen/padding"
         android:orientation="vertical"
         >
-
-
-        <TextView
-            android:id="@+id/lbl_year"
-            android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.2"
-            android:layout_height="wrap_content"
-            android:text="Año"
-            android:theme="@style/sub_titles_forms"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/sp_dialog_year"
-            app:layout_constraintTop_toTopOf="@id/sp_dialog_year"
-            app:layout_constraintBottom_toBottomOf="@id/sp_dialog_year"
-
-            />
-
-        <Spinner
-            android:id="@+id/sp_dialog_year"
-            android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.8"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lbl_year"
-            />
-
-
-        <TextView
-            android:id="@+id/lbl_anexo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="0.2"
-            android:text="Nombre Agricultor"
-            android:theme="@style/sub_titles_forms"
-            app:layout_constraintTop_toTopOf="@id/textInp_dialog_nombre_ag"
-            app:layout_constraintBottom_toBottomOf="@id/textInp_dialog_nombre_ag"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/textInp_dialog_nombre_ag"
-
-
-            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInp_dialog_nombre_ag"
@@ -60,11 +22,11 @@
             app:errorEnabled="true"
             app:counterEnabled="true"
             app:counterMaxLength="50"
-            android:hint="@string/format_set_input"
+            android:hint="@string/nombre_agricultor"
             app:endIconMode="clear_text"
-            app:layout_constraintTop_toBottomOf="@id/sp_dialog_year"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lbl_anexo"
+            app:layout_constraintStart_toStartOf="parent"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -80,14 +42,12 @@
         <TextView
             android:id="@+id/lbl_region"
             android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.2"
             android:layout_height="wrap_content"
-            android:text="Region"
+            android:text="@string/region"
             android:theme="@style/sub_titles_forms"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/sp_dialog_region"
-            app:layout_constraintBottom_toBottomOf="@id/sp_dialog_region"
-            app:layout_constraintEnd_toStartOf="@id/sp_dialog_region"
+            app:layout_constraintStart_toStartOf="@id/sp_dialog_region"
+            app:layout_constraintEnd_toEndOf="@id/sp_dialog_region"
+            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_nombre_ag"
 
             />
 
@@ -95,93 +55,100 @@
             android:id="@+id/sp_dialog_region"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="0.8"
+            app:layout_constraintHorizontal_weight="0.3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_nombre_ag"
-            app:layout_constraintStart_toEndOf="@id/lbl_region"
+            app:layout_constraintTop_toBottomOf="@id/lbl_region"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/sp_dialog_provincia"
 
             />
 
         <TextView
             android:id="@+id/lbl_provincia"
             android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.2"
             android:layout_height="wrap_content"
-            android:text="Comuna"
+            android:text="@string/provincia"
             android:theme="@style/sub_titles_forms"
-            app:layout_constraintTop_toTopOf="@id/sp_dialog_provincia"
-            app:layout_constraintBottom_toBottomOf="@id/sp_dialog_provincia"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/sp_dialog_provincia"
+            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_nombre_ag"
+            app:layout_constraintStart_toStartOf="@id/sp_dialog_provincia"
+            app:layout_constraintEnd_toEndOf="@id/sp_dialog_provincia"
 
             />
 
         <Spinner
             android:id="@+id/sp_dialog_provincia"
             android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.8"
+            app:layout_constraintHorizontal_weight="0.3"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/sp_dialog_region"
+            app:layout_constraintTop_toBottomOf="@id/lbl_provincia"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lbl_provincia"
+            app:layout_constraintStart_toEndOf="@id/sp_dialog_region"
+
 
             />
 
         <TextView
             android:id="@+id/lbl_comuna"
             android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.2"
             android:layout_height="wrap_content"
-            android:text="Comuna"
+            android:text="@string/comuna"
             android:theme="@style/sub_titles_forms"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/sp_dialog_comuna"
-            app:layout_constraintBottom_toBottomOf="@id/sp_dialog_comuna"
-            app:layout_constraintEnd_toStartOf="@id/sp_dialog_comuna"
+            app:layout_constraintStart_toStartOf="@id/sp_dialog_comuna"
+            app:layout_constraintTop_toBottomOf="@id/sp_dialog_region"
+            app:layout_constraintEnd_toEndOf="@id/sp_dialog_comuna"
 
             />
 
         <Spinner
             android:id="@+id/sp_dialog_comuna"
             android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.8"
+            app:layout_constraintHorizontal_weight="0.5"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sp_dialog_provincia"
-            app:layout_constraintStart_toEndOf="@id/lbl_comuna"
-
+            app:layout_constraintTop_toBottomOf="@id/lbl_comuna"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/textInp_dialog_ha_disp"
             />
 
 
         <TextView
-            android:id="@+id/lbl_agricultor"
+            android:id="@+id/lbl_year"
             android:layout_width="0dp"
             app:layout_constraintHorizontal_weight="0.2"
             android:layout_height="wrap_content"
-            android:text="Oferta de negocio"
+            android:text="@string/anno"
             android:theme="@style/sub_titles_forms"
-            app:layout_constraintTop_toTopOf="@id/textInp_dialog_of_neg"
-            app:layout_constraintEnd_toStartOf="@id/textInp_dialog_of_neg"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/textInp_dialog_of_neg"
+            app:layout_constraintStart_toStartOf="@id/sp_dialog_year"
+            app:layout_constraintEnd_toEndOf="@id/sp_dialog_year"
+            app:layout_constraintTop_toBottomOf="@id/sp_dialog_region"
+
 
             />
 
+        <Spinner
+            android:id="@+id/sp_dialog_year"
+            android:layout_width="0dp"
+            app:layout_constraintHorizontal_weight="0.8"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_year"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/sp_dialog_comuna"
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInp_dialog_of_neg"
             android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.8"
+            app:layout_constraintHorizontal_weight="0.5"
+            android:layout_margin="5dp"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             app:errorEnabled="true"
             app:counterEnabled="true"
             app:counterMaxLength="50"
             app:endIconMode="clear_text"
-            android:hint="@string/format_set_input"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="@string/oferta_negocio"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sp_dialog_comuna"
-            app:layout_constraintStart_toEndOf="@id/lbl_agricultor"
+            app:layout_constraintEnd_toStartOf="@id/textInp_dialog_ha_disp"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -194,35 +161,22 @@
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/lbl_potrero"
-            android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.2"
-            android:layout_height="wrap_content"
-            android:text="Ha / disponibles"
-            android:theme="@style/sub_titles_forms"
-            app:layout_constraintTop_toTopOf="@id/textInp_dialog_ha_disp"
-            app:layout_constraintBottom_toBottomOf="@id/textInp_dialog_ha_disp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/textInp_dialog_ha_disp"
-
-            />
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInp_dialog_ha_disp"
             android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.8"
+            app:layout_constraintHorizontal_weight="0.5"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             app:errorEnabled="true"
             app:counterEnabled="true"
+            android:layout_margin="5dp"
             app:counterMaxLength="50"
             app:endIconMode="clear_text"
-            android:hint="@string/format_set_input"
-            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_of_neg"
+            android:hint="@string/ha_disp"
+            app:layout_constraintTop_toBottomOf="@id/sp_dialog_comuna"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lbl_potrero"
+            app:layout_constraintStart_toEndOf="@id/textInp_dialog_of_neg"
 
             >
 
@@ -241,22 +195,22 @@
             android:id="@+id/lbl_grupos"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Estado"
-
+            app:layout_constraintHorizontal_weight="0.2"
+            android:text="@string/estado"
             android:padding="@dimen/padding"
-            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_ha_disp"
+            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_of_neg"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             />
 
         <RadioGroup
             android:id="@+id/radio_group"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.8"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             android:layout_below="@id/lbl_grupos"
-            app:layout_constraintTop_toBottomOf="@id/lbl_grupos"
+            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_of_neg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             >
@@ -267,51 +221,49 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
                 android:checked="true"
-                android:text="Todos" />
+                android:text="@string/todos" />
 
             <RadioButton
                 android:id="@+id/radio_inactiva"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
-                android:text="Inactiva" />
+                android:text="@string/confeccion" />
 
             <RadioButton
                 android:id="@+id/radio_activa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
-                android:text="Activa" />
+                android:text="@string/aprobada" />
 
             <RadioButton
                 android:id="@+id/radio_rechazada"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
-                android:text="Rechazada" />
+                android:text="@string/rechazada" />
         </RadioGroup>
 
         <Button
             android:id="@+id/btn_aplica_filtro"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_green_dark"
             app:layout_constraintTop_toBottomOf="@id/radio_group"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/padding"
-            android:text="Filtrar"/>
+            app:layout_constraintEnd_toStartOf="@id/btn_cancela_filtro"
+            android:text="@string/filter"/>
 
         <Button
             android:id="@+id/btn_cancela_filtro"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:textColor="@color/colorAccent"
-            app:layout_constraintTop_toBottomOf="@id/btn_aplica_filtro"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radio_group"
+            app:layout_constraintStart_toEndOf="@id/btn_aplica_filtro"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/padding"
             android:text="@string/nav_cancel"/>
 
 

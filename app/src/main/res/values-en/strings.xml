@@ -1,12 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- APP NAME -->
     <string name="app_name">CURIMAPU</string>
 
 
+    <!-- LOGIN -->
+    <string name="user_login_export">User Login Export</string>
+    <string name="user">User</string>
+    <string name="password">Password</string>
+    <string name="example_login_pass">Example : 123</string>
+    <string name="login">Login</string>
+    <string name="warning_empty_fields">You must enter username and password</string>
+    <!--    Debe ingresar usuario y contraseña-->
+    <string name="warning_incorrect_fields">Incorrect username and / or password</string>
+    <!--    Usuario y/o Contraseña incorrectos-->
 
 
+    <!-- INICIO -->
+    <string name="sync_all_ok">Nothing to upload, everything synchronized</string>
+    <!--    Nada por subir, todo sincronizado-->
+    <string name="sync_not_internet">You have no internet connection</string>
+    <!--    No tienes conexión a internet-->
+    <string name="sync_up_menu">Uploads</string>
 
+
+    <!-- MENU LATERAL -->
+    <string name="subtitles_visit">Visits</string>
+    <string name="subtitles_start">Start</string>
+    <string name="subtitles_records">Records</string>
+    <string name="subtitles_contracts">Contracts</string>
+    <string name="subtitles_config">Configurations</string>
+    <string name="subtitles_salir">Log out</string>
+
+
+    <!-- FICHAS-->
+    <string name="region">Region : </string>
+    <string name="comuna">Commune : </string>
+    <string name="provincia">Province : </string>
+    <string name="nombre_agricultor">Farmer name : </string>
+    <string name="oferta_negocio">Business offer : </string>
+
+
+    <string name="title_new_ficha">Are you sure? </string>
+    <string name="text_new_ficha">Do you want to create a new file? </string>
+    <!--    ¿ Desea crear una nueva ficha ?-->
+    <string name="button_create">Create </string>
+    <string name="anno">Year </string>
+    <string name="ha_disp">Ha / Available </string>
+    <string name="estado">State</string>
+    <string name="todos">All</string>
+    <string name="confeccion">making</string>
+    <string name="aprobada">approved</string>
+    <string name="rechazada">Rejected</string>
+
+
+    <string name="temporada">Season</string>
+    <string name="datos_agricultor">Farmer Data</string>
+    <string name="rut_agricultor">Farmer rut</string>
+    <string name="tel_agricultor">Farmer Telephone</string>
+    <string name="admin">Administrator</string>
+    <string name="admin_telephone">Administrator Telephone</string>
+    <string name="datos_ficha">Data Sheets</string>
+    <string name="localidad">Location</string>
+    <string name="editar">Edit</string>
+    <string name="seleccione_item">Select Item</string>
+    <string name="ok">OK</string>
+    <string name="puntos_ampros">Anpros Points</string>
+
+
+    <string name="ready_batch">Ready Batch (Customer lot)</string>
+    <string name="raw_batch">RAW Batch</string>
+
+
+    <string name="visitas_terminadas">Visit in finished state, you cannot add more photos.</string>
+    <!--    Visita en estado terminado, no puedes agregar mas fotos. -->
+
+    <string name="entiendo"> I get it </string>
+    <string name="fotos_agricultor"> Farmer Pictures </string>
+    <string name="fotos_cliente"> Client Pictures </string>
+    <string name="pheno_first"> You must select a phenological state first</string>
+    <string name="falta_algo">Something is missing!</string>
+
+
+    <string name="filtros_fichas">Tab Filters</string>
+    <!--    Filtros para Ficha-->
+    <string name="filtros_contrato">Filters for contract</string>
+    <!--    Filtros para contrato-->
+
+    <string name="filter">Filter</string>
+    <string name="atencion">Atention!</string>
+
+
+    <string name="mensaje_alerta_editar_visita">Are you sure you want to see this visit?
+Depending on the state, it can be edited or not.</string>
+    <!--    ¿Estas seguro que deseas ver esta visita?-->
+    <!--    Dependiendo del estado esta se podra editar o no.-->
+
+    <string name="modificar"> Modify</string>
+
+    <string name="estado_visita"> Visiting status</string>
+    <string name="estado_efectuado"> Effected </string>
+    <string name="estado_efectuado_no"> Not Done </string>
 
     <!--FORM CICLO VIDA -->
     <string name="format_date">dd/mm/yyyy</string>
@@ -111,12 +206,7 @@
 
 
 
-    <string name="subtitles_visit">Visits</string>
-    <string name="subtitles_start">Start</string>
-    <string name="subtitles_records">Records</string>
-    <string name="subtitles_contracts">Contracts</string>
-    <string name="subtitles_config">configurations</string>
-    <string name="subtitles_salir">Log out</string>
+
 
 
 
@@ -145,7 +235,6 @@
 
 
 
-    <string name="select">--Select--</string>
 
     <!--    SPINNERS FORM  VISITA-->
     <string-array name="fenologico">
@@ -153,13 +242,15 @@
         <item>Sowing</item>
         <item>Transplant</item>
         <item>Vegetative</item>
-        <item>pre-flowering</item>
+        <item>Pre-Flowering</item>
         <item>Flowering</item>
         <item>Fill</item>
-        <item>Pre-harvest</item>
-        <item>Post-harvest</item>
+        <item>Pre-Harvest</item>
+        <item>Post-Harvest</item>
         <item>Unspecified</item>
     </string-array>
+
+    <string name="select">--Select--</string>
 
 
     <string-array name="crecimiento">
@@ -173,8 +264,8 @@
 
     <string-array name="cosecha">
         <item>@string/select</item>
-        <item>Rejected</item>
-        <item>Approved</item>
+        <item>@string/rechazada</item>
+        <item>@string/aprobada</item>
         <item>Unspecified</item>
     </string-array>
 
@@ -259,7 +350,7 @@
     <string name="orden_de_multiplicaci_n">Multiplication Order</string>
     <string name="especie">Species</string>
     <string name="grower">Grower</string>
-        <string name="predio">Property</string>
+    <string name="predio">Property</string>
     <string name="sag_register_number">Sag Register Number</string>
     <string name="irrigation_system_sistema_de_riego">Irrigation System</string>
     <string name="soil_type_tipo_de_suelo">Soil Type</string>
@@ -298,6 +389,7 @@
         <item>esp</item>
     </string-array>
 
+
     <string-array name="asociacion_agricultor">
         <item>@string/asoc_new_farmer</item>
         <item>@string/asoc_older_farmer</item>
@@ -316,5 +408,7 @@
     <string name="title_dialog_agron">Hey!</string>
     <string name="message_dialog_agron">You can only take 2 photos</string>
     <string name="message_dialog_btn_ok">OK</string>
+
+
 
 </resources>

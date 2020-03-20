@@ -27,6 +27,8 @@ import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
+import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
 import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
@@ -41,15 +43,15 @@ public class DialogFilterTables extends DialogFragment {
     private Spinner sp_dialog_variedad,sp_dialog_especie,sp_dialog_year;
     private EditText et_dialog_anexo, et_dialog_agricultor,et_dialog_potero;
 
-    private String [] years;
-
-    private ArrayList<Integer> idEspecies = new ArrayList<>();
-    private ArrayList<Integer> idVariedades = new ArrayList<>();
+    private List<Temporada> years = MainActivity.myAppDB.myDao().getTemporada();
+    private ArrayList<String> idTemporadas = new ArrayList<>();
+    private ArrayList<String> idEspecies = new ArrayList<>();
+    private ArrayList<String> idVariedades = new ArrayList<>();
 
     private List<Especie> especieList =  MainActivity.myAppDB.myDao().getEspecies();
     private List<Variedad> variedadList =  MainActivity.myAppDB.myDao().getVariedades();
 
-    private int idEspecie,idVariedad,idAnno;
+    private String idEspecie,idVariedad,idAnno;
 
     private SharedPreferences prefs;
 
@@ -68,11 +70,11 @@ public class DialogFilterTables extends DialogFragment {
 
         builder.setView(view);
 
-        builder.setTitle("Filtros para contrato");
+        builder.setTitle(getResources().getString(R.string.filtros_contrato));
 
         bind(view);
 
-        years = getResources().getStringArray(R.array.anos_toolbar);
+//        years = getResources().getStringArray(R.array.anos_toolbar);
 
         activity = (MainActivity) getActivity();
         if (activity != null){
@@ -81,25 +83,40 @@ public class DialogFilterTables extends DialogFragment {
 
 
         if (especieList != null && especieList.size() > 0){
-            String[] rg = new String[especieList.size() + 1];
+            ArrayList<String> rg = new ArrayList<String>();
             int contador = 0;
-            rg[contador] = getResources().getString(R.string.select);
-            idEspecies.add(contador,0);
+            rg.add(contador, getResources().getString(R.string.select));
+            idEspecies.add(contador,"");
             contador++;
 
             for (Especie re : especieList){
-                rg[contador] = re.getDesc_especie();
+                rg.add(contador, re.getDesc_especie());
                 idEspecies.add(contador, re.getId_especie());
                 contador++;
             }
 
-//            sp_dialog_especie.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, rg));
-            sp_dialog_especie.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_ESPECIE, 0));
+            sp_dialog_especie.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_toolbar_view, rg));
+            //sp_dialog_especie.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_ESPECIE, 0));
 
         }
 
 //        sp_dialog_year.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, getResources().getStringArray(R.array.anos_toolbar)));
-        sp_dialog_year.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, activity.getResources().getStringArray(R.array.anos_toolbar).length - 1));
+//        sp_dialog_year.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, activity.getResources().getStringArray(R.array.anos_toolbar).length - 1));
+
+        if (years != null && years.size() > 0){
+            ArrayList<String> rg = new ArrayList<>();
+            int contador = 0;
+            for (Temporada re : years){
+                rg.add(contador,re.getNombre_tempo());
+                idTemporadas.add(contador, re.getId_tempo_tempo());
+                contador++;
+            }
+
+            sp_dialog_year.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, rg));
+            //sp_dialog_year.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, years.size() - 1));
+
+        }
+
 
         cargarVariedad();
         onset();
@@ -113,26 +130,18 @@ public class DialogFilterTables extends DialogFragment {
 
     private void cargarVariedad(){
         if (variedadList != null && variedadList.size() > 0){
-            String[] rg = new String[variedadList.size() + 1];
+            ArrayList<String> rg = new ArrayList<String>();
             int contador = 0;
-            rg[contador] = getResources().getString(R.string.select);
-            idVariedades.add(contador,0);
+            rg.add(contador, getResources().getString(R.string.select));
+            idVariedades.add(contador,"");
             contador++;
-            int selectable = 0;
             for (Variedad re : variedadList){
-                rg[contador] = re.getDesc_variedad();
+                rg.add(contador,re.getDesc_variedad());
                 idVariedades.add(contador, re.getId_variedad());
-
-                if (idVariedad == re.getId_variedad()){
-                    selectable = contador;
-                }
-
                 contador++;
-
-
             }
-//            sp_dialog_variedad.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, rg));
-            sp_dialog_variedad.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_VARIEDAD, selectable));
+            sp_dialog_variedad.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_toolbar_view, rg));
+          //  sp_dialog_variedad.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_VARIEDAD, selectable));
         }
 
     }
@@ -142,8 +151,8 @@ public class DialogFilterTables extends DialogFragment {
         sp_dialog_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                idAnno = Integer.parseInt(years[i]);
-                prefs.edit().putInt(Utilidades.SELECTED_ANO, idAnno).apply();
+                idAnno = idTemporadas.get(i);
+                prefs.edit().putString(Utilidades.SELECTED_ANO, idAnno).apply();
                 prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
             }
 
@@ -162,9 +171,9 @@ public class DialogFilterTables extends DialogFragment {
                     variedadList = MainActivity.myAppDB.myDao().getVariedadesByEspecie(idEspecie);
                     cargarVariedad();
 
-                    prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_ESPECIE, idEspecie).apply();
+                    prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_ESPECIE, i).apply();
                 }else{
-                    idEspecie = 0;
+                    idEspecie = "";
                     prefs.edit().remove(Utilidades.SHARED_FILTER_VISITAS_ESPECIE).apply();
                     variedadList = MainActivity.myAppDB.myDao().getVariedades();
                     cargarVariedad();
@@ -184,9 +193,9 @@ public class DialogFilterTables extends DialogFragment {
                 if (i > 0){
                     idVariedad = idVariedades.get(i);
 
-                    prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_VARIEDAD, idVariedad).apply();
+                    prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_VARIEDAD, i).apply();
                 }else{
-                    idVariedad = 0;
+                    idVariedad = "";
                     prefs.edit().remove(Utilidades.SHARED_FILTER_VISITAS_VARIEDAD).apply();
                     
                 }
@@ -227,7 +236,7 @@ public class DialogFilterTables extends DialogFragment {
                 "anexo_contrato.id_variedad_anexo, " +
                 "anexo_contrato.id_ficha_contrato, " +
                 "anexo_contrato.protero," +
-                "anexo_contrato.rut_agricultor_anexo, " +
+                "anexo_contrato.id_agricultor_anexo, " +
                 "agricultor.nombre_agricultor," +
                 "agricultor.telefono_agricultor," +
                 "agricultor.administrador_agricultor," +
@@ -240,17 +249,19 @@ public class DialogFilterTables extends DialogFragment {
                 "variedad.desc_variedad, " +
                 "fichas.anno " +
                 "FROM anexo_contrato " +
-                "INNER JOIN agricultor ON (agricultor.rut_agricultor = anexo_contrato.rut_agricultor_anexo) " +
+                "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
                 "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
                 "INNER JOIN variedad ON (variedad.id_variedad = anexo_contrato.id_variedad_anexo) " +
                 "INNER JOIN fichas ON (fichas.id_ficha= anexo_contrato.id_ficha_contrato) " +
+                "INNER JOIN predios ON (predios.id_pred = fichas.id_pred) " +
+                "INNER JOIN lote ON (lote.lote = fichas.id_lote) " +
                 "WHERE 1 ";
 
 //        anno = :year
 
         consulta+= " AND fichas.anno =  ?";
 
-        ob = Utilidades.appendValue(ob,prefs.getInt(Utilidades.SELECTED_ANO, 2020));
+        ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SELECTED_ANO, years.get(years.size() - 1).getId_tempo_tempo()));
 
         String dialog_anexo = et_dialog_anexo.getText().toString();
         String dialog_agricultor = et_dialog_agricultor.getText().toString();
@@ -258,12 +269,12 @@ public class DialogFilterTables extends DialogFragment {
 
 
 
-        if (idEspecie > 0){
+        if (!TextUtils.isEmpty(idEspecie)){
             ob = Utilidades.appendValue(ob, idEspecie);
             consulta+= " AND anexo_contrato.id_especie_anexo = ? ";
         }
 
-        if (idVariedad > 0){
+        if (!TextUtils.isEmpty(idVariedad)){
             ob = Utilidades.appendValue(ob, idVariedad);
             consulta+= " AND anexo_contrato.id_variedad_anexo = ? ";
         }

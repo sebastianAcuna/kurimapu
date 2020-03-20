@@ -3,13 +3,11 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
 <RelativeLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/padding"
     >
-
 
     <ImageView
         android:id="@+id/image_logo"
@@ -19,6 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="32dp"
+        android:contentDescription="@string/accion"
 
         />
 
@@ -27,7 +26,7 @@
         android:id="@+id/title_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User Login Export"
+        android:text="@string/user_login_export"
         android:layout_below="@id/image_logo"
         android:layout_centerHorizontal="true"
         android:textSize="38sp"
@@ -40,7 +39,7 @@
         android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_login"
-        android:hint="User"
+        android:hint="@string/user"
         android:layout_margin="@dimen/padding"
         android:layout_centerHorizontal="true">
 
@@ -61,10 +60,10 @@
         android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/container_user_login"
-        android:hint="Password"
+        android:hint="@string/password"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/padding"
-        app:helperText="ejemplo : 1632"
+        app:helperText="@string/example_login_pass"
         app:passwordToggleEnabled="true"
 
         >
@@ -84,7 +83,7 @@
         android:id="@+id/btn_login"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="@string/login"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/container_pass_login"
         android:layout_marginTop="@dimen/padding"

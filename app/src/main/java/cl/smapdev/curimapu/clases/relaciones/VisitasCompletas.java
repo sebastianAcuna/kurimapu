@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.clases.relaciones;
 import androidx.room.Embedded;
 
 
+import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 
 public class VisitasCompletas {
@@ -13,8 +14,17 @@ public class VisitasCompletas {
     @Embedded
     private AnexoCompleto  anexoCompleto;
 
+    @Embedded
+    private Clientes clientes;
 
 
+    public Clientes getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(Clientes clientes) {
+        this.clientes = clientes;
+    }
 
     public Visitas getVisitas() {
         return visitas;

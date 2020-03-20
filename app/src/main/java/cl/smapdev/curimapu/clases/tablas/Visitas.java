@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.clases.tablas;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "visitas")
@@ -10,53 +11,105 @@ public class Visitas {
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id_visita")
+    @Expose
     private int id_visita;
     @SerializedName("id_ac")
-    private int id_anexo_visita;
+    @Expose
+    private String id_anexo_visita;
 
     @SerializedName("estado_fen")
+    @Expose
     private String phenological_state_visita;
     @SerializedName("estado_crec")
+    @Expose
     private String growth_status_visita;
     @SerializedName("estado_male")
+    @Expose
     private String weed_state_visita;
     @SerializedName("estado_fito")
+    @Expose
     private String phytosanitary_state_visita;
     @SerializedName("cosecha")
+    @Expose
     private String harvest_visita;
     @SerializedName("estado_fen_culti")
+    @Expose
     private String overall_status_visita;
     @SerializedName("hum_del_suelo")
+    @Expose
     private String humidity_floor_visita;
     @SerializedName("obs")
+    @Expose
     private String observation_visita;
     @SerializedName("recome")
+    @Expose
     private String recomendation_visita;
 
     @SerializedName("estado_server_visitas")
+    @Expose
     private int estado_server_visitas;
 
     @SerializedName("id_est_vis")
+    @Expose
     private int estado_visita; /* 1 : EFECTUADA; 2: NO EFECTUADA ; 3:POR EFECTUAR */
 
     @SerializedName("etapa_visitas")
+    @Expose
     private int etapa_visitas;
 
     @SerializedName("fecha_r")
+    @Expose
     private String fecha_visita;
 
     @SerializedName("hora_r")
+    @Expose
     private String hora_visita;
+    @SerializedName("temporada")
+    @Expose
+    private String temporada;
 
-    private int temporada;
-
+    @SerializedName("obs_fito")
+    @Expose
     private String obs_fito;
+    @SerializedName("obs_creci")
+    @Expose
     private String obs_creci;
+    @SerializedName("obs_maleza")
+    @Expose
     private String obs_maleza;
+    @SerializedName("obs_cosecha")
+    @Expose
     private String obs_cosecha;
+    @SerializedName("obs_overall")
+    @Expose
     private String obs_overall;
+    @SerializedName("obs_humedad")
+    @Expose
     private String obs_humedad;
 
+    @SerializedName("id_usuario")
+    private int id_user_visita;
+
+    @SerializedName("cabecera_visita")
+    @Expose
+    private int cabecera_visita;
+
+
+    public int getId_user_visita() {
+        return id_user_visita;
+    }
+
+    public void setId_user_visita(int id_user_visita) {
+        this.id_user_visita = id_user_visita;
+    }
+
+    public int getCabecera_visita() {
+        return cabecera_visita;
+    }
+
+    public void setCabecera_visita(int cabecera_visita) {
+        this.cabecera_visita = cabecera_visita;
+    }
 
     public String getObs_fito() {
         return obs_fito;
@@ -106,11 +159,11 @@ public class Visitas {
         this.obs_humedad = obs_humedad;
     }
 
-    public int getTemporada() {
+    public String getTemporada() {
         return temporada;
     }
 
-    public void setTemporada(int temporada) {
+    public void setTemporada(String temporada) {
         this.temporada = temporada;
     }
 
@@ -162,11 +215,11 @@ public class Visitas {
         this.id_visita = id_visita;
     }
 
-    public int getId_anexo_visita() {
+    public String getId_anexo_visita() {
         return id_anexo_visita;
     }
 
-    public void setId_anexo_visita(int id_anexo_visita) {
+    public void setId_anexo_visita(String id_anexo_visita) {
         this.id_anexo_visita = id_anexo_visita;
     }
 

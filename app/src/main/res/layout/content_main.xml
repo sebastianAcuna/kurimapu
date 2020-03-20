@@ -12,6 +12,7 @@
     tools:context=".MainActivity"
     android:id="@+id/relative_constraint_principal">
 
+
 <!--
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/left_graphic"

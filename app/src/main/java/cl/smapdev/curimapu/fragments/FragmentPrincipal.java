@@ -1,13 +1,18 @@
 package cl.smapdev.curimapu.fragments;
 
 import android.app.ProgressDialog;
-import android.database.sqlite.SQLiteException;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,14 +20,29 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
+import cl.smapdev.curimapu.clases.relaciones.Respuesta;
+import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
+import cl.smapdev.curimapu.clases.sincronizacion.ServiceSync;
+import cl.smapdev.curimapu.clases.tablas.Config;
+import cl.smapdev.curimapu.clases.tablas.Errores;
+import cl.smapdev.curimapu.clases.tablas.Fotos;
+import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
+import cl.smapdev.curimapu.clases.utilidades.Descargas;
+import cl.smapdev.curimapu.clases.utilidades.InternetStateClass;
+import cl.smapdev.curimapu.clases.utilidades.Subida;
+import cl.smapdev.curimapu.clases.utilidades.Utilidades;
+import cl.smapdev.curimapu.clases.utilidades.returnValuesFromAsyntask;
+import cl.smapdev.curimapu.fragments.dialogos.DialogFilterFichas;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,7 +50,20 @@ import retrofit2.Response;
 
 public class FragmentPrincipal extends Fragment {
 
+    private MainActivity activity;
 
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (MainActivity) getActivity();
+
+        if (activity != null){
+            activity.startService(new Intent(activity, ServiceSync.class));
+        }
+
+    }
 
     @Nullable
     @Override
@@ -38,16 +71,14 @@ public class FragmentPrincipal extends Fragment {
         return inflater.inflate(R.layout.fragment_inicio, container, false);
     }
 
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        setHasOptionsMenu(true);
 /*
         List<CantidadVisitas>cantidadVisitas = MainActivity.myAppDB.myDao().getCantidadVisitasByEstado(2020);
-
-
 
 
         AnyChartView anyChartView = (AnyChartView) view.findViewById(R.id.left_chart_view);
@@ -177,289 +208,48 @@ public class FragmentPrincipal extends Fragment {
 
 
     @Override
-    public void onResume() {
-        super.onResume();
-        new descargar().execute();
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu_inicio, menu);
     }
-
-    public class descargar extends AsyncTask<Void, Integer, Boolean>{
-
-        ProgressDialog progressDialog = new ProgressDialog(getActivity());
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog.setTitle("Espere un momento...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-
-            final boolean[] problema = {false};
-
-            ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-            Call<GsonDescargas> call = apiService.descargarDatos();
-            call.enqueue(new Callback<GsonDescargas>() {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_upload_files) {
+            InternetStateClass mm = new InternetStateClass(activity, new returnValuesFromAsyntask() {
                 @Override
-                public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
+                public void myMethod(boolean result) {
+                    if (result) {
+                        List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir();
+                        List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubir();
+                        List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotos();
+                        List<Errores> errores = MainActivity.myAppDB.myDao().getErroresPorSubir();
 
-                    GsonDescargas gsonDescargas  = response.body();
-                    if (gsonDescargas != null){
-
-                        if (gsonDescargas.getPro_cli_matList() != null && gsonDescargas.getPro_cli_matList().size() > 0){
-
-                            try {
-
-
-                                MainActivity.myAppDB.myDao().deleteProCliMat();
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertInterfaz(gsonDescargas.getPro_cli_matList());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e){
-                                Log.e("SQLITE",e.getMessage());
-                            }
+                        if (visitas.size() > 0 || detalles.size() > 0 || fotos.size() > 0 || errores.size() > 0) {
+                            new Subida.subida(activity, 1).execute();
+                        } else {
+                            Toast.makeText(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT).show();
                         }
-
-                        if (gsonDescargas.getTemporadas() != null && gsonDescargas.getTemporadas().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteTemporadas();
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertTemporada(gsonDescargas.getTemporadas());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
-                        if (gsonDescargas.getCropRotations() != null && gsonDescargas.getCropRotations().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteCrops();
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertCrop(gsonDescargas.getCropRotations());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
-                        if (gsonDescargas.getDetalle_visita_props() != null && gsonDescargas.getDetalle_visita_props().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteDetalle();
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertDetalle(gsonDescargas.getDetalle_visita_props());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
-                        if (gsonDescargas.getVisitasList() != null && gsonDescargas.getVisitasList().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteVisitas();
-                                List<Long> inserts = MainActivity.myAppDB.myDao().setVisita(gsonDescargas.getVisitasList());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
-                        if (gsonDescargas.getAnexoContratoList() != null && gsonDescargas.getAnexoContratoList().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteAnexos();
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertAnexo(gsonDescargas.getAnexoContratoList());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
-
-                        if (gsonDescargas.getAgricultorList() != null && gsonDescargas.getAgricultorList().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteAgricultores();
-
-//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='agricultor'", null));
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertAgricultor(gsonDescargas.getAgricultorList());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
-
-                        if (gsonDescargas.getRegionList() != null && gsonDescargas.getRegionList().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteRegiones();
-//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='region'", null));
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertRegiones(gsonDescargas.getRegionList());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
-
-                        if (gsonDescargas.getProvinciaList() != null && gsonDescargas.getProvinciaList().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteProvincia();
-//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='provincia'", null));
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertProvincias(gsonDescargas.getProvinciaList());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
-
-                        if (gsonDescargas.getComunaList() != null && gsonDescargas.getComunaList().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteComuna();
-//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='comuna'", null));
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertComunas(gsonDescargas.getComunaList());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
-
-                        if (gsonDescargas.getEspecieList() != null && gsonDescargas.getEspecieList().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteEspecie();
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertEspecie(gsonDescargas.getEspecieList());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
-                        if (gsonDescargas.getVariedadList() != null && gsonDescargas.getVariedadList().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteVariedad();
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertVariedad(gsonDescargas.getVariedadList());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-                        if (gsonDescargas.getFichasList() != null && gsonDescargas.getFichasList().size() > 0){
-                            try {
-
-                                MainActivity.myAppDB.myDao().deleteFichas();
-                                List<Long> inserts = MainActivity.myAppDB.myDao().insertFicha(gsonDescargas.getFichasList());
-                                for (long l : inserts) {
-                                    if (l <= 0) {
-                                        problema[0] = true;
-                                        break;
-                                    }
-                                }
-                            }catch (SQLiteException e) {
-                                Log.e("SQLITE", e.getMessage());
-                            }
-                        }
-
+                    } else {
+                        Toast.makeText(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT).show();
                     }
                 }
-
-                @Override
-                public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
-                    System.out.println(t.getMessage());
-                }
-            });
-
-            return problema[0];
+            }, 1);
+            mm.execute();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
 
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-
-            if (!aBoolean){
-                Toast.makeText(getActivity(), "Todo descargado con exito", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(getActivity(), "No se pudo descargar todo", Toast.LENGTH_SHORT).show();
-            }
-
-
-            progressDialog.dismiss();
-        }
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new Descargas.descargar(activity).execute();
+    }
+
+
 
 
 

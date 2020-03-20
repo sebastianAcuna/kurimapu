@@ -13,7 +13,8 @@ public class Agricultor {
 
     @SerializedName("id_agric")
     @PrimaryKey()
-    private int id_agricultor;
+    @NonNull
+    private String id_agricultor;
     @NonNull
     @SerializedName("rut")
     private String rut_agricultor;
@@ -26,9 +27,9 @@ public class Agricultor {
     @SerializedName("telefono_ac")
     private String telefono_admin_agricultor;
     @SerializedName("id_region")
-    private int region_agricultor;
+    private String region_agricultor;
     @SerializedName("id_comuna")
-    private int comuna_agricultor;
+    private String comuna_agricultor;
     @SerializedName("agricultor_subido")
     private boolean agricultor_subido; /* true : subido, false : no subido */
 
@@ -48,12 +49,7 @@ public class Agricultor {
     }*/
 
 
-    public int getId_agricultor() {
-        return id_agricultor;
-    }
-    public void setId_agricultor(int id_agricultor) {
-        this.id_agricultor = id_agricultor;
-    }
+
 
     public String getRut_agricultor() {
         return rut_agricultor;
@@ -95,19 +91,27 @@ public class Agricultor {
         this.telefono_admin_agricultor = telefono_admin_agricultor;
     }
 
-    public int getRegion_agricultor() {
+    public String getId_agricultor() {
+        return id_agricultor;
+    }
+
+    public void setId_agricultor(String id_agricultor) {
+        this.id_agricultor = id_agricultor;
+    }
+
+    public String getRegion_agricultor() {
         return region_agricultor;
     }
 
-    public void setRegion_agricultor(int region_agricultor) {
+    public void setRegion_agricultor(String region_agricultor) {
         this.region_agricultor = region_agricultor;
     }
 
-    public int getComuna_agricultor() {
+    public String getComuna_agricultor() {
         return comuna_agricultor;
     }
 
-    public void setComuna_agricultor(int comuna_agricultor) {
+    public void setComuna_agricultor(String comuna_agricultor) {
         this.comuna_agricultor = comuna_agricultor;
     }
 

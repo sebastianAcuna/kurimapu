@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.tablas;
 
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -12,29 +13,31 @@ public class Region {
 
     @SerializedName("id_region")
     @PrimaryKey()
-    private int id_region;
+    @NonNull
+    private String id_region;
     @SerializedName("nombre")
     private String desc_region;
     @SerializedName("id_pais")
-    private int id_pais;
+    private String id_pais;
 
     public Region() {
     }
 
-    public int getId_pais() {
-        return id_pais;
-    }
 
-    public void setId_pais(int id_pais) {
-        this.id_pais = id_pais;
-    }
-
-    public int getId_region() {
+    public String getId_region() {
         return id_region;
     }
 
-    public void setId_region(int id_region) {
+    public void setId_region(String id_region) {
         this.id_region = id_region;
+    }
+
+    public String getId_pais() {
+        return id_pais;
+    }
+
+    public void setId_pais(String id_pais) {
+        this.id_pais = id_pais;
     }
 
     public String getDesc_region() {

@@ -11,10 +11,11 @@
     <TextView
         android:id="@+id/titulo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:maxHeight="60dp"
         android:textColor="@color/primaryText"
         android:gravity="start"
-        android:textSize="25sp"
+        android:textSize="20sp"
 
         />
 

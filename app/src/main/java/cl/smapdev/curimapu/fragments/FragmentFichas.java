@@ -25,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -56,7 +57,7 @@ public class FragmentFichas extends Fragment {
 
     private SharedPreferences prefs;
 
-    private ArrayList<Integer> id_temporadas = new ArrayList<>();
+    private ArrayList<String> id_temporadas = new ArrayList<>();
     private ArrayList<String> desc_temporadas = new ArrayList<>();
 
     private List<Temporada> temporadaList;
@@ -113,7 +114,7 @@ public class FragmentFichas extends Fragment {
                     if (Integer.parseInt(spinner_toolbar.getTag().toString()) != i){
 
 
-                        prefs.edit().putInt(Utilidades.SELECTED_ANO,id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
+                        prefs.edit().putString(Utilidades.SELECTED_ANO,id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                         prefs.edit().putInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, i).apply();
 
                         cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
@@ -122,7 +123,7 @@ public class FragmentFichas extends Fragment {
                     }
                 }else{
 
-                    prefs.edit().putInt(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
+                    prefs.edit().putString(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                     prefs.edit().putInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, i).apply();
 
                     cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
@@ -140,12 +141,12 @@ public class FragmentFichas extends Fragment {
         fb_add_ficha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                avisoCreaNuevaFicha("¿Esta seguro?", "¿ Desea crear una nueva ficha ?");
+                avisoCreaNuevaFicha(getResources().getString(R.string.title_new_ficha), getResources().getString(R.string.text_new_ficha));
             }
         });
 
         if (temporadaList.size() > 0){
-            cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(prefs.getInt(Utilidades.SELECTED_ANO, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo())));
+            cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(prefs.getString(Utilidades.SELECTED_ANO, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo())));
         }
 
     }
@@ -204,18 +205,17 @@ public class FragmentFichas extends Fragment {
 
 
     private void cargarLista(List<FichasCompletas> fichasCompletas){
-//        LinearLayoutManager lManager = null;
-//        if (activity != null){
-//            lManager  = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
-//        }
 
-
-        RecyclerView.LayoutManager lManager = null;
-        if (activity != null){
-                lManager = new GridLayoutManager(activity, 2);
+        if (activity != null) {
+            if (Utilidades.isLandscape(activity)) {
+                id_lista_fichas.setLayoutManager(new GridLayoutManager(activity, 2));
+            } else {
+                id_lista_fichas.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+            }
         }
+
         id_lista_fichas.setHasFixedSize(true);
-        id_lista_fichas.setLayoutManager(lManager);
+
 
 
 
@@ -246,12 +246,12 @@ public class FragmentFichas extends Fragment {
                 .setView(viewInfalted)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("crear", new DialogInterface.OnClickListener(){
+                .setPositiveButton(getResources().getString(R.string.button_create), new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
                 })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }

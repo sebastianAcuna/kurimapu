@@ -51,6 +51,7 @@ import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.adapters.FotosListAdapter;
+import cl.smapdev.curimapu.clases.utilidades.CameraUtils;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 import static android.app.Activity.RESULT_OK;
@@ -107,11 +108,8 @@ public class FragmentFotos extends Fragment {
             this.fieldbook = bundle.getInt(FIELDBOOKKEY);
         }
 
-
         prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
-
         estado_visita = MainActivity.myAppDB.myDao().getEstadoVisita(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-
 
         agregarImagenToList();
     }
@@ -123,8 +121,6 @@ public class FragmentFotos extends Fragment {
         if(fileImagen != null){
             outState.putParcelable("file_uri", Uri.fromFile(fileImagen));
         }
-
-
     }
 
 
@@ -138,8 +134,6 @@ public class FragmentFotos extends Fragment {
                 fileImagen= new File(ui.getPath());
             }
         }
-
-
     }
 
     @Nullable
@@ -169,20 +163,20 @@ public class FragmentFotos extends Fragment {
         material_private.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (estado_visita == 2){
-                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes agregar mas fotos.","entiendo");
+                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
                 }else{
-                    abrirCamara(1);
+//                    activity.cambiarFragment(new FragmentTakePicture(), "hola", R.anim.slide_in_left,R.anim.slide_out_left);
+                    activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(fieldbook, 2), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
                 }
-
-
             }
         });
         material_public.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (estado_visita == 2){
-                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes agregar mas fotos.","entiendo");
+                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
                 }else{
-                    abrirCamara(0);
+                    activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(fieldbook, 0), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
+//                    abrirCamara(0);
                 }
             }
         });
@@ -208,7 +202,7 @@ public class FragmentFotos extends Fragment {
         }
     }
 
-    private void abrirCamara(int vista){
+/*    private void abrirCamara(int vista){
 
         prefs.edit().remove(Utilidades.VISTA_FOTOS).apply();
 
@@ -226,9 +220,6 @@ public class FragmentFotos extends Fragment {
             String path = Environment.getExternalStorageDirectory() + File.separator + Utilidades.DIRECTORIO_IMAGEN + File.separator + nombre;
 
             fileImagen=new File(path);
-
-
-
             prefs.edit().putInt(Utilidades.VISTA_FOTOS, vista).apply();
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -238,9 +229,9 @@ public class FragmentFotos extends Fragment {
 
             startActivityForResult(intent, COD_FOTO);
         }
-    }
+    }*/
 
-    @Override
+/*    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == COD_FOTO && resultCode == RESULT_OK) {
 
@@ -257,15 +248,11 @@ public class FragmentFotos extends Fragment {
                     m.preRotate(rotationInDegrees);
                 }
 
-
                 Bitmap src = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), m, true);
-
-
-
                 ByteArrayOutputStream  bos = null;
                 try {
                     bos = new ByteArrayOutputStream();
-                    escribirFechaImg(src).compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                    CameraUtils.escribirFechaImg(src, activity).compress(Bitmap.CompressFormat.JPEG, 100, bos);
                     byte[] bitmapdata = bos.toByteArray();
 
                     FileOutputStream fos = new FileOutputStream(fileImagen.getAbsoluteFile());
@@ -276,17 +263,13 @@ public class FragmentFotos extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
                 guardarBD(fileImagen);
-
-
             }
 
         }
-    }
+    }*/
 
-    private void guardarBD(File path){
+/*    private void guardarBD(File path){
 
         Fotos fotos = new Fotos();
         fotos.setFecha(Utilidades.fechaActualConHora());
@@ -295,7 +278,7 @@ public class FragmentFotos extends Fragment {
         fotos.setNombre_foto(path.getName());
         fotos.setFavorita(false);
         fotos.setPlano(0);
-        fotos.setId_ficha(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+        fotos.setId_ficha(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
         fotos.setVista(prefs.getInt(Utilidades.VISTA_FOTOS, 0));
         fotos.setRuta(path.getAbsolutePath());
         fotos.setId_visita_foto(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
@@ -306,47 +289,7 @@ public class FragmentFotos extends Fragment {
             adapterFotos.notifyDataSetChanged();
         }
 
-    }
-
-
-//    todo agregar imagen de sello de agua ;)
-    private Bitmap escribirFechaImg(Bitmap bm){
-
-        Bitmap dest = Bitmap.createBitmap(bm,0, 0,bm.getWidth(), bm.getHeight()).copy(Bitmap.Config.ARGB_8888, true);
-
-        String fecha = Utilidades.fechaActualInvSinHora();
-
-        Canvas cs = new Canvas(dest);
-
-
-        Paint myPaint = new Paint();
-        myPaint.setColor(getResources().getColor(R.color.transparentBlack));
-        myPaint.setStrokeWidth(10);
-        cs.drawRect(0, dest.getHeight() - 90, 700, dest.getHeight() - 10, myPaint);
-
-
-        Paint tPaint = new Paint();
-        tPaint.setStyle(Paint.Style.FILL);
-        tPaint.setColor(getResources().getColor(android.R.color.white));
-        tPaint.setTextSize(80);
-        tPaint.setStrokeWidth(10);
-
-
-
-        // text shadow
-        tPaint.setShadowLayer(1f, 0f, 1f, getResources().getColor(android.R.color.black));
-
-        Rect bounds = new Rect();
-        tPaint.getTextBounds(fecha, 0, fecha.length(), bounds);
-
-        cs.drawText(fecha, 90, dest.getHeight() - 25 , tPaint);
-
-
-
-
-
-        return dest;
-    }
+    }*/
 
 
     @Override
@@ -370,7 +313,7 @@ public class FragmentFotos extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(lManager);
 
-        final int oreg =prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0);
+        final String oreg =prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "");
         final int idVisi =prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0);
 
 
@@ -387,7 +330,7 @@ public class FragmentFotos extends Fragment {
             public void onItemLongClick(Fotos fotos) {
 
                 if (estado_visita == 2){
-                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes cambiar el estado de las fotos.","entiendo");
+                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
                 }else{
                     if (!fotos.isFavorita()){
                         int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(fieldbook,oreg, idVisi);

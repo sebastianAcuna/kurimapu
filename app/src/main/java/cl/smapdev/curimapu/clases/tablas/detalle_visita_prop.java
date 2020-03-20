@@ -3,26 +3,43 @@ package cl.smapdev.curimapu.clases.tablas;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "detalle_visita_prop")
 public class detalle_visita_prop {
 
     @PrimaryKey(autoGenerate = true)
+    @SerializedName("id_det_vis_prop_detalle")
     private int id_det_vis_prop_detalle;
 
     @SerializedName("id_visita")
+    @Expose
     private int id_visita_detalle;
 
     @SerializedName("id_prop_mat_cli")
+    @Expose
     private int id_prop_mat_cli_detalle;
 
     @SerializedName("valor")
+    @Expose
     private String valor_detalle;
 
     @SerializedName("estado_detalle")
+    @Expose
     private int estado_detalle;
 
+    @SerializedName("cabecera_detalle")
+    @Expose
+    private int cabecera_detalle;
+
+    public int getCabecera_detalle() {
+        return cabecera_detalle;
+    }
+
+    public void setCabecera_detalle(int cabecera_detalle) {
+        this.cabecera_detalle = cabecera_detalle;
+    }
 
     public int getEstado_detalle() {
         return estado_detalle;

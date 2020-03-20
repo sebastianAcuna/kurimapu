@@ -15,6 +15,7 @@ import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.Etapas;
 import cl.smapdev.curimapu.clases.adapters.VisitasTypeAdapter;
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
+import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class VisitasTypeViewHolder extends RecyclerView.ViewHolder {
@@ -30,16 +31,18 @@ public class VisitasTypeViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void bind(final Etapas el, Context context, final VisitasTypeAdapter.OnItemClickListener cLickListener, int idAnexo){
+    public void bind(final Etapas el, Context context, final VisitasTypeAdapter.OnItemClickListener cLickListener, String idAnexo){
 
         if (context != null){
             nombre_field.setText(el.getDescEtapa());
 
             preferences = context.getSharedPreferences(Utilidades.SHARED_NAME, 0);
 
-            String[] annos = context.getResources().getStringArray(R.array.anos_toolbar);
+//            String[] annos = context.getResources().getStringArray(R.array.anos_toolbar);
+            List<Temporada> annos = MainActivity.myAppDB.myDao().getTemporada();
 
-            List<CantidadVisitas> integers = MainActivity.myAppDB.myDao().getCantidadVisitas(idAnexo, Integer.parseInt(annos[preferences.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, 5)]));
+            String annoSelected = preferences.getString(Utilidades.SELECTED_ANO, annos.get(annos.size() - 1 ).getId_tempo_tempo());
+            List<CantidadVisitas> integers = MainActivity.myAppDB.myDao().getCantidadVisitas(idAnexo, annoSelected);
 
             int cantidadTotal = 0;
             if (integers.size() > 0){

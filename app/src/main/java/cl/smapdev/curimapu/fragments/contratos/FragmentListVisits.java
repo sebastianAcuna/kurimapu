@@ -39,12 +39,9 @@ import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.adapters.VisitasListAdapter;
 import cl.smapdev.curimapu.clases.adapters.VisitasTypeAdapter;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
-import cl.smapdev.curimapu.clases.tablas.Flowering;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
-import cl.smapdev.curimapu.clases.tablas.Harvest;
-import cl.smapdev.curimapu.clases.tablas.Sowing;
+import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
-import cl.smapdev.curimapu.clases.temporales.TempHarvest;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentContratos;
@@ -75,8 +72,13 @@ public class FragmentListVisits extends Fragment {
 
     private Spinner spinner_toolbar;
 
-    private String[] annos;
-    private int annoSelected, etapaSelected=0;
+    private List<Temporada> annos;
+    private ArrayList<String> id_temporadas = new ArrayList<>();
+    private ArrayList<String> desc_temporadas = new ArrayList<>();
+
+
+    private String annoSelected;
+    private int etapaSelected=0;
 
 
     @Override
@@ -88,8 +90,16 @@ public class FragmentListVisits extends Fragment {
         if (activity != null){
             prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
         }
+        annos = MainActivity.myAppDB.myDao().getTemporada();
+        if (annos.size() > 0){
+            for (Temporada t : annos){
+                id_temporadas.add(t.getId_tempo_tempo());
+                desc_temporadas.add(t.getNombre_tempo());
+            }
+        }
 
-        annos = getResources().getStringArray(R.array.anos_toolbar);
+
+        //annos = getResources().getStringArray(R.array.anos_toolbar);
 
         etapasArrayList.add(new Etapas(0, "All", false));
         etapasArrayList.add(new Etapas(2, "Sowing", false));
@@ -97,8 +107,9 @@ public class FragmentListVisits extends Fragment {
         etapasArrayList.add(new Etapas(4, "Harvest", false));
         etapasArrayList.add(new Etapas(5, "Unspecified", false));
 
-        String[] years = Utilidades.getAnoCompleto(Integer.parseInt(annos[annos.length -1]));
-        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),years[0], years[1]);
+        //String years = annos.get(annos.size() -1).getId_tempo_tempo();
+        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),
+                id_temporadas.get(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR,annos.size() - 1)));
 
     }
 
@@ -126,17 +137,18 @@ public class FragmentListVisits extends Fragment {
 
 
 
-//        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, annos));
+        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity,R.layout.spinner_template_toolbar_view, annos));
 
 
-
-        annoSelected = Integer.parseInt(annos[annos.length -1]);
+       /* visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),
+                );*/
+        annoSelected = id_temporadas.get(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR,annos.size() - 1));
 
 
         txt_titulo_selected.setText(Utilidades.getStateString(0));
 
 
-        spinner_toolbar.setSelection(annos.length -1);
+        spinner_toolbar.setSelection(id_temporadas.indexOf(annoSelected));
         spinner_toolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -144,17 +156,17 @@ public class FragmentListVisits extends Fragment {
 //                if (spinner_toolbar.getTag() != null ){
 //                    if (Integer.parseInt(spinner_toolbar.getTag().toString()) != i){
 
-
-                    annoSelected = Integer.parseInt(annos[i]);
+                    annoSelected = annos.get(i).getId_tempo_tempo();
 
                     prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
+                    prefs.edit().putString(Utilidades.SELECTED_ANO, annoSelected).apply();
 
-                    String[] el = Utilidades.getAnoCompleto(annoSelected);
+                    //String years = annos.get(annos.size() -1).getId_tempo_tempo();
 
                     if (etapaSelected > 0){
-                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),el[0],el[1]);
+                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
                     }else{
-                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),el[0],el[1]);
+                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
                     }
 
                     cargarListaChica();
@@ -207,23 +219,20 @@ public class FragmentListVisits extends Fragment {
                     case 5: po = 4;break;
                 }
 
-                String[] years = Utilidades.getAnoCompleto(annoSelected);
+                String years = annoSelected;
                 etapaSelected = position;
                 if (position > 0){
 
-                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0), position, years[0], years[1]);
+                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""), position, years);
                     for (Etapas et : etapasArrayList){
                         if (et.getNumeroEtapa() == po){
-
                             etapasArrayList.get(po).setEtapaSelected(true);
                         }else{
                             etapasArrayList.get(po).setEtapaSelected(false);
                         }
                     }
-
-
                 }else{
-                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0),years[0],years[1]);
+                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),years);
                 }
 
 
@@ -232,7 +241,7 @@ public class FragmentListVisits extends Fragment {
                 cargarListaGrande();
 
             }
-        },prefs.getInt(Utilidades.SHARED_VISIT_ANEXO_ID, 0));
+        },prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
 
         lista_visitas_type.setAdapter(visitasTypeAdapter);
     }
@@ -265,7 +274,7 @@ public class FragmentListVisits extends Fragment {
         }, new VisitasListAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, VisitasCompletas fichas, Fotos fotos) {
-                avisoActivaFicha(" Estado de visita ",fichas);
+                avisoActivaFicha(getResources().getString(R.string.estado_visita),fichas);
             }
         }, activity);
 
@@ -302,13 +311,13 @@ public class FragmentListVisits extends Fragment {
 
         final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
                 .setView(viewInfalted)
-                .setTitle("Atencion")
-                .setMessage("¿Estas seguro que deseas ver esta visita?\nDependiendo del estado esta se podra editar o no.")
-                .setPositiveButton("aceptar", new DialogInterface.OnClickListener(){
+                .setTitle(getResources().getString(R.string.atencion))
+                .setMessage(getResources().getString(R.string.mensaje_alerta_editar_visita))
+                .setPositiveButton(getResources().getString(R.string.entiendo), new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
-                }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getResources().getString(R.string.nav_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -333,9 +342,8 @@ public class FragmentListVisits extends Fragment {
                                     MainActivity.myAppDB.myDao().deleteTempVisitas();
 //                    MainActivity.myAppDB.myDao().resetTempVisitas();
 
-                                    MainActivity.myAppDB.myDao().deleteTempHarvest();
+//                                    MainActivity.myAppDB.myDao().deleteTempHarvest();
 //                    MainActivity.myAppDB.myDao().resetTempHarvest();
-
 
                                     MainActivity.myAppDB.myDao().deleteDetalleVacios();
 //                    MainActivity.myAppDB.myDao().resetTempSowing();
@@ -357,33 +365,6 @@ public class FragmentListVisits extends Fragment {
 
                                     MainActivity.myAppDB.myDao().setTempVisitas(tempVisitas);
 
-                                    Harvest harvest = MainActivity.myAppDB.myDao().getharvest(visitasCompletas.getVisitas().getId_visita(), visitasCompletas.getVisitas().getId_anexo_visita());
-                                    if (harvest != null) {
-
-                                        TempHarvest tempHarvest = new TempHarvest();
-
-                                        tempHarvest.setBeginning_date_temp_harvest(harvest.getBeginning_date_temp_harvest());
-                                        tempHarvest.setDate_harvest_estimation_temp_harvest(harvest.getDate_harvest_estimation_temp_harvest());
-                                        tempHarvest.setEnd_date_temp_harvest(harvest.getEnd_date_temp_harvest());
-
-                                        tempHarvest.setEstimated_date_temp_harvest(harvest.getEstimated_date_temp_harvest());
-                                        tempHarvest.setId_anexo_temp_harvest(harvest.getId_anexo_temp_harvest());
-
-                                        tempHarvest.setKg_ha_yield_temp_harvest(harvest.getKg_ha_yield_temp_harvest());
-                                        tempHarvest.setModel_machine_temp_harvest(harvest.getModel_machine_temp_harvest());
-                                        tempHarvest.setObservation_dessicant_temp_harvest(harvest.getObservation_dessicant_temp_harvest());
-                                        tempHarvest.setObservation_yield_temp_harvest(harvest.getObservation_yield_temp_harvest());
-                                        tempHarvest.setOwner_machine_temp_harvest(harvest.getOwner_machine_temp_harvest());
-                                        tempHarvest.setPorcent_temp_harvest(harvest.getPorcent_temp_harvest());
-                                        tempHarvest.setReal_date_temp_harvest(harvest.getReal_date_temp_harvest());
-                                        tempHarvest.setSwathing_date_temp_harvest(harvest.getSwathing_date_temp_harvest());
-
-                                        tempHarvest.setAction_temp_harvest(visitasCompletas.getVisitas().getEstado_visita());
-                                        tempHarvest.setId_temp_harvest(harvest.getId_temp_harvest());
-
-                                        MainActivity.myAppDB.myDao().setTempHarvest(tempHarvest);
-                                    }
-
 
                                     List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
                                     if (fotos.size() > 0){
@@ -402,21 +383,13 @@ public class FragmentListVisits extends Fragment {
                                         }
                                     }
 
-
-
-
-
                                     activity.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
 
-
-
-
-
                                             if (prefs != null){
                                                 prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, visitasCompletas.getAnexoCompleto().getAnexoContrato().getId_ficha_contrato()).apply();
-                                                prefs.edit().putInt(Utilidades.SHARED_VISIT_ANEXO_ID, visitasCompletas.getVisitas().getId_anexo_visita()).apply();
+                                                prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, visitasCompletas.getVisitas().getId_anexo_visita()).apply();
                                                 prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, visitasCompletas.getVisitas().getId_visita()).apply();
                                             }
 
@@ -452,26 +425,23 @@ public class FragmentListVisits extends Fragment {
     private void avisoActivaFicha(String title, final VisitasCompletas completas) {
         final View viewInfalted = LayoutInflater.from(getActivity()).inflate(R.layout.alert_activa_ficha, null);
 
-
         final RadioButton ra = viewInfalted.findViewById(R.id.radio_inactiva);
         final RadioButton rb = viewInfalted.findViewById(R.id.radio_activa);
         final RadioButton rc = viewInfalted.findViewById(R.id.radio_rechazada);
 
-
-        ra.setText("abierta");
-        rb.setText("editable");
-        rc.setText("cerrada");
-
+        ra.setText(getResources().getString(R.string.confeccion));
+        rb.setText(getResources().getString(R.string.estado_efectuado));
+        rc.setText(getResources().getString(R.string.estado_efectuado_no));
 
         switch (completas.getVisitas().getEstado_visita()){
-            case 0:
+            case 1:
             default:
                 ra.setChecked(true);
                 break;
-            case 1:
+            case 2:
                 rb.setChecked(true);
                 break;
-            case 2:
+            case 3:
                 rc.setChecked(true);
                 break;
         }
@@ -480,12 +450,12 @@ public class FragmentListVisits extends Fragment {
         final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
                 .setView(viewInfalted)
                 .setTitle(title)
-                .setPositiveButton("Modificar", new DialogInterface.OnClickListener(){
+                .setPositiveButton(getResources().getString(R.string.modificar), new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
                 })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
@@ -498,14 +468,12 @@ public class FragmentListVisits extends Fragment {
                 Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
                 Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
 
-
-
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Visitas fichas = completas.getVisitas();
                         if (fichas != null){
-                            int estado = (ra.isChecked()) ? 0 : (rb.isChecked()) ? 1 : 2;
+                            int estado = (ra.isChecked()) ? 1 : (rb.isChecked()) ? 2 : 3;
                             fichas.setEstado_visita(estado);
                             MainActivity.myAppDB.myDao().updateVisita(fichas);
 

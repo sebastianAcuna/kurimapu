@@ -14,22 +14,27 @@ public class pro_cli_mat {
 
     @SerializedName("id_cli")
     private int id_cli;
-    @SerializedName("id_materiales")
-    private int id_materiales;
+    @SerializedName("id_esp")
+    private String id_materiales;
     @SerializedName("id_prop")
     private int id_prop;
     @SerializedName("id_etapa")
     private int id_etapa;
     @SerializedName("id_tempo")
-    private int id_tempo;
+    private String id_tempo;
     @SerializedName("nombre_prop_es")
     private String nombre_es;
 
     @SerializedName("nombre_prop_en")
     private String nombre_en;
 
-    @SerializedName("nombre_elemento")
-    private String nombre_elemento;
+    @SerializedName("nombre_elemento_en")
+    private String nombre_elemento_en;
+
+    @SerializedName("nombre_elemento_es")
+    private String nombre_elemento_es;
+
+
 
     @SerializedName("aplica")
     private String aplica;
@@ -68,11 +73,11 @@ public class pro_cli_mat {
         this.id_cli = id_cli;
     }
 
-    public int getId_materiales() {
+    public String getId_materiales() {
         return id_materiales;
     }
 
-    public void setId_materiales(int id_materiales) {
+    public void setId_materiales(String id_materiales) {
         this.id_materiales = id_materiales;
     }
 
@@ -92,11 +97,11 @@ public class pro_cli_mat {
         this.id_etapa = id_etapa;
     }
 
-    public int getId_tempo() {
+    public String getId_tempo() {
         return id_tempo;
     }
 
-    public void setId_tempo(int id_tempo) {
+    public void setId_tempo(String id_tempo) {
         this.id_tempo = id_tempo;
     }
 
@@ -117,12 +122,20 @@ public class pro_cli_mat {
     }
 
 
-    public String getNombre_elemento() {
-        return nombre_elemento;
+    public String getNombre_elemento_en() {
+        return nombre_elemento_en;
     }
 
-    public void setNombre_elemento(String nombre_elemento) {
-        this.nombre_elemento = nombre_elemento;
+    public void setNombre_elemento_en(String nombre_elemento_en) {
+        this.nombre_elemento_en = nombre_elemento_en;
+    }
+
+    public String getNombre_elemento_es() {
+        return nombre_elemento_es;
+    }
+
+    public void setNombre_elemento_es(String nombre_elemento_es) {
+        this.nombre_elemento_es = nombre_elemento_es;
     }
 
     public String getAplica() {

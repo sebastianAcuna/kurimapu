@@ -52,6 +52,7 @@ public class FragmentFieldbook extends Fragment {
 
 
     private void cargarTabs(){
+
         viewPager.setAdapter(new SubTabsAdapters(getChildFragmentManager(),
                 Objects.requireNonNull(getContext())));
 

@@ -36,18 +36,12 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
         int item = 0 ;*/
         for (int i = 0; i < columnas.length; i++){
 
-            String tagTitulo = "titulo_" + i;
+
             String tagValor = "valor_" + i;
             String[] valoresAndColumnas = columnas[i].split("--");
 
-            TextView ttitulo = (TextView) itemView.findViewWithTag(tagTitulo);
             TextView tvalor = (TextView) itemView.findViewWithTag(tagValor);
 
-            if (ttitulo != null ){
-
-                ttitulo.setVisibility(View.VISIBLE);
-                ttitulo.setText(valoresAndColumnas[1]);
-            }
             if (tvalor != null ){
                 tvalor.setVisibility(View.VISIBLE);
                 tvalor.setText(valoresAndColumnas[0]);

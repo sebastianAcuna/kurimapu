@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.fragments.fichas;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -28,10 +31,12 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,7 +65,8 @@ public class FragmentCreaFicha extends Fragment {
     };
 
     private MainActivity activity;
-    private Spinner sp_year/*, sp_asoc_agr*/, sp_agric,sp_region_agricultor,sp_comuna_agricultor, sp_provincia_agricultor;
+    private Spinner sp_year/*, sp_asoc_agr*/,sp_region_agricultor,sp_comuna_agricultor, sp_provincia_agricultor;
+    private SearchableSpinner  sp_agric;
 
     private EditText et_rut_agricultor, et_nombre_agricultor,et_telef_agricultor,et_admin_agricultor,
             et_tel_admin_agricultor,et_oferta_neg_agricultor,et_localidad_agricultor,et_has_disp_agricultor,et_obs_agricultor,
@@ -78,7 +84,7 @@ public class FragmentCreaFicha extends Fragment {
 
 
 
-    private int idComuna, idRegion, idAnno, idProvincia;
+    private String idComuna  = "", idRegion  = "", idAnno  = "", idProvincia = "";
 
 
     private FusedLocationProviderClient client;
@@ -87,11 +93,12 @@ public class FragmentCreaFicha extends Fragment {
     private static final String VIENE_A_EDITAR = "viene_a_editar";
 
     private ArrayList<String> rutAgricultores = new ArrayList<>();
-    private ArrayList<Integer> idRegiones = new ArrayList<>();
-    private ArrayList<Integer> idComunas = new ArrayList<>();
-    private ArrayList<Integer> idProvincias = new ArrayList<>();
-    private ArrayList<Integer> idTemporadas = new ArrayList<>();
+    private ArrayList<String> idRegiones = new ArrayList<>();
+    private ArrayList<String> idComunas = new ArrayList<>();
+    private ArrayList<String> idProvincias = new ArrayList<>();
+    private ArrayList<String> idTemporadas = new ArrayList<>();
 
+//    private AutoCompleteTextView actv;
 
     private FichasCompletas fichasCompletas;
 
@@ -178,7 +185,7 @@ public class FragmentCreaFicha extends Fragment {
         }
 
 
-
+//        actv = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
 
 
         bind(view);
@@ -312,7 +319,7 @@ public class FragmentCreaFicha extends Fragment {
         }
 
         if (fichasCompletas != null){
-            btn_save_agricultor.setText("Editar");
+            btn_save_agricultor.setText(getResources().getString(R.string.editar));
 
 //            asoc_agro.setVisibility(View.INVISIBLE);
 
@@ -413,27 +420,9 @@ public class FragmentCreaFicha extends Fragment {
 
         if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro) &&  !TextUtils.isEmpty(fonoAgro) && !TextUtils.isEmpty(admin) && !TextUtils.isEmpty(fonoAdmin)
         && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
-        && idAnno > 0 && idRegion > 0 && idComuna > 0){
-//            !TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting) &&
+        && !TextUtils.isEmpty(idAnno) && !TextUtils.isEmpty(idRegion) && !TextUtils.isEmpty(idComuna) ){
 
-//            if (Utilidades.validarRut(Utilidades.formatear(rutAgro))){
 
-//                rutAgro = Utilidades.formatear(rutAgro);
-
-/*                if (sp_asoc_agr.getSelectedItem().toString().equals(getResources().getString(R.string.asoc_new_farmer))){
-
-                    Agricultor agricultor = new Agricultor();
-                    agricultor.setRut_agricultor(rutAgro);
-                    agricultor.setNombre_agricultor(nombreAgro);
-                    agricultor.setAdministrador_agricultor(admin);
-                    agricultor.setTelefono_agricultor(fonoAgro);
-                    agricultor.setTelefono_admin_agricultor(fonoAdmin);
-                    agricultor.setRegion_agricultor(idRegion);
-                    agricultor.setComuna_agricultor(idComuna);
-                    agricultor.setAgricultor_subido(false);
-
-                    MainActivity.myAppDB.myDao().insertAgricultor(agricultor);
-                }*/
 
                 Fichas fichas = new Fichas();
                 fichas.setActiva(1);
@@ -497,7 +486,7 @@ public class FragmentCreaFicha extends Fragment {
 
         if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro) &&  !TextUtils.isEmpty(fonoAgro) && !TextUtils.isEmpty(admin) && !TextUtils.isEmpty(fonoAdmin)
                 && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
-                && idAnno > 0 && idRegion > 0 && idComuna > 0){
+                && !TextUtils.isEmpty(idAnno) && !TextUtils.isEmpty(idRegion) && !TextUtils.isEmpty(idComuna)){
 
 //            !TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting) &&
 
@@ -586,6 +575,8 @@ public class FragmentCreaFicha extends Fragment {
             AgricultorCompleto agricultor = MainActivity.myAppDB.myDao().getAgricultorByRut(rut);
             if (agricultor != null){
 
+                sp_agric.setSelection(rutAgricultores.indexOf(agricultor.getAgricultor().getRut_agricultor()));
+
                 et_rut_agricultor.setText(agricultor.getAgricultor().getRut_agricultor());
                 et_rut_agricultor.setEnabled(false);
                 et_nombre_agricultor.setText(agricultor.getAgricultor().getNombre_agricultor());
@@ -645,21 +636,31 @@ public class FragmentCreaFicha extends Fragment {
         sp_asoc_agr.setSelection(1);*/
 
 
+
+
         List<Agricultor> agricultorList = MainActivity.myAppDB.myDao().getAgricultores();
         if (agricultorList.size() > 0){
             ArrayList<String> str = new ArrayList<>();
             int contador = 0;
-            str.add(getResources().getString(R.string.select));
-            rutAgricultores.add(contador,"");
-            contador++;
+//            str.add(getResources().getString(R.string.select));
+//            rutAgricultores.add(contador,"");
+//            contador++;
             for (Agricultor fs : agricultorList){
                 str.add(fs.getNombre_agricultor());
                 rutAgricultores.add(contador,fs.getRut_agricultor());
                 contador++;
-
-
             }
+            sp_agric.setTitle(getResources().getString(R.string.seleccione_item));
+            sp_agric.setPositiveButton(getResources().getString(R.string.ok));
             sp_agric.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, str));
+
+           /* ArrayAdapter<ArrayList<String>> adapter = new ArrayAdapter<ArrayList<String>>(activity,android.R.layout.select_dialog_item, Collections.singletonList(str));
+//            ArrayAdapter<ArrayList<String>> adapter = new ArrayAdapter<ArrayList<String>> (activity, android.R.layout.select_dialog_item, str);
+            //Getting the instance of AutoCompleteTextView
+
+            actv.setThreshold(1);//will start working from first character
+            actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+            actv.setTextColor(Color.RED);*/
 
         }
 
@@ -668,7 +669,7 @@ public class FragmentCreaFicha extends Fragment {
             ArrayList<String> rg = new ArrayList<>();
             int contador = 0;
             rg.add(getResources().getString(R.string.select));
-            idRegiones.add(contador,0);
+            idRegiones.add(contador,"");
             contador++;
 
             for (Region re : regionList){
@@ -692,7 +693,7 @@ public class FragmentCreaFicha extends Fragment {
             ArrayList<String> rg = new ArrayList<>();
             int contador = 0;
             rg.add(getResources().getString(R.string.select));
-            idComunas.add(contador,0);
+            idComunas.add(contador,"");
             contador++;
             int selectable = 0;
             for (Comuna re : comunaList){
@@ -700,7 +701,7 @@ public class FragmentCreaFicha extends Fragment {
                 idComunas.add(contador, re.getId_comuna());
 
 
-                if (idComuna == re.getId_comuna()){
+                if (idComuna.equals(re.getId_comuna())){
                     selectable = contador;
                 }
 
@@ -719,14 +720,14 @@ public class FragmentCreaFicha extends Fragment {
             ArrayList<String> rg = new ArrayList<>();
             int contador = 0;
             rg.add(getResources().getString(R.string.select));
-            idProvincias.add(contador,0);
+            idProvincias.add(contador,"");
             contador++;
             int selectable = 0;
             for (Provincia re : provinciaList){
                 rg.add(re.getNombre_provincia());
                 idProvincias.add(contador, re.getId_provincia());
 
-                if (idProvincia == re.getId_provincia()){
+                if (idProvincia.equals(re.getId_provincia())){
                     selectable = contador;
                 }
 
@@ -755,7 +756,7 @@ public class FragmentCreaFicha extends Fragment {
 
         sp_year = (Spinner) view.findViewById(R.id.sp_year);
 //        sp_asoc_agr = (Spinner) view.findViewById(R.id.sp_asoc_agr);
-        sp_agric = (Spinner) view.findViewById(R.id.sp_agric);
+        sp_agric = (SearchableSpinner) view.findViewById(R.id.sp_agric);
         sp_region_agricultor = (Spinner) view.findViewById(R.id.sp_region_agricultor);
         sp_comuna_agricultor = (Spinner) view.findViewById(R.id.sp_comuna_agricultor);
         sp_provincia_agricultor = (Spinner) view.findViewById(R.id.sp_provincia_agricultor);

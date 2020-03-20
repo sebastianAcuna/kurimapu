@@ -27,7 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/estado_fenolog_gico"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="@id/sp_feno"
             app:layout_constraintEnd_toEndOf="@id/sp_feno"
@@ -48,7 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/estado_de_crecimiento"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="@id/sp_crecimiento"
             app:layout_constraintEnd_toEndOf="@id/sp_crecimiento"
@@ -68,7 +68,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/estado_de_malezas"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="@id/sp_malezas"
             app:layout_constraintEnd_toEndOf="@id/sp_malezas"/>
@@ -142,7 +142,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/estado_fitosanitario"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/divider1"
             app:layout_constraintStart_toStartOf="@id/sp_fito"
             app:layout_constraintEnd_toEndOf="@id/sp_fito"/>
@@ -162,7 +162,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/cosecha"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/divider1"
             app:layout_constraintStart_toStartOf="@id/sp_cosecha"
             app:layout_constraintEnd_toEndOf="@id/sp_cosecha"/>
@@ -182,7 +182,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/estado_general"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/sp_general_cultivo"
             app:layout_constraintEnd_toEndOf="@id/sp_general_cultivo"
             app:layout_constraintTop_toBottomOf="@id/divider1"/>
@@ -274,7 +274,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:text="@string/humedad_del_suelo"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/sp_humedad"
             app:layout_constraintStart_toStartOf="@id/sp_humedad"
             app:layout_constraintTop_toBottomOf="@id/divider2" />
@@ -349,10 +349,10 @@
             android:id="@+id/titulo_agronomo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Fotos Agricultor"
+            android:text="@string/fotos_agricultor"
             android:gravity="center"
             android:textAppearance="?android:textAppearanceLarge"
-            app:layout_constraintTop_toBottomOf="@id/textInp_recomendacion"
+            app:layout_constraintTop_toBottomOf="@id/btn_guardar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />
@@ -373,7 +373,7 @@
             android:id="@+id/titulo_clientes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fotos Clientes"
+            android:text="@string/fotos_cliente"
             android:gravity="center"
             android:textAppearance="?android:textAppearanceLarge"
             app:layout_constraintTop_toBottomOf="@id/fotos_agronomos"
@@ -401,7 +401,7 @@
             android:drawableStart="@drawable/ic_save"
             android:layout_margin="@dimen/padding"
             android:padding="@dimen/padding"
-            app:layout_constraintTop_toBottomOf="@id/fotos_clientes"
+            app:layout_constraintTop_toBottomOf="@id/textInp_recomendacion"
             app:layout_constraintStart_toStartOf="parent"
 
 
@@ -417,7 +417,7 @@
             android:layout_toEndOf="@id/btn_guardar"
             android:padding="@dimen/padding"
             android:layout_margin="@dimen/padding"
-            app:layout_constraintTop_toBottomOf="@id/fotos_clientes"
+            app:layout_constraintTop_toBottomOf="@id/textInp_recomendacion"
             app:layout_constraintStart_toEndOf="@id/btn_guardar"
             />
 

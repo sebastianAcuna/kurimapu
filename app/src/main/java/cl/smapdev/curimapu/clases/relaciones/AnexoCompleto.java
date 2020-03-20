@@ -2,12 +2,18 @@ package cl.smapdev.curimapu.clases.relaciones;
 
 import androidx.room.Embedded;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
+import cl.smapdev.curimapu.clases.tablas.Fichas;
+import cl.smapdev.curimapu.clases.tablas.Lotes;
+import cl.smapdev.curimapu.clases.tablas.Predios;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Especie;
+
 
 public class AnexoCompleto implements Serializable {
 
@@ -23,6 +29,39 @@ public class AnexoCompleto implements Serializable {
     @Embedded
     private Variedad variedad;
 
+    @Embedded
+    private Fichas fichas;
+
+    @Embedded
+    private Predios predios;
+
+    @Embedded
+    private Lotes lotes;
+
+
+    public Fichas getFichas() {
+        return fichas;
+    }
+
+    public void setFichas(Fichas fichas) {
+        this.fichas = fichas;
+    }
+
+    public Predios getPredios() {
+        return predios;
+    }
+
+    public void setPredios(Predios predios) {
+        this.predios = predios;
+    }
+
+    public Lotes getLotes() {
+        return lotes;
+    }
+
+    public void setLotes(Lotes lotes) {
+        this.lotes = lotes;
+    }
 
     public AnexoContrato getAnexoContrato() {
         return anexoContrato;

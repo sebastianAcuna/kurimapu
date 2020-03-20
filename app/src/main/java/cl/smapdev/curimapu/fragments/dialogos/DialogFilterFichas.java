@@ -49,10 +49,10 @@ public class DialogFilterFichas extends DialogFragment {
 
 
 
-    private ArrayList<Integer> idRegiones = new ArrayList<>();
-    private ArrayList<Integer> idComunas = new ArrayList<>();
-    private ArrayList<Integer> idProvincias = new ArrayList<>();
-    private ArrayList<Integer> idTemporadas = new ArrayList<>();
+    private ArrayList<String> idRegiones = new ArrayList<>();
+    private ArrayList<String> idComunas = new ArrayList<>();
+    private ArrayList<String> idProvincias = new ArrayList<>();
+    private ArrayList<String> idTemporadas = new ArrayList<>();
 
 
     private List<Comuna> comunaList =  MainActivity.myAppDB.myDao().getComunas();
@@ -61,7 +61,7 @@ public class DialogFilterFichas extends DialogFragment {
     private List<Temporada> years = MainActivity.myAppDB.myDao().getTemporada();
 
 
-    private int idComuna,idRegion,idAnno, idProvincia;
+    private String idComuna,idRegion,idAnno, idProvincia;
 
     private SharedPreferences prefs;
     private MainActivity activity;
@@ -77,12 +77,8 @@ public class DialogFilterFichas extends DialogFragment {
         LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
 
         View view = inflater.inflate(R.layout.dialogo_filtros_fichas, null);
-
         builder.setView(view);
-
-        builder.setTitle("Filtros para Ficha");
-        
-
+        builder.setTitle(getResources().getString(R.string.filtros_fichas));
         bind(view);
 
 //        years = getResources().getStringArray(R.array.anos_toolbar);
@@ -95,12 +91,21 @@ public class DialogFilterFichas extends DialogFragment {
         }
 
 
+        builder.setCancelable(false);
+        return builder.create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
 
         if (regionList != null && regionList.size() > 0){
             ArrayList<String> rg = new ArrayList<>();
             int contador = 0;
             rg.add(contador,getResources().getString(R.string.select));
-            idRegiones.add(contador,0);
+            idRegiones.add(contador,"");
             contador++;
 
             for (Region re : regionList){
@@ -110,7 +115,7 @@ public class DialogFilterFichas extends DialogFragment {
             }
 
             sp_dialog_region.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
-            sp_dialog_region.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_REGION, 0));
+            //sp_dialog_region.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_REGION, 0));
 
         }
 
@@ -157,10 +162,7 @@ public class DialogFilterFichas extends DialogFragment {
 
 //        sp_dialog_year.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, getResources().getStringArray(R.array.anos_toolbar).length - 1));
 
-        builder.setCancelable(false);
-        return builder.create();
     }
-
 
     private void onset(){
 
@@ -168,7 +170,7 @@ public class DialogFilterFichas extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 idAnno = idTemporadas.get(i);
-                prefs.edit().putInt(Utilidades.SELECTED_ANO, idAnno).apply();
+                prefs.edit().putString(Utilidades.SELECTED_ANO, idAnno).apply();
                 prefs.edit().putInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, i).apply();
             }
 
@@ -233,20 +235,20 @@ public class DialogFilterFichas extends DialogFragment {
 
                     provinciaList = MainActivity.myAppDB.myDao().getProvinciaByRegion(idRegion);
                     prefs.edit().remove(Utilidades.SHARED_FILTER_FICHAS_COMUNA).apply();
-                    prefs.edit().putInt(Utilidades.SHARED_FILTER_FICHAS_REGION, idRegion).apply();
+                    //prefs.edit().putString(Utilidades.SHARED_FILTER_FICHAS_REGION, idRegion).apply();
 
 
                     cargarProvincia();
                 }else{
-                    idRegion = 0;
-                    prefs.edit().remove(Utilidades.SHARED_FILTER_FICHAS_REGION).apply();
+                    idRegion = "";
+                    //prefs.edit().remove(Utilidades.SHARED_FILTER_FICHAS_REGION).apply();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                idRegion = 0;
-                prefs.edit().remove(Utilidades.SHARED_FILTER_FICHAS_REGION).apply();
+                idRegion = "";
+                //prefs.edit().remove(Utilidades.SHARED_FILTER_FICHAS_REGION).apply();
             }
         });
 
@@ -260,13 +262,13 @@ public class DialogFilterFichas extends DialogFragment {
 
                     cargarComuna();
                 }else{
-                    idProvincia = 0;
+                    idProvincia = "";
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                idProvincia = 0;
+                idProvincia = "";
 
             }
         });
@@ -278,16 +280,16 @@ public class DialogFilterFichas extends DialogFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i > 0){
                     idComuna = idComunas.get(i);
-                    prefs.edit().putInt(Utilidades.SHARED_FILTER_FICHAS_COMUNA, idComuna).apply();
+                    prefs.edit().putString(Utilidades.SHARED_FILTER_FICHAS_COMUNA, idComuna).apply();
                 }else{
-                    idComuna = 0;
+                    idComuna = "";
                     prefs.edit().remove(Utilidades.SHARED_FILTER_FICHAS_COMUNA).apply();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                idComuna = 0;
+                idComuna = "";
                 prefs.edit().remove(Utilidades.SHARED_FILTER_FICHAS_COMUNA).apply();
             }
         });
@@ -324,13 +326,13 @@ public class DialogFilterFichas extends DialogFragment {
 //        anno = :year
 
         consulta+= "AND anno =  ?";
-        ob = Utilidades.appendValue(ob,prefs.getInt(Utilidades.SELECTED_ANO, 2020));
+        ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SELECTED_ANO, years.get(years.size() - 1).getId_tempo_tempo()));
 
         String nombre_Ag = et_dialog_nombre_ag.getText().toString();
         String of_neg = et_dialog_of_neg.getText().toString();
         String ha_disp = et_dialog_ha_disp.getText().toString();
 
-        int estado = (radio_todos.isChecked()) ? -1 : (radio_inactiva.isChecked()) ? 0 : (radio_activa.isChecked()) ? 1 : 2;
+        int estado = (radio_todos.isChecked()) ? -1 : (radio_inactiva.isChecked()) ? 1 : (radio_activa.isChecked()) ? 2 : 3;
 
 
         if (estado >= 0){
@@ -355,12 +357,12 @@ public class DialogFilterFichas extends DialogFragment {
             consulta+= " AND fichas.oferta_negocio LIKE ? ";
         }
 
-        if (idRegion > 0){
+        if (!TextUtils.isEmpty(idRegion)){
             ob = Utilidades.appendValue(ob, idRegion);
             consulta+= " AND fichas.id_region_ficha = ? ";
         }
 
-        if (idComuna > 0){
+        if (!TextUtils.isEmpty(idComuna)){
             ob = Utilidades.appendValue(ob, idComuna);
             consulta+= " AND fichas.id_comuna_ficha = ? ";
         }
@@ -384,14 +386,14 @@ public class DialogFilterFichas extends DialogFragment {
             ArrayList<String> rg = new ArrayList<>();
             int contador = 0;
             rg.add(contador,getResources().getString(R.string.select));
-            idProvincias.add(contador,0);
+            idProvincias.add(contador,"");
             contador++;
             int selectable = 0;
             for (Provincia re : provinciaList){
                 rg.add(contador,re.getNombre_provincia());
                 idProvincias.add(contador, re.getId_provincia());
 
-                if (idProvincia == re.getId_provincia()){
+                if (!TextUtils.isEmpty(idProvincia) && idProvincia.equals(re.getId_provincia())){
                     selectable = contador;
                 }
 
@@ -400,7 +402,7 @@ public class DialogFilterFichas extends DialogFragment {
 
             }
             sp_dialog_provincia.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, rg));
-            sp_dialog_provincia.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_COMUNA, selectable));
+            //sp_dialog_provincia.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_COMUNA, selectable));
         }
     }
     private void cargarComuna(){
@@ -409,7 +411,7 @@ public class DialogFilterFichas extends DialogFragment {
             ArrayList<String> rg = new ArrayList<>();
             int contador = 0;
             rg.add(contador,getResources().getString(R.string.select));
-            idComunas.add(contador,0);
+            idComunas.add(contador,"");
             contador++;
             int selectable = 0;
             for (Comuna re : comunaList){
@@ -425,7 +427,7 @@ public class DialogFilterFichas extends DialogFragment {
 
             }
             sp_dialog_comuna.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, rg));
-            sp_dialog_comuna.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_COMUNA, selectable));
+            //sp_dialog_comuna.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_COMUNA, selectable));
         }
     }
 
