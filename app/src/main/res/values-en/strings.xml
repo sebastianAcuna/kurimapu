@@ -103,6 +103,8 @@ Depending on the state, it can be edited or not.</string>
     <string name="estado_efectuado"> Effected </string>
     <string name="estado_efectuado_no"> Not Done </string>
 
+    <string name="espere"> Wait a moment…</string>
+
     <!--FORM CICLO VIDA -->
     <string name="format_date">dd/mm/yyyy</string>
     <string name="format_set_input">Enter Value</string>
@@ -366,8 +368,8 @@ Depending on the state, it can be edited or not.</string>
     <string name="nav_save">Save</string>
     <string name="nav_applicar">Apply</string>
     <string name="nav_cancel">Cancel</string>
-    <string name="nav_take_pick_priv">Take private picture</string>
-    <string name="nav_take_pick_public">Take public picture</string>
+    <string name="nav_take_pick_priv">Take farmer picture</string>
+    <string name="nav_take_pick_public">Take client picture</string>
     <string name="nav_take_pick_action">select action</string>
     <string name="fotos">photos</string>
     <string name="form_ver">Watch</string>

@@ -12,27 +12,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
-        android:background="@color/subToolbarColor">
+        android:background="@color/colorSurface">
 
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/toolbarColor"
+            android:theme="@style/toolbars"
+            app:titleTextColor="@color/colorOnSurface"
+            app:subtitleTextColor="@color/colorOnSurface"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/toolbarColor"
+            android:theme="@style/toolbars"
             app:tabGravity="fill"
             android:layout_gravity="top"
             app:tabMode="fixed"
-            app:tabTextColor="@color/secondaryText"
-            app:tabSelectedTextColor="@color/colorAccent"
-            app:tabIndicatorColor="@color/colorAccent"/>
+            app:tabTextColor="@color/colorOnSurface"
+            app:tabSelectedTextColor="@color/colorSecondaryVariant"
+            app:tabIndicatorColor="@color/colorSecondary"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

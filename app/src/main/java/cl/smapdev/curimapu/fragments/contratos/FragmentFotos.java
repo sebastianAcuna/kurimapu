@@ -165,6 +165,7 @@ public class FragmentFotos extends Fragment {
                 if (estado_visita == 2){
                     Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
                 }else{
+                    Utilidades.hideKeyboard(activity);
 //                    activity.cambiarFragment(new FragmentTakePicture(), "hola", R.anim.slide_in_left,R.anim.slide_out_left);
                     activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(fieldbook, 2), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
                 }
@@ -175,6 +176,7 @@ public class FragmentFotos extends Fragment {
                 if (estado_visita == 2){
                     Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
                 }else{
+                    Utilidades.hideKeyboard(activity);
                     activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(fieldbook, 0), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
 //                    abrirCamara(0);
                 }

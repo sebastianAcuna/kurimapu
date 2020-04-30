@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8a80fd72e876557b8816eb4a1e725e3e",
+    "identityHash": "126bbf4c5a51b3078f9f6ea5182b4d6a",
     "entities": [
       {
         "tableName": "fotos",
@@ -104,7 +104,7 @@
       },
       {
         "tableName": "fichas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_ficha` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `anno` TEXT, `id_agricultor_ficha` TEXT, `oferta_negocio` TEXT, `id_region_ficha` TEXT, `id_comuna_ficha` TEXT, `localidad` TEXT, `has_disponible` REAL NOT NULL, `observaciones` TEXT, `norting` REAL NOT NULL, `easting` REAL NOT NULL, `activa` INTEGER NOT NULL, `subida` INTEGER NOT NULL, `id_pred_ficha` INTEGER NOT NULL, `id_lote_ficha` INTEGER NOT NULL, `coo_utm_ref_ficha` TEXT, `coo_utm_ampros_ficha` TEXT, `id_tipo_suelo` TEXT, `id_tipo_riego` TEXT, `experiencia` TEXT, `id_usuario` INTEGER NOT NULL, `id_tipo_tenencia_maquinaria` TEXT, `id_tipo_tenencia_terreno` TEXT, `maleza` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_ficha` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `anno` TEXT, `id_agricultor_ficha` TEXT, `oferta_negocio` TEXT, `id_region_ficha` TEXT, `id_comuna_ficha` TEXT, `localidad` TEXT, `has_disponible` REAL NOT NULL, `observaciones` TEXT, `norting` REAL NOT NULL, `easting` REAL NOT NULL, `activa` INTEGER NOT NULL, `subida` INTEGER NOT NULL, `id_pred_ficha` INTEGER NOT NULL, `id_lote_ficha` INTEGER NOT NULL, `coo_utm_ref_ficha` TEXT, `coo_utm_ampros_ficha` TEXT, `id_tipo_suelo` TEXT, `id_tipo_riego` TEXT, `experiencia` TEXT, `id_usuario` INTEGER NOT NULL, `id_tipo_tenencia_maquinaria` TEXT, `id_tipo_tenencia_terreno` TEXT, `maleza` TEXT, `cabecera_ficha` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id_ficha",
@@ -249,6 +249,12 @@
             "columnName": "maleza",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "cabecera_ficha",
+            "columnName": "cabecera_ficha",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -1619,11 +1625,43 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "card_view_resumen",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`nombre` TEXT NOT NULL, `total` TEXT, `id_tempo_cardiview` TEXT, PRIMARY KEY(`nombre`))",
+        "fields": [
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "total",
+            "columnName": "total",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id_tempo_cardiview",
+            "columnName": "id_tempo_cardiview",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "nombre"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8a80fd72e876557b8816eb4a1e725e3e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"126bbf4c5a51b3078f9f6ea5182b4d6a\")"
     ]
   }
 }

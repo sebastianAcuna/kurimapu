@@ -71,7 +71,7 @@
             android:layout_toEndOf="@id/lbl_agricultor"
             android:layout_below="@id/fecha_lista_visitas"
             android:layout_marginStart="0.5dp"
-            android:textColor="@color/primaryText"/>
+            android:textColor="@color/colorOnSurface"/>
 
         <TextView
             android:id="@+id/lbl_etapa"
@@ -91,7 +91,7 @@
             android:textAppearance="?android:textAppearanceMedium"
             android:layout_below="@id/nombre_agricultor"
             android:text="FLOWERING"
-            android:textColor="@color/primaryText"/>
+            android:textColor="@color/colorOnSurface"/>
 
         <TextView
             android:id="@+id/lbl_detalle_etapa"
@@ -111,7 +111,7 @@
             android:textAppearance="?android:textAppearanceMedium"
             android:layout_marginStart="0.5dp"
             android:layout_below="@id/nombre_etapa"
-            android:textColor="@color/primaryText"
+            android:textColor="@color/colorOnSurface"
             />
 
 

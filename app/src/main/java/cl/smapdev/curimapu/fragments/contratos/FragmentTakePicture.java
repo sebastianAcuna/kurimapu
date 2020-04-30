@@ -178,6 +178,8 @@ public class FragmentTakePicture extends Fragment {
 
         if (activity != null){
             prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+
+
 //            activity.setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
@@ -205,6 +207,8 @@ public class FragmentTakePicture extends Fragment {
                 takePicture();
             }
         });
+
+
     }
 
 

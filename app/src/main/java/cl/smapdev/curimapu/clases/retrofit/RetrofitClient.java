@@ -19,8 +19,6 @@ public class RetrofitClient {
             .writeTimeout(3,  TimeUnit.MINUTES)
             .build();
 
-
-
     public static Retrofit getClient(){
 
         Gson gson = new GsonBuilder()
@@ -29,7 +27,7 @@ public class RetrofitClient {
 
         if (retrofit ==null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://190.13.170.26/curimapu/core/models/android/")
+                    .baseUrl("http://190.13.170.30/curimapu/core/models/android/")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();

@@ -2,4 +2,10 @@
 <resources>
     <dimen name="padding">16dp</dimen>
 
+
+
+    <dimen name="margin_end_cardviews">16dp</dimen>
+    <dimen name="margin_start_cardviews">16dp</dimen>
+    <dimen name="elevation_cardviews">1dp</dimen>
+
 </resources>

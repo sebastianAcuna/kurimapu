@@ -23,100 +23,40 @@ import retrofit2.Response;
 
 public class Descargas {
 
-    public static class descargar extends AsyncTask<Void, Integer, Boolean> {
 
-        private WeakReference<Context> activity;
+    public static void descargarBack(WeakReference<Context> activity){
 
-        public descargar(Context reference) {
-            this.activity = new WeakReference<>(reference);
-        }
+        Config cnf = MainActivity.myAppDB.myDao().getConfig();
 
-        ProgressDialog progressDialog;
-
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(activity.get());
-            progressDialog.setTitle("Espere un momento...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-
-            final boolean[] problema = {false};
-
-            Config cnf = MainActivity.myAppDB.myDao().getConfig();
-
-            ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-            Call<GsonDescargas> call = apiService.descargarDatos(cnf.getId(), cnf.getId_usuario());
-            call.enqueue(new Callback<GsonDescargas>() {
-                @Override
-                public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
-                    problema[0] = volqueoDatos(response.body());
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
-                    System.out.println(t.getMessage());
-                }
-            });
-
-
-
-            return problema[0];
-        }
-
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            if (!aBoolean){
-                Toast.makeText(activity.get(), "Todo descargado con exito", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(activity.get(), "No se pudo descargar todo", Toast.LENGTH_SHORT).show();
+        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        Call<GsonDescargas> call = apiService.descargarDatos(cnf.getId(), cnf.getId_usuario());
+        call.enqueue(new Callback<GsonDescargas>() {
+            @Override
+            public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
+                boolean problema  = volqueoDatos(response.body());
             }
-            progressDialog.dismiss();
-        }
+
+            @Override
+            public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+
+
     }
 
-    public static class primeraDescarga extends AsyncTask<Void, Integer, Boolean> {
+    public static void primeraDescarga(final MainActivity activity, String imei, int id) {
 
-        private WeakReference<Context> activity;
-        private String imei;
-        private int id;
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setTitle("Espere un momento...");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMax(100);
+        progressDialog.show();
 
-        public primeraDescarga(Context reference, String imei, int id) {
-            this.activity = new WeakReference<>(reference);
-            this.imei = imei;
-            this.id = id;
-        }
 
-        ProgressDialog progressDialog;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(activity.get());
-            progressDialog.setTitle("Espere un momento...");
-            progressDialog.setCancelable(false);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setMax(100);
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-
-            final boolean[] problema = {false};
 
 
             ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
@@ -124,7 +64,7 @@ public class Descargas {
             call.enqueue(new Callback<GsonDescargas>() {
                 @Override
                 public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
-
+                    int problema = 0;
                     GsonDescargas gsonDescargas = response.body();
                     if (gsonDescargas != null) {
                         int id = gsonDescargas.getId_dispo();
@@ -142,46 +82,42 @@ public class Descargas {
                                 int c = 1;
                                 for (long l : inserts) {
                                     if (l <= 0) {
-                                        problema[0] = true;
+                                        problema = 1;
                                     } else {
-                                        publishProgress(c * 100 / inserts.size());
+                                        progressDialog.setProgress(c * 100 / inserts.size());
                                         c++;
                                     }
                                 }
                             } catch (SQLiteException e) {
+                                problema = 1;
                                 Log.e("SQLITE", e.getMessage());
                             }
+                        }else{
+                            problema = 1;
                         }
+                    }else{
+                        problema = 1;
+                    }
+
+                    if (problema > 0){
+                        Toast.makeText(activity, "No se pudo descargar todo", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }else{
+                        Toast.makeText(activity, "Todo descargado con exito", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
                     System.out.println(t.getMessage());
+                    Toast.makeText(activity, "No se pudo descargar todo", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 }
             });
-            return problema[0];
+
         }
 
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-                progressDialog.setProgress(values[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-
-            if (!aBoolean){
-                Toast.makeText(activity.get(), "Todo descargado con exito", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(activity.get(), "No se pudo descargar todo", Toast.LENGTH_SHORT).show();
-            }
-            progressDialog.dismiss();
-        }
-    }
 
     public static boolean volqueoDatos(GsonDescargas gsonDescargas){
 
@@ -572,6 +508,22 @@ public class Descargas {
                     List<Long> inserts = MainActivity.myAppDB.myDao().insertClientes(gsonDescargas.getClientes());
                     for (long l : inserts) {
                         if (l <= 0 && inserts.size()  == gsonDescargas.getClientes().size()) {
+                            problema = true;
+                            break;
+                        }
+                    }
+                }catch (SQLiteException e) {
+                    Log.e("SQLITE", e.getMessage());
+                }
+            }
+
+
+            if (gsonDescargas.getCardViewsResumen() != null && gsonDescargas.getCardViewsResumen().size() > 0){
+                try {
+                    MainActivity.myAppDB.myDao().deleteResumenes();
+                    List<Long> inserts = MainActivity.myAppDB.myDao().insertResumenes(gsonDescargas.getCardViewsResumen());
+                    for (long l : inserts) {
+                        if (l <= 0 && inserts.size()  == gsonDescargas.getCardViewsResumen().size()) {
                             problema = true;
                             break;
                         }

@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="@dimen/padding"
-    android:elevation="@dimen/padding">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/padding">
+    android:paddingVertical="@dimen/padding"
+    android:elevation="0dp"
+    android:background="?attr/selectableItemBackground"
+    android:backgroundTint="@color/colorSurface"
+    >
 
         <ImageView
             android:id="@+id/img_activated"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@drawable/ic_radio_button_unchecked_black_24dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_comuna_fichas"
-            android:contentDescription="@string/accion" />
+            android:contentDescription="@string/accion"
+            android:layout_marginEnd="@dimen/margin_end_cardviews"/>
 
 
-        <TextView
+
+
+    <TextView
             android:id="@+id/lbl_region_fichas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/region"
+            android:layout_marginStart="@dimen/margin_start_cardviews"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_region_fichas"
             app:layout_constraintBottom_toBottomOf="@id/tv_region_fichas"
@@ -71,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nombre_agricultor"
+            android:layout_marginStart="@dimen/margin_start_cardviews"
             app:layout_constraintTop_toBottomOf="@id/tv_comuna_fichas"
             app:layout_constraintStart_toStartOf="parent"
             />
@@ -80,10 +85,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:layout_marginEnd="@dimen/padding"
             app:layout_constraintTop_toBottomOf="@id/lbl_agricultor_fichas"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/margin_start_cardviews"
+            android:layout_marginEnd="@dimen/margin_end_cardviews"
             />
 
         <TextView
@@ -91,6 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/oferta_negocio"
+            android:layout_marginStart="@dimen/margin_start_cardviews"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_negocio_fichas"
             app:layout_constraintBottom_toBottomOf="@id/tv_negocio_fichas"
@@ -101,11 +108,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:layout_marginEnd="@dimen/margin_end_cardviews"
             app:layout_constraintTop_toBottomOf="@id/tv_agricultor_fichas"
             app:layout_constraintStart_toEndOf="@id/lbl_negocio_fichas"
             app:layout_constraintEnd_toEndOf="parent"
 
             />
 
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_activated"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>

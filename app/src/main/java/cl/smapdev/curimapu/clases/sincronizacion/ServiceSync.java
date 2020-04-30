@@ -33,6 +33,7 @@ import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Errores;
+import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
@@ -134,11 +135,11 @@ public class ServiceSync extends Service {
                 }, 0);
                 mm.execute();
                 //Toast.makeText(context, "Service is still running", Toast.LENGTH_LONG).show();
-                handler.postDelayed(runnable, 60000);
+                handler.postDelayed(runnable, 3600000);
             }
         };
 
-        handler.postDelayed(runnable, 65000);
+        handler.postDelayed(runnable, 3605000);
     }
 
 
@@ -148,6 +149,7 @@ public class ServiceSync extends Service {
         List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubir();
         List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotos();
         List<Errores> errores = MainActivity.myAppDB.myDao().getErroresPorSubir();
+        List<Fichas> fichas = MainActivity.myAppDB.myDao().getFichasPorSubir();
 
         List<Fotos> fts = new ArrayList<>();
 
@@ -160,6 +162,40 @@ public class ServiceSync extends Service {
         Config config = MainActivity.myAppDB.myDao().getConfig();
 
 
+        int cantidadSuma = 0;
+
+        if (visitas.size() > 0){
+            for (Visitas v : visitas){
+                cantidadSuma+= v.getId_visita();
+            }
+        }
+        cantidadSuma+= visitas.size();
+
+        if (detalles.size() > 0){
+            for (detalle_visita_prop v : detalles){
+                cantidadSuma+= v.getId_det_vis_prop_detalle();
+            }
+        }
+
+        cantidadSuma+= detalles.size();
+
+        if (fotos.size() > 0){
+            for (Fotos v : fotos){
+                cantidadSuma+=  v.getId_foto();
+            }
+        }
+
+        cantidadSuma= cantidadSuma + fotos.size();
+
+        if (fichas.size() > 0){
+            for (Fichas v : fichas){
+                cantidadSuma+= v.getId_ficha();
+            }
+        }
+
+        cantidadSuma+= fichas.size();
+
+
         SubidaDatos list = new SubidaDatos();
 
         list.setVisitasList(visitas);
@@ -168,6 +204,8 @@ public class ServiceSync extends Service {
         list.setId_dispo(config.getId());
         list.setId_usuario(config.getId_usuario());
         list.setErrores(errores);
+        list.setFichas(fichas);
+        list.setCantidadSuma(cantidadSuma);
 
 
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
@@ -243,10 +281,19 @@ public class ServiceSync extends Service {
                         case 0:
                             //salio bien se sigue con el procedimiento
 
+
+                            List<Fichas> fichas = MainActivity.myAppDB.myDao().getFichasPorSubir();
+                            int ficha = MainActivity.myAppDB.myDao().updateFichasSubidas(re.getCabeceraRespuesta());
+                            if (ficha != fichas.size()){
+                                problema = true;
+                                /*problema[0] = 2;
+                                problema[1] = re.getCabeceraRespuesta();*/
+                            }
+
                             List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir();
                             int visita = MainActivity.myAppDB.myDao().updateVisitasSubidas(re.getCabeceraRespuesta());
                             if (visita != visitas.size()) {
-//                                problema = true;
+                                problema = true;
                                 /*problema[0] = 2;
                                 problema[1] = re.getCabeceraRespuesta();*/
                             }
@@ -254,7 +301,7 @@ public class ServiceSync extends Service {
                             List<detalle_visita_prop> detalle_visita_props = MainActivity.myAppDB.myDao().getDetallesPorSubir();
                             int detalles = MainActivity.myAppDB.myDao().updateDetalleVisitaSubidas(re.getCabeceraRespuesta());
                             if (detalles != detalle_visita_props.size()) {
-//                                problema = true;
+                                problema = true;
                                /* problema[0] = 2;
                                 problema[1] = re.getCabeceraRespuesta();*/
                             }
@@ -262,7 +309,7 @@ public class ServiceSync extends Service {
                             List<Fotos> fotosList = MainActivity.myAppDB.myDao().getFotos();
                             int fotos = MainActivity.myAppDB.myDao().updateFotosSubidas(re.getCabeceraRespuesta());
                             if (fotos != fotosList.size()) {
-//                                problema = true;
+                                problema = true;
                                 /*problema[0] = 2;
                                 problema[1] = re.getCabeceraRespuesta();*/
                             }
@@ -270,7 +317,7 @@ public class ServiceSync extends Service {
                             List<Errores> erroresList = MainActivity.myAppDB.myDao().getErroresPorSubir();
                             int err = MainActivity.myAppDB.myDao().updateErroresSubidos(re.getCabeceraRespuesta());
                             if (err != erroresList.size()){
-//                                problema = true;
+                                problema = true;
                                 /*problema[0] = 2;
                                 problema[1] = re.getCabeceraRespuesta();*/
                             }
@@ -301,6 +348,7 @@ public class ServiceSync extends Service {
                         MainActivity.myAppDB.myDao().updateFotosBack(re.getCabeceraRespuesta());
                         MainActivity.myAppDB.myDao().updateVisitasBack(re.getCabeceraRespuesta());
                         MainActivity.myAppDB.myDao().updateErroresBack(re.getCabeceraRespuesta());
+                        MainActivity.myAppDB.myDao().updateFichasBack(re.getCabeceraRespuesta());
                     }
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     if (notificationManager != null) {

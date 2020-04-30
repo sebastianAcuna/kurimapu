@@ -1,10 +1,12 @@
 package cl.smapdev.curimapu.clases;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -136,43 +138,7 @@ public class Tabla {
         botonForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity activity = (MainActivity) actividad;
-                if (activity != null){
-
-                    /* eliminara detalles de las propiedades (todas)*/
-                    MainActivity.myAppDB.myDao().deleteTempVisitas();
-                    MainActivity.myAppDB.myDao().deleteDetalleVacios();
-
-
-                    List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
-                    if (fotos.size() > 0){
-                        for (Fotos fts : fotos){
-                            try{
-                                File file = new File(fts.getRuta());
-                                if (file.exists()) {
-                                    boolean eliminado = file.delete();
-                                    if (eliminado){
-                                        MainActivity.myAppDB.myDao().deleteFotos(fts);
-                                    }
-                                }
-                            }catch (Exception e){
-                                Log.e("ERROR DELETING", Objects.requireNonNull(e.getMessage()));
-                            }
-                        }
-                    }
-
-
-
-                    if (prefs != null){
-                        prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls.getAnexoContrato().getId_ficha_contrato()).apply();
-                        prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, ls.getAnexoContrato().getId_especie_anexo()).apply();
-                        prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, ls.getAnexoContrato().getId_anexo_contrato()).apply();
-                        prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
-                    }
-
-                    activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left,R.anim.slide_out_left);
-                }
-
+                new LazyLoad().execute(ls);
             }
         });
 
@@ -243,4 +209,74 @@ public class Tabla {
 
 
     }
+
+
+    private class LazyLoad extends AsyncTask<AnexoCompleto, Void, Void>{
+
+        MainActivity activity ;
+        private ProgressDialog progressDialog;
+
+
+        @Override
+        protected void onPreExecute() {
+            activity = (MainActivity) actividad;
+
+            progressDialog = new ProgressDialog(actividad);
+            progressDialog.setTitle(actividad.getResources().getString(R.string.espere));
+            progressDialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(AnexoCompleto... ls) {
+            if (activity != null){
+
+                /* eliminara detalles de las propiedades (todas)*/
+                MainActivity.myAppDB.myDao().deleteTempVisitas();
+                MainActivity.myAppDB.myDao().deleteDetalleVacios();
+
+
+                List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
+                if (fotos.size() > 0){
+                    for (Fotos fts : fotos){
+                        try{
+                            File file = new File(fts.getRuta());
+                            if (file.exists()) {
+                                boolean eliminado = file.delete();
+                                if (eliminado){
+                                    MainActivity.myAppDB.myDao().deleteFotos(fts);
+                                }
+                            }
+                        }catch (Exception e){
+                            Log.e("ERROR DELETING", Objects.requireNonNull(e.getMessage()));
+                        }
+                    }
+                }
+
+
+
+                if (prefs != null){
+                    prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls[0].getAnexoContrato().getId_ficha_contrato()).apply();
+                    prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, ls[0].getAnexoContrato().getId_especie_anexo()).apply();
+                    prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, ls[0].getAnexoContrato().getId_anexo_contrato()).apply();
+                    prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
+                }
+
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left,R.anim.slide_out_left);
+
+            if (progressDialog != null && progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
+        }
+    }
+
 }

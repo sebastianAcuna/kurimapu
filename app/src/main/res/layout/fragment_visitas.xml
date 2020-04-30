@@ -16,7 +16,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/toolbarColor"
+            android:theme="@style/toolbars"
+            app:titleTextColor="@color/colorOnSurface"
+            app:subtitleTextColor="@color/colorOnSurface"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
             <Spinner

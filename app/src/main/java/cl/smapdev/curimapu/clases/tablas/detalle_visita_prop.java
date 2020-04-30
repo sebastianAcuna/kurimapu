@@ -11,6 +11,7 @@ public class detalle_visita_prop {
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id_det_vis_prop_detalle")
+    @Expose
     private int id_det_vis_prop_detalle;
 
     @SerializedName("id_visita")

@@ -28,7 +28,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.clans.fab.FloatingActionButton;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -198,7 +199,6 @@ public class FragmentFichas extends Fragment {
         if (temporadaList.size() > 0){
             spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, temporadaList.size() - 1));
         }
-
     }
 
 

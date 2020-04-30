@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -96,6 +98,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private FotosListAdapter adapterAgronomo;
     private FotosListAdapter adapterCliente;
 
+    private ProgressDialog progressBar;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,19 +108,17 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
         prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
 
-
         fenologico.addAll(Arrays.asList(getResources().getStringArray(R.array.fenologico)));
         cosecha.addAll(Arrays.asList(getResources().getStringArray(R.array.cosecha)));
         crecimiento.addAll(Arrays.asList(getResources().getStringArray(R.array.crecimiento)));
         maleza.addAll(Arrays.asList(getResources().getStringArray(R.array.maleza)));
 
 
+        progressBar = new ProgressDialog(activity);
+        progressBar.setTitle(getResources().getString(R.string.espere));
+        progressBar.show();
 //        crecimiento = getResources().getStringArray(R.array.crecimiento);
 //        maleza = getResources().getStringArray(R.array.maleza);
-
-
-
-
     }
 
     @Nullable
@@ -130,16 +132,19 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         super.onViewCreated(view, savedInstanceState);
         bind(view);
 
+       new LazyLoad().execute();
 
-        if (temp_visitas == null){
-            temp_visitas = new TempVisitas();
-            if (prefs != null){
-                temp_visitas.setId_anexo_temp_visita(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
-                temp_visitas.setId_temp_visita(0);
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+            if (!checkPermission()) {
+                requestPermission();
             }
-            MainActivity.myAppDB.myDao().setTempVisitas(temp_visitas);
-            temp_visitas = MainActivity.myAppDB.myDao().getTempFichas();
         }
+    }
+
+
+    private void chargeAll(){
+
 
         cargarSpinners();
 
@@ -153,6 +158,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                     if (temp_visitas.getAction_temp_visita() == 2){
                         Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
                     }else{
+                        Utilidades.hideKeyboard(activity);
                         activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(0, 2), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
                         //abrirCamara(2);
                     }
@@ -169,6 +175,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                     if (temp_visitas.getAction_temp_visita() == 2){
                         Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
                     }else{
+                        Utilidades.hideKeyboard(activity);
                         activity.cambiarFragmentFoto(FragmentTakePicture.getInstance((prefs.getInt(Utilidades.VISTA_FOTOS,0) == 2) ? 0 : Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()), 0), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
                         //abrirCamara(0);
                     }
@@ -179,17 +186,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
             }
         });
-
-
-
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
-            if (!checkPermission()) {
-                requestPermission();
-            }
-        }
-
-
     }
 
     /*
@@ -723,58 +719,88 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     }
 
 
+    private class LazyLoad extends AsyncTask<Void, Void, Void>{
+
+
+        @Override
+        protected void onPreExecute() {
+
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            if (temp_visitas == null){
+                temp_visitas = new TempVisitas();
+                if (prefs != null){
+                    temp_visitas.setId_anexo_temp_visita(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
+                    temp_visitas.setId_temp_visita(0);
+                }
+                MainActivity.myAppDB.myDao().setTempVisitas(temp_visitas);
+                temp_visitas = MainActivity.myAppDB.myDao().getTempFichas();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            chargeAll();
+
+            if (progressBar != null && progressBar.isShowing()){
+                progressBar.dismiss();
+            }
+        }
+    }
 
 
     private void agregarImagenToAgronomos(){
 
+        if (temp_visitas != null && rwAgronomo != null){
 
-
-        LinearLayoutManager lManager = null;
-        if (activity != null){
-//            lManager = new GridLayoutManager(activity, 1);
-            lManager  = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
-
-        }
-
-        rwAgronomo.setHasFixedSize(true);
-        rwAgronomo.setLayoutManager(lManager);
-
-
-//        int[] myImageList = new int[]{R.drawable.f1, R.drawable.f2 };
-        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, 2, temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-
-
-        adapterAgronomo = new FotosListAdapter(myImageList,activity, new FotosListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Fotos fotos) {
-                showAlertForUpdate(fotos);
+            LinearLayoutManager lManager = null;
+            if (activity != null){
+                lManager  = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
             }
-        }, new FotosListAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(Fotos fotos) {
 
-                if (temp_visitas.getAction_temp_visita() == 2){
-                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes cambiar el estado de las fotos.","entiendo");
-                }else{
-                    if (!fotos.isFavorita()){
-                        int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookFichaAndVista(0, temp_visitas.getId_anexo_temp_visita(),2, temp_visitas.getId_temp_visita());
+            rwAgronomo.setHasFixedSize(true);
+            rwAgronomo.setLayoutManager(lManager);
 
-                        if (favoritas < 3){
-                            cambiarFavorita(fotos);
-                        }else{
-                            Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_fav),getResources().getString(R.string.message_dialog_fav),getResources().getString(R.string.message_dialog_btn_ok));
-                        }
-                    }else{
-                        cambiarFavorita(fotos);
-                    }
+
+            List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, 2, temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+            adapterAgronomo = new FotosListAdapter(myImageList,activity, new FotosListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Fotos fotos) {
+                    showAlertForUpdate(fotos);
                 }
+            }, new FotosListAdapter.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(Fotos fotos) {
+
+                    if (temp_visitas.getAction_temp_visita() == 2){
+                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes cambiar el estado de las fotos.","entiendo");
+                    }else{
+                        if (!fotos.isFavorita()){
+                            int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookFichaAndVista(0, temp_visitas.getId_anexo_temp_visita(),2, temp_visitas.getId_temp_visita());
+
+                            if (favoritas < 3){
+                                cambiarFavorita(fotos);
+                            }else{
+                                Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_fav),getResources().getString(R.string.message_dialog_fav),getResources().getString(R.string.message_dialog_btn_ok));
+                            }
+                        }else{
+                            cambiarFavorita(fotos);
+                        }
+                    }
 
 
-            }
-        });
-
-
-        rwAgronomo.setAdapter(adapterAgronomo);
+                }
+            });
+            rwAgronomo.setAdapter(adapterAgronomo);
+        }
     }
 
 
@@ -805,54 +831,56 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     private void agregarImagenToClientes(){
 
-        LinearLayoutManager lManager = null;
-        if (activity != null){
+        if (temp_visitas != null && rwCliente != null) {
+
+            LinearLayoutManager lManager = null;
+            if (activity != null) {
 //            lManager = new GridLayoutManager(activity, 1);
-            lManager  = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+                lManager = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
 
-        }
+            }
 
-        rwCliente.setHasFixedSize(true);
-        rwCliente.setLayoutManager(lManager);
+            rwCliente.setHasFixedSize(true);
+            rwCliente.setLayoutManager(lManager);
 
-
-        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+            List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
 //        int[] myImageList = new int[]{R.drawable.f1, R.drawable.f2,R.drawable.f3, R.drawable.f4,R.drawable.f5 };
 
-        if (myImageList.size() > 0) sp_fenologico.setEnabled(false);
+            if (myImageList.size() > 0) sp_fenologico.setEnabled(false);
 
-        adapterCliente = new FotosListAdapter(myImageList, activity,new FotosListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Fotos fotos) {
-                showAlertForUpdate(fotos);
-            }
-        }, new FotosListAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(Fotos fotos) {
-                if (temp_visitas.getAction_temp_visita() == 2){
-                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes cambiar el estado de las fotos.","entiendo");
-                }else{
-                    if (!fotos.isFavorita()){
-                        int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookFichaAndVista(0, temp_visitas.getId_anexo_temp_visita(), 0, temp_visitas.getId_temp_visita());
-
-
-                        if (favoritas < 3){
-
-                            cambiarFavorita(fotos);
-                        }else{
-                            Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_fav),getResources().getString(R.string.message_dialog_fav),getResources().getString(R.string.message_dialog_btn_ok));
-                        }
-                    }else{
-                        cambiarFavorita(fotos);
-                    }
+            adapterCliente = new FotosListAdapter(myImageList, activity, new FotosListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Fotos fotos) {
+                    showAlertForUpdate(fotos);
                 }
+            }, new FotosListAdapter.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(Fotos fotos) {
+                    if (temp_visitas.getAction_temp_visita() == 2) {
+                        Utilidades.avisoListo(activity, getResources().getString(R.string.title_dialog_agron), "Visita en estado terminado, no puedes cambiar el estado de las fotos.", "entiendo");
+                    } else {
+                        if (!fotos.isFavorita()) {
+                            int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookFichaAndVista(0, temp_visitas.getId_anexo_temp_visita(), 0, temp_visitas.getId_temp_visita());
 
 
-            }
-        });
+                            if (favoritas < 3) {
+
+                                cambiarFavorita(fotos);
+                            } else {
+                                Utilidades.avisoListo(activity, getResources().getString(R.string.title_dialog_fav), getResources().getString(R.string.message_dialog_fav), getResources().getString(R.string.message_dialog_btn_ok));
+                            }
+                        } else {
+                            cambiarFavorita(fotos);
+                        }
+                    }
 
 
-        rwCliente.setAdapter(adapterCliente);
+                }
+            });
+
+
+            rwCliente.setAdapter(adapterCliente);
+        }
     }
 
 

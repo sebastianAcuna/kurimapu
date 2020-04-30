@@ -44,6 +44,7 @@ import cl.smapdev.curimapu.fragments.FragmentLogin;
 import cl.smapdev.curimapu.fragments.FragmentPrincipal;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
 
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActionBarDrawerToggle toogle;
@@ -87,8 +88,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean aa = prefs.getBoolean("tema", false);
 
 
-        AppCompatDelegate.setDefaultNightMode((!aa) ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
-        setTheme((!aa) ? R.style.AppTheme : R.style.ThemeSecundary);
+//        AppCompatDelegate.setDefaultNightMode((!aa) ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getDelegate().setLocalNightMode((!aa) ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
+            setTheme(R.style.MyTheme_DayNight);
+        }
+
 
 
         super.onCreate(savedInstanceState);

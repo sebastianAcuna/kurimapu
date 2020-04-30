@@ -36,7 +36,9 @@ import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.utilidades.Descargas;
+import cl.smapdev.curimapu.clases.utilidades.InternetStateClass;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
+import cl.smapdev.curimapu.clases.utilidades.returnValuesFromAsyntask;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,8 +64,6 @@ public class FragmentLogin extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_login, container, false);
-
-
     }
 
     @Override
@@ -99,13 +99,7 @@ public class FragmentLogin extends Fragment {
         });
 
 
-        if (activity != null){
-            String androidID = Settings.System.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            Config config = MainActivity.myAppDB.myDao().getConfig();
 
-            int id = (config == null) ? 0 : config.getId();
-            new Descargas.primeraDescarga(activity, androidID, id).execute();
-        }
     }
 
 
@@ -113,6 +107,25 @@ public class FragmentLogin extends Fragment {
     public void onResume() {
         super.onResume();
 
+        if (activity != null){
+            final String androidID = Settings.System.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            Config config = MainActivity.myAppDB.myDao().getConfig();
+
+            final int id = (config == null) ? 0 : config.getId();
+
+            InternetStateClass mm = new InternetStateClass(activity, new returnValuesFromAsyntask() {
+                @Override
+                public void myMethod(boolean result) {
+                    if (result) {
+                        Descargas.primeraDescarga(activity, androidID, id);
+                    } else {
+                        Toast.makeText(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }, 1);
+            mm.execute();
+
+        }
     }
 
     private void comprobar(){

@@ -105,6 +105,18 @@ public class Fichas  implements Serializable {
     @Expose
     private String maleza;
 
+    @SerializedName("cabecera")
+    @Expose
+    private int cabecera_ficha;
+
+
+    public int getCabecera_ficha() {
+        return cabecera_ficha;
+    }
+
+    public void setCabecera_ficha(int cabecera_ficha) {
+        this.cabecera_ficha = cabecera_ficha;
+    }
 
     public Fichas() {
     }

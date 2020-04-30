@@ -1,74 +1,70 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android" >
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+
+    <style name="MyTheme.DayNight" parent="Base.MyTheme"/>
+
+
+    <style name="Base.MyTheme" parent="Base.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorError">@color/colorError</item>
+
+
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="colorOnError">@color/colorOnError</item>
+
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Base.MaterialThemeBuilder" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!--<item name="android:statusBarColor">?colorSurface</item>
+        <item name="android:windowLightStatusBar">false</item>-->
+
+<!--        <item name="android:navigationBarColor">?android:colorBackground</item>-->
+<!--        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>-->
+<!--        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">?colorControlHighlight</item>-->
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
 
-    <style name="ThemeSecundary" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:navigationBarColor">@android:color/black</item>
 
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    <style name="ShapeAppearanceOverlay.MyTheme.MaterialCardView.small" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="small_card_views">
+        <item name="android:layout_margin">8dp</item>
+        <item name="cardElevation">@dimen/elevation_cardviews</item>
+        <item name="android:background">?colorSurface</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyTheme.MaterialCardView.small</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
 
     </style>
+
+
+    <style name="toolbars" >
+        <item name="android:background">?colorSurface</item>
+        <item name="colorControlNormal">?colorOnSurface</item>
+        <item name="elevation">4dp</item>
+        <item name="subtitleTextColor">?colorOnSurface</item>
+    </style>
+
 
     <style name="WindowAnimationTransition">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
-
-
-
-
-<!--    <style name="floating" parent="">-->
-<!--        <item name="android:layout_alignParentBottom">true</item>-->
-<!--        <item name="android:layout_alignParentEnd">true</item>-->
-<!--        <item name="android:layout_marginBottom">11dp</item>-->
-<!--        <item name="android:layout_marginStart">11dp</item>-->
-<!--        <item name="android:layout_marginEnd">11dp</item>-->
-<!--        <item name="fab:menu_animationDelayPerItem">55</item>-->
-<!--        <item name="fab:menu_backgroundColor">@android:color/transparent</item>-->
-<!--        <item name="fab:menu_buttonSpacing">0dp</item>-->
-<!--        <item name="fab:menu_colorNormal">#da3c2f</item>-->
-<!--        <item name="fab:menu_colorPressed">#dc4b3f</item>-->
-<!--        <item name="fab:menu_colorRipple">#99d4d4d4</item>-->
-<!--        <item name="fab:menu_fab_label">@string/nav_take_pick_action</item>-->
-<!--        <item name="fab:menu_fab_size">normal</item>-->
-<!--        <item name="fab:menu_icon">@drawable/fab_add</item>-->
-<!--        <item name="fab:menu_labels_colorNormal">#333</item>-->
-<!--        <item name="fab:menu_labels_colorPressed">#444</item>-->
-<!--        <item name="fab:menu_labels_colorRipple">#66efecec</item>-->
-<!--        <item name="fab:menu_labels_cornerRadius">3dp</item>-->
-<!--        <item name="fab:menu_labels_ellipsize">none</item>-->
-<!--        <item name="fab:menu_labels_hideAnimation">@anim/fab_slide_out_to_right</item>-->
-<!--        <item name="fab:menu_labels_margin">0dp</item>-->
-<!--        <item name="fab:menu_labels_maxLines">-1</item>-->
-<!--        <item name="fab:menu_labels_padding">8dp</item>-->
-<!--        <item name="fab:menu_labels_position">left</item>-->
-<!--        <item name="fab:menu_labels_showAnimation">@anim/fab_slide_in_from_right</item>-->
-<!--        <item name="fab:menu_labels_showShadow">true</item>-->
-<!--        <item name="fab:menu_labels_singleLine">false</item>-->
-<!--        <item name="fab:menu_labels_textColor">#f2f1f1</item>-->
-<!--        <item name="fab:menu_labels_textSize">15sp</item>-->
-<!--        <item name="fab:menu_openDirection">up</item>-->
-<!--        <item name="fab:menu_shadowColor">@color/secondaryText</item>-->
-<!--        <item name="fab:menu_shadowRadius">4dp</item>-->
-<!--        <item name="fab:menu_shadowXOffset">1dp</item>-->
-<!--        <item name="fab:menu_shadowYOffset">4dp</item>-->
-<!--        <item name="fab:menu_showShadow">true</item>-->
-
-<!--    </style>-->
-
 
     <style name="linear_layout_visitas">
         <item name="android:layout_margin">@dimen/padding</item>
@@ -85,29 +81,62 @@
     <style name="titles_forms">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:textColor">?colorOnSurface</item>
         <item name="android:textIsSelectable">true</item>
         <item name="android:padding">@dimen/padding</item>
     </style>
 
     <style name="sub_titles_forms">
-        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:textColor">?colorOnSurface</item>
         <item name="android:padding">@dimen/padding</item>
     </style>
 
     <style name="input_date_forms">
         <item name="android:hint">@string/format_date</item>
         <item name="android:drawableEnd">@drawable/ic_date_range</item>
-        <item name="android:drawableTint">@color/colorAccent</item>
+        <item name="android:drawableTint">?colorSecondaryVariant</item>
         <item name="android:windowSoftInputMode">stateHidden</item>
     </style>
 
     <style name="calendar_icon_forms">
-        <item name="android:tint">@color/colorAccent</item>
+        <item name="android:tint">?colorSecondaryVariant</item>
         <item name="android:scaleType">fitXY</item>
         <item name="android:src">@drawable/ic_date_range</item>
     </style>
 
+
+    <style name="floatingButtons" >
+            <item name="menu_animationDelayPerItem">55</item>
+            <item name="menu_backgroundColor">@android:color/transparent</item>
+            <item name="menu_buttonSpacing">0dp</item>
+            <item name="menu_colorNormal">?colorSecondary</item>
+            <item name="menu_colorPressed">?colorSecondaryVariant</item>
+            <item name="menu_colorRipple">?colorOnSurface</item>
+            <item name="menu_fab_label">@string/nav_take_pick_action</item>
+            <item name="menu_fab_size">normal</item>
+            <item name="menu_icon">@drawable/fab_add</item>
+            <item name="menu_labels_colorNormal">#333</item>
+            <item name="menu_labels_colorPressed">#444</item>
+            <item name="menu_labels_colorRipple">#66efecec</item>
+            <item name="menu_labels_cornerRadius">3dp</item>
+            <item name="menu_labels_ellipsize">none</item>
+            <item name="menu_labels_hideAnimation">@anim/fab_slide_out_to_right</item>
+            <item name="menu_labels_margin">0dp</item>
+            <item name="menu_labels_maxLines">-1</item>
+            <item name="menu_labels_padding">8dp</item>
+            <item name="menu_labels_position">left</item>
+            <item name="menu_labels_showAnimation">@anim/fab_slide_in_from_right</item>
+            <item name="menu_labels_showShadow">true</item>
+            <item name="menu_labels_singleLine">false</item>
+            <item name="menu_labels_textColor">#f2f1f1</item>
+            <item name="menu_labels_textSize">15sp</item>
+            <item name="menu_openDirection">up</item>
+            <item name="menu_shadowColor">#66aff198</item>
+            <item name="menu_shadowRadius">4dp</item>
+            <item name="menu_shadowXOffset">1dp</item>
+            <item name="menu_shadowYOffset">3dp</item>
+            <item name="menu_showShadow">true</item>
+    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

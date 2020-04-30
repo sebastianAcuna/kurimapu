@@ -1,5 +1,7 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +49,42 @@ public class FragmentFieldbook extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewPager  = (ViewPager) view.findViewById(R.id.view_sub_pager);
 
-        cargarTabs();
+        new LazyLoad().execute();
+        //cargarTabs();
+    }
+
+
+    private class LazyLoad extends AsyncTask<Void, Void, Void> {
+
+        private ProgressDialog progressBar;
+
+        @Override
+        protected void onPreExecute() {
+            progressBar = new ProgressDialog(activity);
+            progressBar.setTitle(getResources().getString(R.string.espere));
+            progressBar.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (progressBar != null && progressBar.isShowing()){
+                progressBar.dismiss();
+            }
+            cargarTabs();
+        }
     }
 
 

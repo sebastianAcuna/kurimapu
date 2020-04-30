@@ -1,5 +1,7 @@
 package cl.smapdev.curimapu.fragments;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +54,7 @@ public class FragmentContratos extends Fragment {
 
         viewPager  = (ViewPager) view.findViewById(R.id.view_pager);
 
-        cargarTabs();
+        new LazyLoad().execute();
 
     }
 
@@ -67,6 +69,40 @@ public class FragmentContratos extends Fragment {
         }
     }
 
+
+    private class LazyLoad extends AsyncTask<Void, Void, Void>{
+
+        private ProgressDialog progressBar;
+
+        @Override
+        protected void onPreExecute() {
+            progressBar = new ProgressDialog(activity);
+            progressBar.setTitle(getResources().getString(R.string.espere));
+            progressBar.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (progressBar != null && progressBar.isShowing()){
+                progressBar.dismiss();
+            }
+            cargarTabs();
+        }
+    }
+
     private void cargarTabs(){
         viewPager.setAdapter(new TabsAdapters(getChildFragmentManager(),
                 Objects.requireNonNull(getContext())));
@@ -74,8 +110,6 @@ public class FragmentContratos extends Fragment {
         TabLayout tabLayout = (TabLayout) activity.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-
-
     }
 
     @Override

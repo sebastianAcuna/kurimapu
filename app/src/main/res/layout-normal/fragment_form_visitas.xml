@@ -27,7 +27,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_fenolog_gico"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="@id/sp_feno"
                 app:layout_constraintEnd_toEndOf="@id/sp_feno"
@@ -48,7 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_de_crecimiento"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="@id/sp_crecimiento"
                 app:layout_constraintEnd_toEndOf="@id/sp_crecimiento"
@@ -68,7 +68,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_de_malezas"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="@id/sp_malezas"
                 app:layout_constraintEnd_toEndOf="@id/sp_malezas"/>
@@ -142,7 +142,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_fitosanitario"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/divider1"
                 app:layout_constraintStart_toStartOf="@id/sp_fito"
                 app:layout_constraintEnd_toEndOf="@id/sp_fito"/>
@@ -162,7 +162,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/cosecha"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/divider1"
                 app:layout_constraintStart_toStartOf="@id/sp_cosecha"
                 app:layout_constraintEnd_toEndOf="@id/sp_cosecha"/>
@@ -182,7 +182,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_general"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@id/sp_general_cultivo"
                 app:layout_constraintEnd_toEndOf="@id/sp_general_cultivo"
                 app:layout_constraintTop_toBottomOf="@id/divider1"/>
@@ -274,7 +274,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/humedad_del_suelo"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="@+id/sp_humedad"
                 app:layout_constraintStart_toStartOf="@id/sp_humedad"
                 app:layout_constraintTop_toBottomOf="@id/divider2" />
@@ -349,10 +349,10 @@
                 android:id="@+id/titulo_agronomo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Fotos Agricultor"
+                android:text="@string/fotos_agricultor"
                 android:gravity="center"
                 android:textAppearance="?android:textAppearanceLarge"
-                app:layout_constraintTop_toBottomOf="@id/textInp_recomendacion"
+                app:layout_constraintTop_toBottomOf="@id/btn_guardar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
@@ -373,7 +373,7 @@
                 android:id="@+id/titulo_clientes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fotos Clientes"
+                android:text="@string/fotos_cliente"
                 android:gravity="center"
                 android:textAppearance="?android:textAppearanceLarge"
                 app:layout_constraintTop_toBottomOf="@id/fotos_agronomos"
@@ -401,7 +401,7 @@
                 android:drawableStart="@drawable/ic_save"
                 android:layout_margin="@dimen/padding"
                 android:padding="@dimen/padding"
-                app:layout_constraintTop_toBottomOf="@id/fotos_clientes"
+                app:layout_constraintTop_toBottomOf="@id/textInp_recomendacion"
                 app:layout_constraintStart_toStartOf="parent"
 
 
@@ -417,7 +417,7 @@
                 android:layout_toEndOf="@id/btn_guardar"
                 android:padding="@dimen/padding"
                 android:layout_margin="@dimen/padding"
-                app:layout_constraintTop_toBottomOf="@id/fotos_clientes"
+                app:layout_constraintTop_toBottomOf="@id/textInp_recomendacion"
                 app:layout_constraintStart_toEndOf="@id/btn_guardar"
                 />
 
@@ -446,6 +446,7 @@
 
         </RelativeLayout>-->
     </ScrollView>
+
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/material_design_android_floating_action_menu"
         android:layout_width="wrap_content"
@@ -455,36 +456,7 @@
         android:layout_marginBottom="11dp"
         android:layout_marginLeft="11dp"
         android:layout_marginRight="11dp"
-        app:menu_animationDelayPerItem="55"
-        app:menu_backgroundColor="@android:color/transparent"
-        app:menu_buttonSpacing="0dp"
-        app:menu_colorNormal="#da3c2f"
-        app:menu_colorPressed="#dc4b3f"
-        app:menu_colorRipple="#99d4d4d4"
-        app:menu_fab_label="@string/nav_take_pick_action"
-        app:menu_fab_size="normal"
-        app:menu_icon="@drawable/fab_add"
-        app:menu_labels_colorNormal="#333"
-        app:menu_labels_colorPressed="#444"
-        app:menu_labels_colorRipple="#66efecec"
-        app:menu_labels_cornerRadius="3dp"
-        app:menu_labels_ellipsize="none"
-        app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
-        app:menu_labels_margin="0dp"
-        app:menu_labels_maxLines="-1"
-        app:menu_labels_padding="8dp"
-        app:menu_labels_position="left"
-        app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
-        app:menu_labels_showShadow="true"
-        app:menu_labels_singleLine="false"
-        app:menu_labels_textColor="#f2f1f1"
-        app:menu_labels_textSize="15sp"
-        app:menu_openDirection="up"
-        app:menu_shadowColor="#66aff198"
-        app:menu_shadowRadius="4dp"
-        app:menu_shadowXOffset="1dp"
-        app:menu_shadowYOffset="4dp"
-        app:menu_showShadow="true"
+        style="@style/floatingButtons"
         >
 
 
@@ -494,6 +466,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_attach_file"
             app:fab_label="@string/nav_take_pick_priv"
+            app:fab_colorNormal="@color/colorSecondaryVariant"
             app:fab_size="normal" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -502,6 +475,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_camera"
             app:fab_label="@string/nav_take_pick_public"
+            app:fab_colorNormal="@color/colorSecondaryVariant"
             app:fab_size="normal" />
 
     </com.github.clans.fab.FloatingActionMenu>

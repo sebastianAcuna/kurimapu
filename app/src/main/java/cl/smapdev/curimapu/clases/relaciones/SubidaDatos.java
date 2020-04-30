@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 import cl.smapdev.curimapu.clases.tablas.Errores;
+import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
@@ -36,6 +37,30 @@ public class SubidaDatos {
     @SerializedName("errores")
     private List<Errores> errores;
 
+    @Expose
+    @SerializedName("fichas")
+    private List<Fichas> fichas;
+
+    @Expose
+    @SerializedName("suma_datos")
+    private int cantidadSuma;
+
+
+    public int getCantidadSuma() {
+        return cantidadSuma;
+    }
+
+    public void setCantidadSuma(int cantidadSuma) {
+        this.cantidadSuma = cantidadSuma;
+    }
+
+    public List<Fichas> getFichas() {
+        return fichas;
+    }
+
+    public void setFichas(List<Fichas> fichas) {
+        this.fichas = fichas;
+    }
 
     public List<Errores> getErrores() {
         return errores;

@@ -93,6 +93,7 @@
     <string name="estado_efectuado"> Efectuado </string>
     <string name="estado_efectuado_no"> No Efectuado </string>
 
+    <string name="espere">Espere por favor</string>
 
 
 
@@ -351,8 +352,8 @@
     <string name="nav_save">Guardar</string>
     <string name="nav_applicar">Aplicar</string>
     <string name="nav_cancel">Cancelar</string>
-    <string name="nav_take_pick_priv">Tomar foto privada</string>
-    <string name="nav_take_pick_public">Tomar foto publica</string>
+    <string name="nav_take_pick_priv">Tomar foto Agricultor</string>
+    <string name="nav_take_pick_public">Tomar foto Cliente</string>
     <string name="nav_take_pick_action">seleccione acción</string>
     <string name="fotos">fotos</string>
     <string name="form_ver">Ver</string>

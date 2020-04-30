@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -38,6 +40,7 @@ public class cargarUI {
         ArrayList<RecyclerView> recyclers =  new ArrayList<>();
         ArrayList<ImageView> images =  new ArrayList<>();
         ArrayList<ArrayList> genn = new ArrayList<>();
+        ArrayList<Spinner> spinners = new ArrayList<>();
 
 
         List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByMateriales(idMaterial, idEtapa);
@@ -141,9 +144,17 @@ public class cargarUI {
                             img.setId(View.generateViewId());
                             id_generica.add(img.getId());
                             id_importante.add(fs.getId_prop());
+                            img.setFocusable(true);
+                            img.setClickable(true);
+                            img.setFocusableInTouchMode(true);
+
+
+                            TypedValue outValue = new TypedValue();
+                            activity.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
+                            img.setBackgroundResource(outValue.resourceId);
 
                             img.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_playlist_add_black_24dp));
-                            img.setColorFilter(activity.getResources().getColor(R.color.colorAccent));
+                            img.setColorFilter(activity.getResources().getColor(R.color.colorSecondary));
                             img.setPadding(20,0,20,0);
 
                             constraintLayout.addView(img, cont);
@@ -203,12 +214,13 @@ public class cargarUI {
                                 int el = 1;
                                 for (pro_cli_mat p : Popr){
 
+
                                     TextView textView = new TextView(activity/*new ContextThemeWrapper(activity, R.style.titles_forms), null, 0*/);
                                     textView.setId(View.generateViewId());
-                                    textView.setText(nombreElemento);
+                                    textView.setText((ss.equals("eng")) ? p.getNombre_elemento_en() : p.getNombre_elemento_es());
                                     textView.setGravity(Gravity.CENTER);
                                     textView.setVisibility(View.INVISIBLE);
-                                    textView.setTextColor(activity.getResources().getColor(R.color.primaryText));
+                                    textView.setTextColor(activity.getResources().getColor(R.color.colorOnSurface));
 
 
 
@@ -329,63 +341,98 @@ public class cargarUI {
 
                             } else {
 
-                                EditText et = null;
-                                switch (fs.getTipo_cambio()) {
-                                    case "TEXT":
-                                    case "INT":
-                                    case "DECIMAL":
-                                    default:
-                                        et = new EditText(activity);
-                                        break;
-                                    case "DATE":
-                                        et = new EditText(new ContextThemeWrapper(activity, R.style.input_date_forms));
-                                        break;
+                                if (fs.getTipo_cambio().equals("SPINNER")){
+
+                                    Spinner sp = new Spinner(activity);
+
+                                    int id = View.generateViewId();
+                                    sp.setId(id);
+                                    id_generica.add(sp.getId());
+                                    id_importante.add(fs.getId_prop_mat_cli());
+
+
+
+                                    constraintLayout.addView(sp, cont);
+                                    cont++;
+
+                                    ViewGroup.LayoutParams paramEditText = sp.getLayoutParams();
+                                    paramEditText.height = WRAP_CONTENT;
+                                    paramEditText.width = 0;
+                                    sp.setLayoutParams(paramEditText);
+
+                                    constraintSet.clone(constraintLayout);
+                                    /* PROP */
+                                    constraintSet.connect(tv.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                                    constraintSet.connect(tv.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
+                                    constraintSet.connect(tv.getId(), ConstraintSet.END, sp.getId(), ConstraintSet.START, 0);
+                                    /* VAL */
+                                    constraintSet.connect(sp.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                                    constraintSet.connect(sp.getId(), ConstraintSet.START, tv.getId(), ConstraintSet.END, 0);
+                                    constraintSet.connect(sp.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
+
+
+                                    spinners.add(sp);
+
+
+                                }else{
+                                    EditText et = null;
+                                    switch (fs.getTipo_cambio()) {
+                                        case "TEXT":
+                                        case "INT":
+                                        case "DECIMAL":
+                                        default:
+                                            et = new EditText(activity);
+                                            break;
+                                        case "DATE":
+                                            et = new EditText(new ContextThemeWrapper(activity, R.style.input_date_forms));
+                                            break;
+                                    }
+
+                                    int id = View.generateViewId();
+                                    et.setId(id);
+                                    id_generica.add(et.getId());
+                                    id_importante.add(fs.getId_prop_mat_cli());
+
+
+                                    constraintLayout.addView(et, cont);
+                                    cont++;
+
+                                    ViewGroup.LayoutParams paramEditText = et.getLayoutParams();
+                                    paramEditText.height = WRAP_CONTENT;
+                                    paramEditText.width = 0;
+                                    et.setLayoutParams(paramEditText);
+
+
+                                    switch (fs.getTipo_cambio()) {
+                                        case "TEXT":
+                                            et.setInputType(InputType.TYPE_CLASS_TEXT);
+                                            et.setHint(activity.getResources().getString(R.string.valor));
+                                            break;
+                                        case "DATE":
+                                            et.setInputType(InputType.TYPE_CLASS_DATETIME);
+                                            break;
+                                        case "INT":
+                                            et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                            et.setHint(activity.getResources().getString(R.string.valor));
+                                            break;
+                                        case "DECIMAL":
+                                            et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                                            et.setHint(activity.getResources().getString(R.string.valor));
+                                            break;
+                                    }
+                                    constraintSet.clone(constraintLayout);
+                                    /* PROP */
+                                    constraintSet.connect(tv.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                                    constraintSet.connect(tv.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
+                                    constraintSet.connect(tv.getId(), ConstraintSet.END, et.getId(), ConstraintSet.START, 0);
+                                    /* VAL */
+                                    constraintSet.connect(et.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                                    constraintSet.connect(et.getId(), ConstraintSet.START, tv.getId(), ConstraintSet.END, 0);
+                                    constraintSet.connect(et.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
+
+
+                                    editTexts.add(et);
                                 }
-
-                                int id = View.generateViewId();
-                                et.setId(id);
-                                id_generica.add(et.getId());
-                                id_importante.add(fs.getId_prop_mat_cli());
-
-
-                                constraintLayout.addView(et, cont);
-                                cont++;
-
-                                ViewGroup.LayoutParams paramEditText = et.getLayoutParams();
-                                paramEditText.height = WRAP_CONTENT;
-                                paramEditText.width = 0;
-                                et.setLayoutParams(paramEditText);
-
-
-                                switch (fs.getTipo_cambio()) {
-                                    case "TEXT":
-                                        et.setInputType(InputType.TYPE_CLASS_TEXT);
-                                        et.setHint(activity.getResources().getString(R.string.valor));
-                                        break;
-                                    case "DATE":
-                                        et.setInputType(InputType.TYPE_CLASS_DATETIME);
-                                        break;
-                                    case "INT":
-                                        et.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                        et.setHint(activity.getResources().getString(R.string.valor));
-                                        break;
-                                    case "DECIMAL":
-                                        et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                                        et.setHint(activity.getResources().getString(R.string.valor));
-                                        break;
-                                }
-                                constraintSet.clone(constraintLayout);
-                                /* PROP */
-                                constraintSet.connect(tv.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
-                                constraintSet.connect(tv.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
-                                constraintSet.connect(tv.getId(), ConstraintSet.END, et.getId(), ConstraintSet.START, 0);
-                                /* VAL */
-                                constraintSet.connect(et.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
-                                constraintSet.connect(et.getId(), ConstraintSet.START, tv.getId(), ConstraintSet.END, 0);
-                                constraintSet.connect(et.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
-
-
-                                editTexts.add(et);
                             }
 
                             tvOld = (TextView) tv;
@@ -402,6 +449,7 @@ public class cargarUI {
                     editTexts = (ArrayList<EditText>) all.get(3);
                     recyclers = (ArrayList<RecyclerView>) all.get(4);
                     images = (ArrayList<ImageView>) all.get(5);
+                    spinners = (ArrayList<Spinner>) all.get(6);
 
                 }
 
@@ -413,6 +461,7 @@ public class cargarUI {
         genn.add(editTexts);
         genn.add(recyclers);
         genn.add(images);
+        genn.add(spinners);
 
         return genn;
     }

@@ -260,7 +260,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorSecondary"
             app:layout_constraintTop_toBottomOf="@id/radio_group"
             app:layout_constraintStart_toEndOf="@id/btn_aplica_filtro"
             app:layout_constraintEnd_toEndOf="parent"

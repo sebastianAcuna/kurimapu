@@ -45,6 +45,7 @@ import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
+import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.Provincia;
 import cl.smapdev.curimapu.clases.tablas.Region;
@@ -246,9 +247,9 @@ public class FragmentCreaFicha extends Fragment {
         sp_agric.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i > 0){
+//                if(i > 0){
                     llenarAgricultor(rutAgricultores.get(i));
-                }
+//                }
             }
 
             @Override
@@ -351,12 +352,35 @@ public class FragmentCreaFicha extends Fragment {
             et_tel_admin_agricultor.setText(fichasCompletas.getAgricultor().getTelefono_admin_agricultor());
 
 
+            String coor = fichasCompletas.getFichas().getCoo_utm_ampros_ficha();
+            String[] coordenadas = coor.split(" ");
+
+            et_northing_agricultor.setText((coordenadas.length > 0) ? coordenadas[0] : "");
+            et_easting_agricultor.setText((coordenadas.length > 0) ? coordenadas[1] : "");
 
             et_oferta_neg_agricultor.setText(fichasCompletas.getFichas().getOferta_negocio());
             et_localidad_agricultor.setText(fichasCompletas.getFichas().getLocalidad());
             et_has_disp_agricultor.setText(String.valueOf(fichasCompletas.getFichas().getHas_disponible()));
             et_obs_agricultor.setText(fichasCompletas.getFichas().getObservaciones());
 
+
+            if (fichasCompletas.getFichas().getActiva() == 2){
+                sp_region_agricultor.setEnabled(false);
+                btn_save_agricultor.setEnabled(false);
+                sp_provincia_agricultor.setEnabled(false);
+                sp_comuna_agricultor.setEnabled(false);
+                et_rut_agricultor.setEnabled(false);
+                et_nombre_agricultor.setEnabled(false);
+                et_telef_agricultor.setEnabled(false);
+                et_admin_agricultor.setEnabled(false);
+                et_tel_admin_agricultor.setEnabled(false);
+                et_oferta_neg_agricultor.setEnabled(false);
+                et_localidad_agricultor.setEnabled(false);
+                et_has_disp_agricultor.setEnabled(false);
+                et_obs_agricultor.setEnabled(false);
+                sp_agric.setEnabled(false);
+                sp_year.setEnabled(false);
+            }
 
 
 
@@ -417,12 +441,13 @@ public class FragmentCreaFicha extends Fragment {
 
 
 
-
-        if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro) &&  !TextUtils.isEmpty(fonoAgro) && !TextUtils.isEmpty(admin) && !TextUtils.isEmpty(fonoAdmin)
+//&& !TextUtils.isEmpty(admin) && !TextUtils.isEmpty(fonoAdmin)&&  !TextUtils.isEmpty(fonoAgro)
+        if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro)
         && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
         && !TextUtils.isEmpty(idAnno) && !TextUtils.isEmpty(idRegion) && !TextUtils.isEmpty(idComuna) ){
 
 
+                Config config = MainActivity.myAppDB.myDao().getConfig();
 
                 Fichas fichas = new Fichas();
                 fichas.setActiva(1);
@@ -434,6 +459,7 @@ public class FragmentCreaFicha extends Fragment {
                 fichas.setOferta_negocio(oferta);
                 fichas.setId_region_ficha(idRegion);
                 fichas.setId_comuna_ficha(idComuna);
+                fichas.setId_usuario(config.getId_usuario());
 
 
                 if (!TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting)){
@@ -484,9 +510,8 @@ public class FragmentCreaFicha extends Fragment {
         String easting = et_easting_agricultor.getText().toString();
         String norting = et_northing_agricultor.getText().toString();
 
-        if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro) &&  !TextUtils.isEmpty(fonoAgro) && !TextUtils.isEmpty(admin) && !TextUtils.isEmpty(fonoAdmin)
-                && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
-                && !TextUtils.isEmpty(idAnno) && !TextUtils.isEmpty(idRegion) && !TextUtils.isEmpty(idComuna)){
+        if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro) && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion)
+                && !TextUtils.isEmpty(has) && !TextUtils.isEmpty(idAnno) && !TextUtils.isEmpty(idRegion) && !TextUtils.isEmpty(idComuna)){
 
 //            !TextUtils.isEmpty(easting) && !TextUtils.isEmpty(norting) &&
 
@@ -515,6 +540,9 @@ public class FragmentCreaFicha extends Fragment {
                 }
             }
 
+        }else{
+            Utilidades.avisoListo(activity, "Falto algo", "Debe completar todos los campos", "OK");
+            //todo muestra dialogo
         }
 
 

@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.clases.bd;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
+import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
@@ -37,7 +38,8 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         Fotos.class, Fichas.class, Agricultor.class, Region.class, Comuna.class, AnexoContrato.class,
         Especie.class, Variedad.class, TempVisitas.class,  UnidadMedida.class, Usuario.class, Config.class,
         Visitas.class, CropRotation.class, pro_cli_mat.class, Temporada.class, detalle_visita_prop.class, Provincia.class, Errores.class,
-        Lotes.class, Predios.class, TipoRiego.class, TipoSuelo.class, Maquinaria.class, TipoTenenciaMaquinaria.class, TipoTenenciaTerreno.class, FichaMaquinaria.class, Clientes.class
+        Lotes.class, Predios.class, TipoRiego.class, TipoSuelo.class, Maquinaria.class, TipoTenenciaMaquinaria.class, TipoTenenciaTerreno.class,
+        FichaMaquinaria.class, Clientes.class, CardViewsResumen.class
         }, version = 1)
 public abstract class MyAppBD extends RoomDatabase {
 

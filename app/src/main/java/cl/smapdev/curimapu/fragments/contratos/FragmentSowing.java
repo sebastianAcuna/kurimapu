@@ -1,10 +1,10 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,9 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
@@ -78,6 +74,8 @@ public class FragmentSowing extends Fragment {
 
 
 
+
+
     private View Globalview;
 
     private ArrayList<ArrayList> global = null;
@@ -87,6 +85,9 @@ public class FragmentSowing extends Fragment {
     private ArrayList<EditText> editTexts  = null;
     private ArrayList<RecyclerView> recyclerViews  = null;
     private ArrayList<ImageView> imageViews  = null;
+    private ArrayList<Spinner> spinners  = null;
+
+
     private ArrayList<String> um = null;
     private ArrayList<String> idUm = null;
 
@@ -97,10 +98,11 @@ public class FragmentSowing extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MainActivity a = (MainActivity) getActivity();
-        if (a != null) {
-            activity = a;
-        }
+
+        activity = (MainActivity) getActivity();
+
+
+
 
         prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
 
@@ -111,6 +113,7 @@ public class FragmentSowing extends Fragment {
         editTexts = new ArrayList<>();
         recyclerViews = new ArrayList<>();
         imageViews = new ArrayList<>();
+        spinners = new ArrayList<>();
 
         List<UnidadMedida> umli = MainActivity.myAppDB.myDao().getUM();
         um = new ArrayList<>();
@@ -141,8 +144,9 @@ public class FragmentSowing extends Fragment {
             this.fieldbook = bundle.getInt(FIELDGENERIC);
         }
 
-        global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, getActivity(), prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook, global);
-        setearOnFocus();
+        new LazyLoad(true).execute();
+      /*  global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, getActivity(), prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook, global);
+        setearOnFocus();*/
     }
 
 
@@ -163,8 +167,11 @@ public class FragmentSowing extends Fragment {
 //                AsyncTask.execute(new Runnable() {
 //                    @Override
 //                    public void run() {
-                        global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, getActivity(), prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook,global);
-                        setearOnFocus();
+//                        if (progressBar != null && progressBar.isShowing()){
+                            new LazyLoad(false).execute();
+//                        }
+
+
 //                    }
 //                });
 
@@ -174,6 +181,8 @@ public class FragmentSowing extends Fragment {
 
     private void setearOnFocus(){
 
+
+
         if (global != null && global.size() > 0){
             try{
                 id_generica = (ArrayList<Integer>) global.get(0);
@@ -182,6 +191,7 @@ public class FragmentSowing extends Fragment {
                 editTexts = (ArrayList<EditText>) global.get(3);
                 recyclerViews = (ArrayList<RecyclerView>) global.get(4);
                 imageViews = (ArrayList<ImageView>) global.get(5);
+                spinners = (ArrayList<Spinner>) global.get(6);
 
                 if (Globalview.findViewWithTag("FOTOS_"+fieldbook) == null){
                     LinearLayout ly = Globalview.findViewById(R.id.container_linear_fotos);
@@ -200,12 +210,21 @@ public class FragmentSowing extends Fragment {
 
                             final int index = id_generica.indexOf(imageViews.get(i).getId());
 
+                            final int finalI = i;
                             imageViews.get(i).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-
+                                    imageViews.get(finalI).requestFocus();
                                     avisoActivaFicha(id_importante.get(index));
-                                    //Toast.makeText(activity, "SE ABRIRA POPUP CON ID IMPORTANTE " + id_importante.get(index) + " E ID GENERICA " + v.getId(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            imageViews.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                @Override
+                                public void onFocusChange(View v, boolean hasFocus) {
+                                    if (hasFocus){
+                                        avisoActivaFicha(id_importante.get(index));
+                                    }
                                 }
                             });
 
@@ -269,7 +288,7 @@ public class FragmentSowing extends Fragment {
                                             if (!b) {
                                                 if (!TextUtils.isEmpty(editTexts.get(finalI).getText().toString())){
                                                     detalle_visita_prop temp = new detalle_visita_prop();
-                                                    temp.setValor_detalle(editTexts.get(finalI).getText().toString());
+                                                    temp.setValor_detalle(editTexts.get(finalI).getText().toString().toUpperCase());
                                                     temp.setEstado_detalle(0);
                                                     temp.setId_visita_detalle(0);
                                                     temp.setId_prop_mat_cli_detalle(id_importante.get(index));
@@ -314,6 +333,19 @@ public class FragmentSowing extends Fragment {
                         }
                     }
                 }
+
+                if (spinners != null && spinners.size() > 0){
+                    for (int i = 0 ; i < spinners.size(); i ++){
+                        if (id_generica.contains(spinners.get(i).getId())){
+                            int index  = id_generica.indexOf(spinners.get(i).getId());
+
+                            spinners.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0));
+                            spinners.get(i).setAdapter(new SpinnerAdapter(activity, R.layout.spinner_template_view, um));
+
+                        }
+                    }
+                }
+
 
                 if (recyclerViews != null && recyclerViews.size() > 0){
                     for (int i = 0; i < recyclerViews.size(); i++){
@@ -372,7 +404,17 @@ public class FragmentSowing extends Fragment {
 
 
         String fecha = Utilidades.fechaActualSinHora();
-        String[] fechaRota = fecha.split("-");
+        String[] fechaRota;
+
+        if (!TextUtils.isEmpty(edit.getText())){
+            try{
+               fechaRota = Utilidades.voltearFechaBD(edit.getText().toString()).split("-");
+            }catch (Exception e){
+                fechaRota = fecha.split("-");
+            }
+        }else{
+            fechaRota = fecha.split("-");
+        }
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
@@ -394,7 +436,7 @@ public class FragmentSowing extends Fragment {
                 edit.setText(finalDate);
             }
         }, Integer.parseInt(fechaRota[0]), (Integer.parseInt(fechaRota[1]) - 1), Integer.parseInt(fechaRota[2]));
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+//        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
 
     }
@@ -641,6 +683,53 @@ public class FragmentSowing extends Fragment {
     }
 
 
+    private class LazyLoad extends AsyncTask<Void, Void, ArrayList<ArrayList>>{
+
+        private ProgressDialog progressBar;
+        private  boolean show;
+
+        public LazyLoad(boolean show) {
+           this.show = show;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            if (show){
+                progressBar = new ProgressDialog(activity);
+                progressBar.setTitle(getResources().getString(R.string.espere));
+                progressBar.show();
+            }
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ArrayList<ArrayList> doInBackground(Void... voids) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ArrayList> aVoid) {
+            super.onPostExecute(aVoid);
+            global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook,global);;
+            setearOnFocus();
+            if (show && progressBar != null && progressBar.isShowing()){
+                progressBar.dismiss();
+            }
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

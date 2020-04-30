@@ -12,6 +12,7 @@ import java.util.List;
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
 import cl.smapdev.curimapu.clases.relaciones.DetalleCampo;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
+import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
@@ -124,35 +125,17 @@ public interface MyDao {
     @Update
     int updateFicha(Fichas fichas);
 
+    @Query("SELECT * FROM fichas F WHERE F.subida = 0")
+    List<Fichas> getFichasPorSubir();
 
-    @Query("SELECT " +
-            "fichas.id_ficha, " +
-            "fichas.anno, " +
-            "fichas.id_agricultor_ficha, " +
-            "fichas.oferta_negocio, " +
-            "fichas.localidad," +
-            "fichas.has_disponible," +
-            "fichas.observaciones," +
-            "fichas.norting," +
-            "fichas.easting," +
-            "fichas.activa," +
-            "fichas.subida," +
-            "agricultor.nombre_agricultor," +
-            "agricultor.telefono_agricultor," +
-            "agricultor.administrador_agricultor," +
-            "agricultor.telefono_admin_agricultor," +
-            "agricultor.region_agricultor," +
-            "agricultor.comuna_agricultor," +
-            "agricultor.agricultor_subido," +
-            "agricultor.rut_agricultor," +
-            "region.id_region," +
-            "region.desc_region," +
-            "comuna.id_comuna," +
-            "comuna.desc_comuna," +
-            "comuna.id_provincia_comuna, " +
-            "provincia.id_provincia, " +
-            "provincia.nombre_provincia, " +
-            "provincia.id_region_provincia " +
+    @Query("UPDATE fichas SET cabecera_ficha = :cab WHERE subida = 0")
+    int updateFichasSubidas(int cab);
+
+    @Query("UPDATE fichas SET subida = 0 WHERE cabecera_ficha = :cab")
+    void updateFichasBack(int cab);
+
+
+    @Query("SELECT * " +
             "FROM fichas " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = fichas.id_agricultor_ficha) " +
             "INNER JOIN comuna ON (comuna.id_comuna = fichas.id_comuna_ficha)" +
@@ -214,6 +197,27 @@ public interface MyDao {
 
     @Query("DELETE FROM detalle_visita_prop WHERE id_visita_detalle = 0")
     void deleteDetalleVacios();
+    /* ===================================================================================*/
+
+    @Query("SELECT * FROM card_view_resumen WHERE id_tempo_cardiview = :idTempo")
+    List<CardViewsResumen> getResumen(String idTempo);
+
+    @Query("DELETE  FROM card_view_resumen ")
+    void deleteResumenes();
+
+    @Insert
+    List<Long> insertResumenes(List<CardViewsResumen> cardViewsResumen);
+
+
+    @Query("SELECT count(V.id_visita) AS total, V.etapa_visitas as nombre  FROM visitas V WHERE temporada = :temp GROUP BY V.etapa_visitas")
+    List<CardViewsResumen> getCantidadVisitasByEtapa(String temp);
+
+    @Query("SELECT count(V.id_visita) AS total, VA.desc_variedad AS nombre  FROM visitas V INNER JOIN anexo_contrato  AC ON (V.id_anexo_visita = AC.id_anexo_contrato) INNER JOIN variedad VA ON (VA.id_variedad = AC.id_variedad_anexo) WHERE temporada = :temp  GROUP BY AC.id_variedad_anexo")
+    List<CardViewsResumen> getCantidadVariedadesByVisita(String temp);
+
+    @Query("SELECT count(V.id_visita) AS total, E.desc_especie AS nombre  FROM visitas V INNER JOIN anexo_contrato  AC ON (V.id_anexo_visita = AC.id_anexo_contrato) INNER JOIN especie E ON (E.id_especie = AC.id_especie_anexo) WHERE temporada = :temp  GROUP BY AC.id_especie_anexo")
+    List<CardViewsResumen> getCantidadEspeciesByVisita(String temp);
+
 
 
     /* ===================================================================================*/

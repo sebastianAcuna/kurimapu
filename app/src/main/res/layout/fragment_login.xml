@@ -2,11 +2,13 @@
 <ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBackground">
 <RelativeLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/padding"
+    android:background="@color/colorSurface"
     >
 
     <ImageView
@@ -31,7 +33,7 @@
         android:layout_centerHorizontal="true"
         android:textSize="38sp"
         android:layout_marginTop="@dimen/padding"
-        android:textColor="@color/primaryText"
+        android:textColor="@color/colorOnSurface"
         />
 
     <com.google.android.material.textfield.TextInputLayout

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.cardview.widget.CardView
+<!--<androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_margin="6dp"
-    android:elevation="@dimen/padding">
+    android:elevation="@dimen/padding">-->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/padding">
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/padding"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorSurface">
 
         <TextView
             android:id="@+id/title_type"
@@ -18,15 +19,17 @@
             android:layout_height="wrap_content"
             android:text="Fieldbook"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentStart="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/nombre_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/primaryText"
-            android:text="HARVEST"
-            android:layout_below="@id/title_type"
+            android:textColor="@color/colorOnSurface"
+            app:layout_constraintTop_toBottomOf="@id/title_type"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/padding"
             />
 
@@ -38,18 +41,24 @@
             android:text="0"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-
-
+            android:textSize="25sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
             />
 
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cantidad_type"/>
 
 
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-    </RelativeLayout>
 
-
-</androidx.cardview.widget.CardView>
+<!--</androidx.cardview.widget.CardView>-->
