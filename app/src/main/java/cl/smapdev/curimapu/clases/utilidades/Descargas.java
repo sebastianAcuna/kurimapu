@@ -28,8 +28,8 @@ public class Descargas {
 
         Config cnf = MainActivity.myAppDB.myDao().getConfig();
 
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<GsonDescargas> call = apiService.descargarDatos(cnf.getId(), cnf.getId_usuario());
+        ApiService apiService = RetrofitClient.getClient(cnf.getServidorSeleccionado()).create(ApiService.class);
+        Call<GsonDescargas> call = apiService.descargarDatos(cnf.getId(), cnf.getId_usuario_suplandato());
         call.enqueue(new Callback<GsonDescargas>() {
             @Override
             public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
@@ -57,9 +57,9 @@ public class Descargas {
 
 
 
+            Config config = MainActivity.myAppDB.myDao().getConfig();
 
-
-            ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+            ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
             Call<GsonDescargas> call = apiService.descargaPrimera(imei, id);
             call.enqueue(new Callback<GsonDescargas>() {
                 @Override
@@ -70,9 +70,14 @@ public class Descargas {
                         int id = gsonDescargas.getId_dispo();
 
                         if (id > 0) {
-                            Config config = MainActivity.myAppDB.myDao().getConfig(id);
+                            Config config = MainActivity.myAppDB.myDao().getConfig();
                             if (config == null) {
-                                MainActivity.myAppDB.myDao().setConfig(new Config(id));
+                                Config config1 = new Config();
+                                config1.setId(id);
+                                config1.setServidorSeleccionado("www.zcloud02.cl");
+                                MainActivity.myAppDB.myDao().setConfig(config1);
+                            }else{
+                                MainActivity.myAppDB.myDao().updateConfig(id);
                             }
                         }
                         if (gsonDescargas.getUsuarios() != null && gsonDescargas.getUsuarios().size() > 0) {
@@ -256,6 +261,23 @@ public class Descargas {
                 }
             }
 
+            if (gsonDescargas.getQuotations() != null && gsonDescargas.getQuotations().size() > 0){
+                try {
+
+                    MainActivity.myAppDB.myDao().deleteQuotation();
+//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='region'", null));
+                    List<Long> inserts = MainActivity.myAppDB.myDao().insertQuotation(gsonDescargas.getQuotations());
+                    for (long l : inserts) {
+                        if (l <= 0 && inserts.size()  == gsonDescargas.getQuotations().size()) {
+                            problema = true;
+                            break;
+                        }
+                    }
+                }catch (SQLiteException e) {
+                    Log.e("SQLITE", e.getMessage());
+                }
+            }
+
 
             if (gsonDescargas.getProvinciaList() != null && gsonDescargas.getProvinciaList().size() > 0){
                 try {
@@ -265,6 +287,24 @@ public class Descargas {
                     List<Long> inserts = MainActivity.myAppDB.myDao().insertProvincias(gsonDescargas.getProvinciaList());
                     for (long l : inserts) {
                         if (l <= 0 && inserts.size()  == gsonDescargas.getProvinciaList().size()) {
+                            problema = true;
+                            break;
+                        }
+                    }
+                }catch (SQLiteException e) {
+                    Log.e("SQLITE", e.getMessage());
+                }
+            }
+
+
+            if (gsonDescargas.getCli_pcms() != null && gsonDescargas.getCli_pcms().size() > 0){
+                try {
+
+                    MainActivity.myAppDB.myDao().deleteCliPCM();
+//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='provincia'", null));
+                    List<Long> inserts = MainActivity.myAppDB.myDao().insertPCM(gsonDescargas.getCli_pcms());
+                    for (long l : inserts) {
+                        if (l <= 0 && inserts.size()  == gsonDescargas.getCli_pcms().size()) {
                             problema = true;
                             break;
                         }
@@ -324,6 +364,7 @@ public class Descargas {
                     Log.e("SQLITE", e.getMessage());
                 }
             }
+
             if (gsonDescargas.getFichasList() != null && gsonDescargas.getFichasList().size() > 0){
                 try {
 

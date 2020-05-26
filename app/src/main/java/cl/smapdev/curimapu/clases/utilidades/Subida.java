@@ -104,7 +104,7 @@ public class Subida {
 
 
 
-            ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+            ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
             Call<Respuesta> call = apiService.enviarDatos(list);
 
             call.enqueue(new Callback<Respuesta>() {
@@ -170,7 +170,7 @@ public class Subida {
 
             Config config = MainActivity.myAppDB.myDao().getConfig();
 
-            ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+            ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
             Call<Respuesta> call = apiService.comprobacion(config.getId(), config.getId_usuario(), cab);
 
             call.enqueue(new Callback<Respuesta>() {

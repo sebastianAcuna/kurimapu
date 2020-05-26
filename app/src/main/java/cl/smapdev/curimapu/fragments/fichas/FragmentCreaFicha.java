@@ -351,12 +351,20 @@ public class FragmentCreaFicha extends Fragment {
             et_tel_admin_agricultor.setEnabled(false);
             et_tel_admin_agricultor.setText(fichasCompletas.getAgricultor().getTelefono_admin_agricultor());
 
+            try{
+                if(fichasCompletas.getFichas().getCoo_utm_ampros_ficha().length() > 0){
+                    String coor = fichasCompletas.getFichas().getCoo_utm_ampros_ficha();
+                    String[] coordenadas = coor.split(" ");
+                    et_northing_agricultor.setText((coordenadas.length > 0) ? coordenadas[0] : "");
+                    et_easting_agricultor.setText((coordenadas.length > 0) ? coordenadas[1] : "");
+                }
+            }catch (Exception e){
+                Toast.makeText(activity, "No hay coordenadas", Toast.LENGTH_SHORT).show();
+            }
 
-            String coor = fichasCompletas.getFichas().getCoo_utm_ampros_ficha();
-            String[] coordenadas = coor.split(" ");
 
-            et_northing_agricultor.setText((coordenadas.length > 0) ? coordenadas[0] : "");
-            et_easting_agricultor.setText((coordenadas.length > 0) ? coordenadas[1] : "");
+
+
 
             et_oferta_neg_agricultor.setText(fichasCompletas.getFichas().getOferta_negocio());
             et_localidad_agricultor.setText(fichasCompletas.getFichas().getLocalidad());

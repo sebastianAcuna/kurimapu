@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "usuario")
+@Entity(tableName = "usuarios")
 public class Usuario {
 
 
@@ -73,6 +73,17 @@ public class Usuario {
     @Expose
     private String email;
 
+    @SerializedName("tipo_usuario")
+    @Expose
+    private int tipo_usuario;
+
+    public int getTipo_usuario() {
+        return tipo_usuario;
+    }
+
+    public void setTipo_usuario(int tipo_usuario) {
+        this.tipo_usuario = tipo_usuario;
+    }
 
     public int getId_usuario() {
         return id_usuario;

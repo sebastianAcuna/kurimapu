@@ -34,8 +34,6 @@ public class pro_cli_mat {
     @SerializedName("nombre_elemento_es")
     private String nombre_elemento_es;
 
-
-
     @SerializedName("aplica")
     private String aplica;
 
@@ -48,6 +46,41 @@ public class pro_cli_mat {
     @SerializedName("es_lista")
     private String es_lista;
 
+    /* 04 - 05 - 2020 */
+    @SerializedName("foraneo")
+    private String foraneo;
+
+    @SerializedName("tabla")
+    private String tabla;
+
+
+    @SerializedName("campo")
+    private String campo;
+
+
+    public String getForaneo() {
+        return foraneo;
+    }
+
+    public void setForaneo(String foraneo) {
+        this.foraneo = foraneo;
+    }
+
+    public String getTabla() {
+        return tabla;
+    }
+
+    public void setTabla(String tabla) {
+        this.tabla = tabla;
+    }
+
+    public String getCampo() {
+        return campo;
+    }
+
+    public void setCampo(String campo) {
+        this.campo = campo;
+    }
 
     public String getEs_lista() {
         return es_lista;

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "variedad")
+@Entity(tableName = "materiales")
 public class Variedad {
 
     @PrimaryKey()

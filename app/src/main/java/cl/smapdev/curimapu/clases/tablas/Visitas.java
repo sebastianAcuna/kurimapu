@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "visitas")
+@Entity(tableName = "visita")
 public class Visitas {
 
     @PrimaryKey(autoGenerate = true)
@@ -94,6 +94,19 @@ public class Visitas {
     @Expose
     private int cabecera_visita;
 
+
+    @SerializedName("percent_humedad")
+    @Expose
+    private double percent_humedad;
+
+
+    public double getPercent_humedad() {
+        return percent_humedad;
+    }
+
+    public void setPercent_humedad(double percent_humedad) {
+        this.percent_humedad = percent_humedad;
+    }
 
     public int getId_user_visita() {
         return id_user_visita;

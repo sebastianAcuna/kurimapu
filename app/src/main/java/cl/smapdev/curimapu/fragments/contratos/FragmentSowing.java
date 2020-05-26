@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -23,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -72,10 +75,6 @@ public class FragmentSowing extends Fragment {
     private int fieldbook;
 
 
-
-
-
-
     private View Globalview;
 
     private ArrayList<ArrayList> global = null;
@@ -86,6 +85,7 @@ public class FragmentSowing extends Fragment {
     private ArrayList<RecyclerView> recyclerViews  = null;
     private ArrayList<ImageView> imageViews  = null;
     private ArrayList<Spinner> spinners  = null;
+    private ArrayList<CheckBox> check  = null;
 
 
     private ArrayList<String> um = null;
@@ -114,6 +114,8 @@ public class FragmentSowing extends Fragment {
         recyclerViews = new ArrayList<>();
         imageViews = new ArrayList<>();
         spinners = new ArrayList<>();
+        check = new ArrayList<>();
+
 
         List<UnidadMedida> umli = MainActivity.myAppDB.myDao().getUM();
         um = new ArrayList<>();
@@ -144,7 +146,9 @@ public class FragmentSowing extends Fragment {
             this.fieldbook = bundle.getInt(FIELDGENERIC);
         }
 
-        new LazyLoad(true).execute();
+        if(getUserVisibleHint()) {
+            new LazyLoad(true).execute();
+        }
       /*  global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, getActivity(), prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook, global);
         setearOnFocus();*/
     }
@@ -170,19 +174,40 @@ public class FragmentSowing extends Fragment {
 //                        if (progressBar != null && progressBar.isShowing()){
                             new LazyLoad(false).execute();
 //                        }
-
-
 //                    }
 //                });
+
+                if (Globalview.findViewWithTag("FOTOS_"+fieldbook) == null){
+                    if (Globalview.findViewById(R.id.container_linear_fotos) != null){
+                        LinearLayout ly = Globalview.findViewById(R.id.container_linear_fotos);
+                        if (ly != null){
+                            if(activity != null){
+                                try{
+                                    FrameLayout fm = (FrameLayout) new FrameLayout(activity);
+//                            if (fm != null){
+                                    fm.setId(View.generateViewId());
+                                    fm.setTag("FOTOS_" + fieldbook);
+                                    ly.addView(fm);
+
+
+                                    if(ly.findViewWithTag("FOTOS_" + fieldbook) != null){
+                                        activity.getSupportFragmentManager().beginTransaction().replace(fm.getId(), FragmentFotos.getInstance(fieldbook), Utilidades.FRAGMENT_FOTOS).commit();
+                                    }
+//                                }
+                                }catch (NullPointerException  e){
+                                    Toast.makeText(activity, "No se pudo cargar las fotos", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }
+                }
 
             }
         }
     }
 
     private void setearOnFocus(){
-
-
-
+        int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
         if (global != null && global.size() > 0){
             try{
                 id_generica = (ArrayList<Integer>) global.get(0);
@@ -192,17 +217,10 @@ public class FragmentSowing extends Fragment {
                 recyclerViews = (ArrayList<RecyclerView>) global.get(4);
                 imageViews = (ArrayList<ImageView>) global.get(5);
                 spinners = (ArrayList<Spinner>) global.get(6);
+                check = (ArrayList<CheckBox>) global.get(7);
 
-                if (Globalview.findViewWithTag("FOTOS_"+fieldbook) == null){
-                    LinearLayout ly = Globalview.findViewById(R.id.container_linear_fotos);
-                    FrameLayout fm = (FrameLayout) new FrameLayout(activity);
-                    fm.setId(View.generateViewId());
-                    fm.setTag("FOTOS_" + fieldbook);
 
-                    ly.addView(fm);
 
-                    activity.getSupportFragmentManager().beginTransaction().replace(fm.getId(), FragmentFotos.getInstance(fieldbook), Utilidades.FRAGMENT_FOTOS).commit();
-                }
 
                 if (imageViews != null && imageViews.size() > 0){
                     for (int i = 0; i < imageViews.size(); i++){
@@ -229,6 +247,47 @@ public class FragmentSowing extends Fragment {
                             });
 
 
+                        }
+                    }
+                }
+
+
+                if (check != null && check.size() > 0){
+                    for (int i = 0; i < check.size(); i++){
+                        if (id_generica.contains(check.get(i).getId())) {
+
+                            final int index = id_generica.indexOf(check.get(i).getId());
+
+                            check.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0));
+                            String datoDetalle = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+
+                            if (datoDetalle != null && datoDetalle.length() > 0){
+                                check.get(i).setChecked((datoDetalle.equals("1")));
+                            }
+
+
+                            check.get(i).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                                    detalle_visita_prop temp = new detalle_visita_prop();
+                                    if (isChecked){
+                                        temp.setValor_detalle(String.valueOf(1));
+                                        temp.setEstado_detalle(0);
+                                        temp.setId_visita_detalle(0);
+                                        temp.setId_prop_mat_cli_detalle(id_importante.get(index));
+                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
+                                    }else{
+                                        int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+                                        temp.setId_det_vis_prop_detalle(idAEditar);
+                                        temp.setValor_detalle(String.valueOf(0));
+                                        temp.setEstado_detalle(0);
+                                        temp.setId_visita_detalle(0);
+                                        temp.setId_prop_mat_cli_detalle(id_importante.get(index));
+                                        MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
+                                    }
+                                }
+                            });
                         }
                     }
                 }
@@ -351,7 +410,7 @@ public class FragmentSowing extends Fragment {
                     for (int i = 0; i < recyclerViews.size(); i++){
                         if (id_generica.contains(recyclerViews.get(i).getId())){
                             int index  = id_generica.indexOf(recyclerViews.get(i).getId());
-                            List<pro_cli_mat> lista = MainActivity.myAppDB.myDao().getProCliMatByIdProp(id_importante.get(index));
+                            List<pro_cli_mat> lista = MainActivity.myAppDB.myDao().getProCliMatByIdProp(id_importante.get(index),prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""),idClienteFinal);
                             if (lista.size() > 0){
                                 int idOld = 0;
                                 for (pro_cli_mat ls : lista){
@@ -442,6 +501,7 @@ public class FragmentSowing extends Fragment {
     }
 
     private void avisoActivaFicha(final int id_importante) {
+        int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
         final View viewInfalted = LayoutInflater.from(getActivity()).inflate(R.layout.alert_empty, null);
 
         final ArrayList<Integer> id_g = new ArrayList<>();
@@ -450,7 +510,7 @@ public class FragmentSowing extends Fragment {
         final ArrayList<Spinner> spinners = new ArrayList<>();
 
 
-        final List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByIdProp(id_importante);
+        final List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByIdProp(id_importante,prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""),idClienteFinal);
         ConstraintLayout constraintLayout = (ConstraintLayout) viewInfalted.findViewById(R.id.container_alert_empty);
         ConstraintSet constraintSet = new ConstraintSet();
 
@@ -697,6 +757,7 @@ public class FragmentSowing extends Fragment {
             if (show){
                 progressBar = new ProgressDialog(activity);
                 progressBar.setTitle(getResources().getString(R.string.espere));
+                progressBar.setCancelable(false);
                 progressBar.show();
             }
 
@@ -716,8 +777,11 @@ public class FragmentSowing extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<ArrayList> aVoid) {
             super.onPostExecute(aVoid);
-            global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook,global);;
-            setearOnFocus();
+            int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+            if (Globalview != null){
+                global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook,idClienteFinal,global);;
+                setearOnFocus();
+            }
             if (show && progressBar != null && progressBar.isShowing()){
                 progressBar.dismiss();
             }
@@ -728,6 +792,33 @@ public class FragmentSowing extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        if(getUserVisibleHint()){
+            if (Globalview.findViewWithTag("FOTOS_"+fieldbook) == null){
+                if (Globalview.findViewById(R.id.container_linear_fotos) != null){
+                    LinearLayout ly = Globalview.findViewById(R.id.container_linear_fotos);
+                    if (ly != null){
+                        if(activity != null){
+                            try{
+                                FrameLayout fm = (FrameLayout) new FrameLayout(activity);
+//                            if (fm != null){
+                                fm.setId(View.generateViewId());
+                                fm.setTag("FOTOS_" + fieldbook);
+                                ly.addView(fm);
+
+
+                                if(ly.findViewWithTag("FOTOS_" + fieldbook) != null){
+                                    activity.getSupportFragmentManager().beginTransaction().replace(fm.getId(), FragmentFotos.getInstance(fieldbook), Utilidades.FRAGMENT_FOTOS).commit();
+                                }
+//                                }
+                            }catch (NullPointerException  e){
+                                Toast.makeText(activity, "No se pudo cargar las fotos", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
     }
 

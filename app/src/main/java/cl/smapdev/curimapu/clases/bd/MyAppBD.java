@@ -29,8 +29,10 @@ import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Region;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.tablas.cli_pcm;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
+import cl.smapdev.curimapu.clases.tablas.quotation;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 
 
@@ -39,7 +41,7 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         Especie.class, Variedad.class, TempVisitas.class,  UnidadMedida.class, Usuario.class, Config.class,
         Visitas.class, CropRotation.class, pro_cli_mat.class, Temporada.class, detalle_visita_prop.class, Provincia.class, Errores.class,
         Lotes.class, Predios.class, TipoRiego.class, TipoSuelo.class, Maquinaria.class, TipoTenenciaMaquinaria.class, TipoTenenciaTerreno.class,
-        FichaMaquinaria.class, Clientes.class, CardViewsResumen.class
+        FichaMaquinaria.class, Clientes.class, CardViewsResumen.class, cli_pcm.class, quotation.class
         }, version = 1)
 public abstract class MyAppBD extends RoomDatabase {
 

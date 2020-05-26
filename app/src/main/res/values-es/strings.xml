@@ -393,4 +393,7 @@
     <string name="title_dialog_agron">Hey!</string>
     <string name="message_dialog_agron">Sólo puedes tomar 2 fotos</string>
     <string name="message_dialog_btn_ok">Entiendo</string>
+    <string name="descargar_datos_como">Descargar datos como</string>
+    <string name="supervisores">Administrador</string>
+    <string name="usuarios">Usuarios</string>
 </resources>

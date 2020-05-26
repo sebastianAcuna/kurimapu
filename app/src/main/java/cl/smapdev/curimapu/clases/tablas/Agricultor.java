@@ -2,6 +2,7 @@ package cl.smapdev.curimapu.clases.tablas;
 
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -19,6 +20,7 @@ public class Agricultor {
     @SerializedName("rut")
     private String rut_agricultor;
     @SerializedName("razon_social")
+    @ColumnInfo(name = "razon_social")
     private String nombre_agricultor;
     @SerializedName("telefono")
     private String telefono_agricultor;

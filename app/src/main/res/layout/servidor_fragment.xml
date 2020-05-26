@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBackground">
+
+
+    <TextView
+        android:id="@+id/titulo_servidores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/descargar_datos_como"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_admin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_weight="0.5"
+        app:layout_constraintTop_toTopOf="@id/lnUsers"
+        app:layout_constraintBottom_toBottomOf="@id/lnUsers"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorSurface"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_margin="@dimen/padding"
+        app:layout_constraintEnd_toStartOf="@id/lnUsers"
+        >
+        <TextView
+            android:padding="@dimen/padding"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/supervisores"
+            />
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:id="@+id/lnUsers"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        app:layout_constraintVertical_weight="0.5"
+        app:layout_constraintTop_toBottomOf="@id/titulo_servidores"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/card_admin"
+        android:orientation="vertical"
+        android:padding="@dimen/padding"
+        android:layout_margin="@dimen/padding"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/usuarios"
+            android:textStyle="bold"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_usuarios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+            />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="598dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/lnUsers"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/padding"/>
+
+
+
+    <TextView
+        android:id="@+id/titulo_servidor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seleccione servidor"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        />
+    <LinearLayout
+        android:id="@+id/lnServidores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/titulo_servidor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding"
+        >
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rbPruebas"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="Servidor pruebas (190.13.170.26)"
+
+                />
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rbDesarrollo"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="Servidor Desarrollo (www.zcloud16.cl)"
+
+                />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rbProduccion"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="Servidor Producción (www.zcloud02.cl)"
+
+                />
+
+        </RadioGroup>
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnContinuar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="continuar"
+        android:layout_margin="@dimen/padding"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -363,6 +363,13 @@ public class FragmentListVisits extends Fragment {
                                     tempVisitas.setId_temp_visita(visitasCompletas.getVisitas().getId_visita());
                                     tempVisitas.setAction_temp_visita(visitasCompletas.getVisitas().getEstado_visita());
 
+                                    tempVisitas.setObs_cosecha(visitasCompletas.getVisitas().getObs_cosecha());
+                                    tempVisitas.setObs_creci(visitasCompletas.getVisitas().getObs_creci());
+                                    tempVisitas.setObs_fito(visitasCompletas.getVisitas().getObs_fito());
+                                    tempVisitas.setObs_humedad(visitasCompletas.getVisitas().getObs_humedad());
+                                    tempVisitas.setObs_maleza(visitasCompletas.getVisitas().getObs_maleza());
+                                    tempVisitas.setObs_overall(visitasCompletas.getVisitas().getObs_overall());
+
                                     MainActivity.myAppDB.myDao().setTempVisitas(tempVisitas);
 
 

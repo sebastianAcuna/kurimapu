@@ -208,7 +208,7 @@ public class ServiceSync extends Service {
         list.setCantidadSuma(cantidadSuma);
 
 
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
         Call<Respuesta> call = apiService.enviarDatos(list);
 
         call.enqueue(new Callback<Respuesta>() {
@@ -266,7 +266,7 @@ public class ServiceSync extends Service {
     public void segundaRespuesta(int idCabecera){
         Config config = MainActivity.myAppDB.myDao().getConfig();
 
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
         Call<Respuesta> call = apiService.comprobacion(config.getId(), config.getId_usuario(), idCabecera);
 
         call.enqueue(new Callback<Respuesta>() {
@@ -387,8 +387,8 @@ public class ServiceSync extends Service {
 
         Config config = MainActivity.myAppDB.myDao().getConfig();
 
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<GsonDescargas> call = apiService.descargarDatos(config.getId(), config.getId_usuario());
+        ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
+        Call<GsonDescargas> call = apiService.descargarDatos(config.getId(), config.getId_usuario_suplandato());
         call.enqueue(new Callback<GsonDescargas>() {
             @Override
             public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {

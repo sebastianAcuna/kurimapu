@@ -1,11 +1,11 @@
 package cl.smapdev.curimapu.fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -19,21 +19,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 
@@ -57,7 +69,6 @@ import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
-import cl.smapdev.curimapu.clases.utilidades.Descargas;
 import cl.smapdev.curimapu.clases.utilidades.InternetStateClass;
 import cl.smapdev.curimapu.clases.utilidades.Subida;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
@@ -67,13 +78,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static cl.smapdev.curimapu.clases.utilidades.Descargas.volqueoDatos;
-
+import static cl.smapdev.curimapu.clases.utilidades.Utilidades.SumaRestarFecha;
+import static cl.smapdev.curimapu.clases.utilidades.Utilidades.fechaFromDate;
 
 public class FragmentPrincipal extends Fragment {
 
     private MainActivity activity;
 
-    private PieChart left_chart_view, right_chart_view, chv_3;
+    private PieChart right_chart_view,chv_3;
+    private BarChart left_chart_view;
     private RecyclerView card_list;
 
 
@@ -126,8 +139,8 @@ public class FragmentPrincipal extends Fragment {
 
 
 
-        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, temporadaList));
 
+        cargarToolbar();
 
         recargarYear();
         spinner_toolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -147,7 +160,11 @@ public class FragmentPrincipal extends Fragment {
     }
 
 
-    private void cargarGrafico(PieChart chart, Integer[] cantidadVisitas, String titulo, String[] parties){
+    void cargarToolbar(){
+        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity,R.layout.spinner_template_toolbar_view, temporadaList));
+    }
+
+    private void cargarGraficoPie(PieChart chart, Integer[] cantidadVisitas, String titulo, String[] parties){
 
         chart.setUsePercentValues(true);
         chart.getDescription().setEnabled(false);
@@ -195,7 +212,7 @@ public class FragmentPrincipal extends Fragment {
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
-        l.setTextColor(activity.getResources().getColor(R.color.colorOnSurface));
+        l.setTextColor(R.color.colorOnSurface);
 
         // entry label styling
         chart.setEntryLabelColor(Color.BLACK);
@@ -204,6 +221,20 @@ public class FragmentPrincipal extends Fragment {
 
         setData(chart,cantidadVisitas, parties);
     }
+
+    private void cargarGraficoBarra(BarChart chart, Integer[] cantidadVisitas, String titulo, String[] parties){
+
+        chart.setDrawBarShadow(false);
+        chart.setDrawValueAboveBar(true);
+        chart.setMaxVisibleValueCount(50);
+        chart.setPinchZoom(false);
+        chart.setDrawGridBackground(true);
+
+
+        setDataBar(chart,cantidadVisitas, parties, titulo);
+    }
+
+
 
     private void setData(PieChart chart, Integer[] count, String[] parties) {
         ArrayList<PieEntry> entries = new ArrayList<>();
@@ -264,6 +295,31 @@ public class FragmentPrincipal extends Fragment {
     }
 
 
+    private void setDataBar(BarChart chart, Integer[] count, String[] parties, String titulo) {
+        int start = 0;
+
+        ArrayList<BarEntry> values = new ArrayList<>();
+
+        for (int i = start; i < count.length; i++) {
+            values.add(new BarEntry(i, count[i]));
+        }
+
+        BarDataSet barDataSet = new BarDataSet(values, titulo);
+        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        BarData data = new BarData(barDataSet);
+        data.setBarWidth(0.5f);
+        chart.setData(data);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(7);
+        xAxis.setValueFormatter(new Utilidades.MyXAxisValueFormatter(parties));
+
+    }
+
+
     private void recargarYear(){
         if (temporadaList.size() > 0){
             spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, temporadaList.size() - 1));
@@ -316,14 +372,17 @@ public class FragmentPrincipal extends Fragment {
             public void myMethod(boolean result) {
                 if (result) {
                     final ProgressDialog progressDialog = new ProgressDialog(activity);
-                    progressDialog.setTitle("Espere un momento...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
+                    if (getView() != null){
+                        progressDialog.setTitle("Espere un momento...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                    }
+
 
                     Config cnf = MainActivity.myAppDB.myDao().getConfig();
 
-                    ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-                    Call<GsonDescargas> call = apiService.descargarDatos(cnf.getId(), cnf.getId_usuario());
+                    ApiService apiService = RetrofitClient.getClient(cnf.getServidorSeleccionado()).create(ApiService.class);
+                    Call<GsonDescargas> call = apiService.descargarDatos(cnf.getId(), cnf.getId_usuario_suplandato());
                     call.enqueue(new Callback<GsonDescargas>() {
                         @Override
                         public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
@@ -337,6 +396,7 @@ public class FragmentPrincipal extends Fragment {
                                         desc_temporadas.add(t.getNombre_tempo());
                                     }
                                 }
+                                cargarToolbar();
                                 Toast.makeText(activity, "Todo descargado con exito", Toast.LENGTH_SHORT).show();
                             }else{
                                 Errores errores = new Errores();
@@ -345,7 +405,9 @@ public class FragmentPrincipal extends Fragment {
                                 MainActivity.myAppDB.myDao().setErrores(errores);
                                 Toast.makeText(activity, "No se pudo descargar todo", Toast.LENGTH_SHORT).show();
                             }
-                            progressDialog.dismiss();
+                            if (getView() != null) {
+                                progressDialog.dismiss();
+                            }
                         }
 
                         @Override
@@ -357,7 +419,9 @@ public class FragmentPrincipal extends Fragment {
                             MainActivity.myAppDB.myDao().setErrores(errores);
 
                             Toast.makeText(activity, "No se pudo descargar todo front", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
+                            if (getView() != null) {
+                                progressDialog.dismiss();
+                            }
                         }
                     });
                 } else {
@@ -375,7 +439,14 @@ public class FragmentPrincipal extends Fragment {
         card_list.setAdapter(cardViewAdapter);
 
 
-        List<CardViewsResumen> lists = MainActivity.myAppDB.myDao().getCantidadVisitasByEtapa(prefs.getString(Utilidades.SELECTED_ANO, "1"));
+
+
+
+
+
+
+        /* visitas por predio */
+        List<CardViewsResumen> lists = MainActivity.myAppDB.myDao().getCantidadVisitasByPotrero(prefs.getString(Utilidades.SELECTED_ANO, "1"));
         try {
             Integer[] visitasDatos = new Integer[lists.size()];
             String[] visitasNombres = new String[lists.size()];
@@ -383,18 +454,49 @@ public class FragmentPrincipal extends Fragment {
                 int cont = 0;
                 for (CardViewsResumen f : lists){
                     visitasDatos[cont] = Integer.parseInt(f.getTotal());
-                    visitasNombres[cont] = Utilidades.getStateString(Utilidades.getPhenoState(Integer.parseInt(f.getNombre())));
+                    visitasNombres[cont] = f.getNombre();
                     cont++;
                 }
             }
-            cargarGrafico(left_chart_view,visitasDatos, "VISITAS / ETAPAS", visitasNombres);
+            cargarGraficoBarra(left_chart_view,visitasDatos, "VISITAS / PREDIO", visitasNombres);
         }catch (NumberFormatException e){
             Log.e("PARSE INTEGER", e.getMessage());
         }
 
 
+        /* visitas totales */
+        CardViewsResumen listaVisitas = MainActivity.myAppDB.myDao().getCantidadVisitas(prefs.getString(Utilidades.SELECTED_ANO, "1"));
+        if (listaVisitas != null){
+                TextView cantidad_visitas_cardview = activity.findViewById(R.id.cantidad_visitas_cardview);
+                if (cantidad_visitas_cardview != null){
+                    cantidad_visitas_cardview.setText(listaVisitas.getTotal());
+                }
+        }
 
-        List<CardViewsResumen> listaV = MainActivity.myAppDB.myDao().getCantidadVariedadesByVisita(prefs.getString(Utilidades.SELECTED_ANO, "1"));
+
+        /* predios no visitados */
+        String fechaAntigua  = fechaFromDate(SumaRestarFecha(-10));
+
+        TextView contenido_noUsados = activity.findViewById(R.id.contenido_noUsados);
+
+        List<CardViewsResumen> listaNoUsados = MainActivity.myAppDB.myDao().getCantidadPrediosNoVisitados(prefs.getString(Utilidades.SELECTED_ANO, "1"), fechaAntigua);
+        StringBuilder mensaje = new StringBuilder();
+        int conteoNoUsados = 0;
+        if (listaNoUsados.size() > 0){
+            for (CardViewsResumen crd : listaNoUsados){
+                conteoNoUsados++;
+                mensaje.append(conteoNoUsados).append(".- ").append(crd.getNombre()).append("\n");
+            }
+            contenido_noUsados.setText(mensaje);
+        }else{
+            contenido_noUsados.setText("0");
+        }
+
+
+
+
+        /* ha por variedad */
+        List<CardViewsResumen> listaV = MainActivity.myAppDB.myDao().getHaPorVariedad(prefs.getString(Utilidades.SELECTED_ANO, "1"));
         try {
             Integer[] visitasDatos = new Integer[listaV.size()];
             String[] visitasNombres = new String[listaV.size()];
@@ -406,15 +508,15 @@ public class FragmentPrincipal extends Fragment {
                     cont++;
                 }
             }
-            cargarGrafico(chv_3, visitasDatos, "VISITAS / VARIEDAD", visitasNombres);
+            cargarGraficoPie(chv_3, visitasDatos, "Ha / Material", visitasNombres);
 
         }catch (NumberFormatException e){
             Log.e("PARSE INTEGER", e.getMessage());
         }
 
 
-
-        List<CardViewsResumen> listaE = MainActivity.myAppDB.myDao().getCantidadEspeciesByVisita(prefs.getString(Utilidades.SELECTED_ANO, "1"));
+        /* ha por  especie*/
+        List<CardViewsResumen> listaE = MainActivity.myAppDB.myDao().getHaPorEspecie(prefs.getString(Utilidades.SELECTED_ANO, "1"));
         try {
             Integer[] visitasDatos = new Integer[listaE.size()];
             String[] visitasNombres = new String[listaE.size()];
@@ -426,7 +528,7 @@ public class FragmentPrincipal extends Fragment {
                     cont++;
                 }
             }
-            cargarGrafico(right_chart_view,visitasDatos, "VISITAS / ESPECIE", visitasNombres);
+            cargarGraficoPie(right_chart_view,visitasDatos, "Ha / ESPECIE", visitasNombres);
         }catch (NumberFormatException e){
             Log.e("PARSE INTEGER", e.getMessage());
         }

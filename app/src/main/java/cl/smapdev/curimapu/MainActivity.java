@@ -37,12 +37,14 @@ import java.util.Objects;
 import cl.smapdev.curimapu.clases.bd.MyAppBD;
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
 import cl.smapdev.curimapu.clases.sincronizacion.ServiceSync;
+import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentConfigs;
 import cl.smapdev.curimapu.fragments.FragmentFichas;
 import cl.smapdev.curimapu.fragments.FragmentLogin;
 import cl.smapdev.curimapu.fragments.FragmentPrincipal;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
+import cl.smapdev.curimapu.fragments.servidorFragment;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -94,15 +96,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setTheme(R.style.MyTheme_DayNight);
         }
 
+        Config config1 = MainActivity.myAppDB.myDao().getConfig();
+        if (config1 != null){
+            if (config1.getServidorSeleccionado().length() <= 0){
+                config1.setServidorSeleccionado(Utilidades.IP_PRODUCCION);
+                MainActivity.myAppDB.myDao().updateConfig(config1);
+            }
 
+        }else{
+            Config config2 = new Config();
+            config2.setServidorSeleccionado(Utilidades.IP_PRODUCCION);
+            MainActivity.myAppDB.myDao().setConfig(config2);
+        }
 
         super.onCreate(savedInstanceState);
-
-
-
-
-
-
 
 
 
@@ -121,13 +128,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
            if (Objects.equals(shared.getString(Utilidades.SHARED_USER, ""), "")){
                 cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_LOGIN, R.anim.slide_in_left, R.anim.slide_out_left);
             }else{
-                cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
-                navigationView.setCheckedItem(R.id.nv_inicio);
+               if (shared.getString(Utilidades.SHARED_SERVER_ID_USER, "").equals("")){
+                   cambiarFragment(new servidorFragment(), Utilidades.FRAGMENT_SERVIDOR, R.anim.slide_in_left, R.anim.slide_out_left);
+               }else{
+                   cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
+                   navigationView.setCheckedItem(R.id.nv_inicio);
+               }
+
             }
         }
-
-
-
 
 
     }

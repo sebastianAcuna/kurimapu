@@ -10,6 +10,7 @@ import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -19,19 +20,23 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class cargarUI {
 
-    public static ArrayList<ArrayList> cargarUI(View view, int idConstraint, Activity activity, String idMaterial, int idEtapa, ArrayList<ArrayList> all){
+    public static ArrayList<ArrayList> cargarUI(View view, int idConstraint, Activity activity, String idMaterial, int idEtapa, int cliente, ArrayList<ArrayList> all){
 
         ArrayList<Integer> id_generica = new ArrayList<>();
         ArrayList<Integer> id_importante =  new ArrayList<>();
@@ -41,9 +46,12 @@ public class cargarUI {
         ArrayList<ImageView> images =  new ArrayList<>();
         ArrayList<ArrayList> genn = new ArrayList<>();
         ArrayList<Spinner> spinners = new ArrayList<>();
+        ArrayList<CheckBox> check = new ArrayList<>();
 
 
-        List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByMateriales(idMaterial, idEtapa);
+
+
+        List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByMateriales(idMaterial, idEtapa, cliente);
         if (list.size() > 0) {
 
 
@@ -137,7 +145,7 @@ public class cargarUI {
                         ImageView img = null;
 
 
-                        if(fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")){
+                        if(fs.getEs_lista() != null && fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")){
 
 
                             img = new ImageView(activity);
@@ -172,7 +180,7 @@ public class cargarUI {
 //                        constraintSet.connect(tvTitle.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
 
 
-                        if(fs.getEs_lista().equals("SI")) {
+                        if(fs.getEs_lista() != null && fs.getEs_lista().equals("SI")) {
 
                             if (!fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
                                 //                            constraintSet.connect(img.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
@@ -187,7 +195,7 @@ public class cargarUI {
 
 
                         constraintSet.applyTo(constraintLayout);
-                        if(fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
+                        if(fs.getEs_lista() != null && fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
                             images.add(img);
                         }
 
@@ -196,7 +204,7 @@ public class cargarUI {
 
                     }else{
 
-                        if(fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
+                        if(fs.getEs_lista() != null && fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
                             eslista = true;
                         }
 
@@ -208,7 +216,7 @@ public class cargarUI {
                         if (!titulosUsadosRecyclers.contains(nombre)){
                             titulosUsadosRecyclers.add(nombre);
 
-                            List<pro_cli_mat> Popr = MainActivity.myAppDB.myDao().getProCliMatByIdProp(fs.getId_prop());
+                            List<pro_cli_mat> Popr = MainActivity.myAppDB.myDao().getProCliMatByIdProp(fs.getId_prop(), idMaterial, cliente);
                             if (Popr.size() > 0){
                                 View tvO = null;
                                 int el = 1;
@@ -295,7 +303,7 @@ public class cargarUI {
                         }
                     }else {
 
-                        if (fs.getEs_lista().equals("NO")) {
+                        if (fs.getEs_lista() != null && fs.getEs_lista().equals("NO")) {
 
 
                             TextView tv = new TextView(new ContextThemeWrapper(activity, R.style.sub_titles_forms), null, 0);
@@ -374,6 +382,60 @@ public class cargarUI {
                                     spinners.add(sp);
 
 
+                                }else if(fs.getTipo_cambio().equals("TEXTVIEW")){
+                                    TextView et = new TextView(activity);
+                                    int id = View.generateViewId();
+                                    et.setId(id);
+                                    id_generica.add(et.getId());
+                                    id_importante.add(fs.getId_prop_mat_cli());
+                                    constraintLayout.addView(et, cont);
+                                    cont++;
+
+                                    ViewGroup.LayoutParams paramEditText = et.getLayoutParams();
+                                    paramEditText.height = WRAP_CONTENT;
+                                    paramEditText.width = 0;
+                                    et.setLayoutParams(paramEditText);
+
+                                    constraintSet.clone(constraintLayout);
+                                    /* PROP */
+                                    constraintSet.connect(tv.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                                    constraintSet.connect(tv.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
+                                    constraintSet.connect(tv.getId(), ConstraintSet.END, et.getId(), ConstraintSet.START, 0);
+                                    /* VAL */
+                                    constraintSet.connect(et.getId(), ConstraintSet.TOP, tv.getId(), ConstraintSet.TOP, 0);
+                                    constraintSet.connect(et.getId(), ConstraintSet.START, tv.getId(), ConstraintSet.END, 0);
+                                    constraintSet.connect(et.getId(), ConstraintSet.BOTTOM, tv.getId(), ConstraintSet.BOTTOM, 0);
+                                    constraintSet.connect(et.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
+
+                                    textViews.add(et);
+
+
+                                }else if (fs.getTipo_cambio().equals("CHECK")){
+                                    CheckBox et = new CheckBox(activity);
+                                    int id = View.generateViewId();
+                                    et.setId(id);
+                                    id_generica.add(et.getId());
+                                    id_importante.add(fs.getId_prop_mat_cli());
+                                    constraintLayout.addView(et, cont);
+                                    cont++;
+
+                                    ViewGroup.LayoutParams paramEditText = et.getLayoutParams();
+                                    paramEditText.height = WRAP_CONTENT;
+                                    paramEditText.width = 0;
+                                    et.setLayoutParams(paramEditText);
+
+                                    constraintSet.clone(constraintLayout);
+                                    /* PROP */
+                                    constraintSet.connect(tv.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
+                                    constraintSet.connect(tv.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
+                                    constraintSet.connect(tv.getId(), ConstraintSet.END, et.getId(), ConstraintSet.START, 0);
+                                    /* VAL */
+                                    constraintSet.connect(et.getId(), ConstraintSet.TOP, tv.getId(), ConstraintSet.TOP, 0);
+                                    constraintSet.connect(et.getId(), ConstraintSet.START, tv.getId(), ConstraintSet.END, 0);
+                                    constraintSet.connect(et.getId(), ConstraintSet.BOTTOM, tv.getId(), ConstraintSet.BOTTOM, 0);
+                                    constraintSet.connect(et.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
+
+                                    check.add(et);
                                 }else{
                                     EditText et = null;
                                     switch (fs.getTipo_cambio()) {
@@ -450,6 +512,7 @@ public class cargarUI {
                     recyclers = (ArrayList<RecyclerView>) all.get(4);
                     images = (ArrayList<ImageView>) all.get(5);
                     spinners = (ArrayList<Spinner>) all.get(6);
+                    check = (ArrayList<CheckBox>) all.get(7);
 
                 }
 
@@ -462,6 +525,7 @@ public class cargarUI {
         genn.add(recyclers);
         genn.add(images);
         genn.add(spinners);
+        genn.add(check);
 
         return genn;
     }

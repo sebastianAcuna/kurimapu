@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -41,14 +42,21 @@ import androidx.exifinterface.media.ExifInterface;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.mikephil.charting.formatter.ValueFormatter;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -75,6 +83,14 @@ public class Utilidades {
     public static final String FRAGMENT_CREA_FICHA = "fragment_crea_ficha";
     public static final String FRAGMENT_LIST_VISITS = "fragment_list_visits";
     public static final String FRAGMENT_TAKE_PHOTO = "fragment_take_photo";
+    public static final String FRAGMENT_SERVIDOR = "fragment_servidor";
+
+
+
+    public static final String IP_PRODUCCION = "www.zcloud02.cl";
+//    public static final String IP_DESARROLLO = "www.zcloud16.cl";
+    public static final String IP_DESARROLLO = "www.zcloud16.cl";
+    public static final String IP_PRUEBAS = "190.13.170.26";
 
 
 
@@ -83,6 +99,10 @@ public class Utilidades {
     public static final String SHARED_USER = "user_name";
     public static final String SHARED_PREFERENCE = "frg_preference";
     public static final String SELECTED_ANO = "selected_ano";
+
+
+    public static final String SHARED_SERVER_ID_USER = "server_user_id";
+    public static final String SHARED_SERVER_ID_SERVER = "server_server_id";
 
     /*DIALOGO FILTRO FICHAS*/
     public static final String SHARED_FILTER_FICHAS_REGION = "filter_fichas_region";
@@ -103,6 +123,7 @@ public class Utilidades {
     public static final String SHARED_VISIT_ANEXO_ID = "shared_visit_anexo_id";
     public static final String SHARED_VISIT_VISITA_ID = "shared_visit_visita_id";
     public static final String SHARED_VISIT_MATERIAL_ID = "shared_visit_material_id";
+    public static final String SHARED_VISIT_ESPECIE_ID = "shared_visit_especie_id";
 
 
 
@@ -111,6 +132,29 @@ public class Utilidades {
     public static final String VISTA_FOTOS = "vista";
 
 
+
+    public static Date SumaRestarFecha(int sumaresta){
+
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, sumaresta);
+        return c.getTime();
+
+    }
+
+
+    public static class MyXAxisValueFormatter extends ValueFormatter {
+
+        private String[] mValues;
+
+        public MyXAxisValueFormatter(String[] values) {
+            this.mValues = values;
+        }
+
+        @Override
+        public String getFormattedValue(float value) {
+            return mValues[(int) value];
+        }
+    }
 
 
     public static int getPhenoState(int position){
@@ -281,6 +325,9 @@ public class Utilidades {
         return new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
     }
 
+    public static String fechaFromDate(Date fecha){
+        return new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(fecha);
+    }
 
 
     public static Date horaFormat(String hora) throws ParseException {
@@ -297,6 +344,27 @@ public class Utilidades {
 
     public static String fechaActualInvSinHora(){
         return new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+    }
+
+
+
+    /* Checks if external storage is available for read and write */
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Checks if external storage is available to at least read */
+    public static boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
     }
 
 

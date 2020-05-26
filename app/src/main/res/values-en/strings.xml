@@ -412,5 +412,7 @@ Depending on the state, it can be edited or not.</string>
     <string name="message_dialog_btn_ok">OK</string>
 
 
-
+    <string name="descargar_datos_como">Download like</string>
+    <string name="supervisores">Administrator</string>
+    <string name="usuarios">Users</string>
 </resources>

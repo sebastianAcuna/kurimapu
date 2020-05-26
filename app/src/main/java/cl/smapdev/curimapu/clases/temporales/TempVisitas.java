@@ -28,10 +28,19 @@ public class TempVisitas {
     private String obs_overall;
     private String obs_humedad;
 
+    private double percent_humedad;
+
 
     private int action_temp_visita; /* 0 insert ; 1 update; 2 finished */
     private int etapa_temp_visitas;
 
+    public double getPercent_humedad() {
+        return percent_humedad;
+    }
+
+    public void setPercent_humedad(double percent_humedad) {
+        this.percent_humedad = percent_humedad;
+    }
 
     public String getObs_fito() {
         return obs_fito;

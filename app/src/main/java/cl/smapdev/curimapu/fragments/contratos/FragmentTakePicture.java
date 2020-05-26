@@ -247,99 +247,111 @@ public class FragmentTakePicture extends Fragment {
 
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION,ORIENTATIONS.get(rotation));
 
-            file = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + Utilidades.DIRECTORIO_IMAGEN + File.separator + UUID.randomUUID().toString()+".jpg");
-            ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
-                @Override
-                public void onImageAvailable(ImageReader imageReader) {
-                    Image image = null;
-                    try {
-                        image = reader.acquireLatestImage();
-                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                        byte[] bytes = new byte[buffer.capacity()];
-                        buffer.get(bytes);
-                        save(bytes);
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        {
-                            if (image != null)
-                                image.close();
-                        }
-                    }
-                }
-                private void save(byte[] bytes) throws IOException {
-                    try (OutputStream outputStream = new FileOutputStream(file)) {
-                        outputStream.write(bytes);
+            File miFile = new File(Environment.getExternalStorageDirectory(), Utilidades.DIRECTORIO_IMAGEN);
+            boolean isCreada = miFile.exists();
 
+            if (!isCreada){
+                isCreada=miFile.mkdirs();
+            }
 
+            if(isCreada) {
+                file = new File(Environment.getExternalStorageDirectory() +
+                        File.separator + Utilidades.DIRECTORIO_IMAGEN + File.separator + UUID.randomUUID().toString()+".jpg");
 
-
-                        Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath());
-
-
-                        Integer[] inte = Utilidades.neededRotation(Uri.fromFile(file));
-
-                        int rotation = inte[1];
-                        int rotationInDegrees = inte[0];
-
-                        Matrix m = new Matrix();
-                        if (rotation != 0) {
-                            m.preRotate(rotationInDegrees);
-                        }
-
-                        Bitmap src = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), m, true);
-
-                        ByteArrayOutputStream bos = null;
+                ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
+                    @Override
+                    public void onImageAvailable(ImageReader imageReader) {
+                        Image image = null;
                         try {
-                            bos = new ByteArrayOutputStream();
-                            CameraUtils.escribirFechaImg(src, activity).compress(Bitmap.CompressFormat.JPEG, 100, bos);
-                            byte[] bitmapdata = bos.toByteArray();
-
-                            FileOutputStream fos = new FileOutputStream(file.getAbsoluteFile());
-                            fos.write(bitmapdata);
-                            fos.flush();
-                            fos.close();
+                            image = reader.acquireLatestImage();
+                            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                            byte[] bytes = new byte[buffer.capacity()];
+                            buffer.get(bytes);
+                            save(bytes);
 
                         } catch (IOException e) {
                             e.printStackTrace();
+                        } finally {
+                            {
+                                if (image != null)
+                                    image.close();
+                            }
                         }
                     }
-                }
-            };
+                    private void save(byte[] bytes) throws IOException {
+                        try (OutputStream outputStream = new FileOutputStream(file)) {
+                            outputStream.write(bytes);
 
-            reader.setOnImageAvailableListener(readerListener,mBackgroundHandler);
-            final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
-                @Override
-                public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
-                    super.onCaptureCompleted(session, request, result);
-                    Toast.makeText(activity, "Saved "+file, Toast.LENGTH_SHORT).show();
 
-                    //stopBackgroundThread();
-                    guardarBD(file);
-                    activity.onBackPressed();
 
-                    //createCameraPreview();
-                }
-            };
 
-            cameraDevice.createCaptureSession(outputSurface, new CameraCaptureSession.StateCallback() {
-                @Override
-                public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    try{
-                        cameraCaptureSession.capture(captureBuilder.build(),captureListener,mBackgroundHandler);
-                    } catch (CameraAccessException e) {
-                        e.printStackTrace();
+                            Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath());
+
+
+                            Integer[] inte = Utilidades.neededRotation(Uri.fromFile(file));
+
+                            int rotation = inte[1];
+                            int rotationInDegrees = inte[0];
+
+                            Matrix m = new Matrix();
+                            if (rotation != 0) {
+                                m.preRotate(rotationInDegrees);
+                            }
+
+                            Bitmap src = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), m, true);
+
+                            ByteArrayOutputStream bos = null;
+                            try {
+                                bos = new ByteArrayOutputStream();
+                                CameraUtils.escribirFechaImg(src, activity).compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                                byte[] bitmapdata = bos.toByteArray();
+
+                                FileOutputStream fos = new FileOutputStream(file.getAbsoluteFile());
+                                fos.write(bitmapdata);
+                                fos.flush();
+                                fos.close();
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                }
+                };
 
-                @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+                reader.setOnImageAvailableListener(readerListener,mBackgroundHandler);
+                final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
+                    @Override
+                    public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
+                        super.onCaptureCompleted(session, request, result);
+                        Toast.makeText(activity, "Saved "+file, Toast.LENGTH_SHORT).show();
 
-                }
-            },mBackgroundHandler);
+                        //stopBackgroundThread();
+                        guardarBD(file);
+                        activity.onBackPressed();
 
+                        //createCameraPreview();
+                    }
+                };
+
+                cameraDevice.createCaptureSession(outputSurface, new CameraCaptureSession.StateCallback() {
+                    @Override
+                    public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                        try{
+                            cameraCaptureSession.capture(captureBuilder.build(),captureListener,mBackgroundHandler);
+                        } catch (CameraAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+
+                    }
+                },mBackgroundHandler);
+            }else{
+                Toast.makeText(activity, "No se ha podido crear el directorio", Toast.LENGTH_SHORT).show();
+            }
 
         } catch (CameraAccessException e) {
             e.printStackTrace();

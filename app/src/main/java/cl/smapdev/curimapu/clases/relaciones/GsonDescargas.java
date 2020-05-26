@@ -29,8 +29,10 @@ import cl.smapdev.curimapu.clases.tablas.UnidadMedida;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.tablas.cli_pcm;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
+import cl.smapdev.curimapu.clases.tablas.quotation;
 
 public class GsonDescargas {
 
@@ -141,9 +143,35 @@ public class GsonDescargas {
     private List<Clientes> clientes;
 
 
+    @SerializedName("array_quotation")
+    @Embedded
+    private List<quotation> quotations;
+
+
     @SerializedName("array_card_views")
     @Embedded
     private List<CardViewsResumen> cardViewsResumen;
+
+    @SerializedName("array_pcm")
+    @Embedded
+    private List<cli_pcm> cli_pcms;
+
+
+    public List<quotation> getQuotations() {
+        return quotations;
+    }
+
+    public void setQuotations(List<quotation> quotations) {
+        this.quotations = quotations;
+    }
+
+    public List<cli_pcm> getCli_pcms() {
+        return cli_pcms;
+    }
+
+    public void setCli_pcms(List<cli_pcm> cli_pcms) {
+        this.cli_pcms = cli_pcms;
+    }
 
     public List<CardViewsResumen> getCardViewsResumen() {
         return cardViewsResumen;

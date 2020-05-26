@@ -290,6 +290,48 @@
                 app:layout_constraintEnd_toEndOf="@id/sp_fito"
                 />
 
+            <TextView
+                android:id="@+id/lbl_percent_humedad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="% humedad"
+                app:layout_constraintTop_toTopOf="@id/lbl_humedad"
+                app:layout_constraintBottom_toBottomOf="@id/lbl_humedad"
+                app:layout_constraintStart_toStartOf="@id/ti_percent_humedad"
+
+                />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ti_percent_humedad"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_percent_humedad"
+                app:layout_constraintStart_toEndOf="@id/sp_humedad"
+                android:layout_margin="@dimen/padding"
+                android:hint="%"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_percent_humedad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:src="@drawable/tensiometro"
+                app:layout_constraintStart_toEndOf="@id/ti_percent_humedad"
+                app:layout_constraintTop_toTopOf="@id/ti_percent_humedad"
+                app:layout_constraintBottom_toBottomOf="@id/ti_percent_humedad"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="10dp"
+                android:contentDescription="tensiometro"
+
+                />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/obs_humedad"

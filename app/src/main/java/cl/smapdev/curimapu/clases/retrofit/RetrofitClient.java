@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
+import cl.smapdev.curimapu.MainActivity;
+import cl.smapdev.curimapu.clases.tablas.Config;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -19,15 +21,16 @@ public class RetrofitClient {
             .writeTimeout(3,  TimeUnit.MINUTES)
             .build();
 
-    public static Retrofit getClient(){
+    public static Retrofit getClient(String direccion){
 
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
 
         if (retrofit ==null){
+            String url = "http://"+direccion+"/curimapu/core/models/android/";
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://190.13.170.30/curimapu/core/models/android/")
+                    .baseUrl(url)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();

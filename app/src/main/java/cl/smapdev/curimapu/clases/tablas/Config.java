@@ -16,10 +16,28 @@ public class Config {
 
     private String horaSubida;
 
+    private String servidorSeleccionado;
 
+    private int id_usuario_suplandato;
 
+    public String getServidorSeleccionado() {
+        return servidorSeleccionado;
+    }
+
+    public void setServidorSeleccionado(String servidorSeleccionado) {
+        this.servidorSeleccionado = servidorSeleccionado;
+    }
 
     public Config() {
+    }
+
+
+    public int getId_usuario_suplandato() {
+        return id_usuario_suplandato;
+    }
+
+    public void setId_usuario_suplandato(int id_usuario_suplandato) {
+        this.id_usuario_suplandato = id_usuario_suplandato;
     }
 
     @Ignore

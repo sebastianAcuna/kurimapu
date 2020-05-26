@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.tablas;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -16,6 +17,7 @@ public class AnexoContrato {
     private String id_anexo_contrato;
 
     @SerializedName("num_anexo")
+    @ColumnInfo(name = "num_anexo")
     private String anexo_contrato;
 
     @SerializedName("id_materiales")
@@ -35,6 +37,29 @@ public class AnexoContrato {
 
     @SerializedName("id_ficha")
     private int id_ficha_contrato;
+
+    @SerializedName("id_potrero")
+    private int id_potrero;
+
+    @SerializedName("superficie")
+    private int superficie;
+
+
+    public int getSuperficie() {
+        return superficie;
+    }
+
+    public void setSuperficie(int superficie) {
+        this.superficie = superficie;
+    }
+
+    public int getId_potrero() {
+        return id_potrero;
+    }
+
+    public void setId_potrero(int id_potrero) {
+        this.id_potrero = id_potrero;
+    }
 
     public AnexoContrato() {
     }

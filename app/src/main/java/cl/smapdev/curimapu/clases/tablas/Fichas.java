@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-@Entity(tableName = "fichas")
+@Entity(tableName = "ficha")
 public class Fichas  implements Serializable {
 
     @PrimaryKey(autoGenerate = true)

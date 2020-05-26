@@ -1,24 +1,41 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
+import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
+import cl.smapdev.curimapu.clases.utilidades.cargarUI;
 
 public class FragmentResumen extends Fragment {
 
@@ -29,6 +46,17 @@ public class FragmentResumen extends Fragment {
             production_location, has_contrato, has_customer, fieldman, rch,ptos_ampros;
 
     private SharedPreferences prefs;
+
+    private View Globalview;
+
+    private ArrayList<ArrayList> global = null;
+    private ArrayList<Integer> id_importante = null;
+    private ArrayList<Integer> id_generica = null;
+    private ArrayList<TextView> textViews = null;
+    private ArrayList<EditText> editTexts  = null;
+    private ArrayList<RecyclerView> recyclerViews  = null;
+    private ArrayList<ImageView> imageViews  = null;
+    private ArrayList<Spinner> spinners  = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +70,8 @@ public class FragmentResumen extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_resumen, container, false);
+        Globalview =  inflater.inflate(R.layout.fragment_resumen, container, false);
+        return Globalview;
     }
 
 
@@ -51,86 +80,258 @@ public class FragmentResumen extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         bind(view);
 
+        new LazyLoad(true).execute();
+
 
         if (prefs != null){
-            llenarResumen(MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+//            llenarResumen(MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
         }
 
 
     }
 
 
+    private class LazyLoad extends AsyncTask<Void, Void, ArrayList<ArrayList>> {
 
-    private void llenarResumen(VisitasCompletas visitasCompletas){
+        private ProgressDialog progressBar;
+        private  boolean show;
 
-        if (visitasCompletas != null){
-                /* visitas */
-            if (visitasCompletas.getVisitas() != null){
-                fecha_resumen.setText(Utilidades.voltearFechaBD(visitasCompletas.getVisitas().getFecha_visita()));
-                estado_fenologico.setText(visitasCompletas.getVisitas().getPhenological_state_visita());
-                estado_general.setText(visitasCompletas.getVisitas().getOverall_status_visita());
-                estado_crecimiento.setText(visitasCompletas.getVisitas().getGrowth_status_visita());
-                estado_maleza.setText(visitasCompletas.getVisitas().getWeed_state_visita());
-                estado_fito.setText(visitasCompletas.getVisitas().getPhytosanitary_state_visita());
-                humedad_suelo.setText(visitasCompletas.getVisitas().getHumidity_floor_visita());
-                cosecha.setText(visitasCompletas.getVisitas().getHarvest_visita());
-                observation.setText(visitasCompletas.getVisitas().getObservation_visita());
-                recomendaciones.setText(visitasCompletas.getVisitas().getRecomendation_visita());
+        public LazyLoad(boolean show) {
+            this.show = show;
+        }
 
-
-                Usuario usuario = MainActivity.myAppDB.myDao().getUsuarioById(visitasCompletas.getVisitas().getId_user_visita());
-                if (usuario != null){
-                    String nombre = usuario.getNombre() + " " + usuario.getApellido_p() + " " + usuario.getApellido_m();
-                    fieldman.setText(nombre);
-                }
+        @Override
+        protected void onPreExecute() {
+            if (show){
+                progressBar = new ProgressDialog(activity);
+                progressBar.setTitle(getResources().getString(R.string.espere));
+                progressBar.show();
             }
 
-            /*anexo*/
-            if (visitasCompletas.getAnexoCompleto() != null){
+            super.onPreExecute();
+        }
 
-                anexo.setText(visitasCompletas.getAnexoCompleto().getAnexoContrato().getAnexo_contrato());
-                orden_culplica.setText("¿?");
-
-                if (visitasCompletas.getClientes() != null){
-
-                    cliente.setText(visitasCompletas.getClientes().getRazon_social_clientes());
-                }
-
-                especie.setText(visitasCompletas.getAnexoCompleto().getEspecie().getDesc_especie());
-                variedad.setText(visitasCompletas.getAnexoCompleto().getVariedad().getDesc_variedad());
-
-                ready_batch.setText("¿?");
-                raw_batch.setText("¿?");
-
-                if (visitasCompletas.getAnexoCompleto().getLotes() != null){
-                    grower.setText((visitasCompletas.getAnexoCompleto().getLotes().getNombre_ac() != null) ? visitasCompletas.getAnexoCompleto().getLotes().getNombre_ac() : "");
-                    potrero.setText(visitasCompletas.getAnexoCompleto().getLotes().getNombre_lote());
-                    ptos_ampros.setText(visitasCompletas.getAnexoCompleto().getLotes().getCoo_utm_ampros());
-                }
-
-                if (visitasCompletas.getAnexoCompleto().getPredios() != null){
-                    predio.setText(visitasCompletas.getAnexoCompleto().getPredios().getNombre());
-                }
-
-
-
-
-
-
-                siembra_sag.setText("¿?");
-                sag_register_number.setText("¿?");
-                irrigation_system.setText("¿?");
-                soil_type.setText("¿?");
-                production_location.setText("¿?");
-                has_contrato.setText("¿?");
-                has_customer.setText("¿?");
-                rch.setText("¿?");
-
-
+        @Override
+        protected ArrayList<ArrayList> doInBackground(Void... voids) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ArrayList> aVoid) {
+            super.onPostExecute(aVoid);
+            int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+            global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_resumen, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), 1,idClienteFinal,global);;
+            setearOnFocus();
+            if (show && progressBar != null && progressBar.isShowing()){
+                progressBar.dismiss();
+            }
+        }
+    }
+
+
+    private void setearOnFocus(){
+        if (global != null && global.size() > 0){
+
+            try{
+
+                id_generica = (ArrayList<Integer>) global.get(0);
+                id_importante = (ArrayList<Integer>) global.get(1);
+                textViews = (ArrayList<TextView>) global.get(2);
+
+                int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+
+                if (textViews != null && textViews.size() > 0){
+                    for (int i = 0; i < textViews.size(); i++){
+                        if (id_generica.contains(textViews.get(i).getId())) {
+                            int index = id_generica.indexOf(textViews.get(i).getId());
+                            int idImportante = id_importante.get(index);
+
+                            pro_cli_mat fs = MainActivity.myAppDB.myDao().getProCliMatByIdProp(idImportante, idClienteFinal);
+                            if (fs != null){
+                                if (fs.getForaneo().equals("SI")){
+
+                                    Object[] ob = new Object[]{};
+                                    String nombreCampoTableta = "";
+                                    String nombreTabla = "";
+                                    if (!fs.getTabla().equals("")){
+                                        switch (fs.getTabla()){
+                                            case "cliente":
+                                                nombreCampoTableta = (fs.getCampo().equals("razon_social")) ? "razon_social_clientes" : fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
+
+                                            case "especie":
+                                                nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "desc_especie" : fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
+
+                                            case "materiales":
+                                                nombreCampoTableta = (fs.getCampo().equals("nom_hibrido")) ? "desc_hibrido_variedad" : fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
+
+                                            case "lote":
+                                                nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "nombre_lote" : fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
+                                            case "visita":
+                                                switch (fs.getCampo()){
+                                                    case "fecha_r":
+                                                        nombreCampoTableta = "fecha_visita";
+                                                        break;
+                                                    case "estado_fen":
+                                                        nombreCampoTableta = "phenological_state_visita";
+                                                        break;
+                                                    case "estado_gen_culti":
+                                                        nombreCampoTableta = "overall_status_visita";
+                                                        break;
+                                                    case "estado_crec":
+                                                        nombreCampoTableta = "growth_status_visita";
+                                                        break;
+                                                    case "estado_male":
+                                                        nombreCampoTableta = "weed_state_visita";
+                                                        break;
+                                                    case "estado_fito":
+                                                        nombreCampoTableta = "phytosanitary_state_visita";
+                                                        break;
+                                                    case "hum_del_suelo":
+                                                        nombreCampoTableta = "humidity_floor_visita";
+                                                        break;
+                                                    case "cosecha":
+                                                        nombreCampoTableta = "harvest_visita";
+                                                        break;
+                                                    default:
+                                                        nombreCampoTableta = fs.getCampo();
+                                                        break;
+
+                                                }
+                                                nombreTabla = fs.getTabla();
+                                                break;
+                                            case "detalle_visita_prop":
+                                                nombreCampoTableta = (fs.getCampo().equals("valor")) ? "valor_detalle" : fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
+
+                                            case "usuarios":
+                                                nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "nombre || ' ' || apellido_p AS nombre " : fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
+
+                                            case "detalle_quotation":
+                                                nombreCampoTableta =  fs.getCampo();
+                                                nombreTabla = "quotation";
+                                                break;
+
+
+
+                                        /*case "ficha":
+                                            if (fs.getCampo().equals("localidad")){
+
+                                            }
+                                            nombreCampoTableta = (fs.getCampo().equals("valor")) ? "valor_detalle" : fs.getCampo();
+                                            break;*/
+                                            default:
+                                                nombreTabla = fs.getTabla();
+                                                nombreCampoTableta = fs.getCampo();
+                                        }
+
+                                        String consulta = "SELECT " + nombreCampoTableta + " " +
+                                                " FROM " + nombreTabla + " ";
+
+                                        switch (fs.getTabla()){
+                                            case "anexo_contrato" :
+                                                consulta += " WHERE id_anexo_contrato = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
+
+                                            case "cliente":
+
+                                                int idCliente  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                consulta += " WHERE id_clientes_tabla = ? ";
+                                                ob = Utilidades.appendValue(ob,idCliente);
+                                                break;
+
+                                            case "especie":
+                                                consulta += " WHERE id_especie = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""));
+                                                break;
+
+                                            case "materiales":
+                                                String idVariedad  = MainActivity.myAppDB.myDao().getIdMaterialByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                consulta += " WHERE id_variedad = ? ";
+                                                ob = Utilidades.appendValue(ob,idVariedad);
+                                                break;
+                                            case "agricultor":
+                                                consulta += " INNER JOIN anexo_contrato AC ON AC.id_agricultor_anexo = agricultor.id_agricultor  WHERE id_anexo_contrato = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
+
+//
+                                            case "predio":
+                                                int idPredio  = MainActivity.myAppDB.myDao().getIdPredioByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                consulta += " WHERE id_pred = ? ";
+                                                ob = Utilidades.appendValue(ob,idPredio);
+                                                break;
+                                            case "lote":
+                                                int idLote  = MainActivity.myAppDB.myDao().getIdLoteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                consulta += " WHERE lote = ? ";
+                                                ob = Utilidades.appendValue(ob,idLote);
+                                                break;
+                                            case "visita":
+                                                int idVisita  = MainActivity.myAppDB.myDao().getIdVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                consulta += " WHERE id_visita = ? ";
+                                                ob = Utilidades.appendValue(ob,idVisita);
+                                                break;
+                                            case "detalle_visita_prop":
+                                                int idVisitas  = MainActivity.myAppDB.myDao().getIdVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                consulta += " WHERE id_det_vis_prop_detalle = ? AND id_visita_detalle = ?  ORDER BY id_det_vis_prop_detalle DESC LIMIT 1 ";
+                                                ob = Utilidades.appendValue(ob,fs.getId_prop_mat_cli());
+                                                ob = Utilidades.appendValue(ob,idVisitas);
+                                                break;
+                                            case "tipo_riego":
+                                                int idTipoRiego  = MainActivity.myAppDB.myDao().getIdTipoRiegoByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                consulta += " WHERE id_tipo_riego = ? ";
+                                                ob = Utilidades.appendValue(ob,idTipoRiego);
+                                                break;
+                                            case "tipo_suelo":
+                                                int idTipoSuelo  = MainActivity.myAppDB.myDao().getIdTipoSueloByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                consulta += " WHERE id_tipo_suelo = ? ";
+                                                ob = Utilidades.appendValue(ob,idTipoSuelo);
+                                                break;
+                                            case "ficha":
+                                                consulta += " WHERE id_ficha = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getInt(Utilidades.SHARED_VISIT_FICHA_ID,0));
+                                                break;
+                                            case "usuarios":
+                                                int idUsuario  = MainActivity.myAppDB.myDao().getIdusuarioByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                consulta += " WHERE id_usuario = ? ";
+                                                ob = Utilidades.appendValue(ob,idUsuario);
+                                                break;
+                                        }
+                                        String value = MainActivity.myAppDB.myDao().getValueResume(new SimpleSQLiteQuery(consulta, ob));
+
+                                        textViews.get(i).setText(value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }catch (Exception e){
+                Log.e("ERROR ARRAY RESUMEN", e.getMessage());
+            }
+
+
         }
 
     }
+
+
 
     @Override
     public void onResume() {
@@ -145,8 +346,15 @@ public class FragmentResumen extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
-//                Toast.makeText(activity, "Visible resumen", Toast.LENGTH_SHORT).show();
-                //activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumenes, FragmentFotos.getInstance(1), Utilidades.FRAGMENT_FOTOS).commit();
+//                AsyncTask.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (progressBar != null && progressBar.isShowing()){
+                             new LazyLoad(false).execute();
+//                        }
+//                    }
+//                });
+
             }
         }
     }
@@ -154,7 +362,7 @@ public class FragmentResumen extends Fragment {
 
     private void bind(View view){
 
-        fecha_resumen = (TextView) view.findViewById(R.id.fecha_resumen);
+        /*fecha_resumen = (TextView) view.findViewById(R.id.fecha_resumen);
         estado_fenologico = (TextView) view.findViewById(R.id.estado_fenologico);
         estado_general = (TextView) view.findViewById(R.id.estado_general);
         estado_crecimiento = (TextView) view.findViewById(R.id.estado_crecimiento);
@@ -183,7 +391,7 @@ public class FragmentResumen extends Fragment {
         has_customer = (TextView) view.findViewById(R.id.has_customer);
         fieldman = (TextView) view.findViewById(R.id.fieldman);
         rch = (TextView) view.findViewById(R.id.rch);
-        ptos_ampros = (TextView) view.findViewById(R.id.ptos_ampros);
+        ptos_ampros = (TextView) view.findViewById(R.id.ptos_ampros);*/
 
     }
 

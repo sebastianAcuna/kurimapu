@@ -379,8 +379,6 @@ public class FragmentFotos extends Fragment {
 
     private void showAlertForUpdate(Fotos foto){
         View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_big_img,null);
-
-
 //        String titulo = "Editando " + fotos.getNombreFoto() + " de PAQUETE " + fotos.getEtiquetaPaquete();
         final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
                 .setView(viewInfalted)
@@ -403,7 +401,6 @@ public class FragmentFotos extends Fragment {
                     @Override
                     public void onClick(View v) {
                         builder.dismiss();
-
                     }
                 });
             }

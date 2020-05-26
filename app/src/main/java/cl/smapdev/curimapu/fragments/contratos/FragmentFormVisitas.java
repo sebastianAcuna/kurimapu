@@ -81,7 +81,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private ArrayList<String> fenologico = new ArrayList<>(), cosecha = new ArrayList<>(), crecimiento = new ArrayList<>(), maleza = new ArrayList<>();
 
     private TextInputLayout obs_growth, obs_weed, obs_fito,obs_harvest,obs_overall, obs_humedad;
-    private EditText et_obs, et_recomendacion, et_obs_growth, et_obs_weed, et_obs_fito, et_obs_harvest, et_obs_overall,et_obs_humedad;
+    private EditText et_obs, et_recomendacion, et_obs_growth, et_obs_weed, et_obs_fito, et_obs_harvest, et_obs_overall,et_obs_humedad,et_percent_humedad;
 
     /* IMAGENES */
     private RecyclerView rwAgronomo, rwCliente;
@@ -162,10 +162,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(0, 2), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
                         //abrirCamara(2);
                     }
-
                 }
-
-
             }
         });
         material_public.setOnClickListener(new View.OnClickListener() {
@@ -211,6 +208,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             et_obs_weed.setText(temp_visitas.getObs_maleza());
             et_obs_fito.setText(temp_visitas.getObs_fito());
             et_obs_growth.setText(temp_visitas.getObs_creci());
+            et_percent_humedad.setText(String.valueOf(temp_visitas.getPercent_humedad()));
 
 
             if (temp_visitas.getAction_temp_visita() == 2){
@@ -232,6 +230,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 et_obs_fito.setEnabled(false);
                 et_obs_growth.setEnabled(false);
                 et_obs_harvest.setEnabled(false);
+
+                et_percent_humedad.setEnabled(false);
 
             }
 
@@ -301,7 +301,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_guardar:
-                    setOnSave();
+                setOnSave();
+               /* if (activity != null){
+                    showAlertAskForSave123("¿Esta seguro que desea guardar?", "revice el libro de campo antes de hacerlo, si esta seguro, presione aceptar.");
+                }*/
                 break;
 
             case R.id.btn_volver:
@@ -337,6 +340,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         et_obs_overall = (EditText) view.findViewById(R.id.et_obs_overall);
         et_obs_weed = (EditText) view.findViewById(R.id.et_obs_weed);
         et_obs_humedad = (EditText) view.findViewById(R.id.et_obs_humedad);
+        et_percent_humedad = (EditText) view.findViewById(R.id.et_percent_humedad);
 
         obs_growth = (TextInputLayout) view.findViewById(R.id.obs_growth);
         obs_weed = (TextInputLayout) view.findViewById(R.id.obs_weed);
@@ -363,6 +367,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         et_obs_harvest.setOnFocusChangeListener(this);
         et_obs_fito.setOnFocusChangeListener(this);
         et_obs_humedad.setOnFocusChangeListener(this);
+        et_percent_humedad.setOnFocusChangeListener(this);
 
 
         btn_volver.setOnClickListener(this);
@@ -474,7 +479,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     @Override
     public void onFocusChange(View view, boolean b) {
-
         if (!b){
             switch (view.getId()){
                 case R.id.et_obs:
@@ -501,7 +505,14 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 case R.id.et_obs_humedad:
                     temp_visitas.setObs_humedad(et_obs_humedad.getText().toString());
                     break;
-
+                case R.id.et_percent_humedad:
+                    try{
+                        temp_visitas.setPercent_humedad(Double.parseDouble(et_percent_humedad.getText().toString()));
+                    }catch (Exception e){
+                        temp_visitas.setPercent_humedad(0);
+                        Toast.makeText(activity, "No se pudo guardar el porcentaje, formato incorrecto.", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
             }
 
             MainActivity.myAppDB.myDao().updateTempVisitas(temp_visitas);
@@ -641,6 +652,16 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         visitas.setEstado_server_visitas(0);
                         visitas.setEstado_visita(2);
                         visitas.setEtapa_visitas(temp_visitas.getEtapa_temp_visitas());
+
+
+                        visitas.setPercent_humedad(temp_visitas.getPercent_humedad());
+
+                        visitas.setObs_cosecha(temp_visitas.getObs_cosecha());
+                        visitas.setObs_creci(temp_visitas.getObs_creci());
+                        visitas.setObs_fito(temp_visitas.getObs_fito());
+                        visitas.setObs_humedad(temp_visitas.getObs_humedad());
+                        visitas.setObs_maleza(temp_visitas.getObs_maleza());
+                        visitas.setObs_overall(temp_visitas.getObs_overall());
 
 
                         AnexoContrato an = MainActivity.myAppDB.myDao().getAnexos(temp_visitas.getId_anexo_temp_visita());
@@ -884,12 +905,59 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     }
 
 
+    private void showAlertAskForSave123(String title, String message){
+        View viewInfalted44 = LayoutInflater.from(activity).inflate(R.layout.alert_empty,null);
+
+
+        final AlertDialog builder3 = new AlertDialog.Builder(activity)
+                .setView(viewInfalted44)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).create();
+
+
+        builder3.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button tg = builder3.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button qd = builder3.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+                tg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setOnSave();
+                    }
+                });
+
+                qd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder3.dismiss();
+
+                    }
+                });
+            }
+        });
+        builder3.setCancelable(false);
+        builder3.show();
+    }
+
 
     private void showAlertForSave(String title, String message){
         View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_empty,null);
 
 
-        final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+        final AlertDialog builder22 = new AlertDialog.Builder(activity)
                 .setView(viewInfalted)
                 .setTitle(title)
                 .setMessage(message)
@@ -900,22 +968,22 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 })/*.setNegativeButton("cancelar",null)*/.create();
 
 
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
+        builder22.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
+                Button a = builder22.getButton(AlertDialog.BUTTON_POSITIVE);
+                a.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        activity.cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_left, R.anim.slide_out_left);
-                        builder.dismiss();
+                        //activity.cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_left, R.anim.slide_out_left);
+                        builder22.dismiss();
 
                     }
                 });
             }
         });
-        builder.setCancelable(false);
-        builder.show();
+        builder22.setCancelable(true);
+        builder22.show();
     }
 
 
