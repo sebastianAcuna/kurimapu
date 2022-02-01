@@ -17,8 +17,8 @@ import cl.smapdev.curimapu.clases.tablas.CropRotation;
 
 public class CropRotationAdapter  extends RecyclerView.Adapter<CropRotationViewHolder> {
 
-    private List<CropRotation> elements;
-    private Context context;
+    private final List<CropRotation> elements;
+    private final Context context;
 
 
     public CropRotationAdapter(List<CropRotation> elements, Context context) {

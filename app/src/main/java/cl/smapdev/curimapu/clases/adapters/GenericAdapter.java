@@ -25,10 +25,10 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class GenericAdapter extends RecyclerView.Adapter<GenericViewHolder> {
 
 //    private String[] titulos;
-    private ArrayList<String> valores;
-    private Context context;
+    private final ArrayList<String> valores;
+    private final Context context;
 
-    private ArrayList<TextView> tv = new  ArrayList<>();
+    private final ArrayList<TextView> tv = new  ArrayList<>();
 
 
     public GenericAdapter(/*String[] titulos,*/ ArrayList<String> valores, Context context) {

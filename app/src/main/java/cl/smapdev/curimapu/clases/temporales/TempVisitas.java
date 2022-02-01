@@ -3,6 +3,9 @@ package cl.smapdev.curimapu.clases.temporales;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "temp_visitas")
 public class TempVisitas {
 
@@ -33,6 +36,58 @@ public class TempVisitas {
 
     private int action_temp_visita; /* 0 insert ; 1 update; 2 finished */
     private int etapa_temp_visitas;
+
+
+
+
+    // 05-06-2020 se agregó 2 columnas nuevas a visita y visita temp para el tema de las fotos
+    private int id_visita_local;
+    private int id_dispo;
+
+
+    private float evaluacion;
+    private String comentario_evaluacion;
+
+    private  int id_evaluacion;
+
+    public int getId_evaluacion() {
+        return id_evaluacion;
+    }
+
+    public void setId_evaluacion(int id_evaluacion) {
+        this.id_evaluacion = id_evaluacion;
+    }
+
+
+    public float getEvaluacion() {
+        return evaluacion;
+    }
+    public void setEvaluacion(float evaluacion) {
+        this.evaluacion = evaluacion;
+    }
+
+    public String getComentario_evaluacion() {
+        return comentario_evaluacion;
+    }
+
+    public void setComentario_evaluacion(String comentario_evaluacion) {
+        this.comentario_evaluacion = comentario_evaluacion;
+    }
+
+    public int getId_visita_local() {
+        return id_visita_local;
+    }
+    public void setId_visita_local(int id_visita_local) {
+        this.id_visita_local = id_visita_local;
+    }
+
+    public int getId_dispo() {
+        return id_dispo;
+    }
+
+    public void setId_dispo(int id_dispo) {
+        this.id_dispo = id_dispo;
+    }
 
     public double getPercent_humedad() {
         return percent_humedad;

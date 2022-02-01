@@ -38,9 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hora  : "
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@id/fecha_lista_visitas"
-            android:layout_marginStart="16dp"
+            android:layout_below="@id/fecha_lista_visitas"
+            android:layout_alignParentStart="true"
             />
 
         <TextView
@@ -48,9 +47,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/lbl_hora"
-            android:layout_alignParentTop="true"
+            android:layout_below="@id/fecha_lista_visitas"
             android:text="02-19-2020"
             android:textAppearance="?android:textAppearanceLarge"
+            android:layout_marginStart="0.5dp"
 
             />
         <TextView
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Agricultor : "
-            android:layout_below="@id/fecha_lista_visitas"
+            android:layout_below="@id/hora_lista_visitas"
             android:layout_alignParentStart="true"
            />
 
@@ -69,7 +69,7 @@
             android:text="NOMBRE AGRICULTOR "
             android:textAppearance="?android:textAppearanceMedium"
             android:layout_toEndOf="@id/lbl_agricultor"
-            android:layout_below="@id/fecha_lista_visitas"
+            android:layout_below="@id/hora_lista_visitas"
             android:layout_marginStart="0.5dp"
             android:textColor="@color/colorOnSurface"/>
 
@@ -124,6 +124,30 @@
             android:contentDescription="favoriteImage"
             />
 
+        <Button
+            android:id="@+id/btn_eliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eliminar"
+            android:layout_below="@id/nombre_detalle_etapa"
+            android:layout_alignParentEnd="true"/>
+
+        <Button
+            android:id="@+id/btn_Ver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VER"
+            android:layout_below="@id/nombre_detalle_etapa"
+            android:layout_alignParentStart="true"/>
+
+        <View
+            android:id="@+id/divider12"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:layout_below="@id/btn_eliminar"
+
+            android:layout_marginTop="10dp"/>
 
 
     </RelativeLayout>

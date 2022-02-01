@@ -94,7 +94,7 @@
                 app:layout_constraintStart_toStartOf="@id/sp_crecimiento"
                 android:layout_marginHorizontal="@dimen/padding"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:visibility="invisible"
+
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -102,6 +102,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
+                    android:maxHeight="100dp"
+                    android:height="100dp"
                     android:hint="@string/observations" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +116,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginHorizontal="@dimen/padding"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:visibility="invisible"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -122,6 +123,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
+                    android:maxHeight="100dp"
+                    android:height="100dp"
                     android:hint="@string/observations" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -206,7 +209,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginHorizontal="@dimen/padding"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:visibility="invisible"
+
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -214,7 +217,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:hint="@string/observations" />
+                    android:hint="@string/observations"
+                    android:maxHeight="100dp"
+                    android:height="100dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -226,7 +231,7 @@
                 app:layout_constraintEnd_toStartOf="@id/obs_overall"
                 android:layout_marginHorizontal="@dimen/padding"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:visibility="invisible"
+
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -234,7 +239,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:hint="@string/observations" />
+                    android:hint="@string/observations"
+                    android:maxHeight="100dp"
+                    android:height="100dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -246,7 +253,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginHorizontal="@dimen/padding"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:visibility="invisible"
+
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -254,7 +261,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:hint="@string/observations" />
+                    android:hint="@string/observations"
+                    android:maxHeight="100dp"
+                    android:height="100dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -294,11 +303,11 @@
                 android:id="@+id/lbl_percent_humedad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="% humedad"
+                android:text="Potencial de Rendimiento"
+                android:textSize="18sp"
                 app:layout_constraintTop_toTopOf="@id/lbl_humedad"
                 app:layout_constraintBottom_toBottomOf="@id/lbl_humedad"
                 app:layout_constraintStart_toStartOf="@id/ti_percent_humedad"
-
                 />
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ti_percent_humedad"
@@ -329,7 +338,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="10dp"
                 android:contentDescription="tensiometro"
-
+                android:visibility="gone"
                 />
 
 
@@ -341,7 +350,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/sp_humedad"
                 android:layout_margin="@dimen/padding"
-                android:visibility="invisible"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -349,7 +357,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:hint="@string/observations" />
+                    android:hint="@string/observations"
+                    android:maxHeight="100dp"
+                    android:height="100dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

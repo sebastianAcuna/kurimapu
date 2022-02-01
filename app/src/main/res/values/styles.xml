@@ -66,42 +66,25 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="linear_layout_visitas">
-        <item name="android:layout_margin">@dimen/padding</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
-
-    <style name="linear_sub_layout_visitas">
-        <item name="android:gravity">start</item>
-        <item name="android:layout_weight">0.3</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
     <style name="titles_forms">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?colorOnSurface</item>
         <item name="android:textIsSelectable">true</item>
-        <item name="android:padding">@dimen/padding</item>
+        <item name="android:padding">@dimen/padding_small</item>
     </style>
 
     <style name="sub_titles_forms">
         <item name="android:textColor">?colorOnSurface</item>
-        <item name="android:padding">@dimen/padding</item>
+        <item name="android:padding">@dimen/padding_small</item>
     </style>
+
 
     <style name="input_date_forms">
         <item name="android:hint">@string/format_date</item>
         <item name="android:drawableEnd">@drawable/ic_date_range</item>
         <item name="android:drawableTint">?colorSecondaryVariant</item>
         <item name="android:windowSoftInputMode">stateHidden</item>
-    </style>
-
-    <style name="calendar_icon_forms">
-        <item name="android:tint">?colorSecondaryVariant</item>
-        <item name="android:scaleType">fitXY</item>
-        <item name="android:src">@drawable/ic_date_range</item>
     </style>
 
 

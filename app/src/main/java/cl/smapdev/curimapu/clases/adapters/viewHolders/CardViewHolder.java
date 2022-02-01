@@ -14,8 +14,9 @@ import cl.smapdev.curimapu.clases.tablas.CropRotation;
 
 public class CardViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView titulo, dato;
-    private ImageView icono;
+    private final TextView titulo;
+    private final TextView dato;
+    private final ImageView icono;
 
 
     public CardViewHolder(@NonNull View itemView) {

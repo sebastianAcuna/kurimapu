@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,10 +47,12 @@ public class FragmentVisitas extends Fragment {
     private Spinner spinner_toolbar;
 
 
-    private ArrayList<String> id_temporadas = new ArrayList<>();
-    private ArrayList<String> desc_temporadas = new ArrayList<>();
+    private final ArrayList<String> id_temporadas = new ArrayList<>();
+    private final ArrayList<String> desc_temporadas = new ArrayList<>();
 
     private List<Temporada> temporadaList;
+
+    private String marca_especial_temporada;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +76,7 @@ public class FragmentVisitas extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        spinner_toolbar = (Spinner) view.findViewById(R.id.spinner_toolbar);
+        spinner_toolbar = view.findViewById(R.id.spinner_toolbar);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
 
 
@@ -82,6 +85,10 @@ public class FragmentVisitas extends Fragment {
             for (Temporada t : temporadaList){
                 id_temporadas.add(t.getId_tempo_tempo());
                 desc_temporadas.add(t.getNombre_tempo());
+
+                if(t.getEspecial_temporada() > 0){
+                    marca_especial_temporada = t.getId_tempo_tempo();
+                }
             }
         }
 
@@ -131,7 +138,7 @@ public class FragmentVisitas extends Fragment {
 
     private void recargarYear(){
         if (temporadaList.size() > 0){
-            spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.size() - 1));
+            spinner_toolbar.setSelection((marca_especial_temporada.isEmpty()) ? prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.size() - 1) : id_temporadas.indexOf(marca_especial_temporada));
         }
     }
 
@@ -179,19 +186,32 @@ public class FragmentVisitas extends Fragment {
         }
     }
 
-    private void cargarInforme(List<AnexoCompleto> anexoCompletos){
+
+    private void cargarInforme(final List<AnexoCompleto> anexoCompletos){
         if (tabla != null){
             tabla.removeViews();
             tabla.agregarCabecera(R.array.cabecera_informe);
 
-            LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.layoutTabla);
+            LinearLayout linearLayout = view.findViewById(R.id.layoutTabla);
             linearLayout.setVisibility(View.VISIBLE);
 
 
             if (anexoCompletos.size() > 0){
-                for (int i = 0; i < anexoCompletos.size(); i++){
-                    tabla.agregarFilaTabla(anexoCompletos.get(i));
-                }
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (int i = 0; i < anexoCompletos.size(); i++){
+                                    tabla.agregarFilaTabla(anexoCompletos.get(i));
+                                }
+                            }
+                        });
+
+                    }
+                });
+
             }
         }
     }

@@ -4,6 +4,7 @@ import androidx.room.Embedded;
 
 
 import cl.smapdev.curimapu.clases.tablas.Clientes;
+import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 
 public class VisitasCompletas {
@@ -17,6 +18,19 @@ public class VisitasCompletas {
     @Embedded
     private Clientes clientes;
 
+    @Embedded
+    private Fotos fotos;
+
+
+
+
+    public Fotos getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(Fotos fotos) {
+        this.fotos = fotos;
+    }
 
     public Clientes getClientes() {
         return clientes;

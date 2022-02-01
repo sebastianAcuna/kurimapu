@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import java.util.Objects;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.TabsAdapters;
+import es.dmoral.toasty.Toasty;
 
 public class FragmentContratos extends Fragment {
 
@@ -52,9 +54,11 @@ public class FragmentContratos extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        viewPager  = (ViewPager) view.findViewById(R.id.view_pager);
+        viewPager  = view.findViewById(R.id.view_pager);
 
-        new LazyLoad().execute();
+
+            cargarTabs();
+//        new LazyLoad().execute();
 
     }
 
@@ -68,7 +72,6 @@ public class FragmentContratos extends Fragment {
             }
         }
     }
-
 
     private class LazyLoad extends AsyncTask<Void, Void, Void>{
 
@@ -103,13 +106,23 @@ public class FragmentContratos extends Fragment {
         }
     }
 
-    private void cargarTabs(){
-        viewPager.setAdapter(new TabsAdapters(getChildFragmentManager(),
-                Objects.requireNonNull(getContext())));
 
-        TabLayout tabLayout = (TabLayout) activity.findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+    private void cargarTabs(){
+
+        try{
+            viewPager.setAdapter(new TabsAdapters(getChildFragmentManager(),
+                    Objects.requireNonNull(getContext())));
+
+
+            TabLayout tabLayout = activity.findViewById(R.id.tab_layout);
+            tabLayout.setupWithViewPager(viewPager);
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
+        }catch(Exception e){
+            Toasty.warning(activity, "Error capturado"+e.getLocalizedMessage(), Toast.LENGTH_SHORT, true).show();
+            //new LazyLoad().execute();
+        }
+
     }
 
     @Override

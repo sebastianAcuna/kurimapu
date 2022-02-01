@@ -18,7 +18,7 @@ public class Fotos {
 
     @SerializedName("id_anexo")
     @Expose
-    private String id_ficha; /* ES EL ANEXO*/
+    private String id_ficha_fotos; /* ES EL ANEXO*/
 
     @SerializedName("nombre_foto")
     @Expose
@@ -52,9 +52,16 @@ public class Fotos {
     @Expose
     private String ruta;
 
+    /* id local de la visita */
     @SerializedName("id_visita_foto")
     @Expose
     private int id_visita_foto;
+
+    /* id servidor de visita */
+    private int id_visita_servidor_foto;
+
+    /* id_dispo_foto */
+    private int id_dispo_foto;
 
     private int estado_fotos;
 
@@ -66,6 +73,35 @@ public class Fotos {
     @Expose
     private int cabecera_fotos;
 
+
+    @SerializedName("tomada_fotos")
+    @Expose
+    private int tomada_foto;
+
+
+    public int getTomada_foto() {
+        return tomada_foto;
+    }
+
+    public void setTomada_foto(int tomada_foto) {
+        this.tomada_foto = tomada_foto;
+    }
+
+    public int getId_visita_servidor_foto() {
+        return id_visita_servidor_foto;
+    }
+
+    public void setId_visita_servidor_foto(int id_visita_servidor_foto) {
+        this.id_visita_servidor_foto = id_visita_servidor_foto;
+    }
+
+    public int getId_dispo_foto() {
+        return id_dispo_foto;
+    }
+
+    public void setId_dispo_foto(int id_dispo_foto) {
+        this.id_dispo_foto = id_dispo_foto;
+    }
 
     public int getCabecera_fotos() {
         return cabecera_fotos;
@@ -106,12 +142,12 @@ public class Fotos {
         this.id_foto = id_foto;
     }
 
-    public String getId_ficha() {
-        return id_ficha;
+    public String getId_ficha_fotos() {
+        return id_ficha_fotos;
     }
 
-    public void setId_ficha(String id_ficha) {
-        this.id_ficha = id_ficha;
+    public void setId_ficha_fotos(String id_ficha_fotos) {
+        this.id_ficha_fotos = id_ficha_fotos;
     }
 
     public String getNombre_foto() {

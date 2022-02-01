@@ -6,8 +6,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import cl.smapdev.curimapu.clases.tablas.AgrPredTemp;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
+import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
@@ -15,6 +17,7 @@ import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
+import cl.smapdev.curimapu.clases.tablas.FichasNew;
 import cl.smapdev.curimapu.clases.tablas.Lotes;
 import cl.smapdev.curimapu.clases.tablas.Maquinaria;
 import cl.smapdev.curimapu.clases.tablas.Predios;
@@ -91,7 +94,7 @@ public class GsonDescargas {
 
     @SerializedName("array_fichas")
     @Embedded
-    private List<Fichas> fichasList;
+    private List<FichasNew> fichasList;
 
     @SerializedName("array_um")
     @Embedded
@@ -156,6 +159,32 @@ public class GsonDescargas {
     @Embedded
     private List<cli_pcm> cli_pcms;
 
+
+    @SerializedName("array_pred_agr_temp")
+    @Embedded
+    private List<AgrPredTemp> pred_agr_temp;
+
+
+    @SerializedName("array_fechas_anexos")
+    @Embedded
+    private List<AnexoCorreoFechas> array_fechas_anexos;
+
+
+    public List<AnexoCorreoFechas> getArray_fechas_anexos() {
+        return array_fechas_anexos;
+    }
+
+    public void setArray_fechas_anexos(List<AnexoCorreoFechas> array_fechas_anexos) {
+        this.array_fechas_anexos = array_fechas_anexos;
+    }
+
+    public List<AgrPredTemp> getPred_agr_temp() {
+        return pred_agr_temp;
+    }
+
+    public void setPred_agr_temp(List<AgrPredTemp> pred_agr_temp) {
+        this.pred_agr_temp = pred_agr_temp;
+    }
 
     public List<quotation> getQuotations() {
         return quotations;
@@ -285,11 +314,11 @@ public class GsonDescargas {
         this.unidadMedidas = unidadMedidas;
     }
 
-    public List<Fichas> getFichasList() {
+    public List<FichasNew> getFichasList() {
         return fichasList;
     }
 
-    public void setFichasList(List<Fichas> fichasList) {
+    public void setFichasList(List<FichasNew> fichasList) {
         this.fichasList = fichasList;
     }
 

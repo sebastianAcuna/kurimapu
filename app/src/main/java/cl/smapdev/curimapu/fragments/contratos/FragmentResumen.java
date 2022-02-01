@@ -53,10 +53,10 @@ public class FragmentResumen extends Fragment {
     private ArrayList<Integer> id_importante = null;
     private ArrayList<Integer> id_generica = null;
     private ArrayList<TextView> textViews = null;
-    private ArrayList<EditText> editTexts  = null;
-    private ArrayList<RecyclerView> recyclerViews  = null;
-    private ArrayList<ImageView> imageViews  = null;
-    private ArrayList<Spinner> spinners  = null;
+    private final ArrayList<EditText> editTexts  = null;
+    private final ArrayList<RecyclerView> recyclerViews  = null;
+    private final ArrayList<ImageView> imageViews  = null;
+    private final ArrayList<Spinner> spinners  = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,7 +94,7 @@ public class FragmentResumen extends Fragment {
     private class LazyLoad extends AsyncTask<Void, Void, ArrayList<ArrayList>> {
 
         private ProgressDialog progressBar;
-        private  boolean show;
+        private final boolean show;
 
         public LazyLoad(boolean show) {
             this.show = show;
@@ -125,7 +125,7 @@ public class FragmentResumen extends Fragment {
         protected void onPostExecute(ArrayList<ArrayList> aVoid) {
             super.onPostExecute(aVoid);
             int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
-            global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_resumen, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), 1,idClienteFinal,global);;
+            global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_resumen, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), 1,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
             setearOnFocus();
             if (show && progressBar != null && progressBar.isShowing()){
                 progressBar.dismiss();
@@ -151,7 +151,7 @@ public class FragmentResumen extends Fragment {
                             int index = id_generica.indexOf(textViews.get(i).getId());
                             int idImportante = id_importante.get(index);
 
-                            pro_cli_mat fs = MainActivity.myAppDB.myDao().getProCliMatByIdProp(idImportante, idClienteFinal);
+                            pro_cli_mat fs = MainActivity.myAppDB.myDao().getProCliMatByIdProp(idImportante, idClienteFinal, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
                             if (fs != null){
                                 if (fs.getForaneo().equals("SI")){
 
@@ -221,27 +221,31 @@ public class FragmentResumen extends Fragment {
                                                 nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "nombre || ' ' || apellido_p AS nombre " : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
                                                 break;
-
+                                            case "anexo_correo_fechas":
+                                                nombreCampoTableta = fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
                                             case "detalle_quotation":
                                                 nombreCampoTableta =  fs.getCampo();
                                                 nombreTabla = "quotation";
                                                 break;
-
-
-
-                                        /*case "ficha":
-                                            if (fs.getCampo().equals("localidad")){
-
-                                            }
-                                            nombreCampoTableta = (fs.getCampo().equals("valor")) ? "valor_detalle" : fs.getCampo();
-                                            break;*/
+                                            case "ficha":
+                                                nombreCampoTableta =  fs.getCampo()+"_new";
+                                                nombreTabla = "ficha_new";
+                                                break;
+                                            case "fieldman_asis":
+                                                nombreCampoTableta = " nombre || ' ' || apellido_p AS nombre ";
+                                                nombreTabla = " usuarios ";
+                                                break;
                                             default:
                                                 nombreTabla = fs.getTabla();
                                                 nombreCampoTableta = fs.getCampo();
                                         }
 
-                                        String consulta = "SELECT " + nombreCampoTableta + " " +
+                                        String  consulta = "SELECT " + nombreCampoTableta + " " +
                                                 " FROM " + nombreTabla + " ";
+
+
 
                                         switch (fs.getTabla()){
                                             case "anexo_contrato" :
@@ -255,7 +259,10 @@ public class FragmentResumen extends Fragment {
                                                 consulta += " WHERE id_clientes_tabla = ? ";
                                                 ob = Utilidades.appendValue(ob,idCliente);
                                                 break;
-
+                                            case "anexo_correo_fechas":
+                                                consulta += "WHERE id_ac_corr_fech = ?";
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
                                             case "especie":
                                                 consulta += " WHERE id_especie = ? ";
                                                 ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""));
@@ -304,13 +311,18 @@ public class FragmentResumen extends Fragment {
                                                 ob = Utilidades.appendValue(ob,idTipoSuelo);
                                                 break;
                                             case "ficha":
-                                                consulta += " WHERE id_ficha = ? ";
+                                                consulta += " WHERE id_ficha_new = ? ";
                                                 ob = Utilidades.appendValue(ob,prefs.getInt(Utilidades.SHARED_VISIT_FICHA_ID,0));
                                                 break;
                                             case "usuarios":
-                                                int idUsuario  = MainActivity.myAppDB.myDao().getIdusuarioByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
-                                                consulta += " WHERE id_usuario = ? ";
-                                                ob = Utilidades.appendValue(ob,idUsuario);
+                                                consulta += " LEFT JOIN ficha_new FN ON FN.id_usuario_new = usuarios.id_usuario ";
+                                                consulta += " INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = FN.id_ficha_new  WHERE AC.id_anexo_contrato = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
+                                            case "fieldman_asis":
+                                                consulta += " LEFT JOIN ficha_new FN ON FN.rut_fieldman_ass = usuarios.rut_usuario ";
+                                                consulta += " INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = FN.id_ficha_new  WHERE AC.id_anexo_contrato = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
                                         }
                                         String value = MainActivity.myAppDB.myDao().getValueResume(new SimpleSQLiteQuery(consulta, ob));

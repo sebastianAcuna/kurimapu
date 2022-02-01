@@ -7,17 +7,25 @@ import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Update;
 import androidx.sqlite.db.SupportSQLiteQuery;
+
 import java.util.List;
 
+import cl.smapdev.curimapu.clases.relaciones.AnexoWithDates;
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
 import cl.smapdev.curimapu.clases.relaciones.DetalleCampo;
+import cl.smapdev.curimapu.clases.relaciones.SitiosNoVisitadosAnexos;
+import cl.smapdev.curimapu.clases.relaciones.VisitaDetalle;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
+import cl.smapdev.curimapu.clases.tablas.AgrPredTemp;
+import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
 import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
+import cl.smapdev.curimapu.clases.tablas.FichasNew;
+import cl.smapdev.curimapu.clases.tablas.FotosFichas;
 import cl.smapdev.curimapu.clases.tablas.Lotes;
 import cl.smapdev.curimapu.clases.tablas.Maquinaria;
 import cl.smapdev.curimapu.clases.tablas.Predios;
@@ -55,36 +63,98 @@ public interface MyDao {
     @Insert
     long insertFotos(Fotos fotos);
 
+
+    @Query("SELECT * FROM agricultor;")
+    List<Agricultor> getAgricultoresss();
+
+    @Query("SELECT  * FROM anexo_contrato AC " +
+            " INNER JOIN materiales M ON (AC.id_variedad_anexo = M.id_variedad) " +
+            " INNER JOIN especie E ON (E.id_especie = M.id_especie_variedad) " +
+            " INNER JOIN lote L  ON (AC.id_potrero = L.lote) " +
+            " INNER JOIN predio P  ON (L.id_pred_lote = P.id_pred) " +
+            " INNER JOIN ficha_new F ON  (F.id_ficha_new = AC.id_ficha_contrato) " +
+            " INNER JOIN usuarios U1 ON (F.id_usuario_new = U1.id_usuario) " +
+            " LEFT JOIN agricultor AG ON (F.id_agric_new = AG.id_agricultor) " +
+            " INNER JOIN temporada T ON ( F.id_tempo_new = T.id_tempo_tempo) " +
+            " WHERE  T.id_tempo_tempo = :id_tempo " +
+            " ORDER BY E.desc_especie ASC, AC.num_anexo ASC ; ")
+    List<SitiosNoVisitadosAnexos>  getSitiosNoVisitados(int id_tempo);
+
+
+    @Query("SELECT * FROM visita V " +
+            "LEFT JOIN detalle_visita_prop DVP ON (DVP.id_visita_detalle = V.id_visita) " +
+            "LEFT JOIN pro_cli_mat PCM ON (PCM.id_prop_mat_cli = DVP.id_prop_mat_cli_detalle) " +
+            "WHERE id_anexo_visita = :id_ac  " +
+            "AND V.fecha_visita IS NOT NULL AND ( (PCM.id_sub_propiedad_pcm = 164 AND valor_detalle IS NOT NULL ) OR valor_detalle IS NULL ); ")
+    List<VisitaDetalle> getVisitaDetalle(int id_ac);
+
+    @Query("SELECT * FROM visita V WHERE V.id_anexo_visita = :id_ac  GROUP BY V.id_visita ORDER BY V.fecha_visita DESC LIMIT 1;")
+    List<Visitas> traeVisitaPorAnexo(int id_ac);
+
+
+    @Query("SELECT * FROM visita V " +
+            "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +
+            "INNER JOIN ficha_new F ON (F.id_ficha_new = AC.id_ficha_contrato) " +
+            "INNER JOIN agricultor A ON (A.id_agricultor = F.id_agric_new) " +
+            "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
+            "INNER JOIN especie E ON (E.id_especie = M.id_especie_variedad) " +
+            "INNER JOIN usuarios U ON (V.id_user_visita = U.id_usuario) " +
+            "WHERE F.id_tempo_new = :id_tempo " +
+            "ORDER BY V.fecha_visita DESC, AC.num_anexo ASC, E.desc_especie ASC, V.hora_visita DESC ; ")
+    List<VisitasCompletas> getPrimeraPrioridad(int id_tempo);
+
+
+
+
     @Query("SELECT  * FROM fotos WHERE estado_fotos = 0 AND id_visita_foto > 0")
     List<Fotos> getFotos();
+
+    @Query("SELECT  * FROM fotos WHERE estado_fotos = 0 AND id_visita_foto > 0 AND id_visita_foto = :id_visita; ")
+    List<Fotos> getFotosLimit(int id_visita);
+
+    @Query("SELECT  * FROM fotos WHERE estado_fotos = 0 AND id_visita_foto > 0 AND tomada_foto = 1 ; ")
+    List<Fotos> getFotosLimitTomada();
+
+    @Query("UPDATE fotos SET tomada_foto = 1 WHERE estado_fotos = 0 AND id_visita_foto = :id_visita; ")
+    void marcarFotos(int id_visita);
 
     @Query("SELECT  * FROM fotos WHERE fieldbook  = :field ")
     List<Fotos> getFotosByField(int field);
 
-    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha AND id_visita_foto = :idVisita")
-    List<Fotos> getFotosByFieldAndView(int field, int view, String ficha, int idVisita);
+    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha_fotos = :ficha AND id_visita_foto = :idVisita AND id_visita_servidor_foto = :idVisitaServidor AND id_dispo_foto = :idDispo")
+    List<Fotos> getFotosByFieldAndView(int field, int view, String ficha, int idVisita, int idVisitaServidor, int idDispo);
 
-    @Query("SELECT  * FROM fotos WHERE vista = :view AND id_ficha = :ficha AND id_visita_foto = :idVisita")
-    List<Fotos> getFotosByFieldAndView(int view, String ficha, int idVisita);
+    @Query("SELECT  * FROM fotos " +
+            "WHERE vista = :view AND id_ficha_fotos = :idFichaFoto AND id_visita_foto = :idVisita " +
+            "AND id_visita_servidor_foto = :idVisitaServidor AND id_dispo_foto = :idDispo")
+    List<Fotos> getFotosByFieldAndViewVisitas(int view, String idFichaFoto,  int idVisita, int idVisitaServidor, int idDispo);
 
-    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND nombre_foto != :nonn AND id_ficha = :ficha AND id_visita_foto = :idVisita")
-    List<Fotos> getFotosByFieldAndView(int field, String nonn, String ficha, int idVisita);
+    @Query("SELECT  * FROM fotos WHERE vista = :view AND id_ficha_fotos = :ficha AND id_visita_foto = :idVisita AND id_visita_servidor_foto = :idVisitaServidor AND id_dispo_foto = :idDispo")
+    List<Fotos> getFotosByFieldAndView(int view, String ficha, int idVisita, int idVisitaServidor, int idDispo);
 
-    @Query("SELECT  COUNT(id_foto) FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha = :ficha AND id_visita_foto = :idVisita")
+    @Query("SELECT  * FROM fotos WHERE fieldbook  = :field AND nombre_foto != :nonn AND id_ficha_fotos = :ficha AND id_visita_foto = :idVisita")
+    List<Fotos> getFotosByFieldAndViewNom(int field, String nonn, String ficha, int idVisita);
+
+    @Query("SELECT  COUNT(id_foto) FROM fotos WHERE fieldbook  = :field AND vista = :view AND id_ficha_fotos = :ficha AND id_visita_foto = :idVisita")
     int getCantAgroByFieldViewAndFicha(int field, int view, String ficha, int idVisita);
 
-    @Query("SELECT * FROM fotos WHERE id_ficha = :idFicha AND id_visita_foto = :idVisita AND favorita = 1 ORDER BY fecha DESC LIMIT 1")
-    Fotos getFoto(String idFicha, int idVisita);
+    @Query("SELECT * FROM fotos WHERE id_ficha_fotos = :idFicha AND id_visita_foto = :idVisita AND id_visita_servidor_foto = :idVisitaServidor AND id_dispo_foto = :idDispo  AND favorita = 1 ORDER BY fecha DESC LIMIT 1")
+    Fotos getFoto(String idFicha, int idVisita, int idVisitaServidor, int idDispo);
 
-    @Query("UPDATE fotos SET id_visita_foto = :idVisita WHERE id_ficha = :idAnexo AND id_visita_foto = 0")
+    @Query("UPDATE fotos SET id_visita_foto = :idVisita WHERE id_ficha_fotos = :idAnexo AND id_visita_foto = 0")
     void updateFotosWithVisita(int idVisita, String idAnexo);
 
     @Query("UPDATE fotos SET estado_fotos = 1, cabecera_fotos = :idCab WHERE estado_fotos = 0")
     int updateFotosSubidas(int idCab);
 
-    @Query("UPDATE fotos SET estado_fotos = 0, cabecera_fotos = 0 WHERE cabecera_fotos = :idCab")
+    @Query("UPDATE fotos SET estado_fotos = 1, cabecera_fotos = :idCab, tomada_foto = 0 WHERE estado_fotos = 0 AND tomada_foto = 1; ")
+    int updateFotosSubidasTomada(int idCab);
+
+    @Query("UPDATE fotos SET estado_fotos = 0, cabecera_fotos = 0, tomada_foto = 0 WHERE cabecera_fotos = :idCab")
     int updateFotosBack(int idCab);
 
+    @Query("UPDATE fotos SET id_visita_servidor_foto = :idServidor WHERE  id_dispo_foto = :idDispo AND id_visita_foto = :idLocal ")
+    int updateFotos(int idServidor, int idLocal, int idDispo);
 
     @Update
     void updateFavorita(Fotos fotos);
@@ -92,23 +162,23 @@ public interface MyDao {
     @Query("SELECT  * FROM fotos WHERE id_foto = :idFoto")
     Fotos getFotosById(int idFoto);
 
-    @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha = :idFicha AND favorita = 1 AND id_visita_foto = :idVisita ")
+    @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha_fotos = :idFicha AND favorita = 1 AND id_visita_foto = :idVisita ")
     int getCantFavoritasByFieldbookAndFicha(int fieldbook, String idFicha, int idVisita);
 
 
-    @Query("SELECT COUNT(favorita) FROM fotos WHERE id_ficha = :idFicha AND favorita = 1 AND id_visita_foto = :idVisita ")
-    int getCantFavoritasByFieldbookAndFicha( String idFicha, int idVisita);
+    @Query("SELECT COUNT(favorita) FROM fotos WHERE id_ficha_fotos = :idFicha AND favorita = 1 AND id_visita_foto = :idVisita AND vista = :vista")
+    int getCantFavoritasByFieldbookAndFicha( String idFicha, int idVisita, int vista);
 
 
-    @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha = :idFicha AND vista = :view AND favorita = 1 AND id_visita_foto = :idVisita ")
+    @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha_fotos = :idFicha AND vista = :view AND favorita = 1 AND id_visita_foto = :idVisita ")
     int getCantFavoritasByFieldbookFichaAndVista(int fieldbook, String idFicha, int view, int idVisita);
 
 
     @Query("SELECT  * FROM fotos WHERE id_visita_foto = :id_visita")
     List<Fotos> getFotosByIdVisita(int id_visita);
 
-    @Query("SELECT COUNT(id_foto)  FROM fotos WHERE id_ficha = :idFicha AND id_visita_foto = :idVisita ")
-    int getCantFotos(String idFicha, int idVisita);
+    @Query("SELECT COUNT(id_foto)  FROM fotos WHERE id_ficha_fotos = :idFicha AND id_visita_foto = :idVisita AND vista = :vista ")
+    int getCantFotos(String idFicha, int idVisita, int vista);
 
     @Delete
     void deleteFotos(Fotos fotos);
@@ -116,13 +186,126 @@ public interface MyDao {
 
 
 
+    @Query("SELECT " +
+            "ACF.id_ac_cor_fech, " +
+            "ACF.id_ac_corr_fech, " +
+            "ACF.id_fieldman, " +
+            "ACF.inicio_despano, " +
+            "ACF.correo_inicio_despano, " +
+            "ACF.cinco_porciento_floracion, " +
+            "ACF.correo_cinco_porciento_floracion, " +
+            "ACF.inicio_corte_seda, " +
+            "ACF.correo_inicio_corte_seda, " +
+            "ACF.inicio_cosecha, " +
+            "ACF.correo_inicio_cosecha, " +
+            "ACF.termino_cosecha, " +
+            "ACF.correo_termino_cosecha, " +
+            "ACF.termino_labores_post_cosechas, " +
+            "ACF.correo_termino_labores_post_cosechas, " +
+            "ACF.detalle_labores, " +
+            "ACF.id_asistente, " +
+            "AC.num_anexo, " +
+            "U.user as usu_user, " +
+            "A.razon_social, " +
+            "L.nombre_lote, " +
+            "P.nombre, " +
+            "M.desc_variedad, " +
+            "E.desc_especie, " +
+            "AC.id_anexo_contrato, " +
+            "C.desc_comuna AS foo_desc_comuna, " +
+            "V.fecha_visita, " +
+            "ACF.inicio_corte_seda " +
+            "FROM anexo_contrato AC  " +
+            " LEFT JOIN anexo_correo_fechas ACF  ON (AC.id_anexo_contrato = ACF.id_ac_corr_fech) " +
+            " LEFT JOIN usuarios U ON U.id_usuario = ACF.id_fieldman " +
+            " LEFT JOIN agricultor A ON (A.id_agricultor = AC.id_agricultor_anexo) " +
+            " LEFT JOIN lote L ON (L.lote = AC.id_potrero) " +
+            " LEFT JOIN predio P ON (P.id_pred = L.id_pred_lote) " +
+            " LEFT JOIN ficha_new FN ON (FN.id_ficha_new = AC.id_ficha_contrato) " +
+            " LEFT JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
+            " LEFT JOIN especie E ON (E.id_especie = M.id_especie_variedad)" +
+            " LEFT JOIN comuna C ON (C.id_comuna = FN.id_comuna_new )" +
+            " LEFT JOIN visita V ON (V.id_anexo_visita = AC.id_anexo_contrato) " +
+            " WHERE FN.id_tempo_new = :tempo " +
+            " GROUP BY AC.id_anexo_contrato " +
+            " ORDER BY E.desc_especie ASC "  +
+            " LIMIT :pagina, 10")
+
+    List<AnexoWithDates> getFechasSag(String tempo, int pagina);
+
+
+    @Query("SELECT * FROM anexo_correo_fechas WHERE id_ac_corr_fech = :id_anexo; ")
+    AnexoCorreoFechas getAnexoCorreoFechasByAnexo(int id_anexo);
+
+
+
+    @Query("SELECT * FROM anexo_correo_fechas WHERE " +
+            "(correo_inicio_despano <= 0 AND (inicio_despano IS NOT NULL AND inicio_despano != '0000-00-00')) OR  " +
+            "(correo_cinco_porciento_floracion <= 0 AND( cinco_porciento_floracion IS NOT NULL AND cinco_porciento_floracion != '0000-00-00')) OR " +
+            "(correo_inicio_corte_seda <= 0 AND (inicio_corte_seda IS NOT NULL AND inicio_corte_seda != '0000-00-00')) OR " +
+            "(correo_inicio_cosecha <= 0 AND (inicio_cosecha IS NOT NULL AND inicio_cosecha != '0000-00-00')) OR " +
+            "(correo_termino_cosecha <= 0 AND (termino_cosecha IS NOT NULL AND termino_cosecha != '0000-00-00')) OR " +
+            "(correo_termino_labores_post_cosechas <= 0 AND (termino_labores_post_cosechas IS NOT NULL AND termino_labores_post_cosechas != '0000-00-00'))")
+    List<AnexoCorreoFechas> getAnexoCorreoFechas();
+
+    @Update
+    int UpdateFechasAnexos(AnexoCorreoFechas anexoCorreoFechas);
+
+    @Insert
+    long insertFechasAnexos(AnexoCorreoFechas anexoCorreoFechas);
+
+
+    @Query("UPDATE config SET servidorSeleccionado = :servidor ;")
+    void updateServidor(String servidor);
+
+
+//    @Query("SELECT * FROM anexo_correo_fechas ACF  " +
+//            " INNER JOIN anexo_contrato  AC ON (AC.id_anexo_contrato = ACF.id_ac_corr_fech) " +
+//            " INNER JOIN usuarios U ON U.id_usuario = ACF.id_fieldman " +
+//            " INNER JOIN agricultor A ON (A.id_agricultor = AC.id_agricultor_anexo) " +
+//            " INNER JOIN lote L ON (L.lote = AC.id_potrero) " +
+//            " INNER JOIN predio P ON (P.id_pred = L.id_pred_lote) " +
+//            " INNER JOIN ficha_new FN ON (FN.id_ficha_new = AC.id_ficha_contrato) " +
+//            " INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
+//            " INNER JOIN especie E ON (E.id_especie = M.id_especie_variedad) ")
+//
+//    List<AnexoCorreoFechas> getDetallesSag();
+
+
+    /*FOTOS FICHAS */
+    @Insert
+    long insertFotosFichas(FotosFichas fotos);
+
+    @Query("SELECT * FROM fotos_fichas WHERE id_ficha_fotos_local = :idFichaLocal AND id_ficha_fotos_servidor = :idFichaServidor AND id_dispo_captura = :idDispo ")
+    List<FotosFichas> getFotosFichasByIdes(int idFichaLocal, int idFichaServidor, int idDispo);
+
+
+    @Query("UPDATE fotos_fichas SET id_ficha_fotos_local = :idFichaLocal , id_ficha_fotos_servidor = :idFichaLocal WHERE id_ficha_fotos_local = 0 AND estado_subida_foto = 0 ")
+    int updateFotosFichas(int idFichaLocal);
+
+    @Query("SELECT  * FROM fotos_fichas WHERE estado_subida_foto = 0 AND id_ficha_fotos_local > 0")
+    List<FotosFichas> getFotosFichasPorSubir();
+
+    @Query("UPDATE fotos_fichas SET estado_subida_foto = 1, cabecera_subida = :idCab WHERE estado_subida_foto = 0")
+    int updateFotosFichasSubidas(int idCab);
+
+    @Query("UPDATE fotos_fichas SET estado_subida_foto = 0, cabecera_subida = 0 WHERE cabecera_subida = :idCab")
+    int updateFotosFichasBack(int idCab);
+
+
+    @Query("UPDATE fotos_fichas SET id_ficha_fotos_servidor = :idServidor WHERE  id_dispo_captura = :idDispo AND id_ficha_fotos_local = :idLocal ")
+    int updateFotosFichas(int idServidor, int idLocal, int idDispo);
+
+
     /* FICHAS */
 
 
     @Insert
     long insertFicha(Fichas fichas);
+
+
     @Insert
-    List<Long> insertFicha(List<Fichas> fichas);
+    List<Long> insertFicha(List<FichasNew> fichas);
 
     @Update
     int updateFicha(Fichas fichas);
@@ -143,10 +326,10 @@ public interface MyDao {
             "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_ficha)" +
             "INNER JOIN region R ON (R.id_region = F.id_region_ficha)" +
             "INNER JOIN provincia P ON (P.id_provincia = C.id_provincia_comuna)" +
-            "WHERE anno = :year ")
+            "WHERE anno = :year AND F.activa != 2 ")
     List<FichasCompletas> getFichasByYear(String year);
 
-    @Query("DELETE FROM ficha WHERE subida = 1 ")
+    @Query("DELETE FROM ficha_new ; ")
     void deleteFichas();
 
 
@@ -175,8 +358,21 @@ public interface MyDao {
     @Query("SELECT  COUNT(*) FROM temp_visitas WHERE id_anexo_temp_visita = :idFicha")
     int getCantTempVisitas(int idFicha);
 
-    @Query("SELECT * FROM visita WHERE estado_server_visitas = 0")
+    @Query("SELECT * FROM visita WHERE estado_server_visitas = 0 ORDER BY id_visita ASC LIMIT 3 ")
+    List<Visitas> getVisitasPorSubirLimit();
+
+    @Query("SELECT * FROM visita WHERE estado_server_visitas = 0 AND tomadas = 1 ORDER BY id_visita ASC ")
+    List<Visitas> getVisitasPorSubirTomadas();
+
+
+
+    @Query("UPDATE visita SET tomadas = 1 WHERE estado_server_visitas = 0 AND id_visita = :id_visita ")
+    void marcarVisitas(int id_visita);
+
+
+    @Query("SELECT * FROM visita WHERE estado_server_visitas = 0 ORDER BY fecha_visita ASC")
     List<Visitas> getVisitasPorSubir();
+
 
     @Query("SELECT valor_detalle FROM detalle_visita_prop where id_prop_mat_cli_detalle = :idProp AND id_visita_detalle = :idVisita")
     String getDatoDetalle(int idProp, int idVisita);
@@ -202,6 +398,10 @@ public interface MyDao {
 
     @Query("DELETE FROM detalle_visita_prop WHERE id_visita_detalle = 0")
     void deleteDetalleVacios();
+
+
+    @Query("SELECT * FROM visita WHERE id_visita  = :idVisita")
+    Visitas getVisitas(int idVisita);
     /* ===================================================================================*/
 
     @Query("SELECT * FROM card_view_resumen WHERE id_tempo_cardiview = :idTempo")
@@ -213,10 +413,6 @@ public interface MyDao {
     @Insert
     List<Long> insertResumenes(List<CardViewsResumen> cardViewsResumen);
 
-
-    @Query("SELECT P.nombre AS nombre, COUNT(id_visita) AS total, P.id_pred AS id FROM predio P INNER JOIN lote L ON (L.id_pred_lote = P.id_pred) INNER JOIN anexo_contrato AC ON (AC.id_potrero = L.lote) " +
-            "LEFT JOIN visita V ON (AC.id_anexo_contrato = V.id_anexo_visita)  WHERE id_tempo = :temp GROUP BY id_pred")
-    List<CardViewsResumen> getCantidadVisitasByPotrero(String temp);
 
     @Query("SELECT count(V.id_visita) AS total, VA.desc_variedad AS nombre , V.id_visita AS id FROM visita V " +
             "INNER JOIN anexo_contrato  AC ON (V.id_anexo_visita = AC.id_anexo_contrato) " +
@@ -230,16 +426,34 @@ public interface MyDao {
             "WHERE temporada = :temp  GROUP BY AC.id_especie_anexo")
     List<CardViewsResumen> getCantidadEspeciesByVisita(String temp);
 
+    @Query("SELECT P.nombre AS nombre, COUNT(id_visita) AS total, P.id_pred AS id FROM predio P " +
+            "INNER JOIN lote L ON (L.id_pred_lote = P.id_pred) " +
+            "INNER JOIN anexo_contrato AC ON  (AC.id_potrero = L.lote) " +
+            "INNER JOIN agri_pred_temp APT ON (APT.id_pred = P.id_pred AND APT.id_agric = AC.id_agricultor_anexo) " +
+            "LEFT JOIN visita V ON (AC.id_anexo_contrato = V.id_anexo_visita)  WHERE APT.id_tempo = :temp GROUP BY P.id_pred")
+    List<CardViewsResumen> getCantidadVisitasByPotrero(String temp);
 
-    @Query("SELECT P.nombre AS nombre, P.id_pred as total, P.id_agric as id FROM predio P INNER JOIN lote L ON (L.id_pred_lote = P.id_pred)  " +
-            "INNER JOIN anexo_contrato AC ON (AC.id_potrero = P.id_pred) " +
+
+    @Query("SELECT P.nombre AS nombre, P.id_pred as total, ATT.id_agric as id FROM predio P " +
+            "INNER JOIN agricultor A ON (A.id_agricultor = ATT.id_agric)  " +
+            "INNER JOIN lote L ON (L.id_pred_lote = P.id_pred)  " +
+            "INNER JOIN anexo_contrato AC ON (AC.id_potrero = L.lote) " +
+            "INNER JOIN agri_pred_temp ATT ON (ATT.id_pred = P.id_pred AND ATT.id_agric = AC.id_agricultor_anexo)  " +
             "LEFT JOIN visita V ON (V.id_anexo_visita = AC.id_anexo_contrato) " +
-        "WHERE id_tempo = :temp AND V.fecha_visita <= :fecha ")
+            "WHERE ATT.id_tempo = :temp AND V.fecha_visita <= :fecha GROUP BY p.id_pred")
     List<CardViewsResumen> getCantidadPrediosNoVisitados(String temp, String fecha);
 
 
 
     /* ===================================================================================*/
+
+
+    @Query("UPDATE visita SET estado_server_visitas = 0 WHERE id_user_visita = 2 ")
+    void updateVisitaTest();
+
+    @Query("UPDATE fotos SET estado_fotos = 1;")
+    void updateFotoTest();
+
 
     /* VISITAS */
 
@@ -254,44 +468,83 @@ public interface MyDao {
             "INNER JOIN agricultor ON (agricultor.id_agricultor = AC.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
-            "INNER JOIN ficha F ON (F.id_ficha= AC.id_ficha_contrato) " +
+            "INNER JOIN ficha_new F ON (F.id_ficha_new = AC.id_ficha_contrato) " +
             "INNER JOIN quotation Q ON (Q.id_materiales = M.id_variedad) " +
             "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
             "WHERE id_anexo_visita = :idAnexo AND AC.temporada_anexo = :annoDesde " +
             "GROUP BY V.id_visita " +
-            "ORDER BY fecha_visita, hora_visita DESC")
+            "ORDER BY V.fecha_visita, V.hora_visita, V.id_visita DESC")
     List<VisitasCompletas> getVisitasCompletas(String idAnexo, String annoDesde);
+
+
+    @Query("SELECT * FROM visita V " +
+            "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +
+            "INNER JOIN agricultor ON (agricultor.id_agricultor = AC.id_agricultor_anexo) " +
+            "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
+            "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
+            "INNER JOIN ficha_new F ON (F.id_ficha_new= AC.id_ficha_contrato)" +
+            "INNER JOIN quotation Q ON (Q.id_materiales = M.id_variedad) " +
+            "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
+            "LEFT JOIN fotos Fo ON (Fo.id_visita_foto = V.id_visita_local AND Fo.id_dispo_foto  = V.id_dispo  AND Fo.favorita = 1)" +
+            "WHERE id_anexo_visita = :idAnexo AND AC.temporada_anexo = :annoDesde " +
+            "GROUP BY V.id_visita " +
+            "ORDER BY V.fecha_visita, V.hora_visita, V.id_visita DESC")
+    List<VisitasCompletas> getVisitasCompletasWithFotos(String idAnexo, String annoDesde);
+
+    @Query("SELECT * FROM visita V " +
+            "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +
+            "INNER JOIN agricultor ON (agricultor.id_agricultor = AC.id_agricultor_anexo) " +
+            "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
+            "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
+            "INNER JOIN ficha_new F ON (F.id_ficha_new = AC.id_ficha_contrato)" +
+            "INNER JOIN quotation Q ON (Q.id_materiales = M.id_variedad) " +
+            "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
+            "LEFT JOIN fotos Fo ON (Fo.id_visita_foto = V.id_visita_local AND Fo.id_dispo_foto  = V.id_dispo  AND Fo.favorita = 1)" +
+            "WHERE id_anexo_visita = :idAnexo AND V.etapa_visitas = :etapa AND AC.temporada_anexo = :annoDesde " +
+            "GROUP BY V.id_visita " +
+            "ORDER BY V.fecha_visita, V.hora_visita, V.id_visita DESC")
+    List<VisitasCompletas> getVisitasCompletasWithFotos(String idAnexo, int etapa, String annoDesde);
 
     @Query("SELECT * FROM visita V INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = AC.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
-            "INNER JOIN ficha F ON (F.id_ficha= AC.id_ficha_contrato) " +
+            "INNER JOIN ficha_new F ON (F.id_ficha_new = AC.id_ficha_contrato) " +
             "INNER JOIN quotation Q ON (Q.id_materiales = M.id_variedad) " +
             "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
             "WHERE id_anexo_visita = :idAnexo AND V.etapa_visitas = :etapa AND AC.temporada_anexo = :annoDesde " +
             "GROUP BY V.id_visita " +
-            "ORDER BY fecha_visita, hora_visita DESC")
+            "ORDER BY V.fecha_visita, V.hora_visita, V.id_visita DESC")
     List<VisitasCompletas> getVisitasCompletas(String idAnexo, int etapa, String annoDesde);
 
 
-    @Query("UPDATE visita SET estado_server_visitas = 1, cabecera_visita = :idCab  WHERE estado_server_visitas = 0")
-    int updateVisitasSubidas(int idCab);
+    @Query("UPDATE visita SET estado_server_visitas = 1, cabecera_visita = :idCab, tomadas = 0  WHERE estado_server_visitas = 0 AND tomadas = 1 ;")
+    int updateVisitasSubidasTomadas(int idCab);
 
-    @Query("UPDATE visita SET estado_server_visitas = 0, cabecera_visita = 0  WHERE cabecera_visita = :idCab ")
+
+    @Query("UPDATE visita SET  tomadas = 0  WHERE  tomadas = 1 ;")
+    int updateVisitasSubidasTomadasBack();
+
+    @Query("UPDATE detalle_visita_prop SET  tomada_detalle = 0  WHERE  tomada_detalle = 1 ;")
+    int updateDetalleSubidasTomadasBack();
+
+    @Query("UPDATE fotos SET  tomada_foto = 0  WHERE  tomada_foto = 1 ;")
+    int updateFotosSubidasTomadasBack();
+
+    @Query("UPDATE visita SET estado_server_visitas = 0, cabecera_visita = 0, tomadas = 0  WHERE cabecera_visita = :idCab ")
     int updateVisitasBack(int idCab);
 
 
     @Query("SELECT * FROM visita V " +
             "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato  = V.id_anexo_visita)" +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = AC.id_agricultor_anexo)" +
-            "INNER JOIN region ON (region.id_region = agricultor.region_agricultor)" +
+            "LEFT  JOIN region ON (region.id_region = agricultor.region_agricultor)" +
             "INNER JOIN comuna ON (comuna.id_comuna = agricultor.comuna_agricultor)" +
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo)" +
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo)" +
-            "INNER JOIN ficha  F ON (F.id_ficha= AC.id_ficha_contrato) " +
-            "INNER JOIN predio P ON (P.id_pred = F.id_pred_ficha) " +
-            "INNER JOIN lote ON (lote.lote = F.id_lote_ficha) " +
+            "INNER JOIN ficha_new  F ON (F.id_ficha_new = AC.id_ficha_contrato) " +
+            "INNER JOIN predio P ON (P.id_pred = F.id_pred_new) " +
+            "INNER JOIN lote ON (lote.lote = F.id_lote_new) " +
             "INNER JOIN quotation Q ON (Q.id_materiales = M.id_variedad) " +
             "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
             "WHERE id_anexo_visita = :idAnexo ORDER BY id_visita DESC LIMIT 1;")
@@ -336,14 +589,29 @@ public interface MyDao {
 
     /* CROP ROTATION */
 
-    @Query("SELECT * FROM crop_rotation WHERE id_ficha_crop_rotation = :idFicha")
+    @Query("SELECT * FROM crop_rotation WHERE id_ficha_crop_rotation = :idFicha AND tipo_crop = 'F'  ")
     List<CropRotation> getCropRotation(int idFicha);
+
+    @Query("SELECT * FROM crop_rotation WHERE id_ficha_local_cp = :idFicha AND tipo_crop = 'P'  ORDER BY  crop_rotation.temporada_crop_rotation ASC")
+    List<CropRotation> getCropRotationLocal(int idFicha);
 
     @Query("SELECT * FROM crop_rotation")
     List<CropRotation> getCropRotation();
 
-    @Query("DELETE FROM crop_rotation")
+    @Query("DELETE FROM crop_rotation WHERE estado_subida_crop_rotation = 1 ")
     void deleteCrops();
+
+    @Query("SELECT * FROM crop_rotation WHERE estado_subida_crop_rotation = 0 ")
+    List<CropRotation> getCropsPorSubir();
+
+    @Query("UPDATE crop_rotation SET estado_subida_crop_rotation = 1, cabecera_crop = :cabecera WHERE estado_subida_crop_rotation = 0;")
+    int updateCropsSubidos(int cabecera);
+
+    @Query("UPDATE crop_rotation SET estado_subida_crop_rotation = 0 WHERE cabecera_crop = :cabecera ")
+    int updateCropsBack(int cabecera);
+
+    @Update
+    void updateCrop(CropRotation cropRotation);
 
     @Insert
     List<Long> insertCrop(List<CropRotation> cropRotation);
@@ -366,20 +634,44 @@ public interface MyDao {
     /* =====================================================================*/
 
 
+    @Query("DELETE FROM detalle_visita_prop WHERE estado_detalle = 0 AND id_visita_detalle = :visita ")
+    void deleteDetallesByVisita(int visita);
+
+    @Query("DELETE FROM fotos WHERE estado_fotos = 0 AND id_visita_foto = :visita ")
+    void deleteFotosByVisita(int visita);
+
+    @Query(" DELETE FROM visita WHERE estado_server_visitas = 0 AND id_visita = :visita ")
+    void deleteVisita(int visita);
+
 
     /* DETALLE*/
     @Query("DELETE FROM detalle_visita_prop WHERE estado_detalle = 1")
     void deleteDetalle();
 
+
+
     @Query("UPDATE detalle_visita_prop SET estado_detalle = 1, cabecera_detalle = :idCab WHERE estado_detalle = 0")
     int updateDetalleVisitaSubidas(int idCab);
 
+    @Query("UPDATE detalle_visita_prop SET estado_detalle = 1, tomada_detalle = 0,  cabecera_detalle = :idCab WHERE estado_detalle = 0 AND tomada_detalle = 1 ; ")
+    int updateDetalleVisitaSubidasTomadas(int idCab);
 
-    @Query("UPDATE detalle_visita_prop SET estado_detalle = 0, cabecera_detalle = 0 WHERE cabecera_detalle = :idCab")
+
+    @Query("UPDATE detalle_visita_prop SET estado_detalle = 0, cabecera_detalle = 0 , tomada_detalle = 0 WHERE cabecera_detalle = :idCab")
     int updateDetalleVisitaBack(int idCab);
+
+    @Query("SELECT * FROM detalle_visita_prop WHERE estado_detalle = 0 AND id_visita_detalle > 0 AND id_visita_detalle = :id_visita ")
+    List<detalle_visita_prop> getDetallesPorSubirLimit(int id_visita);
+
+    @Query("UPDATE detalle_visita_prop SET tomada_detalle = 1 WHERE estado_detalle = 0 AND id_visita_detalle = :id_visita ")
+    void marcarDetalle(int id_visita);
+
 
     @Query("SELECT * FROM detalle_visita_prop WHERE estado_detalle = 0 AND id_visita_detalle > 0")
     List<detalle_visita_prop> getDetallesPorSubir();
+
+    @Query("SELECT * FROM detalle_visita_prop WHERE estado_detalle = 0 AND tomada_detalle = 1 ")
+    List<detalle_visita_prop> getDetallesPorSubirTomadas();
     @Insert
     List<Long> insertDetalle(List<detalle_visita_prop> detalle_visita_props);
 
@@ -457,16 +749,16 @@ public interface MyDao {
     void deleteProCliMat();
 
     @Query("SELECT * FROM cli_pcm CCPM INNER JOIN pro_cli_mat PCM USING(id_prop_mat_cli) " +
-            "WHERE PCM.id_materiales = :idMaterial AND PCM.id_etapa = :idEtapa AND CCPM.id_cli = :idCli AND CCPM.registrar = 1 ORDER BY orden ASC ")
-    List<pro_cli_mat> getProCliMatByMateriales(String idMaterial, int idEtapa, int idCli);
+            "WHERE PCM.id_materiales = :idMaterial AND PCM.id_etapa = :idEtapa AND CCPM.id_cli = :idCli AND CCPM.registrar = 1 AND PCM.id_tempo = :idTempo ORDER BY  orden ASC ")
+    List<pro_cli_mat> getProCliMatByMateriales(String idMaterial, int idEtapa, int idCli, String idTempo);
 
     @Query("SELECT  * FROM cli_pcm CCPM INNER JOIN pro_cli_mat PCM USING(id_prop_mat_cli) " +
-            "WHERE PCM.id_prop = :idProp AND PCM.id_materiales = :idMat AND CCPM.id_cli = :idCli AND CCPM.registrar = 1 ORDER BY orden ASC ")
-    List<pro_cli_mat> getProCliMatByIdProp(int idProp, String idMat, int idCli);
+            "WHERE PCM.id_prop = :idProp AND PCM.id_materiales = :idMat AND CCPM.id_cli = :idCli AND CCPM.registrar = 1 AND PCM.id_tempo = :idTempo ORDER BY  orden ASC")
+    List<pro_cli_mat> getProCliMatByIdProp(int idProp, String idMat, int idCli, String idTempo);
 
     @Query("SELECT  * FROM cli_pcm CCPM INNER JOIN pro_cli_mat PCM USING(id_prop_mat_cli) " +
-            "WHERE PCM.id_prop_mat_cli = :idProp AND CCPM.id_cli = :idCli AND CCPM.registrar = 1 ")
-    pro_cli_mat getProCliMatByIdProp(int idProp, int idCli);
+            "WHERE PCM.id_prop_mat_cli = :idProp AND CCPM.id_cli = :idCli AND CCPM.registrar = 1 AND PCM.id_tempo = :idTempo ")
+    pro_cli_mat getProCliMatByIdProp(int idProp, int idCli, String idTempo);
 
 
 
@@ -481,29 +773,31 @@ public interface MyDao {
             "INNER JOIN materiales M ON AC.id_variedad_anexo = M.id_variedad WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
     String getIdMaterialByAnexo(String idAnexo);
 
-    @Query("SELECT F.id_pred_ficha FROM ficha F " +
-            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha WHERE AC.id_anexo_contrato = :idPredio LIMIT 1" )
+    @Query("SELECT F.id_pred_new FROM ficha_new F " +
+            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idPredio LIMIT 1" )
     int getIdPredioByAnexo(String idPredio);
 
-    @Query("SELECT F.id_lote_ficha FROM ficha F " +
-            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha WHERE AC.id_anexo_contrato = :idLote LIMIT 1" )
+    @Query("SELECT F.id_lote_new FROM ficha_new F " +
+            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idLote LIMIT 1" )
     int getIdLoteByAnexo(String idLote);
 
     @Query("SELECT v.id_visita FROM visita V " +
             "INNER JOIN anexo_contrato AC ON AC.id_anexo_contrato = V.id_anexo_visita WHERE AC.id_anexo_contrato = :idLote ORDER BY id_visita DESC LIMIT 1" )
     int getIdVisitaByAnexo(String idLote);
 
-    @Query("SELECT F.id_tipo_suelo FROM ficha F " +
-            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
+    @Query("SELECT F.id_tipo_suelo_new FROM ficha_new F " +
+            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
     int getIdTipoSueloByAnexo(String idAnexo);
 
-    @Query("SELECT F.id_tipo_riego FROM ficha F " +
-            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
+    @Query("SELECT F.id_tipo_riego_new FROM ficha_new F " +
+            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
     int getIdTipoRiegoByAnexo(String idAnexo);
 
-    @Query("SELECT F.id_usuario FROM ficha F " +
-            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
+    @Query("SELECT F.id_usuario_new FROM ficha_new F " +
+            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
     int getIdusuarioByAnexo(String idAnexo);
+
+
     /* ===================================================================================*/
 
     /* temporadas */
@@ -557,9 +851,9 @@ public interface MyDao {
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN materiales ON (materiales.id_variedad = anexo_contrato.id_variedad_anexo) " +
-            "INNER JOIN ficha F ON (F.id_ficha= anexo_contrato.id_ficha_contrato) " +
-            "INNER JOIN predio P ON (P.id_pred = F.id_pred_ficha) " +
-            "INNER JOIN lote ON (lote.lote = F.id_lote_ficha) " +
+            "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
+            "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
+            "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
             "")
     List<AnexoCompleto> getAnexos();
 
@@ -572,11 +866,24 @@ public interface MyDao {
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN materiales ON (materiales.id_variedad = anexo_contrato.id_variedad_anexo) " +
-            "INNER JOIN ficha F ON (F.id_ficha= anexo_contrato.id_ficha_contrato) " +
-            "INNER JOIN predio P ON (P.id_pred = F.id_pred_ficha) " +
-            "INNER JOIN lote ON (lote.lote = F.id_lote_ficha) " +
-            "WHERE F.anno = :year")
+            "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
+            "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
+            "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
+            "WHERE F.id_tempo_new = :year")
     List<AnexoCompleto> getAnexosByYear(String year);
+
+
+
+    @Query("SELECT * " +
+            "FROM anexo_contrato " +
+            "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
+            "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
+            "INNER JOIN materiales ON (materiales.id_variedad = anexo_contrato.id_variedad_anexo) " +
+            "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
+            "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
+            "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
+            "WHERE id_anexo_contrato = :idAnexo ")
+    AnexoCompleto getAnexoCompletoById(String idAnexo);
 
     @Insert
     void insertAnexo(AnexoContrato anexoContrato);
@@ -597,6 +904,9 @@ public interface MyDao {
     @Query("SELECT * FROM especie")
     List<Especie> getEspecies();
 
+    @Query("SELECT * FROM especie WHERE id_especie = :idEspecie")
+    Especie getEspecie(String idEspecie);
+
     @Insert
     void insertEspecie(Especie especie);
     @Insert
@@ -605,7 +915,7 @@ public interface MyDao {
     @Query("DELETE FROM especie")
     void deleteEspecie();
 
-     /* ================================================================== */
+    /* ================================================================== */
 
 
     /*VARIEDAD*/
@@ -767,6 +1077,22 @@ public interface MyDao {
     void deletePredios();
 
     /* ===================================================================================*/
+
+
+    /* agri pred temp */
+    @Insert
+    List<Long> insertAgriPredTemp(List<AgrPredTemp> agris);
+
+    @Query("SELECT * FROM agri_pred_temp ")
+    List<AgrPredTemp> getAgripredTemp();
+
+    @Query("DELETE FROM agri_pred_temp")
+    void deleteAgriPredTemp();
+
+    /* ===================================================================================*/
+
+
+
 
     /* TIPO RIEGO */
     @Insert

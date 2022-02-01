@@ -16,9 +16,9 @@ import cl.smapdev.curimapu.clases.tablas.Usuario;
 
 public class UsuariosAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
-    private List<Usuario> items;
-    private OnItemClickListener listener;
-    private Context context;
+    private final List<Usuario> items;
+    private final OnItemClickListener listener;
+    private final Context context;
 
     public UsuariosAdapter(List<Usuario> items, OnItemClickListener listener,Context context) {
         this.items = items;

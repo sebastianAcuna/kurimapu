@@ -58,6 +58,18 @@ public class pro_cli_mat {
     private String campo;
 
 
+    @SerializedName("id_sub_propiedad_pcm")
+    private int id_sub_propiedad_pcm;
+
+
+    public int getId_sub_propiedad_pcm() {
+        return id_sub_propiedad_pcm;
+    }
+
+    public void setId_sub_propiedad_pcm(int id_sub_propiedad_pcm) {
+        this.id_sub_propiedad_pcm = id_sub_propiedad_pcm;
+    }
+
     public String getForaneo() {
         return foraneo;
     }

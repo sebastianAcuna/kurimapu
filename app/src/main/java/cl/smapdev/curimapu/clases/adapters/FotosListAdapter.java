@@ -20,11 +20,11 @@ import cl.smapdev.curimapu.clases.tablas.Fotos;
 
 public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.ImageViewHolder> {
 
-    private List<Fotos> images;
+    private final List<Fotos> images;
 //    private int[] images;
-    private OnItemClickListener itemClickListener;
-    private OnItemLongClickListener itemLongClickListener;
-    private Context context;
+    private final OnItemClickListener itemClickListener;
+    private final OnItemLongClickListener itemLongClickListener;
+    private final Context context;
 
 
     public FotosListAdapter(List<Fotos> images, Context context, OnItemClickListener itemClickListener , OnItemLongClickListener itemLongClickListener){

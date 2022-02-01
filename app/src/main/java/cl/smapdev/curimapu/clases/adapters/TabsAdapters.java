@@ -14,7 +14,7 @@ import cl.smapdev.curimapu.fragments.contratos.FragmentFormVisitas;
 
 public class TabsAdapters extends FragmentStatePagerAdapter {
 
-    private String[] tabs;
+    private final String[] tabs;
 
     public TabsAdapters(FragmentManager manager, Context context) {
         super(manager);

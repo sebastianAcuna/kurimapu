@@ -40,7 +40,7 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
             String tagValor = "valor_" + i;
             String[] valoresAndColumnas = columnas[i].split("--");
 
-            TextView tvalor = (TextView) itemView.findViewWithTag(tagValor);
+            TextView tvalor = itemView.findViewWithTag(tagValor);
 
             if (tvalor != null ){
                 tvalor.setVisibility(View.VISIBLE);

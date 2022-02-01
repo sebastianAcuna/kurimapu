@@ -9,8 +9,10 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 @Entity(tableName = "agricultor")
-public class Agricultor {
+public class Agricultor implements Serializable {
 
     @SerializedName("id_agric")
     @PrimaryKey()

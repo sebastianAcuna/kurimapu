@@ -16,10 +16,10 @@ import cl.smapdev.curimapu.clases.adapters.viewHolders.VisitasTypeViewHolder;
 
 public class VisitasTypeAdapter extends RecyclerView.Adapter<VisitasTypeViewHolder> {
 
-    private ArrayList<Etapas> elements;
-    private Context context;
-    private OnItemClickListener cLickListener;
-    private String idAnexo;
+    private final ArrayList<Etapas> elements;
+    private final Context context;
+    private final OnItemClickListener cLickListener;
+    private final String idAnexo;
 
     public VisitasTypeAdapter(ArrayList<Etapas> elements, Context context, OnItemClickListener cLickListener, String idAnexo) {
         this.elements = elements;

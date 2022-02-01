@@ -8,8 +8,10 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 @Entity(tableName = "region")
-public class Region {
+public class Region implements Serializable {
 
     @SerializedName("id_region")
     @PrimaryKey()

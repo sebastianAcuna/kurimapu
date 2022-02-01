@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +39,7 @@ import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
+import es.dmoral.toasty.Toasty;
 
 public class DialogFilterFichas extends DialogFragment {
 
@@ -49,16 +52,16 @@ public class DialogFilterFichas extends DialogFragment {
 
 
 
-    private ArrayList<String> idRegiones = new ArrayList<>();
-    private ArrayList<String> idComunas = new ArrayList<>();
-    private ArrayList<String> idProvincias = new ArrayList<>();
-    private ArrayList<String> idTemporadas = new ArrayList<>();
+    private final ArrayList<String> idRegiones = new ArrayList<>();
+    private final ArrayList<String> idComunas = new ArrayList<>();
+    private final ArrayList<String> idProvincias = new ArrayList<>();
+    private final ArrayList<String> idTemporadas = new ArrayList<>();
 
 
     private List<Comuna> comunaList =  MainActivity.myAppDB.myDao().getComunas();
-    private List<Region> regionList =  MainActivity.myAppDB.myDao().getRegiones();
+    private final List<Region> regionList =  MainActivity.myAppDB.myDao().getRegiones();
     private List<Provincia> provinciaList =  MainActivity.myAppDB.myDao().getProvincias();
-    private List<Temporada> years = MainActivity.myAppDB.myDao().getTemporada();
+    private final List<Temporada> years = MainActivity.myAppDB.myDao().getTemporada();
 
 
     private String idComuna,idRegion,idAnno, idProvincia;
@@ -139,8 +142,6 @@ public class DialogFilterFichas extends DialogFragment {
         switch (state){
             case -1:
             default:
-                radio_todos.setChecked(true);
-                break;
             case 1:
                 radio_inactiva.setChecked(true);
                 break;
@@ -315,65 +316,74 @@ public class DialogFilterFichas extends DialogFragment {
     private void filtrarFichas(){
 
 
-        String consulta = "SELECT * " +
-                " FROM fichas " +
-                "INNER JOIN agricultor ON (agricultor.id_agricultor = fichas.id_agricultor_ficha) " +
-                "INNER JOIN region ON (region.id_region = fichas.id_region_ficha)" +
-                "INNER JOIN comuna ON (comuna.id_comuna = fichas.id_comuna_ficha)" +
-                "INNER JOIN provincia ON (provincia.id_provincia = comuna.id_provincia_comuna)" +
-                "WHERE 1 ";
-
-//        anno = :year
-
-        consulta+= "AND anno =  ?";
-        ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SELECTED_ANO, years.get(years.size() - 1).getId_tempo_tempo()));
-
-        String nombre_Ag = et_dialog_nombre_ag.getText().toString();
-        String of_neg = et_dialog_of_neg.getText().toString();
-        String ha_disp = et_dialog_ha_disp.getText().toString();
-
-        int estado = (radio_todos.isChecked()) ? -1 : (radio_inactiva.isChecked()) ? 1 : (radio_activa.isChecked()) ? 2 : 3;
+        try{
+            String consulta = "SELECT * " +
+                    " FROM ficha F " +
+                    "INNER JOIN agricultor A ON (A.id_agricultor = F.id_agricultor_ficha) " +
+                    "INNER JOIN region ON (region.id_region = F.id_region_ficha)" +
+                    "INNER JOIN comuna ON (comuna.id_comuna = F.id_comuna_ficha)" +
+                    "INNER JOIN provincia ON (provincia.id_provincia = comuna.id_provincia_comuna)" +
+                    "WHERE 1 ";
 
 
-        if (estado >= 0){
-            consulta += "AND fichas.activa = ?";
-            ob = Utilidades.appendValue(ob, estado);
+            //        anno = :year
+
+            consulta+= "AND anno =  ?";
+            ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SELECTED_ANO, years.get(years.size() - 1).getId_tempo_tempo()));
+
+            String nombre_Ag = et_dialog_nombre_ag.getText().toString();
+            String of_neg = et_dialog_of_neg.getText().toString();
+            String ha_disp = et_dialog_ha_disp.getText().toString();
+
+//            int estado = (radio_todos.isChecked()) ? -1 : (radio_inactiva.isChecked()) ? 1 : (radio_activa.isChecked()) ? 2 : 3;
+
+
+//            if (estado >= 0){
+                consulta += "AND F.activa != ?";
+                ob = Utilidades.appendValue(ob, 2);
+//            }
+
+            if (!TextUtils.isEmpty(ha_disp)){
+                ob = Utilidades.appendValue(ob, ha_disp);
+                consulta+= " AND F.has_disponible = ? ";
+
+            }
+
+            if (!TextUtils.isEmpty(nombre_Ag)){
+                ob = Utilidades.appendValue(ob,"%"+nombre_Ag+"%");
+                consulta+= " AND A.razon_social LIKE ? ";
+
+            }
+
+            if (!TextUtils.isEmpty(of_neg)){
+                ob = Utilidades.appendValue(ob,"%"+of_neg+"%");
+                consulta+= " AND F.oferta_negocio LIKE ? ";
+            }
+
+            if (!TextUtils.isEmpty(idRegion)){
+                ob = Utilidades.appendValue(ob, idRegion);
+                consulta+= " AND F.id_region_ficha = ? ";
+            }
+
+            if (!TextUtils.isEmpty(idComuna)){
+                ob = Utilidades.appendValue(ob, idComuna);
+                consulta+= " AND F.id_comuna_ficha = ? ";
+            }
+
+            List<FichasCompletas> fichasCompletas = MainActivity.myAppDB.myDao().getFichasFilter(new SimpleSQLiteQuery(consulta, ob));
+            LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
+            Intent i = new Intent("TAG_REFRESH");
+            i.putExtra(LLAVE_ENVIO_OBJECTO, (Serializable) fichasCompletas);
+            lbm.sendBroadcast(i);
+            dismiss();
+
+        }catch (Exception e){
+            Log.e("ERROR",e.getMessage());
+            Toasty.error(activity, "No pudimos encontrar lo que buscaste", Toast.LENGTH_SHORT, true).show();
+
+            dismiss();
         }
 
-        if (!TextUtils.isEmpty(ha_disp)){
-            ob = Utilidades.appendValue(ob, ha_disp);
-            consulta+= " AND fichas.has_disponible = ? ";
-
-        }
-
-        if (!TextUtils.isEmpty(nombre_Ag)){
-            ob = Utilidades.appendValue(ob,"%"+nombre_Ag+"%");
-            consulta+= " AND agricultor.nombre_agricultor LIKE ? ";
-
-        }
-
-        if (!TextUtils.isEmpty(of_neg)){
-            ob = Utilidades.appendValue(ob,"%"+of_neg+"%");
-            consulta+= " AND fichas.oferta_negocio LIKE ? ";
-        }
-
-        if (!TextUtils.isEmpty(idRegion)){
-            ob = Utilidades.appendValue(ob, idRegion);
-            consulta+= " AND fichas.id_region_ficha = ? ";
-        }
-
-        if (!TextUtils.isEmpty(idComuna)){
-            ob = Utilidades.appendValue(ob, idComuna);
-            consulta+= " AND fichas.id_comuna_ficha = ? ";
-        }
-
-
-        List<FichasCompletas> fichasCompletas = MainActivity.myAppDB.myDao().getFichasFilter(new SimpleSQLiteQuery(consulta, ob));
-        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
-        Intent i = new Intent("TAG_REFRESH");
-        i.putExtra(LLAVE_ENVIO_OBJECTO, (Serializable) fichasCompletas);
-        lbm.sendBroadcast(i);
-        dismiss();
 
     }
 
@@ -433,24 +443,24 @@ public class DialogFilterFichas extends DialogFragment {
 
 
     private void bind(View view){
-        buttonCancel = (Button) view.findViewById(R.id.btn_cancela_filtro);
-        btn_aplica_filtro = (Button) view.findViewById(R.id.btn_aplica_filtro);
+        buttonCancel = view.findViewById(R.id.btn_cancela_filtro);
+        btn_aplica_filtro = view.findViewById(R.id.btn_aplica_filtro);
 
-        sp_dialog_region = (Spinner) view.findViewById(R.id.sp_dialog_region);
-        sp_dialog_comuna = (Spinner) view.findViewById(R.id.sp_dialog_comuna);
-        sp_dialog_year = (Spinner) view.findViewById(R.id.sp_dialog_year);
-        sp_dialog_provincia = (Spinner) view.findViewById(R.id.sp_dialog_provincia);
-
-
-
-        et_dialog_nombre_ag = (EditText) view.findViewById(R.id.et_dialog_nombre_ag);
-        et_dialog_of_neg = (EditText) view.findViewById(R.id.et_dialog_of_neg);
-        et_dialog_ha_disp = (EditText) view.findViewById(R.id.et_dialog_ha_disp);
+        sp_dialog_region = view.findViewById(R.id.sp_dialog_region);
+        sp_dialog_comuna = view.findViewById(R.id.sp_dialog_comuna);
+        sp_dialog_year = view.findViewById(R.id.sp_dialog_year);
+        sp_dialog_provincia = view.findViewById(R.id.sp_dialog_provincia);
 
 
-        radio_todos = (RadioButton) view.findViewById(R.id.radio_todos);
-        radio_inactiva = (RadioButton) view.findViewById(R.id.radio_inactiva);
-        radio_activa = (RadioButton) view.findViewById(R.id.radio_activa);
-        radio_rechazada = (RadioButton) view.findViewById(R.id.radio_rechazada);
+
+        et_dialog_nombre_ag = view.findViewById(R.id.et_dialog_nombre_ag);
+        et_dialog_of_neg = view.findViewById(R.id.et_dialog_of_neg);
+        et_dialog_ha_disp = view.findViewById(R.id.et_dialog_ha_disp);
+
+
+        radio_todos = view.findViewById(R.id.radio_todos);
+        radio_inactiva = view.findViewById(R.id.radio_inactiva);
+        radio_activa = view.findViewById(R.id.radio_activa);
+        radio_rechazada = view.findViewById(R.id.radio_rechazada);
     }
 }

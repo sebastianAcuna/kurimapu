@@ -13,7 +13,7 @@ import cl.smapdev.curimapu.fragments.contratos.FragmentSowing;
 
 public class SubTabsAdapters extends FragmentStatePagerAdapter {
 
-    private String[] tabs;
+    private final String[] tabs;
 
     public SubTabsAdapters(FragmentManager fm, Context context) {
         super(fm);

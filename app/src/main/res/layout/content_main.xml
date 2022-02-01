@@ -17,186 +17,149 @@
         android:id="@+id/relative_constraint_principal">
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/card_list"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_preparar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_descargar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="preparar visitas \n para subir "
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:drawableLeft="@drawable/ic_upload_white"
+            />
+
+        <Button
+            android:id="@+id/btn_descargar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
+            android:text="descargar datos"
+            app:layout_constraintStart_toEndOf="@id/btn_preparar"
+            app:layout_constraintTop_toTopOf="@id/btn_preparar"
+            app:layout_constraintBottom_toBottomOf="@id/btn_preparar"
+            android:backgroundTint="@android:color/holo_orange_dark"
+            android:drawableLeft="@drawable/ic_download_white"
+
             />
 
 
-        <View
-            android:id="@+id/divider4"
+        <TextView
+            android:id="@+id/visitas_titulo"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_margin="@dimen/padding"
-            app:layout_constraintTop_toBottomOf="@id/card_list"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_preparar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_visitas"
-            android:layout_width="0dp"
-            android:layout_height="382dp"
-            app:layout_constraintHorizontal_weight="0.3"
-            style="@style/small_card_views"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider4"
-            app:layout_constraintEnd_toStartOf="@id/left_graphic"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                >
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Visitas Totales"
-                    android:gravity="center"
-                    android:textSize="22sp"
-
-                    />
-
-                <TextView
-                    android:id="@+id/cantidad_visitas_cardview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="28sp"
-
-                    />
-
-            </LinearLayout>
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/left_graphic"
-            android:layout_width="0dp"
-            android:layout_height="382dp"
-            app:layout_constraintHorizontal_weight="0.3"
-            style="@style/small_card_views"
-            app:layout_constraintTop_toBottomOf="@id/divider4"
-            app:layout_constraintStart_toEndOf="@id/card_visitas"
-            app:layout_constraintEnd_toStartOf="@id/noUsados"
-            >
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/left_chart_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/seekBar1" />
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/noUsados"
-            android:layout_width="0dp"
-            android:layout_height="382dp"
-            app:layout_constraintHorizontal_weight="0.3"
-            style="@style/small_card_views"
-            app:layout_constraintTop_toBottomOf="@id/divider4"
-            app:layout_constraintStart_toEndOf="@id/left_graphic"
             app:layout_constraintEnd_toEndOf="parent"
-            >
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:visibility="invisible"
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="predios no visitados"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    />
-                <View
-                    android:id="@+id/divider6"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    android:layout_margin="@dimen/padding"/>
+            />
 
-                <TextView
-                    android:id="@+id/contenido_noUsados"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding"
-
-                    />
-            </LinearLayout>
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-
-        <View
-            android:id="@+id/divider5"
+        <TextView
+            android:id="@+id/visitas_marca"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_margin="@dimen/padding"
-            app:layout_constraintTop_toBottomOf="@id/noUsados"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/visitas_titulo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/right_graphic"
-            android:layout_width="0dp"
-            android:layout_height="382dp"
-            app:layout_constraintHorizontal_weight="0.3"
-            style="@style/small_card_views"
-            app:layout_constraintTop_toBottomOf="@id/divider5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/gr_3"
-            >
-
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/right_chart_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/seekBar1" />
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/gr_3"
-            android:layout_width="0dp"
-            android:layout_height="382dp"
-            app:layout_constraintHorizontal_weight="0.3"
-            style="@style/small_card_views"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider5"
-            app:layout_constraintStart_toEndOf="@id/right_graphic"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:visibility="invisible"
+            />
+
+
+        <Button
+            android:id="@+id/btn_sube_marcadas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Subir visitas marcadas"
+            app:layout_constraintTop_toBottomOf="@id/visitas_marca"
+            android:backgroundTint="@color/colorPrimary"
+            android:drawableLeft="@drawable/ic_upload_white"
+            android:visibility="invisible"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/contenedor_botones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/btn_sube_marcadas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal"
             >
+        </LinearLayout>
 
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/chv_3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/seekBar1" />
 
-        </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:id="@+id/titulo_primera_prioridad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_botones"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="10dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_primera_prioridad"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:layout_constraintTop_toBottomOf="@id/titulo_primera_prioridad"
+
+            />
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/titulo_primera_prioridad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"/>
+
+
+
+
+        <TextView
+            android:id="@+id/titulo_sitios_no_visitados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lista_primera_prioridad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="10dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_sitios_no_visitados"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/titulo_sitios_no_visitados"
+
+            />
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/titulo_sitios_no_visitados"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"/>
+
 
 
 

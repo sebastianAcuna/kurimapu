@@ -2,11 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/menu_upload_files"
-        android:title="@string/sync_up_menu"
-        android:icon="@drawable/ic_cloud_upload_black_24dp"
+
+<!--    <item
+        android:id="@+id/menu_download_files"
+        android:title="Descarga"
+        android:titleCondensed="Descarga"
         app:showAsAction="always"
+        android:icon="@drawable/ic_cloud_download_black_24dp"
+
         />
+
+    <item
+        android:id="@+id/useless"
+        android:title=""
+        android:titleCondensed=""
+        app:showAsAction="always"
+
+        />-->
 
 </menu>

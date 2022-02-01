@@ -34,12 +34,12 @@ import static cl.smapdev.curimapu.clases.utilidades.Utilidades.obtenerAnchoPixel
 
 public class Tabla {
 
-    private TableLayout tabla; // Layout donde se pintará la tabla
-    private ArrayList<TableRow> filas; // Array de las filas de la tabla
-    private Activity actividad;
-    private Resources rs;
+    private final TableLayout tabla; // Layout donde se pintará la tabla
+    private final ArrayList<TableRow> filas; // Array de las filas de la tabla
+    private final Activity actividad;
+    private final Resources rs;
     private int FILAS, COLUMNAS; // Filas y columnas de nuestra tabla
-    private SharedPreferences prefs;
+    private final SharedPreferences prefs;
 
 
     public Tabla(TableLayout tabla, Activity actividad) {
@@ -69,7 +69,7 @@ public class Tabla {
 
         for (String s : arraycabecera) {
             TextView texto = new TextView(actividad);
-            layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(s), TableRow.LayoutParams.WRAP_CONTENT);
+            layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(s ,50.0f), TableRow.LayoutParams.WRAP_CONTENT);
             texto.setText(s);
             texto.setGravity(Gravity.CENTER_HORIZONTAL);
             texto.setTextAppearance(actividad, android.R.style.TextAppearance_Small);
@@ -106,23 +106,22 @@ public class Tabla {
 
 
 
-            TextView anexo = new TextView(actividad);
-            TextView variedad = new TextView(actividad);
-            TextView especie= new TextView(actividad);
-            TextView agricultor = new TextView(actividad);
-            TextView potrero = new TextView(actividad);
+        TextView anexo = new TextView(actividad);
+        TextView variedad = new TextView(actividad);
+        TextView especie= new TextView(actividad);
+        TextView agricultor = new TextView(actividad);
+        TextView potrero = new TextView(actividad);
 
         Button botonForm = new Button(actividad);
         Button botonVer = new Button(actividad);
 
 
 
-
-            anexo.setText(String.valueOf(ls.getAnexoContrato().getAnexo_contrato()));
-            variedad.setText(String.valueOf(ls.getVariedad().getDesc_variedad()));
-            especie.setText(String.valueOf(ls.getEspecie().getDesc_especie()));
-            agricultor.setText(String.valueOf(ls.getAgricultor().getNombre_agricultor()));
-            potrero.setText(String.valueOf(ls.getAnexoContrato().getProtero()));
+        anexo.setText(String.valueOf(ls.getAnexoContrato().getAnexo_contrato()));
+        variedad.setText(String.valueOf(ls.getVariedad().getDesc_variedad()));
+        especie.setText(String.valueOf(ls.getEspecie().getDesc_especie()));
+        agricultor.setText(String.valueOf(ls.getAgricultor().getNombre_agricultor()));
+        potrero.setText(String.valueOf(ls.getAnexoContrato().getProtero()));
 
 
 
@@ -158,6 +157,9 @@ public class Tabla {
                     if (prefs != null) {
                         prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls.getAnexoContrato().getId_ficha_contrato()).apply();
                         prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, ls.getAnexoContrato().getId_anexo_contrato()).apply();
+                        prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, ls.getAnexoContrato().getId_especie_anexo()).apply();
+                        prefs.edit().putString(Utilidades.SHARED_VISIT_TEMPORADA, ls.getAnexoContrato().getTemporada_anexo()).apply();
+                        prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
                     }
 
                     activity.cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_left, R.anim.slide_out_left);
@@ -169,7 +171,7 @@ public class Tabla {
 
 //        botonVer.setBackgroundColor(botonVer.getContext().getResources().getColor(R.color.colorAccent));
 
-       layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(anexo.getText().toString()),
+       layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(anexo.getText().toString(), 50.0f),
                    TableRow.LayoutParams.WRAP_CONTENT);
 
         anexo.setLayoutParams(layoutCelda);
@@ -181,7 +183,7 @@ public class Tabla {
 //        agricultor.setLayoutParams(layoutCelda);
 
 
-        layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(potrero.getText().toString()),
+        layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(potrero.getText().toString(), 50.0f),
                 TableRow.LayoutParams.WRAP_CONTENT);
 
         potrero.setLayoutParams(layoutCelda);
@@ -259,6 +261,9 @@ public class Tabla {
                     prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, ls[0].getAnexoContrato().getId_ficha_contrato()).apply();
                     prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, ls[0].getAnexoContrato().getId_especie_anexo()).apply();
                     prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, ls[0].getAnexoContrato().getId_anexo_contrato()).apply();
+
+                    prefs.edit().putString(Utilidades.SHARED_VISIT_TEMPORADA, ls[0].getAnexoContrato().getTemporada_anexo()).apply();
+
                     prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
                 }
 

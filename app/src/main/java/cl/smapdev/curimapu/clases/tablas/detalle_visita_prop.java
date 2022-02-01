@@ -34,6 +34,20 @@ public class detalle_visita_prop {
     @Expose
     private int cabecera_detalle;
 
+
+    @SerializedName("tomada_detalle")
+    @Expose
+    private int tomada_detalle;
+
+
+    public int getTomada_detalle() {
+        return tomada_detalle;
+    }
+
+    public void setTomada_detalle(int tomada_detalle) {
+        this.tomada_detalle = tomada_detalle;
+    }
+
     public int getCabecera_detalle() {
         return cabecera_detalle;
     }

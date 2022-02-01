@@ -14,11 +14,11 @@ public class Predios implements Serializable  {
     @SerializedName("id_pred")
     private int id_pred;
 
-    @SerializedName("id_agric")
-    private String id_agric;
-
-    @SerializedName("id_tempo")
-    private String id_tempo;
+//    @SerializedName("id_agric")
+//    private String id_agric;
+//
+//    @SerializedName("id_tempo")
+//    private String id_tempo;
 
     @SerializedName("id_comuna")
     private String id_comuna;
@@ -41,21 +41,29 @@ public class Predios implements Serializable  {
         this.id_pred = id_pred;
     }
 
-    public String getId_agric() {
-        return id_agric;
-    }
 
-    public void setId_agric(String id_agric) {
-        this.id_agric = id_agric;
-    }
 
-    public String getId_tempo() {
-        return id_tempo;
-    }
 
-    public void setId_tempo(String id_tempo) {
-        this.id_tempo = id_tempo;
-    }
+
+//    public String getId_agric() {
+//        return id_agric;
+//    }
+//
+//    public void setId_agric(String id_agric) {
+//        this.id_agric = id_agric;
+//    }
+//
+//    public String getId_tempo() {
+//        return id_tempo;
+//    }
+//
+//    public void setId_tempo(String id_tempo) {
+//        this.id_tempo = id_tempo;
+//    }
+
+
+
+
 
     public String getId_comuna() {
         return id_comuna;

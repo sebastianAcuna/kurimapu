@@ -16,11 +16,11 @@ import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 
 public class FichasAdapter extends RecyclerView.Adapter<FichasViewHolder> {
 
-    private List<FichasCompletas> elements;
-    private List<FichasCompletas> mfilter;
-    private OnItemClickListener itemClickListener;
-    private OnItemLongClickListener itemLongClickListener;
-    private Context context;
+    private final List<FichasCompletas> elements;
+    private final List<FichasCompletas> mfilter;
+    private final OnItemClickListener itemClickListener;
+    private final OnItemLongClickListener itemLongClickListener;
+    private final Context context;
 
 
     public FichasAdapter(List<FichasCompletas> elements,OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener, Context context) {

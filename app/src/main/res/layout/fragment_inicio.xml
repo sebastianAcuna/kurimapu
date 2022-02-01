@@ -21,6 +21,7 @@
             android:theme="@style/toolbars"
             app:titleTextColor="@color/colorOnSurface"
             app:subtitleTextColor="@color/colorOnSurface"
+
             >
             <Spinner
                 android:id="@+id/spinner_toolbar"

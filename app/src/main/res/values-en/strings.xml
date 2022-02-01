@@ -26,10 +26,9 @@
 
 
     <!-- MENU LATERAL -->
-    <string name="subtitles_visit">Visits</string>
+    <string name="subtitles_visit">Annexes</string>
     <string name="subtitles_start">Start</string>
-    <string name="subtitles_records">Records</string>
-    <string name="subtitles_contracts">Contracts</string>
+    <string name="subtitles_records">Prospects</string>
     <string name="subtitles_config">Configurations</string>
     <string name="subtitles_salir">Log out</string>
 
@@ -51,26 +50,17 @@
     <string name="estado">State</string>
     <string name="todos">All</string>
     <string name="confeccion">making</string>
-    <string name="aprobada">approved</string>
-    <string name="rechazada">Rejected</string>
+    <string name="aprobada">APPROVED</string>
+    <string name="rechazada">REJECTED</string>
 
 
     <string name="temporada">Season</string>
     <string name="datos_agricultor">Farmer Data</string>
     <string name="rut_agricultor">Farmer rut</string>
     <string name="tel_agricultor">Farmer Telephone</string>
-    <string name="admin">Administrator</string>
-    <string name="admin_telephone">Administrator Telephone</string>
-    <string name="datos_ficha">Data Sheets</string>
-    <string name="localidad">Location</string>
     <string name="editar">Edit</string>
     <string name="seleccione_item">Select Item</string>
     <string name="ok">OK</string>
-    <string name="puntos_ampros">Anpros Points</string>
-
-
-    <string name="ready_batch">Ready Batch (Customer lot)</string>
-    <string name="raw_batch">RAW Batch</string>
 
 
     <string name="visitas_terminadas">Visit in finished state, you cannot add more photos.</string>
@@ -83,7 +73,7 @@
     <string name="falta_algo">Something is missing!</string>
 
 
-    <string name="filtros_fichas">Tab Filters</string>
+    <string name="filtros_fichas">Prospects Filters</string>
     <!--    Filtros para Ficha-->
     <string name="filtros_contrato">Filters for contract</string>
     <!--    Filtros para contrato-->
@@ -97,159 +87,37 @@ Depending on the state, it can be edited or not.</string>
     <!--    ¿Estas seguro que deseas ver esta visita?-->
     <!--    Dependiendo del estado esta se podra editar o no.-->
 
-    <string name="modificar"> Modify</string>
-
-    <string name="estado_visita"> Visiting status</string>
-    <string name="estado_efectuado"> Effected </string>
-    <string name="estado_efectuado_no"> Not Done </string>
-
     <string name="espere"> Wait a moment…</string>
 
     <!--FORM CICLO VIDA -->
     <string name="format_date">dd/mm/yyyy</string>
-    <string name="format_set_input">Enter Value</string>
 
     <string name="propiedad">Properties</string>
     <string name="valor">Value</string>
-    <string name="coordenates">Coordinate</string>
-    <string name="norting">Norting</string>
-    <string name="set_norting">Enter Norting</string>
-    <string name="easting">Easting</string>
-    <string name="set_easting">Enter Easting</string>
-    <string name="aviso_siembra">SAG Planting Notice</string>
-    <string name="siembra_sag">SAG Planting</string>
-    <string name="crop_rotation">Crop Rotation</string>
-    <string name="t_2015">2015</string>
-    <string name="set_cultivo">Enter Crop</string>
-    <string name="t_2016">2016</string>
-    <string name="t_2017">2017</string>
-    <string name="t_2018">2018</string>
-    <string name="analisis_suelo">Soil analysis</string>
-    <string name="entregado">delivered</string>
-    <string name="mezcla_aplicada">Type of mixture applied</string>
-    <string name="cantidad_aplicada">amount applied</string>
-    <string name="insolation">Isolation</string>
-    <string name="meters">Meters</string>
-    <string name="lines">Lines</string>
-    <string name="female">Female</string>
-    <string name="sowing_lot">sowing lot</string>
-    <string name="real_sowing">Real Sowing Female (kg)</string>
-    <string name="sowing_start">Sowing date start</string>
-    <string name="sowing_end">Sowing date end</string>
-    <string name="sowing_seed_meter">Sowing seed / meter</string>
-    <string name="row_distance">Row distance (M)</string>
-    <string name="row_distance_min">Row Distance (m)</string>
-    <string name="spread">Spread urea (N)</string>
-    <string name="dose_uno">Dose 1</string>
-    <string name="date_uno">Date 1</string>
-    <string name="dose_dos">Dose 2</string>
-    <string name="date_dos">Date 2</string>
-    <string name="sparying_date">Herbicide spraying date</string>
-    <string name="name_uno">Name 1</string>
-    <string name="name_dos">Name 2</string>
-    <string name="name_tres">Name 3</string>
-    <string name="date_tres">Date 3</string>
-    <string name="emergence_herbicide">Pre emergence herbicide</string>
-    <string name="dose">Dose</string>
-    <string name="water_lts">Water (Lts)</string>
-    <string name="plant_m">Plant/m</string>
-    <string name="population">Population (Plants/Ha)</string>
-    <string name="basta_date">Basta Spraying Date</string>
-    <string name="basta_spray_uno">Basta Spray 1</string>
-    <string name="basta_spray_dos">Basta Spray 2</string>
-    <string name="basta_spray_tres">Basta Spray 3</string>
-    <string name="basta_spray_cuatro">Basta Spray 4</string>
-    <string name="basta_spray_cuatro_ha">Basta Spray 4 Ha</string>
-    <string name="titulo_largo_form">Bruchus pisorum L. And sclerotinia preventive application </string>
-    <string name="product">Product</string>
-    <string name="dose_lt_ha">Dose (Lt/Ha)</string>
-    <string name="foliar_app">Foliar Application</string>
-    <string name="foliar">Foliar</string>
-    <string name="notice_sag">Notice SAG</string>
-    <string name="flowering_estim">Flowering estimation</string>
-    <string name="flowering_start">Flowering start</string>
-    <string name="flowering_end">Flowering end</string>
-    <string name="fertility">Fertility</string>
-    <string name="fungicide_app">Fungicide Application</string>
-    <string name="fungicide">Fungicide</string>
-    <string name="plant_number_checked">Plant Number Checked</string>
-    <string name="check">Check</string>
-    <string name="main_characteristics">Main Characteristics</string>
-    <string name="insepection">Inspection</string>
-    <string name="insepection_s">Inspection</string>
-    <string name="dessicant_app">Desiccant Application</string>
-    <string name="estimated_date">Estimated Date</string>
-    <string name="real_date">Real date</string>
+    <string name="set_norting">Ingrese latitude</string>
+    <string name="set_easting">Ingrese longitude</string>
+    <string name="ingrese_norte_manual">ingrese latitude manual</string>
+    <string name="ingrese_easting_manual">ingrese longitude manual</string>
     <string name="observations">Observations</string>
-    <string name="swathing_date">SWATHING DATE</string>
-    <string name="swathing_date_s">Swathing Date</string>
-    <string name="yield_estimation">Yield Estimation Pre Clean</string>
-    <string name="kg_ha">Kg/Ha</string>
-    <string name="harvest_estimation">Harvest Estimation</string>
-    <string name="real_harvest_date">Real Harvest Date</string>
-    <string name="beginning_date">Beginning Date</string>
-    <string name="beginning_dep">Beginning depuration</string>
-    <string name="end_date">End Date</string>
-    <string name="harvest_machine">Harvest Machine</string>
-    <string name="owner">Owner</string>
-    <string name="model">Model</string>
-    <string name="seed_hrv_mois">Seed Harvest Moisture</string>
-    <string name="percent">%</string>
-    <string name="off_type">Off type</string>
-    <string name="insecticide_app">Insecticide Application</string>
-
-
-
-
-
-    <string name="date">Date</string>
-    <string name="f">F</string>
-    <string name="seleccione_fecha">Select date</string>
-
-
-
-
-
-
-
-
 
 
     <!-- FOTOS DE MUESTRA -->
-    <string-array name="fotos">
-        <item>f1.jpg</item>
-        <item>f2.jpg</item>
-        <item>f3.jpg</item>
-        <item>f4.jpg</item>
-        <item>f5.jpg</item>
-    </string-array>
-
-
-
-    <string-array name="anos_toolbar">
-        <item>2015</item>
-        <item>2016</item>
-        <item>2017</item>
-        <item>2018</item>
-        <item>2019</item>
-        <item>2020</item>
-    </string-array>
-
-
 
 
     <!--    SPINNERS FORM  VISITA-->
     <string-array name="fenologico">
         <item>@string/select</item>
-        <item>Sowing</item>
-        <item>Transplant</item>
-        <item>Vegetative</item>
-        <item>Pre-Flowering</item>
-        <item>Flowering</item>
-        <item>Fill</item>
-        <item>Pre-Harvest</item>
-        <item>Post-Harvest</item>
-        <item>Unspecified</item>
+        <item>SOWING</item>
+        <item>TRANSPLANT</item>
+        <item>VEGETATIVE</item>
+        <item>PRE-FLOWERING</item>
+        <item>FLOWERING</item>
+        <item>FILL</item>
+        <item>PRE-HARVEST</item>
+        <item>COSECHA</item>
+        <item>POST-HARVEST</item>
+        <item>MONITORING</item>
+        <item>UNSPECIFIED</item>
     </string-array>
 
     <string name="select">--Select--</string>
@@ -257,26 +125,26 @@ Depending on the state, it can be edited or not.</string>
 
     <string-array name="crecimiento">
         <item>@string/select</item>
-        <item>Excellent</item>
-        <item>Good</item>
-        <item>Regular</item>
-        <item>Bad</item>
-        <item>Unspecified</item>
+        <item>EXCELLENT</item>
+        <item>GOOD</item>
+        <item>REGULAR</item>
+        <item>BAD</item>
+        <item>UNSPECIFIED</item>
     </string-array>
 
     <string-array name="cosecha">
         <item>@string/select</item>
         <item>@string/rechazada</item>
         <item>@string/aprobada</item>
-        <item>Unspecified</item>
+        <item>UNSPECIFIED</item>
     </string-array>
 
     <string-array name="maleza">
         <item>@string/select</item>
-        <item>Low</item>
-        <item>Regular</item>
-        <item>High</item>
-        <item>Unspecified</item>
+        <item>LOW</item>
+        <item>REGULAR</item>
+        <item>HIGH</item>
+        <item>UNSPECIFIED</item>
     </string-array>
 
 
@@ -313,7 +181,6 @@ Depending on the state, it can be edited or not.</string>
     <!--    TABLA -->
 
 
-    <string name="cliente">Client</string>
     <string name="agricultor">Farmer</string>
     <string name="potrero">Paddock</string>
     <string name="variedad">Variety</string>
@@ -339,7 +206,6 @@ Depending on the state, it can be edited or not.</string>
     <!--    MENU -->
     <string name="open_drawer">Open navigation drawer</string>
     <string name="close_drawer">Close navigation drawer</string>
-    <string name="fecha">Date</string>
     <string name="estado_fenolog_gico">Phenological State</string>
     <string name="estado_general">Overall status</string>
     <string name="estado_de_crecimiento">Growth Status</string>
@@ -349,24 +215,13 @@ Depending on the state, it can be edited or not.</string>
     <string name="cosecha">Harvest</string>
     <string name="recomendaciones">recommendations</string>
     <string name="anexo">Annexed</string>
-    <string name="orden_de_multiplicaci_n">Multiplication Order</string>
     <string name="especie">Species</string>
-    <string name="grower">Grower</string>
     <string name="predio">Property</string>
-    <string name="sag_register_number">Sag Register Number</string>
-    <string name="irrigation_system_sistema_de_riego">Irrigation System</string>
-    <string name="soil_type_tipo_de_suelo">Soil Type</string>
-    <string name="production_location_localidad">Production Location</string>
-    <string name="has_contrato">Has Contract</string>
-    <string name="has_customer">Has Customer</string>
-    <string name="fieldman">Fieldman</string>
-    <string name="rch">RCH</string>
 
 
     <!--    NAVEGACION -->
     <string name="nav_back">Back</string>
     <string name="nav_save">Save</string>
-    <string name="nav_applicar">Apply</string>
     <string name="nav_cancel">Cancel</string>
     <string name="nav_take_pick_priv">Take farmer picture</string>
     <string name="nav_take_pick_public">Take client picture</string>
@@ -392,14 +247,6 @@ Depending on the state, it can be edited or not.</string>
     </string-array>
 
 
-    <string-array name="asociacion_agricultor">
-        <item>@string/asoc_new_farmer</item>
-        <item>@string/asoc_older_farmer</item>
-    </string-array>
-
-    <string name="asoc_new_farmer">-- New farmer --</string>
-    <string name="asoc_older_farmer">-- Registered farmer --</string>
-
     <string name="title_dialog_fav">Attention!</string>
     <string name="message_fav">It has been marked as a favorite</string>
     <string name="message_fav_remove">It has been removed of favorites</string>
@@ -415,4 +262,11 @@ Depending on the state, it can be edited or not.</string>
     <string name="descargar_datos_como">Download like</string>
     <string name="supervisores">Administrator</string>
     <string name="usuarios">Users</string>
+    <string name="subtitle_anexo_fecha">Anexo Fecha</string>
+    <string name="comentario_evaluacion">escriba aqui comentario sobre evaluacion</string>
+    <string name="comentario">Comentario</string>
+    <string name="pregunta_ranking">de 1 a 5 ¿Como estuvo la visita anterior?</string>
+    <string name="recomendacion_anterior">Recomendacion anterior</string>
+    <string name="visita_anterior_text">Visita Anterior</string>
+    <string name="title_warning_ranked">esta evaluacion se guardara al guardar la visita.</string>
 </resources>

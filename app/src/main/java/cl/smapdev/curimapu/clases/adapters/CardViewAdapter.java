@@ -15,7 +15,7 @@ import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 
 public class CardViewAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
-    private List<CardViewsResumen> elem;
+    private final List<CardViewsResumen> elem;
 
     public CardViewAdapter(List<CardViewsResumen> elem) {
         this.elem = elem;

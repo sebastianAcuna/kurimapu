@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 import cl.smapdev.curimapu.clases.tablas.Fichas;
+import cl.smapdev.curimapu.clases.tablas.FichasNew;
 import cl.smapdev.curimapu.clases.tablas.Lotes;
 import cl.smapdev.curimapu.clases.tablas.Predios;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
@@ -30,7 +31,7 @@ public class AnexoCompleto implements Serializable {
     private Variedad variedad;
 
     @Embedded
-    private Fichas fichas;
+    private FichasNew fichas;
 
     @Embedded
     private Predios predios;
@@ -39,11 +40,11 @@ public class AnexoCompleto implements Serializable {
     private Lotes lotes;
 
 
-    public Fichas getFichas() {
+    public FichasNew getFichas() {
         return fichas;
     }
 
-    public void setFichas(Fichas fichas) {
+    public void setFichas(FichasNew fichas) {
         this.fichas = fichas;
     }
 

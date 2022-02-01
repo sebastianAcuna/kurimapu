@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="comentario_evaluacion">escriba aqui comentario sobre evaluacion</string>
+    <string name="comentario">Comentario</string>
+    <string name="pregunta_ranking">de 1 a 5 ¿Como estuvo la visita anterior?</string>
+    <string name="recomendacion_anterior">Recomendacion anterior</string>
+    <string name="visita_anterior_text">Visita Anterior</string>
+    <string name="title_warning_ranked">esta evaluacion se guardara al guardar la visita.</string>
+</resources>

@@ -38,6 +38,7 @@ import cl.smapdev.curimapu.clases.Etapas;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.adapters.VisitasListAdapter;
 import cl.smapdev.curimapu.clases.adapters.VisitasTypeAdapter;
+import cl.smapdev.curimapu.clases.bd.MyDao;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
@@ -52,9 +53,9 @@ public class FragmentListVisits extends Fragment {
     private MainActivity activity;
     private RecyclerView lista_visitas, lista_visitas_type;
 
-    private String[] etapas = new String[]{"All","Sowing","Flowering","Harvest", "Unspecified"};
+    private final String[] etapas = new String[]{"All","Sowing","Flowering","Harvest", "Unspecified"};
 
-    private ArrayList<Etapas> etapasArrayList = new ArrayList<>();
+    private final ArrayList<Etapas> etapasArrayList = new ArrayList<>();
 
 
 
@@ -73,8 +74,8 @@ public class FragmentListVisits extends Fragment {
     private Spinner spinner_toolbar;
 
     private List<Temporada> annos;
-    private ArrayList<String> id_temporadas = new ArrayList<>();
-    private ArrayList<String> desc_temporadas = new ArrayList<>();
+    private final ArrayList<String> id_temporadas = new ArrayList<>();
+    private final ArrayList<String> desc_temporadas = new ArrayList<>();
 
 
     private String annoSelected;
@@ -108,7 +109,7 @@ public class FragmentListVisits extends Fragment {
         etapasArrayList.add(new Etapas(5, "Unspecified", false));
 
         //String years = annos.get(annos.size() -1).getId_tempo_tempo();
-        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),
+        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),
                 id_temporadas.get(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR,annos.size() - 1)));
 
     }
@@ -133,7 +134,7 @@ public class FragmentListVisits extends Fragment {
         lista_visitas = view.findViewById(R.id.lista_visitas);
         lista_visitas_type = view.findViewById(R.id.lista_visitas_type);
         txt_titulo_selected = view.findViewById(R.id.txt_titulo_selected);
-        spinner_toolbar = (Spinner) view.findViewById(R.id.spinner_toolbar);
+        spinner_toolbar = view.findViewById(R.id.spinner_toolbar);
 
 
 
@@ -164,9 +165,9 @@ public class FragmentListVisits extends Fragment {
                     //String years = annos.get(annos.size() -1).getId_tempo_tempo();
 
                     if (etapaSelected > 0){
-                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
+                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
                     }else{
-                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
+                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
                     }
 
                     cargarListaChica();
@@ -223,16 +224,12 @@ public class FragmentListVisits extends Fragment {
                 etapaSelected = position;
                 if (position > 0){
 
-                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""), position, years);
+                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""), position, years);
                     for (Etapas et : etapasArrayList){
-                        if (et.getNumeroEtapa() == po){
-                            etapasArrayList.get(po).setEtapaSelected(true);
-                        }else{
-                            etapasArrayList.get(po).setEtapaSelected(false);
-                        }
+                        etapasArrayList.get(po).setEtapaSelected(et.getNumeroEtapa() == po);
                     }
                 }else{
-                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),years);
+                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),years);
                 }
 
 
@@ -259,25 +256,15 @@ public class FragmentListVisits extends Fragment {
 
         visitasListAdapter = new VisitasListAdapter(visitasCompletas, new VisitasListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, VisitasCompletas fichas, Fotos fotos) {
-                switch (view.getId()){
-                    case R.id.imagen_referencial:
-                        if (fotos != null){
-                            showAlertForUpdate(fotos);
-                        }
-                        break;
-                    case R.id.cardview_visitas:
-                        showAlertForEdit(fichas);
-                        break;
-                }
+            public void onItemClick(View view, VisitasCompletas fichas) {
+                showAlertForEdit(fichas);
             }
-        }, new VisitasListAdapter.OnItemLongClickListener() {
+        }, new VisitasListAdapter.OnItemClickListener() {
             @Override
-            public void onItemLongClick(View view, VisitasCompletas fichas, Fotos fotos) {
-                avisoActivaFicha(getResources().getString(R.string.estado_visita),fichas);
+            public void onItemClick(View view, VisitasCompletas fichas) {
+                avisoActivaFicha("Esta a punto de eliminar esta visita para el anexo "+fichas.getAnexoCompleto().getAnexoContrato().getAnexo_contrato(), "esta visita realizada el dia "+fichas.getVisitas().getFecha_visita()+" se eliminara completamente de la tableta, no se subira a servidor tampoco",fichas);
             }
         }, activity);
-
 
         lista_visitas.setAdapter(visitasListAdapter);
     }
@@ -309,7 +296,7 @@ public class FragmentListVisits extends Fragment {
         View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_empty,null);
 
 
-        final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+        final AlertDialog builder = new AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle(getResources().getString(R.string.atencion))
                 .setMessage(getResources().getString(R.string.mensaje_alerta_editar_visita))
@@ -363,12 +350,17 @@ public class FragmentListVisits extends Fragment {
                                     tempVisitas.setId_temp_visita(visitasCompletas.getVisitas().getId_visita());
                                     tempVisitas.setAction_temp_visita(visitasCompletas.getVisitas().getEstado_visita());
 
+                                    tempVisitas.setPercent_humedad(visitasCompletas.getVisitas().getPercent_humedad());
+
                                     tempVisitas.setObs_cosecha(visitasCompletas.getVisitas().getObs_cosecha());
                                     tempVisitas.setObs_creci(visitasCompletas.getVisitas().getObs_creci());
                                     tempVisitas.setObs_fito(visitasCompletas.getVisitas().getObs_fito());
                                     tempVisitas.setObs_humedad(visitasCompletas.getVisitas().getObs_humedad());
                                     tempVisitas.setObs_maleza(visitasCompletas.getVisitas().getObs_maleza());
                                     tempVisitas.setObs_overall(visitasCompletas.getVisitas().getObs_overall());
+
+                                    tempVisitas.setId_visita_local(visitasCompletas.getVisitas().getId_visita_local());
+                                    tempVisitas.setId_dispo(visitasCompletas.getVisitas().getId_dispo());
 
                                     MainActivity.myAppDB.myDao().setTempVisitas(tempVisitas);
 
@@ -429,35 +421,15 @@ public class FragmentListVisits extends Fragment {
     }
 
 
-    private void avisoActivaFicha(String title, final VisitasCompletas completas) {
-        final View viewInfalted = LayoutInflater.from(getActivity()).inflate(R.layout.alert_activa_ficha, null);
-
-        final RadioButton ra = viewInfalted.findViewById(R.id.radio_inactiva);
-        final RadioButton rb = viewInfalted.findViewById(R.id.radio_activa);
-        final RadioButton rc = viewInfalted.findViewById(R.id.radio_rechazada);
-
-        ra.setText(getResources().getString(R.string.confeccion));
-        rb.setText(getResources().getString(R.string.estado_efectuado));
-        rc.setText(getResources().getString(R.string.estado_efectuado_no));
-
-        switch (completas.getVisitas().getEstado_visita()){
-            case 1:
-            default:
-                ra.setChecked(true);
-                break;
-            case 2:
-                rb.setChecked(true);
-                break;
-            case 3:
-                rc.setChecked(true);
-                break;
-        }
+    private void avisoActivaFicha(String title, String message, final VisitasCompletas completas) {
+        final View viewInfalted = LayoutInflater.from(getActivity()).inflate(R.layout.alert_empty, null);
 
 
-        final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+        final AlertDialog builder = new AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle(title)
-                .setPositiveButton(getResources().getString(R.string.modificar), new DialogInterface.OnClickListener(){
+                .setMessage(message)
+                .setPositiveButton("Eliminar", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
@@ -478,17 +450,15 @@ public class FragmentListVisits extends Fragment {
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Visitas fichas = completas.getVisitas();
-                        if (fichas != null){
-                            int estado = (ra.isChecked()) ? 1 : (rb.isChecked()) ? 2 : 3;
-                            fichas.setEstado_visita(estado);
-                            MainActivity.myAppDB.myDao().updateVisita(fichas);
 
-                            if (visitasListAdapter != null){
-                                visitasListAdapter.notifyDataSetChanged();
-                            }
+                        MainActivity.myAppDB.myDao().deleteDetallesByVisita(completas.getVisitas().getId_visita());
+                        MainActivity.myAppDB.myDao().deleteFotosByVisita(completas.getVisitas().getId_visita());
+                        MainActivity.myAppDB.myDao().deleteVisita(completas.getVisitas().getId_visita());
 
-                        }
+                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
+
+                        cargarListaChica();
+                        cargarListaGrande();
                         builder.dismiss();
                     }
                 });
@@ -511,7 +481,7 @@ public class FragmentListVisits extends Fragment {
 
 
 //        String titulo = "Editando " + fotos.getNombreFoto() + " de PAQUETE " + fotos.getEtiquetaPaquete();
-        final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+        final AlertDialog builder = new AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setPositiveButton("cerrar", new DialogInterface.OnClickListener(){
                     @Override

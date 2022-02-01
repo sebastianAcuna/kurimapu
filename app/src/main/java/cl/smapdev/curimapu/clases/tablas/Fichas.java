@@ -1,7 +1,6 @@
 package cl.smapdev.curimapu.clases.tablas;
 
 
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -16,40 +15,62 @@ public class Fichas  implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id_ficha")
     private int id_ficha;
+
+    @SerializedName("id_ficha_local_ficha")
+    @Expose
+    private int id_ficha_local_ficha;
+
+
     @SerializedName("id_tempo")
+    @Expose
     private String anno;
 
     @SerializedName("id_agric")
+    @Expose
     private String id_agricultor_ficha;
 
     @SerializedName("oferta_de_negocio")
+    @Expose
     private String oferta_negocio;
 
     @SerializedName("id_region")
+    @Expose
     private String id_region_ficha;
 
     @SerializedName("id_comuna")
+    @Expose
     private String id_comuna_ficha;
 
+    @SerializedName("id_provincia")
+    @Expose
+    private String id_provincia_ficha;
+
     @SerializedName("localidad")
+    @Expose
     private String localidad;
 
     @SerializedName("ha_disponibles")
+    @Expose
     private double has_disponible;
 
     @SerializedName("obs")
+    @Expose
     private String observaciones;
 
-//    @SerializedName("")
+    @SerializedName("norting")
+    @Expose
     private double norting;
 
-//    @SerializedName("")
+    @SerializedName("easting")
+    @Expose
     private double easting;
 
     @SerializedName("id_est_fic")
-    private int activa; /* 1 : confeccion, 2: activa, 3: rechazada */
+    @Expose
+    private int activa; /* 1 : confeccion, 2: activa, 3: activaDesdeTableta */
 
     @SerializedName("subida")
+    @Expose
     private boolean subida; /* true : subida, false : no subida */
 
 
@@ -109,6 +130,98 @@ public class Fichas  implements Serializable {
     @Expose
     private int cabecera_ficha;
 
+    @SerializedName("predio")
+    @Expose
+    private String predio_ficha;
+
+    @SerializedName("potrero")
+    @Expose
+    private String potrero_ficha;
+
+
+    @SerializedName("especie")
+    @Expose
+    private String especie_ficha;
+
+    @SerializedName("estado_general")
+    @Expose
+    private String estado_general_ficha;
+
+
+
+    @SerializedName("fecha_limite_siembra")
+    @Expose
+    private String fecha_limite_siembra_ficha;
+
+
+    @SerializedName("observacion_negocio")
+    @Expose
+    private String observacion_negocio_ficha;
+
+
+
+    public String getPredio_ficha() {
+        return predio_ficha;
+    }
+
+    public void setPredio_ficha(String predio_ficha) {
+        this.predio_ficha = predio_ficha;
+    }
+
+    public String getPotrero_ficha() {
+        return potrero_ficha;
+    }
+
+    public void setPotrero_ficha(String potrero_ficha) {
+        this.potrero_ficha = potrero_ficha;
+    }
+
+    public String getEspecie_ficha() {
+        return especie_ficha;
+    }
+
+    public void setEspecie_ficha(String especie_ficha) {
+        this.especie_ficha = especie_ficha;
+    }
+
+    public String getEstado_general_ficha() {
+        return estado_general_ficha;
+    }
+
+    public void setEstado_general_ficha(String estado_general_ficha) {
+        this.estado_general_ficha = estado_general_ficha;
+    }
+
+    public String getFecha_limite_siembra_ficha() {
+        return fecha_limite_siembra_ficha;
+    }
+
+    public void setFecha_limite_siembra_ficha(String fecha_limite_siembra_ficha) {
+        this.fecha_limite_siembra_ficha = fecha_limite_siembra_ficha;
+    }
+
+    public String getObservacion_negocio_ficha() {
+        return observacion_negocio_ficha;
+    }
+
+    public void setObservacion_negocio_ficha(String observacion_negocio_ficha) {
+        this.observacion_negocio_ficha = observacion_negocio_ficha;
+    }
+
+    public String getId_provincia_ficha() {
+        return id_provincia_ficha;
+    }
+    public void setId_provincia_ficha(String id_provincia_ficha) {
+        this.id_provincia_ficha = id_provincia_ficha;
+    }
+
+    public int getId_ficha_local_ficha() {
+        return id_ficha_local_ficha;
+    }
+
+    public void setId_ficha_local_ficha(int id_ficha_local_ficha) {
+        this.id_ficha_local_ficha = id_ficha_local_ficha;
+    }
 
     public int getCabecera_ficha() {
         return cabecera_ficha;

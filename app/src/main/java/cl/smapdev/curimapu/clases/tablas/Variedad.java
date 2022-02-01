@@ -23,9 +23,41 @@ public class Variedad {
     @SerializedName("nom_hibrido")
     private String desc_hibrido_variedad;
 
+    @SerializedName("condition")
+    private String condition;
+
+    @SerializedName("certification")
+    private String certification;
+
+    @SerializedName("condition_mat")
+    private String condition_mat;
+
     public Variedad() {
     }
 
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public String getCondition_mat() {
+        return condition_mat;
+    }
+
+    public void setCondition_mat(String condition_mat) {
+        this.condition_mat = condition_mat;
+    }
+
+    public String getCertification() {
+        return certification;
+    }
+
+    public void setCertification(String certification) {
+        this.certification = certification;
+    }
 
     public String getDesc_hibrido_variedad() {
         return desc_hibrido_variedad;

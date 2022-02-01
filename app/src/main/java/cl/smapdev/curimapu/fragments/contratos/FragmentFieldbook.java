@@ -22,6 +22,8 @@ import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.SubTabsAdapters;
 import cl.smapdev.curimapu.clases.adapters.TabsAdapters;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
+import cl.smapdev.curimapu.fragments.FragmentContratos;
+import es.dmoral.toasty.Toasty;
 
 public class FragmentFieldbook extends Fragment {
 
@@ -47,10 +49,10 @@ public class FragmentFieldbook extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewPager  = (ViewPager) view.findViewById(R.id.view_sub_pager);
+        viewPager  = view.findViewById(R.id.view_sub_pager);
 
-        new LazyLoad().execute();
-        //cargarTabs();
+//        new LazyLoad().execute();
+        cargarTabs();
     }
 
 
@@ -90,12 +92,24 @@ public class FragmentFieldbook extends Fragment {
 
     private void cargarTabs(){
 
-        viewPager.setAdapter(new SubTabsAdapters(getChildFragmentManager(),
-                Objects.requireNonNull(getContext())));
+        try{
 
-        TabLayout tabLayout = (TabLayout) Objects.requireNonNull(getView()).findViewById(R.id.tab_sub_layout);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
+                viewPager.setAdapter(new SubTabsAdapters(getChildFragmentManager(),
+                        Objects.requireNonNull(getContext())));
+
+                TabLayout tabLayout = Objects.requireNonNull(getView()).findViewById(R.id.tab_sub_layout);
+                tabLayout.setupWithViewPager(viewPager);
+                tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
+
+        }catch(Exception e){
+
+            Toasty.warning(activity, "Error capturado"+e.getLocalizedMessage(), Toast.LENGTH_SHORT, true).show();
+            //new LazyLoad().execute();
+
+        }
+
 
 
     }

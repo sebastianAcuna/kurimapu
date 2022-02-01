@@ -20,7 +20,8 @@ import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class VisitasTypeViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView cantidad_type, nombre_field;
+    private final TextView cantidad_type;
+    private final TextView nombre_field;
     private SharedPreferences preferences;
 
 
@@ -69,8 +70,6 @@ public class VisitasTypeViewHolder extends RecyclerView.ViewHolder {
                         cantidad_type.setText(String.valueOf(cantidadVisitas.getTodos()));
                     }
                 }
-
-
             }
 
 
@@ -82,11 +81,6 @@ public class VisitasTypeViewHolder extends RecyclerView.ViewHolder {
                     cLickListener.onItemClick(el.getNumeroEtapa());
                 }
             });
-
-
-
-
-
 
         }
     }

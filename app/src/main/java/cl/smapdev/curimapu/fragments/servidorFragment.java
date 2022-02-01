@@ -63,13 +63,13 @@ public class servidorFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rv = (RecyclerView) view.findViewById(R.id.rv_usuarios);
-        rbDesarrollo = (RadioButton) view.findViewById(R.id.rbDesarrollo);
-        rbProduccion = (RadioButton) view.findViewById(R.id.rbProduccion);
-        rbPruebas = (RadioButton) view.findViewById(R.id.rbPruebas);
-        button = (Button) view.findViewById(R.id.btnContinuar);
-        card_admin = (MaterialCardView) view.findViewById(R.id.card_admin);
-        titulo_servidor = (TextView) view.findViewById(R.id.titulo_servidor);
+        rv = view.findViewById(R.id.rv_usuarios);
+        rbDesarrollo = view.findViewById(R.id.rbDesarrollo);
+        rbProduccion = view.findViewById(R.id.rbProduccion);
+        rbPruebas = view.findViewById(R.id.rbPruebas);
+        button = view.findViewById(R.id.btnContinuar);
+        card_admin = view.findViewById(R.id.card_admin);
+        titulo_servidor = view.findViewById(R.id.titulo_servidor);
 
         shared = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
         shared.edit().remove(Utilidades.SHARED_SERVER_ID_USER).apply();
@@ -80,17 +80,17 @@ public class servidorFragment extends Fragment {
 
         Config cnf = MainActivity.myAppDB.myDao().getConfig();
         Usuario us = MainActivity.myAppDB.myDao().getUsuarioById(cnf.getId_usuario());
-        if (us.getRut_usuario().equals("18.804.066-7") || us.getRut_usuario().equals("9.411.789-5") || us.getRut_usuario().equals("15.953.693-9") ){
-            rbDesarrollo.setVisibility(View.VISIBLE);
-            rbProduccion.setVisibility(View.VISIBLE);
-            titulo_servidor.setVisibility(View.VISIBLE);
-            rbPruebas.setVisibility(View.VISIBLE);
-        }else{
+//        if (us.getRut_usuario().equals("18.804.066-7") || us.getRut_usuario().equals("9.411.789-5") || us.getRut_usuario().equals("15.953.693-9") ){
+//            rbDesarrollo.setVisibility(View.VISIBLE);
+//            rbProduccion.setVisibility(View.VISIBLE);
+//            titulo_servidor.setVisibility(View.VISIBLE);
+//            rbPruebas.setVisibility(View.VISIBLE);
+//        }else{
             rbDesarrollo.setVisibility(View.GONE);
             rbProduccion.setVisibility(View.GONE);
             titulo_servidor.setVisibility(View.GONE);
             rbPruebas.setVisibility(View.GONE);
-        }
+//        }
 
         if (String.valueOf(cnf.getId_usuario()).equals(shared.getString(Utilidades.SHARED_SERVER_ID_USER, ""))){
             card_admin.setBackgroundColor(activity.getColor(R.color.colorSelected));

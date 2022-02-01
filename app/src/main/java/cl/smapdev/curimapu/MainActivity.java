@@ -3,47 +3,67 @@ package cl.smapdev.curimapu;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.room.Room;
+import androidx.room.migration.Migration;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.Surface;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import cl.smapdev.curimapu.clases.bd.Migrations;
 import cl.smapdev.curimapu.clases.bd.MyAppBD;
-import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
-import cl.smapdev.curimapu.clases.sincronizacion.ServiceSync;
 import cl.smapdev.curimapu.clases.tablas.Config;
+import cl.smapdev.curimapu.clases.tablas.Usuario;
+import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentConfigs;
 import cl.smapdev.curimapu.fragments.FragmentFichas;
 import cl.smapdev.curimapu.fragments.FragmentLogin;
 import cl.smapdev.curimapu.fragments.FragmentPrincipal;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
+import cl.smapdev.curimapu.fragments.anexoFechas.FragmentAnexoFechas;
 import cl.smapdev.curimapu.fragments.servidorFragment;
 
 
@@ -63,8 +83,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
 
         // Create the dummy account
-//        .addMigrations(Migrations.MIGRATION_1_TO_2,Migrations.MIGRATION_2_TO_3).
-        myAppDB = Room.databaseBuilder(getApplicationContext(),MyAppBD.class,"curimapu.db").allowMainThreadQueries().build();
+        myAppDB = Room.databaseBuilder(getApplicationContext(),MyAppBD.class,Utilidades.NOMBRE_DATABASE).allowMainThreadQueries()
+                .addMigrations(Migrations.MIGRATION_1_TO_2).addMigrations(Migrations.MIGRATION_2_TO_3)
+                .addMigrations(Migrations.MIGRATION_3_TO_4)
+                .addMigrations(Migrations.MIGRATION_4_TO_5)
+                .addMigrations(Migrations.MIGRATION_5_TO_6)
+                .addMigrations(Migrations.MIGRATION_6_TO_7)
+                .addMigrations(Migrations.MIGRATION_7_TO_8)
+                .addMigrations(Migrations.MIGRATION_8_TO_9)
+                .addMigrations(Migrations.MIGRATION_9_TO_10)
+                .addMigrations(Migrations.MIGRATION_10_TO_11)
+                .addMigrations(Migrations.MIGRATION_11_TO_12)
+                .addMigrations(Migrations.MIGRATION_12_TO_13)
+                .addMigrations(Migrations.MIGRATION_13_TO_14)
+                .build();
+
+
+
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+            if (!checkPermission()) {
+                requestPermission();
+            }
+        }
+
+//        importDB();
+//        myAppDB.myDao().updateServidor(Utilidades.IP_PRODUCCION);
+//        myAppDB.myDao().updateVisitaTest();
+//
+//        List<Visitas> visitas =  myAppDB.myDao().getVisitasPorSubir();
+//        for (Visitas v : visitas){
+//            myAppDB.myDao().updateFotoTest();
+//        }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String ss = prefs.getString("lang", "eng");
@@ -77,20 +127,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             languageToLoad2  = "ES";
         }
 
-        //prefs.edit().putString("lang","eng").apply();
-
         Locale locale = new Locale(languageToLoad,languageToLoad2);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
         getResources().updateConfiguration(config,getResources().getDisplayMetrics());
 
-
-
         boolean aa = prefs.getBoolean("tema", false);
 
-
-//        AppCompatDelegate.setDefaultNightMode((!aa) ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             getDelegate().setLocalNightMode((!aa) ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
             setTheme(R.style.MyTheme_DayNight);
@@ -102,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 config1.setServidorSeleccionado(Utilidades.IP_PRODUCCION);
                 MainActivity.myAppDB.myDao().updateConfig(config1);
             }
-
         }else{
             Config config2 = new Config();
             config2.setServidorSeleccionado(Utilidades.IP_PRODUCCION);
@@ -110,17 +153,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         super.onCreate(savedInstanceState);
-
-
-
-
         setContentView(R.layout.activity_main);
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         if (navigationView != null)
             navigationView.setNavigationItemSelectedListener(this);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        Config config2 = MainActivity.myAppDB.myDao().getConfig();
+        if (config2 != null){
+            cambiarNombreUser(config2.getId_usuario());
+        }
 
         shared = getSharedPreferences(Utilidades.SHARED_NAME, MODE_PRIVATE);
 
@@ -134,14 +177,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                    cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
                    navigationView.setCheckedItem(R.id.nv_inicio);
                }
-
             }
         }
-
-
     }
 
+    private void importDB() {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data  = Environment.getDataDirectory();
 
+//            if (sd.canWrite()) {
+                String  currentDBPath= "//data//" + getPackageName()
+                        + "//databases//" + Utilidades.NOMBRE_DATABASE;
+                String backupDBPath  = "/20210122112939_backup_curimapu.db";
+                File  backupDB= new File(data, currentDBPath);
+                File currentDB  = new File(sd, backupDBPath);
+
+                FileChannel src = new FileInputStream(currentDB).getChannel();
+                FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+//                dst.close();
+                Toast.makeText(getBaseContext(), backupDB.toString(),
+                        Toast.LENGTH_LONG).show();
+
+            Log.e("DATABASE", backupDBPath);
+
+        } catch (Exception e) {
+            Log.e("DATABASE", e.getMessage());
+            Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+
+        }
+    }
+
+    public void cambiarNombreUser(int usuario) {
+        TextView textView = navigationView.getHeaderView(0).findViewById(R.id.id_usuarios);
+        if (textView != null){
+
+            Usuario usuarios = MainActivity.myAppDB.myDao().getUsuarioById(usuario);
+            if(usuarios != null){
+                textView.setText(usuarios.getUser());
+            }
+
+
+            TextView version = findViewById(R.id.version_app);
+            if (version != null){
+
+                Config config = MainActivity.myAppDB.myDao().getConfig();
+                String data = "ID: "+config.getId() + " VERSION: " + Utilidades.APPLICATION_VERSION;
+                version.setText(data);
+
+            }
+
+
+
+
+
+
+        }
+    }
 
     public void setDrawerEnabled(boolean enabled) {
         int lockMode = enabled ? DrawerLayout.LOCK_MODE_UNLOCKED :
@@ -164,6 +259,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission( this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        int result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        int result3 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED  && result2 == PackageManager.PERMISSION_GRANTED  && result3 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Toast.makeText(this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+            }
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -205,6 +319,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
 
+            case R.id.nv_anexo_fecha:
+                cambiarFragment(new FragmentAnexoFechas(), Utilidades.FRAGMENT_ANEXO_FICHA, R.anim.slide_in_left, R.anim.slide_out_left);
+                break;
+
             case R.id.nv_configs:
                 cambiarFragment(new FragmentConfigs(), Utilidades.FRAGMENT_CONFIG, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
@@ -225,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void updateView(String title, String subtitle) {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null){
             toolbar.setTitle(title);
             toolbar.setSubtitle(subtitle);
@@ -292,8 +410,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case Utilidades.FRAGMENT_CONTRATOS:
                     case Utilidades.FRAGMENT_LIST_VISITS:
-                        cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_right, R.anim.slide_out_right);
-                        cambiarNavigation(R.id.nv_visitas);
+
+                        preguntarSiQuiereVolver("ATENCION", "SI VUELVES NO GUARDARA LOS CAMBIOS, ESTAS SEGURO QUE DESEAS VOLVER ?");
+
                         break;
 
                     case Utilidades.FRAGMENT_CREA_FICHA:
@@ -307,7 +426,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         cambiarNavigation(R.id.nv_inicio);
                     break;
                    /* case Utilidades.FRAGMENT_TAKE_PHOTO:
-
                         break;*/
                     default:
                         super.onBackPressed();
@@ -316,6 +434,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }
+    }
+
+    public void  preguntarSiQuiereVolver ( String title, String message) {
+        View viewInfalted = LayoutInflater.from(this).inflate(R.layout.alert_empty, null);
+
+        final AlertDialog builder = new AlertDialog.Builder(this)
+                .setView(viewInfalted)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("aceptar", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .create();
+
+        builder.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_right, R.anim.slide_out_right);
+                        cambiarNavigation(R.id.nv_visitas);
+                        builder.dismiss();
+                    }
+                });
+                c.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder.dismiss();
+                    }
+                });
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
     }
 
     void salirApp(){

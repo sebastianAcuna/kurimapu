@@ -18,19 +18,22 @@ import cl.smapdev.curimapu.clases.tablas.Fotos;
 public class VisitasListAdapter extends RecyclerView.Adapter<VisitasListViewHolder> {
 
 
-    private List<VisitasCompletas> visitasCompletas;
-    private OnItemClickListener itemClickListener;
-    private OnItemLongClickListener itemLongClickListener;
-    private Context context;
+    private final List<VisitasCompletas> visitasCompletas;
+    private final OnItemClickListener itemClickListenerVer;
+    private final OnItemClickListener itemClickListenerEliminar;
+    private final Context context;
 
-    public interface OnItemClickListener{ void onItemClick(View view, VisitasCompletas fichas, Fotos fotos); }
-    public interface OnItemLongClickListener{ void onItemLongClick(View view, VisitasCompletas fichas, Fotos fotos);}
+    public interface OnItemClickListener{ void onItemClick(View view, VisitasCompletas fichas); }
 
 
-    public VisitasListAdapter(List<VisitasCompletas> visitasCompletas, OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener, Context context) {
+
+    public VisitasListAdapter(List<VisitasCompletas> visitasCompletas,
+                              OnItemClickListener itemClickListenerVer,
+                              OnItemClickListener itemClickListenerEliminar,
+                              Context context) {
         this.visitasCompletas = visitasCompletas;
-        this.itemClickListener = itemClickListener;
-        this.itemLongClickListener = itemLongClickListener;
+        this.itemClickListenerVer = itemClickListenerVer;
+        this.itemClickListenerEliminar = itemClickListenerEliminar;
         this.context = context;
     }
 
@@ -43,7 +46,7 @@ public class VisitasListAdapter extends RecyclerView.Adapter<VisitasListViewHold
 
     @Override
     public void onBindViewHolder(@NonNull VisitasListViewHolder holder, int position) {
-        holder.bind(visitasCompletas.get(position), itemClickListener, itemLongClickListener,context);
+        holder.bind(visitasCompletas.get(position), itemClickListenerVer, itemClickListenerEliminar,context);
     }
 
     @Override

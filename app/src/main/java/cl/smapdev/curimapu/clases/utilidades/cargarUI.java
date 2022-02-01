@@ -36,7 +36,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class cargarUI {
 
-    public static ArrayList<ArrayList> cargarUI(View view, int idConstraint, Activity activity, String idMaterial, int idEtapa, int cliente, ArrayList<ArrayList> all){
+    public static ArrayList<ArrayList> cargarUI(View view, int idConstraint, Activity activity, String idMaterial, int idEtapa, int cliente, ArrayList<ArrayList> all, String temporada){
 
         ArrayList<Integer> id_generica = new ArrayList<>();
         ArrayList<Integer> id_importante =  new ArrayList<>();
@@ -51,7 +51,7 @@ public class cargarUI {
 
 
 
-        List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByMateriales(idMaterial, idEtapa, cliente);
+        List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByMateriales(idMaterial, idEtapa, cliente, temporada);
         if (list.size() > 0) {
 
 
@@ -60,7 +60,7 @@ public class cargarUI {
 
 
 
-            ConstraintLayout constraintLayout = (ConstraintLayout) view.findViewById(idConstraint);
+            ConstraintLayout constraintLayout = view.findViewById(idConstraint);
             ConstraintSet constraintSet = new ConstraintSet();
 
             TextView prop = new TextView(new ContextThemeWrapper(activity, R.style.sub_titles_forms), null, 0);
@@ -98,7 +98,7 @@ public class cargarUI {
 
                 constraintSet.applyTo(constraintLayout);
 
-                View tvOld = (TextView) prop;
+                View tvOld = prop;
 //                TextView tvOld = prop;
 
 
@@ -168,8 +168,8 @@ public class cargarUI {
                             constraintLayout.addView(img, cont);
                             cont++;
                             ViewGroup.LayoutParams paramTitleImg = img.getLayoutParams();
-                            paramTitleImg.height = 80;
-                            paramTitleImg.width = 80;
+                            paramTitleImg.height = 100;
+                            paramTitleImg.width = 0;
                             img.setLayoutParams(paramTitleImg);
 
                         }
@@ -200,7 +200,7 @@ public class cargarUI {
                         }
 
                         //cont++;
-                        tvOld = (TextView) tvTitle;
+                        tvOld = tvTitle;
 
                     }else{
 
@@ -216,7 +216,7 @@ public class cargarUI {
                         if (!titulosUsadosRecyclers.contains(nombre)){
                             titulosUsadosRecyclers.add(nombre);
 
-                            List<pro_cli_mat> Popr = MainActivity.myAppDB.myDao().getProCliMatByIdProp(fs.getId_prop(), idMaterial, cliente);
+                            List<pro_cli_mat> Popr = MainActivity.myAppDB.myDao().getProCliMatByIdProp(fs.getId_prop(), idMaterial, cliente, temporada);
                             if (Popr.size() > 0){
                                 View tvO = null;
                                 int el = 1;
@@ -258,13 +258,13 @@ public class cargarUI {
 
                                     if (el == Popr.size()){
                                         constraintSet.connect(textView.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
-                                        tvOld = (TextView) textView;
+                                        tvOld = textView;
                                     }
 
                                     constraintSet.applyTo(constraintLayout);
 
                                     el++;
-                                    tvO = (TextView) textView;
+                                    tvO = textView;
                                     textViews.add(textView);
                                 }
                             }
@@ -299,7 +299,7 @@ public class cargarUI {
                             recyclers.add(tv);
 
                             eslista = false;
-                            tvOld = (RecyclerView) tv;
+                            tvOld = tv;
                         }
                     }else {
 
@@ -478,7 +478,7 @@ public class cargarUI {
                                             et.setHint(activity.getResources().getString(R.string.valor));
                                             break;
                                         case "DECIMAL":
-                                            et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                                            et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
                                             et.setHint(activity.getResources().getString(R.string.valor));
                                             break;
                                     }
@@ -497,7 +497,7 @@ public class cargarUI {
                                 }
                             }
 
-                            tvOld = (TextView) tv;
+                            tvOld = tv;
                         }
                     }
                     constraintSet.applyTo(constraintLayout);

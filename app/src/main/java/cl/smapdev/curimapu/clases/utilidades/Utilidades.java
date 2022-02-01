@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -35,6 +36,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -45,32 +47,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.TimeUnit;
 
-import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class Utilidades {
 
-
+    public static final String APPLICATION_VERSION = "3.5.0000";
 
     public static final String FRAGMENT_INICIO = "fragment_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -84,22 +86,25 @@ public class Utilidades {
     public static final String FRAGMENT_LIST_VISITS = "fragment_list_visits";
     public static final String FRAGMENT_TAKE_PHOTO = "fragment_take_photo";
     public static final String FRAGMENT_SERVIDOR = "fragment_servidor";
+    public static final String FRAGMENT_ANEXO_FICHA = "fragment_anexo_ficha";
 
 
+//    21-ca0493
 
-    public static final String IP_PRODUCCION = "www.zcloud02.cl";
+
+    public static final String IP_PRODUCCION = "192.168.1.17";
 //    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_PRUEBAS = "190.13.170.26";
 
-
-
+    public static final String DIRECTORIO_IMAGEN = "curimapu_imagenes";
+    public static final String DIRECTORIO_RESPALDO = "curimapu_respaldo_bd";
+    public static final String NOMBRE_DATABASE = "curimapu.db";
 
     public static final String SHARED_NAME = "preference_app";
     public static final String SHARED_USER = "user_name";
     public static final String SHARED_PREFERENCE = "frg_preference";
     public static final String SELECTED_ANO = "selected_ano";
-
 
     public static final String SHARED_SERVER_ID_USER = "server_user_id";
     public static final String SHARED_SERVER_ID_SERVER = "server_server_id";
@@ -113,24 +118,81 @@ public class Utilidades {
     public static final String SHARED_FILTER_FICHAS_NOMB_AG = "filter_fichas_nom_ag";
     public static final String SHARED_FILTER_FICHAS_OF_NEG = "filter_fichas_of_neg";
 
-
     public static final String SHARED_FILTER_VISITAS_YEAR = "filter_visitas_anno";
     public static final String SHARED_FILTER_VISITAS_ESPECIE = "filter_visitas_especie";
     public static final String SHARED_FILTER_VISITAS_VARIEDAD = "filter_visitas_variedad";
 
+    public static final String SHARED_ETAPA_SELECTED = "shared_etapas_selected";
 
     public static final String SHARED_VISIT_FICHA_ID = "shared_visit_ficha_id";
     public static final String SHARED_VISIT_ANEXO_ID = "shared_visit_anexo_id";
     public static final String SHARED_VISIT_VISITA_ID = "shared_visit_visita_id";
     public static final String SHARED_VISIT_MATERIAL_ID = "shared_visit_material_id";
+    public static final String SHARED_VISIT_TEMPORADA = "shared_visit_temporada";
     public static final String SHARED_VISIT_ESPECIE_ID = "shared_visit_especie_id";
 
 
-
-
-    public static final String DIRECTORIO_IMAGEN = "curimapu_imagenes";
     public static final String VISTA_FOTOS = "vista";
 
+
+
+    public static long compararFechas(String inputString2){
+        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String inputString1 = fechaActualSinHora();
+
+        try {
+            Date date1 = myFormat.parse(inputString1);
+            Date date2 = myFormat.parse(inputString2);
+            long diff = date1.getTime() - date2.getTime();
+            return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static boolean exportDatabse(String databaseName, String packageName) {
+
+        boolean respuesta = true;
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+
+            /* CREAR CARPETA curimapu_respaldo_bd */
+            File miFile = new File(Environment.getExternalStorageDirectory(), Utilidades.DIRECTORIO_RESPALDO);
+            boolean isCreada = miFile.exists();
+
+            if (!isCreada){
+                isCreada=miFile.mkdirs();
+            }
+
+            if(isCreada) {
+                if (sd.canWrite()) {
+                    String currentDBPath = "//data//"+packageName+"//databases//"+databaseName+"";
+                    String backupDBPath = Utilidades.DIRECTORIO_RESPALDO+"/"+Utilidades.fechaActualSinHoraNombre()+"_backup_curimapu.db";
+                    File currentDB = new File(data, currentDBPath);
+                    File backupDB = new File(sd, backupDBPath);
+
+                    if (currentDB.exists()) {
+                        FileChannel src = new FileInputStream(currentDB).getChannel();
+                        FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                        dst.transferFrom(src, 0, src.size());
+                        src.close();
+                        dst.close();
+                    }
+                }
+            }else{
+                respuesta = false;
+            }
+
+
+
+            return respuesta;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 
     public static Date SumaRestarFecha(int sumaresta){
@@ -141,10 +203,35 @@ public class Utilidades {
 
     }
 
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public static Date SumaRestarFecha(int sumaresta, String opcion){
+//        Calendar c = Calendar.getInstance();
+//        Date now = c.getTime();
+//
+//        LocalDate date = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//        //Con Java9
+//        //LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
+//        TemporalUnit unidadTemporal = null;
+//        switch(opcion){
+//            case "DAYS":
+//                unidadTemporal = ChronoUnit.DAYS;
+//                break;
+//            case "MONTHS":
+//                unidadTemporal = ChronoUnit.MONTHS;
+//                break;
+//            case "YEARS":
+//                unidadTemporal = ChronoUnit.YEARS;
+//                break;
+//            default:
+//                //Controlar error
+//        }
+//        LocalDate dateResultado = date.minus(sumaresta, unidadTemporal);
+//        return Date.from(dateResultado.atStartOfDay(ZoneId.systemDefault()).toInstant());
+//    }
 
     public static class MyXAxisValueFormatter extends ValueFormatter {
 
-        private String[] mValues;
+        private final String[] mValues;
 
         public MyXAxisValueFormatter(String[] values) {
             this.mValues = values;
@@ -152,7 +239,7 @@ public class Utilidades {
 
         @Override
         public String getFormattedValue(float value) {
-            return mValues[(int) value];
+            return ((int) value > 0) ? mValues[(int) value]: "";
         }
     }
 
@@ -178,9 +265,13 @@ public class Utilidades {
                 break;
             case 7:
             case 8:
+            case 9:
                 res = 4;
                 break;
-            case 9:
+            case 10:
+                res = 6;
+                break;
+            case 11:
                 res = 5;
                 break;
 
@@ -190,6 +281,10 @@ public class Utilidades {
         return res;
     }
 
+    public static String getAnno(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy", Locale.getDefault());
+        return df.format(new Date());
+    }
 
     public static String[] getAnoCompleto(int anno){
         String[] str = new String[2];
@@ -199,7 +294,6 @@ public class Utilidades {
 
         return str;
     }
-
 
     public static String getStateString(int position){
 
@@ -270,18 +364,14 @@ public class Utilidades {
         return estado;
     }
 
-
-
-    public static int obtenerAnchoPixelesTexto(String texto){
+    public static int obtenerAnchoPixelesTexto(String texto, float textSize){
         Paint p = new Paint();
         Rect bounds = new Rect();
-        p.setTextSize(50);
+        p.setTextSize(textSize);
 
         p.getTextBounds(texto, 0, texto.length(), bounds);
         return bounds.width();
     }
-
-
 
     public static String voltearFechaBD(String fecha){
         try {
@@ -326,7 +416,7 @@ public class Utilidades {
     }
 
     public static String fechaFromDate(Date fecha){
-        return new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(fecha);
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(fecha);
     }
 
 
@@ -334,6 +424,13 @@ public class Utilidades {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         return  sdf.parse(hora);
     }
+
+    public static String fechaActualSinHoraNombre(){
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+        return df.format(new Date());
+    }
+
 
 
     public static String fechaActualSinHora(){
@@ -351,26 +448,19 @@ public class Utilidades {
     /* Checks if external storage is available for read and write */
     public static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     /* Checks if external storage is available to at least read */
     public static boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
 
 
-    public static Integer[] neededRotation(Uri ff)
-    {
+    public static Integer[] neededRotation(Uri ff) {
         Integer[] inte = new Integer[2];
         if (ff !=null && ff.getPath() != null) {
 
@@ -399,7 +489,6 @@ public class Utilidades {
         else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
         return 0;
     }
-
 
     public static void avisoListo(Activity activity, String title, String message, String textButton) {
         View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_empty, null);
@@ -431,7 +520,6 @@ public class Utilidades {
         builder.show();
     }
 
-
     static public String formatear(String rut){
         int cont=0;
         String format;
@@ -442,7 +530,7 @@ public class Utilidades {
             rut = rut.replace("-", "");
             format = "-"+rut.substring(rut.length()-1);
             for(int i = rut.length()-2;i>=0;i--){
-                format = rut.substring(i, i+1) + format;
+                format = rut.charAt(i) + format;
                 cont++;
                 if(cont == 3 && i != 0){
                     format = "."+format;
@@ -452,6 +540,7 @@ public class Utilidades {
             return format;
         }
     }
+
     public static boolean validarRut(String rut) {
 
         boolean validacion = false;
@@ -505,12 +594,11 @@ public class Utilidades {
         inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-
     public static String getMD5(final String s) {
         try{
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
             digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
+            byte[] messageDigest = digest.digest();
             StringBuilder hexString = new StringBuilder();
             for(int i = 0; i < messageDigest.length; i++){
                 String h = Integer.toHexString(0xFF & messageDigest[i]);
@@ -526,17 +614,19 @@ public class Utilidades {
         return "";
     }
 
-
-
     public static String imageToString(String ruta){
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Bitmap bitmap = BitmapFactory.decodeFile(ruta,null);
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG,40,byteArrayOutputStream);
-        byte[] imgByte = byteArrayOutputStream.toByteArray();
+        try{
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            Bitmap bitmap = BitmapFactory.decodeFile(ruta,null);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,40,byteArrayOutputStream);
+            byte[] imgByte = byteArrayOutputStream.toByteArray();
 
-        return Base64.encodeToString(imgByte, Base64.DEFAULT);
+            return Base64.encodeToString(imgByte, Base64.DEFAULT);
+        }catch (Exception e){
+            return "";
+        }
+
     }
-
 
 }

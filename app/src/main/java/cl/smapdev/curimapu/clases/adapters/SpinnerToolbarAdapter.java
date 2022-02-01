@@ -16,8 +16,8 @@ import cl.smapdev.curimapu.clases.tablas.Temporada;
 
 public class SpinnerToolbarAdapter extends ArrayAdapter<Temporada> {
 
-    private List<Temporada> objects;
-    private Context context;
+    private final List<Temporada> objects;
+    private final Context context;
 
     public SpinnerToolbarAdapter(@NonNull Context context, int resource, @NonNull List<Temporada> objects) {
         super(context, resource, objects);
@@ -42,7 +42,7 @@ public class SpinnerToolbarAdapter extends ArrayAdapter<Temporada> {
 
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(  Context.LAYOUT_INFLATER_SERVICE );
         View row=inflater.inflate(resourceId, parent, false);
-        TextView titulo = (TextView) row.findViewById(R.id.titulo);
+        TextView titulo = row.findViewById(R.id.titulo);
         titulo.setText(objects.get(position).getNombre_tempo());
         return row;
     }

@@ -15,10 +15,10 @@ public class RetrofitClient {
 
     private static Retrofit retrofit;
 
-    private static OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .connectTimeout(6, TimeUnit.MINUTES)
-            .readTimeout(3, TimeUnit.MINUTES)
-            .writeTimeout(3,  TimeUnit.MINUTES)
+    private static final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.MINUTES)
+            .readTimeout(5, TimeUnit.MINUTES)
+            .writeTimeout(5,  TimeUnit.MINUTES)
             .build();
 
     public static Retrofit getClient(String direccion){

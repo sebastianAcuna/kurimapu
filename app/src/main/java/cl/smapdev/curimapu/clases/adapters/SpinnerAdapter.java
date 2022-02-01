@@ -16,8 +16,8 @@ import cl.smapdev.curimapu.R;
 
 public class SpinnerAdapter extends ArrayAdapter<String> {
 
-    private ArrayList<String> objects;
-    private Context context;
+    private final ArrayList<String> objects;
+    private final Context context;
 
     public SpinnerAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects) {
         super(context, resource,  objects);
@@ -43,7 +43,7 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
 
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(  Context.LAYOUT_INFLATER_SERVICE );
         View row=inflater.inflate(resourceId, parent, false);
-        TextView titulo = (TextView) row.findViewById(R.id.titulo);
+        TextView titulo = row.findViewById(R.id.titulo);
 //        titulo.setTextSize(10);
         titulo.setText(objects.get(position));
         return row;

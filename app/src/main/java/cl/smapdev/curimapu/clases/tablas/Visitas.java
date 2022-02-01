@@ -1,5 +1,6 @@
 package cl.smapdev.curimapu.clases.tablas;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -8,6 +9,9 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "visita")
 public class Visitas {
+/* AGREGAR ID LOCAL E ID DISPOSITIVO */
+
+
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id_visita")
@@ -97,8 +101,89 @@ public class Visitas {
 
     @SerializedName("percent_humedad")
     @Expose
+    @ColumnInfo(name = "porcentaje_humedad")
     private double percent_humedad;
 
+
+    // 05-06-2020 se agregó 2 columnas nuevas a visita y visita temp para el tema de las fotos
+    @SerializedName("id_visita_local")
+    @Expose
+    private int id_visita_local;
+
+
+    @SerializedName("id_dispo")
+    @Expose
+    private int id_dispo;
+
+
+    @SerializedName("tomadas")
+    @Expose
+    private int tomadas;
+
+
+
+
+    @SerializedName("evaluacion")
+    @Expose
+    private float evaluacion;
+
+
+    @SerializedName("comentario_evaluacion")
+    @Expose
+    private String comentario_evaluacion;
+
+
+    @SerializedName("id_evaluacion")
+    @Expose
+    private  int id_evaluacion;
+
+    public int getId_evaluacion() {
+        return id_evaluacion;
+    }
+
+    public void setId_evaluacion(int id_evaluacion) {
+        this.id_evaluacion = id_evaluacion;
+    }
+
+    public float getEvaluacion() {
+        return evaluacion;
+    }
+
+    public void setEvaluacion(float evaluacion) {
+        this.evaluacion = evaluacion;
+    }
+
+    public String getComentario_evaluacion() {
+        return comentario_evaluacion;
+    }
+
+    public void setComentario_evaluacion(String comentario_evaluacion) {
+        this.comentario_evaluacion = comentario_evaluacion;
+    }
+
+    public int getTomadas() {
+        return tomadas;
+    }
+
+    public void setTomadas(int tomadas) {
+        this.tomadas = tomadas;
+    }
+
+    public int getId_visita_local() {
+        return id_visita_local;
+    }
+
+    public void setId_visita_local(int id_visita_local) {
+        this.id_visita_local = id_visita_local;
+    }
+
+    public int getId_dispo() {
+        return id_dispo;
+    }
+
+    public void setId_dispo(int id_dispo) {
+        this.id_dispo = id_dispo;
+    }
 
     public double getPercent_humedad() {
         return percent_humedad;
