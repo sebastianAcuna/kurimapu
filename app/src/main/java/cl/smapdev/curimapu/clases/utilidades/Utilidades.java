@@ -1,59 +1,32 @@
 package cl.smapdev.curimapu.clases.utilidades;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
-
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.exifinterface.media.ExifInterface;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -72,7 +45,7 @@ import cl.smapdev.curimapu.R;
 
 public class Utilidades {
 
-    public static final String APPLICATION_VERSION = "3.5.0000";
+    public static final String APPLICATION_VERSION = "3.6.1000";
 
     public static final String FRAGMENT_INICIO = "fragment_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -92,7 +65,7 @@ public class Utilidades {
 //    21-ca0493
 
 
-    public static final String IP_PRODUCCION = "192.168.1.17";
+    public static final String IP_PRODUCCION = "www.zcloud.cl";
 //    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_PRUEBAS = "190.13.170.26";

@@ -388,6 +388,7 @@ public class FragmentAnexoFechas extends Fragment {
 
 
 
+        //para mostrar vacios en vez de 0 en fecha
         et_inicio_despano.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_despano() != null && !plz.getAnexoCorreoFichas().getInicio_despano().equals("0000-00-00")) ? Utilidades.voltearFechaVista(plz.getAnexoCorreoFichas().getInicio_despano()) : "");
         et_cinco_porc_floracion.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getCinco_porciento_floracion() != null && !plz.getAnexoCorreoFichas().getCinco_porciento_floracion().equals("0000-00-00")) ? Utilidades.voltearFechaVista(plz.getAnexoCorreoFichas().getCinco_porciento_floracion()) : "");
         et_inicio_corte_seda.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_corte_seda() != null && !plz.getAnexoCorreoFichas().getInicio_corte_seda().equals("0000-00-00")) ? Utilidades.voltearFechaVista(plz.getAnexoCorreoFichas().getInicio_corte_seda()) : "");
@@ -396,6 +397,7 @@ public class FragmentAnexoFechas extends Fragment {
         et_termino_labores_post_cosecha.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas() != null && !plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas().equals("0000-00-00")) ? Utilidades.voltearFechaVista(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas()) : "");
         et_detalle_labores.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getDetalle_labores() != null ) ? plz.getAnexoCorreoFichas().getDetalle_labores() : "");
 
+        // para habilitar el boton y no escribir en las que estan listas
         et_inicio_despano.setEnabled((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && (plz.getAnexoCorreoFichas().getInicio_despano() == null || plz.getAnexoCorreoFichas().getInicio_despano().equals("0000-00-00")))));
         et_cinco_porc_floracion.setEnabled((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && (plz.getAnexoCorreoFichas().getCinco_porciento_floracion() == null || plz.getAnexoCorreoFichas().getCinco_porciento_floracion().equals("0000-00-00")))));
         et_inicio_corte_seda.setEnabled((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && (plz.getAnexoCorreoFichas().getInicio_corte_seda() == null || plz.getAnexoCorreoFichas().getInicio_corte_seda().equals("0000-00-00")))));
@@ -544,21 +546,12 @@ public class FragmentAnexoFechas extends Fragment {
                                 fhc.setInicio_corte_seda(plz.getAnexoCorreoFichas().getInicio_corte_seda());
                             }
 
-                            if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas())) ) &&  !TextUtils.isEmpty(et_termino_labores_post_cosecha.getText())){
+                            if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas().equals("0000-00-00")) ) &&  !TextUtils.isEmpty(et_termino_labores_post_cosecha.getText())){
                                 fhc.setTermino_labores_post_cosechas(Utilidades.voltearFechaBD(et_termino_labores_post_cosecha.getText().toString()));
                                 fhc.setDetalle_labores(et_detalle_labores.getText().toString());
                             }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas())){
                                 fhc.setTermino_labores_post_cosechas(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas());
                             }
-
-//                            AnexoCorreoFechas getF = null;
-
-//                            try{
-//                                getF = MainActivity.myAppDB.myDao().getAnexoCorreoFechasByAnexo(Integer.parseInt(plz.getAnexoCompleto().getAnexoContrato().getId_anexo_contrato()));
-//                            }catch (Exception e){
-//                                Toast.makeText(activity, "No encontramos datos para este anexo", Toast.LENGTH_SHORT).show();
-//                            }
-//
 
                             if(plz.getAnexoCorreoFichas() != null){
                                 fhc.setCorreo_cinco_porciento_floracion(plz.getAnexoCorreoFichas().getCorreo_cinco_porciento_floracion());
@@ -671,7 +664,7 @@ public class FragmentAnexoFechas extends Fragment {
         et_inicio_cosecha.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_cosecha() != null) ? Utilidades.voltearFechaVista(plz.getAnexoCorreoFichas().getInicio_cosecha()) : "");
         et_termino_cosecha.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getTermino_cosecha() != null) ? Utilidades.voltearFechaVista(plz.getAnexoCorreoFichas().getTermino_cosecha()) : "");
         et_termino_labores_post_cosecha.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas() != null) ? Utilidades.voltearFechaVista(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas()) : "");
-
+        et_detalle_labores.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getDetalle_labores() != null) ? plz.getAnexoCorreoFichas().getDetalle_labores() : "");
 
 
         if(plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_despano() != null && plz.getAnexoCorreoFichas().getCorreo_inicio_despano() > 0){
@@ -786,8 +779,7 @@ public class FragmentAnexoFechas extends Fragment {
                 tabla.agregarCabecera(R.array.cabecera_anexo_fechas_vista_dos);
             }
 
-            int page = 1;
-            final List<AnexoWithDates> lista = MainActivity.myAppDB.myDao().getFechasSag(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()), page);
+            final List<AnexoWithDates> lista = MainActivity.myAppDB.myDao().getFechasSag(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
 
             if (lista != null && lista.size() > 0){
                 final ProgressDialog pp = new ProgressDialog(activity);

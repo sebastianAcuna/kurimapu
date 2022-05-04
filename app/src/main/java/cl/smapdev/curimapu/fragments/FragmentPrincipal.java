@@ -287,8 +287,6 @@ public class FragmentPrincipal extends Fragment {
     void prepararVisitas(){
         if(contenedor_botones != null){
 
-
-
             contenedor_botones.removeAllViews();
 
             btn_descargar.setEnabled(true);
@@ -296,6 +294,9 @@ public class FragmentPrincipal extends Fragment {
 
             List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir(); //2
             if (visitas.size() > 0){
+
+                Utilidades.exportDatabse(Utilidades.NOMBRE_DATABASE, activity.getPackageName());
+
 
                 botonesSeleccionados = new ArrayList<>();
                 idVisitasSeleccionadas = new ArrayList<>();
@@ -363,32 +364,37 @@ public class FragmentPrincipal extends Fragment {
                                 @Override
                                 public void onClick(View view) {
 
+                                    Toasty.info(getActivity(), "Funcionalidad deshabilitada, pmantenga presionado para subir", Toast.LENGTH_LONG, true).show();
 
+//                                    botonesSeleccionados = new ArrayList<>();
+//                                    idVisitasSeleccionadas = new ArrayList<>();
+//                                    button.setEnabled(false);
+//                                    subirVisita(v, button);
 
-                                    if(botonesSeleccionados.indexOf(button.getId()) >= 0){
-                                        botonesSeleccionados.remove((Integer) button.getId());
-                                        idVisitasSeleccionadas.remove((Integer) v.getId_visita());
-                                        button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorRedLight));
-                                        button.setTextColor(getActivity().getColor(R.color.colorSurface));
-
-                                    }else{
-                                        if(botonesSeleccionados.size() < 3){
-                                            button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorPrimaryDarkVariant));
-                                            button.setTextColor(getActivity().getColor(R.color.colorSurface));
-                                            botonesSeleccionados.add(button.getId());
-                                            idVisitasSeleccionadas.add(v.getId_visita());
-                                        }else{
-                                            Utilidades.avisoListo(getActivity(), "Hey", "solo puedes marcar 3 visitas para subir a la vez", "entiendo");
-                                        }
-                                    }
-
-
-
-                                    if(botonesSeleccionados.size() == 3){
-                                        btn_sube_marcadas.setVisibility(View.VISIBLE);
-                                    }else{
-                                        btn_sube_marcadas.setVisibility(View.INVISIBLE);
-                                    }
+//                                    if(botonesSeleccionados.indexOf(button.getId()) >= 0){
+//                                        botonesSeleccionados.remove((Integer) button.getId());
+//                                        idVisitasSeleccionadas.remove((Integer) v.getId_visita());
+//                                        button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorRedLight));
+//                                        button.setTextColor(getActivity().getColor(R.color.colorSurface));
+//
+//                                    }else{
+//                                        if(botonesSeleccionados.size() < 3){
+//                                            button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorPrimaryDarkVariant));
+//                                            button.setTextColor(getActivity().getColor(R.color.colorSurface));
+//                                            botonesSeleccionados.add(button.getId());
+//                                            idVisitasSeleccionadas.add(v.getId_visita());
+//                                        }else{
+//                                            Utilidades.avisoListo(getActivity(), "Hey", "solo puedes marcar 3 visitas para subir a la vez", "entiendo");
+//                                        }
+//                                    }
+//
+//
+//
+//                                    if(botonesSeleccionados.size() == 3){
+//                                        btn_sube_marcadas.setVisibility(View.VISIBLE);
+//                                    }else{
+//                                        btn_sube_marcadas.setVisibility(View.INVISIBLE);
+//                                    }
 
 //                                    Toast.makeText(getActivity(), " click", Toast.LENGTH_SHORT).show();
                                 }
@@ -402,6 +408,7 @@ public class FragmentPrincipal extends Fragment {
                                     idVisitasSeleccionadas = new ArrayList<>();
                                     button.setEnabled(false);
                                     subirVisita(v, button);
+
                                     return false;
                                 }
                             });
@@ -465,33 +472,33 @@ public class FragmentPrincipal extends Fragment {
                             button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-
-                                    if(botonesSeleccionados.indexOf(button.getId()) >= 0){
-
-                                        botonesSeleccionados.remove((Integer) button.getId());
-                                        idVisitasSeleccionadas.remove((Integer) v.getId_visita());
-
-                                        button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorRedLight));
-                                        button.setTextColor(getActivity().getColor(R.color.colorSurface));
-
-                                    }else{
-
-                                        if(botonesSeleccionados.size() < 3){
-                                            button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorPrimaryDarkVariant));
-                                            button.setTextColor(getActivity().getColor(R.color.colorSurface));
-
-                                            botonesSeleccionados.add(button.getId());
-                                            idVisitasSeleccionadas.add(v.getId_visita());
-                                        }else{
-                                            Utilidades.avisoListo(getActivity(), "Hey", "solo puedes marcar 3 visitas para subir a la vez", "entiendo");
-                                        }
-
-                                    }
-                                    if(botonesSeleccionados.size() == 3){
-                                        btn_sube_marcadas.setVisibility(View.VISIBLE);
-                                    }else{
-                                        btn_sube_marcadas.setVisibility(View.INVISIBLE);
-                                    }
+                                    Toasty.info(getActivity(), "Funcionalidad deshabilitada, pmantenga presionado para subir", Toast.LENGTH_LONG, true).show();
+//                                    if(botonesSeleccionados.indexOf(button.getId()) >= 0){
+//
+//                                        botonesSeleccionados.remove((Integer) button.getId());
+//                                        idVisitasSeleccionadas.remove((Integer) v.getId_visita());
+//
+//                                        button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorRedLight));
+//                                        button.setTextColor(getActivity().getColor(R.color.colorSurface));
+//
+//                                    }else{
+//
+//                                        if(botonesSeleccionados.size() < 3){
+//                                            button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorPrimaryDarkVariant));
+//                                            button.setTextColor(getActivity().getColor(R.color.colorSurface));
+//
+//                                            botonesSeleccionados.add(button.getId());
+//                                            idVisitasSeleccionadas.add(v.getId_visita());
+//                                        }else{
+//                                            Utilidades.avisoListo(getActivity(), "Hey", "solo puedes marcar 3 visitas para subir a la vez", "entiendo");
+//                                        }
+//
+//                                    }
+//                                    if(botonesSeleccionados.size() == 3){
+//                                        btn_sube_marcadas.setVisibility(View.VISIBLE);
+//                                    }else{
+//                                        btn_sube_marcadas.setVisibility(View.INVISIBLE);
+//                                    }
                                 }
                             });
 

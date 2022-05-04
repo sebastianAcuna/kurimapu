@@ -165,6 +165,10 @@ public class FragmentResumen extends Fragment {
                                                 nombreTabla = fs.getTabla();
                                                 break;
 
+                                            case "comuna":
+                                                nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "desc_comuna" : fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
                                             case "especie":
                                                 nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "desc_especie" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
@@ -258,6 +262,11 @@ public class FragmentResumen extends Fragment {
                                                 int idCliente  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 consulta += " WHERE id_clientes_tabla = ? ";
                                                 ob = Utilidades.appendValue(ob,idCliente);
+                                                break;
+                                            case "comuna":
+                                                consulta += " INNER JOIN ficha_new FN ON FN.id_comuna_new = comuna.id_comuna ";
+                                                consulta += " INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = FN.id_ficha_new WHERE AC.id_anexo_contrato = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
                                             case "anexo_correo_fechas":
                                                 consulta += "WHERE id_ac_corr_fech = ?";

@@ -168,31 +168,16 @@ public class Tabla {
             }
         });
 
-
-//        botonVer.setBackgroundColor(botonVer.getContext().getResources().getColor(R.color.colorAccent));
-
        layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(anexo.getText().toString(), 50.0f),
                    TableRow.LayoutParams.WRAP_CONTENT);
 
         anexo.setLayoutParams(layoutCelda);
 
 
-//        layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(agricultor.getText().toString()),
-//                   TableRow.LayoutParams.WRAP_CONTENT);
-//
-//        agricultor.setLayoutParams(layoutCelda);
-
-
         layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(potrero.getText().toString(), 50.0f),
                 TableRow.LayoutParams.WRAP_CONTENT);
 
         potrero.setLayoutParams(layoutCelda);
-
-
-/*        layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(variedad.getText().toString()),
-                TableRow.LayoutParams.WRAP_CONTENT);
-
-        variedad.setLayoutParams(layoutCelda);*/
 
 
             fila.addView(anexo);

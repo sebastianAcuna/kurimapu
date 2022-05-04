@@ -46,7 +46,7 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         Visitas.class, CropRotation.class, pro_cli_mat.class, Temporada.class, detalle_visita_prop.class, Provincia.class, Errores.class,
         Lotes.class, Predios.class, TipoRiego.class, TipoSuelo.class, Maquinaria.class, TipoTenenciaMaquinaria.class, TipoTenenciaTerreno.class,
         FichaMaquinaria.class, Clientes.class, CardViewsResumen.class, cli_pcm.class, quotation.class, FotosFichas.class, AgrPredTemp.class, FichasNew.class, AnexoCorreoFechas.class
-        }, version = 15)
+        }, version = 14)
 public abstract class MyAppBD extends RoomDatabase {
 
         public abstract MyDao myDao();

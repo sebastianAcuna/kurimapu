@@ -169,6 +169,24 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     private void chargeAll(){
 
+        if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 &&  temp_visitas.getEvaluacion() <= 0.0){
+
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    final VisitasCompletas visitaAnterior = MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita());
+
+                    if (visitaAnterior != null && visitaAnterior.getVisitas() != null){
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showAlertForRankear(visitaAnterior.getVisitas(), temp_visitas);
+                            }
+                        });
+                    }
+                }
+            });
+        }
 
         cargarSpinners();
 
@@ -297,30 +315,30 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         super.onResume();
         if (activity != null){
             //activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumen, FragmentFotosResumen.getInstance(0), Utilidades.FRAGMENT_FOTOS_RESUMEN).commit();
-
+            temp_visitas  = (temp_visitas != null) ? temp_visitas : MainActivity.myAppDB.myDao().getTempFichas();
             agregarImagenToAgronomos();
             agregarImagenToClientes();
 
 
 
-            if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 &&  temp_visitas.getEvaluacion() <= 0.0){
-
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        final VisitasCompletas visitaAnterior = MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita());
-
-                        if (visitaAnterior != null && visitaAnterior.getVisitas() != null){
-                            requireActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showAlertForRankear(visitaAnterior.getVisitas(), temp_visitas);
-                                }
-                            });
-                        }
-                    }
-                });
-            }
+//            if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 &&  temp_visitas.getEvaluacion() <= 0.0){
+//
+//                AsyncTask.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        final VisitasCompletas visitaAnterior = MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita());
+//
+//                        if (visitaAnterior != null && visitaAnterior.getVisitas() != null){
+//                            requireActivity().runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    showAlertForRankear(visitaAnterior.getVisitas(), temp_visitas);
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+//            }
         }
     }
 

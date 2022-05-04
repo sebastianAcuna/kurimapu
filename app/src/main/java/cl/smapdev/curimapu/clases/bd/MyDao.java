@@ -228,10 +228,9 @@ public interface MyDao {
             " LEFT JOIN visita V ON (V.id_anexo_visita = AC.id_anexo_contrato) " +
             " WHERE FN.id_tempo_new = :tempo " +
             " GROUP BY AC.id_anexo_contrato " +
-            " ORDER BY E.desc_especie ASC "  +
-            " LIMIT :pagina, 10")
+            " ORDER BY E.desc_especie ASC ")
 
-    List<AnexoWithDates> getFechasSag(String tempo, int pagina);
+    List<AnexoWithDates> getFechasSag(String tempo);
 
 
     @Query("SELECT * FROM anexo_correo_fechas WHERE id_ac_corr_fech = :id_anexo; ")
