@@ -168,46 +168,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         shared = getSharedPreferences(Utilidades.SHARED_NAME, MODE_PRIVATE);
 
         if (savedInstanceState == null){
-           if (Objects.equals(shared.getString(Utilidades.SHARED_USER, ""), "")){
+           if (Objects.equals(shared.getString(Utilidades.SHARED_USER, ""), "") || Objects.equals(shared.getString(Utilidades.SHARED_SERVER_ID_USER, ""), "")){
                 cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_LOGIN, R.anim.slide_in_left, R.anim.slide_out_left);
             }else{
-               if (shared.getString(Utilidades.SHARED_SERVER_ID_USER, "").equals("")){
-                   cambiarFragment(new servidorFragment(), Utilidades.FRAGMENT_SERVIDOR, R.anim.slide_in_left, R.anim.slide_out_left);
-               }else{
-                   cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
-                   navigationView.setCheckedItem(R.id.nv_inicio);
-               }
+               cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
+               navigationView.setCheckedItem(R.id.nv_inicio);
             }
-        }
-    }
-
-    private void importDB() {
-        try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data  = Environment.getDataDirectory();
-
-//            if (sd.canWrite()) {
-                String  currentDBPath= "//data//" + getPackageName()
-                        + "//databases//" + Utilidades.NOMBRE_DATABASE;
-                String backupDBPath  = "/20210122112939_backup_curimapu.db";
-                File  backupDB= new File(data, currentDBPath);
-                File currentDB  = new File(sd, backupDBPath);
-
-                FileChannel src = new FileInputStream(currentDB).getChannel();
-                FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                dst.transferFrom(src, 0, src.size());
-                src.close();
-//                dst.close();
-                Toast.makeText(getBaseContext(), backupDB.toString(),
-                        Toast.LENGTH_LONG).show();
-
-            Log.e("DATABASE", backupDBPath);
-
-        } catch (Exception e) {
-            Log.e("DATABASE", e.getMessage());
-            Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
-
         }
     }
 
@@ -229,11 +195,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 version.setText(data);
 
             }
-
-
-
-
-
 
         }
     }

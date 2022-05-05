@@ -136,8 +136,6 @@ public class FragmentLogin extends Fragment {
         String user = user_login.getText().toString();
         String pass = pass_login.getText().toString();
 
-
-
         if (TextUtils.isEmpty(user) && TextUtils.isEmpty(pass)){
             Toasty.warning(activity, activity.getResources().getString(R.string.warning_empty_fields), Toast.LENGTH_SHORT, true).show();
         }else{
@@ -159,9 +157,6 @@ public class FragmentLogin extends Fragment {
                 MainActivity activity = (MainActivity) getActivity();
                 if (activity != null){
                     Utilidades.hideKeyboard(activity);
-                    if (usuario.getTipo_usuario() == 5){
-                        activity.cambiarFragment(new servidorFragment(), Utilidades.FRAGMENT_SERVIDOR, R.anim.slide_in_left, R.anim.slide_out_left);
-                    }else{
                         shared.edit().putString(Utilidades.SHARED_SERVER_ID_USER, String.valueOf(usuario.getId_usuario())).apply();
                         shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRODUCCION).apply();
 
@@ -171,7 +166,6 @@ public class FragmentLogin extends Fragment {
                         MainActivity.myAppDB.myDao().updateConfig(cn);
 
                         activity.cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
-                    }
                 }
             }else{
                 Toasty.error(activity, activity.getResources().getString(R.string.warning_incorrect_fields), Toast.LENGTH_SHORT, true).show();
