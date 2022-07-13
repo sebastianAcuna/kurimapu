@@ -52,6 +52,7 @@ import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
+import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.utilidades.InternetStateClass;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.returnValuesFromAsyntask;
@@ -69,7 +70,7 @@ public class FragmentAnexoFechas extends Fragment {
     private MainActivity activity;
     private SharedPreferences prefs;
     private Spinner spinner_toolbar;
-    private RadioButton rb_fechas, rb_detalle;
+//    private RadioButton rb_fechas, rb_detalle;
 
     private List<Temporada> temporadaList;
     private final ArrayList<String> id_temporadas = new ArrayList<>();
@@ -77,7 +78,6 @@ public class FragmentAnexoFechas extends Fragment {
 
     private String marca_especial_temporada;
 
-//    int seleccionado  = 0;
 
 
     @Override
@@ -103,11 +103,10 @@ public class FragmentAnexoFechas extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         spinner_toolbar = view.findViewById(R.id.spinner_toolbar);
-//        Toolbar toolbar = view.findViewById(R.id.toolbar);
 
 
-        rb_fechas = view.findViewById(R.id.rb_fechas);
-        rb_detalle = view.findViewById(R.id.rb_detalle);
+//        rb_fechas = view.findViewById(R.id.rb_fechas);
+//        rb_detalle = view.findViewById(R.id.rb_detalle);
 
 
         temporadaList = MainActivity.myAppDB.myDao().getTemporada();
@@ -121,11 +120,7 @@ public class FragmentAnexoFechas extends Fragment {
             }
         }
 
-
-
-
         setHasOptionsMenu(true);
-
 
         spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity,R.layout.spinner_template_toolbar_view, temporadaList));
 
@@ -140,42 +135,10 @@ public class FragmentAnexoFechas extends Fragment {
                 @Override
                 public void onItemClick(AnexoWithDates plz) {
                     showAlertForDeletePieza(plz);
-//                    Toast.makeText(activity, "Hice click la puta madre", Toast.LENGTH_SHORT).show();
                 }
-            }, new TablaAnexosFechas.OnItemClickListenerVer() {
-                @Override
-                public void onItemClick(AnexoWithDates plz) {
-                    showAlertDetalleFechaAnexo(plz);
-//                    Toast.makeText(activity, "ver ", Toast.LENGTH_SHORT).show();
-                }
-            });
+            }, this::showAlertDetalleFechaAnexo);
         }
 
-
-
-
-        rb_detalle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-//                    seleccionado = 0;
-//                    System.out.println("evento listener detalle");
-                    cargarInforme( 1);
-                }
-            }
-        });
-
-
-        rb_fechas.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-//                    seleccionado = 1;
-//                    System.out.println("evento listener fecha");
-                    cargarInforme( 0);
-                }
-            }
-        });
         spinner_toolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -210,7 +173,6 @@ public class FragmentAnexoFechas extends Fragment {
 
 
         if (temporadaList.size() > 0){
-            rb_fechas.setChecked(true);
             cargarInforme( 0);
         }
     }
@@ -238,32 +200,29 @@ public class FragmentAnexoFechas extends Fragment {
 
     private void prepararSubirFechas(){
 
-        InternetStateClass mm = new InternetStateClass(activity, new returnValuesFromAsyntask() {
-            @Override
-            public void myMethod(boolean result) {
-                if (result) {
-                    ProgressDialog pd = new ProgressDialog(activity);
-                    pd.setMessage("conectandose a internet, espere por favor");
-                    pd.show();
+        InternetStateClass mm = new InternetStateClass(activity, result -> {
+            if (result) {
+                ProgressDialog pd = new ProgressDialog(activity);
+                pd.setMessage("conectandose a internet, espere por favor");
+                pd.show();
 
 
-                    List<AnexoCorreoFechas> fechas = MainActivity.myAppDB.myDao().getAnexoCorreoFechas();
-                    if(fechas != null && fechas.size() > 0){
+                List<AnexoCorreoFechas> fechas = MainActivity.myAppDB.myDao().getAnexoCorreoFechas();
+                if(fechas != null && fechas.size() > 0){
 
-                        if(pd.isShowing()){
-                            pd.dismiss();
-                        }
-                        subirFechas(fechas);
-                    }else{
-                        if(pd.isShowing()){
-                            pd.dismiss();
-                        }
-                        Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                    if(pd.isShowing()){
+                        pd.dismiss();
                     }
-
-                } else {
-                        Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
+                    subirFechas(fechas);
+                }else{
+                    if(pd.isShowing()){
+                        pd.dismiss();
+                    }
+                    Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 }
+
+            } else {
+                    Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
             }
         }, 1);
         mm.execute();
@@ -445,168 +404,144 @@ public class FragmentAnexoFechas extends Fragment {
             correo_envia_termino_labores_post_cosecha.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_email_24_no));
         }
 
-        et_inicio_despano.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b){
-                    levantarFecha(et_inicio_despano);
-                }
+        et_inicio_despano.setOnFocusChangeListener((view, b) -> {
+            if (b){
+                levantarFecha(et_inicio_despano);
             }
         });
 
-        et_cinco_porc_floracion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b){
-                    levantarFecha(et_cinco_porc_floracion);
-                }
+        et_cinco_porc_floracion.setOnFocusChangeListener((view, b) -> {
+            if (b){
+                levantarFecha(et_cinco_porc_floracion);
             }
         });
 
-        et_termino_cosecha.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b){
-                    levantarFecha(et_termino_cosecha);
-                }
+        et_termino_cosecha.setOnFocusChangeListener((view, b) -> {
+            if (b){
+                levantarFecha(et_termino_cosecha);
             }
         });
 
-        et_inicio_cosecha.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b){
-                    levantarFecha(et_inicio_cosecha);
-                }
+        et_inicio_cosecha.setOnFocusChangeListener((view, b) -> {
+            if (b){
+                levantarFecha(et_inicio_cosecha);
             }
         });
 
-        et_inicio_corte_seda.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b){
-                    levantarFecha(et_inicio_corte_seda);
-                }
+        et_inicio_corte_seda.setOnFocusChangeListener((view, b) -> {
+            if (b){
+                levantarFecha(et_inicio_corte_seda);
             }
         });
 
-        et_termino_labores_post_cosecha.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b){
-                    levantarFecha(et_termino_labores_post_cosecha);
-                }
+        et_termino_labores_post_cosecha.setOnFocusChangeListener((view, b) -> {
+            if (b){
+                levantarFecha(et_termino_labores_post_cosecha);
             }
         });
 
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-                final Button n = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+            final Button n = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
 
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
 
-                        if(!TextUtils.isEmpty(et_termino_labores_post_cosecha.getText()) && TextUtils.isEmpty(et_detalle_labores.getText())){
-                            Toasty.error(activity, "Debes ingresar el detalle al ingresar el termino de labores ", Toast.LENGTH_LONG, true).show();
-                        }else{
+                    if(!TextUtils.isEmpty(et_termino_labores_post_cosecha.getText()) && TextUtils.isEmpty(et_detalle_labores.getText())){
+                        Toasty.error(activity, "Debes ingresar el detalle al ingresar el termino de labores ", Toast.LENGTH_LONG, true).show();
+                    }else{
 
-                            AnexoCorreoFechas fhc = new AnexoCorreoFechas();
+                        AnexoCorreoFechas fhc = new AnexoCorreoFechas();
 
-                            if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_despano())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_despano().equals("0000-00-00"))) &&  !TextUtils.isEmpty(et_inicio_despano.getText())){
-                                fhc.setInicio_despano(Utilidades.voltearFechaBD(et_inicio_despano.getText().toString()));
-                            }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_despano())){
-                                fhc.setInicio_despano(plz.getAnexoCorreoFichas().getInicio_despano());
-                            }
-
-                            if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getCinco_porciento_floracion())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getCinco_porciento_floracion().equals("0000-00-00"))) &&  !TextUtils.isEmpty(et_cinco_porc_floracion.getText())){
-                                fhc.setCinco_porciento_floracion(Utilidades.voltearFechaBD(et_cinco_porc_floracion.getText().toString()));
-                            }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getCinco_porciento_floracion())){
-                                fhc.setCinco_porciento_floracion(plz.getAnexoCorreoFichas().getCinco_porciento_floracion());
-                            }
-
-                            if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_cosecha())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getTermino_cosecha().equals("0000-00-00"))) &&  !TextUtils.isEmpty(et_termino_cosecha.getText())){
-                                fhc.setTermino_cosecha(Utilidades.voltearFechaBD(et_termino_cosecha.getText().toString()));
-                            }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_cosecha())){
-                                fhc.setTermino_cosecha(plz.getAnexoCorreoFichas().getTermino_cosecha());
-                            }
-
-                            if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_cosecha())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_cosecha().equals("0000-00-00"))) &&  !TextUtils.isEmpty(et_inicio_cosecha.getText())){
-                                fhc.setInicio_cosecha(Utilidades.voltearFechaBD(et_inicio_cosecha.getText().toString()));
-                            }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_cosecha())){
-                                fhc.setInicio_cosecha(plz.getAnexoCorreoFichas().getInicio_cosecha());
-                            }
-
-                            if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_corte_seda())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_corte_seda().equals("0000-00-00"))) &&  !TextUtils.isEmpty(et_inicio_corte_seda.getText())){
-                                fhc.setInicio_corte_seda(Utilidades.voltearFechaBD(et_inicio_corte_seda.getText().toString()));
-                            }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_corte_seda())){
-                                fhc.setInicio_corte_seda(plz.getAnexoCorreoFichas().getInicio_corte_seda());
-                            }
-
-                            if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas().equals("0000-00-00")) ) &&  !TextUtils.isEmpty(et_termino_labores_post_cosecha.getText())){
-                                fhc.setTermino_labores_post_cosechas(Utilidades.voltearFechaBD(et_termino_labores_post_cosecha.getText().toString()));
-                                fhc.setDetalle_labores(et_detalle_labores.getText().toString());
-                            }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas())){
-                                fhc.setTermino_labores_post_cosechas(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas());
-                            }
-
-                            if(plz.getAnexoCorreoFichas() != null){
-                                fhc.setCorreo_cinco_porciento_floracion(plz.getAnexoCorreoFichas().getCorreo_cinco_porciento_floracion());
-                                fhc.setCorreo_inicio_corte_seda(plz.getAnexoCorreoFichas().getCorreo_inicio_corte_seda());
-                                fhc.setCorreo_inicio_cosecha(plz.getAnexoCorreoFichas().getCorreo_inicio_cosecha());
-                                fhc.setCorreo_inicio_despano(plz.getAnexoCorreoFichas().getCorreo_inicio_despano());
-                                fhc.setCorreo_termino_cosecha(plz.getAnexoCorreoFichas().getCorreo_termino_cosecha());
-                                fhc.setCorreo_termino_labores_post_cosechas(plz.getAnexoCorreoFichas().getCorreo_termino_labores_post_cosechas());
-                                fhc.setId_fieldman(plz.getAnexoCorreoFichas().getId_fieldman());
-                                fhc.setId_asistente(plz.getAnexoCorreoFichas().getId_asistente());
-                                fhc.setId_ac_corr_fech(plz.getAnexoCorreoFichas().getId_ac_corr_fech());
-                                fhc.setId_ac_cor_fech(plz.getAnexoCorreoFichas().getId_ac_cor_fech());
-
-
-                                int id = MainActivity.myAppDB.myDao().UpdateFechasAnexos(fhc);
-                                if(id > 0){
-                                    Toasty.success(activity, "Fechas guardada con exito", Toast.LENGTH_SHORT, true).show();
-                                }else{
-                                    Toasty.error(activity, "No se pudo guardar la fecha", Toast.LENGTH_SHORT, true).show();
-                                }
-                            }else{
-                                Config config = MainActivity.myAppDB.myDao().getConfig();
-                                fhc.setId_fieldman(config.getId_usuario());
-                                fhc.setId_fieldman(config.getId_usuario());
-                                fhc.setId_ac_corr_fech(Integer.parseInt(plz.getAnexoCompleto().getAnexoContrato().getId_anexo_contrato()));
-
-                                fhc.setCorreo_cinco_porciento_floracion(0);
-                                fhc.setCorreo_inicio_corte_seda(0);
-                                fhc.setCorreo_inicio_cosecha(0);
-                                fhc.setCorreo_inicio_despano(0);
-                                fhc.setCorreo_termino_cosecha(0);
-                                fhc.setCorreo_termino_labores_post_cosechas(0);
-
-                                long id = MainActivity.myAppDB.myDao().insertFechasAnexos(fhc);
-                                if(id > 0){
-                                    Toasty.success(activity, "Fechas guardada con exito", Toast.LENGTH_SHORT, true).show();
-                                }else{
-                                    Toasty.error(activity, "No se pudo guardar la fecha", Toast.LENGTH_SHORT, true).show();
-                                }
-                            }
-
-                            cargarInforme(0);
-
-
-                            builder.dismiss();
+                        if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_despano())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_despano().equals("0000-00-00"))) &&  !TextUtils.isEmpty(et_inicio_despano.getText())){
+                            fhc.setInicio_despano(Utilidades.voltearFechaBD(et_inicio_despano.getText().toString()));
+                        }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_despano())){
+                            fhc.setInicio_despano(plz.getAnexoCorreoFichas().getInicio_despano());
                         }
-                    }
-                });
-                n.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+
+                        if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getCinco_porciento_floracion())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getCinco_porciento_floracion().equals("0000-00-00"))) &&  !TextUtils.isEmpty(et_cinco_porc_floracion.getText())){
+                            fhc.setCinco_porciento_floracion(Utilidades.voltearFechaBD(et_cinco_porc_floracion.getText().toString()));
+                        }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getCinco_porciento_floracion())){
+                            fhc.setCinco_porciento_floracion(plz.getAnexoCorreoFichas().getCinco_porciento_floracion());
+                        }
+
+                        if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_cosecha())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getTermino_cosecha().equals("0000-00-00"))) &&  !TextUtils.isEmpty(et_termino_cosecha.getText())){
+                            fhc.setTermino_cosecha(Utilidades.voltearFechaBD(et_termino_cosecha.getText().toString()));
+                        }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_cosecha())){
+                            fhc.setTermino_cosecha(plz.getAnexoCorreoFichas().getTermino_cosecha());
+                        }
+
+                        if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_cosecha())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_cosecha().equals("0000-00-00"))) &&  !TextUtils.isEmpty(et_inicio_cosecha.getText())){
+                            fhc.setInicio_cosecha(Utilidades.voltearFechaBD(et_inicio_cosecha.getText().toString()));
+                        }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_cosecha())){
+                            fhc.setInicio_cosecha(plz.getAnexoCorreoFichas().getInicio_cosecha());
+                        }
+
+                        if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_corte_seda())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_corte_seda().equals("0000-00-00"))) &&  !TextUtils.isEmpty(et_inicio_corte_seda.getText())){
+                            fhc.setInicio_corte_seda(Utilidades.voltearFechaBD(et_inicio_corte_seda.getText().toString()));
+                        }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getInicio_corte_seda())){
+                            fhc.setInicio_corte_seda(plz.getAnexoCorreoFichas().getInicio_corte_seda());
+                        }
+
+                        if((plz.getAnexoCorreoFichas() == null || (plz.getAnexoCorreoFichas() != null && TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas())) || (plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas().equals("0000-00-00")) ) &&  !TextUtils.isEmpty(et_termino_labores_post_cosecha.getText())){
+                            fhc.setTermino_labores_post_cosechas(Utilidades.voltearFechaBD(et_termino_labores_post_cosecha.getText().toString()));
+                            fhc.setDetalle_labores(et_detalle_labores.getText().toString());
+                        }else if(plz.getAnexoCorreoFichas() != null && !TextUtils.isEmpty(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas())){
+                            fhc.setTermino_labores_post_cosechas(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas());
+                        }
+
+                        if(plz.getAnexoCorreoFichas() != null){
+                            fhc.setCorreo_cinco_porciento_floracion(plz.getAnexoCorreoFichas()
+                                    .getCorreo_cinco_porciento_floracion());
+                            fhc.setCorreo_inicio_corte_seda(plz.getAnexoCorreoFichas()
+                                    .getCorreo_inicio_corte_seda());
+                            fhc.setCorreo_inicio_cosecha(plz.getAnexoCorreoFichas().getCorreo_inicio_cosecha());
+                            fhc.setCorreo_inicio_despano(plz.getAnexoCorreoFichas().getCorreo_inicio_despano());
+                            fhc.setCorreo_termino_cosecha(plz.getAnexoCorreoFichas().getCorreo_termino_cosecha());
+                            fhc.setCorreo_termino_labores_post_cosechas(plz.getAnexoCorreoFichas().getCorreo_termino_labores_post_cosechas());
+                            fhc.setId_fieldman(plz.getAnexoCorreoFichas().getId_fieldman());
+                            fhc.setId_asistente(plz.getAnexoCorreoFichas().getId_asistente());
+                            fhc.setId_ac_corr_fech(plz.getAnexoCorreoFichas().getId_ac_corr_fech());
+                            fhc.setId_ac_cor_fech(plz.getAnexoCorreoFichas().getId_ac_cor_fech());
+
+
+                            int id = MainActivity.myAppDB.myDao().UpdateFechasAnexos(fhc);
+                            if(id > 0){
+                                Toasty.success(activity, "Fechas guardada con exito", Toast.LENGTH_SHORT, true).show();
+                            }else{
+                                Toasty.error(activity, "No se pudo guardar la fecha", Toast.LENGTH_SHORT, true).show();
+                            }
+                        }else{
+                            Config config = MainActivity.myAppDB.myDao().getConfig();
+                            fhc.setId_fieldman(config.getId_usuario());
+                            fhc.setId_fieldman(config.getId_usuario());
+                            fhc.setId_ac_corr_fech(Integer.parseInt(plz.getAnexoCompleto().getAnexoContrato().getId_anexo_contrato()));
+
+                            fhc.setCorreo_cinco_porciento_floracion(0);
+                            fhc.setCorreo_inicio_corte_seda(0);
+                            fhc.setCorreo_inicio_cosecha(0);
+                            fhc.setCorreo_inicio_despano(0);
+                            fhc.setCorreo_termino_cosecha(0);
+                            fhc.setCorreo_termino_labores_post_cosechas(0);
+
+                            long id = MainActivity.myAppDB.myDao().insertFechasAnexos(fhc);
+                            if(id > 0){
+                                Toasty.success(activity, "Fechas guardada con exito", Toast.LENGTH_SHORT, true).show();
+                            }else{
+                                Toasty.error(activity, "No se pudo guardar la fecha", Toast.LENGTH_SHORT, true).show();
+                            }
+                        }
+
+                        cargarInforme(0);
+
+
                         builder.dismiss();
                     }
-                });
-            }
+                }
+            });
+            n.setOnClickListener(v -> builder.dismiss());
         });
         builder.setCancelable(false);
         builder.show();
@@ -634,12 +569,7 @@ public class FragmentAnexoFechas extends Fragment {
         final TextView potrero = viewInfalted.findViewById(R.id.potrero);
         final TextView especie = viewInfalted.findViewById(R.id.especie);
         final TextView comuna = viewInfalted.findViewById(R.id.comuna);
-        final TextView fecha_ultima_visita = viewInfalted.findViewById(R.id.fecha_ultima_visita);
-
-
-
-
-
+//        final TextView fecha_ultima_visita = viewInfalted.findViewById(R.id.fecha_ultima_visita);
 
 
         final ImageView correo_envia_inicio_despano = viewInfalted.findViewById(R.id.correo_envia_inicio_despano);
@@ -650,12 +580,18 @@ public class FragmentAnexoFechas extends Fragment {
         final ImageView correo_envia_termino_labores_post_cosecha = viewInfalted.findViewById(R.id.correo_envia_termino_labores_post_cosecha);
 
 
-        asistente.setText((plz.getUsuario() != null && plz.getUsuario().getUser() != null) ? plz.getUsuario().getUser() : "sin informacion");
+        Usuario usuario = null;
+        if(plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getId_fieldman() > 0){
+            usuario = MainActivity.myAppDB.myDao().getUsuarioById(plz.getAnexoCorreoFichas().getId_fieldman());
+        }
+
+
+        asistente.setText((usuario != null) ? usuario.getNombre() + ' ' + usuario.getApellido_p() : "sin informacion");
         agricultor.setText((plz.getAnexoCompleto().getAgricultor() != null && plz.getAnexoCompleto().getAgricultor().getNombre_agricultor() != null) ? plz.getAnexoCompleto().getAgricultor().getNombre_agricultor() : "sin informacion");
         potrero.setText((plz.getAnexoCompleto().getLotes() != null && plz.getAnexoCompleto().getLotes().getNombre_lote() != null) ? plz.getAnexoCompleto().getLotes().getNombre_lote() : "sin informacion");
         especie.setText((plz.getAnexoCompleto().getEspecie() != null && plz.getAnexoCompleto().getEspecie().getDesc_especie() != null) ? plz.getAnexoCompleto().getEspecie().getDesc_especie() : "sin informacion");
         comuna.setText((plz.getComuna() != null && plz.getComuna().getDesc_comuna() != null) ? plz.getComuna().getDesc_comuna() : "sin informacion");
-
+//        fecha_ultima_visita.setText((plz.getVisitas() != null && plz.getVisitas().getFecha_visita() != null)  ? plz.getVisitas().getFecha_visita() : "Sin informacion");
 
 
         et_inicio_despano.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_despano() != null) ? Utilidades.voltearFechaVista(plz.getAnexoCorreoFichas().getInicio_despano()) : "");
@@ -665,6 +601,7 @@ public class FragmentAnexoFechas extends Fragment {
         et_termino_cosecha.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getTermino_cosecha() != null) ? Utilidades.voltearFechaVista(plz.getAnexoCorreoFichas().getTermino_cosecha()) : "");
         et_termino_labores_post_cosecha.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas() != null) ? Utilidades.voltearFechaVista(plz.getAnexoCorreoFichas().getTermino_labores_post_cosechas()) : "");
         et_detalle_labores.setText((plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getDetalle_labores() != null) ? plz.getAnexoCorreoFichas().getDetalle_labores() : "");
+
 
 
         if(plz.getAnexoCorreoFichas() != null && plz.getAnexoCorreoFichas().getInicio_despano() != null && plz.getAnexoCorreoFichas().getCorreo_inicio_despano() > 0){
@@ -707,19 +644,9 @@ public class FragmentAnexoFechas extends Fragment {
         }
 
 
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                final Button n = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
-
-
-                n.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder.dismiss();
-                    }
-                });
-            }
+        builder.setOnShowListener(dialog -> {
+            final Button n = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
+            n.setOnClickListener(v -> builder.dismiss());
         });
         builder.setCancelable(false);
         builder.show();
@@ -740,28 +667,23 @@ public class FragmentAnexoFechas extends Fragment {
         }else{
             fechaRota = fecha.split("-");
         }
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (datePicker, year, month, dayOfMonth) -> {
 
-                month = month + 1;
+            month = month + 1;
 
-                String mes = "", dia;
+            String mes = "", dia;
 
-                if (month < 10) {
-                    mes = "0" + month;
-                } else {
-                    mes = String.valueOf(month);
-                }
-                if (dayOfMonth < 10) dia = "0" + dayOfMonth;
-                else dia = String.valueOf(dayOfMonth);
-
-                String finalDate = dia + "-" + mes + "-" + year;
-//                edit.setHint("");
-                edit.setText(finalDate);
+            if (month < 10) {
+                mes = "0" + month;
+            } else {
+                mes = String.valueOf(month);
             }
+            if (dayOfMonth < 10) dia = "0" + dayOfMonth;
+            else dia = String.valueOf(dayOfMonth);
+
+            String finalDate = dia + "-" + mes + "-" + year;
+            edit.setText(finalDate);
         }, Integer.parseInt(fechaRota[0]), (Integer.parseInt(fechaRota[1]) - 1), Integer.parseInt(fechaRota[2]));
-//        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
 
     }
@@ -771,13 +693,7 @@ public class FragmentAnexoFechas extends Fragment {
 
         if (tabla != null){
             tabla.removeViews();
-
-
-            if(seleccionado == 0){
-                tabla.agregarCabecera(R.array.cabecera_anexo_fechas_vista_uno);
-            }else {
-                tabla.agregarCabecera(R.array.cabecera_anexo_fechas_vista_dos);
-            }
+            tabla.agregarCabecera(R.array.cabecera_anexo_fechas_vista_uno);
 
             final List<AnexoWithDates> lista = MainActivity.myAppDB.myDao().getFechasSag(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
 
@@ -785,23 +701,15 @@ public class FragmentAnexoFechas extends Fragment {
                 final ProgressDialog pp = new ProgressDialog(activity);
                                 pp.setMessage("Espere por favor");
                                 pp.show();
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                AsyncTask.execute(() -> activity.runOnUiThread(() -> {
 //
-                                for (int i = 0; i < lista.size(); i++){
-                                    tabla.agregarFilaTabla(lista.get(i), seleccionado);
-                                    if(lista.size() == i + 1){
-                                        pp.dismiss();
-                                    }
-                                }
-                            }
-                        });
+                    for (int i = 0; i < lista.size(); i++){
+                        tabla.agregarFilaTabla(lista.get(i), 0);
+                        if(lista.size() == i + 1){
+                            pp.dismiss();
+                        }
                     }
-                });
+                }));
             }
         }
     }

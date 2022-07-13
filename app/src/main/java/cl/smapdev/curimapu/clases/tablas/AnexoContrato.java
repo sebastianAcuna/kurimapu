@@ -202,6 +202,30 @@ public class AnexoContrato {
     @SerializedName("id_de_quo")
     private String id_de_quo;
 
+    /* CAMBIOS 07-07-2022 */
+    @SerializedName("ha_destruidas")
+    private String ha_destruidas;
+
+    /* CAMBIOS 07-07-2022 16:56 */
+    @SerializedName("destruido")
+    private String destruido;
+
+
+    public String getDestruido() {
+        return destruido;
+    }
+
+    public void setDestruido(String destruido) {
+        this.destruido = destruido;
+    }
+
+    public String getHa_destruidas() {
+        return ha_destruidas;
+    }
+
+    public void setHa_destruidas(String ha_destruidas) {
+        this.ha_destruidas = ha_destruidas;
+    }
 
     public String getId_de_quo() {
         return id_de_quo;

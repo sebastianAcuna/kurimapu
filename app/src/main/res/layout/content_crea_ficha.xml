@@ -351,7 +351,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
-                 />
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -446,6 +446,8 @@
 
             />
 
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cont_rotacion_1"
             android:layout_width="0dp"
@@ -456,7 +458,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider7"
             app:layout_constraintEnd_toStartOf="@id/cont_rotacion_2"
-            android:hint="2020"
+            android:hint="2017"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -478,7 +480,7 @@
             app:layout_constraintStart_toEndOf="@id/cont_rotacion_1"
             app:layout_constraintTop_toBottomOf="@id/divider7"
             app:layout_constraintEnd_toEndOf="parent"
-            android:hint="2019"
+            android:hint="2018"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -498,8 +500,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_margin="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_2"
             app:layout_constraintEnd_toStartOf="@id/cont_rotacion_4"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_2"
             android:hint="2019"
             >
 
@@ -522,11 +524,33 @@
             app:layout_constraintStart_toEndOf="@id/cont_rotacion_3"
             app:layout_constraintTop_toBottomOf="@id/cont_rotacion_2"
             app:layout_constraintEnd_toEndOf="parent"
-            android:hint="2017"
+            android:hint="2020"
             >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_rotacion_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_rotacion_5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_4"
+            app:layout_constraintEnd_toEndOf="@id/cont_rotacion_3"
+            android:hint="2021"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_rotacion_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text|textNoSuggestions"
@@ -540,7 +564,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/datos_informativos"
-            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_4"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="@dimen/padding"
@@ -810,6 +834,7 @@
             android:padding="10dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:hint="@string/ingrese_norte_manual"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider9"
             app:layout_constraintEnd_toStartOf="@id/et_easting">
@@ -951,7 +976,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lista_fotos_ficha"
-           />
+            />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_picture_fichas"

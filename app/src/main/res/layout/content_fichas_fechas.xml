@@ -23,7 +23,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/layoutTablaFechas"
                 android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/contenedor_radios"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -37,34 +36,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:textSize="20sp"
                     />
-
-                <RadioGroup
-                    android:id="@+id/contenedor_radios"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/lbl_titulo"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:gravity="center"
-                    >
-
-                    <RadioButton
-                        android:id="@+id/rb_fechas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="fechas"
-                        />
-
-                    <RadioButton
-                        android:id="@+id/rb_detalle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="detalle"
-
-                        />
-
-                </RadioGroup>
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"

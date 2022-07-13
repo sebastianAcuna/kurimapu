@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 14,
-    "identityHash": "7a548148e0bfe0e67058c34e3b565293",
+    "identityHash": "1c2f5abb4060af3fb5b53248f2507493",
     "entities": [
       {
         "tableName": "fotos",
@@ -466,7 +466,7 @@
       },
       {
         "tableName": "anexo_contrato",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` TEXT NOT NULL, `num_anexo` TEXT, `id_variedad_anexo` TEXT, `temporada_anexo` TEXT, `id_especie_anexo` TEXT, `id_agricultor_anexo` TEXT, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL, `id_potrero` INTEGER NOT NULL, `superficie` INTEGER NOT NULL, `ready_batch` TEXT, `sectorial_office` TEXT, `field_sag` TEXT, `rch` TEXT, `sag_register_number` TEXT, `has_contrato` TEXT, `has_gps` TEXT, `orden_multiplicacion` TEXT, `sowing_date` TEXT, `lines_female` TEXT, `lines_male` TEXT, `sl_female` TEXT, `sl_real_sowing_female` TEXT, `sl_male` TEXT, `sl_real_sowing_male` TEXT, `sl_line_increase` TEXT, `sl_real_sowing_increase_line` TEXT, `results_raw_kgs` TEXT, `results_clean_kgs` TEXT, `yield_kg_ha` TEXT, `linea_incremento` TEXT, `raw_kgs_lot_uno` TEXT, `raw_kgs_lot_dos` TEXT, `raw_kgs_lot_tres` TEXT, `raw_kgs_lot_cuatro` TEXT, `raw_kgs_lot_cinco` TEXT, `total_kgs_raw` TEXT, `clean_kgs_lot_uno` TEXT, `clean_kgs_lot_dos` TEXT, `clean_kgs_lot_tres` TEXT, `clean_kgs_lot_cuatro` TEXT, `clean_kgs_lot_cinco` TEXT, `total_clean_kgs` TEXT, `germination_lot_uno` TEXT, `germination_lot_dos` TEXT, `germination_lot_tres` TEXT, `germination_lot_cuatro` TEXT, `germination_lot_cinco` TEXT, `humidity_lot_uno` TEXT, `humidity_lot_dos` TEXT, `humidity_lot_tres` TEXT, `humidity_lot_cuatro` TEXT, `humidity_lot_cinco` TEXT, `tsw_lot_uno` TEXT, `tsw_lot_dos` TEXT, `tsw_lot_tres` TEXT, `tsw_lot_cuatro` TEXT, `tsw_lot_cinco` TEXT, `id_de_quo` TEXT, PRIMARY KEY(`id_anexo_contrato`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` TEXT NOT NULL, `num_anexo` TEXT, `id_variedad_anexo` TEXT, `temporada_anexo` TEXT, `id_especie_anexo` TEXT, `id_agricultor_anexo` TEXT, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL, `id_potrero` INTEGER NOT NULL, `superficie` INTEGER NOT NULL, `ready_batch` TEXT, `sectorial_office` TEXT, `field_sag` TEXT, `rch` TEXT, `sag_register_number` TEXT, `has_contrato` TEXT, `has_gps` TEXT, `orden_multiplicacion` TEXT, `sowing_date` TEXT, `lines_female` TEXT, `lines_male` TEXT, `sl_female` TEXT, `sl_real_sowing_female` TEXT, `sl_male` TEXT, `sl_real_sowing_male` TEXT, `sl_line_increase` TEXT, `sl_real_sowing_increase_line` TEXT, `results_raw_kgs` TEXT, `results_clean_kgs` TEXT, `yield_kg_ha` TEXT, `linea_incremento` TEXT, `raw_kgs_lot_uno` TEXT, `raw_kgs_lot_dos` TEXT, `raw_kgs_lot_tres` TEXT, `raw_kgs_lot_cuatro` TEXT, `raw_kgs_lot_cinco` TEXT, `total_kgs_raw` TEXT, `clean_kgs_lot_uno` TEXT, `clean_kgs_lot_dos` TEXT, `clean_kgs_lot_tres` TEXT, `clean_kgs_lot_cuatro` TEXT, `clean_kgs_lot_cinco` TEXT, `total_clean_kgs` TEXT, `germination_lot_uno` TEXT, `germination_lot_dos` TEXT, `germination_lot_tres` TEXT, `germination_lot_cuatro` TEXT, `germination_lot_cinco` TEXT, `humidity_lot_uno` TEXT, `humidity_lot_dos` TEXT, `humidity_lot_tres` TEXT, `humidity_lot_cuatro` TEXT, `humidity_lot_cinco` TEXT, `tsw_lot_uno` TEXT, `tsw_lot_dos` TEXT, `tsw_lot_tres` TEXT, `tsw_lot_cuatro` TEXT, `tsw_lot_cinco` TEXT, `id_de_quo` TEXT, `ha_destruidas` TEXT, `destruido` TEXT, PRIMARY KEY(`id_anexo_contrato`))",
         "fields": [
           {
             "fieldPath": "id_anexo_contrato",
@@ -819,6 +819,18 @@
           {
             "fieldPath": "id_de_quo",
             "columnName": "id_de_quo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ha_destruidas",
+            "columnName": "ha_destruidas",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "destruido",
+            "columnName": "destruido",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -2733,9 +2745,10 @@
         "foreignKeys": []
       }
     ],
+    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7a548148e0bfe0e67058c34e3b565293\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1c2f5abb4060af3fb5b53248f2507493')"
     ]
   }
 }

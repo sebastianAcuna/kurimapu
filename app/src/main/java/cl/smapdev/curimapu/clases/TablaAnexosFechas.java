@@ -63,7 +63,7 @@ public class TablaAnexosFechas {
         this.tabla = tabla;
         rs = this.actividad.getResources();
         FILAS = COLUMNAS = 0;
-        filas = new ArrayList<TableRow>();
+        filas = new ArrayList<>();
         this.itemClickListener = itemClickListener;
         this.itemClickListenerver = itemClickListenerver;
 
@@ -143,7 +143,6 @@ public class TablaAnexosFechas {
     public void agregarFilaTabla(final AnexoWithDates ls, int posicion)
     {
 
-//        TableRow.LayoutParams layoutCelda;
         TableRow.LayoutParams layoutFila = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         TableRow fila = new TableRow(actividad);
         fila.setLayoutParams(layoutFila);
@@ -183,7 +182,7 @@ public class TablaAnexosFechas {
 
 
             Button botonVer = new Button(actividad);
-            botonVer.setText("Ver");
+            botonVer.setText("DETALLE");
             botonVer.setHeight(30);
 
 //            ly.addView(botonEditar);
@@ -203,34 +202,8 @@ public class TablaAnexosFechas {
             detalle_labores.setText((ls.getAnexoCorreoFichas() != null &&  ls.getAnexoCorreoFichas().getDetalle_labores() != null) ? ls.getAnexoCorreoFichas().getDetalle_labores() : "Sin Registros");
 
 
-            botonEditar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    itemClickListener.onItemClick(ls);
-                }
-            });
-
-            botonVer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    itemClickListenerver.onItemClick(ls);
-                }
-            });
-
-
-//            layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(anexo.getText().toString(), 50.0f),
-//                    TableRow.LayoutParams.WRAP_CONTENT);
-//
-//            anexo.setLayoutParams(layoutCelda);
-//
-//            layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(potrero.getText().toString(), 20.0f),
-//                    TableRow.LayoutParams.WRAP_CONTENT);
-//
-//            potrero.setLayoutParams(layoutCelda);
-
-
-//            layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(anexo.getText().toString(), anchoColumnas), TableRow.LayoutParams.WRAP_CONTENT);
-//            anexo.setLayoutParams(layoutCelda);
+            botonEditar.setOnClickListener(view -> itemClickListener.onItemClick(ls));
+            botonVer.setOnClickListener(view -> itemClickListenerver.onItemClick(ls));
 
 
             fila.addView(botonEditar);
@@ -244,8 +217,6 @@ public class TablaAnexosFechas {
             fila.addView(termino_cosecha);
             fila.addView(termino_labores_post_cosecha);
             fila.addView(detalle_labores);
-
-
 
 
         }else{
@@ -269,7 +240,7 @@ public class TablaAnexosFechas {
 
 //            Button botonForm = new Button(actividad);
             Button botonVer = new Button(actividad);
-            botonVer.setText("ver");
+            botonVer.setText("DETALLE");
 
             String nombreAgricultor = "";
             if(ls.getAnexoCompleto().getAgricultor() != null && ls.getAnexoCompleto().getAgricultor().getNombre_agricultor() != null){

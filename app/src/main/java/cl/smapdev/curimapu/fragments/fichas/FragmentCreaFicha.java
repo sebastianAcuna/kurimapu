@@ -106,10 +106,10 @@ public class FragmentCreaFicha extends Fragment {
     private EditText et_rut_agricultor, et_nombre_agricultor,et_telef_agricultor,et_admin_agricultor,
             et_tel_admin_agricultor,et_oferta_neg_agricultor,et_localidad_agricultor,et_has_disp_agricultor,
             et_obs_agricultor, ti_easting, ti_norting,ti_easting_manual, ti_norting_manual,
-            et_predio, et_potrero, et_rotacion_1, et_rotacion_2, et_rotacion_3, et_rotacion_4, et_carga_maleza,
+            et_predio, et_potrero, et_rotacion_1, et_rotacion_2, et_rotacion_3, et_rotacion_4, et_rotacion_5, et_carga_maleza,
             et_estado_general, et_fecha_limite_siembra, et_obs_negocio;
 
-    private TextInputLayout cont_rotacion_3,cont_rotacion_2, cont_rotacion_1 , cont_rotacion_4;
+    private TextInputLayout cont_rotacion_3,cont_rotacion_2, cont_rotacion_1 , cont_rotacion_4, cont_rotacion_5;
 
     private RecyclerView lista_fotos_ficha;
     private FloatingActionButton floating_picture_fichas;
@@ -130,9 +130,9 @@ public class FragmentCreaFicha extends Fragment {
 
 
     protected LocationManager locationManager;
-//    protected MyLocationListener MyLocationListener;
+    //    protected MyLocationListener MyLocationListener;
 //
-    private final Location currentBestLocation = null;
+    private Location currentBestLocation = null;
 
 
     private String marca_especial_temporada;
@@ -144,20 +144,20 @@ public class FragmentCreaFicha extends Fragment {
 
     private static final String VIENE_A_EDITAR = "viene_a_editar";
 
-    private final ArrayList<String> rutAgricultores = new ArrayList<>();
-    private final ArrayList<String> idRegiones = new ArrayList<>();
-    private final ArrayList<String> idComunas = new ArrayList<>();
-    private final ArrayList<String> idProvincias = new ArrayList<>();
-    private final ArrayList<String> idEspecies = new ArrayList<>();
-    private final ArrayList<String> idTipoRiegos = new ArrayList<>();
-    private final ArrayList<String> idTipoSuelos = new ArrayList<>();
-    private final ArrayList<String> idExperiencias = new ArrayList<>();
-    private final ArrayList<String> idTenencias = new ArrayList<>();
-    private final ArrayList<String> idMaquinarias = new ArrayList<>();
-    private final ArrayList<String> idTemporadas = new ArrayList<>();
+    private ArrayList<String> rutAgricultores = new ArrayList<>();
+    private ArrayList<String> idRegiones = new ArrayList<>();
+    private ArrayList<String> idComunas = new ArrayList<>();
+    private ArrayList<String> idProvincias = new ArrayList<>();
+    private ArrayList<String> idEspecies = new ArrayList<>();
+    private ArrayList<String> idTipoRiegos = new ArrayList<>();
+    private ArrayList<String> idTipoSuelos = new ArrayList<>();
+    private ArrayList<String> idExperiencias = new ArrayList<>();
+    private ArrayList<String> idTenencias = new ArrayList<>();
+    private ArrayList<String> idMaquinarias = new ArrayList<>();
+    private ArrayList<String> idTemporadas = new ArrayList<>();
 
-    private final String[] forbiddenWords = new String[]{"á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú"};
-    private final String[] forbiddenReplacement = new String[]{"a", "e", "i", "o", "u", "A", "E", "I", "O", "U"};
+    private String[] forbiddenWords = new String[]{"á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú"};
+    private String[] forbiddenReplacement = new String[]{"a", "e", "i", "o", "u", "A", "E", "I", "O", "U"};
 
 //    private AutoCompleteTextView actv;
 
@@ -280,7 +280,7 @@ public class FragmentCreaFicha extends Fragment {
         }
     }
 
-    private final LocationListener locationListenerGPS=new LocationListener() {
+    private LocationListener locationListenerGPS=new LocationListener() {
         @Override
         public void onLocationChanged(android.location.Location location) {
             double latitude=location.getLatitude();
@@ -289,11 +289,11 @@ public class FragmentCreaFicha extends Fragment {
 //            if (ti_norting_manual != null && fichasCompletas == null){
 
 
-                ti_norting_manual.setText(String.valueOf(latitude));
+            ti_norting_manual.setText(String.valueOf(latitude));
 //            }
 
 //            if (ti_easting_manual != null  && fichasCompletas == null){
-                ti_easting_manual.setText(String.valueOf(longitude));
+            ti_easting_manual.setText(String.valueOf(longitude));
 //            }
 
         }
@@ -391,7 +391,7 @@ public class FragmentCreaFicha extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 //                if(i > 0){
-                    llenarAgricultor(rutAgricultores.get(i));
+                llenarAgricultor(rutAgricultores.get(i));
 //                }
             }
 
@@ -541,14 +541,22 @@ public class FragmentCreaFicha extends Fragment {
         String anoActual = Utilidades.getAnno();
         if (!TextUtils.isEmpty(anoActual)){
             int Anno = Integer.parseInt(anoActual);
-            cont_rotacion_1.setHint("Cultivo "+ (Anno - 4));
-            et_rotacion_1.setTag(Anno - 4);
-            cont_rotacion_2.setHint("Cultivo "+ (Anno - 3));
-            et_rotacion_1.setTag(Anno - 3);
-            cont_rotacion_3.setHint("Cultivo "+ (Anno - 2));
-            et_rotacion_1.setTag(Anno - 2);
-            cont_rotacion_4.setHint("Cultivo "+ (Anno - 1));
-            et_rotacion_1.setTag(Anno - 1);
+
+            cont_rotacion_1.setHint("Cultivo "+String.valueOf(Anno - 5));
+            et_rotacion_1.setTag(Anno - 5);
+
+            cont_rotacion_2.setHint("Cultivo "+String.valueOf(Anno - 4));
+            et_rotacion_2.setTag(Anno - 4);
+
+            cont_rotacion_3.setHint("Cultivo "+String.valueOf(Anno - 3));
+            et_rotacion_3.setTag(Anno - 3);
+
+            cont_rotacion_4.setHint("Cultivo "+String.valueOf(Anno - 2));
+            et_rotacion_4.setTag(Anno - 2);
+
+            cont_rotacion_5.setHint("Cultivo "+String.valueOf(Anno - 1));
+            et_rotacion_5.setTag(Anno - 1);
+
 
         }
 
@@ -556,16 +564,16 @@ public class FragmentCreaFicha extends Fragment {
 
 
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.CAMERA);
-        int result2 = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_FINE_LOCATION);
-        int result3 = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_COARSE_LOCATION);
+        int result = ContextCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA);
+        int result2 = ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION);
+        int result3 = ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION);
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED  && result2 == PackageManager.PERMISSION_GRANTED  && result3 == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermission() {
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(Objects.requireNonNull(getActivity()), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             Toast.makeText(getActivity(), "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -666,6 +674,14 @@ public class FragmentCreaFicha extends Fragment {
 
             List<CropRotation> cropRotations = MainActivity.myAppDB.myDao().getCropRotationLocal(fichasCompletas.getFichas().getId_ficha_local_ficha());
             if(cropRotations.size() > 0){
+
+                System.out.println(cropRotations.get(0).getCultivo_crop_rotation());
+                System.out.println(cropRotations.get(1).getCultivo_crop_rotation());
+                System.out.println(cropRotations.get(2).getCultivo_crop_rotation());
+                System.out.println(cropRotations.get(3).getCultivo_crop_rotation());
+                System.out.println(cropRotations.get(4).getCultivo_crop_rotation());
+
+
                 et_rotacion_1.setText(cropRotations.get(0).getCultivo_crop_rotation());
                 cont_rotacion_1.setHint("Cultivo "+cropRotations.get(0).getTemporada_crop_rotation());
                 et_rotacion_1.setTag(cropRotations.get(0).getTemporada_crop_rotation());
@@ -682,6 +698,10 @@ public class FragmentCreaFicha extends Fragment {
                 cont_rotacion_4.setHint("Cultivo "+cropRotations.get(3).getTemporada_crop_rotation());
                 et_rotacion_4.setTag(cropRotations.get(3).getTemporada_crop_rotation());
 
+                et_rotacion_5.setText(cropRotations.get(4).getCultivo_crop_rotation());
+                cont_rotacion_5.setHint("Cultivo "+cropRotations.get(4).getTemporada_crop_rotation());
+                et_rotacion_5.setTag(cropRotations.get(4).getTemporada_crop_rotation());
+
 
             }
 
@@ -693,8 +713,8 @@ public class FragmentCreaFicha extends Fragment {
 //                norting = (!TextUtils.isEmpty(String.valueOf(fichasCompletas.getFichas().getNorting())) )? fichasCompletas.getFichas().getNorting() : coordenates.getAltitude();
 //                easting = (!TextUtils.isEmpty(String.valueOf(fichasCompletas.getFichas().getEasting())) )? fichasCompletas.getFichas().getEasting() : coordenates.getLongitude();
 //            }else{
-                norting = fichasCompletas.getFichas().getNorting();
-                easting = fichasCompletas.getFichas().getEasting();
+            norting = fichasCompletas.getFichas().getNorting();
+            easting = fichasCompletas.getFichas().getEasting();
 //            }
 
 
@@ -749,6 +769,7 @@ public class FragmentCreaFicha extends Fragment {
                 et_rotacion_2.setEnabled(false);
                 et_rotacion_3.setEnabled(false);
                 et_rotacion_4.setEnabled(false);
+                et_rotacion_5.setEnabled(false);
 
 
                 btn_captura_gps.setEnabled(false);
@@ -792,6 +813,7 @@ public class FragmentCreaFicha extends Fragment {
                 et_rotacion_2.setEnabled(false);
                 et_rotacion_3.setEnabled(false);
                 et_rotacion_4.setEnabled(false);
+                et_rotacion_5.setEnabled(false);
 
                 btn_save_agricultor.setEnabled(true);
                 floating_picture_fichas.setEnabled(true);
@@ -896,6 +918,7 @@ public class FragmentCreaFicha extends Fragment {
         String rotacion2 = et_rotacion_2.getText().toString().toUpperCase();
         String rotacion3 = et_rotacion_3.getText().toString().toUpperCase();
         String rotacion4 = et_rotacion_4.getText().toString().toUpperCase();
+        String rotacion5 = et_rotacion_5.getText().toString().toUpperCase();
 
         String predio = et_predio.getText().toString().toUpperCase();
         String potrero = et_potrero.getText().toString().toUpperCase();
@@ -913,185 +936,193 @@ public class FragmentCreaFicha extends Fragment {
 
 //&& !TextUtils.isEmpty(admin) && !TextUtils.isEmpty(fonoAdmin)&&  !TextUtils.isEmpty(fonoAgro)
         if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro)
-        && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
-        && !TextUtils.isEmpty(idAnno) && !TextUtils.isEmpty(idRegion) && !TextUtils.isEmpty(idComuna) && !TextUtils.isEmpty(norting) && !TextUtils.isEmpty(easting)
+                && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
+                && !TextUtils.isEmpty(idAnno) && !TextUtils.isEmpty(idRegion) && !TextUtils.isEmpty(idComuna) && !TextUtils.isEmpty(norting) && !TextUtils.isEmpty(easting)
                 && sp_comuna_agricultor.getSelectedItemPosition() > 0
                 && sp_provincia_agricultor.getSelectedItemPosition() > 0
                 && sp_region_agricultor.getSelectedItemPosition() > 0 ){
 
 
-                Config config = MainActivity.myAppDB.myDao().getConfig();
+            Config config = MainActivity.myAppDB.myDao().getConfig();
 
 
-                for (int i = 0; i < forbiddenWords.length; i++){
-                    localidad = localidad.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                    observacion = observacion.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                    oferta = oferta.replace(forbiddenWords[i],forbiddenReplacement[i]);
+            for (int i = 0; i < forbiddenWords.length; i++){
+                localidad = localidad.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                observacion = observacion.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                oferta = oferta.replace(forbiddenWords[i],forbiddenReplacement[i]);
 
-                    rotacion1 = rotacion1.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                    rotacion2 = rotacion2.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                    rotacion3 = rotacion3.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                    rotacion4 = rotacion4.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                rotacion1 = rotacion1.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                rotacion2 = rotacion2.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                rotacion3 = rotacion3.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                rotacion4 = rotacion4.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                rotacion5 = rotacion5.replace(forbiddenWords[i],forbiddenReplacement[i]);
 
-                    predio = predio.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                    potrero = potrero.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                    cargaMaleza = cargaMaleza.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                    estadoGeneral = estadoGeneral.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                    observacionNegocio = observacionNegocio.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                predio = predio.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                potrero = potrero.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                cargaMaleza = cargaMaleza.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                estadoGeneral = estadoGeneral.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                observacionNegocio = observacionNegocio.replace(forbiddenWords[i],forbiddenReplacement[i]);
+
+            }
+
+
+            Fichas fichas = new Fichas();
+            fichas.setActiva(1);
+            fichas.setAnno(idTemporadas.get(sp_year.getSelectedItemPosition()));
+            fichas.setHas_disponible(Double.parseDouble(has));
+            fichas.setLocalidad(localidad.toUpperCase());
+            fichas.setObservaciones(observacion.toUpperCase());
+            fichas.setSubida(false);
+            fichas.setOferta_negocio(oferta.toUpperCase());
+            fichas.setId_region_ficha(idRegion);
+            fichas.setId_comuna_ficha(idComuna);
+            fichas.setId_usuario(config.getId_usuario());
+
+            fichas.setId_tipo_riego(idTipoRiegos.get(sp_tipo_riego.getSelectedItemPosition()));
+            fichas.setId_tipo_suelo(idTipoSuelos.get(sp_tipo_suelo.getSelectedItemPosition()));
+            fichas.setId_tipo_tenencia_maquinaria(sp_maquinaria.getSelectedItem().toString());
+            fichas.setId_tipo_tenencia_terreno(sp_tenencia.getSelectedItem().toString());
+            fichas.setMaleza(cargaMaleza);
+            fichas.setExperiencia(sp_experiencia.getSelectedItem().toString());
+
+            fichas.setEstado_general_ficha(estadoGeneral);
+            fichas.setObservacion_negocio_ficha(observacionNegocio);
+            fichas.setPredio_ficha(predio);
+            fichas.setPotrero_ficha(potrero);
+
+            fichas.setEspecie_ficha(idEspecies.get(sp_especie.getSelectedItemPosition()));
+
+
+            try{
+                fichas.setFecha_limite_siembra_ficha(Utilidades.voltearFechaBD(fechaLimite));
+            }catch (Exception e){
+                Toasty.error(activity, "No se pudo guardar fecha limite de siembra", Toast.LENGTH_SHORT, true).show();
+            }
+
+
+
+
+            fichas.setId_provincia_ficha(idProvincias.get(sp_provincia_agricultor.getSelectedItemPosition()));
+
+            try{
+                fichas.setNorting(Double.parseDouble(norting));
+                fichas.setEasting(Double.parseDouble(easting));
+            }catch (ParseException e){
+                fichas.setNorting(0);
+                fichas.setEasting(0);
+                Toasty.info(activity, "No se pudo guardar norting y easting , se setearan en 0", Toast.LENGTH_SHORT, true).show();
+            }
+
+
+            fichas.setId_agricultor_ficha(MainActivity.myAppDB.myDao().getIdAgricutorByRut(rutAgro));
+
+            /* INSERT DE FICHA */
+            long idFichaNueva  = MainActivity.myAppDB.myDao().insertFicha(fichas) ;
+            if( idFichaNueva > 0){
+
+                Fichas fichas2 = new Fichas();
+                fichas2.setActiva(1);
+                fichas2.setAnno(fichas.getAnno());
+                fichas2.setHas_disponible(Double.parseDouble(has));
+                fichas2.setLocalidad(localidad.toUpperCase());
+                fichas2.setObservaciones(observacion.toUpperCase());
+                fichas2.setSubida(false);
+                fichas2.setOferta_negocio(oferta.toUpperCase());
+                fichas2.setId_region_ficha(idRegion);
+                fichas2.setId_comuna_ficha(idComuna);
+                fichas2.setId_usuario(config.getId_usuario());
+                fichas2.setId_ficha((int) idFichaNueva);
+                fichas2.setId_ficha_local_ficha((int) idFichaNueva);
+                fichas2.setId_provincia_ficha(fichas.getId_provincia_ficha());
+
+
+
+                fichas2.setId_tipo_riego(fichas.getId_tipo_riego());
+                fichas2.setId_tipo_suelo(fichas.getId_tipo_suelo());
+                fichas2.setId_tipo_tenencia_maquinaria(fichas.getId_tipo_tenencia_maquinaria());
+                fichas2.setId_tipo_tenencia_terreno(fichas.getId_tipo_tenencia_terreno());
+                fichas2.setMaleza(fichas.getMaleza());
+                fichas2.setExperiencia(fichas.getExperiencia());
+
+                fichas2.setEstado_general_ficha(fichas.getEstado_general_ficha());
+                fichas2.setObservacion_negocio_ficha(fichas.getObservacion_negocio_ficha());
+                fichas2.setPredio_ficha(fichas.getPredio_ficha());
+                fichas2.setPotrero_ficha(fichas.getPotrero_ficha());
+
+                fichas2.setFecha_limite_siembra_ficha(fichas.getFecha_limite_siembra_ficha());
+                fichas2.setEspecie_ficha(fichas.getEspecie_ficha());
+
+
+
+
+                String anoActual = Utilidades.getAnno();
+                if (!TextUtils.isEmpty(anoActual)){
+
+                    int Anno = Integer.parseInt(anoActual);
+
+                    ArrayList<CropRotation> cropRotations = new ArrayList<>();
+                    CropRotation crp5 = new CropRotation();
+
+                    crp5.setCultivo_crop_rotation(rotacion5);
+                    crp5.setTemporada_crop_rotation(String.valueOf(Anno - 1));
+                    crp5.setId_ficha_crop_rotation((int) idFichaNueva);
+                    crp5.setId_ficha_local_cp((int) idFichaNueva);
+                    crp5.setTipo_crop("P");
+                    cropRotations.add(crp5);
+
+                    CropRotation crp1 = new CropRotation();
+                    crp1.setCultivo_crop_rotation(rotacion4);
+                    crp1.setTemporada_crop_rotation(String.valueOf(Anno - 2));
+                    crp1.setId_ficha_crop_rotation((int) idFichaNueva);
+                    crp1.setId_ficha_local_cp((int) idFichaNueva);
+                    crp1.setTipo_crop("P");
+                    cropRotations.add(crp1);
+
+                    CropRotation crp2 = new CropRotation();
+                    crp2.setCultivo_crop_rotation(rotacion3);
+                    crp2.setTemporada_crop_rotation(String.valueOf(Anno - 3));
+                    crp2.setId_ficha_crop_rotation((int) idFichaNueva);
+                    crp2.setId_ficha_local_cp((int) idFichaNueva);
+                    crp2.setTipo_crop("P");
+                    cropRotations.add(crp2);
+
+                    CropRotation crp3 = new CropRotation();
+                    crp3.setCultivo_crop_rotation(rotacion2);
+                    crp3.setTemporada_crop_rotation(String.valueOf(Anno - 4));
+                    crp3.setId_ficha_crop_rotation((int) idFichaNueva);
+                    crp3.setId_ficha_local_cp((int) idFichaNueva);
+                    crp3.setTipo_crop("P");
+                    cropRotations.add(crp3);
+
+                    CropRotation crp4 = new CropRotation();
+                    crp4.setCultivo_crop_rotation(rotacion1);
+                    crp4.setTemporada_crop_rotation(String.valueOf(Anno - 5));
+                    crp4.setId_ficha_crop_rotation((int) idFichaNueva);
+                    crp4.setId_ficha_local_cp((int) idFichaNueva);
+                    crp4.setTipo_crop("P");
+                    cropRotations.add(crp4);
+
+                    MainActivity.myAppDB.myDao().insertCrop(cropRotations);
 
                 }
 
 
-                Fichas fichas = new Fichas();
-                fichas.setActiva(1);
-                fichas.setAnno(idTemporadas.get(sp_year.getSelectedItemPosition()));
-                fichas.setHas_disponible(Double.parseDouble(has));
-                fichas.setLocalidad(localidad.toUpperCase());
-                fichas.setObservaciones(observacion.toUpperCase());
-                fichas.setSubida(false);
-                fichas.setOferta_negocio(oferta.toUpperCase());
-                fichas.setId_region_ficha(idRegion);
-                fichas.setId_comuna_ficha(idComuna);
-                fichas.setId_usuario(config.getId_usuario());
-
-                fichas.setId_tipo_riego(idTipoRiegos.get(sp_tipo_riego.getSelectedItemPosition()));
-                fichas.setId_tipo_suelo(idTipoSuelos.get(sp_tipo_suelo.getSelectedItemPosition()));
-                fichas.setId_tipo_tenencia_maquinaria(sp_maquinaria.getSelectedItem().toString());
-                fichas.setId_tipo_tenencia_terreno(sp_tenencia.getSelectedItem().toString());
-                fichas.setMaleza(cargaMaleza);
-                fichas.setExperiencia(sp_experiencia.getSelectedItem().toString());
-
-                fichas.setEstado_general_ficha(estadoGeneral);
-                fichas.setObservacion_negocio_ficha(observacionNegocio);
-                fichas.setPredio_ficha(predio);
-                fichas.setPotrero_ficha(potrero);
-
-                fichas.setEspecie_ficha(idEspecies.get(sp_especie.getSelectedItemPosition()));
+                fichas2.setNorting(fichas.getNorting());
+                fichas2.setEasting(fichas.getEasting());
 
 
-                try{
-                    fichas.setFecha_limite_siembra_ficha(Utilidades.voltearFechaBD(fechaLimite));
-                }catch (Exception e){
-                    Toasty.error(activity, "No se pudo guardar fecha limite de siembra", Toast.LENGTH_SHORT, true).show();
+                fichas2.setId_agricultor_ficha(MainActivity.myAppDB.myDao().getIdAgricutorByRut(rutAgro));
+
+                MainActivity.myAppDB.myDao().updateFicha(fichas2);
+                MainActivity.myAppDB.myDao().updateFotosFichas((int) idFichaNueva);
+
+
+
+                if(activity != null){
+                    Snackbar.make(requireView(), "Se creo el prospecto de manera correcta", Snackbar.LENGTH_SHORT).show();
+                    activity.cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_right, R.anim.slide_out_right);
                 }
-
-
-
-
-                fichas.setId_provincia_ficha(idProvincias.get(sp_provincia_agricultor.getSelectedItemPosition()));
-
-                try{
-                    fichas.setNorting(Double.parseDouble(norting));
-                    fichas.setEasting(Double.parseDouble(easting));
-                }catch (ParseException e){
-                    fichas.setNorting(0);
-                    fichas.setEasting(0);
-                    Toasty.info(activity, "No se pudo guardar norting y easting , se setearan en 0", Toast.LENGTH_SHORT, true).show();
-                }
-
-
-                fichas.setId_agricultor_ficha(MainActivity.myAppDB.myDao().getIdAgricutorByRut(rutAgro));
-
-                /* INSERT DE FICHA */
-                long idFichaNueva  = MainActivity.myAppDB.myDao().insertFicha(fichas) ;
-                if( idFichaNueva > 0){
-
-                    Fichas fichas2 = new Fichas();
-                    fichas2.setActiva(1);
-                    fichas2.setAnno(fichas.getAnno());
-                    fichas2.setHas_disponible(Double.parseDouble(has));
-                    fichas2.setLocalidad(localidad.toUpperCase());
-                    fichas2.setObservaciones(observacion.toUpperCase());
-                    fichas2.setSubida(false);
-                    fichas2.setOferta_negocio(oferta.toUpperCase());
-                    fichas2.setId_region_ficha(idRegion);
-                    fichas2.setId_comuna_ficha(idComuna);
-                    fichas2.setId_usuario(config.getId_usuario());
-                    fichas2.setId_ficha((int) idFichaNueva);
-                    fichas2.setId_ficha_local_ficha((int) idFichaNueva);
-                    fichas2.setId_provincia_ficha(fichas.getId_provincia_ficha());
-
-
-
-                    fichas2.setId_tipo_riego(fichas.getId_tipo_riego());
-                    fichas2.setId_tipo_suelo(fichas.getId_tipo_suelo());
-                    fichas2.setId_tipo_tenencia_maquinaria(fichas.getId_tipo_tenencia_maquinaria());
-                    fichas2.setId_tipo_tenencia_terreno(fichas.getId_tipo_tenencia_terreno());
-                    fichas2.setMaleza(fichas.getMaleza());
-                    fichas2.setExperiencia(fichas.getExperiencia());
-
-                    fichas2.setEstado_general_ficha(fichas.getEstado_general_ficha());
-                    fichas2.setObservacion_negocio_ficha(fichas.getObservacion_negocio_ficha());
-                    fichas2.setPredio_ficha(fichas.getPredio_ficha());
-                    fichas2.setPotrero_ficha(fichas.getPotrero_ficha());
-
-                    fichas2.setFecha_limite_siembra_ficha(fichas.getFecha_limite_siembra_ficha());
-                    fichas2.setEspecie_ficha(fichas.getEspecie_ficha());
-
-
-
-
-                    String anoActual = Utilidades.getAnno();
-                    if (!TextUtils.isEmpty(anoActual)){
-
-                        int Anno = Integer.parseInt(anoActual);
-
-                        ArrayList<CropRotation> cropRotations = new ArrayList<>();
-                        CropRotation crp1 = new CropRotation();
-
-                        crp1.setCultivo_crop_rotation(rotacion4);
-                        crp1.setTemporada_crop_rotation(String.valueOf(Anno - 1));
-                        crp1.setId_ficha_crop_rotation((int) idFichaNueva);
-                        crp1.setId_ficha_local_cp((int) idFichaNueva);
-                        crp1.setTipo_crop("P");
-                        cropRotations.add(crp1);
-
-                        CropRotation crp2 = new CropRotation();
-                        crp2.setCultivo_crop_rotation(rotacion3);
-                        crp2.setTemporada_crop_rotation(String.valueOf(Anno - 2));
-                        crp2.setId_ficha_crop_rotation((int) idFichaNueva);
-                        crp2.setId_ficha_local_cp((int) idFichaNueva);
-                        crp2.setTipo_crop("P");
-                        cropRotations.add(crp2);
-
-                        CropRotation crp3 = new CropRotation();
-                        crp3.setCultivo_crop_rotation(rotacion2);
-                        crp3.setTemporada_crop_rotation(String.valueOf(Anno - 3));
-                        crp3.setId_ficha_crop_rotation((int) idFichaNueva);
-                        crp3.setId_ficha_local_cp((int) idFichaNueva);
-                        crp3.setTipo_crop("P");
-                        cropRotations.add(crp3);
-
-                        CropRotation crp4 = new CropRotation();
-                        crp4.setCultivo_crop_rotation(rotacion1);
-                        crp4.setTemporada_crop_rotation(String.valueOf(Anno - 4));
-                        crp4.setId_ficha_crop_rotation((int) idFichaNueva);
-                        crp4.setId_ficha_local_cp((int) idFichaNueva);
-                        crp4.setTipo_crop("P");
-
-                        cropRotations.add(crp4);
-
-                        MainActivity.myAppDB.myDao().insertCrop(cropRotations);
-
-                    }
-
-
-                    fichas2.setNorting(fichas.getNorting());
-                    fichas2.setEasting(fichas.getEasting());
-
-
-                    fichas2.setId_agricultor_ficha(MainActivity.myAppDB.myDao().getIdAgricutorByRut(rutAgro));
-
-                    MainActivity.myAppDB.myDao().updateFicha(fichas2);
-                    MainActivity.myAppDB.myDao().updateFotosFichas((int) idFichaNueva);
-
-
-
-                    if(activity != null){
-                        Snackbar.make(Objects.requireNonNull(getView()), "Se creo el prospecto de manera correcta", Snackbar.LENGTH_SHORT).show();
-                        activity.cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_right, R.anim.slide_out_right);
-                    }
-                }
+            }
 
 
         }else{
@@ -1124,6 +1155,7 @@ public class FragmentCreaFicha extends Fragment {
         String rotacion2 = et_rotacion_2.getText().toString().toUpperCase();
         String rotacion3 = et_rotacion_3.getText().toString().toUpperCase();
         String rotacion4 = et_rotacion_4.getText().toString().toUpperCase();
+        String rotacion5 = et_rotacion_5.getText().toString().toUpperCase();
 
         String predio = et_predio.getText().toString().toUpperCase();
         String potrero = et_potrero.getText().toString().toUpperCase();
@@ -1156,6 +1188,7 @@ public class FragmentCreaFicha extends Fragment {
                 rotacion2 = rotacion2.replace(forbiddenWords[i],forbiddenReplacement[i]);
                 rotacion3 = rotacion3.replace(forbiddenWords[i],forbiddenReplacement[i]);
                 rotacion4 = rotacion4.replace(forbiddenWords[i],forbiddenReplacement[i]);
+                rotacion5 = rotacion5.replace(forbiddenWords[i],forbiddenReplacement[i]);
 
                 predio = predio.replace(forbiddenWords[i],forbiddenReplacement[i]);
                 potrero = potrero.replace(forbiddenWords[i],forbiddenReplacement[i]);
@@ -1201,9 +1234,9 @@ public class FragmentCreaFicha extends Fragment {
                     crp1.setId_crop_rotation(crp.getId_crop_rotation());
                     crp1.setTipo_crop("P");
 
-                   if(et_rotacion_1.getTag().toString().equals(crp.getTemporada_crop_rotation())){
-                       crp1.setCultivo_crop_rotation(et_rotacion_1.getText().toString().toUpperCase());
-                   }
+                    if(et_rotacion_1.getTag().toString().equals(crp.getTemporada_crop_rotation())){
+                        crp1.setCultivo_crop_rotation(et_rotacion_1.getText().toString().toUpperCase());
+                    }
 
                     if(et_rotacion_2.getTag().toString().equals(crp.getTemporada_crop_rotation())){
                         crp1.setCultivo_crop_rotation(et_rotacion_2.getText().toString().toUpperCase());
@@ -1213,6 +1246,9 @@ public class FragmentCreaFicha extends Fragment {
                     }
                     if(et_rotacion_4.getTag().toString().equals(crp.getTemporada_crop_rotation())){
                         crp1.setCultivo_crop_rotation(et_rotacion_4.getText().toString().toUpperCase());
+                    }
+                    if(et_rotacion_5.getTag().toString().equals(crp.getTemporada_crop_rotation())){
+                        crp1.setCultivo_crop_rotation(et_rotacion_5.getText().toString().toUpperCase());
                     }
 
 
@@ -1227,36 +1263,44 @@ public class FragmentCreaFicha extends Fragment {
                     int Anno = Integer.parseInt(anoActual);
 
                     ArrayList<CropRotation> cropRotationss = new ArrayList<>();
-                    CropRotation crp1 = new CropRotation();
+                    CropRotation crp5 = new CropRotation();
 
+                    crp5.setCultivo_crop_rotation(rotacion5);
+                    crp5.setTemporada_crop_rotation(String.valueOf(Anno - 1));
+                    crp5.setId_ficha_crop_rotation((int) fichas.getId_ficha());
+                    crp5.setId_ficha_local_cp((int) fichas.getId_ficha());
+                    crp5.setTipo_crop("P");
+                    cropRotationss.add(crp5);
+
+                    CropRotation crp1 = new CropRotation();
                     crp1.setCultivo_crop_rotation(rotacion4);
-                    crp1.setTemporada_crop_rotation(String.valueOf(Anno - 1));
-                    crp1.setId_ficha_crop_rotation(fichas.getId_ficha());
-                    crp1.setId_ficha_local_cp(fichas.getId_ficha());
+                    crp1.setTemporada_crop_rotation(String.valueOf(Anno - 2));
+                    crp1.setId_ficha_crop_rotation((int) fichas.getId_ficha());
+                    crp1.setId_ficha_local_cp((int) fichas.getId_ficha());
                     crp1.setTipo_crop("P");
                     cropRotationss.add(crp1);
 
                     CropRotation crp2 = new CropRotation();
                     crp2.setCultivo_crop_rotation(rotacion3);
-                    crp2.setTemporada_crop_rotation(String.valueOf(Anno - 2));
-                    crp2.setId_ficha_crop_rotation(fichas.getId_ficha());
-                    crp2.setId_ficha_local_cp(fichas.getId_ficha());
+                    crp2.setTemporada_crop_rotation(String.valueOf(Anno - 3));
+                    crp2.setId_ficha_crop_rotation((int)fichas.getId_ficha());
+                    crp2.setId_ficha_local_cp((int) fichas.getId_ficha());
                     crp2.setTipo_crop("P");
                     cropRotationss.add(crp2);
 
                     CropRotation crp3 = new CropRotation();
                     crp3.setCultivo_crop_rotation(rotacion2);
-                    crp3.setTemporada_crop_rotation(String.valueOf(Anno - 3));
-                    crp3.setId_ficha_crop_rotation(fichas.getId_ficha());
-                    crp3.setId_ficha_local_cp(fichas.getId_ficha());
+                    crp3.setTemporada_crop_rotation(String.valueOf(Anno - 4));
+                    crp3.setId_ficha_crop_rotation((int) fichas.getId_ficha());
+                    crp3.setId_ficha_local_cp((int)fichas.getId_ficha());
                     crp3.setTipo_crop("P");
                     cropRotationss.add(crp3);
 
                     CropRotation crp4 = new CropRotation();
                     crp4.setCultivo_crop_rotation(rotacion1);
-                    crp4.setTemporada_crop_rotation(String.valueOf(Anno - 4));
-                    crp4.setId_ficha_crop_rotation(fichas.getId_ficha());
-                    crp4.setId_ficha_local_cp(fichas.getId_ficha());
+                    crp4.setTemporada_crop_rotation(String.valueOf(Anno - 5));
+                    crp4.setId_ficha_crop_rotation((int) fichas.getId_ficha());
+                    crp4.setId_ficha_local_cp((int) fichas.getId_ficha());
                     crp4.setTipo_crop("P");
 
                     cropRotationss.add(crp4);
@@ -1295,7 +1339,7 @@ public class FragmentCreaFicha extends Fragment {
 
             if(MainActivity.myAppDB.myDao().updateFicha(fichas) > 0){
 
-                Snackbar.make(Objects.requireNonNull(getView()), "Se modifico la ficha de manera correcta", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(requireView(), "Se modifico la ficha de manera correcta", Snackbar.LENGTH_SHORT).show();
                 if(activity != null){
                     activity.cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_right, R.anim.slide_out_right);
                 }
@@ -1311,7 +1355,7 @@ public class FragmentCreaFicha extends Fragment {
     private void avisoConfirmaCrear(String title, String message, String buton, final int accion) {
         View viewInfalted = LayoutInflater.from(getActivity()).inflate(R.layout.alert_empty, null);
 
-        final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+        final AlertDialog builder = new AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle(title)
                 .setMessage(message)
@@ -1408,7 +1452,7 @@ public class FragmentCreaFicha extends Fragment {
                 }
                 contador++;
             }
-            sp_year.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, str));
+            sp_year.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, str));
             if(!marca_especial_temporada.isEmpty()){
                 sp_year.setSelection(idTemporadas.indexOf(marca_especial_temporada));
 
@@ -1434,7 +1478,7 @@ public class FragmentCreaFicha extends Fragment {
             }
             sp_agric.setTitle(getResources().getString(R.string.seleccione_item));
             sp_agric.setPositiveButton(getResources().getString(R.string.ok));
-            sp_agric.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, str));
+            sp_agric.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, str));
 
         }
 
@@ -1452,7 +1496,7 @@ public class FragmentCreaFicha extends Fragment {
                 contador++;
             }
 
-            sp_region_agricultor.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_region_agricultor.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
 //            sp_region_agricultor.setSelection(0);
 
             cargarProvincia();
@@ -1484,7 +1528,7 @@ public class FragmentCreaFicha extends Fragment {
                 }
                 contador++;
             }
-            sp_especie.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_especie.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
             sp_especie.setSelection(selectable);
 
         }else{
@@ -1492,7 +1536,7 @@ public class FragmentCreaFicha extends Fragment {
             int contador = 0;
             rg.add(getResources().getString(R.string.select));
             idEspecies.add(contador,"");
-            sp_especie.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_especie.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
         }
 
     }
@@ -1517,7 +1561,7 @@ public class FragmentCreaFicha extends Fragment {
                 }
                 contador++;
             }
-            sp_tipo_riego.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_tipo_riego.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
             sp_tipo_riego.setSelection(selectable);
 
         }else{
@@ -1525,7 +1569,7 @@ public class FragmentCreaFicha extends Fragment {
             int contador = 0;
             rg.add(getResources().getString(R.string.select));
             idTipoRiegos.add(contador,"");
-            sp_tipo_riego.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_tipo_riego.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
         }
 
 
@@ -1547,7 +1591,7 @@ public class FragmentCreaFicha extends Fragment {
                 }
                 contador++;
             }
-            sp_tipo_suelo.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_tipo_suelo.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
             sp_tipo_suelo.setSelection(selectable);
 
         }else{
@@ -1555,7 +1599,7 @@ public class FragmentCreaFicha extends Fragment {
             int contador = 0;
             rg.add(getResources().getString(R.string.select));
             idTipoSuelos.add(contador,"");
-            sp_tipo_suelo.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_tipo_suelo.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
         }
 
 
@@ -1569,7 +1613,7 @@ public class FragmentCreaFicha extends Fragment {
         contadorExp++;
         rgExp.add("NO");
         idExperiencias.add(contadorExp,"NO");
-        sp_experiencia.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rgExp));
+        sp_experiencia.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rgExp));
 
         sp_experiencia.setSelection((idExperiencia.equals("SI")) ? 1 : (idExperiencia.equals("NO")  ? 2 : 0));
 
@@ -1584,7 +1628,7 @@ public class FragmentCreaFicha extends Fragment {
         contadorTen++;
         rgTen.add("ARRENDADA");
         idTenencias.add(contadorTen,"ARRENDADA");
-        sp_tenencia.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rgTen));
+        sp_tenencia.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rgTen));
         sp_tenencia.setSelection((idTenencia.equals("PROPIA")) ? 1 : (idTenencia.equals("ARRENDADA")  ? 2 : 0));
 
 
@@ -1598,7 +1642,7 @@ public class FragmentCreaFicha extends Fragment {
         contadorMaq++;
         rgMaq.add("ARRENDADA");
         idMaquinarias.add(contadorMaq,"ARRENDADA");
-        sp_maquinaria.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rgMaq));
+        sp_maquinaria.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rgMaq));
         sp_maquinaria.setSelection((idMaquinaria.equals("PROPIA")) ? 1 : (idMaquinaria.equals("ARRENDADA")  ? 2 : 0));
 
     }
@@ -1620,7 +1664,7 @@ public class FragmentCreaFicha extends Fragment {
                 }
                 contador++;
             }
-            sp_provincia_agricultor.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_provincia_agricultor.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
             sp_provincia_agricultor.setSelection(selectable);
 
             cargarComuna();
@@ -1629,7 +1673,7 @@ public class FragmentCreaFicha extends Fragment {
             int contador = 0;
             rg.add(getResources().getString(R.string.select));
             idProvincias.add(contador,"");
-            sp_provincia_agricultor.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_provincia_agricultor.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
 //            sp_provincia_agricultor.setSelection(selectable);
             cargarComuna();
         }
@@ -1653,14 +1697,14 @@ public class FragmentCreaFicha extends Fragment {
                 contador++;
             }
 
-            sp_comuna_agricultor.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_comuna_agricultor.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
             sp_comuna_agricultor.setSelection(selectable);
         }else{
             ArrayList<String> rg = new ArrayList<>();
             int contador = 0;
             rg.add(getResources().getString(R.string.select));
             idComunas.add(contador,"");
-            sp_comuna_agricultor.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_comuna_agricultor.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
         }
     }
 
@@ -1770,23 +1814,23 @@ public class FragmentCreaFicha extends Fragment {
 
     private void agregarImagenToFichas(List<FotosFichas> myImageList){
 
-            lista_fotos_ficha.setHasFixedSize(true);
+        lista_fotos_ficha.setHasFixedSize(true);
 
 
-           // List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, 2, temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0), temp_visitas.getId_visita_local(), idDispo);
+        // List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, 2, temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0), temp_visitas.getId_visita_local(), idDispo);
 
 
-            adapterFotosFichas = new FotosFichasAdapter(myImageList,activity, new FotosFichasAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(FotosFichas fotos) {
+        adapterFotosFichas = new FotosFichasAdapter(myImageList,activity, new FotosFichasAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(FotosFichas fotos) {
 //                    showAlertForUpdate(fotos);
-                }
-            }, new FotosFichasAdapter.OnItemLongClickListener() {
-                @Override
-                public void onItemLongClick(FotosFichas fotos) {
+            }
+        }, new FotosFichasAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(FotosFichas fotos) {
 
-                }
-            });
+            }
+        });
         lista_fotos_ficha.setAdapter(adapterFotosFichas);
 
     }
@@ -1846,32 +1890,32 @@ public class FragmentCreaFicha extends Fragment {
     private void bind(View view){
 
 
-        lista_fotos_ficha = view.findViewById(R.id.lista_fotos_ficha);
+        lista_fotos_ficha = (RecyclerView) view.findViewById(R.id.lista_fotos_ficha);
 
-        floating_picture_fichas = view.findViewById(R.id.floating_picture_fichas);
+        floating_picture_fichas = (FloatingActionButton) view.findViewById(R.id.floating_picture_fichas);
 
 
-        sp_year = view.findViewById(R.id.sp_year);
+        sp_year = (Spinner) view.findViewById(R.id.sp_year);
 //        sp_asoc_agr = (Spinner) view.findViewById(R.id.sp_asoc_agr);
-        sp_agric = view.findViewById(R.id.sp_agric);
-        sp_region_agricultor = view.findViewById(R.id.sp_region_agricultor);
-        sp_comuna_agricultor = view.findViewById(R.id.sp_comuna_agricultor);
-        sp_provincia_agricultor = view.findViewById(R.id.sp_provincia_agricultor);
+        sp_agric = (SearchableSpinner) view.findViewById(R.id.sp_agric);
+        sp_region_agricultor = (Spinner) view.findViewById(R.id.sp_region_agricultor);
+        sp_comuna_agricultor = (Spinner) view.findViewById(R.id.sp_comuna_agricultor);
+        sp_provincia_agricultor = (Spinner) view.findViewById(R.id.sp_provincia_agricultor);
 
 
 //        older_agr = (LinearLayout) view.findViewById(R.id.older_agr);
 //        asoc_agro = (LinearLayout) view.findViewById(R.id.asoc_agro);
 
-        et_rut_agricultor = view.findViewById(R.id.et_rut_agricultor);
-        et_nombre_agricultor = view.findViewById(R.id.et_nombre_agricultor);
-        et_telef_agricultor = view.findViewById(R.id.et_telef_agricultor);
-        et_admin_agricultor = view.findViewById(R.id.et_admin_agricultor);
-        et_tel_admin_agricultor = view.findViewById(R.id.et_tel_admin_agricultor);
+        et_rut_agricultor = (EditText) view.findViewById(R.id.et_rut_agricultor);
+        et_nombre_agricultor = (EditText) view.findViewById(R.id.et_nombre_agricultor);
+        et_telef_agricultor = (EditText) view.findViewById(R.id.et_telef_agricultor);
+        et_admin_agricultor = (EditText) view.findViewById(R.id.et_admin_agricultor);
+        et_tel_admin_agricultor = (EditText) view.findViewById(R.id.et_tel_admin_agricultor);
 
-        et_oferta_neg_agricultor = view.findViewById(R.id.et_oferta_neg_agricultor);
-        et_localidad_agricultor = view.findViewById(R.id.et_localidad_agricultor);
-        et_has_disp_agricultor = view.findViewById(R.id.et_has_disp_agricultor);
-        et_obs_agricultor = view.findViewById(R.id.et_obs_agricultor);
+        et_oferta_neg_agricultor = (EditText) view.findViewById(R.id.et_oferta_neg_agricultor);
+        et_localidad_agricultor = (EditText) view.findViewById(R.id.et_localidad_agricultor);
+        et_has_disp_agricultor = (EditText) view.findViewById(R.id.et_has_disp_agricultor);
+        et_obs_agricultor = (EditText) view.findViewById(R.id.et_obs_agricultor);
 
 //        et_oferta_neg_agricultor.setFilters(new InputFilter[] { inputfilter });
 //        et_localidad_agricultor.setFilters(new InputFilter[] { inputfilter });
@@ -1879,39 +1923,40 @@ public class FragmentCreaFicha extends Fragment {
 //        et_obs_agricultor.setFilters(new InputFilter[] { inputfilter });
 
 
-        btn_captura_gps = view.findViewById(R.id.btn_captura_gps);
+        btn_captura_gps = (Button) view.findViewById(R.id.btn_captura_gps);
 
 
 
-        ti_easting = view.findViewById(R.id.ti_easting);
-        ti_norting = view.findViewById(R.id.ti_norting);
+        ti_easting = (EditText) view.findViewById(R.id.ti_easting);
+        ti_norting = (EditText) view.findViewById(R.id.ti_norting);
 
-        ti_norting_manual = view.findViewById(R.id.ti_norting_manual);
-        ti_easting_manual = view.findViewById(R.id.ti_easting_manual);
+        ti_norting_manual = (EditText) view.findViewById(R.id.ti_norting_manual);
+        ti_easting_manual = (EditText) view.findViewById(R.id.ti_easting_manual);
 
 
         ti_norting_manual.setEnabled(false);
         ti_easting_manual.setEnabled(false);
 
 
-        sp_especie = view.findViewById(R.id.sp_especie);
-        sp_tipo_suelo = view.findViewById(R.id.sp_tipo_suelo);
-        sp_tipo_riego = view.findViewById(R.id.sp_tipo_riego);
-        sp_experiencia = view.findViewById(R.id.sp_experiencia);
-        sp_tenencia = view.findViewById(R.id.sp_tenencia);
-        sp_maquinaria = view.findViewById(R.id.sp_maquinaria);
-        sp_maquinaria = view.findViewById(R.id.sp_maquinaria);
+        sp_especie = (Spinner) view.findViewById(R.id.sp_especie);
+        sp_tipo_suelo = (Spinner) view.findViewById(R.id.sp_tipo_suelo);
+        sp_tipo_riego = (Spinner) view.findViewById(R.id.sp_tipo_riego);
+        sp_experiencia = (Spinner) view.findViewById(R.id.sp_experiencia);
+        sp_tenencia = (Spinner) view.findViewById(R.id.sp_tenencia);
+        sp_maquinaria = (Spinner) view.findViewById(R.id.sp_maquinaria);
+        sp_maquinaria = (Spinner) view.findViewById(R.id.sp_maquinaria);
 
 
-        et_predio = view.findViewById(R.id.et_predio);
-        et_potrero = view.findViewById(R.id.et_potrero);
-        et_rotacion_1 = view.findViewById(R.id.et_rotacion_1);
-        et_rotacion_2 = view.findViewById(R.id.et_rotacion_2);
-        et_rotacion_3 = view.findViewById(R.id.et_rotacion_3);
-        et_rotacion_4 = view.findViewById(R.id.et_rotacion_4);
-        et_carga_maleza = view.findViewById(R.id.et_carga_maleza);
-        et_estado_general = view.findViewById(R.id.et_estado_general);
-        et_fecha_limite_siembra = view.findViewById(R.id.et_fecha_limite_siembra);
+        et_predio = (EditText) view.findViewById(R.id.et_predio);
+        et_potrero = (EditText) view.findViewById(R.id.et_potrero);
+        et_rotacion_1 = (EditText) view.findViewById(R.id.et_rotacion_1);
+        et_rotacion_2 = (EditText) view.findViewById(R.id.et_rotacion_2);
+        et_rotacion_3 = (EditText) view.findViewById(R.id.et_rotacion_3);
+        et_rotacion_4 = (EditText) view.findViewById(R.id.et_rotacion_4);
+        et_rotacion_5 = (EditText) view.findViewById(R.id.et_rotacion_5);
+        et_carga_maleza = (EditText) view.findViewById(R.id.et_carga_maleza);
+        et_estado_general = (EditText) view.findViewById(R.id.et_estado_general);
+        et_fecha_limite_siembra = (EditText) view.findViewById(R.id.et_fecha_limite_siembra);
 
         et_fecha_limite_siembra.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -1920,12 +1965,13 @@ public class FragmentCreaFicha extends Fragment {
             }
         });
 
-        et_obs_negocio = view.findViewById(R.id.et_obs_negocio);
+        et_obs_negocio = (EditText) view.findViewById(R.id.et_obs_negocio);
 
-        cont_rotacion_3 = view.findViewById(R.id.cont_rotacion_3);
-        cont_rotacion_2 = view.findViewById(R.id.cont_rotacion_2);
-        cont_rotacion_1 = view.findViewById(R.id.cont_rotacion_1);
-        cont_rotacion_4 = view.findViewById(R.id.cont_rotacion_4);
+        cont_rotacion_3 = (TextInputLayout) view.findViewById(R.id.cont_rotacion_3);
+        cont_rotacion_2 = (TextInputLayout) view.findViewById(R.id.cont_rotacion_2);
+        cont_rotacion_1 = (TextInputLayout) view.findViewById(R.id.cont_rotacion_1);
+        cont_rotacion_4 = (TextInputLayout) view.findViewById(R.id.cont_rotacion_4);
+        cont_rotacion_5 = (TextInputLayout) view.findViewById(R.id.cont_rotacion_5);
 
 
 
@@ -1936,10 +1982,11 @@ public class FragmentCreaFicha extends Fragment {
         et_rotacion_2.setSelectAllOnFocus(true);
         et_rotacion_3.setSelectAllOnFocus(true);
         et_rotacion_4.setSelectAllOnFocus(true);
+        et_rotacion_5.setSelectAllOnFocus(true);
 
 
 
-        btn_save_agricultor = view.findViewById(R.id.btn_save_agricultor);
+        btn_save_agricultor = (Button) view.findViewById(R.id.btn_save_agricultor);
 
 
         btn_captura_gps.setOnClickListener(new View.OnClickListener() {

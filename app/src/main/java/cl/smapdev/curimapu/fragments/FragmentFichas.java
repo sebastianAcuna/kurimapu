@@ -220,12 +220,12 @@ public class FragmentFichas extends Fragment {
                     if(visitas.size() <= 0 && detalles.size() <= 0 && fotos.size() <= 0){
                         if (fichas.size() > 0 || fotosFichas.size() > 0 || crops.size() > 0) {
 
-                            if(Utilidades.exportDatabse(Utilidades.NOMBRE_DATABASE, activity.getPackageName())){
+//                            if(Utilidades.exportDatabse(Utilidades.NOMBRE_DATABASE, activity.getPackageName())){
                                 probarTodo();
-                            }else{
-                                if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                                Utilidades.avisoListo(getActivity(), "Hey", "NO PUDIMOS GENERAR EL RESPALDO A LA BASE DE DATOS, VUELVE A INTENTARLO, SI EL PROBLEMA PERSISTE CONTACTE CON UN ADMINISTRADOR.", "ENTIENDO");
-                            }
+//                            }else{
+//                                if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+//                                Utilidades.avisoListo(getActivity(), "Hey", "NO PUDIMOS GENERAR EL RESPALDO A LA BASE DE DATOS, VUELVE A INTENTARLO, SI EL PROBLEMA PERSISTE CONTACTE CON UN ADMINISTRADOR.", "ENTIENDO");
+//                            }
                             btn_subir.setEnabled(true);
                         } else {
                             btn_subir.setEnabled(true);

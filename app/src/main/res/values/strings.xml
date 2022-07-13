@@ -302,4 +302,5 @@
     <string name="recomendacion_anterior">Recomendacion anterior</string>
     <string name="visita_anterior_text">Visita Anterior</string>
     <string name="title_warning_ranked">esta evaluacion se guardara al guardar la visita.</string>
+    <string name="dateicon">DateIcon</string>
 </resources>

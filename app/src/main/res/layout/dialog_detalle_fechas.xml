@@ -2,6 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -16,9 +17,9 @@
     <TextView
         android:id="@+id/lbl_asist"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
-        android:text="Asistente"
+        android:text="Usuario"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,20 +30,19 @@
 
     <TextView
         android:id="@+id/asistente"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/colorOnBackground"
-        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/lbl_asist"
         app:layout_constraintBottom_toBottomOf="@id/lbl_asist"
         app:layout_constraintStart_toEndOf="@id/lbl_asist"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
     <TextView
         android:id="@+id/lbl_agricultor"
         android:layout_width="200dp"
-        android:layout_height="50dp"
-        app:layout_constraintHorizontal_weight="3"
+        android:layout_height="wrap_content"
         android:text="Agricultor"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/lbl_asist"
@@ -54,20 +54,19 @@
 
     <TextView
         android:id="@+id/agricultor"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/colorOnBackground"
-        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/lbl_agricultor"
         app:layout_constraintBottom_toBottomOf="@id/lbl_agricultor"
         app:layout_constraintStart_toEndOf="@id/lbl_agricultor"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
     <TextView
         android:id="@+id/lbl_potrero"
         android:layout_width="200dp"
-        android:layout_height="50dp"
-        app:layout_constraintHorizontal_weight="3"
+        android:layout_height="wrap_content"
         android:text="Potrero"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/lbl_agricultor"
@@ -79,19 +78,20 @@
 
     <TextView
         android:id="@+id/potrero"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/colorOnBackground"
         app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/lbl_potrero"
         app:layout_constraintBottom_toBottomOf="@id/lbl_potrero"
         app:layout_constraintStart_toEndOf="@id/lbl_potrero"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
     <TextView
         android:id="@+id/lbl_especie"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
         android:text="Especie"
         android:textSize="18sp"
@@ -104,21 +104,20 @@
 
     <TextView
         android:id="@+id/especie"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/colorOnBackground"
-        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/lbl_especie"
         app:layout_constraintBottom_toBottomOf="@id/lbl_especie"
         app:layout_constraintStart_toEndOf="@id/lbl_especie"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
 
     <TextView
         android:id="@+id/lbl_comuna"
         android:layout_width="200dp"
-        android:layout_height="50dp"
-        app:layout_constraintHorizontal_weight="3"
+        android:layout_height="wrap_content"
         android:text="Comuna"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/lbl_especie"
@@ -130,49 +129,66 @@
 
     <TextView
         android:id="@+id/comuna"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/colorOnBackground"
         app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/lbl_comuna"
         app:layout_constraintBottom_toBottomOf="@id/lbl_comuna"
         app:layout_constraintStart_toEndOf="@id/lbl_comuna"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
     <TextView
-        android:id="@+id/lbl_fecha_ultima_visita"
+        android:id="@+id/lbl_condicion"
         android:layout_width="200dp"
-        android:layout_height="50dp"
-        app:layout_constraintHorizontal_weight="3"
-        android:text="Fecha Ultima Visita"
+        android:layout_height="wrap_content"
+        android:text="Condicion"
+        android:layout_marginBottom="10sp"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/lbl_comuna"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fecha_ultima_visita"
+        app:layout_constraintEnd_toStartOf="@id/condicion"
+        app:layout_constraintBottom_toTopOf="@id/divider13"
         android:gravity="center_vertical"
 
         />
 
     <TextView
-        android:id="@+id/fecha_ultima_visita"
-        android:layout_width="wrap_content"
+        android:id="@+id/condicion"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/colorOnBackground"
+        android:layout_marginBottom="10sp"
         app:layout_constraintHorizontal_weight="3"
-        app:layout_constraintTop_toTopOf="@id/lbl_fecha_ultima_visita"
-        app:layout_constraintBottom_toBottomOf="@id/lbl_fecha_ultima_visita"
-        app:layout_constraintStart_toEndOf="@id/lbl_fecha_ultima_visita"
+        app:layout_constraintTop_toTopOf="@id/lbl_condicion"
+        app:layout_constraintBottom_toBottomOf="@id/lbl_condicion"
+        app:layout_constraintStart_toEndOf="@id/lbl_condicion"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
+
+
+    <View
+        android:id="@+id/divider13"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/lbl_condicion"
+        app:layout_constraintBottom_toTopOf="@id/lbl_inicio_despano"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
     <TextView
         android:id="@+id/lbl_inicio_despano"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         app:layout_constraintHorizontal_weight="3"
         android:text="inicio despano"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/lbl_fecha_ultima_visita"
+        android:layout_marginTop="5sp"
+        app:layout_constraintTop_toBottomOf="@id/divider13"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/et_inicio_despano"
         android:gravity="center_vertical"
@@ -181,14 +197,14 @@
 
     <TextView
         android:id="@+id/et_inicio_despano"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:textColor="@color/colorOnBackground"
         app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/lbl_inicio_despano"
         app:layout_constraintBottom_toBottomOf="@id/lbl_inicio_despano"
         app:layout_constraintStart_toEndOf="@id/lbl_inicio_despano"
-        app:layout_constraintEnd_toEndOf="@id/lbl_inicio_despano"
+        app:layout_constraintEnd_toStartOf="@id/correo_envia_inicio_despano"
         />
 
     <ImageView
@@ -200,14 +216,14 @@
         app:layout_constraintTop_toTopOf="@id/lbl_inicio_despano"
         app:layout_constraintBottom_toBottomOf="@id/lbl_inicio_despano"
         app:layout_constraintStart_toEndOf="@id/et_inicio_despano"
-
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/dateicon" />
 
 
     <TextView
         android:id="@+id/cinco_porc_floracion"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         app:layout_constraintHorizontal_weight="3"
         android:text="5% floracion"
         android:textSize="18sp"
@@ -218,8 +234,8 @@
 
     <TextView
         android:id="@+id/et_cinco_porc_floracion"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:textColor="@color/colorOnBackground"
         app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/cinco_porc_floracion"
@@ -238,13 +254,14 @@
         app:layout_constraintTop_toTopOf="@id/cinco_porc_floracion"
         app:layout_constraintBottom_toBottomOf="@id/cinco_porc_floracion"
         app:layout_constraintStart_toEndOf="@id/et_cinco_porc_floracion"
+        app:layout_constraintEnd_toEndOf="parent"
 
         />
 
     <TextView
         android:id="@+id/inicio_corte_seda"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:gravity="center_vertical"
         app:layout_constraintHorizontal_weight="3"
         android:text="inicio corte seda"
@@ -256,8 +273,8 @@
 
     <TextView
         android:id="@+id/et_inicio_corte_seda"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:textColor="@color/colorOnBackground"
         app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/inicio_corte_seda"
@@ -275,6 +292,7 @@
         app:layout_constraintTop_toTopOf="@id/inicio_corte_seda"
         app:layout_constraintBottom_toBottomOf="@id/inicio_corte_seda"
         app:layout_constraintStart_toEndOf="@id/et_inicio_corte_seda"
+        app:layout_constraintEnd_toEndOf="parent"
 
         />
 
@@ -283,7 +301,6 @@
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:gravity="center_vertical"
-        app:layout_constraintHorizontal_weight="3"
         android:text="inicio cosecha"
         android:textSize="18sp"
        app:layout_constraintTop_toBottomOf="@id/inicio_corte_seda"
@@ -294,11 +311,10 @@
 
     <TextView
         android:id="@+id/et_inicio_cosecha"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:gravity="center_vertical"
         android:textColor="@color/colorOnBackground"
-        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/inicio_cosecha"
         app:layout_constraintBottom_toBottomOf="@id/inicio_cosecha"
         app:layout_constraintStart_toEndOf="@id/inicio_cosecha"
@@ -311,20 +327,19 @@
         android:id="@+id/correo_envia_inicio_cosecha"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        app:layout_constraintHorizontal_weight="3"
         android:src="@drawable/ic_baseline_email_24_no"
         app:layout_constraintTop_toTopOf="@id/inicio_cosecha"
         app:layout_constraintBottom_toBottomOf="@id/inicio_cosecha"
         app:layout_constraintStart_toEndOf="@id/et_inicio_cosecha"
+        app:layout_constraintEnd_toEndOf="parent"
 
         />
 
     <TextView
         android:id="@+id/termino_cosecha"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:gravity="center_vertical"
-        app:layout_constraintHorizontal_weight="3"
         android:text="Termino cosecha"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/inicio_cosecha"
@@ -336,10 +351,9 @@
 
     <TextView
         android:id="@+id/et_termino_cosecha"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:textColor="@color/colorOnBackground"
-        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/termino_cosecha"
         app:layout_constraintBottom_toBottomOf="@id/termino_cosecha"
         app:layout_constraintStart_toEndOf="@id/termino_cosecha"
@@ -356,6 +370,7 @@
         app:layout_constraintTop_toTopOf="@id/termino_cosecha"
         app:layout_constraintBottom_toBottomOf="@id/termino_cosecha"
         app:layout_constraintStart_toEndOf="@id/et_termino_cosecha"
+        app:layout_constraintEnd_toEndOf="parent"
 
         />
 
@@ -363,7 +378,7 @@
     <TextView
         android:id="@+id/termino_labores_post_cosecha"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:gravity="center_vertical"
         app:layout_constraintHorizontal_weight="3"
         android:text="Termino labores post cosecha"
@@ -375,10 +390,9 @@
 
     <TextView
         android:id="@+id/et_termino_labores_post_cosecha"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/colorOnBackground"
-        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="@id/termino_labores_post_cosecha"
         app:layout_constraintBottom_toBottomOf="@id/termino_labores_post_cosecha"
         app:layout_constraintStart_toEndOf="@id/termino_labores_post_cosecha"
@@ -394,6 +408,7 @@
         app:layout_constraintTop_toTopOf="@id/termino_labores_post_cosecha"
         app:layout_constraintBottom_toBottomOf="@id/termino_labores_post_cosecha"
         app:layout_constraintStart_toEndOf="@id/et_termino_labores_post_cosecha"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
     <TextView
@@ -406,8 +421,6 @@
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/termino_labores_post_cosecha"
         app:layout_constraintStart_toStartOf="parent"
-
-
         />
 
     <TextView
@@ -415,11 +428,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorOnBackground"
-        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toBottomOf="@id/detalle_labores"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

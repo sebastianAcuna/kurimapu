@@ -111,7 +111,7 @@ public class FragmentContratos extends Fragment {
 
         try{
             viewPager.setAdapter(new TabsAdapters(getChildFragmentManager(),
-                    Objects.requireNonNull(getContext())));
+                    requireContext()));
 
 
             TabLayout tabLayout = activity.findViewById(R.id.tab_layout);

@@ -76,7 +76,7 @@ public interface MyDao {
             " INNER JOIN usuarios U1 ON (F.id_usuario_new = U1.id_usuario) " +
             " LEFT JOIN agricultor AG ON (F.id_agric_new = AG.id_agricultor) " +
             " INNER JOIN temporada T ON ( F.id_tempo_new = T.id_tempo_tempo) " +
-            " WHERE  T.id_tempo_tempo = :id_tempo " +
+            " WHERE  T.id_tempo_tempo = :id_tempo AND AC.destruido = '0' " +
             " ORDER BY E.desc_especie ASC, AC.num_anexo ASC ; ")
     List<SitiosNoVisitadosAnexos>  getSitiosNoVisitados(int id_tempo);
 
@@ -99,7 +99,7 @@ public interface MyDao {
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
             "INNER JOIN especie E ON (E.id_especie = M.id_especie_variedad) " +
             "INNER JOIN usuarios U ON (V.id_user_visita = U.id_usuario) " +
-            "WHERE F.id_tempo_new = :id_tempo " +
+            "WHERE F.id_tempo_new = :id_tempo AND AC.destruido = '0' " +
             "ORDER BY V.fecha_visita DESC, AC.num_anexo ASC, E.desc_especie ASC, V.hora_visita DESC ; ")
     List<VisitasCompletas> getPrimeraPrioridad(int id_tempo);
 
