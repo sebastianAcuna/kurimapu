@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
-    android:padding="@dimen/padding"
+    android:padding="@dimen/padding_small"
+    android:layout_margin="@dimen/padding_small"
     android:background="@color/colorBackgroundList"
+    android:elevation="@dimen/padding"
     >
 
     <TextView
@@ -40,6 +43,7 @@
         app:layout_constraintTop_toBottomOf="@id/num_anexo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/especie"
+        android:layout_marginTop="@dimen/padding_small"
         android:text="@string/agricultor"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
         />
@@ -65,6 +69,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/lbl_variedad"
         android:text="@string/potrero"
+        android:layout_marginTop="@dimen/padding_small"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
         />
 
@@ -88,6 +93,7 @@
         app:layout_constraintStart_toEndOf="@id/lbl_potrero"
         app:layout_constraintTop_toBottomOf="@id/agricultor"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
         android:text="@string/variedad"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
         />
@@ -108,10 +114,10 @@
         android:id="@+id/btn_add_visita"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         app:layout_constraintTop_toBottomOf="@id/variedad"
         app:layout_constraintStart_toStartOf="parent"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:textColor="@color/colorPrimary"
         android:text="@string/nuevo"
         android:layout_marginTop="@dimen/padding_small"
         />
@@ -120,7 +126,7 @@
         android:id="@+id/btn_menu_visita"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        style="@style/Widget.AppCompat.Button.Colored"
         app:layout_constraintTop_toBottomOf="@id/variedad"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/detalle"
@@ -135,6 +141,7 @@
         android:layout_marginTop="@dimen/padding_small"
         app:layout_constraintTop_toBottomOf="@id/btn_menu_visita"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
         />
 
 

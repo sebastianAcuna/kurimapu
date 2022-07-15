@@ -65,7 +65,7 @@ public class Utilidades {
 //    21-ca0493
 
 
-    public static final String IP_PRODUCCION = "www.zcloud.cl";
+    public static final String IP_PRODUCCION = "192.168.1.17";
 //    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_PRUEBAS = "190.13.170.26";

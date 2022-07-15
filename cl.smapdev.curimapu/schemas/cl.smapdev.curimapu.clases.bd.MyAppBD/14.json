@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 14,
-    "identityHash": "1c2f5abb4060af3fb5b53248f2507493",
+    "identityHash": "494555a27170ad60d19f934bf0c2ac02",
     "entities": [
       {
         "tableName": "fotos",
@@ -2743,12 +2743,116 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "anexo_recomendaciones",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_ac_recom` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ac` INTEGER NOT NULL, `descripcion_recom` TEXT, `estado` TEXT, `observacion_recom` TEXT, `fecha_plazo` TEXT, `user_tx` TEXT, `nombre_crea` TEXT, `fecha_hora_tx` TEXT, `user_mod` TEXT, `nombre_mod` TEXT, `fecha_hora_mod` TEXT, `estado_server` INTEGER NOT NULL, `cabecera_server` INTEGER NOT NULL, `marca_evaluacion_server` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id_ac_recom",
+            "columnName": "id_ac_recom",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_ac",
+            "columnName": "id_ac",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descripcion_recom",
+            "columnName": "descripcion_recom",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado",
+            "columnName": "estado",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "observacion_recom",
+            "columnName": "observacion_recom",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_plazo",
+            "columnName": "fecha_plazo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "user_tx",
+            "columnName": "user_tx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_crea",
+            "columnName": "nombre_crea",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_hora_tx",
+            "columnName": "fecha_hora_tx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "user_mod",
+            "columnName": "user_mod",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_mod",
+            "columnName": "nombre_mod",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_hora_mod",
+            "columnName": "fecha_hora_mod",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado_server",
+            "columnName": "estado_server",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cabecera_server",
+            "columnName": "cabecera_server",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "marca_evaluacion_server",
+            "columnName": "marca_evaluacion_server",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_ac_recom"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1c2f5abb4060af3fb5b53248f2507493')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '494555a27170ad60d19f934bf0c2ac02')"
     ]
   }
 }

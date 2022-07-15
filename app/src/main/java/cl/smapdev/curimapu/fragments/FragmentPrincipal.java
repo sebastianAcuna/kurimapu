@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
@@ -50,6 +51,7 @@ import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
+import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.FotosFichas;
@@ -197,65 +199,53 @@ public class FragmentPrincipal extends Fragment {
 
 
 
-        btn_descargar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btn_descargar.setOnClickListener(view1 -> {
 
-                btn_descargar.setEnabled(false);
-                btn_preparar.setEnabled(false);
-                List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir();
-                List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubir();
-                List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotos();
-                List<Fichas> fichas = MainActivity.myAppDB.myDao().getFichasPorSubir();
-                List<FotosFichas> fotosFichas = MainActivity.myAppDB.myDao().getFotosFichasPorSubir();
-                List<CropRotation> crops = MainActivity.myAppDB.myDao().getCropsPorSubir();
+            btn_descargar.setEnabled(false);
+            btn_preparar.setEnabled(false);
+            List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir();
+            List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubir();
+            List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotos();
+            List<Fichas> fichas = MainActivity.myAppDB.myDao().getFichasPorSubir();
+            List<FotosFichas> fotosFichas = MainActivity.myAppDB.myDao().getFotosFichasPorSubir();
+            List<CropRotation> crops = MainActivity.myAppDB.myDao().getCropsPorSubir();
 
-                if(visitas.size() <= 0 && detalles.size() <= 0 && fotos.size() <= 0 && fichas.size() <= 0 && fotosFichas.size() <= 0 && crops.size() <= 0 ) {
-                    InternetStateClass mm = new InternetStateClass(activity, new returnValuesFromAsyntask() {
-                        @Override
-                        public void myMethod(boolean result) {
-                            if (result) {
-                                btn_descargar.setEnabled(true);
-                                btn_preparar.setEnabled(true);
-                                descargando();
-                            }
-                        }
-                    }, 1);
-                    mm.execute();
-                }else{
-                    btn_descargar.setEnabled(true);
-                    btn_preparar.setEnabled(true);
-                    Utilidades.avisoListo(getActivity(), "ATENCION", "TIENE " +
-                            "\n-" + visitas.size() + " VISITAS " +
-                            "\n-" + fotos.size() + " FOTOS " +
-                            "\n-" + detalles.size() + " DETALLE VISITA (LIBRO DE CAMPO) " +
-                            "\n-" + fichas.size() + " PROSPECTOS " +
-                            "\n-" + fotosFichas.size() + " FOTOS EN PROSPECTOS " +
-                            "\n-" + crops.size() + " ROTACIONES EN PROSPECTOS " +
-                            "\nPENDIENTES, POR FAVOR, PRIMERO SINCRONICE ", "ENTIENDO");
-                }
-
+            if(visitas.size() <= 0 && detalles.size() <= 0 && fotos.size() <= 0 && fichas.size() <= 0 && fotosFichas.size() <= 0 && crops.size() <= 0 ) {
+                InternetStateClass mm = new InternetStateClass(activity, result -> {
+                    if (result) {
+                        btn_descargar.setEnabled(true);
+                        btn_preparar.setEnabled(true);
+                        descargando();
+                    }
+                }, 1);
+                mm.execute();
+            }else{
+                btn_descargar.setEnabled(true);
+                btn_preparar.setEnabled(true);
+                Utilidades.avisoListo(getActivity(), "ATENCION", "TIENE " +
+                        "\n-" + visitas.size() + " VISITAS " +
+                        "\n-" + fotos.size() + " FOTOS " +
+                        "\n-" + detalles.size() + " DETALLE VISITA (LIBRO DE CAMPO) " +
+                        "\n-" + fichas.size() + " PROSPECTOS " +
+                        "\n-" + fotosFichas.size() + " FOTOS EN PROSPECTOS " +
+                        "\n-" + crops.size() + " ROTACIONES EN PROSPECTOS " +
+                        "\nPENDIENTES, POR FAVOR, PRIMERO SINCRONICE ", "ENTIENDO");
             }
+
         });
 
 
-        btn_sube_marcadas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(botonesSeleccionados.size() > 0){
-                    contadorVisita = 0;
-                    prepararVisitaAgrupada(contadorVisita);
-                }
+        btn_sube_marcadas.setOnClickListener(view12 -> {
+            if(botonesSeleccionados.size() > 0){
+                contadorVisita = 0;
+                prepararVisitaAgrupada(contadorVisita);
             }
         });
 
-        btn_preparar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btn_descargar.setEnabled(false);
-                btn_preparar.setEnabled(false);
-                prepararVisitas();
-            }
+        btn_preparar.setOnClickListener(view13 -> {
+            btn_descargar.setEnabled(false);
+            btn_preparar.setEnabled(false);
+            prepararVisitas();
         });
 
 
@@ -285,254 +275,172 @@ public class FragmentPrincipal extends Fragment {
 
 
     void prepararVisitas(){
-        if(contenedor_botones != null){
+        if(contenedor_botones == null){ return; }
 
-            contenedor_botones.removeAllViews();
+        contenedor_botones.removeAllViews();
 
-            btn_descargar.setEnabled(true);
-            btn_preparar.setEnabled(true);
+        btn_descargar.setEnabled(true);
+        btn_preparar.setEnabled(true);
 
-            List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir(); //2
-            if (visitas.size() > 0){
-
-                Utilidades.exportDatabse(Utilidades.NOMBRE_DATABASE, activity.getPackageName());
-
-
-                botonesSeleccionados = new ArrayList<>();
-                idVisitasSeleccionadas = new ArrayList<>();
-
-                visitas_titulo.setVisibility(View.VISIBLE);
-                visitas_titulo.setText("Visitas pendientes por subir (ROJAS)");
-                visitas_marca.setVisibility(View.VISIBLE);
-                visitas_marca.setText("pinche cada visita para marcarla (solo de a 3), para subirla inmeditamente mantenga presionado el botón.");
-
-
-                ArrayList<Visitas> visitas1 = new ArrayList<>(); //0
-                int totalContadas = 0;
-                int cantidadAMostrar = 3;
-                for (final Visitas v2 : visitas) { //2 vueltas
-
-                    visitas1.add(v2);
-//                        2 == 3?
-                    if (visitas1.size() == cantidadAMostrar){
-                        LinearLayout linearLayout = new LinearLayout(getActivity());
-                        linearLayout.setId(View.generateViewId());
-                        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                        for (final Visitas v : visitas1){ //vueltas de a 3
-
-                            AnexoContrato anexoContrato = MainActivity.myAppDB.myDao().getAnexos(v.getId_anexo_visita());
-                            List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(v.getId_visita());
-
-                            final Button button = new Button(getActivity());
-                            button.setId(View.generateViewId());
-                            button.setGravity(Gravity.CENTER);
-                            button.setTag("VISITASPENDIENTES_"+v.getId_visita());
-
-                            if(v.getEstado_server_visitas() == 0){
-                                button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorRedLight));
-                                button.setTextColor(getActivity().getColor(R.color.colorSurface));
-                            }
-
-                            long peso = 0;
-
-                            for(Fotos f : fotos){
-                                File file = new File(f.getRuta());
-                                if (file.exists()){
-                                    peso +=  (file.length() / 1024);
-                                }
-                            }
-
-                            String texto = "";
-
-                            texto += (anexoContrato != null) ? anexoContrato.getAnexo_contrato() : "";
-                            texto += "\n" + fotos.size() + " FOTOS ";
-                            texto += "CON " + (peso / 1024) + " MB  ";
-
-
-                            button.setText(texto);
-
-                            linearLayout.addView(button);
-
-                            LinearLayout.LayoutParams propParam = new LinearLayout.LayoutParams( WRAP_CONTENT, WRAP_CONTENT );
-                            propParam.setMargins(20, 10, 20,10);
-
-                            button.setLayoutParams(propParam);
-
-
-                            button.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                    Toasty.info(getActivity(), "Funcionalidad deshabilitada, pmantenga presionado para subir", Toast.LENGTH_LONG, true).show();
-
-//                                    botonesSeleccionados = new ArrayList<>();
-//                                    idVisitasSeleccionadas = new ArrayList<>();
-//                                    button.setEnabled(false);
-//                                    subirVisita(v, button);
-
-//                                    if(botonesSeleccionados.indexOf(button.getId()) >= 0){
-//                                        botonesSeleccionados.remove((Integer) button.getId());
-//                                        idVisitasSeleccionadas.remove((Integer) v.getId_visita());
-//                                        button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorRedLight));
-//                                        button.setTextColor(getActivity().getColor(R.color.colorSurface));
-//
-//                                    }else{
-//                                        if(botonesSeleccionados.size() < 3){
-//                                            button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorPrimaryDarkVariant));
-//                                            button.setTextColor(getActivity().getColor(R.color.colorSurface));
-//                                            botonesSeleccionados.add(button.getId());
-//                                            idVisitasSeleccionadas.add(v.getId_visita());
-//                                        }else{
-//                                            Utilidades.avisoListo(getActivity(), "Hey", "solo puedes marcar 3 visitas para subir a la vez", "entiendo");
-//                                        }
-//                                    }
-//
-//
-//
-//                                    if(botonesSeleccionados.size() == 3){
-//                                        btn_sube_marcadas.setVisibility(View.VISIBLE);
-//                                    }else{
-//                                        btn_sube_marcadas.setVisibility(View.INVISIBLE);
-//                                    }
-
-//                                    Toast.makeText(getActivity(), " click", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                            button.setOnLongClickListener(new View.OnLongClickListener() {
-                                @Override
-                                public boolean onLongClick(View view) {
-
-                                    botonesSeleccionados = new ArrayList<>();
-                                    idVisitasSeleccionadas = new ArrayList<>();
-                                    button.setEnabled(false);
-                                    subirVisita(v, button);
-
-                                    return false;
-                                }
-                            });
-                        }
-                        contenedor_botones.addView(linearLayout);
-
-                        ViewGroup.LayoutParams propParam = linearLayout.getLayoutParams();
-                        propParam.height = WRAP_CONTENT;
-                        propParam.width = WRAP_CONTENT;
-                        linearLayout.setLayoutParams(propParam);
-                        totalContadas += cantidadAMostrar;
-                        visitas1.clear();
-                    }else if((visitas.size()/* 2 */ - totalContadas /* 1 */) > 0 && (visitas.size() - totalContadas) < cantidadAMostrar){
-
-                        LinearLayout linearLayout = new LinearLayout(getActivity());
-                        linearLayout.setId(View.generateViewId());
-                        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                        for (final Visitas v : visitas1){ //vueltas de a 3
-
-                            AnexoContrato anexoContrato = MainActivity.myAppDB.myDao().getAnexos(v.getId_anexo_visita());
-                            List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(v.getId_visita());
-
-                            final Button button = new Button(getActivity());
-                            button.setId(View.generateViewId());
-                            button.setGravity(Gravity.CENTER);
-                            button.setTag("VISITASPENDIENTES_"+v.getId_visita());
-
-                            if(v.getEstado_server_visitas() == 0){
-                                button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorRedLight));
-                                button.setTextColor(getActivity().getColor(R.color.colorSurface));
-                            }
-
-                            long peso = 0;
-
-                            for(Fotos f : fotos){
-                                File file = new File(f.getRuta());
-                                if (file.exists()){
-                                    peso +=  (file.length() / 1024);
-                                }
-                            }
-
-                            String texto = "";
-
-                            texto += (anexoContrato != null) ? anexoContrato.getAnexo_contrato() : "";
-                            texto += "\n" + fotos.size() + " FOTOS ";
-                            texto += "CON " + (peso / 1024) + " MB  ";
-
-
-                            button.setText(texto);
-
-                            linearLayout.addView(button);
-
-                            LinearLayout.LayoutParams propParam = new LinearLayout.LayoutParams( WRAP_CONTENT, WRAP_CONTENT );
-                            propParam.setMargins(20, 10, 20,10);
-
-
-                            button.setLayoutParams(propParam);
-
-
-                            button.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Toasty.info(getActivity(), "Funcionalidad deshabilitada, pmantenga presionado para subir", Toast.LENGTH_LONG, true).show();
-//                                    if(botonesSeleccionados.indexOf(button.getId()) >= 0){
-//
-//                                        botonesSeleccionados.remove((Integer) button.getId());
-//                                        idVisitasSeleccionadas.remove((Integer) v.getId_visita());
-//
-//                                        button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorRedLight));
-//                                        button.setTextColor(getActivity().getColor(R.color.colorSurface));
-//
-//                                    }else{
-//
-//                                        if(botonesSeleccionados.size() < 3){
-//                                            button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorPrimaryDarkVariant));
-//                                            button.setTextColor(getActivity().getColor(R.color.colorSurface));
-//
-//                                            botonesSeleccionados.add(button.getId());
-//                                            idVisitasSeleccionadas.add(v.getId_visita());
-//                                        }else{
-//                                            Utilidades.avisoListo(getActivity(), "Hey", "solo puedes marcar 3 visitas para subir a la vez", "entiendo");
-//                                        }
-//
-//                                    }
-//                                    if(botonesSeleccionados.size() == 3){
-//                                        btn_sube_marcadas.setVisibility(View.VISIBLE);
-//                                    }else{
-//                                        btn_sube_marcadas.setVisibility(View.INVISIBLE);
-//                                    }
-                                }
-                            });
-
-                            button.setOnLongClickListener(new View.OnLongClickListener() {
-                                @Override
-                                public boolean onLongClick(View view) {
-                                    button.setEnabled(false);
-                                    subirVisita(v, button);
-                                    botonesSeleccionados = new ArrayList<>();
-                                    idVisitasSeleccionadas = new ArrayList<>();
-                                    return false;
-                                }
-                            });
-                        }
-                        contenedor_botones.addView(linearLayout);
-
-                        ViewGroup.LayoutParams propParam = linearLayout.getLayoutParams();
-                        propParam.height = WRAP_CONTENT;
-                        propParam.width = WRAP_CONTENT;
-                        linearLayout.setLayoutParams(propParam);
-                        totalContadas ++;
-                        visitas1.clear();
-
-                    }
-                }
-            }else{
-                visitas_titulo.setVisibility(View.VISIBLE);
-                visitas_titulo.setText("no hay visitas pendientes");
-                visitas_marca.setVisibility(View.VISIBLE);
-                visitas_marca.setText("");
-            }
+        List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir(); //2
+        if(visitas.size() <= 0) {
+            visitas_titulo.setVisibility(View.VISIBLE);
+            visitas_titulo.setText("no hay visitas pendientes");
+            visitas_marca.setVisibility(View.VISIBLE);
+            visitas_marca.setText("");
+            return;
         }
 
+        Utilidades.exportDatabse(Utilidades.NOMBRE_DATABASE, activity.getPackageName());
 
+
+        botonesSeleccionados = new ArrayList<>();
+        idVisitasSeleccionadas = new ArrayList<>();
+
+        visitas_titulo.setVisibility(View.VISIBLE);
+        visitas_titulo.setText("Visitas pendientes por subir (ROJAS)");
+        visitas_marca.setVisibility(View.VISIBLE);
+        visitas_marca.setText("pinche cada visita para marcarla (solo de a 3), para subirla inmeditamente mantenga presionado el botón.");
+
+
+        ArrayList<Visitas> visitas1 = new ArrayList<>();
+        int totalContadas = 0;
+        int cantidadAMostrar = 3;
+        for (final Visitas v2 : visitas) {
+            visitas1.add(v2);
+            if (visitas1.size() == cantidadAMostrar){
+                LinearLayout linearLayout = new LinearLayout(getActivity());
+                linearLayout.setId(View.generateViewId());
+                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                for (final Visitas v : visitas1){
+
+                    AnexoContrato anexoContrato = MainActivity.myAppDB.myDao().getAnexos(v.getId_anexo_visita());
+                    List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(v.getId_visita());
+
+                    final Button button = new Button(getActivity());
+                    button.setId(View.generateViewId());
+                    button.setGravity(Gravity.CENTER);
+                    button.setTag("VISITASPENDIENTES_"+v.getId_visita());
+
+                    if(v.getEstado_server_visitas() == 0){
+                        button.setBackgroundTintList(requireActivity().getResources().getColorStateList(R.color.colorRedLight));
+                        button.setTextColor(requireActivity().getColor(R.color.colorSurface));
+                    }
+
+                    long peso = 0;
+
+                    for(Fotos f : fotos){
+                        File file = new File(f.getRuta());
+                        if (file.exists()){
+                            peso +=  (file.length() / 1024);
+                        }
+                    }
+
+                    String texto = "";
+
+                    texto += (anexoContrato != null) ? anexoContrato.getAnexo_contrato() : "";
+                    texto += "\n" + fotos.size() + " FOTOS ";
+                    texto += "CON " + (peso / 1024) + " MB  ";
+
+
+                    button.setText(texto);
+
+                    linearLayout.addView(button);
+
+                    LinearLayout.LayoutParams propParam = new LinearLayout.LayoutParams( WRAP_CONTENT, WRAP_CONTENT );
+                    propParam.setMargins(20, 10, 20,10);
+
+                    button.setLayoutParams(propParam);
+
+
+                    button.setOnClickListener(view -> Toasty.info(requireActivity(), "Funcionalidad deshabilitada, pmantenga presionado para subir", Toast.LENGTH_LONG, true).show());
+
+                    button.setOnLongClickListener(view -> {
+
+                        botonesSeleccionados = new ArrayList<>();
+                        idVisitasSeleccionadas = new ArrayList<>();
+                        button.setEnabled(false);
+                        subirVisita(v, button);
+
+                        return false;
+                    });
+                }
+                contenedor_botones.addView(linearLayout);
+
+                ViewGroup.LayoutParams propParam = linearLayout.getLayoutParams();
+                propParam.height = WRAP_CONTENT;
+                propParam.width = WRAP_CONTENT;
+                linearLayout.setLayoutParams(propParam);
+                totalContadas += cantidadAMostrar;
+                visitas1.clear();
+            }else if((visitas.size() - totalContadas) > 0 && (visitas.size() - totalContadas) < cantidadAMostrar){
+
+                LinearLayout linearLayout = new LinearLayout(getActivity());
+                linearLayout.setId(View.generateViewId());
+                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                for (final Visitas v : visitas1){
+
+                    AnexoContrato anexoContrato = MainActivity.myAppDB.myDao().getAnexos(v.getId_anexo_visita());
+                    List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(v.getId_visita());
+
+                    final Button button = new Button(getActivity());
+                    button.setId(View.generateViewId());
+                    button.setGravity(Gravity.CENTER);
+                    button.setTag("VISITASPENDIENTES_"+v.getId_visita());
+
+                    if(v.getEstado_server_visitas() == 0){
+                        button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorRedLight));
+                        button.setTextColor(getActivity().getColor(R.color.colorSurface));
+                    }
+
+                    long peso = 0;
+
+                    for(Fotos f : fotos){
+                        File file = new File(f.getRuta());
+                        if (file.exists()){
+                            peso +=  (file.length() / 1024);
+                        }
+                    }
+
+                    String texto = "";
+
+                    texto += (anexoContrato != null) ? anexoContrato.getAnexo_contrato() : "";
+                    texto += "\n" + fotos.size() + " FOTOS ";
+                    texto += "CON " + (peso / 1024) + " MB  ";
+
+
+                    button.setText(texto);
+
+                    linearLayout.addView(button);
+
+                    LinearLayout.LayoutParams propParam = new LinearLayout.LayoutParams( WRAP_CONTENT, WRAP_CONTENT );
+                    propParam.setMargins(20, 10, 20,10);
+
+
+                    button.setLayoutParams(propParam);
+
+
+                    button.setOnClickListener(view -> Toasty.info(requireActivity(), "Funcionalidad deshabilitada, mantenga presionado para subir", Toast.LENGTH_LONG, true).show());
+
+                    button.setOnLongClickListener(view -> {
+                        button.setEnabled(false);
+                        subirVisita(v, button);
+                        botonesSeleccionados = new ArrayList<>();
+                        idVisitasSeleccionadas = new ArrayList<>();
+                        return false;
+                    });
+                }
+                contenedor_botones.addView(linearLayout);
+                ViewGroup.LayoutParams propParam = linearLayout.getLayoutParams();
+                propParam.height = WRAP_CONTENT;
+                propParam.width = WRAP_CONTENT;
+                linearLayout.setLayoutParams(propParam);
+                totalContadas ++;
+                visitas1.clear();
+            }
+        }
     }
     void subirVisita(final Visitas v, final Button button){
         if (progressDialogGeneral != null && !progressDialogGeneral.isShowing()){
@@ -543,82 +451,82 @@ public class FragmentPrincipal extends Fragment {
 
 
 
-        InternetStateClass mm = new InternetStateClass(activity, new returnValuesFromAsyntask() {
-            @Override
-            public void myMethod(boolean result) {
-                if (result) {
-                    if(button != null) button.setEnabled(true);
-                    MainActivity.myAppDB.myDao().updateVisitasSubidasTomadasBack();
-                    MainActivity.myAppDB.myDao().updateDetalleSubidasTomadasBack();
-                    MainActivity.myAppDB.myDao().updateFotosSubidasTomadasBack();
+        InternetStateClass mm = new InternetStateClass(activity, result -> {
+
+            if(!result){
+                if(button != null) button.setEnabled(true);
+                if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
+                return;
+            }
+
+            if(button != null) button.setEnabled(true);
+            MainActivity.myAppDB.myDao().updateVisitasSubidasTomadasBack();
+            MainActivity.myAppDB.myDao().updateDetalleSubidasTomadasBack();
+            MainActivity.myAppDB.myDao().updateFotosSubidasTomadasBack();
+            MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesTomadasBack();
 
 
-                    int cantidadSuma = 0;
-                    ArrayList<Visitas> visitas = new ArrayList<>();
+            int cantidadSuma = 0;
+            ArrayList<Visitas> visitas = new ArrayList<>();
 
-                    List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubirLimit(v.getId_visita());
-                    List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosLimit(v.getId_visita());
-
-
-                    visitas.add(v);
-                    MainActivity.myAppDB.myDao().marcarVisitas(v.getId_visita());
-                    MainActivity.myAppDB.myDao().marcarDetalle(v.getId_visita());
-                    MainActivity.myAppDB.myDao().marcarFotos(v.getId_visita());
+            List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubirLimit(v.getId_visita());
+            List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosLimit(v.getId_visita());
+            List<Evaluaciones> evaluaciones = MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByAC(Integer.parseInt(v.getId_anexo_visita()));
 
 
-                    cantidadSuma+= v.getId_visita();
-                    cantidadSuma+= 1;
+            visitas.add(v);
+            MainActivity.myAppDB.myDao().marcarVisitas(v.getId_visita());
+            MainActivity.myAppDB.myDao().marcarDetalle(v.getId_visita());
+            MainActivity.myAppDB.myDao().marcarFotos(v.getId_visita());
+            MainActivity.myAppDB.DaoEvaluaciones().marcarEvaluaciones(Integer.parseInt(v.getId_anexo_visita()));
+
+            cantidadSuma+= v.getId_visita();
+            cantidadSuma+= 1;
 
 
-                    List<Fotos> fts = new ArrayList<>();
-                    if (fotos.size() > 0){
-                        for (Fotos fs : fotos){
-                            String imageString  = Utilidades.imageToString(fs.getRuta());
-                            if(imageString.length() > 0){
-                                fs.setEncrypted_image(imageString);
-                                fts.add(fs);
-                            }
-                        }
+            List<Fotos> fts = new ArrayList<>();
+            if (fotos.size() > 0){
+                for (Fotos fs : fotos){
+                    String imageString  = Utilidades.imageToString(fs.getRuta());
+                    if(imageString.length() > 0){
+                        fs.setEncrypted_image(imageString);
+                        fts.add(fs);
                     }
-
-
-                    if (detalles.size() > 0){
-                        for (detalle_visita_prop v : detalles){
-                            cantidadSuma+= v.getId_det_vis_prop_detalle();
-                        }
-                    }
-                    cantidadSuma+= detalles.size();
-
-
-                    if (fts.size() > 0){
-                        for (Fotos v : fts){
-                            cantidadSuma+=  v.getId_foto();
-                        }
-                    }
-                    cantidadSuma = cantidadSuma + fts.size();
-
-
-                    Config config = MainActivity.myAppDB.myDao().getConfig();
-                    SubidaDatos list = new SubidaDatos();
-
-                    list.setVisitasList(visitas);
-                    list.setDetalle_visita_props(detalles);
-                    list.setFotosList(fts);
-                    list.setId_dispo(config.getId());
-                    list.setId_usuario(config.getId_usuario());
-                    list.setCantidadSuma(cantidadSuma);
-                    list.setVersion(Utilidades.APPLICATION_VERSION);
-
-                    subidaDatosVisita(list, v.getId_visita());
-
-
-
-                } else {
-                    if(button != null) button.setEnabled(true);
-                    if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                    Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
                 }
             }
+
+
+            if (detalles.size() > 0){
+                for (detalle_visita_prop v1 : detalles){
+                    cantidadSuma+= v1.getId_det_vis_prop_detalle();
+                }
+            }
+            cantidadSuma+= detalles.size();
+
+
+            if (fts.size() > 0){
+                for (Fotos v1 : fts){
+                    cantidadSuma+=  v1.getId_foto();
+                }
+            }
+            cantidadSuma = cantidadSuma + fts.size();
+
+
+            Config config = MainActivity.myAppDB.myDao().getConfig();
+            SubidaDatos list = new SubidaDatos();
+
+            list.setVisitasList(visitas);
+            list.setDetalle_visita_props(detalles);
+            list.setFotosList(fts);
+            list.setId_dispo(config.getId());
+            list.setEvaluaciones(evaluaciones);
+            list.setId_usuario(config.getId_usuario());
+            list.setCantidadSuma(cantidadSuma);
+            list.setVersion(Utilidades.APPLICATION_VERSION);
+
+            subidaDatosVisita(list, v.getId_visita());
+
         }, 1);
         mm.execute();
     }
@@ -636,24 +544,24 @@ public class FragmentPrincipal extends Fragment {
                     switch (response.code()){
                         case 200:
                             Respuesta resSubidaDatos = response.body();
-                            if (resSubidaDatos != null){
-                                switch (resSubidaDatos.getCodigoRespuesta()){
-                                    case 0:
-                                        Toasty.info(activity, "pasando a segunda respuesta", Toast.LENGTH_SHORT, true).show();
-                                        segundaRespuestaVisita(resSubidaDatos.getCabeceraRespuesta(), id_visita);
-                                        break;
-                                    case 5:
-                                        Utilidades.avisoListo(activity, "ATENCION", "NO POSEES LA ULTIMA VERSION DE LA APLICACION ", "entiendo");
-                                        if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                                        break;
-                                    default:
-                                        if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                                        Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  "+resSubidaDatos.getCodigoRespuesta()+"\nMENSAJE: \n"+resSubidaDatos.getMensajeRespuesta(), "ENTIENDO");
-                                        break;
-                                }
-                            }else{
+                            if(resSubidaDatos == null){
                                 if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
                                 Utilidades.avisoListo(getActivity(),"ATENCION", "CUERPO DE RESPUESTA VACIO \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+response.message(), "ENTIENDO");
+                                break;
+                            }
+                            switch (resSubidaDatos.getCodigoRespuesta()){
+                                case 0:
+                                    Toasty.info(activity, "pasando a segunda respuesta", Toast.LENGTH_SHORT, true).show();
+                                    segundaRespuestaVisita(resSubidaDatos.getCabeceraRespuesta(), id_visita);
+                                    break;
+                                case 5:
+                                    Utilidades.avisoListo(activity, "ATENCION", "NO POSEES LA ULTIMA VERSION DE LA APLICACION ", "entiendo");
+                                    if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                                    break;
+                                default:
+                                    if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                                    Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  "+resSubidaDatos.getCodigoRespuesta()+"\nMENSAJE: \n"+resSubidaDatos.getMensajeRespuesta(), "ENTIENDO");
+                                    break;
                             }
                             break;
                         default:
@@ -670,12 +578,7 @@ public class FragmentPrincipal extends Fragment {
                     } catch (Exception e) {
                         Utilidades.avisoListo(getActivity(),"ATENCION", "COMUNICACION FALLIDA \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+e.getMessage(), "ENTIENDO");
                     }
-
                 }
-
-
-
-
             }
             @Override
             public void onFailure(@NonNull Call<Respuesta> call, @NonNull Throwable t) {
@@ -701,69 +604,58 @@ public class FragmentPrincipal extends Fragment {
                     switch (response.code()){
                         case 200:
                             Respuesta re = response.body();
-                            if (re != null) {
-                                switch (re.getCodigoRespuesta()) {
-                                    case 0: //salio bien se sigue con el procedimiento
-
-                                        int visita = MainActivity.myAppDB.myDao().updateVisitasSubidasTomadas(re.getCabeceraRespuesta()); /* las actualizo y las dejo en tomadas = 0 */
-                                        if (visita <= 0) {
-                                            respuesta[0] = 2;
-                                            respuesta[1] = re.getCabeceraRespuesta();
-                                        }
-
-//                                        List<detalle_visita_prop> detalle_visita_props = MainActivity.myAppDB.myDao().getDetallesPorSubirTomadas();
-                                        int detalles = MainActivity.myAppDB.myDao().updateDetalleVisitaSubidasTomadas(re.getCabeceraRespuesta());
-//                                        if (detalles != detalle_visita_props.size()) {
-//                                            respuesta[0] = 2;
-//                                            respuesta[1] = re.getCabeceraRespuesta();
-//                                        }
-
-//                                        List<Fotos> fotosList = MainActivity.myAppDB.myDao().getFotosLimitTomada();
-                                        int fotos = MainActivity.myAppDB.myDao().updateFotosSubidasTomada(re.getCabeceraRespuesta());
-//                                        if (fotos != fotosList.size()) {
-//                                            respuesta[0] = 2;
-//                                            respuesta[1] = re.getCabeceraRespuesta();
-//                                        }
-                                        if (respuesta[0] == 2) {
-
-                                            MainActivity.myAppDB.myDao().updateDetalleVisitaBack(re.getCabeceraRespuesta());
-                                            MainActivity.myAppDB.myDao().updateFotosBack(re.getCabeceraRespuesta());
-                                            MainActivity.myAppDB.myDao().updateVisitasBack(re.getCabeceraRespuesta());
-
-                                            Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  "+re.getCodigoRespuesta()+"\nMENSAJE: \n"+re.getMensajeRespuesta(), "ENTIENDO");
-
-                                            Toasty.success(activity, "Problema subiendo los datos , por favor, vuelva a intentarlo", Toast.LENGTH_SHORT, true).show();
-                                            if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                                        }else {
-
-                                            Button button = view.findViewWithTag("VISITASPENDIENTES_"+id_visita);
-                                            if (button != null){
-                                                button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorGreenLight));
-                                                button.setEnabled(false);
-                                            }
-                                            contadorVisita++;
-                                            if(idVisitasSeleccionadas.size() > 0 && contadorVisita < 3){
-                                                prepararVisitaAgrupada(contadorVisita);
-                                            }else{
-                                                    btn_sube_marcadas.setVisibility(View.INVISIBLE);
-                                                if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                                            }
-                                            Toasty.success(activity, "Se subio La visita con exito", Toast.LENGTH_SHORT, true).show();
-                                        }
-                                        break;
-
-                                    default:
-                                        if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                                        Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  "+re.getCodigoRespuesta()+"\nMENSAJE: \n"+re.getMensajeRespuesta(), "ENTIENDO");
-                                        break;
-                                }
-                            } else {
+                            if( re == null ){
                                 /* respuesta nula */
                                 if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
                                 Toasty.error(activity, "Problema conectandonos al servidor, por favor vuelva a intentarlo ", Toast.LENGTH_SHORT, true).show();
+                                break;
+                            }
+                            switch (re.getCodigoRespuesta()) {
+                                case 0: //salio bien se sigue con el procedimiento
+
+                                    int visita = MainActivity.myAppDB.myDao().updateVisitasSubidasTomadas(re.getCabeceraRespuesta()); /* las actualizo y las dejo en tomadas = 0 */
+                                    if (visita <= 0) {
+                                        respuesta[0] = 2;
+                                        respuesta[1] = re.getCabeceraRespuesta();
+                                    }
+                                    int detalles = MainActivity.myAppDB.myDao().updateDetalleVisitaSubidasTomadas(re.getCabeceraRespuesta());
+                                    int fotos = MainActivity.myAppDB.myDao().updateFotosSubidasTomada(re.getCabeceraRespuesta());
+                                    int evaluaciones = MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesSubidasTomada(re.getCabeceraRespuesta());
+
+                                    if (respuesta[0] == 2) {
+
+                                        MainActivity.myAppDB.myDao().updateDetalleVisitaBack(re.getCabeceraRespuesta());
+                                        MainActivity.myAppDB.myDao().updateFotosBack(re.getCabeceraRespuesta());
+                                        MainActivity.myAppDB.myDao().updateVisitasBack(re.getCabeceraRespuesta());
+
+                                        Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  "+re.getCodigoRespuesta()+"\nMENSAJE: \n"+re.getMensajeRespuesta(), "ENTIENDO");
+
+                                        Toasty.success(activity, "Problema subiendo los datos , por favor, vuelva a intentarlo", Toast.LENGTH_SHORT, true).show();
+                                        if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                                    }else {
+
+                                        Button button = view.findViewWithTag("VISITASPENDIENTES_"+id_visita);
+                                        if (button != null){
+                                            button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorGreenLight));
+                                            button.setEnabled(false);
+                                        }
+                                        contadorVisita++;
+                                        if(idVisitasSeleccionadas.size() > 0 && contadorVisita < 3){
+                                            prepararVisitaAgrupada(contadorVisita);
+                                        }else{
+                                                btn_sube_marcadas.setVisibility(View.INVISIBLE);
+                                            if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                                        }
+                                        Toasty.success(activity, "Se subio La visita con exito", Toast.LENGTH_SHORT, true).show();
+                                    }
+                                    break;
+
+                                default:
+                                    if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                                    Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  "+re.getCodigoRespuesta()+"\nMENSAJE: \n"+re.getMensajeRespuesta(), "ENTIENDO");
+                                    break;
                             }
                             break;
-
                         default:
                             if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
                             Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS CON SERVIDOR \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+response.message(), "ENTIENDO");
@@ -779,9 +671,6 @@ public class FragmentPrincipal extends Fragment {
                         Utilidades.avisoListo(getActivity(),"ATENCION", "COMUNICACION FALLIDA EN COMPROBACION \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+e.getMessage(), "ENTIENDO");
                     }
                 }
-
-
-
             }
 
             @Override

@@ -6,44 +6,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/padding"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/fragment_visitas"
     android:id="@+id/relative">
-    <LinearLayout
-        android:visibility="gone"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/layoutTabla"
-        android:gravity="center"
-        android:padding="16dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true">
 
-        <ScrollView
-            android:id="@+id/scrollvertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:layout_weight="1">
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/scrollhorizontal"
-                android:scrollbars="horizontal">
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TableLayout
-                        android:id="@+id/tabla"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </TableLayout>
-                </LinearLayout>
-            </HorizontalScrollView>
-        </ScrollView>
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lista_anexos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true" />
+<!--    <LinearLayout-->
+<!--        android:visibility="gone"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/layoutTabla"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="16dp"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_alignParentStart="true">-->
+
+<!--        <ScrollView-->
+<!--            android:id="@+id/scrollvertical"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:scrollbars="vertical"-->
+<!--            android:layout_weight="1">-->
+<!--            <HorizontalScrollView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/scrollhorizontal"-->
+<!--                android:scrollbars="horizontal">-->
+<!--                <LinearLayout-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content">-->
+<!--                    <TableLayout-->
+<!--                        android:id="@+id/tabla"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content">-->
+<!--                    </TableLayout>-->
+<!--                </LinearLayout>-->
+<!--            </HorizontalScrollView>-->
+<!--        </ScrollView>-->
+<!--    </LinearLayout>-->
 </RelativeLayout>

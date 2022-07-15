@@ -15,6 +15,7 @@ import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Especie;
+import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
@@ -112,6 +113,10 @@ public class GsonDescargas {
     @Embedded
     private List<Predios> predios;
 
+    @SerializedName("evaluaciones")
+    @Embedded
+    private List<Evaluaciones> evaluaciones;
+
 
     @SerializedName("array_lotes")
     @Embedded
@@ -169,6 +174,14 @@ public class GsonDescargas {
     @Embedded
     private List<AnexoCorreoFechas> array_fechas_anexos;
 
+
+    public List<Evaluaciones> getEvaluaciones() {
+        return evaluaciones;
+    }
+
+    public void setEvaluaciones(List<Evaluaciones> evaluaciones) {
+        this.evaluaciones = evaluaciones;
+    }
 
     public List<AnexoCorreoFechas> getArray_fechas_anexos() {
         return array_fechas_anexos;

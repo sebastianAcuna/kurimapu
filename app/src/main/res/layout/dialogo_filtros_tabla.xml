@@ -2,8 +2,6 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minWidth="900dp"
-    android:minHeight="300dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
@@ -11,7 +9,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding">
+        android:padding="@dimen/padding_small">
 
 
             <TextView
@@ -19,10 +17,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/anno"
-                android:theme="@style/sub_titles_forms"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="@id/sp_dialog_year"
                 app:layout_constraintEnd_toEndOf="@id/sp_dialog_year"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 />
 
             <Spinner
@@ -38,7 +36,6 @@
                 android:id="@+id/textInp_dialog_anexo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.8"
                 app:endIconMode="clear_text"
                 app:counterEnabled="true"
                 app:counterMaxLength="50"
@@ -61,7 +58,25 @@
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/lbl_especie"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/especie"
+                android:theme="@style/sub_titles_forms"
+                app:layout_constraintTop_toBottomOf="@id/textInp_dialog_anexo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
+            <Spinner
+                android:id="@+id/sp_dialog_especie"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_especie"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
             <TextView
                 android:id="@+id/lbl_variedad"
@@ -69,9 +84,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/variedad"
                 android:theme="@style/sub_titles_forms"
-                app:layout_constraintTop_toBottomOf="@id/textInp_dialog_anexo"
-                app:layout_constraintStart_toStartOf="@id/sp_dialog_variedad"
-                app:layout_constraintEnd_toEndOf="@id/sp_dialog_variedad"
+                app:layout_constraintTop_toBottomOf="@id/sp_dialog_especie"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
 
                 />
 
@@ -82,35 +97,14 @@
                 app:layout_constraintHorizontal_weight="0.5"
                 app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/sp_dialog_especie"
-                />
-
-
-            <TextView
-                android:id="@+id/lbl_especie"
-                android:layout_width="0dp"
-                android:layout_weight="0.2"
-                android:layout_height="wrap_content"
-                android:text="@string/especie"
-                android:theme="@style/sub_titles_forms"
-                app:layout_constraintTop_toBottomOf="@id/textInp_dialog_anexo"
-                app:layout_constraintStart_toStartOf="@id/sp_dialog_especie"
-                app:layout_constraintEnd_toEndOf="@id/sp_dialog_especie"
-                />
-
-            <Spinner
-                android:id="@+id/sp_dialog_especie"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                app:layout_constraintHorizontal_weight="0.5"
-                app:layout_constraintTop_toBottomOf="@id/lbl_especie"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/sp_dialog_variedad"
                 />
+
+
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInp_dialog_agricultor"
                 android:layout_width="0dp"
-                app:layout_constraintHorizontal_weight="0.5"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                 app:errorEnabled="true"
@@ -120,9 +114,9 @@
                 app:endIconMode="clear_text"
                 android:hint="@string/agricultor"
                 android:layout_margin="2dp"
-                app:layout_constraintTop_toBottomOf="@id/sp_dialog_especie"
+                app:layout_constraintTop_toBottomOf="@id/sp_dialog_variedad"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/textInp_dialog_potrero"
+                app:layout_constraintEnd_toEndOf="parent"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -150,9 +144,9 @@
                 app:endIconMode="clear_text"
                 android:hint="@string/potrero"
                 android:layout_margin="2dp"
-                app:layout_constraintTop_toBottomOf="@id/sp_dialog_variedad"
+                app:layout_constraintTop_toBottomOf="@id/textInp_dialog_agricultor"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/textInp_dialog_agricultor"
+               app:layout_constraintStart_toStartOf="parent"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -173,7 +167,7 @@
             app:layout_constraintTop_toBottomOf="@id/textInp_dialog_potrero"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_cancela_filtro"
-            android:layout_margin="2dp"
+            android:layout_marginTop="10dp"
             android:text="@string/filter"/>
 
         <Button
@@ -182,7 +176,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorError"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_margin="2dp"
+            android:layout_marginTop="10dp"
             android:text="@string/nav_cancel"
             app:layout_constraintTop_toBottomOf="@id/textInp_dialog_potrero"
             app:layout_constraintEnd_toEndOf="parent"

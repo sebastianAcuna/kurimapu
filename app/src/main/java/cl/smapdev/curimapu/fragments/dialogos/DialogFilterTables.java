@@ -24,8 +24,13 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
@@ -46,13 +51,13 @@ public class DialogFilterTables extends DialogFragment {
     private Spinner sp_dialog_variedad,sp_dialog_especie,sp_dialog_year;
     private EditText et_dialog_anexo, et_dialog_agricultor,et_dialog_potero;
 
-    private final List<Temporada> years = MainActivity.myAppDB.myDao().getTemporada();
     private final ArrayList<String> idTemporadas = new ArrayList<>();
     private final ArrayList<String> idEspecies = new ArrayList<>();
     private final ArrayList<String> idVariedades = new ArrayList<>();
 
-    private final List<Especie> especieList =  MainActivity.myAppDB.myDao().getEspecies();
-    private List<Variedad> variedadList =  MainActivity.myAppDB.myDao().getVariedades();
+    private List<Temporada> years = Collections.emptyList();
+    private List<Especie> especieList = Collections.emptyList();
+    private List<Variedad> variedadList =  Collections.emptyList();
 
     private String idEspecie,idVariedad,idAnno;
 
@@ -60,6 +65,7 @@ public class DialogFilterTables extends DialogFragment {
 
     private MainActivity activity;
 
+    private String marca_especial_temporada = "";
     private Object[] ob = new Object[]{};
 
 
@@ -67,66 +73,74 @@ public class DialogFilterTables extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
 
         View view = inflater.inflate(R.layout.dialogo_filtros_tabla, null);
-
         builder.setView(view);
-
         builder.setTitle(getResources().getString(R.string.filtros_contrato));
-
         bind(view);
-
-//        years = getResources().getStringArray(R.array.anos_toolbar);
 
         activity = (MainActivity) getActivity();
         if (activity != null){
             prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
         }
 
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<List<Especie>> futureEspecie = executor.submit( () ->
+                MainActivity.myAppDB.myDao().getEspecies());
 
-        if (especieList != null && especieList.size() > 0){
-            ArrayList<String> rg = new ArrayList<String>();
-            int contador = 0;
-            rg.add(contador, getResources().getString(R.string.select));
-            idEspecies.add(contador,"");
-            contador++;
+        Future<List<Variedad>> futureVariedad = executor.submit( () ->
+                MainActivity.myAppDB.myDao().getVariedades());
 
-            for (Especie re : especieList){
-                rg.add(contador, re.getDesc_especie());
-                idEspecies.add(contador, re.getId_especie());
+        Future<List<Temporada>> futureTemporada = executor.submit( () ->
+                MainActivity.myAppDB.myDao().getTemporada());
+
+        try {
+            especieList = futureEspecie.get();
+            if (especieList != null && especieList.size() > 0){
+                ArrayList<String> rg = new ArrayList<String>();
+                int contador = 0;
+                rg.add(contador, getResources().getString(R.string.select));
+                idEspecies.add(contador,"");
                 contador++;
+
+                for (Especie re : especieList){
+                    rg.add(contador, re.getDesc_especie());
+                    idEspecies.add(contador, re.getId_especie());
+                    contador++;
+                }
+
+                sp_dialog_especie.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_toolbar_view, rg));
             }
+            years = futureTemporada.get();
+            if (years != null && years.size() > 0){
+                ArrayList<String> rg = new ArrayList<>();
+                int contador = 0;
+                for (Temporada re : years){
+                    rg.add(contador,re.getNombre_tempo());
+                    idTemporadas.add(contador, re.getId_tempo_tempo());
+                    contador++;
+                    if(re.getEspecial_temporada() > 0){
+                        marca_especial_temporada = re.getId_tempo_tempo();
+                    }
+                }
 
-            sp_dialog_especie.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_toolbar_view, rg));
-            //sp_dialog_especie.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_ESPECIE, 0));
+                sp_dialog_year.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_toolbar_view, rg));
 
-        }
+                if(!marca_especial_temporada.isEmpty()){
+                    sp_dialog_year.setSelection(idTemporadas.indexOf(marca_especial_temporada));
+                }
 
-//        sp_dialog_year.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, getResources().getStringArray(R.array.anos_toolbar)));
-//        sp_dialog_year.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, activity.getResources().getStringArray(R.array.anos_toolbar).length - 1));
-
-        if (years != null && years.size() > 0){
-            ArrayList<String> rg = new ArrayList<>();
-            int contador = 0;
-            for (Temporada re : years){
-                rg.add(contador,re.getNombre_tempo());
-                idTemporadas.add(contador, re.getId_tempo_tempo());
-                contador++;
             }
+            variedadList = futureVariedad.get();
+            cargarVariedad();
 
-            sp_dialog_year.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, rg));
-            //sp_dialog_year.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, years.size() - 1));
-
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
+        executor.shutdown();
 
-
-        cargarVariedad();
         onset();
-
-
-
-
         return builder.create();
     }
 
@@ -144,9 +158,7 @@ public class DialogFilterTables extends DialogFragment {
                 contador++;
             }
             sp_dialog_variedad.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_toolbar_view, rg));
-          //  sp_dialog_variedad.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_VARIEDAD, selectable));
         }
-
     }
 
     private void onset(){
@@ -227,8 +239,6 @@ public class DialogFilterTables extends DialogFragment {
         });
     }
 
-
-
     private void filtrarFichas(){
 
 
@@ -282,12 +292,17 @@ public class DialogFilterTables extends DialogFragment {
 
             }
 
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            String finalConsulta = consulta;
+            Future<List<AnexoCompleto>> futureAnexos = executor.submit(() ->  MainActivity.myAppDB.myDao().getAnexosFilter(new SimpleSQLiteQuery(finalConsulta, ob)) );
+            List<AnexoCompleto> anexoCompletos = futureAnexos.get();
 
-            List<AnexoCompleto> anexoCompletos = MainActivity.myAppDB.myDao().getAnexosFilter(new SimpleSQLiteQuery(consulta, ob));
             LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
             Intent i = new Intent("TAG_REFRESH");
             i.putExtra(LLAVE_FILTER_TABLAS, (Serializable) anexoCompletos);
             lbm.sendBroadcast(i);
+            executor.shutdown();
+
             dismiss();
 
         }catch(Exception e){
@@ -299,6 +314,7 @@ public class DialogFilterTables extends DialogFragment {
 
 
     }
+
     private void bind(View view){
         buttonCancel = view.findViewById(R.id.btn_cancela_filtro);
         btn_aplica_filtro = view.findViewById(R.id.btn_aplica_filtro);
@@ -310,8 +326,6 @@ public class DialogFilterTables extends DialogFragment {
         et_dialog_anexo = view.findViewById(R.id.et_dialog_anexo);
         et_dialog_agricultor = view.findViewById(R.id.et_dialog_agricultor);
         et_dialog_potero = view.findViewById(R.id.et_dialog_potero);
-
-
     }
 
 

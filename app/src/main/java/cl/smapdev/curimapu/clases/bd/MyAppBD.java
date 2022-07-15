@@ -10,6 +10,7 @@ import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
+import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
 import cl.smapdev.curimapu.clases.tablas.FotosFichas;
@@ -45,10 +46,11 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         Especie.class, Variedad.class, TempVisitas.class,  UnidadMedida.class, Usuario.class, Config.class,
         Visitas.class, CropRotation.class, pro_cli_mat.class, Temporada.class, detalle_visita_prop.class, Provincia.class, Errores.class,
         Lotes.class, Predios.class, TipoRiego.class, TipoSuelo.class, Maquinaria.class, TipoTenenciaMaquinaria.class, TipoTenenciaTerreno.class,
-        FichaMaquinaria.class, Clientes.class, CardViewsResumen.class, cli_pcm.class, quotation.class, FotosFichas.class, AgrPredTemp.class, FichasNew.class, AnexoCorreoFechas.class
+        FichaMaquinaria.class, Clientes.class, CardViewsResumen.class, cli_pcm.class, quotation.class, FotosFichas.class, AgrPredTemp.class, FichasNew.class,
+        AnexoCorreoFechas.class, Evaluaciones.class
         }, version = 14)
 public abstract class MyAppBD extends RoomDatabase {
-
         public abstract MyDao myDao();
+        public abstract DaoEvaluaciones DaoEvaluaciones();
 
 }

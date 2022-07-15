@@ -271,4 +271,22 @@ Depending on the state, it can be edited or not.</string>
     <string name="title_warning_ranked">esta evaluacion se guardara al guardar la visita.</string>
     <string name="nuevo">nuevo</string>
     <string name="detalle">detalle</string>
+    <string name="etapa">Etapa</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="fecha">Fecha</string>
+    <string name="nueva_visita">nueva visita</string>
+    <string name="visitas_anteriores">Visitas Anteriores</string>
+    <string name="c_virtual">C. virtual</string>
+    <string name="guardar">guardar</string>
+    <string name="posponer">posponer</string>
+    <string name="pendientes">Pendientes</string>
+    <string name="rechazadas">Rechazadas</string>
+    <string name="realizadas">Realizadas</string>
+    <string name="cerrar">cerrar</string>
+    <string name="plazo">Plazo</string>
+    <string name="agregar">agregar</string>
+    <string name="fecha_plazo">fecha plazo</string>
+    <string name="ultimo_modificador">Ultimo modificador</string>
+    <string name="obs">Obs...</string>
+    <string name="explique_la_razon_por_la_que_desea_rechazar_la_recomendacion">Explique la razon por la que desea rechazar la recomendacion</string>
 </resources>

@@ -7,6 +7,7 @@ import java.util.List;
 
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
+import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.FotosFichas;
@@ -52,12 +53,25 @@ public class SubidaDatos {
     private List<CropRotation> cropRotation;
 
     @Expose
+    @SerializedName("evaluaciones")
+    private List<Evaluaciones> evaluaciones;
+
+    @Expose
     @SerializedName("suma_datos")
     private int cantidadSuma;
 
     @Expose
     @SerializedName("version")
     private String version;
+
+
+    public List<Evaluaciones> getEvaluaciones() {
+        return evaluaciones;
+    }
+
+    public void setEvaluaciones(List<Evaluaciones> evaluaciones) {
+        this.evaluaciones = evaluaciones;
+    }
 
     public List<CropRotation> getCropRotation() {
         return cropRotation;

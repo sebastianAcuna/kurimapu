@@ -9,6 +9,9 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -20,22 +23,30 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
+import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
+import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.cargarUI;
+import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
 
 public class FragmentResumen extends Fragment {
 
@@ -79,7 +90,7 @@ public class FragmentResumen extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bind(view);
-
+        setHasOptionsMenu(true);
         new LazyLoad(true).execute();
 
 
@@ -88,6 +99,56 @@ public class FragmentResumen extends Fragment {
         }
 
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu_visitas, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_visitas_recom:
+
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+
+                TempVisitas tmp = null;
+                VisitasCompletas visitasCompletas = null;
+                AnexoContrato ac = null;
+                try {
+                    Future<TempVisitas> temp_visitasF = executor.submit(() -> MainActivity.myAppDB.myDao().getTempFichas());
+
+                    TempVisitas temp_visitas = temp_visitasF.get();
+                    Future<VisitasCompletas> visitasCompletasFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita()));
+
+                    if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 ) {
+                        tmp = temp_visitas;
+                        visitasCompletas = visitasCompletasFuture.get();
+                        ac  = visitasCompletas.getAnexoCompleto().getAnexoContrato();
+                    }else{
+                        Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+                        ac = anexo.get();
+                    }
+
+                    FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+                    Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
+                    if (prev != null) {
+                        ft.remove(prev);
+                    }
+
+                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, (TempVisitas tm)->{});
+                    dialogo.show(ft, "EVALUACION_RECOMENDACION");
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                executor.shutdown();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

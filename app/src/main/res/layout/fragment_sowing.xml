@@ -23,19 +23,19 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-    <LinearLayout
-        android:id="@+id/container_linear_fotos"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.4"
-        android:orientation="vertical">
-<!--        <FrameLayout
-            android:id="@+id/container_fotos_sowing"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />-->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/container_linear_fotos"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="0.4"-->
+<!--        android:orientation="vertical">-->
+<!--&lt;!&ndash;        <FrameLayout-->
+<!--            android:id="@+id/container_fotos_sowing"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            />&ndash;&gt;-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </LinearLayout>
 

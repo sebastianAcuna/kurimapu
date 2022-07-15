@@ -485,10 +485,10 @@ public interface MyDao {
             "INNER JOIN quotation Q ON (Q.id_materiales = M.id_variedad) " +
             "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
             "LEFT JOIN fotos Fo ON (Fo.id_visita_foto = V.id_visita_local AND Fo.id_dispo_foto  = V.id_dispo  AND Fo.favorita = 1)" +
-            "WHERE id_anexo_visita = :idAnexo AND AC.temporada_anexo = :annoDesde " +
+            "WHERE id_anexo_visita = :idAnexo " +
             "GROUP BY V.id_visita " +
-            "ORDER BY V.fecha_visita, V.hora_visita, V.id_visita DESC")
-    List<VisitasCompletas> getVisitasCompletasWithFotos(String idAnexo, String annoDesde);
+            "ORDER BY V.fecha_visita DESC, V.hora_visita DESC, V.id_visita DESC")
+    List<VisitasCompletas> getVisitasCompletasWithFotos(String idAnexo);
 
     @Query("SELECT * FROM visita V " +
             "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +

@@ -37,7 +37,7 @@ public class AnexosAdapter extends RecyclerView.Adapter<AnexosListViewHolder> {
     @NonNull
     @Override
     public AnexosListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_visitas,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_anexos,parent,false);
         return new AnexosListViewHolder(view);
     }
 

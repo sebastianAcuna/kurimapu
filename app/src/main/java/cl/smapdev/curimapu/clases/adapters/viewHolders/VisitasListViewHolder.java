@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -30,13 +31,11 @@ public class VisitasListViewHolder extends RecyclerView.ViewHolder {
     private final TextView hora_lista_visitas;
     private final Button btn_ver;
     private final Button btn_eliminar;
-    private final ImageView imagen_referencial;
-    private final CardView cardview_visitas;
+    private final ConstraintLayout cardview_visitas;
 
     public VisitasListViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        imagen_referencial  = itemView.findViewById(R.id.imagen_referencial);
         nombre_agricultor  = itemView.findViewById(R.id.nombre_agricultor);
         nombre_etapa  = itemView.findViewById(R.id.nombre_etapa);
         nombre_detalle_etapa  = itemView.findViewById(R.id.nombre_detalle_etapa);
@@ -59,10 +58,6 @@ public class VisitasListViewHolder extends RecyclerView.ViewHolder {
             if (config != null){
                 configid = config.getId();
             }
-
-           // final Fotos fotos = MainActivity.myAppDB.myDao().getFoto(elem.getVisitas().getId_anexo_visita(), elem.getVisitas().getId_visita(), elem.getVisitas().getId_visita_local(), configid);
-            imagen_referencial.setVisibility(View.GONE);
-            imagen_referencial.setImageDrawable(null);
 
             btn_ver.setOnClickListener(new View.OnClickListener() {
                 @Override

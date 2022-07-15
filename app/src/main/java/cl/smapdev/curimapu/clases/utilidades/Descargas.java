@@ -152,61 +152,67 @@ public class Descargas {
 
         boolean[] problema = {false, false};
 //        GsonDescargas gsonDescargas  = response.body();
-        Toast.makeText(activity, gsonDescargas.toString(), Toast.LENGTH_SHORT).show();
-        if (gsonDescargas != null){
+//        Toast.makeText(activity, gsonDescargas.toString(), Toast.LENGTH_SHORT).show();
+        if( gsonDescargas == null) {
+            Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", "respuesta nula", "aceptar");
+            return problema;
+        }
 
-            if(gsonDescargas.getRespuestas() != null && gsonDescargas.getRespuestas().size() > 0){
-                for(Respuesta rsp : gsonDescargas.getRespuestas()){
-                    switch(rsp.getCodigoRespuesta()){
-                        case 5:
-                            problema[1] = true;
-                            break;
-                        case 2:
-                            Toasty.error(activity, rsp.getMensajeRespuesta(), Toast.LENGTH_LONG, true).show();
-                            Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", rsp.getMensajeRespuesta()
-                                    +" por favor vuelva a intentarlo, si el problema persiste contacte con un administrador", "aceptar");
-                            problema[0] = true;
-                            break;
-                    }
+
+        if(gsonDescargas.getRespuestas() != null && gsonDescargas.getRespuestas().size() > 0){
+            for(Respuesta rsp : gsonDescargas.getRespuestas()){
+                switch(rsp.getCodigoRespuesta()){
+                    case 5:
+                        problema[1] = true;
+                        break;
+                    case 2:
+                        Toasty.error(activity, rsp.getMensajeRespuesta(), Toast.LENGTH_LONG, true).show();
+                        Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", rsp.getMensajeRespuesta()
+                                +" por favor vuelva a intentarlo, si el problema persiste contacte con un administrador", "aceptar");
+                        problema[0] = true;
+                        break;
                 }
             }
+        }
+
+        if(problema[1] && problema[0]){
+            return problema;
+        }
+
+        Toasty.error(activity, "revisando datos", Toast.LENGTH_SHORT, true).show();
+
+        if(gsonDescargas.getArray_fechas_anexos() != null && gsonDescargas.getArray_fechas_anexos().size() > 0){
+            try{
+                for (AnexoCorreoFechas fch : gsonDescargas.getArray_fechas_anexos()){
+                    AnexoCorreoFechas f = MainActivity.myAppDB.myDao().getAnexoCorreoFechasByAnexo(fch.getId_ac_corr_fech());
+                    if(f != null){
+                        f.setCorreo_cinco_porciento_floracion(fch.getCorreo_cinco_porciento_floracion());
+                        f.setCorreo_inicio_corte_seda(fch.getCorreo_inicio_corte_seda());
+                        f.setCorreo_inicio_cosecha(fch.getCorreo_inicio_cosecha());
+                        f.setCorreo_inicio_despano(fch.getCorreo_inicio_despano());
+                        f.setCorreo_termino_cosecha(fch.getCorreo_termino_cosecha());
+                        f.setCorreo_termino_labores_post_cosechas(fch.getCorreo_termino_labores_post_cosechas());
+
+                        f.setCinco_porciento_floracion(fch.getCinco_porciento_floracion());
+                        f.setInicio_corte_seda(fch.getInicio_corte_seda());
+                        f.setInicio_cosecha(fch.getInicio_cosecha());
+                        f.setInicio_despano(fch.getInicio_despano());
+                        f.setTermino_cosecha(fch.getTermino_cosecha());
+                        f.setTermino_labores_post_cosechas(fch.getTermino_labores_post_cosechas());
 
 
-            if(!problema[1] && !problema[0]){
-                Toasty.error(activity, "revisando datos", Toast.LENGTH_SHORT, true).show();
-
-                if(gsonDescargas.getArray_fechas_anexos() != null && gsonDescargas.getArray_fechas_anexos().size() > 0){
-                    try{
-                        for (AnexoCorreoFechas fch : gsonDescargas.getArray_fechas_anexos()){
-                            AnexoCorreoFechas f = MainActivity.myAppDB.myDao().getAnexoCorreoFechasByAnexo(fch.getId_ac_corr_fech());
-                            if(f != null){
-                                f.setCorreo_cinco_porciento_floracion(fch.getCorreo_cinco_porciento_floracion());
-                                f.setCorreo_inicio_corte_seda(fch.getCorreo_inicio_corte_seda());
-                                f.setCorreo_inicio_cosecha(fch.getCorreo_inicio_cosecha());
-                                f.setCorreo_inicio_despano(fch.getCorreo_inicio_despano());
-                                f.setCorreo_termino_cosecha(fch.getCorreo_termino_cosecha());
-                                f.setCorreo_termino_labores_post_cosechas(fch.getCorreo_termino_labores_post_cosechas());
-
-                                f.setCinco_porciento_floracion(fch.getCinco_porciento_floracion());
-                                f.setInicio_corte_seda(fch.getInicio_corte_seda());
-                                f.setInicio_cosecha(fch.getInicio_cosecha());
-                                f.setInicio_despano(fch.getInicio_despano());
-                                f.setTermino_cosecha(fch.getTermino_cosecha());
-                                f.setTermino_labores_post_cosechas(fch.getTermino_labores_post_cosechas());
-
-
-                                MainActivity.myAppDB.myDao().UpdateFechasAnexos(f);
-                            }else{
-                                MainActivity.myAppDB.myDao().insertFechasAnexos(fch);
-                            }
-                        }
-
-                    }catch (SQLiteException e){
-                        Log.e("SQLITE",e.getMessage());
-                        Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
-                        problema[0] = true;
+                        MainActivity.myAppDB.myDao().UpdateFechasAnexos(f);
+                    }else{
+                        MainActivity.myAppDB.myDao().insertFechasAnexos(fch);
                     }
                 }
+
+            }catch (SQLiteException e){
+                Log.e("SQLITE",e.getMessage());
+                Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
+                problema[0] = true;
+            }
+        }
 
                 if (gsonDescargas.getPro_cli_matList() != null && gsonDescargas.getPro_cli_matList().size() > 0){
                     try {
@@ -238,11 +244,28 @@ public class Descargas {
                 }
 
 
+
+
                 if (gsonDescargas.getCropRotations() != null && gsonDescargas.getCropRotations().size() > 0){
                     try {
 
                         MainActivity.myAppDB.myDao().deleteCrops();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertCrop(gsonDescargas.getCropRotations());
+
+                    }catch (SQLiteException e) {
+                        Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
+                        Log.e("SQLITE", e.getMessage());
+                        problema[0] = true;
+                    }
+                }else{
+                    MainActivity.myAppDB.myDao().deleteCrops();
+                }
+
+                if (gsonDescargas.getEvaluaciones() != null && gsonDescargas.getEvaluaciones().size() > 0){
+                    try {
+
+                        MainActivity.myAppDB.DaoEvaluaciones().deleteAllEvaluaciones();
+                        MainActivity.myAppDB.DaoEvaluaciones().insertEvaluaciones(gsonDescargas.getEvaluaciones());
 
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
@@ -870,10 +893,7 @@ public class Descargas {
                         MainActivity.myAppDB.myDao().updateConfig(config);
                     }
                 }
-            }
-        }else{
-            Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", "respuesta nula", "aceptar");
-        }
+
 
         return problema;
     }
