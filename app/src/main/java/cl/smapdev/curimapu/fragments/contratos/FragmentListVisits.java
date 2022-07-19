@@ -37,14 +37,13 @@ import java.util.concurrent.Future;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.VisitasListAdapter;
-import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentContratos;
-import cl.smapdev.curimapu.fragments.dialogos.DialogFilterTables;
+import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
 import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
 
 public class FragmentListVisits extends Fragment {
@@ -133,6 +132,8 @@ public class FragmentListVisits extends Fragment {
         lista_visitas = view.findViewById(R.id.lista_visitas);
         ic_collapse = view.findViewById(R.id.ic_collapse);
         btn_nueva_visita = view.findViewById(R.id.btn_nueva_visita);
+        btn_carpeta_virtual = view.findViewById(R.id.btn_carpeta_virtual);
+
 
         setHasOptionsMenu(true);
 
@@ -147,7 +148,9 @@ public class FragmentListVisits extends Fragment {
                     ? getResources().getDrawable(R.drawable.ic_expand_down, activity.getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, activity.getTheme())
             );
-            lista_visitas.setVisibility( (lista_visitas.getVisibility() == View.VISIBLE) ? View.GONE  : View.VISIBLE);
+            lista_visitas.setVisibility( (lista_visitas.getVisibility() == View.VISIBLE)
+                    ? View.GONE
+                    : View.VISIBLE);
         });
 
         ic_collapse.setOnClickListener(view1 -> {
@@ -155,7 +158,9 @@ public class FragmentListVisits extends Fragment {
                     ? getResources().getDrawable(R.drawable.ic_expand_down, activity.getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, activity.getTheme())
             );
-            lista_visitas.setVisibility( (lista_visitas.getVisibility() == View.VISIBLE) ? View.GONE  : View.VISIBLE);
+            lista_visitas.setVisibility( (lista_visitas.getVisibility() == View.VISIBLE)
+                    ? View.GONE
+                    : View.VISIBLE);
         });
 
 
@@ -163,26 +168,47 @@ public class FragmentListVisits extends Fragment {
             btn_nueva_visita.setOnClickListener(view1 -> nuevaVisita(anexoContrato));
         }
 
+
+        btn_carpeta_virtual.setOnClickListener(view1 -> {
+            activity.cambiarFragment(
+                    new FragmentCheckList(),
+                    Utilidades.FRAGMENT_CHECKLIST,
+                    R.anim.slide_in_left,R.anim.slide_out_left
+            );
+//            DialogFirma df = new DialogFirma();
+//            df.show(getActivity().getSupportFragmentManager(), "TEST_FIRMA");
+        });
+
     }
 
 
     private void cargarListaGrande(){
         LinearLayoutManager lManagerVisitas = null;
         if (activity != null){
-            lManagerVisitas  = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
-
+            lManagerVisitas  = new LinearLayoutManager(
+                activity,
+                LinearLayoutManager.VERTICAL,
+                false
+            );
         }
         lista_visitas.setHasFixedSize(true);
         lista_visitas.setLayoutManager(lManagerVisitas);
 
 
-        VisitasListAdapter visitasListAdapter = new VisitasListAdapter(visitasCompletas, (view, fichas) ->
-                showAlertForEdit(fichas), (view, fichas) ->
-                avisoActivaFicha(
-                        "Esta a punto de eliminar esta visita para el anexo " + fichas.getAnexoCompleto().getAnexoContrato().getAnexo_contrato(),
-                        "esta visita realizada el dia " + fichas.getVisitas().getFecha_visita() + " se eliminara completamente de la tableta, no se subira a servidor tampoco",
-                        fichas
-                ),
+        VisitasListAdapter visitasListAdapter = new VisitasListAdapter(
+                visitasCompletas,
+                (view, fichas) ->
+                    showAlertForEdit(fichas), (view, fichas) ->
+                    avisoActivaFicha(
+                            "Esta a punto de eliminar esta visita para el anexo " +
+                                    fichas.getAnexoCompleto()
+                                            .getAnexoContrato()
+                                            .getAnexo_contrato(),
+                            "esta visita realizada el dia " +
+                                    fichas.getVisitas().getFecha_visita() +
+                                    " se eliminara completamente de la tableta, no se subira a servidor tampoco",
+                            fichas
+                    ),
                 activity
         );
         lista_visitas.setAdapter(visitasListAdapter);

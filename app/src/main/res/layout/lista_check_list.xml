@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/padding_small"
+    android:layout_margin="@dimen/padding_small"
+    android:background="@color/colorBackgroundList">
+
+
+    <TextView
+        android:id="@+id/lbl_tipo_doc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/tipo_doc"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lbl_estad_doc"
+        />
+
+    <TextView
+        android:id="@+id/lbl_estad_doc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        tool:text="EN CONFECCION"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_exand_rv"
+        app:layout_constraintStart_toEndOf="@id/lbl_tipo_doc"
+        />
+
+    <ImageView
+        android:id="@+id/btn_exand_rv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/lbl_estad_doc"
+        app:layout_constraintBottom_toTopOf="@id/lbl_documento"
+        android:src="@drawable/ic_expand_down"
+        app:tint="@color/colorOnBackground"
+       app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/lbl_documento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tool:text="CHECKLIST COSECHA"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintTop_toBottomOf="@id/lbl_estad_doc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/lbl_estado_sincro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tool:text="SINCRONIZADO"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        app:layout_constraintTop_toBottomOf="@id/lbl_documento"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/btn_subir_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_estado_sincro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rv_lista_detalle"
+        android:src="@drawable/ic_upload_white"
+        app:tint="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="@id/lbl_estado_sincro"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_lista_detalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_subir_check"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_nuevo_checklist"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/nuevo"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/lbl_estado_sincro"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_editar_checklist"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/editar"-->
+<!--        android:backgroundTint="@color/colorSecondaryVariant"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/lbl_estado_sincro"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/btn_nuevo_checklist"-->
+<!--        android:layout_marginEnd="@dimen/padding_small"-->
+<!--        />-->
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -279,4 +279,5 @@
     <string name="ultimo_modificador">Ultimo modificador</string>
     <string name="obs">Obs...</string>
     <string name="explique_la_razon_por_la_que_desea_rechazar_la_recomendacion">Explique la razon por la que desea rechazar la recomendacion</string>
+    <string name="tipo_doc">Tipo Doc.</string>
 </resources>

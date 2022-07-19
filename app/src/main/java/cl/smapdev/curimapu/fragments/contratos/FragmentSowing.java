@@ -715,7 +715,6 @@ public class FragmentSowing extends Fragment {
             }catch (Exception e){
                 Log.e("ERROR ARRAY EDIT TEXT", e.getLocalizedMessage());
             }
-
         }
     }
 

@@ -23,8 +23,11 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_crea_ficha" />
-
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_crea_ficha"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="center" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

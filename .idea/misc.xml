@@ -46,18 +46,29 @@
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/alert_empty.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/alert_guardar_obs.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/alert_rankear.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_checklist.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_checklist_siembra.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_crea_ficha.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_fichas.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_lista_visitas.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_visitas.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/dialog_observation_todo.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/dialogo_filtros_tabla.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/firma_digital.xml" value="0.22" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_checklist_siembra.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_contrato.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_crea_ficha.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_fichas.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_fieldbook.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_form_visitas.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_lista_visitas.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_sowing.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_visitas.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_anexos.xml" value="0.35833333333333334" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_cards.xml" value="0.35833333333333334" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_check_list.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_fichas.xml" value="0.35833333333333334" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_nested_checklist.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_recomendaciones.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_visitas.xml" value="0.35833333333333334" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/menu/menu_visitas.xml" value="0.3625" />
@@ -66,4 +77,5 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
