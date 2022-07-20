@@ -1,0 +1,2477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_small"
+        >
+
+        <TextView
+            android:id="@+id/lbl_numero_anexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/numero_de_anexo"
+            />
+        <TextView
+            android:id="@+id/tv_numero_anexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_numero_anexo"
+            app:layout_constraintStart_toStartOf="parent"
+            tool:text="23-TR2243"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_variedad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/variedad"
+            />
+        <TextView
+            android:id="@+id/tv_variedad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
+            app:layout_constraintEnd_toEndOf="parent"
+            tool:text="COL-24431fC"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/contenedor_vista"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_numero_anexo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_agricultor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/agricultor"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_agricultor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_agricultor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tool:text="SEBASTIAN MATIAS ACUñA PINILLA"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+            <TextView
+                android:id="@+id/lbl_potrero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_agricultor"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/potrero"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_potrero"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_potrero"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_rch"
+                tool:text="PATA DE GALLINA"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+
+            <TextView
+                android:id="@+id/lbl_rch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_agricultor"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/rch"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_rch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_potrero"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_potrero"
+                tool:text="445266CHSJ"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+
+
+            <TextView
+                android:id="@+id/lbl_sag_ogm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_potrero"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/registro_sag_ogm"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_sag_ogm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_sag_ogm"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_sag_idase"
+                tool:text="SAG OGM"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+
+            <TextView
+                android:id="@+id/lbl_sag_idase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_potrero"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/registro_sag_idase"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_sag_idase"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_sag_idase"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_sag_ogm"
+                tool:text="SAG IDASE"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+
+            <TextView
+                android:id="@+id/lbl_condicion_semilla"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_sag_ogm"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/condicion_semilla"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_condicion_semilla"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_condicion_semilla"
+                app:layout_constraintStart_toStartOf="parent"
+                tool:text="CONDICION SEMILLA"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+            <TextView
+                android:id="@+id/lbl_supervisor_curimapu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_condicion_semilla"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/supervisor_curimapu_en_cosecha"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_supervisor_curimapu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_supervisor_curimapu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tool:text="SOFIA CONCHA"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/btn_oculta_cabecera"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_vista"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+
+
+
+        <TextView
+            android:id="@+id/lbl_titulo_suelo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_cabecera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_suelo"
+            android:text="@string/suelo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_suelo"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_cabecera"
+            app:layout_constraintStart_toEndOf="@id/lbl_titulo_suelo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cont_suelo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_suelo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_chequeo_aislacion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_chequeo_aislacion"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="@string/chequeo_aislacion"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_chequeo_aislacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_chequeo_aislacion"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_chequeo_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si"
+                    tool:layout_editor_absoluteX="199dp"
+                    tool:layout_editor_absoluteY="95dp" />
+                <RadioButton
+                    android:id="@+id/btn_chequeo_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    tool:layout_editor_absoluteX="199dp"
+                    tool:layout_editor_absoluteY="95dp" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_cama_semilla"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cama_semilla"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_chequeo_aislacion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_cama_semilla"
+                />
+
+            <Spinner
+                android:id="@+id/sp_cama_semilla"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_cama_semilla"
+                app:layout_constraintTop_toBottomOf="@id/grupo_chequeo_aislacion" />
+
+
+            <TextView
+                android:id="@+id/lbl_cultivo_anterior"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cultivo_anterior"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_cama_semilla"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_cultivo_anterior"
+                />
+
+            <EditText
+                android:id="@+id/et_cultivo_anterior"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/sp_cama_semilla"
+                app:layout_constraintStart_toEndOf="@id/lbl_cultivo_anterior"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_estado_humedad"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/estado_humedad"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_cultivo_anterior"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_estado_humedad"
+                />
+
+            <Spinner
+                android:id="@+id/sp_estado_humedad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toBottomOf="@id/et_cultivo_anterior"
+                app:layout_constraintStart_toEndOf="@id/lbl_estado_humedad"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_compactacion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/compactacion"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_estado_humedad"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_compactacion"
+                />
+
+            <Spinner
+                android:id="@+id/sp_compactacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/desplegable_checklist_2"
+                android:layout_marginTop="@dimen/padding_small"
+                app:layout_constraintTop_toBottomOf="@id/sp_estado_humedad"
+                app:layout_constraintStart_toEndOf="@id/lbl_compactacion"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        <TextView
+            android:id="@+id/lbl_titulo_siembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_suelo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_siembra"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/siembra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_siembra"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_suelo"
+            app:layout_constraintStart_toEndOf="@id/lbl_titulo_siembra"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cont_siembra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_protocolo_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/protocolo_siembra_n"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_protocolo_siembra"
+                />
+
+            <EditText
+                android:id="@+id/et_protocolo_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_protocolo_siembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_fotografia_cartel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_protocolo_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_fotografia_cartel"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="@string/fotograf_a_cartel_de_identificacion_en_visita"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_fotografia_cartel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/et_protocolo_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_fotografia_cartel"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_fotografia_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_fotografia_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_indica_fecha_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/grupo_fotografia_cartel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_indica_fecha_siembra"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="@string/se_indica_fecha_de_siembra_hembra_en_libro_de_campo"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_indica_fecha_siembra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_fotografia_cartel"
+                app:layout_constraintStart_toEndOf="@id/lbl_indica_fecha_siembra"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_indica_fecha_siembra_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_indica_fecha_siembra_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_relacion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/relacion_m_h"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_indica_fecha_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_relacion_m"
+                />
+
+            <EditText
+                android:id="@+id/et_relacion_m"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_indica_fecha_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_relacion"
+                app:layout_constraintEnd_toStartOf="@id/lbl_separacion_relacion"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_separacion_relacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/separacion_relacion"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_indica_fecha_siembra"
+                app:layout_constraintStart_toEndOf="@id/et_relacion_m"
+                app:layout_constraintEnd_toStartOf="@id/et_relacion_h"
+                />
+
+            <EditText
+                android:id="@+id/et_relacion_h"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_indica_fecha_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_separacion_relacion"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/lbl_titulo_chequeo_envases"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_chequeo_envases"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/chequeo_de_envases"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_chequeo_envases"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_siembra"
+            app:layout_constraintStart_toEndOf="@id/lbl_titulo_chequeo_envases"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cont_chequeo_envases"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_chequeo_envases"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_foto_envase"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_foto_envase"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="@string/foto_envase"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_foto_envase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_foto_envase"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_foto_envase_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_foto_envase_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_foto_semilla"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/grupo_foto_envase"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_foto_semilla"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="@string/foto_semilla"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_foto_semilla"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_foto_envase"
+                app:layout_constraintStart_toEndOf="@id/lbl_foto_semilla"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_foto_semilla_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_foto_semilla_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_mezcla"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/mezcla"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_foto_semilla"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_mezcla"
+                />
+
+            <EditText
+                android:id="@+id/et_mezcla"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_foto_semilla"
+                app:layout_constraintStart_toEndOf="@id/lbl_mezcla"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_cantidad_fertilizante"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cantidad_aplicada_de_fertilizante_kg_ha"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_mezcla"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_cantidad_fertilizante"
+                />
+
+            <EditText
+                android:id="@+id/et_cantidad_fertilizante"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_mezcla"
+                app:layout_constraintStart_toEndOf="@id/lbl_cantidad_fertilizante"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_cantidad_envases_h"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cantidad_envases_h"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_cantidad_fertilizante"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_cantidad_envases_h"
+                />
+
+            <EditText
+                android:id="@+id/et_cantidad_envases_h"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_cantidad_fertilizante"
+                app:layout_constraintStart_toEndOf="@id/lbl_cantidad_envases_h"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_lote_hembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lote_hembra"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_cantidad_envases_h"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_lote_hembra"
+                />
+
+            <EditText
+                android:id="@+id/et_lote_hembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_cantidad_envases_h"
+                app:layout_constraintStart_toEndOf="@id/lbl_lote_hembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_cantidad_envases_m"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cantidad_envases_m"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_lote_hembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_cantidad_envases_m"
+                />
+
+            <EditText
+                android:id="@+id/et_cantidad_envases_m"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_lote_hembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_cantidad_envases_m"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_lote_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lote_macho"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_cantidad_envases_m"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_lote_macho"
+                />
+
+            <EditText
+                android:id="@+id/et_lote_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_cantidad_envases_m"
+                app:layout_constraintStart_toEndOf="@id/lbl_lote_macho"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/lbl_siembra_anterior"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_chequeo_envases"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_siembra_anterior"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/siembra_anterior"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_siembra_anterior"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_chequeo_envases"
+            app:layout_constraintStart_toEndOf="@id/lbl_siembra_anterior"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cont_siembra_anterior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_siembra_anterior"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_especie"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/especie_m"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_especie"
+                />
+
+            <EditText
+                android:id="@+id/et_especie"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_especie"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_varieda_siembra_anterior"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/variedad"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_especie"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_variedad"
+                />
+
+            <EditText
+                android:id="@+id/et_variedad"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_especie"
+                app:layout_constraintStart_toEndOf="@id/lbl_varieda_siembra_anterior"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_ogm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/ogm"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_variedad"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_ogm"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_ogm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/et_variedad"
+                app:layout_constraintStart_toEndOf="@id/lbl_ogm"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_ogm_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_ogm_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_anexo_curimapu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/anexo_curimapu"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_ogm"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_variedad"
+                />
+
+            <EditText
+                android:id="@+id/et_anexo_curimapu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_ogm"
+                app:layout_constraintStart_toEndOf="@id/lbl_anexo_curimapu"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <TextView
+            android:id="@+id/lbl_regulacion_siembra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_siembra_anterior"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/regulacion_de_siembra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_regulacion_siembra"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_siembra_anterior"
+            app:layout_constraintStart_toEndOf="@id/lbl_siembra_anterior"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cont_regulacion_siembra"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_regulacion_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+            <TextView
+                android:id="@+id/lbl_prestador_servicio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/prestador_de_servicio"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_prestador_servicio"
+                />
+
+            <EditText
+                android:id="@+id/et_prestador_servicio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_prestador_servicio"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_estado_discos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/estado_de_discos"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_prestador_servicio"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_estado_discos"
+                />
+
+            <Spinner
+                android:id="@+id/sp_estado_discos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toBottomOf="@id/et_prestador_servicio"
+                app:layout_constraintStart_toEndOf="@id/lbl_estado_discos"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_sembradora_marca"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/sembradora_marca"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_estado_discos"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_sembradora_marca"
+                />
+
+            <EditText
+                android:id="@+id/et_sembradora_marca"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/sp_estado_discos"
+                app:layout_constraintStart_toEndOf="@id/lbl_prestador_servicio"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_sembradora_modelo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/sembradora_modelo"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_sembradora_marca"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_sembradora_modelo"
+                />
+
+            <EditText
+                android:id="@+id/et_sembradora_modelo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_sembradora_marca"
+                app:layout_constraintStart_toEndOf="@id/lbl_sembradora_modelo"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_trocha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/trocha_mt"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_sembradora_modelo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_trocha"
+                />
+
+            <EditText
+                android:id="@+id/et_trocha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_sembradora_modelo"
+                app:layout_constraintStart_toEndOf="@id/lbl_trocha"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_tipo_sembradora"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/tipo_sembradora"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_trocha"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_tipo_sembradora"
+                />
+
+            <Spinner
+                android:id="@+id/sp_tipo_sembradora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_3"
+                app:layout_constraintTop_toBottomOf="@id/et_trocha"
+                app:layout_constraintStart_toEndOf="@id/lbl_tipo_sembradora"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_chequeo_selector"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/chequeo_selector"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_tipo_sembradora"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_chequeo_selector"
+                />
+
+            <Spinner
+                android:id="@+id/sp_chequeo_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toBottomOf="@id/sp_tipo_sembradora"
+                app:layout_constraintStart_toEndOf="@id/lbl_chequeo_selector"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_estado_maquina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/estado_de_la_m_quina"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_chequeo_selector"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_estado_maquina"
+                />
+
+            <Spinner
+                android:id="@+id/sp_estado_maquina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toBottomOf="@id/sp_chequeo_selector"
+                app:layout_constraintStart_toEndOf="@id/lbl_estado_maquina"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            <TextView
+                android:id="@+id/lbl_desterronadores"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/desterronadores"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_estado_maquina"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_desterronadores"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_desterronadores"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/sp_estado_maquina"
+                app:layout_constraintStart_toEndOf="@id/lbl_desterronadores"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_desterronadores_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_desterronadores_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_presion_neomaticos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/presion_neumaticos"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_desterronadores"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_presion_neumaticos"
+                />
+
+            <Spinner
+                android:id="@+id/sp_presion_neumaticos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_desterronadores"
+                app:layout_constraintStart_toEndOf="@id/lbl_presion_neomaticos"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_especie_lote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/especie_y_lote_anterior"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_presion_neumaticos"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_especie_lote"
+                />
+
+            <EditText
+                android:id="@+id/et_especie_lote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/sp_presion_neumaticos"
+                app:layout_constraintStart_toEndOf="@id/lbl_especie_lote"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_rueda_angosta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/rueda_angosta"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_especie_lote"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_rueda_angosta"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_rueda_angosta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/et_especie_lote"
+                app:layout_constraintStart_toEndOf="@id/lbl_rueda_angosta"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_rueda_angosta_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_rueda_angosta_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_largo_guia"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/largo_guia_mt"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_rueda_angosta"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_largo_guia"
+                />
+
+            <EditText
+                android:id="@+id/et_largo_guia"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_rueda_angosta"
+                app:layout_constraintStart_toEndOf="@id/lbl_largo_guia"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_sistema_fertilizacion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/sistema_de_fertilizacion"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_largo_guia"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_sistema_fertilizacion"
+                />
+
+            <EditText
+                android:id="@+id/et_sistema_fertilizacion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_largo_guia"
+                app:layout_constraintStart_toEndOf="@id/lbl_sistema_fertilizacion"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_distancia_hileras"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/distancia_entre_hileras_mt"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_sistema_fertilizacion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_distancia_hileras"
+                />
+
+            <EditText
+                android:id="@+id/et_distancia_hileras"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_sistema_fertilizacion"
+                app:layout_constraintStart_toEndOf="@id/lbl_distancia_hileras"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_cheque_caidas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cheque_de_caidas_disco_botas"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_distancia_hileras"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_cheque_caidas"
+                />
+
+            <Spinner
+                android:id="@+id/sp_cheque_caidas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                app:layout_constraintTop_toBottomOf="@id/et_distancia_hileras"
+                app:layout_constraintStart_toEndOf="@id/lbl_cheque_caidas"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_numero_semillas_mt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/n_semillas_mt"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_cheque_caidas"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_numero_semillas_mt"
+                />
+
+            <EditText
+                android:id="@+id/et_numero_semillas_mt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/sp_cheque_caidas"
+                app:layout_constraintStart_toEndOf="@id/lbl_numero_semillas_mt"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_profundidad_fertilizante"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/prof_de_fertilizante_cm"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_numero_semillas_mt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_profundidad_fertilizante"
+                />
+
+            <EditText
+                android:id="@+id/et_profundidad_fertilizante"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_numero_semillas_mt"
+                app:layout_constraintStart_toEndOf="@id/lbl_profundidad_fertilizante"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_profundidad_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/profundidad_de_siembra_cm"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_profundidad_fertilizante"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_profundidad_siembra"
+                />
+
+            <EditText
+                android:id="@+id/et_profundidad_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_profundidad_fertilizante"
+                app:layout_constraintStart_toEndOf="@id/lbl_profundidad_siembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_dist_entre_fert_semilla"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/dis_entre_fert_y_semilla_cm_n"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_profundidad_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_dist_entre_fert_semilla"
+                />
+
+            <EditText
+                android:id="@+id/et_dist_entre_fert_semilla"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_profundidad_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_dist_entre_fert_semilla"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        <TextView
+            android:id="@+id/lbl_aseo_maquinaria_pre_siembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_regulacion_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_aseo_maquinaria_pre_siembra"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/aseo_maquinaria_pre_siembra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_aseo_maquinaria_pre_siembra"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_regulacion_siembra"
+            app:layout_constraintStart_toEndOf="@id/lbl_aseo_maquinaria_pre_siembra"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cont_aseo_maquinaria_pre_siembra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_aseo_maquinaria_pre_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_tarros_semilla"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/tarros_semilla"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_tarros_semilla"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_tarros_semilla"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_tarros_semilla"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_tarros_semilla_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_tarros_semilla_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_discos_sembradores"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/discos_sembradores"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_tarros_semilla"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_discos_sembradores"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_discos_sembradores"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_tarros_semilla"
+                app:layout_constraintStart_toEndOf="@id/lbl_discos_sembradores"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_discos_sembradores_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_discos_sembradores_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_estructura_maquinaria"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/estructura_maquinaria"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_discos_sembradores"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_estructura_maquinaria"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_estructura_maquinaria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_discos_sembradores"
+                app:layout_constraintStart_toEndOf="@id/lbl_estructura_maquinaria"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_estructura_maquinaria_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_estructura_maquinaria_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_lugar_limpieza"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lugar_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_estructura_maquinaria"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_lugar_limpieza"
+                />
+
+            <EditText
+                android:id="@+id/et_lugar_limpieza"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_estructura_maquinaria"
+                app:layout_constraintStart_toEndOf="@id/lbl_lugar_limpieza"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_responsable_aseo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/responsable_aseo"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_lugar_limpieza"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_responsable_aseo"
+                />
+
+            <EditText
+                android:id="@+id/et_responsable_aseo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_lugar_limpieza"
+                app:layout_constraintStart_toEndOf="@id/lbl_responsable_aseo"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_rut_responsable_aseo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/rut_responsable_aseo_de_ingreso"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_aseo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_rut_responsable_aseo"
+                />
+
+            <EditText
+                android:id="@+id/et_rut_responsable_aseo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_aseo"
+                app:layout_constraintStart_toEndOf="@id/lbl_rut_responsable_aseo"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_responsable_aseo_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_responsable_aseo_de_ingreso"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable_aseo_ingreso"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_responsable_aseo_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable_aseo_ingreso"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_responsable_aseo_ingreso"
+                />
+            <ImageView
+                android:id="@+id/check_firma_responsable_aseo_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_aseo_ingreso"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_aseo_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/lbl_responsable_revision_limpieza_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/responsable_curimapu_revision_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_aseo_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_responsable_revision_limpieza_ingreso"
+                />
+
+            <EditText
+                android:id="@+id/et_responsable_revision_limpieza_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_aseo_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_responsable_revision_limpieza_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_responsable_revision_limpieza_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_responsable_curimapu_revision_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable_revision_limpieza_ingreso"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_responsable_revision_limpieza_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable_revision_limpieza_ingreso"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_responsable_revision_limpieza_ingreso"
+                />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/check_firma_responsable_revision_limpieza_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_ingreso"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_revision_limpieza_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <TextView
+            android:id="@+id/lbl_aseo_maquinaria_post_siembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_aseo_maquinaria_pre_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_aseo_maquinaria_post_siembra"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/aseo_maquinaria_post_siembra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_aseo_maquinaria_post_siembra"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_aseo_maquinaria_pre_siembra"
+            app:layout_constraintStart_toEndOf="@id/lbl_aseo_maquinaria_post_siembra"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cont_aseo_maquinaria_post_siembra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_aseo_maquinaria_post_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+
+            <TextView
+                android:id="@+id/lbl_tarros_semillas_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/tarros_semilla"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_tarros_semilla_post_siembra"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_tarros_semilla_post_siembra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_tarros_semillas_post_siembra"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_tarros_semilla_post_siembra_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_tarros_semilla_post_siembra_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_discos_sembradores_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/discos_sembradores"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_tarros_semilla_post_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_discos_sembradores_post_siembra"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_discos_sembradores_post_siembra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_tarros_semilla_post_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_discos_sembradores_post_siembra"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_discos_sembradores_post_siembra_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_discos_sembradores_post_siembra_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_estructura_maquinaria_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/estructura_maquinaria"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_discos_sembradores_post_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_estructura_maquinaria_post_siembra"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_estructura_maquinaria_post_siembra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_discos_sembradores_post_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_estructura_maquinaria_post_siembra"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_estructura_maquinaria_post_siembra_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_estructura_maquinaria_post_siembra_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_lugar_limpieza_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lugar_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_estructura_maquinaria_post_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_lugar_limpieza_post_siembra"
+                />
+
+            <EditText
+                android:id="@+id/et_lugar_limpieza_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_estructura_maquinaria_post_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_lugar_limpieza_post_siembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_responsable_aseo_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/responsable_aseo"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_lugar_limpieza_post_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_responsable_aseo_post_siembra"
+                />
+
+            <EditText
+                android:id="@+id/et_responsable_aseo_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_lugar_limpieza_post_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_responsable_aseo_post_siembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_rut_responsable_aseo_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/rut_responsable_aseo_de_ingreso"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_aseo_post_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_rut_responsable_aseo_post_siembra"
+                />
+
+            <EditText
+                android:id="@+id/et_rut_responsable_aseo_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_aseo_post_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_rut_responsable_aseo_post_siembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_responsable_aseo_ingreso_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_responsable_aseo_de_ingreso"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo_post_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable_aseo_ingreso_post_siembra"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_responsable_aseo_ingreso_post_siembra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo_post_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable_aseo_ingreso_post_siembra"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_responsable_aseo_ingreso_post_siembra"
+                />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/check_firma_responsable_aseo_ingreso_post_siembra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo_post_siembra"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_aseo_ingreso_post_siembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/lbl_responsable_revision_limpieza_ingreso_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/responsable_curimapu_revision_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_aseo_ingreso_post_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_responsable_revision_limpieza_ingreso_post_siembra"
+                />
+
+            <EditText
+                android:id="@+id/et_responsable_revision_limpieza_ingreso_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_aseo_ingreso_post_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_responsable_revision_limpieza_ingreso_post_siembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_responsable_revision_limpieza_ingreso_post_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_responsable_curimapu_revision_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_ingreso_post_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable_revision_limpieza_ingreso_post_siembra"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_responsable_revision_limpieza_ingreso_post_siembra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_ingreso_post_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable_revision_limpieza_ingreso_post_siembra"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_responsable_revision_limpieza_ingreso_post_siembra"
+                />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/check_firma_responsable_revision_limpieza_ingreso_post_siembra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_ingreso_post_siembra"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_revision_limpieza_ingreso_post_siembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        <TextView
+            android:id="@+id/lbl_titulo_general"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_aseo_maquinaria_post_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_general"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/general_r"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_general"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_aseo_maquinaria_post_siembra"
+            app:layout_constraintStart_toEndOf="@id/lbl_titulo_general"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cont_general"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_general"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_desempeno_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/desempe_o_de_la_siembra"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_desempeno_siembra"
+                />
+
+            <Spinner
+                android:id="@+id/sp_desempeno_siembra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_desempeno_siembra"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_observaciones_general"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/observaciones"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_desempeno_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_observaciones_general"
+                />
+
+            <EditText
+                android:id="@+id/et_observaciones_general"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/sp_desempeno_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_observaciones_general"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        <TextView
+            android:id="@+id/lbl_titulo_ingreso"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_general"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_ingreso"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/ingreso"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_ingreso"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_general"
+            app:layout_constraintStart_toEndOf="@id/lbl_titulo_ingreso"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cont_ingreso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_ingreso"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+            <TextView
+                android:id="@+id/lbl_fecha_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/fecha_de_ingreso"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_fecha_ingreso"
+                />
+
+            <EditText
+                android:id="@+id/et_fecha_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:maxLines="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_fecha_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_hora_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/fecha_de_ingreso"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_fecha_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_hora_ingreso"
+                />
+
+            <EditText
+                android:id="@+id/et_hora_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_fecha_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_hora_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_nombre_supervisor_ingreso_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre_del_supervisor_curimapu_en_siembra"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_hora_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_nombre_supervisor_ingreso_siembra"
+                />
+
+            <EditText
+                android:id="@+id/et_nombre_supervisor_ingreso_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_hora_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_nombre_supervisor_ingreso_siembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_nombre_responsable_campo_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre_responsable_del_campo"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_nombre_supervisor_ingreso_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_nombre_responsable_campo_ingreso"
+                />
+
+            <EditText
+                android:id="@+id/et_nombre_responsable_campo_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_nombre_supervisor_ingreso_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_nombre_responsable_campo_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_responsable_campo_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_responsable_del_campo"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_nombre_responsable_campo_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable_campo_ingreso"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_responsable_campo_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_nombre_responsable_campo_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable_campo_ingreso"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_responsable_campo_ingreso"
+                />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/check_firma_responsable_campo_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_nombre_responsable_campo_ingreso"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_campo_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <TextView
+            android:id="@+id/lbl_titulo_salida"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_ingreso"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_salida"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/salida"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_salida"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_ingreso"
+            app:layout_constraintStart_toEndOf="@id/lbl_titulo_salida"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cont_termino"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_salida">
+
+            <TextView
+                android:id="@+id/lbl_fecha_termino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/fecha_de_termino"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_fecha_termino"
+                />
+
+            <EditText
+                android:id="@+id/et_fecha_termino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:maxLines="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_fecha_termino"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_hora_termino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/hora_termino"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_fecha_termino"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_hora_termino"
+                />
+
+            <EditText
+                android:id="@+id/et_hora_termino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_fecha_termino"
+                app:layout_constraintStart_toEndOf="@id/lbl_hora_termino"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_nombre_supervisor_termino_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre_del_supervisor_curimapu_en_siembra"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_hora_termino"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_nombre_supervisor_termino_siembra"
+                />
+
+            <EditText
+                android:id="@+id/et_nombre_supervisor_termino_siembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_hora_termino"
+                app:layout_constraintStart_toEndOf="@id/lbl_nombre_supervisor_termino_siembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_nombre_responsable_campo_termino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre_responsable_del_campo"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_nombre_supervisor_termino_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_nombre_responsable_campo_termino"
+                />
+
+            <EditText
+                android:id="@+id/et_nombre_responsable_campo_termino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_nombre_supervisor_termino_siembra"
+                app:layout_constraintStart_toEndOf="@id/lbl_nombre_responsable_campo_termino"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_responsable_campo_termino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_responsable_del_campo"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_nombre_responsable_campo_termino"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable_campo_termino"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_responsable_campo_termino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_nombre_responsable_campo_termino"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable_campo_termino"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_responsable_campo_termino"
+                />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/check_firma_responsable_campo_termino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_nombre_responsable_campo_termino"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_campo_termino"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

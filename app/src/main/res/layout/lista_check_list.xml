@@ -13,7 +13,7 @@
     <TextView
         android:id="@+id/lbl_documento"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         tool:text="CHECKLIST COSECHA"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:gravity="center"
@@ -22,6 +22,15 @@
         app:layout_constraintEnd_toStartOf="@id/btn_exand_rv"
         />
 
+    <Button
+        android:id="@+id/btn_nuevo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nuevo"
+        app:layout_constraintTop_toBottomOf="@id/lbl_documento"
+        app:layout_constraintStart_toStartOf="parent"
+
+        />
     <ImageView
         android:id="@+id/btn_exand_rv"
         android:layout_width="60dp"
@@ -38,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/lbl_documento"
+        app:layout_constraintTop_toBottomOf="@id/btn_nuevo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

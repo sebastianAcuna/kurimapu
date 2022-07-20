@@ -12,21 +12,32 @@ import java.util.List;
 
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.viewHolders.CheckListViewHolder;
+import cl.smapdev.curimapu.clases.tablas.CheckListDetails;
 import cl.smapdev.curimapu.clases.tablas.CheckLists;
 
 public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> {
 
     private final List<CheckLists> checkLists;
-    private final OnClickListener onClick;
-    private final OnClickListener onClickEditar;
+    private final OnClickListener onClickNuevo;
+    private final OnClickListenerCallback onClickEditar;
+    private final OnClickListenerCallback onClickPDF;
+    private final OnClickListenerCallback onClickSubir;
 
     public interface OnClickListener{ void onItemClick( CheckLists checkList ); };
+    public interface OnClickListenerCallback{ void onItemClick(CheckLists checkList, CheckListDetails details); };
 
 
-    public CheckListAdapter(List<CheckLists> checkLists, OnClickListener onClick, OnClickListener onClickEditar) {
+    public CheckListAdapter(
+            List<CheckLists> checkLists,
+            OnClickListener onClick,
+            OnClickListenerCallback onClickEditar,
+            OnClickListenerCallback onClickPDF,
+            OnClickListenerCallback onClickSubir) {
         this.checkLists = checkLists;
-        this.onClick = onClick;
+        this.onClickNuevo = onClick;
         this.onClickEditar = onClickEditar;
+        this.onClickPDF = onClickPDF;
+        this.onClickSubir = onClickSubir;
     }
 
     @NonNull
@@ -43,12 +54,18 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> 
         holder.lbl_documento.setText( checkList.getDescCheckList() );
 
 
-        NestedCheckListAdapter nested = new NestedCheckListAdapter(checkList.getDetails());
+        NestedCheckListAdapter nested = new NestedCheckListAdapter(
+                checkList.getDetails(),
+                checkListDetails -> onClickPDF.onItemClick(checkList, checkListDetails),
+                checkListDetails -> onClickEditar.onItemClick(checkList, checkListDetails),
+                checkListDetails -> onClickSubir.onItemClick(checkList, checkListDetails)
+                );
         LinearLayoutManager lm = new LinearLayoutManager(holder.itemView.getContext());
 
         holder.rv_lista_detalle.setLayoutManager(lm);
         holder.rv_lista_detalle.setAdapter(nested);
 
+        holder.btn_nuevo.setOnClickListener(view -> onClickNuevo.onItemClick(checkList));
 
         holder.btn_exand_rv.setOnClickListener(view -> {
             checkList.setExpanded(!checkList.isExpanded());

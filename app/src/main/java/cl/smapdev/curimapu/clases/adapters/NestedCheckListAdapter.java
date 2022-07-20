@@ -18,8 +18,17 @@ public class NestedCheckListAdapter extends RecyclerView.Adapter<NestedCheckList
 
     List<CheckListDetails> nestedDetails;
 
-    public NestedCheckListAdapter(List<CheckListDetails> nested) {
+    private final OnClickListener onClickEditar;
+    private final OnClickListener onClickPDF;
+    private final OnClickListener onClickSubir;
+
+    public interface OnClickListener{ void onItemClick( CheckListDetails checkListDetails ); };
+
+    public NestedCheckListAdapter(List<CheckListDetails> nested, OnClickListener onClickEditar, OnClickListener onClickPDF, OnClickListener onClickSubir) {
         this.nestedDetails = nested;
+        this.onClickEditar = onClickEditar;
+        this.onClickPDF = onClickPDF;
+        this.onClickSubir = onClickSubir;
     }
 
     @NonNull
@@ -31,7 +40,7 @@ public class NestedCheckListAdapter extends RecyclerView.Adapter<NestedCheckList
 
     @Override
     public void onBindViewHolder(@NonNull NestedCheckListViewHolder holder, int position) {
-        holder.bind(nestedDetails.get(position));
+        holder.bind(nestedDetails.get(position), onClickPDF, onClickEditar, onClickSubir);
     }
 
     @Override

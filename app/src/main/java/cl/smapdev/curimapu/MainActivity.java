@@ -64,6 +64,8 @@ import cl.smapdev.curimapu.fragments.FragmentLogin;
 import cl.smapdev.curimapu.fragments.FragmentPrincipal;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
 import cl.smapdev.curimapu.fragments.anexoFechas.FragmentAnexoFechas;
+import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
+import cl.smapdev.curimapu.fragments.contratos.FragmentListVisits;
 import cl.smapdev.curimapu.fragments.servidorFragment;
 
 
@@ -422,9 +424,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case Utilidades.FRAGMENT_CONFIG:
                     case Utilidades.FRAGMENT_FICHAS:
                     case Utilidades.FRAGMENT_VISITAS:
+
                         cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_right, R.anim.slide_out_right);
                         cambiarNavigation(R.id.nv_inicio);
                     break;
+
+                    case Utilidades.FRAGMENT_CHECKLIST:
+                        cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_right, R.anim.slide_out_right);
+                        break;
+                    case Utilidades.FRAGMENT_CHECKLIST_SIEMBRA:
+                        cambiarFragment(new FragmentCheckList(), Utilidades.FRAGMENT_CHECKLIST, R.anim.slide_in_right, R.anim.slide_out_right);
+                        break;
                    /* case Utilidades.FRAGMENT_TAKE_PHOTO:
                         break;*/
                     default:

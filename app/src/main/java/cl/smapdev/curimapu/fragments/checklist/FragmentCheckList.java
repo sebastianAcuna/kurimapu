@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,7 @@ import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.tablas.CheckListDetails;
 import cl.smapdev.curimapu.clases.tablas.CheckLists;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
+import es.dmoral.toasty.Toasty;
 
 public class FragmentCheckList extends Fragment {
 
@@ -114,42 +116,6 @@ public class FragmentCheckList extends Fragment {
         checkLists.add(chk1);
         checkLists.add(chk2);
 
-//
-//        CheckLists chk2 = new CheckLists();
-//        chk2.setEstadoDocumento(1);
-//        chk2.setDescTipoDocumento("CAPACITACION SIEMBRA");
-//        chk2.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-//        chk2.setEstadoSincronizazion(1);
-//        chk2.setExpanded(false);
-//        List<String> nested2 = new ArrayList<>();
-//        nested2.add("1");
-//        nested2.add("2");
-//        nested2.add("3");
-//        nested2.add("4");
-//        nested2.add("5");
-//        nested2.add("6");
-//        chk1.setNestedChecks(nested2);
-//        checkLists.add(chk2);
-//
-//
-//        CheckLists chk3 = new CheckLists();
-//        chk3.setEstadoDocumento(0);
-//        chk3.setDescTipoDocumento("CHECK LIST COSECHA");
-//        chk3.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-//        chk3.setEstadoSincronizazion(0);
-//        chk3.setExpanded(false);
-//        chk3.setNestedChecks(Collections.emptyList());
-//        checkLists.add(chk3);
-//
-//        CheckLists chk4 = new CheckLists();
-//        chk4.setEstadoDocumento(0);
-//        chk4.setDescTipoDocumento("CAPACITACION COSECHA");
-//        chk4.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-//        chk4.setEstadoSincronizazion(0);
-//        chk4.setExpanded(false);
-//        chk4.setNestedChecks(Collections.emptyList());
-//        checkLists.add(chk4);
-
 
         LinearLayoutManager lManager = null;
         if (activity != null){
@@ -161,8 +127,22 @@ public class FragmentCheckList extends Fragment {
 
         adapter = new CheckListAdapter(
                 checkLists,
-                nuevoCheckList -> { },
-                editCheckList -> { }
+                nuevoCheckList -> {
+                    activity.cambiarFragment(
+                            new FragmentCheckListSiembra(),
+                            Utilidades.FRAGMENT_CHECKLIST_SIEMBRA,
+                            R.anim.slide_in_left,R.anim.slide_out_left
+                    );
+                },
+                (checkListPDF, detailsPDF) -> {
+                    Toasty.success(requireContext(), "PDF", Toast.LENGTH_SHORT, true).show();
+                },
+                (checkListEditar, detailsEditar) -> {
+                    Toasty.success(requireContext(), "EDITAR", Toast.LENGTH_SHORT, true).show();
+                },
+                (checkListSubir, detailsSubir) -> {
+                    Toasty.success(requireContext(), "SUBIR", Toast.LENGTH_SHORT, true).show();
+                }
         );
 
         rv_checklist.setAdapter(adapter);

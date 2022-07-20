@@ -23,6 +23,25 @@
     <string name="sync_up_menu">Uploads</string>
 
 
+    <string-array name="desplegable_checklist_1">
+        <item>@string/select</item>
+        <item>BUENO</item>
+        <item>REGULAR</item>
+        <item>MALO</item>
+    </string-array>
+
+    <string-array name="desplegable_checklist_2">
+        <item>@string/select</item>
+        <item>ALTA</item>
+        <item>MEDIA</item>
+        <item>BAJA</item>
+    </string-array>
+
+    <string-array name="desplegable_checklist_3">
+        <item>@string/select</item>
+        <item>CEREALERA</item>
+        <item>MONOGRANO</item>
+    </string-array>
 
     <!-- FICHAS-->
     <string name="region">Region : </string>
@@ -280,4 +299,82 @@
     <string name="obs">Obs...</string>
     <string name="explique_la_razon_por_la_que_desea_rechazar_la_recomendacion">Explique la razon por la que desea rechazar la recomendacion</string>
     <string name="tipo_doc">Tipo Doc.</string>
+    <string name="numero_de_anexo">Número de Anexo</string>
+    <string name="rch">RCH</string>
+    <string name="registro_sag_ogm">REGISTRO SAG OGM</string>
+    <string name="registro_sag_idase">REGISTRO SAG IDASE</string>
+    <string name="condicion_semilla">CONDICION SEMILLA</string>
+    <string name="supervisor_curimapu_en_cosecha">SUPERVISOR CURIMAPU EN COSECHA</string>
+    <string name="suelo">SUELO</string>
+    <string name="chequeo_aislacion">CHEQUEO AISLACION</string>
+    <string name="si">SI</string>
+    <string name="no">NO</string>
+    <string name="cama_semilla">CAMA SEMILLA</string>
+    <string name="cultivo_anterior">CULTIVO ANTERIOR</string>
+    <string name="estado_humedad">ESTADO HUMEDAD</string>
+    <string name="compactacion">COMPACTACION</string>
+    <string name="siembra">SIEMBRA</string>
+    <string name="protocolo_siembra_n">PROTOCOLO SIEMBRA N°</string>
+    <string name="fotograf_a_cartel_de_identificacion_en_visita">FOTOGRAFÍA CARTEL DE IDENTIFICACION EN VISITA</string>
+    <string name="se_indica_fecha_de_siembra_hembra_en_libro_de_campo">SE INDICA FECHA DE SIEMBRA HEMBRA EN LIBRO DE CAMPO</string>
+    <string name="relacion_m_h">RELACION M:H</string>
+    <string name="separacion_relacion">:</string>
+    <string name="chequeo_de_envases">CHEQUEO DE ENVASES</string>
+    <string name="foto_envase">FOTO ENVASE</string>
+    <string name="foto_semilla">FOTO SEMILLA</string>
+    <string name="mezcla">MEZCLA</string>
+    <string name="cantidad_aplicada_de_fertilizante_kg_ha">CANTIDAD APLICADA DE FERTILIZANTE (KG/HA)</string>
+    <string name="cantidad_envases_h">CANTIDAD ENVASES H</string>
+    <string name="lote_hembra">LOTE HEMBRA</string>
+    <string name="cantidad_envases_m">CANTIDAD ENVASES M</string>
+    <string name="lote_macho">LOTE MACHO</string>
+    <string name="siembra_anterior">SIEMBRA ANTERIOR</string>
+    <string name="especie_m">ESPECIE</string>
+    <string name="ogm">OGM</string>
+    <string name="anexo_curimapu">ANEXO CURIMAPU</string>
+    <string name="regulacion_de_siembra">REGULACION DE SIEMBRA</string>
+    <string name="prestador_de_servicio">PRESTADOR DE SERVICIO</string>
+    <string name="estado_de_discos">ESTADO DE DISCOS</string>
+    <string name="sembradora_marca">SEMBRADORA MARCA</string>
+    <string name="sembradora_modelo">SEMBRADORA MODELO</string>
+    <string name="trocha_mt">TROCHA (MT)</string>
+    <string name="tipo_sembradora">TIPO SEMBRADORA</string>
+    <string name="chequeo_selector">CHEQUEO SELECTOR</string>
+    <string name="estado_de_la_m_quina">ESTADO DE LA MÁQUINA</string>
+    <string name="desterronadores">DESTERRONADORES</string>
+    <string name="presion_neumaticos">PRESION NEUMATICOS</string>
+    <string name="especie_y_lote_anterior">ESPECIE Y LOTE ANTERIOR</string>
+    <string name="rueda_angosta">RUEDA ANGOSTA</string>
+    <string name="largo_guia_mt">LARGO GUIA (MT)</string>
+    <string name="sistema_de_fertilizacion">SISTEMA DE FERTILIZACION</string>
+    <string name="distancia_entre_hileras_mt">DISTANCIA ENTRE HILERAS (MT)</string>
+    <string name="cheque_de_caidas_disco_botas">CHEQUE DE CAIDAS: (DISCO/BOTAS)</string>
+    <string name="n_semillas_mt">N° SEMILLAS/MT</string>
+    <string name="prof_de_fertilizante_cm">PROF. DE FERTILIZANTE (CM)</string>
+    <string name="profundidad_de_siembra_cm">PROFUNDIDAD DE SIEMBRA (CM)</string>
+    <string name="dis_entre_fert_y_semilla_cm_n">DIS. ENTRE FERT Y SEMILLA (CM) N°</string>
+    <string name="aseo_maquinaria_pre_siembra">ASEO MAQUINARIA PRE SIEMBRA</string>
+    <string name="tarros_semilla">TARROS SEMILLA</string>
+    <string name="discos_sembradores">DISCOS SEMBRADORES</string>
+    <string name="estructura_maquinaria">ESTRUCTURA MAQUINARIA</string>
+    <string name="lugar_de_limpieza">LUGAR DE LIMPIEZA</string>
+    <string name="responsable_aseo">RESPONSABLE ASEO</string>
+    <string name="rut_responsable_aseo_de_ingreso">RUT RESPONSABLE ASEO DE INGRESO</string>
+    <string name="firmar">firmar</string>
+    <string name="responsable_curimapu_revision_de_limpieza">RESPONSABLE CURIMAPU REVISION DE LIMPIEZA</string>
+    <string name="firma_responsable_curimapu_revision_de_limpieza">FIRMA RESPONSABLE CURIMAPU REVISION DE LIMPIEZA</string>
+    <string name="firma_responsable_aseo_de_ingreso">FIRMA RESPONSABLE ASEO DE INGRESO</string>
+    <string name="aseo_maquinaria_post_siembra">ASEO MAQUINARIA POST SIEMBRA</string>
+    <string name="general">GENERAL</string>
+    <string name="general_r">GENERAL</string>
+    <string name="desempe_o_de_la_siembra">DESEMPEÑO DE LA SIEMBRA</string>
+    <string name="observaciones">OBSERVACIONES</string>
+    <string name="ingreso">INGRESO</string>
+    <string name="fecha_de_ingreso">FECHA DE INGRESO</string>
+    <string name="nombre_del_supervisor_curimapu_en_siembra">NOMBRE DEL SUPERVISOR CURIMAPU EN SIEMBRA</string>
+    <string name="nombre_responsable_del_campo">NOMBRE RESPONSABLE DEL CAMPO</string>
+    <string name="firma_responsable_del_campo">FIRMA RESPONSABLE DEL CAMPO</string>
+    <string name="salida">SALIDA</string>
+    <string name="fecha_de_termino">FECHA DE TERMINO</string>
+    <string name="hora_termino">HORA TERMINO</string>
 </resources>

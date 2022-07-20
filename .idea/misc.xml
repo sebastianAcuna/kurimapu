@@ -3,15 +3,78 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_archive.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_arrow_back.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_assignment.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_attach_file.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_camera.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_date_range.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_filter_list.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_home.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_keyboard_return.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_remove_red_eye.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_save.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-anydpi/ic_settings.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-tvdpi/rounded_button_green.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-tvdpi/rounded_button_icon.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-v24/ic_general.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-v24/ic_grow.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-v24/ic_humidity.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-v24/ic_phyto.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable-v24/ic_weed.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_baseline_email_24_no.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_baseline_email_24_si.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_baseline_perm_contact_calendar_24.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_camera_alt_black.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_cloud_upload_black_24dp.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_download_white.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_handshake_regular.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_hat_cowboy_solid.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_map_regular.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_playlist_add_black_24dp.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_quora_brands.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_radio_button_checked_black_24dp.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_radio_button_unchecked_black_24dp.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_search_solid.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_spa_solid.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_star_black_24dp.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/ic_upload_white.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/margen_columna_cinco_floracion.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/margen_columna_inicio_corte_seda.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/margenes_cabecera.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/drawable/rounded_dark.xml" value="0.158" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/alert_empty.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/alert_guardar_obs.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/alert_rankear.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_checklist.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_checklist_siembra.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_crea_ficha.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_fichas.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_lista_visitas.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_visitas.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/dialog_observation_todo.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/dialogo_filtros_tabla.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/firma_digital.xml" value="0.22" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_checklist.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_checklist_siembra.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_contrato.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_crea_ficha.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_fichas.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_fieldbook.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_form_visitas.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_lista_visitas.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_sowing.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_visitas.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_anexos.xml" value="0.35833333333333334" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_cards.xml" value="0.35833333333333334" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_check_list.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_detalle_checklist.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_fichas.xml" value="0.35833333333333334" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_nested_checklist.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_recomendaciones.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_visitas.xml" value="0.35833333333333334" />
-        <entry key="app/src/main/res/drawable/ic_file_pdf_solid.xml" value="0.1385" />
-        <entry key="app/src/main/res/layout/lista_check_list.xml" value="0.30480072463768115" />
-        <entry key="app/src/main/res/layout/lista_detalle_checklist.xml" value="0.30480072463768115" />
-        <entry key="app/src/main/res/layout/lista_nested_checklist.xml" value="0.1752786220871327" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/menu/menu_visitas.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/menu/menu_vistas.xml" value="0.3625" />
       </map>
     </option>
   </component>
