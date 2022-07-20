@@ -25,7 +25,8 @@ import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.CheckListAdapter;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
-import cl.smapdev.curimapu.clases.tablas.CheckList;
+import cl.smapdev.curimapu.clases.tablas.CheckListDetails;
+import cl.smapdev.curimapu.clases.tablas.CheckLists;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class FragmentCheckList extends Fragment {
@@ -43,13 +44,8 @@ public class FragmentCheckList extends Fragment {
         super.onCreate(savedInstanceState);
         MainActivity a = (MainActivity) getActivity();
         if(a != null) activity = a;
-
-
         prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
-
     }
-
-
 
     @Nullable
     @Override
@@ -78,60 +74,81 @@ public class FragmentCheckList extends Fragment {
         bind(view);
 
 
-        List<CheckList> checkLists = new ArrayList<>();
+        List<CheckLists> checkLists = new ArrayList<>();
 
-        CheckList chk1 = new CheckList();
-        chk1.setEstadoDocumento(0);
-        chk1.setDescTipoDocumento("CHECK LIST SIEMBRA");
+        CheckLists chk1 = new CheckLists();
+        CheckLists chk2 = new CheckLists();
+        chk1.setDescCheckList("CHECK LIST SIEMBRA");
         chk1.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-        chk1.setEstadoSincronizazion(0);
-        chk1.setIdDocumentoPendiente(454);
         chk1.setExpanded(false);
 
-        List<String> nested1 = new ArrayList<>();
-        nested1.add("1");
-        nested1.add("2");
-        nested1.add("3");
-        nested1.add("4");
-        nested1.add("5");
-        chk1.setNestedChecks(nested1);
-        checkLists.add(chk1);
-
-
-        CheckList chk2 = new CheckList();
-        chk2.setEstadoDocumento(1);
-        chk2.setDescTipoDocumento("CAPACITACION SIEMBRA");
+        chk2.setDescCheckList("CHECK LIST COSECHA");
         chk2.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-        chk2.setEstadoSincronizazion(1);
         chk2.setExpanded(false);
-        List<String> nested2 = new ArrayList<>();
-        nested2.add("1");
-        nested2.add("2");
-        nested2.add("3");
-        nested2.add("4");
-        nested2.add("5");
-        nested2.add("6");
-        chk1.setNestedChecks(nested2);
+
+        List<CheckListDetails> nested1 = new ArrayList<>();
+        List<CheckListDetails> nested2 = new ArrayList<>();
+        CheckListDetails nd1 = new CheckListDetails();
+        nd1.setDescription("HOLA 1 ");
+        CheckListDetails nd2 = new CheckListDetails();
+        nd2.setDescription("HOLA 1 ");
+        CheckListDetails nd3 = new CheckListDetails();
+        nd3.setDescription("HOLA 3 ");
+        CheckListDetails nd4 = new CheckListDetails();
+        nd4.setDescription("HOLA 4 ");
+        CheckListDetails nd5 = new CheckListDetails();
+        nd5.setDescription("HOLA 5 ");
+        nested1.add(nd1);
+        nested1.add(nd2);
+        nested1.add(nd3);
+        nested1.add(nd4);
+        nested1.add(nd5);
+
+        nested2.add(nd1);
+        nested2.add(nd2);
+        nested2.add(nd3);
+        nested2.add(nd4);
+        nested2.add(nd5);
+        chk1.setDetails(nested1);
+        chk2.setDetails(nested2);
+        checkLists.add(chk1);
         checkLists.add(chk2);
 
-
-        CheckList chk3 = new CheckList();
-        chk3.setEstadoDocumento(0);
-        chk3.setDescTipoDocumento("CHECK LIST COSECHA");
-        chk3.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-        chk3.setEstadoSincronizazion(0);
-        chk3.setExpanded(false);
-        chk3.setNestedChecks(Collections.emptyList());
-        checkLists.add(chk3);
-
-        CheckList chk4 = new CheckList();
-        chk4.setEstadoDocumento(0);
-        chk4.setDescTipoDocumento("CAPACITACION COSECHA");
-        chk4.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-        chk4.setEstadoSincronizazion(0);
-        chk4.setExpanded(false);
-        chk4.setNestedChecks(Collections.emptyList());
-        checkLists.add(chk4);
+//
+//        CheckLists chk2 = new CheckLists();
+//        chk2.setEstadoDocumento(1);
+//        chk2.setDescTipoDocumento("CAPACITACION SIEMBRA");
+//        chk2.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+//        chk2.setEstadoSincronizazion(1);
+//        chk2.setExpanded(false);
+//        List<String> nested2 = new ArrayList<>();
+//        nested2.add("1");
+//        nested2.add("2");
+//        nested2.add("3");
+//        nested2.add("4");
+//        nested2.add("5");
+//        nested2.add("6");
+//        chk1.setNestedChecks(nested2);
+//        checkLists.add(chk2);
+//
+//
+//        CheckLists chk3 = new CheckLists();
+//        chk3.setEstadoDocumento(0);
+//        chk3.setDescTipoDocumento("CHECK LIST COSECHA");
+//        chk3.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+//        chk3.setEstadoSincronizazion(0);
+//        chk3.setExpanded(false);
+//        chk3.setNestedChecks(Collections.emptyList());
+//        checkLists.add(chk3);
+//
+//        CheckLists chk4 = new CheckLists();
+//        chk4.setEstadoDocumento(0);
+//        chk4.setDescTipoDocumento("CAPACITACION COSECHA");
+//        chk4.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+//        chk4.setEstadoSincronizazion(0);
+//        chk4.setExpanded(false);
+//        chk4.setNestedChecks(Collections.emptyList());
+//        checkLists.add(chk4);
 
 
         LinearLayoutManager lManager = null;

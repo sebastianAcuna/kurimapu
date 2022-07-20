@@ -5,25 +5,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Collections;
 import java.util.List;
 
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.viewHolders.CheckListViewHolder;
-import cl.smapdev.curimapu.clases.tablas.CheckList;
+import cl.smapdev.curimapu.clases.tablas.CheckLists;
 
 public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> {
 
-    private final List<CheckList> checkLists;
+    private final List<CheckLists> checkLists;
     private final OnClickListener onClick;
     private final OnClickListener onClickEditar;
 
-    public interface OnClickListener{ void onItemClick( CheckList checkList ); };
+    public interface OnClickListener{ void onItemClick( CheckLists checkList ); };
 
 
-    public CheckListAdapter(List<CheckList> checkLists, OnClickListener onClick, OnClickListener onClickEditar) {
+    public CheckListAdapter(List<CheckLists> checkLists, OnClickListener onClick, OnClickListener onClickEditar) {
         this.checkLists = checkLists;
         this.onClick = onClick;
         this.onClickEditar = onClickEditar;
@@ -37,8 +37,33 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CheckListViewHolder holder, int position) {
-        holder.bind(checkLists.get(position), onClick, onClickEditar);
+    public void onBindViewHolder(@NonNull CheckListViewHolder holder, int position){
+
+        CheckLists checkList = checkLists.get( position );
+        holder.lbl_documento.setText( checkList.getDescCheckList() );
+
+
+        NestedCheckListAdapter nested = new NestedCheckListAdapter(checkList.getDetails());
+        LinearLayoutManager lm = new LinearLayoutManager(holder.itemView.getContext());
+
+        holder.rv_lista_detalle.setLayoutManager(lm);
+        holder.rv_lista_detalle.setAdapter(nested);
+
+
+        holder.btn_exand_rv.setOnClickListener(view -> {
+            checkList.setExpanded(!checkList.isExpanded());
+            holder.rv_lista_detalle.setVisibility(checkList.isExpanded()
+                    ? View.VISIBLE
+                    : View.GONE);
+
+
+            holder.btn_exand_rv.setImageDrawable((checkList.isExpanded())
+                    ? holder.itemView.getContext().getDrawable(R.drawable.ic_expand_up)
+                    : holder.itemView.getContext().getDrawable(R.drawable.ic_expand_down)
+            );
+        });
+
+
     }
 
     @Override
@@ -46,3 +71,5 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> 
         return checkLists.size();
     }
 }
+
+
