@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -33,7 +34,9 @@ import java.util.concurrent.Future;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
+import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
+import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.dialogos.DialogFirma;
@@ -188,6 +191,12 @@ public class FragmentCheckListSiembra extends Fragment {
     private Button btn_firma_responsable_campo_ingreso;
     private ImageView check_firma_responsable_campo_ingreso;
 
+    private EditText et_operador_maquina_ingreso;
+    private Button btn_firma_operario_maquina_ingreso;
+    private ImageView check_firma_operario_maquina_ingreso;
+
+
+
     //salida
     private EditText et_fecha_termino;
     private EditText et_hora_termino;
@@ -195,6 +204,14 @@ public class FragmentCheckListSiembra extends Fragment {
     private EditText et_nombre_responsable_campo_termino;
     private Button btn_firma_responsable_campo_termino;
     private ImageView check_firma_responsable_campo_termino;
+    private EditText et_operador_maquina_termino;
+    private Button btn_firma_operario_maquina_termino;
+    private ImageView check_firma_operario_maquina_termino;
+
+
+    //botonera
+    private Button btn_guardar_cl_siembra;
+    private Button btn_cancelar_cl_siembra;
 
 
     private ConstraintLayout contenedor_vista;
@@ -435,6 +452,10 @@ public class FragmentCheckListSiembra extends Fragment {
          check_firma_responsable_revision_limpieza_ingreso_post_siembra = view.findViewById(R.id.check_firma_responsable_revision_limpieza_ingreso_post_siembra);
 
 
+         //general
+        sp_desempeno_siembra = view.findViewById(R.id.sp_desempeno_siembra);
+        et_observaciones_general = view.findViewById(R.id.et_observaciones_general);
+
         //ingreso
          et_fecha_ingreso = view.findViewById(R.id.et_fecha_ingreso);
          et_hora_ingreso = view.findViewById(R.id.et_hora_ingreso);
@@ -442,6 +463,9 @@ public class FragmentCheckListSiembra extends Fragment {
          et_nombre_responsable_campo_ingreso = view.findViewById(R.id.et_nombre_responsable_campo_ingreso);
          btn_firma_responsable_campo_ingreso = view.findViewById(R.id.btn_firma_responsable_campo_ingreso);
          check_firma_responsable_campo_ingreso = view.findViewById(R.id.check_firma_responsable_campo_ingreso);
+         et_operador_maquina_ingreso = view.findViewById(R.id.et_operador_maquina_ingreso);
+         btn_firma_operario_maquina_ingreso = view.findViewById(R.id.btn_firma_operario_maquina_ingreso);
+         check_firma_operario_maquina_ingreso = view.findViewById(R.id.check_firma_operario_maquina_ingreso);
 
         //salida
          et_fecha_termino = view.findViewById(R.id.et_fecha_termino);
@@ -450,6 +474,9 @@ public class FragmentCheckListSiembra extends Fragment {
          et_nombre_responsable_campo_termino = view.findViewById(R.id.et_nombre_responsable_campo_termino);
          btn_firma_responsable_campo_termino = view.findViewById(R.id.btn_firma_responsable_campo_termino);
          check_firma_responsable_campo_termino = view.findViewById(R.id.check_firma_responsable_campo_termino);
+         et_operador_maquina_termino = view.findViewById(R.id.et_operador_maquina_termino);
+         btn_firma_operario_maquina_termino = view.findViewById(R.id.btn_firma_operario_maquina_termino);
+         check_firma_operario_maquina_termino = view.findViewById(R.id.check_firma_operario_maquina_termino);
 
         //constraint layout
         contenedor_vista = view.findViewById(R.id.contenedor_vista);
@@ -463,6 +490,10 @@ public class FragmentCheckListSiembra extends Fragment {
         cont_general = view.findViewById(R.id.cont_general);
         cont_ingreso = view.findViewById(R.id.cont_ingreso);
         cont_termino = view.findViewById(R.id.cont_termino);
+
+        //botonera
+        btn_guardar_cl_siembra = view.findViewById(R.id.btn_guardar_cl_siembra);
+        btn_cancelar_cl_siembra = view.findViewById(R.id.btn_cancelar_cl_siembra);
 
 
 
@@ -514,6 +545,9 @@ public class FragmentCheckListSiembra extends Fragment {
 
 
 
+        //botonera
+        btn_guardar_cl_siembra.setOnClickListener(view1 -> showAlertForConfirmarGuardar());
+        btn_cancelar_cl_siembra.setOnClickListener(view1 -> cancelar());
 
 
 
@@ -529,6 +563,7 @@ public class FragmentCheckListSiembra extends Fragment {
 
 
 
+
         btn_firma_responsable_aseo_ingreso.setOnClickListener(view1 -> levantarDialogo("RESPONSABLE_ASEO_INGRESO"));
         btn_firma_responsable_revision_limpieza_ingreso.setOnClickListener(view1 -> levantarDialogo("REVISOR_LIMPIEZA_INGRESO"));
         btn_firma_responsable_aseo_ingreso_post_siembra.setOnClickListener(view1 -> levantarDialogo("RESPONSABLE_ASEO_SALIDA"));
@@ -536,8 +571,404 @@ public class FragmentCheckListSiembra extends Fragment {
         btn_firma_responsable_campo_ingreso.setOnClickListener(view1 -> levantarDialogo("RESPONSABLE_CAMPO_INGRESO"));
         btn_firma_responsable_campo_termino.setOnClickListener(view1 -> levantarDialogo("RESPONSABLE_CAMPO_TERMINO"));
 
+    }
+
+    private boolean guardar(int state, String description) {
+
+        String comparaSpinner = "--Seleccione--";
+        //crear clase y guardar en bd
+
+        //levantar modal para preguntar si quiere guardar y activar o solo guardar.
+        CheckListSiembra siembra  = new CheckListSiembra();
+
+        siembra.setEstado_documento(state);
+        siembra.setApellido_checklist( description);
+        siembra.setId_ac_cl_siembra(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
 
 
+        String claveUnica = config.getId()+""+config.getId_usuario()+""+Utilidades.fechaActualConHora().replaceAll("")
+
+        //suelo
+        if(btn_chequeo_si.isChecked() || btn_chequeo_no.isChecked()){
+            int chequeoAislacion = (btn_chequeo_si.isSelected()) ? 1 : 0;
+            siembra.setChequeo_aislacion(chequeoAislacion);
+        }
+
+        if(!sp_cama_semilla.getSelectedItem().toString().equals(comparaSpinner)){
+            String cama_semilla = sp_cama_semilla.getSelectedItem().toString();
+            siembra.setCama_semilla(cama_semilla);
+        }
+
+        if(!et_cultivo_anterior.getText().toString().isEmpty()){
+            String cultivo_anterior = et_cultivo_anterior.getText().toString();
+            siembra.setCultivo_anterior(cultivo_anterior);
+        }
+
+        if(!sp_estado_humedad.getSelectedItem().toString().equals(comparaSpinner)){
+            String estadoHumedad = sp_estado_humedad.getSelectedItem().toString();
+            siembra.setEstado_humedad(estadoHumedad);
+        }
+
+        if(!sp_compactacion.getSelectedItem().toString().equals(comparaSpinner)){
+            String compactacion = sp_compactacion.getSelectedItem().toString();
+            siembra.setCompactacion(compactacion);
+        }
+
+        //siembra
+        if(!et_protocolo_siembra.getText().toString().isEmpty()){
+            String protocoloSiembra = et_protocolo_siembra.getText().toString();
+            siembra.setProtocolo_siembra(Integer.parseInt(protocoloSiembra));
+        }
+
+        if(btn_fotografia_si.isChecked() || btn_fotografia_no.isChecked()){
+            int fotografiaCartel = (btn_fotografia_si.isChecked()) ? 1 : 0;
+            siembra.setFotografia_cartel_identificacion(fotografiaCartel);
+        }
+
+        if(btn_indica_fecha_siembra_si.isChecked() || btn_indica_fecha_siembra_no.isChecked()){
+            int indicaFechaSiembra = (btn_indica_fecha_siembra_si.isChecked()) ? 1 : 0;
+            siembra.setSe_indica_fecha_siembra_lc(indicaFechaSiembra);
+        }
+
+        if(!et_relacion_m.getText().toString().isEmpty()){
+            String relacionM = et_relacion_m.getText().toString();
+            siembra.setRelacion_m(Double.parseDouble(relacionM));
+        }
+
+        if(!et_relacion_h.getText().toString().isEmpty()){
+            String relacionH = et_relacion_h.getText().toString();
+            siembra.setRelacion_h(Double.parseDouble(relacionH));
+        }
+
+        //chequeo envases
+
+        if(btn_foto_envase_si.isChecked() || btn_foto_envase_no.isChecked()){
+            int fotoEnvase = (btn_foto_envase_si.isChecked()) ? 1 : 0;
+            siembra.setFoto_envase(fotoEnvase);
+        }
+
+        if(btn_foto_semilla_si.isChecked() || btn_foto_semilla_no.isChecked()){
+            int fotoSemilla = (btn_foto_semilla_si.isChecked()) ? 1 : 0;
+            siembra.setFoto_semilla(fotoSemilla);
+        }
+
+        if(!et_mezcla.getText().toString().isEmpty()){
+            String mezcla = et_mezcla.getText().toString();
+            siembra.setMezcla(mezcla);
+        }
+
+        if(!et_cantidad_fertilizante.getText().toString().isEmpty()){
+            String cantidadFertilizante = et_cantidad_fertilizante.getText().toString();
+            siembra.setCantidad_aplicada(Double.parseDouble(cantidadFertilizante));
+        }
+
+
+        if(!et_cantidad_envases_h.getText().toString().isEmpty()){
+            String cantidadEnvasesH = et_cantidad_envases_h.getText().toString();
+            siembra.setCantidad_envase_h(Double.parseDouble(cantidadEnvasesH));
+        }
+
+        if(!et_lote_hembra.getText().toString().isEmpty()){
+            String loteHembra = et_lote_hembra.getText().toString();
+            siembra.setLote_hembra(loteHembra);
+        }
+
+        if(!et_cantidad_envases_m.getText().toString().isEmpty()){
+            String cantidadEnvasesM = et_cantidad_envases_m.getText().toString();
+            siembra.setCantidad_envase_m(Double.parseDouble(cantidadEnvasesM));
+        }
+
+        if(!et_lote_macho.getText().toString().isEmpty()){
+            String loteMacho = et_lote_macho.getText().toString();
+            siembra.setLote_macho(loteMacho);
+        }
+
+
+        //siembra anterior
+
+        if(!et_especie.getText().toString().isEmpty()){
+            String especie = et_especie.getText().toString();
+            siembra.setEspecie(especie);
+        }
+
+        if(!et_variedad.getText().toString().isEmpty()){
+            String variedad = et_variedad.getText().toString();
+            siembra.setVariedad(variedad);
+        }
+
+        if(btn_ogm_si.isChecked() || btn_ogm_no.isChecked()){
+            int ogm = (btn_ogm_si.isChecked()) ? 1 : 0;
+            siembra.setOgm(ogm);
+        }
+
+        if(!et_anexo_curimapu.getText().toString().isEmpty()){
+            String anexoCurimapu = et_anexo_curimapu.getText().toString();
+            siembra.setAnexo_curimapu(anexoCurimapu);
+        }
+
+        //regulacion de siembra
+        if(!et_prestador_servicio.getText().toString().isEmpty()){
+            String prestadorServicio = et_prestador_servicio.getText().toString();
+            siembra.setPrestador_servicio(prestadorServicio);
+        }
+
+        if(!sp_estado_discos.getSelectedItem().toString().equals(comparaSpinner)){
+            String estadoDiscos = sp_estado_discos.getSelectedItem().toString();
+            siembra.setEstado_discos(estadoDiscos);
+        }
+
+        if(!et_sembradora_marca.getText().toString().isEmpty()){
+            String sembradoraMarca = et_sembradora_marca.getText().toString();
+            siembra.setSembradora_marca(sembradoraMarca);
+        }
+        if(!et_sembradora_modelo.getText().toString().isEmpty()){
+            String sembradoraModelo = et_sembradora_modelo.getText().toString();
+            siembra.setSembradora_modelo(sembradoraModelo);
+        }
+        if(!et_trocha.getText().toString().isEmpty()){
+            String trocha = et_trocha.getText().toString();
+            siembra.setTrocha(Double.parseDouble(trocha));
+        }
+        if(!sp_tipo_sembradora.getSelectedItem().toString().equals(comparaSpinner)){
+            String tipoSembradora = sp_tipo_sembradora.getSelectedItem().toString();
+            siembra.setTipo_sembradora(tipoSembradora);
+        }
+        if(!sp_chequeo_selector.getSelectedItem().toString().equals(comparaSpinner)){
+            String chequeoSelector = sp_chequeo_selector.getSelectedItem().toString();
+            siembra.setChequeo_selector(chequeoSelector);
+        }
+        if(!sp_estado_maquina.getSelectedItem().toString().equals(comparaSpinner)){
+            String estadoMaquina = sp_estado_maquina.getSelectedItem().toString();
+            siembra.setEstado_maquina(estadoMaquina);
+        }
+
+        if(btn_desterronadores_si.isChecked() || btn_desterronadores_no.isChecked()){
+            int desterronadores = (btn_desterronadores_si.isChecked()) ? 1 : 0;
+            siembra.setDesterronadores(desterronadores);
+        }
+
+        if(!sp_presion_neumaticos.getSelectedItem().toString().equals(comparaSpinner)){
+            String presionNeumatico = sp_presion_neumaticos.getSelectedItem().toString();
+            siembra.setPresion_neumaticos(presionNeumatico);
+        }
+
+        if(!et_especie_lote.getText().toString().isEmpty()){
+            String especieLote = et_especie_lote.getText().toString();
+            siembra.setEspecie_lote_anterior(especieLote);
+        }
+        if(btn_rueda_angosta_si.isChecked() || btn_rueda_angosta_no.isChecked()){
+            int ruedaAngosta = (btn_rueda_angosta_si.isChecked()) ? 1 : 0;
+            siembra.setRueda_angosta(ruedaAngosta);
+        }
+        if(!et_largo_guia.getText().toString().isEmpty()){
+            String largoGuia = et_largo_guia.getText().toString();
+            siembra.setLargo_guia(Double.parseDouble(largoGuia));
+        }
+        if(!et_sistema_fertilizacion.getText().toString().isEmpty()){
+            String sistemaFertilizacion = et_sistema_fertilizacion.getText().toString();
+            siembra.setSistema_fertilizacion(sistemaFertilizacion);
+        }
+        if(!et_distancia_hileras.getText().toString().isEmpty()){
+            String distanciaHileras = et_distancia_hileras.getText().toString();
+            siembra.setDistancia_hileras(Double.parseDouble(distanciaHileras));
+        }
+
+        if(btn_chequeo_si.isChecked() || btn_chequeo_no.isChecked()){
+            int chequeo = (btn_chequeo_si.isChecked()) ? 1 : 0;
+            siembra.setRueda_angosta(chequeo);
+        }
+        if(!et_numero_semillas_mt.getText().toString().isEmpty()){
+            String numeroSemillas = et_numero_semillas_mt.getText().toString();
+            siembra.setNumero_semillas(Double.parseDouble(numeroSemillas));
+        }
+        if(!et_profundidad_fertilizante.getText().toString().isEmpty()){
+            String profFertilizante = et_profundidad_fertilizante.getText().toString();
+            siembra.setProfundidad_fertilizante(Double.parseDouble(profFertilizante));
+        }
+        if(!et_profundidad_siembra.getText().toString().isEmpty()){
+            String profSiembra = et_profundidad_siembra.getText().toString();
+            siembra.setProfundidad_siembra(Double.parseDouble(profSiembra));
+        }
+
+        if(!et_dist_entre_fert_semilla.getText().toString().isEmpty()){
+            String distanciaFertSemilla = et_dist_entre_fert_semilla.getText().toString();
+            siembra.setDistancia_fertilizante_semilla(Double.parseDouble(distanciaFertSemilla));
+        }
+
+
+        //aseo maquinaria pre siembra
+        if(btn_tarros_semilla_si.isChecked() || btn_tarros_semilla_no.isChecked()){
+            int tarrosSemillas = (btn_tarros_semilla_si.isChecked()) ? 1 : 0;
+            siembra.setTarros_semilla_pre_siembra(tarrosSemillas);
+        }
+        if(btn_discos_sembradores_si.isChecked() || btn_discos_sembradores_no.isChecked()){
+            int discosSembradores = (btn_discos_sembradores_si.isChecked()) ? 1 : 0;
+            siembra.setDiscos_sembradores_pre_siembra(discosSembradores);
+        }
+        if(btn_estructura_maquinaria_si.isChecked() || btn_estructura_maquinaria_no.isChecked()){
+            int estructuraMaquinaria = (btn_estructura_maquinaria_si.isChecked()) ? 1 : 0;
+            siembra.setEstructura_maquinaria_pre_siembra(estructuraMaquinaria);
+        }
+
+        if(!et_lugar_limpieza.getText().toString().isEmpty()){
+            String lugarLimpieza = et_lugar_limpieza.getText().toString();
+            siembra.setLugar_limpieza_pre_siembra(lugarLimpieza);
+        }
+
+        if(!et_responsable_aseo.getText().toString().isEmpty()){
+            String responsableAseo = et_responsable_aseo.getText().toString();
+            siembra.setResponsable_aseo_pre_siembra(responsableAseo);
+        }
+        if(!et_rut_responsable_aseo.getText().toString().isEmpty()){
+            String rutResponsableAseo = et_rut_responsable_aseo.getText().toString();
+            siembra.setRut_responsable_aseo_pre_siembra(rutResponsableAseo);
+        }
+        //firma
+
+        if(!et_responsable_revision_limpieza_ingreso.getText().toString().isEmpty()){
+            String responsableRevisionLimpieza = et_responsable_revision_limpieza_ingreso.getText().toString();
+            siembra.setEncargado_revision_limpieza_post_siembra(responsableRevisionLimpieza);
+        }
+        //firma
+
+
+        //aseo maquinaria post siembra
+        if(btn_tarros_semilla_post_siembra_si.isChecked() || btn_tarros_semilla_post_siembra_no.isChecked()){
+            int tarroSemillaPostSiembra = (btn_tarros_semilla_post_siembra_si.isChecked()) ? 1 : 0;
+            siembra.setTarros_semilla_post_siembra(tarroSemillaPostSiembra);
+        }
+        if(btn_discos_sembradores_post_siembra_si.isChecked() || btn_discos_sembradores_post_siembra_no.isChecked()){
+            int discosSembradoresPostSiembra = (btn_discos_sembradores_post_siembra_si.isChecked()) ? 1 : 0;
+            siembra.setDiscos_sembradores_post_siembra(discosSembradoresPostSiembra);
+        }
+
+        if(btn_estructura_maquinaria_post_siembra_si.isChecked() || btn_estructura_maquinaria_post_siembra_no.isChecked()){
+            int estrucutraMaquinariaPostSiembra = (btn_estructura_maquinaria_post_siembra_si.isChecked()) ? 1 : 0;
+            siembra.setEstructura_maquinaria_post_cosecha(estrucutraMaquinariaPostSiembra);
+        }
+
+        if(!et_lugar_limpieza_post_siembra.getText().toString().isEmpty()){
+            String lugarLimpiezaPS = et_lugar_limpieza_post_siembra.getText().toString();
+            siembra.setLugar_limpieza_post_siembra(lugarLimpiezaPS);
+        }
+        if(!et_responsable_aseo_post_siembra.getText().toString().isEmpty()){
+            String responsableAseoPS = et_responsable_aseo_post_siembra.getText().toString();
+            siembra.setResponsable_aseo_post_siembra(responsableAseoPS);
+        }
+
+        if(!et_rut_responsable_aseo_post_siembra.getText().toString().isEmpty()){
+            String rutResponsableAseoPS = et_rut_responsable_aseo_post_siembra.getText().toString();
+            siembra.setRut_responsable_aseo_post_siembra(rutResponsableAseoPS);
+        }
+        //firma
+
+
+        if(!et_responsable_revision_limpieza_ingreso_post_siembra.getText().toString().isEmpty()){
+            String rutResponsableRevisionAseoPS = et_responsable_revision_limpieza_ingreso_post_siembra.getText().toString();
+            siembra.setEncargado_revision_limpieza_post_siembra(rutResponsableRevisionAseoPS);
+        }
+        //firma
+
+
+
+        //general
+        if(!sp_desempeno_siembra.getSelectedItem().toString().equals(comparaSpinner)){
+            String desempenoSiembra = sp_desempeno_siembra.getSelectedItem().toString();
+            siembra.setDesempeno_siembra(desempenoSiembra);
+        }
+
+        if(!et_observaciones_general.getText().toString().isEmpty()){
+            String observaciones = et_observaciones_general.getText().toString();
+            siembra.setObservacion_general(observaciones);
+        }
+
+
+        //ingreso
+        if(!et_fecha_ingreso.getText().toString().isEmpty()){
+            String fechaIngreso = et_fecha_ingreso.getText().toString();
+            siembra.setFecha_ingreso(fechaIngreso);
+        }
+
+        if(!et_hora_ingreso.getText().toString().isEmpty()){
+            String horaIngreso = et_hora_ingreso.getText().toString();
+            siembra.setHora_ingreso(horaIngreso);
+        }
+
+        if(!et_nombre_supervisor_ingreso_siembra.getText().toString().isEmpty()){
+            String nombreSupervisor = et_nombre_supervisor_ingreso_siembra.getText().toString();
+            siembra.setNombre_supervisor_siembra(nombreSupervisor);
+        }
+        //firma
+
+        if(!et_nombre_responsable_campo_ingreso.getText().toString().isEmpty()){
+            String resposableCampo = et_nombre_responsable_campo_ingreso.getText().toString();
+            siembra.setNombre_responsable_campo(resposableCampo);
+        }
+        //firma
+
+        if(!et_operador_maquina_ingreso.getText().toString().isEmpty()){
+            String operarioMaquina = et_operador_maquina_ingreso.getText().toString();
+            siembra.setNombre_operario_maquina(operarioMaquina);
+        }
+        //firma
+
+
+        //salida
+        if(!et_fecha_termino.getText().toString().isEmpty()){
+            String fechaIngreso = et_fecha_termino.getText().toString();
+            siembra.setFecha_termino(fechaIngreso);
+        }
+
+        if(!et_hora_termino.getText().toString().isEmpty()){
+            String horaIngreso = et_hora_termino.getText().toString();
+            siembra.setHora_termino(horaIngreso);
+        }
+
+        if(!et_nombre_supervisor_termino_siembra.getText().toString().isEmpty()){
+            String nombreSupervisor = et_nombre_supervisor_termino_siembra.getText().toString();
+            siembra.setNombre_supervisor_siembra_termino(nombreSupervisor);
+        }
+        //firma
+
+        if(!et_nombre_responsable_campo_termino.getText().toString().isEmpty()){
+            String resposableCampo = et_nombre_responsable_campo_termino.getText().toString();
+            siembra.setNombre_responsable_campo_termino(resposableCampo);
+        }
+        //firma
+
+        if(!et_operador_maquina_termino.getText().toString().isEmpty()){
+            String operarioMaquina = et_operador_maquina_termino.getText().toString();
+            siembra.setNombre_operario_maquina_termino(operarioMaquina);
+        }
+        //firma
+
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        Future<Long> newIdFuture =  executor.submit(() ->
+            MainActivity.myAppDB.DaoClSiembra().insertClSiembra(siembra));
+
+        try {
+            long newId = newIdFuture.get();
+
+            if(newId > 0) {
+                Toasty.success(requireActivity(), "Guardado con exito", Toast.LENGTH_LONG, true).show();
+            }else{
+                Toasty.error(requireActivity(), "No se pudo guardar con exito", Toast.LENGTH_LONG, true).show();
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            Toasty.warning(requireActivity(), "Error al guardar ->"+ e.getMessage(), Toast.LENGTH_LONG, true).show();
+        }
+
+        return true;
+    }
+
+
+    private void cancelar() {
+        //eliminar firmas si es que las hay
+
+        //devolver a checklists
     }
 
 
@@ -556,6 +987,42 @@ public class FragmentCheckListSiembra extends Fragment {
 
             DialogFirma df = new DialogFirma();
             df.show(requireActivity().getSupportFragmentManager(), "FIRMA_USUARIOSDIALOG");
+    }
+
+    private void showAlertForConfirmarGuardar(){
+        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_checklist,null);
+
+        RadioGroup grupo_radios_estado = viewInfalted.findViewById(R.id.grupo_radios_estado);
+        RadioButton rbtn_activo = viewInfalted.findViewById(R.id.rbtn_activo);
+        RadioButton rbtn_pendiente = viewInfalted.findViewById(R.id.rbtn_pendiente);
+        EditText et_apellido = viewInfalted.findViewById(R.id.et_apellido);
+
+
+        final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
+                .setView(viewInfalted)
+                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> { })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .create();
+
+
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
+            Button c = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE);
+            b.setOnClickListener(view -> {
+
+                if((!rbtn_activo.isChecked() && !rbtn_pendiente.isChecked()) || et_apellido.getText().toString().isEmpty() ){
+                    Toasty.error(requireActivity(), "Debes seleccionar un estado e ingresar una descripcion", Toast.LENGTH_LONG, true).show();
+                    return;
+                }
+                int state = (rbtn_activo.isChecked()) ? 1 : 0;
+                boolean isSaved = guardar(state, et_apellido.getText().toString());
+                if(isSaved) builder.dismiss();
+
+            });
+            c.setOnClickListener(view -> builder.dismiss());
+        });
+        builder.setCancelable(false);
+        builder.show();
     }
 
     private void levantarHora(final EditText edit ){

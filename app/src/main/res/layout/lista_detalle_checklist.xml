@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_upload_white"
-        app:tint="@color/colorPrimaryDark"
+        app:tint="@color/colorGold"
         />
 
     <ImageView

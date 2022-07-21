@@ -422,4 +422,12 @@
     <string name="salida">SALIDA</string>
     <string name="fecha_de_termino">FECHA DE TERMINO</string>
     <string name="hora_termino">HORA TERMINO</string>
+    <string name="est_seguro_que_desea_guardar_este_checklist">¿Está seguro que desea guardar este CheckList ?</string>
+    <string name="antes_de_guardar_por_favor_seleccione_un_estado">Antes de guardar, por favor, seleccione un estado</string>
+    <string name="si_seleccionas_activo_al_sincronizar_se_agregara_automaticamente_a_la_carpeta_virtual">Si seleccionas \'Activo\' al sincronizar se agregara automaticamente a la carpeta virtual</string>
+    <string name="activo">ACTIVO</string>
+    <string name="pendiente">PENDIENTE</string>
+    <string name="ingrese_un_nombre_para_este_checklist_y_asi_poder_diferenciarlos">Ingrese un nombre para este checklist, y asi poder diferenciarlos.</string>
+    <string name="nombre_operario_maquina">NOMBRE OPERARIO MAQUINA</string>
+    <string name="firma_operario_maquina">FIRMA OPERARIO MAQUINA</string>
 </resources>

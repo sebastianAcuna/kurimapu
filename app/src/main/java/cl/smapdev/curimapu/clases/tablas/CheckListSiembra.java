@@ -15,12 +15,18 @@ public class CheckListSiembra {
     private int id_ac_cl_siembra;
     @Expose
     private String apellido_checklist;
+    @Expose
+    private int estado_sincronizacion;
+    @Expose
+    private int estado_documento;
+    @Expose
+    private String clave_unica;
 
     //suelo
     @Expose
     private int chequeo_aislacion; //si, no
     @Expose
-    private String cama_semilla_cultivo_anterior; //bueno, regular, malo
+    private String cama_semilla; //bueno, regular, malo
     @Expose
     private String cultivo_anterior;
     @Expose
@@ -36,9 +42,9 @@ public class CheckListSiembra {
     @Expose
     private int se_indica_fecha_siembra_lc;
     @Expose
-    private int relacion_m;
+    private double relacion_m;
     @Expose
-    private int relacion_h;
+    private double relacion_h;
 
     //chequeo emvases
     @Expose
@@ -48,13 +54,13 @@ public class CheckListSiembra {
     @Expose
     private String mezcla;
     @Expose
-    private int cantidad_aplicada;
+    private double cantidad_aplicada;
     @Expose
-    private int cantidad_envase_h;
+    private double cantidad_envase_h;
     @Expose
     private String lote_hembra;
     @Expose
-    private int cantidad_envase_m;
+    private double cantidad_envase_m;
     @Expose
     private String lote_macho;
 
@@ -126,7 +132,7 @@ public class CheckListSiembra {
     @Expose
     private String firma_responsable_aso_pre_siembra;
     @Expose
-    private String rut_revision_limpieza_pre_siembra;
+    private String responsable_revision_limpieza_pre_siembra;
     @Expose
     private String firma_revision_limpieza_pre_siembra;
 
@@ -147,7 +153,7 @@ public class CheckListSiembra {
     @Expose
     private String firma_responsable_aseo_post_siembra;
     @Expose
-    private String rut_revision_limpieza_post_siembra;
+    private String encargado_revision_limpieza_post_siembra;
     @Expose
     private String firma_revision_limpieza_post_siembra;
 
@@ -191,6 +197,30 @@ public class CheckListSiembra {
     private String firma_operario_maquina_termino;
 
 
+    public String getClave_unica() {
+        return clave_unica;
+    }
+
+    public void setClave_unica(String clave_unica) {
+        this.clave_unica = clave_unica;
+    }
+
+    public int getEstado_sincronizacion() {
+        return estado_sincronizacion;
+    }
+
+    public void setEstado_sincronizacion(int estado_sincronizacion) {
+        this.estado_sincronizacion = estado_sincronizacion;
+    }
+
+    public int getEstado_documento() {
+        return estado_documento;
+    }
+
+    public void setEstado_documento(int estado_documento) {
+        this.estado_documento = estado_documento;
+    }
+
     public int getId_cl_siembra() {
         return id_cl_siembra;
     }
@@ -232,12 +262,12 @@ public class CheckListSiembra {
         this.cultivo_anterior = cultivo_anterior;
     }
 
-    public String getCama_semilla_cultivo_anterior() {
-        return cama_semilla_cultivo_anterior;
+    public String getCama_semilla() {
+        return cama_semilla;
     }
 
-    public void setCama_semilla_cultivo_anterior(String cama_semilla_cultivo_anterior) {
-        this.cama_semilla_cultivo_anterior = cama_semilla_cultivo_anterior;
+    public void setCama_semilla(String cama_semilla) {
+        this.cama_semilla = cama_semilla;
     }
 
     public String getEstado_humedad() {
@@ -280,19 +310,19 @@ public class CheckListSiembra {
         this.se_indica_fecha_siembra_lc = se_indica_fecha_siembra_lc;
     }
 
-    public int getRelacion_m() {
+    public double getRelacion_m() {
         return relacion_m;
     }
 
-    public void setRelacion_m(int relacion_m) {
+    public void setRelacion_m(double relacion_m) {
         this.relacion_m = relacion_m;
     }
 
-    public int getRelacion_h() {
+    public double getRelacion_h() {
         return relacion_h;
     }
 
-    public void setRelacion_h(int relacion_h) {
+    public void setRelacion_h(double relacion_h) {
         this.relacion_h = relacion_h;
     }
 
@@ -320,19 +350,19 @@ public class CheckListSiembra {
         this.mezcla = mezcla;
     }
 
-    public int getCantidad_aplicada() {
+    public double getCantidad_aplicada() {
         return cantidad_aplicada;
     }
 
-    public void setCantidad_aplicada(int cantidad_aplicada) {
+    public void setCantidad_aplicada(double cantidad_aplicada) {
         this.cantidad_aplicada = cantidad_aplicada;
     }
 
-    public int getCantidad_envase_h() {
+    public double getCantidad_envase_h() {
         return cantidad_envase_h;
     }
 
-    public void setCantidad_envase_h(int cantidad_envase_h) {
+    public void setCantidad_envase_h(double cantidad_envase_h) {
         this.cantidad_envase_h = cantidad_envase_h;
     }
 
@@ -344,11 +374,11 @@ public class CheckListSiembra {
         this.lote_hembra = lote_hembra;
     }
 
-    public int getCantidad_envase_m() {
+    public double getCantidad_envase_m() {
         return cantidad_envase_m;
     }
 
-    public void setCantidad_envase_m(int cantidad_envase_m) {
+    public void setCantidad_envase_m(double cantidad_envase_m) {
         this.cantidad_envase_m = cantidad_envase_m;
     }
 
@@ -608,12 +638,12 @@ public class CheckListSiembra {
         this.firma_responsable_aso_pre_siembra = firma_responsable_aso_pre_siembra;
     }
 
-    public String getRut_revision_limpieza_pre_siembra() {
-        return rut_revision_limpieza_pre_siembra;
+    public String getResponsable_revision_limpieza_pre_siembra() {
+        return responsable_revision_limpieza_pre_siembra;
     }
 
-    public void setRut_revision_limpieza_pre_siembra(String rut_revision_limpieza_pre_siembra) {
-        this.rut_revision_limpieza_pre_siembra = rut_revision_limpieza_pre_siembra;
+    public void setResponsable_revision_limpieza_pre_siembra(String responsable_revision_limpieza_pre_siembra) {
+        this.responsable_revision_limpieza_pre_siembra = responsable_revision_limpieza_pre_siembra;
     }
 
     public String getFirma_revision_limpieza_pre_siembra() {
@@ -680,12 +710,12 @@ public class CheckListSiembra {
         this.firma_responsable_aseo_post_siembra = firma_responsable_aseo_post_siembra;
     }
 
-    public String getRut_revision_limpieza_post_siembra() {
-        return rut_revision_limpieza_post_siembra;
+    public String getEncargado_revision_limpieza_post_siembra() {
+        return encargado_revision_limpieza_post_siembra;
     }
 
-    public void setRut_revision_limpieza_post_siembra(String rut_revision_limpieza_post_siembra) {
-        this.rut_revision_limpieza_post_siembra = rut_revision_limpieza_post_siembra;
+    public void setEncargado_revision_limpieza_post_siembra(String encargado_revision_limpieza_post_siembra) {
+        this.encargado_revision_limpieza_post_siembra = encargado_revision_limpieza_post_siembra;
     }
 
     public String getFirma_revision_limpieza_post_siembra() {

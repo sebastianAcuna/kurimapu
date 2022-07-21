@@ -3,11 +3,37 @@ package cl.smapdev.curimapu.clases.tablas;
 public class CheckListDetails {
 
     private int id;
+    private int tipo_documento;
     private String  description;
-    private String  idAnexo;
+    private int  idAnexo;
     private boolean isUploaded;
-    private String  estado;
+    private int  estado;
+    private String descEstado;
 
+
+    public int getIdAnexo() {
+        return idAnexo;
+    }
+
+    public String getDescEstado() {
+        return descEstado;
+    }
+
+    public void setDescEstado(String descEstado) {
+        this.descEstado = descEstado;
+    }
+
+    public int getTipo_documento() {
+        return tipo_documento;
+    }
+
+    public void setTipo_documento(int tipo_documento) {
+        this.tipo_documento = tipo_documento;
+    }
+
+    public void setIdAnexo(int idAnexo) {
+        this.idAnexo = idAnexo;
+    }
 
     public int getId() {
         return id;
@@ -25,13 +51,6 @@ public class CheckListDetails {
         this.description = description;
     }
 
-    public String getIdAnexo() {
-        return idAnexo;
-    }
-
-    public void setIdAnexo(String idAnexo) {
-        this.idAnexo = idAnexo;
-    }
 
     public boolean isUploaded() {
         return isUploaded;
@@ -41,11 +60,11 @@ public class CheckListDetails {
         isUploaded = uploaded;
     }
 
-    public String getEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
     }
 }

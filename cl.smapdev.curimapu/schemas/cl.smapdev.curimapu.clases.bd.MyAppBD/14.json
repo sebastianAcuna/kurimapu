@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 14,
-    "identityHash": "494555a27170ad60d19f934bf0c2ac02",
+    "identityHash": "eb9a7dd32bff77a80fb154d803e32b15",
     "entities": [
       {
         "tableName": "fotos",
@@ -2847,12 +2847,550 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "anexo_checklist_siembra",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_cl_siembra` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ac_cl_siembra` INTEGER NOT NULL, `apellido_checklist` TEXT, `estado_sincronizacion` INTEGER NOT NULL, `estado_documento` INTEGER NOT NULL, `chequeo_aislacion` INTEGER NOT NULL, `cama_semilla` TEXT, `cultivo_anterior` TEXT, `estado_humedad` TEXT, `compactacion` TEXT, `protocolo_siembra` INTEGER NOT NULL, `fotografia_cartel_identificacion` INTEGER NOT NULL, `se_indica_fecha_siembra_lc` INTEGER NOT NULL, `relacion_m` REAL NOT NULL, `relacion_h` REAL NOT NULL, `foto_envase` INTEGER NOT NULL, `foto_semilla` INTEGER NOT NULL, `mezcla` TEXT, `cantidad_aplicada` REAL NOT NULL, `cantidad_envase_h` REAL NOT NULL, `lote_hembra` TEXT, `cantidad_envase_m` REAL NOT NULL, `lote_macho` TEXT, `especie` TEXT, `variedad` TEXT, `ogm` INTEGER NOT NULL, `anexo_curimapu` TEXT, `prestador_servicio` TEXT, `estado_discos` TEXT, `sembradora_marca` TEXT, `sembradora_modelo` TEXT, `trocha` REAL NOT NULL, `tipo_sembradora` TEXT, `chequeo_selector` TEXT, `estado_maquina` TEXT, `desterronadores` INTEGER NOT NULL, `presion_neumaticos` TEXT, `especie_lote_anterior` TEXT, `rueda_angosta` INTEGER NOT NULL, `largo_guia` REAL NOT NULL, `sistema_fertilizacion` TEXT, `distancia_hileras` REAL NOT NULL, `cheque_caidas` INTEGER NOT NULL, `numero_semillas` REAL NOT NULL, `profundidad_fertilizante` REAL NOT NULL, `profundidad_siembra` REAL NOT NULL, `distancia_fertilizante_semilla` REAL NOT NULL, `tarros_semilla_pre_siembra` INTEGER NOT NULL, `discos_sembradores_pre_siembra` INTEGER NOT NULL, `estructura_maquinaria_pre_siembra` INTEGER NOT NULL, `lugar_limpieza_pre_siembra` TEXT, `responsable_aseo_pre_siembra` TEXT, `rut_responsable_aseo_pre_siembra` TEXT, `firma_responsable_aso_pre_siembra` TEXT, `responsable_revision_limpieza_pre_siembra` TEXT, `firma_revision_limpieza_pre_siembra` TEXT, `tarros_semilla_post_siembra` INTEGER NOT NULL, `discos_sembradores_post_siembra` INTEGER NOT NULL, `estructura_maquinaria_post_cosecha` INTEGER NOT NULL, `lugar_limpieza_post_siembra` TEXT, `responsable_aseo_post_siembra` TEXT, `rut_responsable_aseo_post_siembra` TEXT, `firma_responsable_aseo_post_siembra` TEXT, `encargado_revision_limpieza_post_siembra` TEXT, `firma_revision_limpieza_post_siembra` TEXT, `desempeno_siembra` TEXT, `observacion_general` TEXT, `fecha_ingreso` TEXT, `hora_ingreso` TEXT, `nombre_supervisor_siembra` TEXT, `nombre_responsable_campo` TEXT, `firma_responsable_campo` TEXT, `nombre_operario_maquina` TEXT, `firma_operario_maquina` TEXT, `fecha_termino` TEXT, `hora_termino` TEXT, `nombre_supervisor_siembra_termino` TEXT, `nombre_responsable_campo_termino` TEXT, `firma_responsable_campo_termino` TEXT, `nombre_operario_maquina_termino` TEXT, `firma_operario_maquina_termino` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_cl_siembra",
+            "columnName": "id_cl_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_ac_cl_siembra",
+            "columnName": "id_ac_cl_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apellido_checklist",
+            "columnName": "apellido_checklist",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado_sincronizacion",
+            "columnName": "estado_sincronizacion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estado_documento",
+            "columnName": "estado_documento",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "chequeo_aislacion",
+            "columnName": "chequeo_aislacion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cama_semilla",
+            "columnName": "cama_semilla",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cultivo_anterior",
+            "columnName": "cultivo_anterior",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado_humedad",
+            "columnName": "estado_humedad",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "compactacion",
+            "columnName": "compactacion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "protocolo_siembra",
+            "columnName": "protocolo_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fotografia_cartel_identificacion",
+            "columnName": "fotografia_cartel_identificacion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "se_indica_fecha_siembra_lc",
+            "columnName": "se_indica_fecha_siembra_lc",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "relacion_m",
+            "columnName": "relacion_m",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "relacion_h",
+            "columnName": "relacion_h",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "foto_envase",
+            "columnName": "foto_envase",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "foto_semilla",
+            "columnName": "foto_semilla",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mezcla",
+            "columnName": "mezcla",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cantidad_aplicada",
+            "columnName": "cantidad_aplicada",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cantidad_envase_h",
+            "columnName": "cantidad_envase_h",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lote_hembra",
+            "columnName": "lote_hembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cantidad_envase_m",
+            "columnName": "cantidad_envase_m",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lote_macho",
+            "columnName": "lote_macho",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "especie",
+            "columnName": "especie",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "variedad",
+            "columnName": "variedad",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ogm",
+            "columnName": "ogm",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "anexo_curimapu",
+            "columnName": "anexo_curimapu",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "prestador_servicio",
+            "columnName": "prestador_servicio",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado_discos",
+            "columnName": "estado_discos",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sembradora_marca",
+            "columnName": "sembradora_marca",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sembradora_modelo",
+            "columnName": "sembradora_modelo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "trocha",
+            "columnName": "trocha",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipo_sembradora",
+            "columnName": "tipo_sembradora",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chequeo_selector",
+            "columnName": "chequeo_selector",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado_maquina",
+            "columnName": "estado_maquina",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "desterronadores",
+            "columnName": "desterronadores",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "presion_neumaticos",
+            "columnName": "presion_neumaticos",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "especie_lote_anterior",
+            "columnName": "especie_lote_anterior",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rueda_angosta",
+            "columnName": "rueda_angosta",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "largo_guia",
+            "columnName": "largo_guia",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sistema_fertilizacion",
+            "columnName": "sistema_fertilizacion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "distancia_hileras",
+            "columnName": "distancia_hileras",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cheque_caidas",
+            "columnName": "cheque_caidas",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numero_semillas",
+            "columnName": "numero_semillas",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "profundidad_fertilizante",
+            "columnName": "profundidad_fertilizante",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "profundidad_siembra",
+            "columnName": "profundidad_siembra",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "distancia_fertilizante_semilla",
+            "columnName": "distancia_fertilizante_semilla",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tarros_semilla_pre_siembra",
+            "columnName": "tarros_semilla_pre_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "discos_sembradores_pre_siembra",
+            "columnName": "discos_sembradores_pre_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estructura_maquinaria_pre_siembra",
+            "columnName": "estructura_maquinaria_pre_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lugar_limpieza_pre_siembra",
+            "columnName": "lugar_limpieza_pre_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "responsable_aseo_pre_siembra",
+            "columnName": "responsable_aseo_pre_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rut_responsable_aseo_pre_siembra",
+            "columnName": "rut_responsable_aseo_pre_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_responsable_aso_pre_siembra",
+            "columnName": "firma_responsable_aso_pre_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "responsable_revision_limpieza_pre_siembra",
+            "columnName": "responsable_revision_limpieza_pre_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_revision_limpieza_pre_siembra",
+            "columnName": "firma_revision_limpieza_pre_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tarros_semilla_post_siembra",
+            "columnName": "tarros_semilla_post_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "discos_sembradores_post_siembra",
+            "columnName": "discos_sembradores_post_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estructura_maquinaria_post_cosecha",
+            "columnName": "estructura_maquinaria_post_cosecha",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lugar_limpieza_post_siembra",
+            "columnName": "lugar_limpieza_post_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "responsable_aseo_post_siembra",
+            "columnName": "responsable_aseo_post_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rut_responsable_aseo_post_siembra",
+            "columnName": "rut_responsable_aseo_post_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_responsable_aseo_post_siembra",
+            "columnName": "firma_responsable_aseo_post_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encargado_revision_limpieza_post_siembra",
+            "columnName": "encargado_revision_limpieza_post_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_revision_limpieza_post_siembra",
+            "columnName": "firma_revision_limpieza_post_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "desempeno_siembra",
+            "columnName": "desempeno_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "observacion_general",
+            "columnName": "observacion_general",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_ingreso",
+            "columnName": "fecha_ingreso",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hora_ingreso",
+            "columnName": "hora_ingreso",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_supervisor_siembra",
+            "columnName": "nombre_supervisor_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_responsable_campo",
+            "columnName": "nombre_responsable_campo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_responsable_campo",
+            "columnName": "firma_responsable_campo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_operario_maquina",
+            "columnName": "nombre_operario_maquina",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_operario_maquina",
+            "columnName": "firma_operario_maquina",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_termino",
+            "columnName": "fecha_termino",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hora_termino",
+            "columnName": "hora_termino",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_supervisor_siembra_termino",
+            "columnName": "nombre_supervisor_siembra_termino",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_responsable_campo_termino",
+            "columnName": "nombre_responsable_campo_termino",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_responsable_campo_termino",
+            "columnName": "firma_responsable_campo_termino",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_operario_maquina_termino",
+            "columnName": "nombre_operario_maquina_termino",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_operario_maquina_termino",
+            "columnName": "firma_operario_maquina_termino",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_cl_siembra"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "temp_firmas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_firmas` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `path` TEXT, `tipo_documento` INTEGER NOT NULL, `lugar_firma` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_firmas",
+            "columnName": "id_firmas",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "path",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tipo_documento",
+            "columnName": "tipo_documento",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lugar_firma",
+            "columnName": "lugar_firma",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_firmas"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '494555a27170ad60d19f934bf0c2ac02')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eb9a7dd32bff77a80fb154d803e32b15')"
     ]
   }
 }

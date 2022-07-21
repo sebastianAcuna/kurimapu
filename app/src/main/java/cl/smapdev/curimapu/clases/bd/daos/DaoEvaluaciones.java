@@ -1,4 +1,4 @@
-package cl.smapdev.curimapu.clases.bd;
+package cl.smapdev.curimapu.clases.bd.daos;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

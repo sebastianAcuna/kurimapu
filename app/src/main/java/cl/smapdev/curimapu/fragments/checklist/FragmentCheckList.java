@@ -27,6 +27,7 @@ import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.CheckListAdapter;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.tablas.CheckListDetails;
+import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.CheckLists;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import es.dmoral.toasty.Toasty;
@@ -78,43 +79,48 @@ public class FragmentCheckList extends Fragment {
 
         List<CheckLists> checkLists = new ArrayList<>();
 
-        CheckLists chk1 = new CheckLists();
-        CheckLists chk2 = new CheckLists();
-        chk1.setDescCheckList("CHECK LIST SIEMBRA");
-        chk1.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-        chk1.setExpanded(false);
+        CheckLists capacitacionSiembra = new CheckLists();
+        capacitacionSiembra.setDescCheckList("CAPACITACION SIEMBRA");
+        capacitacionSiembra.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+        capacitacionSiembra.setExpanded(false);
+        capacitacionSiembra.setDetails(Collections.emptyList());
+        capacitacionSiembra.setTipoCheckList(5);
 
-        chk2.setDescCheckList("CHECK LIST COSECHA");
-        chk2.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-        chk2.setExpanded(false);
 
-        List<CheckListDetails> nested1 = new ArrayList<>();
-        List<CheckListDetails> nested2 = new ArrayList<>();
-        CheckListDetails nd1 = new CheckListDetails();
-        nd1.setDescription("HOLA 1 ");
-        CheckListDetails nd2 = new CheckListDetails();
-        nd2.setDescription("HOLA 1 ");
-        CheckListDetails nd3 = new CheckListDetails();
-        nd3.setDescription("HOLA 3 ");
-        CheckListDetails nd4 = new CheckListDetails();
-        nd4.setDescription("HOLA 4 ");
-        CheckListDetails nd5 = new CheckListDetails();
-        nd5.setDescription("HOLA 5 ");
-        nested1.add(nd1);
-        nested1.add(nd2);
-        nested1.add(nd3);
-        nested1.add(nd4);
-        nested1.add(nd5);
+        CheckLists checkListSiembra = new CheckLists();
+        checkListSiembra.setDescCheckList("CHECK LIST SIEMBRA");
+        checkListSiembra.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+        checkListSiembra.setExpanded(false);
+        ExecutorService ex = Executors.newSingleThreadExecutor();
+        List<CheckListSiembra> clSiembras;
+        Future<List<CheckListSiembra>> clSiembraFuture = ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().getAllClSiembraByAc(checkListSiembra.getIdAnexo()));
 
-        nested2.add(nd1);
-        nested2.add(nd2);
-        nested2.add(nd3);
-        nested2.add(nd4);
-        nested2.add(nd5);
-        chk1.setDetails(nested1);
-        chk2.setDetails(nested2);
-        checkLists.add(chk1);
-        checkLists.add(chk2);
+        try {
+            clSiembras = clSiembraFuture.get();
+            if(clSiembras.size() > 0){
+                List<CheckListDetails> nested = new ArrayList<>();
+                for (CheckListSiembra clSiembra : clSiembras){
+                    CheckListDetails tmp = new CheckListDetails();
+                    tmp.setDescription(clSiembra.getApellido_checklist());
+                    tmp.setUploaded((clSiembra.getEstado_sincronizacion() > 0));
+                    tmp.setId(clSiembra.getId_cl_siembra());
+                    tmp.setIdAnexo(clSiembra.getId_ac_cl_siembra());
+                    tmp.setEstado(clSiembra.getEstado_documento());
+                    tmp.setDescEstado((clSiembra.getEstado_documento() > 0) ? "ACTIVA" : "PENDIENTE");
+                    nested.add(tmp);
+                }
+                checkListSiembra.setDetails(nested);
+            }else{
+                checkListSiembra.setDetails(Collections.emptyList());
+            }
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            checkListSiembra.setDetails(Collections.emptyList());
+        }
+
+        checkLists.add(capacitacionSiembra);
+        checkLists.add(checkListSiembra);
 
 
         LinearLayoutManager lManager = null;

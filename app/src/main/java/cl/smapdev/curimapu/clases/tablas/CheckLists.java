@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CheckLists {
 
-    private String tipoCheckList;
+    private int tipoCheckList;
     private String descCheckList;
     private boolean isExpanded = false;
     private int idAnexo;
@@ -19,11 +19,11 @@ public class CheckLists {
         this.idAnexo = idAnexo;
     }
 
-    public String getTipoCheckList() {
+    public int getTipoCheckList() {
         return tipoCheckList;
     }
 
-    public void setTipoCheckList(String tipoCheckList) {
+    public void setTipoCheckList(int tipoCheckList) {
         this.tipoCheckList = tipoCheckList;
     }
 

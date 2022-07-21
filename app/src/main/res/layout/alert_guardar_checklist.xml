@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/padding_small">
+
+
+    <TextView
+        android:id="@+id/lbl_titulo_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/antes_de_guardar_por_favor_seleccione_un_estado"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <TextView
+        android:id="@+id/lbl_desc_estado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/si_seleccionas_activo_al_sincronizar_se_agregara_automaticamente_a_la_carpeta_virtual"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/lbl_titulo_alert"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
+
+    <RadioGroup
+        android:id="@+id/grupo_radios_estado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/lbl_desc_estado"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center_horizontal"
+        >
+
+        <RadioButton
+            android:id="@+id/rbtn_activo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activo"
+            />
+
+        <RadioButton
+            android:id="@+id/rbtn_pendiente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pendiente"
+            />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_titulo_apellido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ingrese_un_nombre_para_este_checklist_y_asi_poder_diferenciarlos"
+        app:layout_constraintTop_toBottomOf="@id/grupo_radios_estado"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/et_apellido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_titulo_apellido"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

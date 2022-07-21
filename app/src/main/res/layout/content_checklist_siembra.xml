@@ -219,6 +219,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
         <ImageView
             android:id="@+id/btn_oculta_cabecera"
             android:layout_width="50dp"
@@ -229,13 +230,22 @@
             app:tint="@color/colorOnBackground" />
 
 
+        <View
+            android:id="@+id/divider_cabecera"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_cabecera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
 
         <TextView
             android:id="@+id/lbl_titulo_suelo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/btn_oculta_cabecera"
+            app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_oculta_suelo"
             android:text="@string/suelo"
@@ -2312,6 +2322,64 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
+
+
+            <TextView
+                android:id="@+id/lbl_nombre_operador_maquina_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre_operario_maquina"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_campo_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_operador_maquina_ingreso"
+                />
+
+            <EditText
+                android:id="@+id/et_operador_maquina_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_campo_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_nombre_operador_maquina_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_operario_maquina_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_operario_maquina"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_operador_maquina_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_operario_maquina_ingreso"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_operario_maquina_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_operador_maquina_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_operario_maquina_ingreso"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_operario_maquina_ingreso"
+                />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/check_firma_operario_maquina_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_operador_maquina_ingreso"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_operario_maquina_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -2470,7 +2538,92 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
+            <TextView
+                android:id="@+id/lbl_nombre_operador_maquina_ingreso_termino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre_operario_maquina"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_campo_termino"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_operador_maquina_termino"
+                />
+
+            <EditText
+                android:id="@+id/et_operador_maquina_termino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_campo_termino"
+                app:layout_constraintStart_toEndOf="@id/lbl_nombre_operador_maquina_ingreso_termino"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_operario_maquina_termino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_operario_maquina"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_operador_maquina_termino"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_operario_maquina_termino"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_operario_maquina_termino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_operador_maquina_termino"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_operario_maquina_termino"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_operario_maquina_termino"
+                />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/check_firma_operario_maquina_termino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_operador_maquina_termino"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_operario_maquina_termino"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/divider_botonera"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/cont_termino"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/btn_guardar_cl_siembra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_botonera"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/guardar"/>
+
+        <Button
+            android:id="@+id/btn_cancelar_cl_siembra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_botonera"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/nav_cancel"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
