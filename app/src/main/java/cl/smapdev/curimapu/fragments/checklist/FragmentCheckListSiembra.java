@@ -586,7 +586,7 @@ public class FragmentCheckListSiembra extends Fragment {
         siembra.setId_ac_cl_siembra(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
 
 
-        String claveUnica = config.getId()+""+config.getId_usuario()+""+Utilidades.fechaActualConHora().replaceAll("")
+        String claveUnica = config.getId()+""+config.getId_usuario()+""+Utilidades.fechaActualConHora();
 
         //suelo
         if(btn_chequeo_si.isChecked() || btn_chequeo_no.isChecked()){
