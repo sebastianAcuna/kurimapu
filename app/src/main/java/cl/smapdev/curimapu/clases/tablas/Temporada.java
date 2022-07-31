@@ -23,6 +23,17 @@ public class Temporada {
     @SerializedName("hasta")
     private String hasta_tempo;
 
+    @SerializedName("especial")
+    private int especial_temporada;
+
+
+    public int getEspecial_temporada() {
+        return especial_temporada;
+    }
+
+    public void setEspecial_temporada(int especial_temporada) {
+        this.especial_temporada = especial_temporada;
+    }
 
     public String getId_tempo_tempo() {
         return id_tempo_tempo;

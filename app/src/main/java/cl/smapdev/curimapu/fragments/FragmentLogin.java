@@ -39,6 +39,7 @@ import cl.smapdev.curimapu.clases.utilidades.Descargas;
 import cl.smapdev.curimapu.clases.utilidades.InternetStateClass;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.returnValuesFromAsyntask;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -111,15 +112,18 @@ public class FragmentLogin extends Fragment {
             final String androidID = Settings.System.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             Config config = MainActivity.myAppDB.myDao().getConfig();
 
+//            System.out.println(androidID);
+            Log.e("IMEI", androidID);
+
             final int id = (config == null) ? 0 : config.getId();
 
             InternetStateClass mm = new InternetStateClass(activity, new returnValuesFromAsyntask() {
                 @Override
                 public void myMethod(boolean result) {
                     if (result) {
-                        Descargas.primeraDescarga(activity, androidID, id);
+                        Descargas.primeraDescarga(activity, androidID, id, Utilidades.APPLICATION_VERSION);
                     } else {
-                        Toast.makeText(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT).show();
+                        Toasty.warning(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
                     }
                 }
             }, 1);
@@ -135,12 +139,11 @@ public class FragmentLogin extends Fragment {
 
 
         if (TextUtils.isEmpty(user) && TextUtils.isEmpty(pass)){
-            Toast.makeText(getActivity(), activity.getResources().getString(R.string.warning_empty_fields), Toast.LENGTH_SHORT).show();
+            Toasty.warning(activity, activity.getResources().getString(R.string.warning_empty_fields), Toast.LENGTH_SHORT, true).show();
         }else{
 
             String encryptedPass = Utilidades.getMD5(pass);
 
-            System.out.println(encryptedPass);
 
             Usuario usuario  = MainActivity.myAppDB.myDao().getUsuarioLogin(user, encryptedPass);
 
@@ -160,10 +163,10 @@ public class FragmentLogin extends Fragment {
                         activity.cambiarFragment(new servidorFragment(), Utilidades.FRAGMENT_SERVIDOR, R.anim.slide_in_left, R.anim.slide_out_left);
                     }else{
                         shared.edit().putString(Utilidades.SHARED_SERVER_ID_USER, String.valueOf(usuario.getId_usuario())).apply();
-                        shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, "www.zcloud02.cl").apply();
+                        shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRODUCCION).apply();
 
                         Config cn = MainActivity.myAppDB.myDao().getConfig();
-                        cn.setServidorSeleccionado(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, "www.zcloud02.cl"));
+                        cn.setServidorSeleccionado(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRODUCCION));
                         cn.setId_usuario_suplandato(usuario.getId_usuario());
                         MainActivity.myAppDB.myDao().updateConfig(cn);
 
@@ -171,7 +174,7 @@ public class FragmentLogin extends Fragment {
                     }
                 }
             }else{
-                Toast.makeText(getActivity(), activity.getResources().getString(R.string.warning_incorrect_fields), Toast.LENGTH_SHORT).show();
+                Toasty.error(activity, activity.getResources().getString(R.string.warning_incorrect_fields), Toast.LENGTH_SHORT, true).show();
             }
         }
     }

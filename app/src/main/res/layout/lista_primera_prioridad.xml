@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/anexo_nov"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/especie_nov"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="AN-B0212"
+        android:textSize="12sp"
+        />
+
+    <TextView
+        android:id="@+id/especie_nov"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/anexo_nov"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pepino"
+        android:textSize="12sp"
+        android:gravity="end"
+        />
+
+    <TextView
+        android:id="@+id/lote_nov"
+        app:layout_constraintTop_toBottomOf="@id/anexo_nov"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="STA EUFEMIA ARRIENDO"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"
+        />
+
+    <ImageView
+        android:id="@+id/i_grow"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_grow"
+        app:layout_constraintTop_toBottomOf="@id/lote_nov"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="5dp"
+        app:layout_constraintEnd_toStartOf="@id/i_fito"
+        />
+
+    <ImageView
+        android:id="@+id/i_fito"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_phyto"
+        app:layout_constraintTop_toBottomOf="@id/lote_nov"
+        app:layout_constraintStart_toEndOf="@id/i_grow"
+        app:layout_constraintEnd_toStartOf="@id/i_general"
+        android:layout_marginStart="5dp"
+        />
+    <ImageView
+        android:id="@+id/i_general"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_general"
+        app:layout_constraintTop_toBottomOf="@id/lote_nov"
+        app:layout_constraintStart_toEndOf="@id/i_fito"
+        app:layout_constraintEnd_toStartOf="@id/i_humidity"
+        android:layout_marginStart="5dp"
+        />
+    <ImageView
+        android:id="@+id/i_humidity"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_humidity"
+        app:layout_constraintTop_toBottomOf="@id/lote_nov"
+        app:layout_constraintStart_toEndOf="@id/i_general"
+        app:layout_constraintEnd_toStartOf="@id/i_weed"
+        android:layout_marginStart="5dp"
+        />
+
+    <ImageView
+        android:id="@+id/i_weed"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_weed"
+        app:layout_constraintTop_toBottomOf="@id/lote_nov"
+        app:layout_constraintStart_toEndOf="@id/i_humidity"
+        android:layout_marginStart="5dp"
+        />
+
+    <View
+        android:id="@+id/divider11"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/i_weed"
+        android:layout_marginTop="10dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

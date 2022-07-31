@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Respuesta {
 
+
+
     @SerializedName("codigo_respuesta")
     @Expose
     private int codigoRespuesta;

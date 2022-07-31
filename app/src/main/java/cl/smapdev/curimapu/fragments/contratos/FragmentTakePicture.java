@@ -3,7 +3,6 @@ package cl.smapdev.curimapu.fragments.contratos;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -62,7 +61,6 @@ import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.utilidades.CameraUtils;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
-import cl.smapdev.curimapu.fragments.FragmentContratos;
 
 public class FragmentTakePicture extends Fragment {
 
@@ -418,7 +416,7 @@ public class FragmentTakePicture extends Fragment {
         fotos.setNombre_foto(path.getName());
         fotos.setFavorita(false);
         fotos.setPlano(0);
-        fotos.setId_ficha(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
+        fotos.setId_ficha_fotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
         fotos.setVista(vista);
         fotos.setRuta(path.getAbsolutePath());
         fotos.setId_visita_foto(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));

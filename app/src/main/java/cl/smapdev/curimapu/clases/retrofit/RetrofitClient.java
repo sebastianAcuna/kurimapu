@@ -16,9 +16,9 @@ public class RetrofitClient {
     private static Retrofit retrofit;
 
     private static OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .connectTimeout(6, TimeUnit.MINUTES)
-            .readTimeout(3, TimeUnit.MINUTES)
-            .writeTimeout(3,  TimeUnit.MINUTES)
+            .connectTimeout(10, TimeUnit.MINUTES)
+            .readTimeout(5, TimeUnit.MINUTES)
+            .writeTimeout(5,  TimeUnit.MINUTES)
             .build();
 
     public static Retrofit getClient(String direccion){
@@ -28,7 +28,7 @@ public class RetrofitClient {
                 .create();
 
         if (retrofit ==null){
-            String url = "http://"+direccion+"/curimapu/core/models/android/";
+            String url = "http://"+direccion+"/curimapu_vegetables/core/models/android/";
             retrofit = new Retrofit.Builder()
                     .baseUrl(url)
                     .client(okHttpClient)

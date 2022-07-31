@@ -33,8 +33,7 @@ public class InternetStateClass extends AsyncTask<Void, Boolean , Boolean> {
         if (lugar == 1) {
             progressDialog = new ProgressDialog(activity.get());
             progressDialog.setTitle("Espere un momento...");
-//            todo cambiar texto de dialogo internet
-            progressDialog.setMessage(activity.get().getResources().getString(R.string.propiedad));
+            progressDialog.setMessage("comprobando conexion a internet ");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }

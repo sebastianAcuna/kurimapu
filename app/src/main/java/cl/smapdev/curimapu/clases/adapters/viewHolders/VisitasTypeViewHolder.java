@@ -69,8 +69,6 @@ public class VisitasTypeViewHolder extends RecyclerView.ViewHolder {
                         cantidad_type.setText(String.valueOf(cantidadVisitas.getTodos()));
                     }
                 }
-
-
             }
 
 
@@ -82,11 +80,6 @@ public class VisitasTypeViewHolder extends RecyclerView.ViewHolder {
                     cLickListener.onItemClick(el.getNumeroEtapa());
                 }
             });
-
-
-
-
-
 
         }
     }

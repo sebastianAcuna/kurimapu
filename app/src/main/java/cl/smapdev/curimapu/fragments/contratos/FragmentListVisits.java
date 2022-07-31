@@ -108,7 +108,7 @@ public class FragmentListVisits extends Fragment {
         etapasArrayList.add(new Etapas(5, "Unspecified", false));
 
         //String years = annos.get(annos.size() -1).getId_tempo_tempo();
-        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),
+        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),
                 id_temporadas.get(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR,annos.size() - 1)));
 
     }
@@ -164,9 +164,9 @@ public class FragmentListVisits extends Fragment {
                     //String years = annos.get(annos.size() -1).getId_tempo_tempo();
 
                     if (etapaSelected > 0){
-                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
+                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
                     }else{
-                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
+                        visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),annoSelected);
                     }
 
                     cargarListaChica();
@@ -223,7 +223,7 @@ public class FragmentListVisits extends Fragment {
                 etapaSelected = position;
                 if (position > 0){
 
-                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""), position, years);
+                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""), position, years);
                     for (Etapas et : etapasArrayList){
                         if (et.getNumeroEtapa() == po){
                             etapasArrayList.get(po).setEtapaSelected(true);
@@ -232,7 +232,7 @@ public class FragmentListVisits extends Fragment {
                         }
                     }
                 }else{
-                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletas(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),years);
+                    visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""),years);
                 }
 
 
@@ -263,7 +263,7 @@ public class FragmentListVisits extends Fragment {
                 switch (view.getId()){
                     case R.id.imagen_referencial:
                         if (fotos != null){
-                            showAlertForUpdate(fotos);
+//                            showAlertForUpdate(fotos);
                         }
                         break;
                     case R.id.cardview_visitas:
@@ -274,9 +274,9 @@ public class FragmentListVisits extends Fragment {
         }, new VisitasListAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, VisitasCompletas fichas, Fotos fotos) {
-                avisoActivaFicha(getResources().getString(R.string.estado_visita),fichas);
-            }
-        }, activity);
+//                avisoActivaFicha(getResources().getString(R.string.estado_visita),fichas);
+    }
+}, activity);
 
 
         lista_visitas.setAdapter(visitasListAdapter);
@@ -363,12 +363,17 @@ public class FragmentListVisits extends Fragment {
                                     tempVisitas.setId_temp_visita(visitasCompletas.getVisitas().getId_visita());
                                     tempVisitas.setAction_temp_visita(visitasCompletas.getVisitas().getEstado_visita());
 
+                                    tempVisitas.setPercent_humedad(visitasCompletas.getVisitas().getPercent_humedad());
+
                                     tempVisitas.setObs_cosecha(visitasCompletas.getVisitas().getObs_cosecha());
                                     tempVisitas.setObs_creci(visitasCompletas.getVisitas().getObs_creci());
                                     tempVisitas.setObs_fito(visitasCompletas.getVisitas().getObs_fito());
                                     tempVisitas.setObs_humedad(visitasCompletas.getVisitas().getObs_humedad());
                                     tempVisitas.setObs_maleza(visitasCompletas.getVisitas().getObs_maleza());
                                     tempVisitas.setObs_overall(visitasCompletas.getVisitas().getObs_overall());
+
+                                    tempVisitas.setId_visita_local(visitasCompletas.getVisitas().getId_visita_local());
+                                    tempVisitas.setId_dispo(visitasCompletas.getVisitas().getId_dispo());
 
                                     MainActivity.myAppDB.myDao().setTempVisitas(tempVisitas);
 

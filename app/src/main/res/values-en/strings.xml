@@ -2,11 +2,11 @@
 <resources>
 
     <!-- APP NAME -->
-    <string name="app_name">CURIMAPU</string>
+    <string name="app_name">CURIMAPU VEGETABLES</string>
 
 
     <!-- LOGIN -->
-    <string name="user_login_export">User Login Export</string>
+    <string name="user_login_export">User Login Vegetables</string>
     <string name="user">User</string>
     <string name="password">Password</string>
     <string name="example_login_pass">Example : 123</string>
@@ -26,9 +26,9 @@
 
 
     <!-- MENU LATERAL -->
-    <string name="subtitles_visit">Visits</string>
+    <string name="subtitles_visit">Annexes</string>
     <string name="subtitles_start">Start</string>
-    <string name="subtitles_records">Records</string>
+    <string name="subtitles_records">Prospects</string>
     <string name="subtitles_contracts">Contracts</string>
     <string name="subtitles_config">Configurations</string>
     <string name="subtitles_salir">Log out</string>
@@ -51,8 +51,8 @@
     <string name="estado">State</string>
     <string name="todos">All</string>
     <string name="confeccion">making</string>
-    <string name="aprobada">approved</string>
-    <string name="rechazada">Rejected</string>
+    <string name="aprobada">APPROVED</string>
+    <string name="rechazada">REJECTED</string>
 
 
     <string name="temporada">Season</string>
@@ -61,7 +61,7 @@
     <string name="tel_agricultor">Farmer Telephone</string>
     <string name="admin">Administrator</string>
     <string name="admin_telephone">Administrator Telephone</string>
-    <string name="datos_ficha">Data Sheets</string>
+    <string name="datos_ficha">Prospects Data</string>
     <string name="localidad">Location</string>
     <string name="editar">Edit</string>
     <string name="seleccione_item">Select Item</string>
@@ -83,7 +83,7 @@
     <string name="falta_algo">Something is missing!</string>
 
 
-    <string name="filtros_fichas">Tab Filters</string>
+    <string name="filtros_fichas">Prospects Filters</string>
     <!--    Filtros para Ficha-->
     <string name="filtros_contrato">Filters for contract</string>
     <!--    Filtros para contrato-->
@@ -112,10 +112,12 @@ Depending on the state, it can be edited or not.</string>
     <string name="propiedad">Properties</string>
     <string name="valor">Value</string>
     <string name="coordenates">Coordinate</string>
-    <string name="norting">Norting</string>
-    <string name="set_norting">Enter Norting</string>
-    <string name="easting">Easting</string>
-    <string name="set_easting">Enter Easting</string>
+    <string name="norting">Norte</string>
+    <string name="set_norting">Ingrese latitude</string>
+    <string name="easting">Este</string>
+    <string name="set_easting">Ingrese longitude</string>
+    <string name="ingrese_norte_manual">ingrese latitude manual</string>
+    <string name="ingrese_easting_manual">ingrese longitude manual</string>
     <string name="aviso_siembra">SAG Planting Notice</string>
     <string name="siembra_sag">SAG Planting</string>
     <string name="crop_rotation">Crop Rotation</string>
@@ -200,18 +202,9 @@ Depending on the state, it can be edited or not.</string>
 
 
 
-
-
     <string name="date">Date</string>
     <string name="f">F</string>
     <string name="seleccione_fecha">Select date</string>
-
-
-
-
-
-
-
 
 
 
@@ -241,15 +234,17 @@ Depending on the state, it can be edited or not.</string>
     <!--    SPINNERS FORM  VISITA-->
     <string-array name="fenologico">
         <item>@string/select</item>
-        <item>Sowing</item>
-        <item>Transplant</item>
-        <item>Vegetative</item>
-        <item>Pre-Flowering</item>
-        <item>Flowering</item>
-        <item>Fill</item>
-        <item>Pre-Harvest</item>
-        <item>Post-Harvest</item>
-        <item>Unspecified</item>
+        <item>SOWING</item>
+        <item>TRANSPLANT</item>
+        <item>VEGETATIVE</item>
+        <item>PRE-FLOWERING</item>
+        <item>FLOWERING</item>
+        <item>FILL</item>
+        <item>PRE-HARVEST</item>
+        <item>HARVEST</item>
+        <item>POST-HARVEST</item>
+        <item>MONITORING</item>
+        <item>UNSPECIFIED</item>
     </string-array>
 
     <string name="select">--Select--</string>
@@ -257,26 +252,26 @@ Depending on the state, it can be edited or not.</string>
 
     <string-array name="crecimiento">
         <item>@string/select</item>
-        <item>Excellent</item>
-        <item>Good</item>
-        <item>Regular</item>
-        <item>Bad</item>
-        <item>Unspecified</item>
+        <item>EXCELLENT</item>
+        <item>GOOD</item>
+        <item>REGULAR</item>
+        <item>BAD</item>
+        <item>UNSPECIFIED</item>
     </string-array>
 
     <string-array name="cosecha">
         <item>@string/select</item>
         <item>@string/rechazada</item>
         <item>@string/aprobada</item>
-        <item>Unspecified</item>
+        <item>UNSPECIFIED</item>
     </string-array>
 
     <string-array name="maleza">
         <item>@string/select</item>
-        <item>Low</item>
-        <item>Regular</item>
-        <item>High</item>
-        <item>Unspecified</item>
+        <item>LOW</item>
+        <item>REGULAR</item>
+        <item>HIGH</item>
+        <item>UNSPECIFIED</item>
     </string-array>
 
 
@@ -415,4 +410,26 @@ Depending on the state, it can be edited or not.</string>
     <string name="descargar_datos_como">Download like</string>
     <string name="supervisores">Administrator</string>
     <string name="usuarios">Users</string>
+    <string name="subtitle_anexo_fecha">Anexo Fecha</string>
+
+    <string name="datos_predio">Datos predio</string>
+    <string name="rotacion">Rotación</string>
+    <string name="datos_informativos">Datos informativos</string>
+    <string name="tipo_de_suelo">Tipo de Suelo</string>
+    <string name="tipo_de_riego">Tipo de Riego</string>
+    <string name="experiencia">Experiencia</string>
+    <string name="maquinaria">Maquinaria</string>
+    <string name="tenencia">Tenencia</string>
+    <string name="representante_legal">Representante Legal</string>
+    <string name="telefono_rep_legal">Telefono Rep. Legal</string>
+    <string name="carga_de_malezas">Carga de Malezas</string>
+    <string name="fecha_limite_siembra">Fecha Limite Siembra</string>
+    <string name="observaciones_de_negocio">Observaciones de $ negocio o min garantizado (USD/HA)</string>
+    <string name="capturar">capturar</string>
+    <string name="visita_anterior_text">Visita Anterior</string>
+    <string name="recomendacion_anterior">Recomendacion Anterior</string>
+    <string name="title_warning_ranked">esta evaluacion se guardara al guardar la visita</string>
+    <string name="pregunta_ranking">de 1 a 5 ¿Como estuvo la visita anterior?</string>
+    <string name="comentario">Comentario</string>
+    <string name="comentario_evaluacion">escriba aqui comentario sobre evaluacion</string>
 </resources>

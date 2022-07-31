@@ -80,17 +80,17 @@ public class servidorFragment extends Fragment {
 
         Config cnf = MainActivity.myAppDB.myDao().getConfig();
         Usuario us = MainActivity.myAppDB.myDao().getUsuarioById(cnf.getId_usuario());
-        if (us.getRut_usuario().equals("18.804.066-7") || us.getRut_usuario().equals("9.411.789-5") || us.getRut_usuario().equals("15.953.693-9") ){
-            rbDesarrollo.setVisibility(View.VISIBLE);
-            rbProduccion.setVisibility(View.VISIBLE);
-            titulo_servidor.setVisibility(View.VISIBLE);
-            rbPruebas.setVisibility(View.VISIBLE);
-        }else{
+//        if (us.getRut_usuario().equals("18.804.066-7") || us.getRut_usuario().equals("9.411.789-5") || us.getRut_usuario().equals("15.953.693-9") ){
+//            rbDesarrollo.setVisibility(View.VISIBLE);
+//            rbProduccion.setVisibility(View.VISIBLE);
+//            titulo_servidor.setVisibility(View.VISIBLE);
+//            rbPruebas.setVisibility(View.VISIBLE);
+//        }else{
             rbDesarrollo.setVisibility(View.GONE);
             rbProduccion.setVisibility(View.GONE);
             titulo_servidor.setVisibility(View.GONE);
             rbPruebas.setVisibility(View.GONE);
-        }
+//        }
 
         if (String.valueOf(cnf.getId_usuario()).equals(shared.getString(Utilidades.SHARED_SERVER_ID_USER, ""))){
             card_admin.setBackgroundColor(activity.getColor(R.color.colorSelected));

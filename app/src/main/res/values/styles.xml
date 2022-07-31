@@ -79,17 +79,22 @@
     </style>
 
     <style name="titles_forms">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?colorOnSurface</item>
         <item name="android:textIsSelectable">true</item>
-        <item name="android:padding">@dimen/padding</item>
+        <item name="android:padding">@dimen/padding_small</item>
     </style>
 
     <style name="sub_titles_forms">
         <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:padding">@dimen/padding_small</item>
+    </style>
+
+    <style name="buttons_visitas">
         <item name="android:padding">@dimen/padding</item>
     </style>
+
 
     <style name="input_date_forms">
         <item name="android:hint">@string/format_date</item>

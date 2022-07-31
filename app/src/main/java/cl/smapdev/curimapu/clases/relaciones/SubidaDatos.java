@@ -5,9 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
+import cl.smapdev.curimapu.clases.tablas.FotosFichas;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 
@@ -34,6 +36,10 @@ public class SubidaDatos {
     private List<Fotos> fotosList;
 
     @Expose
+    @SerializedName("fotos_fichas")
+    private List<FotosFichas> fotosFichas;
+
+    @Expose
     @SerializedName("errores")
     private List<Errores> errores;
 
@@ -42,9 +48,40 @@ public class SubidaDatos {
     private List<Fichas> fichas;
 
     @Expose
+    @SerializedName("crop_rotation")
+    private List<CropRotation> cropRotation;
+
+    @Expose
     @SerializedName("suma_datos")
     private int cantidadSuma;
 
+    @Expose
+    @SerializedName("version")
+    private String version;
+
+    public List<CropRotation> getCropRotation() {
+        return cropRotation;
+    }
+
+    public void setCropRotation(List<CropRotation> cropRotation) {
+        this.cropRotation = cropRotation;
+    }
+
+    public List<FotosFichas> getFotosFichas() {
+        return fotosFichas;
+    }
+
+    public void setFotosFichas(List<FotosFichas> fotosFichas) {
+        this.fotosFichas = fotosFichas;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
     public int getCantidadSuma() {
         return cantidadSuma;

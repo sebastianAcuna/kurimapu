@@ -55,16 +55,6 @@
             app:layout_constraintEnd_toEndOf="parent"
 
             />
-<!--        <Spinner-->
-<!--            android:id="@+id/sp_agric"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintHorizontal_weight="0.5"-->
-<!--            android:layout_marginHorizontal="@dimen/padding"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/lbl_agric"-->
-<!--            app:layout_constraintStart_toEndOf="@id/sp_year"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
-
 
         <TextView
             android:id="@+id/titulo_agricultor"
@@ -167,7 +157,7 @@
             app:layout_constraintHorizontal_weight="0.3"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_margin="10dp"
-            android:hint="@string/admin"
+            android:hint="@string/representante_legal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cont_rut_agricultor"
             app:layout_constraintEnd_toStartOf="@id/cont_tel_admin_agricultor">
@@ -188,7 +178,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.3"
-            android:hint="@string/admin_telephone"
+            android:hint="@string/telefono_rep_legal"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_margin="10dp"
             app:layout_constraintStart_toEndOf="@id/cont_admin_agricultor"
@@ -211,7 +201,7 @@
             android:id="@+id/titulo_fichas"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/datos_ficha"
+            android:text="@string/datos_predio"
             app:layout_constraintTop_toBottomOf="@id/cont_tel_admin_agricultor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -241,7 +231,7 @@
             android:id="@+id/lbl_region_agricultor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/region"
+            android:text="Region(*)"
             android:textAppearance="?android:textAppearanceMedium"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
@@ -262,7 +252,7 @@
             android:id="@+id/lbl_provincia_agricultor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/provincia"
+            android:text="Provincia(*)"
             android:textAppearance="?android:textAppearanceMedium"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@id/sp_provincia_agricultor"
@@ -281,7 +271,7 @@
             android:id="@+id/lbl_comuna_agricultor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/comuna"
+            android:text="Comuna(*)"
             android:textAppearance="?android:textAppearanceMedium"
             app:layout_constraintStart_toStartOf="@id/sp_comuna_agricultor"
             app:layout_constraintTop_toBottomOf="@id/divider5"
@@ -303,7 +293,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.3"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="@string/oferta_negocio"
+            android:hint="Of. de negocio(*)"
             android:layout_margin="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sp_region_agricultor"
@@ -326,7 +316,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.3"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="@string/localidad"
+            android:hint="Localidad(*)"
             android:layout_margin="10dp"
             app:layout_constraintStart_toEndOf="@id/cont_oferta_neg_agricultor"
             app:layout_constraintTop_toBottomOf="@id/sp_region_agricultor"
@@ -352,7 +342,7 @@
             app:layout_constraintStart_toEndOf="@id/cont_localidad_agricultor"
             app:layout_constraintTop_toBottomOf="@id/sp_region_agricultor"
             app:layout_constraintEnd_toEndOf="parent"
-            android:hint="@string/ha_disp"
+            android:hint="Ha/Disponible(*)"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -366,17 +356,418 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_predio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cont_has_disp_agricultor"
+            app:layout_constraintEnd_toStartOf="@id/cont_potrero"
+            android:hint="@string/predio"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_predio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_potrero"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toEndOf="@id/cont_predio"
+            app:layout_constraintTop_toBottomOf="@id/cont_has_disp_agricultor"
+            app:layout_constraintEnd_toStartOf="@id/sp_especie"
+            android:hint="@string/potrero"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_potrero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/label_especie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_has_disp_agricultor"
+            app:layout_constraintStart_toStartOf="@id/sp_especie"
+            app:layout_constraintEnd_toEndOf="@id/sp_especie"
+            android:gravity="start"
+            android:text="@string/especie"
+            />
+
+        <Spinner
+            android:id="@+id/sp_especie"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintTop_toBottomOf="@id/label_especie"
+            app:layout_constraintStart_toEndOf="@id/sp_provincia_agricultor"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/titulo_rotacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/rotacion"
+            app:layout_constraintTop_toBottomOf="@id/cont_predio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding"
+            android:textAppearance="?android:textAppearanceLarge"
+            />
+
+        <View
+            android:id="@+id/divider7"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/titulo_rotacion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding"
+
+            />
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_rotacion_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider7"
+            app:layout_constraintEnd_toStartOf="@id/cont_rotacion_2"
+            android:hint="2017"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_rotacion_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_rotacion_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toEndOf="@id/cont_rotacion_1"
+            app:layout_constraintTop_toBottomOf="@id/divider7"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="2018"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_rotacion_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_rotacion_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cont_rotacion_4"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_2"
+            android:hint="2019"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_rotacion_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_rotacion_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toEndOf="@id/cont_rotacion_3"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="2020"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_rotacion_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_rotacion_5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_4"
+            app:layout_constraintEnd_toEndOf="@id/cont_rotacion_3"
+            android:hint="2021"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_rotacion_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/titulo_informativo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/datos_informativos"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding"
+            android:textAppearance="?android:textAppearanceLarge"
+            />
+
+        <View
+            android:id="@+id/divider8"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/titulo_informativo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding"
+
+            />
+
+
+
+        <TextView
+            android:id="@+id/lbl_tipo_suelo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tipo_de_suelo"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@id/sp_tipo_suelo"
+            app:layout_constraintTop_toBottomOf="@id/divider8"/>
+
+        <Spinner
+            android:id="@+id/sp_tipo_suelo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintTop_toBottomOf="@id/lbl_tipo_suelo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/sp_tipo_riego"/>
+
+        <TextView
+            android:id="@+id/lbl_tipo_riego"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tipo_de_riego"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@id/sp_tipo_riego"
+            app:layout_constraintTop_toBottomOf="@id/divider8"/>
+        <Spinner
+            android:id="@+id/sp_tipo_riego"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintTop_toBottomOf="@id/lbl_tipo_riego"
+            app:layout_constraintStart_toEndOf="@id/sp_tipo_suelo"
+            app:layout_constraintEnd_toStartOf="@id/sp_experiencia"/>
+
+        <TextView
+            android:id="@+id/lbl_experiencia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/experiencia"
+            android:textAppearance="?android:textAppearanceMedium"
+            app:layout_constraintStart_toStartOf="@id/sp_experiencia"
+            app:layout_constraintTop_toBottomOf="@id/divider8"
+            android:layout_marginTop="10dp"/>
+        <Spinner
+            android:id="@+id/sp_experiencia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintTop_toBottomOf="@id/lbl_experiencia"
+            app:layout_constraintStart_toEndOf="@id/sp_tipo_riego"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/lbl_tenencia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tenencia"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@id/sp_tenencia"
+            app:layout_constraintTop_toBottomOf="@id/sp_experiencia"/>
+
+        <Spinner
+            android:id="@+id/sp_tenencia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintTop_toBottomOf="@id/lbl_tenencia"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/sp_maquinaria"/>
+
+        <TextView
+            android:id="@+id/lbl_maquinaria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/maquinaria"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@id/sp_maquinaria"
+            app:layout_constraintTop_toBottomOf="@id/sp_tipo_suelo"/>
+        <Spinner
+            android:id="@+id/sp_maquinaria"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintTop_toBottomOf="@id/lbl_maquinaria"
+            app:layout_constraintStart_toEndOf="@id/sp_tenencia"
+            app:layout_constraintEnd_toStartOf="@id/sp_experiencia"/>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_carga_maleza"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sp_maquinaria"
+            app:layout_constraintEnd_toStartOf="@id/cont_estado_general"
+            android:hint="@string/carga_de_malezas"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_carga_maleza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_estado_general"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toEndOf="@id/cont_carga_maleza"
+            app:layout_constraintTop_toBottomOf="@id/sp_maquinaria"
+            app:layout_constraintEnd_toStartOf="@id/cont_fecha_limite_siembra"
+            android:hint="@string/estado_general"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_estado_general"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_fecha_limite_siembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toEndOf="@id/cont_estado_general"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sp_maquinaria"
+            android:hint="@string/fecha_limite_siembra"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_fecha_limite_siembra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cont_obs_agricultor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="@string/observations"
+            android:hint="Observaciones(*)"
             app:counterMaxLength="200"
 
             app:counterEnabled="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cont_has_disp_agricultor">
+            app:layout_constraintTop_toBottomOf="@id/cont_carga_maleza">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_obs_agricultor"
@@ -389,48 +780,190 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/cont_northing_agricultor"
-            android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.3"
+            android:id="@+id/cont_obs_negocio"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="@string/norting"
-            android:layout_margin="10dp"
+            android:hint="@string/observaciones_de_negocio"
+            app:counterMaxLength="200"
+            app:counterEnabled="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cont_obs_agricultor"
-            app:layout_constraintEnd_toStartOf="@id/cont_easting_agricultor">
+            app:layout_constraintTop_toBottomOf="@id/cont_obs_agricultor">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_northing_agricultor"
+                android:id="@+id/et_obs_negocio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:inputType="numberDecimal"
+                android:inputType="textMultiLine"
+                android:maxLength="200"
                 />
         </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/titulo_manual"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="GPS Manual(*)"
+            app:layout_constraintTop_toBottomOf="@id/cont_obs_negocio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding"
+            android:textAppearance="?android:textAppearanceLarge"
+            />
+
+        <View
+            android:id="@+id/divider9"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/titulo_manual"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding"
+
+            />
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/cont_easting_agricultor"
+            android:id="@+id/et_norting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintHorizontal_weight="0.2"
+            android:padding="10dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:hint="@string/easting"
-            android:layout_margin="10dp"
-            app:layout_constraintStart_toEndOf="@id/cont_northing_agricultor"
-            app:layout_constraintTop_toBottomOf="@id/cont_obs_agricultor"
-            app:layout_constraintEnd_toStartOf="@id/btn_save_agricultor">
+            android:hint="@string/ingrese_norte_manual"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider9"
+            app:layout_constraintEnd_toStartOf="@id/et_easting">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_easting_agricultor"
+                android:id="@+id/ti_norting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:inputType="numberDecimal"
+                android:inputType="numberDecimal|numberSigned"
+
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_easting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            android:padding="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:hint="@string/ingrese_easting_manual"
+
+            app:layout_constraintStart_toEndOf="@id/et_norting"
+            app:layout_constraintTop_toBottomOf="@id/divider9"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ti_easting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal|numberSigned"
+
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <TextView
+            android:id="@+id/titulo_auto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="GPS Automatico"
+            app:layout_constraintTop_toBottomOf="@id/et_easting"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding"
+            android:textAppearance="?android:textAppearanceLarge"
+            />
+
+        <View
+            android:id="@+id/divider10"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/titulo_auto"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding"
+
+            />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_norting_manual"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            android:padding="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:hint="@string/set_norting"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider10"
+            app:layout_constraintEnd_toStartOf="@id/et_easting_manual">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ti_norting_manual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal|numberSigned"
+
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_easting_manual"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.3"
+            android:padding="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:hint="@string/set_easting"
+            app:layout_constraintStart_toEndOf="@id/et_norting_manual"
+            app:layout_constraintTop_toBottomOf="@id/divider10"
+            app:layout_constraintEnd_toStartOf="@id/btn_captura_gps">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ti_easting_manual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal|numberSigned"
+
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_captura_gps"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            android:layout_margin="10dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/capturar"
+            app:layout_constraintStart_toEndOf="@id/et_easting_manual"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider10"
+            />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_fotos_ficha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_easting_manual"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+
+            />
 
         <Button
             android:id="@+id/btn_save_agricultor"
@@ -439,11 +972,23 @@
             android:layout_margin="10dp"
             android:layout_marginTop="8dp"
             android:text="@string/nav_save"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lista_fotos_ficha"
+           />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_picture_fichas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="0.3"
-            app:layout_constraintStart_toEndOf="@id/cont_easting_agricultor"
-            app:layout_constraintTop_toTopOf="@id/cont_easting_agricultor"
-            app:layout_constraintBottom_toBottomOf="@id/cont_easting_agricultor"/>
+            android:src="@drawable/ic_camera_alt_black"
+            android:contentDescription="sacar foto fichas"
+            android:layout_marginEnd="@dimen/padding"
+            android:layout_marginBottom="10dp"
+            />
 
 
 

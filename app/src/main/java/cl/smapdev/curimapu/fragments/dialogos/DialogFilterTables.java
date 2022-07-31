@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,7 @@ import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
+import es.dmoral.toasty.Toasty;
 
 public class DialogFilterTables extends DialogFragment {
     public static final String LLAVE_FILTER_TABLAS = "llave_filter_tablas";
@@ -229,81 +232,71 @@ public class DialogFilterTables extends DialogFragment {
     private void filtrarFichas(){
 
 
-        String consulta = "SELECT " +
-                "anexo_contrato.id_anexo_contrato, " +
-                "anexo_contrato.anexo_contrato, " +
-                "anexo_contrato.id_especie_anexo, " +
-                "anexo_contrato.id_variedad_anexo, " +
-                "anexo_contrato.id_ficha_contrato, " +
-                "anexo_contrato.protero," +
-                "anexo_contrato.id_agricultor_anexo, " +
-                "agricultor.nombre_agricultor," +
-                "agricultor.telefono_agricultor," +
-                "agricultor.administrador_agricultor," +
-                "agricultor.telefono_admin_agricultor," +
-                "agricultor.region_agricultor," +
-                "agricultor.comuna_agricultor," +
-                "agricultor.agricultor_subido," +
-                "agricultor.rut_agricultor, " +
-                "especie.desc_especie, " +
-                "variedad.desc_variedad, " +
-                "fichas.anno " +
-                "FROM anexo_contrato " +
-                "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
-                "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
-                "INNER JOIN variedad ON (variedad.id_variedad = anexo_contrato.id_variedad_anexo) " +
-                "INNER JOIN fichas ON (fichas.id_ficha= anexo_contrato.id_ficha_contrato) " +
-                "INNER JOIN predios ON (predios.id_pred = fichas.id_pred) " +
-                "INNER JOIN lote ON (lote.lote = fichas.id_lote) " +
-                "WHERE 1 ";
+        try{
 
-//        anno = :year
+            String consulta = "SELECT * " +
+                    "FROM anexo_contrato AC " +
+                    "INNER JOIN agricultor A ON (A.id_agricultor = AC.id_agricultor_anexo) " +
+                    "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
+                    "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
+                    "INNER JOIN ficha_new F ON (F.id_ficha_new = AC.id_ficha_contrato) " +
+                    "INNER JOIN predio P ON (P.id_pred = F.id_pred_new) " +
+                    "INNER JOIN lote ON (lote.lote = F.id_lote_new) " +
+                    "WHERE 1 ";
 
-        consulta+= " AND fichas.anno =  ?";
+            consulta+= " AND F.id_tempo_new =  ?";
 
-        ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SELECTED_ANO, years.get(years.size() - 1).getId_tempo_tempo()));
+            ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SELECTED_ANO, years.get(years.size() - 1).getId_tempo_tempo()));
 
-        String dialog_anexo = et_dialog_anexo.getText().toString();
-        String dialog_agricultor = et_dialog_agricultor.getText().toString();
-        String dialog_potrero = et_dialog_potero.getText().toString();
+            String dialog_anexo = et_dialog_anexo.getText().toString();
+            String dialog_agricultor = et_dialog_agricultor.getText().toString();
+            String dialog_potrero = et_dialog_potero.getText().toString();
 
 
 
-        if (!TextUtils.isEmpty(idEspecie)){
-            ob = Utilidades.appendValue(ob, idEspecie);
-            consulta+= " AND anexo_contrato.id_especie_anexo = ? ";
-        }
+            if (!TextUtils.isEmpty(idEspecie)){
+                ob = Utilidades.appendValue(ob, idEspecie);
+                consulta+= " AND AC.id_especie_anexo = ? ";
+            }
 
-        if (!TextUtils.isEmpty(idVariedad)){
-            ob = Utilidades.appendValue(ob, idVariedad);
-            consulta+= " AND anexo_contrato.id_variedad_anexo = ? ";
-        }
+            if (!TextUtils.isEmpty(idVariedad)){
+                ob = Utilidades.appendValue(ob, idVariedad);
+                consulta+= " AND AC.id_variedad_anexo = ? ";
+            }
 
-        if (!TextUtils.isEmpty(dialog_anexo)){
-            ob = Utilidades.appendValue(ob, "%"+dialog_anexo+"%");
-            consulta+= " AND anexo_contrato.anexo_contrato LIKE ? ";
+            if (!TextUtils.isEmpty(dialog_anexo)){
+                ob = Utilidades.appendValue(ob, "%"+dialog_anexo+"%");
+                consulta+= " AND AC.num_anexo LIKE ? ";
 
-        }
+            }
 
-        if (!TextUtils.isEmpty(dialog_agricultor)){
-            ob = Utilidades.appendValue(ob,"%"+dialog_agricultor+"%");
-            consulta+= " AND agricultor.nombre_agricultor LIKE ? ";
+            if (!TextUtils.isEmpty(dialog_agricultor)){
+                ob = Utilidades.appendValue(ob,"%"+dialog_agricultor+"%");
+                consulta+= " AND A.razon_social LIKE ? ";
 
-        }
+            }
 
-        if (!TextUtils.isEmpty(dialog_potrero)){
-            ob = Utilidades.appendValue(ob,"%"+dialog_potrero+"%");
-            consulta+= " AND anexo_contrato.protero LIKE ? ";
+            if (!TextUtils.isEmpty(dialog_potrero)){
+                ob = Utilidades.appendValue(ob,"%"+dialog_potrero+"%");
+                consulta+= " AND AC.protero LIKE ? ";
 
+            }
+
+
+            List<AnexoCompleto> anexoCompletos = MainActivity.myAppDB.myDao().getAnexosFilter(new SimpleSQLiteQuery(consulta, ob));
+            LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
+            Intent i = new Intent("TAG_REFRESH");
+            i.putExtra(LLAVE_FILTER_TABLAS, (Serializable) anexoCompletos);
+            lbm.sendBroadcast(i);
+            dismiss();
+
+        }catch(Exception e){
+            Toasty.error(activity, "No se pudo realizar la busqueda", Toast.LENGTH_SHORT, true).show();
+            Log.e("ERROR FILTER", e.getMessage());
+            dismiss();
         }
 
 
-        List<AnexoCompleto> anexoCompletos = MainActivity.myAppDB.myDao().getAnexosFilter(new SimpleSQLiteQuery(consulta, ob));
-        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
-        Intent i = new Intent("TAG_REFRESH");
-        i.putExtra(LLAVE_FILTER_TABLAS, (Serializable) anexoCompletos);
-        lbm.sendBroadcast(i);
-        dismiss();
 
     }
     private void bind(View view){

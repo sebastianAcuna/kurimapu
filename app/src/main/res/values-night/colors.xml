@@ -25,7 +25,8 @@
 
 
     <color name="colorGold">#e5c100</color>
-
+    <color name="colorWarning">#e87400</color>
+    <color name="colorGreen">#ff669900</color>
     <color name="colorGreenLight">#94ec5d</color>
 
     <color name="transparentBlack">#80000000</color>

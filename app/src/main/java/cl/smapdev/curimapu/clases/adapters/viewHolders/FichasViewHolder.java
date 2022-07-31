@@ -40,15 +40,12 @@ public class FichasViewHolder extends RecyclerView.ViewHolder {
 
 
             switch (fichas.getFichas().getActiva()){
-
                 case 1:
                     img_activated.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_radio_button_unchecked_black_24dp));
                     break;
                 case 2:
-                    img_activated.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_radio_button_checked_black_24dp));
-                    break;
                 case 3:
-                    img_activated.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_new_releases_black_24dp));
+                    img_activated.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_radio_button_checked_black_24dp));
                     break;
 
             }

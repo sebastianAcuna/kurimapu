@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,6 +52,8 @@ public class FragmentVisitas extends Fragment {
 
     private List<Temporada> temporadaList;
 
+    private String marca_especial_temporada;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +85,10 @@ public class FragmentVisitas extends Fragment {
             for (Temporada t : temporadaList){
                 id_temporadas.add(t.getId_tempo_tempo());
                 desc_temporadas.add(t.getNombre_tempo());
+
+                if(t.getEspecial_temporada() > 0){
+                    marca_especial_temporada = t.getId_tempo_tempo();
+                }
             }
         }
 
@@ -131,7 +138,7 @@ public class FragmentVisitas extends Fragment {
 
     private void recargarYear(){
         if (temporadaList.size() > 0){
-            spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.size() - 1));
+            spinner_toolbar.setSelection((marca_especial_temporada.isEmpty()) ? prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.size() - 1) : id_temporadas.indexOf(marca_especial_temporada));
         }
     }
 
@@ -149,7 +156,7 @@ public class FragmentVisitas extends Fragment {
         switch (item.getItemId()){
             case R.id.menu_vistas_filter:
                 DialogFilterTables dialogo = new DialogFilterTables();
-                dialogo.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "DIALOGO");
+                dialogo.show(activity.getSupportFragmentManager(), "DIALOGO");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -161,7 +168,7 @@ public class FragmentVisitas extends Fragment {
     public void onResume() {
         super.onResume();
         MyReceiver r = new MyReceiver();
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).registerReceiver(r, new IntentFilter("TAG_REFRESH"));
+        LocalBroadcastManager.getInstance(activity).registerReceiver(r, new IntentFilter("TAG_REFRESH"));
     }
 
     private class MyReceiver extends BroadcastReceiver {
@@ -179,7 +186,8 @@ public class FragmentVisitas extends Fragment {
         }
     }
 
-    private void cargarInforme(List<AnexoCompleto> anexoCompletos){
+
+    private void cargarInforme(final List<AnexoCompleto> anexoCompletos){
         if (tabla != null){
             tabla.removeViews();
             tabla.agregarCabecera(R.array.cabecera_informe);
@@ -189,9 +197,21 @@ public class FragmentVisitas extends Fragment {
 
 
             if (anexoCompletos.size() > 0){
-                for (int i = 0; i < anexoCompletos.size(); i++){
-                    tabla.agregarFilaTabla(anexoCompletos.get(i));
-                }
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (int i = 0; i < anexoCompletos.size(); i++){
+                                    tabla.agregarFilaTabla(anexoCompletos.get(i));
+                                }
+                            }
+                        });
+
+                    }
+                });
+
             }
         }
     }

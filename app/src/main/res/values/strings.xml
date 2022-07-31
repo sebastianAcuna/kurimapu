@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CURIMAPU</string>
+    <string name="app_name">CURIMAPU VEGETABLES</string>
 
 
     <!-- LOGIN -->
-    <string name="user_login_export">User Login Export</string>
+    <string name="user_login_export">User Login Vegetables</string>
     <string name="user">User</string>
     <string name="password">Password</string>
     <string name="example_login_pass">Example : 123</string>
@@ -27,7 +27,7 @@
     <!-- FICHAS-->
     <string name="region">Region : </string>
     <string name="comuna">Comuna : </string>
-    <string name="provincia">provincia : </string>
+    <string name="provincia">Provincia : </string>
     <string name="nombre_agricultor">Nombre del agricultor : </string>
     <string name="oferta_negocio">Oferta de negocio : </string>
 
@@ -51,7 +51,7 @@
     <string name="tel_agricultor">Telefono Agricultor</string>
     <string name="admin">Administrador</string>
     <string name="admin_telephone">Telefono Administrador</string>
-    <string name="datos_ficha">Datos Fichas</string>
+    <string name="datos_ficha">Datos Prospecto</string>
     <string name="localidad">Localidad</string>
     <string name="editar">Editar</string>
     <string name="seleccione_item">Seleccione</string>
@@ -73,7 +73,7 @@
     <string name="falta_algo">¡Algo falta!</string>
 
 
-    <string name="filtros_fichas">Filtros fichas</string>
+    <string name="filtros_fichas">Filtros Prospectos</string>
     <!--    Filtros para Ficha-->
     <string name="filtros_contrato">Filtros para contrato</string>
     <!--    Filtros para contrato-->
@@ -106,9 +106,11 @@
     <string name="valor">Valor</string>
     <string name="coordenates">Cordenadas</string>
     <string name="norting">Norte</string>
-    <string name="set_norting">Ingrese norte</string>
+    <string name="set_norting">Ingrese latitude</string>
     <string name="easting">Este</string>
-    <string name="set_easting">Ingrese Este</string>
+    <string name="set_easting">Ingrese longitude</string>
+    <string name="ingrese_norte_manual">ingrese latitude manual</string>
+    <string name="ingrese_easting_manual">ingrese longitude manual</string>
     <string name="aviso_siembra">Aviso Siembra SAG</string>
     <string name="siembra_sag">Siembra SAG</string>
     <string name="crop_rotation">Rotación de cultivos</string>
@@ -228,47 +230,49 @@
     <!--    SPINNERS FORM  VISITA-->
     <string-array name="fenologico">
         <item>@string/select</item>
-        <item>Siembra</item>
-        <item>Transplante</item>
-        <item>Vegetativo</item>
-        <item>pre-floración</item>
-        <item>Floración</item>
-        <item>LLenado</item>
-        <item>Pre-cosecha</item>
-        <item>Post-cosecha</item>
-        <item>Sin Especificar</item>
+        <item>SIEMBRA</item>
+        <item>TRANSPLANTE</item>
+        <item>VEGETATIVO</item>
+        <item>PRE-FLORACION</item>
+        <item>FLORACION</item>
+        <item>LLENADO</item>
+        <item>PRE-COSECHA</item>
+        <item>COSECHA</item>
+        <item>POST COSECHA</item>
+        <item>MONITOREO</item>
+        <item>SIN ESPECIFICAR</item>
     </string-array>
 
 
     <string-array name="crecimiento">
         <item>@string/select</item>
-        <item>Excelente</item>
-        <item>Buena</item>
-        <item>Regular</item>
-        <item>Mala</item>
-        <item>Sin Especificar</item>
+        <item>EXCELENTE</item>
+        <item>BUENA</item>
+        <item>REGULAR</item>
+        <item>MALA</item>
+        <item>SIN ESPECIFICAR</item>
     </string-array>
 
     <string-array name="cosecha">
         <item>@string/select</item>
-        <item>Rechazada</item>
-        <item>Aprobada</item>
-        <item>Sin Especificar</item>
+        <item>RECHAZADA</item>
+        <item>APROBADA</item>
+        <item>SIN ESPECIFICAR</item>
     </string-array>
 
     <string-array name="maleza">
         <item>@string/select</item>
-        <item>Baja</item>
-        <item>Regular</item>
-        <item>Alta</item>
-        <item>Sin Especificar</item>
+        <item>BAJA</item>
+        <item>REGULAR</item>
+        <item>ALTA</item>
+        <item>SIN ESPECIFICAR</item>
     </string-array>
 
 
 
-    <string name="subtitles_visit">Visitas</string>
+    <string name="subtitles_visit">Anexos</string>
     <string name="subtitles_start">Inicio</string>
-    <string name="subtitles_records">Fichas</string>
+    <string name="subtitles_records">Prospectos</string>
     <string name="subtitles_contracts">Contratos</string>
     <string name="subtitles_config">configuraciones</string>
     <string name="subtitles_salir">Salir</string>
@@ -318,13 +322,41 @@
     </string-array>
 
 
+    <string-array name="cabecera_anexo_fechas_vista_uno">
+        <item>ACCION</item>
+        <item>VER</item>
+        <item>AC</item>
+        <item>COMUNA</item>
+        <item>INICIO DESPANO</item>
+        <item>5% FLORACION</item>
+        <item>INICIO CORTE DE SEDA</item>
+        <item>INICIO COSECHA</item>
+        <item>TERMINO COSECHA</item>
+        <item>TERMINO LABORES POST COSECHA</item>
+        <item>DETALLE LABORES</item>
+    </string-array>
+
+
+    <string-array name="cabecera_anexo_fechas_vista_dos">
+        <item>ACCION</item>
+        <item>ASISTENTE</item>
+        <item>AC</item>
+        <item>AGRICULTOR</item>
+        <item>POTRERO</item>
+        <item>ESPECIE</item>
+        <item>COMUNA</item>
+        <item>FECHA ULTIMA VISITA</item>
+    </string-array>
+
+
+
 
 
     <!--    MENU -->
     <string name="open_drawer">Abrir cajón de navegación</string>
     <string name="close_drawer">Cerrar cajón de navegación</string>
     <string name="fecha">Fecha</string>
-    <string name="estado_fenolog_gico">Estado Fenologógico</string>
+    <string name="estado_fenolog_gico">Estado Fenológico</string>
     <string name="estado_general">Estado General</string>
     <string name="estado_de_crecimiento">Estado de Crecimiento</string>
     <string name="estado_de_malezas">Estado de Malezas</string>
@@ -396,4 +428,25 @@
     <string name="descargar_datos_como">Descargar datos como</string>
     <string name="supervisores">Administrador</string>
     <string name="usuarios">Usuarios</string>
+    <string name="datos_predio">Datos predio</string>
+    <string name="rotacion">Rotación</string>
+    <string name="datos_informativos">Datos informativos</string>
+    <string name="tipo_de_suelo">Tipo de Suelo</string>
+    <string name="tipo_de_riego">Tipo de Riego</string>
+    <string name="experiencia">Experiencia</string>
+    <string name="maquinaria">Maquinaria</string>
+    <string name="tenencia">Tenencia</string>
+    <string name="representante_legal">Representante Legal</string>
+    <string name="telefono_rep_legal">Telefono Rep. Legal</string>
+    <string name="carga_de_malezas">Carga de Malezas</string>
+    <string name="fecha_limite_siembra">Fecha Limite Siembra</string>
+    <string name="observaciones_de_negocio">Observaciones de $ negocio o min garantizado (USD/HA)</string>
+    <string name="capturar">capturar</string>
+    <string name="subtitle_anexo_fecha">Anexo Fecha</string>
+    <string name="visita_anterior_text">Visita Anterior</string>
+    <string name="recomendacion_anterior">Recomendacion Anterior</string>
+    <string name="title_warning_ranked">esta evaluacion se guardara al guardar la visita</string>
+    <string name="pregunta_ranking">de 1 a 5 ¿Como estuvo la visita anterior?</string>
+    <string name="comentario">Comentario</string>
+    <string name="comentario_evaluacion">escriba aqui comentario sobre evaluacion</string>
 </resources>

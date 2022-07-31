@@ -8,23 +8,18 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,10 +44,12 @@ import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.adapters.FotosListAdapter;
 import cl.smapdev.curimapu.clases.utilidades.CameraUtils;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
+import es.dmoral.toasty.Toasty;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -162,23 +159,35 @@ public class FragmentFotos extends Fragment {
 
         material_private.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (estado_visita == 2){
-                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
+
+                if(fieldbook <= 0 ){
+                    Utilidades.avisoListo(activity, "!Hey", "No puedes ingresar una foto sin seleccionar un estado fenologico, seleccionalo y luego saca la foto.", "entendi");
                 }else{
-                    Utilidades.hideKeyboard(activity);
+                    if (estado_visita == 2){
+                        Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
+                    }else{
+                        Utilidades.hideKeyboard(activity);
+                        abrirCamara(2);
 //                    activity.cambiarFragment(new FragmentTakePicture(), "hola", R.anim.slide_in_left,R.anim.slide_out_left);
-                    activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(fieldbook, 2), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
+//                    activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(fieldbook, 2), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
+                    }
                 }
+
             }
         });
         material_public.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (estado_visita == 2){
-                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
-                }else{
-                    Utilidades.hideKeyboard(activity);
-                    activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(fieldbook, 0), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
-//                    abrirCamara(0);
+
+                if(fieldbook <= 0 ){
+                    Utilidades.avisoListo(activity, "!Hey", "No puedes ingresar una foto sin seleccionar un estado fenologico, seleccionalo y luego saca la foto.", "entendi");
+                }else {
+                    if (estado_visita == 2) {
+                        Utilidades.avisoListo(activity, getResources().getString(R.string.title_dialog_agron), getResources().getString(R.string.visitas_terminadas), getResources().getString(R.string.entiendo));
+                    } else {
+                        Utilidades.hideKeyboard(activity);
+                        //                    activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(fieldbook, 0), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
+                        abrirCamara(0);
+                    }
                 }
             }
         });
@@ -196,7 +205,7 @@ public class FragmentFotos extends Fragment {
     private void requestPermission() {
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(Objects.requireNonNull(getActivity()), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Toast.makeText(getActivity(), "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+            Toasty.normal(getActivity(), "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 100);
@@ -204,11 +213,11 @@ public class FragmentFotos extends Fragment {
         }
     }
 
-/*    private void abrirCamara(int vista){
+    private void abrirCamara(int vista){
 
         prefs.edit().remove(Utilidades.VISTA_FOTOS).apply();
 
-        File miFile = new File(Environment.getExternalStorageDirectory(), Utilidades.DIRECTORIO_IMAGEN);
+        File miFile = new File(Environment.getExternalStoragePublicDirectory("DCIM"), Utilidades.DIRECTORIO_IMAGEN);
         boolean isCreada = miFile.exists();
 
         if (!isCreada){
@@ -219,7 +228,7 @@ public class FragmentFotos extends Fragment {
 
             long consecutivo = System.currentTimeMillis()/1000;
             String nombre = consecutivo+"_"+vista+"_"+fieldbook+".jpg";
-            String path = Environment.getExternalStorageDirectory() + File.separator + Utilidades.DIRECTORIO_IMAGEN + File.separator + nombre;
+            String path = Environment.getExternalStoragePublicDirectory("DCIM") + File.separator + Utilidades.DIRECTORIO_IMAGEN + File.separator + nombre;
 
             fileImagen=new File(path);
             prefs.edit().putInt(Utilidades.VISTA_FOTOS, vista).apply();
@@ -231,9 +240,9 @@ public class FragmentFotos extends Fragment {
 
             startActivityForResult(intent, COD_FOTO);
         }
-    }*/
+    }
 
-/*    @Override
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == COD_FOTO && resultCode == RESULT_OK) {
 
@@ -269,9 +278,9 @@ public class FragmentFotos extends Fragment {
             }
 
         }
-    }*/
+    }
 
-/*    private void guardarBD(File path){
+    private void guardarBD(File path){
 
         Fotos fotos = new Fotos();
         fotos.setFecha(Utilidades.fechaActualConHora());
@@ -280,10 +289,15 @@ public class FragmentFotos extends Fragment {
         fotos.setNombre_foto(path.getName());
         fotos.setFavorita(false);
         fotos.setPlano(0);
-        fotos.setId_ficha(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
+        fotos.setId_ficha_fotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
         fotos.setVista(prefs.getInt(Utilidades.VISTA_FOTOS, 0));
         fotos.setRuta(path.getAbsolutePath());
         fotos.setId_visita_foto(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+
+        Config config = MainActivity.myAppDB.myDao().getConfig();
+        if (config != null){
+            fotos.setId_dispo_foto(config.getId());
+        }
 
         MainActivity.myAppDB.myDao().insertFotos(fotos);
 
@@ -291,7 +305,7 @@ public class FragmentFotos extends Fragment {
             adapterFotos.notifyDataSetChanged();
         }
 
-    }*/
+    }
 
 
     @Override
@@ -320,7 +334,7 @@ public class FragmentFotos extends Fragment {
 
 
 
-        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(fieldbook, "",oreg, idVisi );
+        List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndViewNom(fieldbook, "",oreg, idVisi );
 
         adapterFotos = new FotosListAdapter(myImageList,activity, new FotosListAdapter.OnItemClickListener() {
             @Override
@@ -359,10 +373,10 @@ public class FragmentFotos extends Fragment {
     private void cambiarFavorita(Fotos fotos){
 
         if (fotos.isFavorita()){
-            Toast.makeText(activity, getResources().getString(R.string.message_fav_remove), Toast.LENGTH_SHORT).show();
+            Toasty.info(activity, getResources().getString(R.string.message_fav_remove), Toast.LENGTH_SHORT, true).show();
             fotos.setFavorita(false);
         }else{
-            Toast.makeText(activity, getResources().getString(R.string.message_fav), Toast.LENGTH_SHORT).show();
+            Toasty.info(activity, getResources().getString(R.string.message_fav), Toast.LENGTH_SHORT, true).show();
             fotos.setFavorita(true);
         }
 

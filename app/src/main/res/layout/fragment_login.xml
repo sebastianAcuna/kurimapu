@@ -15,7 +15,7 @@
         android:id="@+id/image_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/export_on"
+        android:src="@drawable/seed_vegetables"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="32dp"
@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:maxLines="1"
-            android:inputType="numberPassword"
+            android:inputType="textPassword"
             />
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="match_parent"
+
+
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minWidth="900dp"
-    android:minHeight="300dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding"
-        android:orientation="vertical"
-        >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/padding"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInp_dialog_nombre_ag"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="0.8"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             app:errorEnabled="true"
             app:counterEnabled="true"
@@ -54,13 +48,11 @@
         <Spinner
             android:id="@+id/sp_dialog_region"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="0.3"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="50dp"
+            app:layout_constraintHorizontal_weight="0.5"
             app:layout_constraintTop_toBottomOf="@id/lbl_region"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/sp_dialog_provincia"
-
             />
 
         <TextView
@@ -78,13 +70,11 @@
         <Spinner
             android:id="@+id/sp_dialog_provincia"
             android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.3"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            app:layout_constraintHorizontal_weight="0.5"
             app:layout_constraintTop_toBottomOf="@id/lbl_provincia"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/sp_dialog_region"
-
-
             />
 
         <TextView
@@ -102,11 +92,11 @@
         <Spinner
             android:id="@+id/sp_dialog_comuna"
             android:layout_width="0dp"
+            android:layout_height="50dp"
             app:layout_constraintHorizontal_weight="0.5"
-            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/lbl_comuna"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/textInp_dialog_ha_disp"
+            app:layout_constraintEnd_toStartOf="@id/sp_dialog_year"
             />
 
 
@@ -119,7 +109,7 @@
             android:theme="@style/sub_titles_forms"
             app:layout_constraintStart_toStartOf="@id/sp_dialog_year"
             app:layout_constraintEnd_toEndOf="@id/sp_dialog_year"
-            app:layout_constraintTop_toBottomOf="@id/sp_dialog_region"
+            app:layout_constraintTop_toBottomOf="@id/sp_dialog_provincia"
 
 
             />
@@ -127,8 +117,8 @@
         <Spinner
             android:id="@+id/sp_dialog_year"
             android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="0.8"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            app:layout_constraintHorizontal_weight="0.5"
             app:layout_constraintTop_toBottomOf="@id/lbl_year"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/sp_dialog_comuna"
@@ -138,7 +128,6 @@
             android:id="@+id/textInp_dialog_of_neg"
             android:layout_width="0dp"
             app:layout_constraintHorizontal_weight="0.5"
-            android:layout_margin="5dp"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             app:errorEnabled="true"
@@ -170,11 +159,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             app:errorEnabled="true"
             app:counterEnabled="true"
-            android:layout_margin="5dp"
             app:counterMaxLength="50"
             app:endIconMode="clear_text"
             android:hint="@string/ha_disp"
-            app:layout_constraintTop_toBottomOf="@id/sp_dialog_comuna"
+            app:layout_constraintTop_toBottomOf="@id/sp_dialog_year"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/textInp_dialog_of_neg"
 
@@ -192,21 +180,22 @@
 
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/lbl_grupos"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="0.2"
             android:text="@string/estado"
             android:padding="@dimen/padding"
             app:layout_constraintTop_toBottomOf="@id/textInp_dialog_of_neg"
             app:layout_constraintStart_toStartOf="parent"
+
             />
 
         <RadioGroup
+            android:visibility="gone"
             android:id="@+id/radio_group"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="0.8"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             android:layout_below="@id/lbl_grupos"
@@ -220,7 +209,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
-                android:checked="true"
                 android:text="@string/todos" />
 
             <RadioButton
@@ -228,6 +216,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
+                android:checked="true"
                 android:text="@string/confeccion" />
 
             <RadioButton
@@ -249,8 +238,8 @@
             android:id="@+id/btn_aplica_filtro"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_green_dark"
-            app:layout_constraintTop_toBottomOf="@id/radio_group"
+            app:layout_constraintHorizontal_weight="0.4"
+            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_of_neg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_cancela_filtro"
             android:text="@string/filter"/>
@@ -259,13 +248,13 @@
             android:id="@+id/btn_cancela_filtro"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.4"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:textColor="@color/colorSecondary"
-            app:layout_constraintTop_toBottomOf="@id/radio_group"
+            app:layout_constraintTop_toBottomOf="@id/textInp_dialog_ha_disp"
             app:layout_constraintStart_toEndOf="@id/btn_aplica_filtro"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/nav_cancel"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>

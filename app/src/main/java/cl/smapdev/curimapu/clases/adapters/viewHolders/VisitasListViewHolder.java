@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.adapters.viewHolders;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.VisitasListAdapter;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
+import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
@@ -42,20 +44,36 @@ public class VisitasListViewHolder extends RecyclerView.ViewHolder {
 
         if (context != null){
 
+            int configid = 0;
+            Config config = MainActivity.myAppDB.myDao().getConfig();
+            if (config != null){
+                configid = config.getId();
+            }
 
-            final Fotos fotos = MainActivity.myAppDB.myDao().getFoto(elem.getVisitas().getId_anexo_visita(), elem.getVisitas().getId_visita());
+           // final Fotos fotos = MainActivity.myAppDB.myDao().getFoto(elem.getVisitas().getId_anexo_visita(), elem.getVisitas().getId_visita(), elem.getVisitas().getId_visita_local(), configid);
 
-            if (fotos != null){
-                Picasso.get().load("file:///"+fotos.getRuta()).resize(800,600).centerCrop().into(imagen_referencial);
+            if(elem.getFotos() !=null){
+                final Fotos fotos = elem.getFotos();
 
-                imagen_referencial.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        clickListener.onItemClick(view, elem, fotos);
-                    }
-                });
+                if (fotos != null){
+                    imagen_referencial.setVisibility(View.VISIBLE);
+//                    Picasso.get().load("file:///"+fotos.getRuta()).resize(800,600).centerCrop().into(imagen_referencial);
+
+//                    Drawable d = Drawable.createFromPath(fotos.getRuta());
+//                    imagen_referencial.setImageDrawable(d);
+
+                    imagen_referencial.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            clickListener.onItemClick(view, elem, fotos);
+                        }
+                    });
 
 
+                }else{
+                    imagen_referencial.setVisibility(View.GONE);
+                    imagen_referencial.setImageDrawable(null);
+                }
             }
 
             cardview_visitas.setOnClickListener(new View.OnClickListener() {
