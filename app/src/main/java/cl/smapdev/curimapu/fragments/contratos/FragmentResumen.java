@@ -234,12 +234,14 @@ public class FragmentResumen extends Fragment {
                                                 nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "desc_especie" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
                                                 break;
-
                                             case "materiales":
                                                 nombreCampoTableta = (fs.getCampo().equals("nom_hibrido")) ? "desc_hibrido_variedad" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
                                                 break;
-
+                                            case "libro_campo":
+                                                nombreCampoTableta = fs.getCampo();
+                                                nombreTabla = "detalle_visita_prop";
+                                                break;
                                             case "lote":
                                                 nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "nombre_lote" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
@@ -317,12 +319,23 @@ public class FragmentResumen extends Fragment {
                                                 consulta += " WHERE id_anexo_contrato = ? ";
                                                 ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
+                                            case "anexo_checklist_siembra" :
+                                                consulta += " WHERE id_ac_cl_siembra = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
 
                                             case "cliente":
 
                                                 int idCliente  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 consulta += " WHERE id_clientes_tabla = ? ";
                                                 ob = Utilidades.appendValue(ob,idCliente);
+                                                break;
+                                            case "libro_campo":
+                                                consulta += " INNER JOIN pro_cli_mat USING (id_prop_mat_cli)  ";
+                                                consulta += " LEFT JOIN visita USING (id_visita)  ";
+                                                consulta += " WHERE visita.id_ac = ? AND  AND prop_cli_mat.campo = '"+nombreCampoTableta+"' ";
+                                                consulta += " ORDER BY id_det_vis_prop DESC LIMIT 1 ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
                                             case "comuna":
                                                 consulta += " INNER JOIN ficha_new FN ON FN.id_comuna_new = comuna.id_comuna ";

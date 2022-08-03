@@ -546,7 +546,9 @@ public class FragmentSowing extends Fragment {
                                             editTexts.get(i).setEnabled(false);
                                         }
                                     }
-                                    editTexts.get(i).setText(Utilidades.voltearFechaVista(datoDetalleFecha));
+                                    String nuevaFecha = Utilidades.voltearFechaVista(datoDetalleFecha);
+                                    nuevaFecha = (nuevaFecha.equals("")) ? datoDetalleFecha : nuevaFecha;
+                                    editTexts.get(i).setText(nuevaFecha);
                                     final int finalI1 = i;
                                     if (editTexts.get(i).isEnabled()){
                                         editTexts.get(i).setOnClickListener(new View.OnClickListener() {
@@ -603,7 +605,10 @@ public class FragmentSowing extends Fragment {
                                                 if (!TextUtils.isEmpty(editTexts.get(finalI).getText().toString())) {
                                                     detalle_visita_prop temp = new detalle_visita_prop();
 
-                                                    String fe = Utilidades.voltearFechaBD(editTexts.get(finalI).getText().toString());
+                                                    String prevValue = editTexts.get(finalI).getText().toString();
+                                                    String fe = Utilidades.voltearFechaBD(prevValue);
+
+                                                    fe = (fe == "") ? prevValue : fe;
 
                                                     temp.setValor_detalle(fe);
                                                     temp.setEstado_detalle(0);
@@ -724,37 +729,38 @@ public class FragmentSowing extends Fragment {
         String fecha = Utilidades.fechaActualSinHora();
         String[] fechaRota;
 
-        if (!TextUtils.isEmpty(edit.getText())){
+        String prevValue = edit.getText().toString();
+
+        if (!TextUtils.isEmpty(prevValue)){
             try{
-               fechaRota = Utilidades.voltearFechaBD(edit.getText().toString()).split("-");
+                String[] canSplit = prevValue.split("-");
+                if( canSplit.length <= 1){
+                    edit.setText(prevValue);
+                    return;
+                }
+                fechaRota = Utilidades.voltearFechaBD(prevValue).split("-");
+
             }catch (Exception e){
                 fechaRota = fecha.split("-");
             }
         }else{
             fechaRota = fecha.split("-");
         }
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
 
-                month = month + 1;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (datePicker, year, month, dayOfMonth) -> {
 
-                String mes = "", dia;
+            month = month + 1;
+            String mes = "", dia;
 
-                if (month < 10) {
-                    mes = "0" + month;
-                } else {
-                    mes = String.valueOf(month);
-                }
-                if (dayOfMonth < 10) dia = "0" + dayOfMonth;
-                else dia = String.valueOf(dayOfMonth);
+            if (month < 10) { mes = "0" + month; }
+            else {  mes = String.valueOf(month); }
 
-                String finalDate = dia + "-" + mes + "-" + year;
-//                edit.setHint("");
-                edit.setText(finalDate);
-            }
+            if (dayOfMonth < 10) dia = "0" + dayOfMonth;
+            else dia = String.valueOf(dayOfMonth);
+
+            String finalDate = dia + "-" + mes + "-" + year;
+            edit.setText(finalDate);
         }, Integer.parseInt(fechaRota[0]), (Integer.parseInt(fechaRota[1]) - 1), Integer.parseInt(fechaRota[2]));
-//        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
 
     }

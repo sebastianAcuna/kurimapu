@@ -51,11 +51,13 @@
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_checklist_siembra.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_crea_ficha.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_fichas.xml" value="0.3625" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_fichas_fechas.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_lista_visitas.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/content_visitas.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/dialog_observation_todo.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/dialogo_filtros_tabla.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/firma_digital.xml" value="0.22" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_anexo_fecha.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_checklist.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_checklist_siembra.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_contrato.xml" value="0.3625" />
@@ -67,6 +69,7 @@
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_sowing.xml" value="0.3625" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/fragment_visitas.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_anexos.xml" value="0.35833333333333334" />
+        <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_anexos_fechas.xml" value="0.25" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_cards.xml" value="0.35833333333333334" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_check_list.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/sebastian/Documents/proyectos android/curimapu/app/src/main/res/layout/lista_detalle_checklist.xml" value="0.3625" />

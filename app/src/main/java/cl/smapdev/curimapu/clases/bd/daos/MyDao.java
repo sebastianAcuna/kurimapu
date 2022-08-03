@@ -853,11 +853,11 @@ public interface MyDao {
             "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
             "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
             "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
-            "")
+            "ORDER BY especie.desc_especie ASC ")
     List<AnexoCompleto> getAnexos();
 
 
-    @Query("SELECT * FROM anexo_contrato WHERE id_anexo_contrato = :idAnexo")
+    @Query("SELECT * FROM anexo_contrato WHERE id_anexo_contrato = :idAnexo ORDER BY anexo_contrato.num_anexo ASC ")
     AnexoContrato getAnexos(String idAnexo);
 
     @Query("SELECT * " +
@@ -868,7 +868,7 @@ public interface MyDao {
             "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
             "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
             "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
-            "WHERE F.id_tempo_new = :year")
+            "WHERE F.id_tempo_new = :year ORDER BY especie.desc_especie ASC ")
     List<AnexoCompleto> getAnexosByYear(String year);
 
 
@@ -881,7 +881,7 @@ public interface MyDao {
             "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
             "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
             "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
-            "WHERE id_anexo_contrato = :idAnexo ")
+            "WHERE id_anexo_contrato = :idAnexo ORDER BY especie.desc_especie ASC ")
     AnexoCompleto getAnexoCompletoById(String idAnexo);
 
     @Insert

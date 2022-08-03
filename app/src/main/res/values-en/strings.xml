@@ -396,4 +396,13 @@ Depending on the state, it can be edited or not.</string>
     <string name="ingrese_un_nombre_para_este_checklist_y_asi_poder_diferenciarlos">Ingrese un nombre para este checklist, y asi poder diferenciarlos.</string>
     <string name="nombre_operario_maquina">NOMBRE OPERARIO MAQUINA</string>
     <string name="firma_operario_maquina">FIRMA OPERARIO MAQUINA</string>
+    <string name="cambiar">cambiar</string>
+    <string name="comuna_fecha">COMUNA</string>
+    <string name="inicio_despano">Inicio despano</string>
+    <string name="_5_floracion">5% floracion</string>
+    <string name="inicio_corte_seda">Inicio Corte Seda</string>
+    <string name="inicio_cosecha">Inicio Cosecha</string>
+    <string name="termino_cosecha">Termino Cosecha</string>
+    <string name="termino_labores_post_cosecha">Termino Labores Post Cosecha</string>
+    <string name="detalle_labores">Detalle Labores</string>
 </resources>
