@@ -394,4 +394,20 @@
     <string name="termino_cosecha">Termino Cosecha</string>
     <string name="termino_labores_post_cosecha">Termino Labores Post Cosecha</string>
     <string name="detalle_labores">Detalle Labores</string>
+    <string name="condicion">CONDICION</string>
+    <string name="ogm_siembra_temprana_gram_nea">(OGM) SIEMBRA TEMPRANA GRAMíNEA</string>
+    <string name="tipo_gram_nea">Tipo Gramínea</string>
+    <string name="destruccion_de_semillero_ensayo">Destruccion de Semillero / Ensayo</string>
+    <string name="fecha_y_hora_destrucci_n">Fecha y Hora destrucción</string>
+    <string name="destrucci_n">Destrucción</string>
+    <string name="parcial">PARCIAL</string>
+    <string name="completo">COMPLETO</string>
+    <string name="cantidad_has_destruidas">Cantidad Has Destruidas</string>
+    <string name="motivo">Motivo</string>
+    <string name="hum">Hum:</string>
+    <string name="uv">UV:</string>
+    <string name="min">Min:</string>
+    <string name="max">Max:</string>
+    <string name="velocidad">Velocidad:</string>
+    <string name="rafagas">Rafagas:</string>
 </resources>

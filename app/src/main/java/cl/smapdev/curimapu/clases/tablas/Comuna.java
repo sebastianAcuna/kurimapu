@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 @Entity(tableName = "comuna")
-public class Comuna implements Serializable {
+public class Comuna  {
 
     @SerializedName("id_comuna")
     @PrimaryKey()
@@ -21,8 +21,19 @@ public class Comuna implements Serializable {
     @SerializedName("id_provincia")
     private String id_provincia_comuna;
 
+    @SerializedName("id_api")
+    private String id_api;
+
 
     public Comuna() {
+    }
+
+    public String getId_api() {
+        return id_api;
+    }
+
+    public void setId_api(String id_api) {
+        this.id_api = id_api;
     }
 
     public String getDesc_comuna() {

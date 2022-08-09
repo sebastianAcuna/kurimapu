@@ -210,6 +210,18 @@ public class AnexoContrato {
     @SerializedName("destruido")
     private String destruido;
 
+    /* CAMBIOS 03-08-2022 */
+    @SerializedName("condicion")
+    private String condicion;
+
+
+    public String getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
+    }
 
     public String getDestruido() {
         return destruido;

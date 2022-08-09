@@ -95,6 +95,7 @@ public interface MyDao {
     @Query("SELECT * FROM visita V " +
             "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +
             "INNER JOIN ficha_new F ON (F.id_ficha_new = AC.id_ficha_contrato) " +
+            "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_new ) " +
             "INNER JOIN agricultor A ON (A.id_agricultor = F.id_agric_new) " +
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
             "INNER JOIN especie E ON (E.id_especie = M.id_especie_variedad) " +
@@ -183,75 +184,6 @@ public interface MyDao {
     @Delete
     void deleteFotos(Fotos fotos);
 
-
-
-
-    @Query("SELECT " +
-            "ACF.id_ac_cor_fech, " +
-            "ACF.id_ac_corr_fech, " +
-            "ACF.id_fieldman, " +
-            "ACF.inicio_despano, " +
-            "ACF.correo_inicio_despano, " +
-            "ACF.cinco_porciento_floracion, " +
-            "ACF.correo_cinco_porciento_floracion, " +
-            "ACF.inicio_corte_seda, " +
-            "ACF.correo_inicio_corte_seda, " +
-            "ACF.inicio_cosecha, " +
-            "ACF.correo_inicio_cosecha, " +
-            "ACF.termino_cosecha, " +
-            "ACF.correo_termino_cosecha, " +
-            "ACF.termino_labores_post_cosechas, " +
-            "ACF.correo_termino_labores_post_cosechas, " +
-            "ACF.detalle_labores, " +
-            "ACF.id_asistente, " +
-            "AC.num_anexo, " +
-            "U.user as usu_user, " +
-            "A.razon_social, " +
-            "L.nombre_lote, " +
-            "P.nombre, " +
-            "M.desc_variedad, " +
-            "E.desc_especie, " +
-            "AC.id_anexo_contrato, " +
-            "C.desc_comuna AS foo_desc_comuna, " +
-            "V.fecha_visita, " +
-            "ACF.inicio_corte_seda " +
-            "FROM anexo_contrato AC  " +
-            " LEFT JOIN anexo_correo_fechas ACF  ON (AC.id_anexo_contrato = ACF.id_ac_corr_fech) " +
-            " LEFT JOIN usuarios U ON U.id_usuario = ACF.id_fieldman " +
-            " LEFT JOIN agricultor A ON (A.id_agricultor = AC.id_agricultor_anexo) " +
-            " LEFT JOIN lote L ON (L.lote = AC.id_potrero) " +
-            " LEFT JOIN predio P ON (P.id_pred = L.id_pred_lote) " +
-            " LEFT JOIN ficha_new FN ON (FN.id_ficha_new = AC.id_ficha_contrato) " +
-            " LEFT JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
-            " LEFT JOIN especie E ON (E.id_especie = M.id_especie_variedad)" +
-            " LEFT JOIN comuna C ON (C.id_comuna = FN.id_comuna_new )" +
-            " LEFT JOIN visita V ON (V.id_anexo_visita = AC.id_anexo_contrato) " +
-            " WHERE FN.id_tempo_new = :tempo " +
-            " GROUP BY AC.id_anexo_contrato " +
-            " ORDER BY E.desc_especie ASC ")
-
-    List<AnexoWithDates> getFechasSag(String tempo);
-
-
-    @Query("SELECT * FROM anexo_correo_fechas WHERE id_ac_corr_fech = :id_anexo; ")
-    AnexoCorreoFechas getAnexoCorreoFechasByAnexo(int id_anexo);
-
-
-
-    @Query("SELECT * FROM anexo_correo_fechas WHERE " +
-            "(correo_inicio_despano <= 0 AND (inicio_despano IS NOT NULL AND inicio_despano != '0000-00-00')) OR  " +
-            "(correo_cinco_porciento_floracion <= 0 AND( cinco_porciento_floracion IS NOT NULL AND cinco_porciento_floracion != '0000-00-00')) OR " +
-            "(correo_inicio_corte_seda <= 0 AND (inicio_corte_seda IS NOT NULL AND inicio_corte_seda != '0000-00-00')) OR " +
-            "(correo_inicio_cosecha <= 0 AND (inicio_cosecha IS NOT NULL AND inicio_cosecha != '0000-00-00')) OR " +
-            "(correo_termino_cosecha <= 0 AND (termino_cosecha IS NOT NULL AND termino_cosecha != '0000-00-00')) OR " +
-            "(correo_termino_labores_post_cosechas <= 0 AND (termino_labores_post_cosechas IS NOT NULL AND termino_labores_post_cosechas != '0000-00-00'))")
-    List<AnexoCorreoFechas> getAnexoCorreoFechas();
-
-    @Update
-    int UpdateFechasAnexos(AnexoCorreoFechas anexoCorreoFechas);
-
-    @Insert
-    long insertFechasAnexos(AnexoCorreoFechas anexoCorreoFechas);
 
 
     @Query("UPDATE config SET servidorSeleccionado = :servidor ;")
@@ -468,6 +400,7 @@ public interface MyDao {
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
             "INNER JOIN ficha_new F ON (F.id_ficha_new = AC.id_ficha_contrato) " +
+            "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_new ) " +
             "INNER JOIN quotation Q ON (Q.id_materiales = M.id_variedad) " +
             "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
             "WHERE id_anexo_visita = :idAnexo AND AC.temporada_anexo = :annoDesde " +
@@ -482,6 +415,7 @@ public interface MyDao {
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
             "INNER JOIN ficha_new F ON (F.id_ficha_new= AC.id_ficha_contrato)" +
+            "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_new ) " +
             "INNER JOIN quotation Q ON (Q.id_materiales = M.id_variedad) " +
             "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
             "LEFT JOIN fotos Fo ON (Fo.id_visita_foto = V.id_visita_local AND Fo.id_dispo_foto  = V.id_dispo  AND Fo.favorita = 1)" +
@@ -496,6 +430,7 @@ public interface MyDao {
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
             "INNER JOIN ficha_new F ON (F.id_ficha_new = AC.id_ficha_contrato)" +
+            "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_new ) " +
             "INNER JOIN quotation Q ON (Q.id_materiales = M.id_variedad) " +
             "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
             "LEFT JOIN fotos Fo ON (Fo.id_visita_foto = V.id_visita_local AND Fo.id_dispo_foto  = V.id_dispo  AND Fo.favorita = 1)" +
@@ -509,6 +444,7 @@ public interface MyDao {
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
             "INNER JOIN ficha_new F ON (F.id_ficha_new = AC.id_ficha_contrato) " +
+            "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_new ) " +
             "INNER JOIN quotation Q ON (Q.id_materiales = M.id_variedad) " +
             "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
             "WHERE id_anexo_visita = :idAnexo AND V.etapa_visitas = :etapa AND AC.temporada_anexo = :annoDesde " +
@@ -851,6 +787,7 @@ public interface MyDao {
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN materiales ON (materiales.id_variedad = anexo_contrato.id_variedad_anexo) " +
             "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
+            "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_new ) " +
             "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
             "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
             "ORDER BY especie.desc_especie ASC ")
@@ -860,12 +797,13 @@ public interface MyDao {
     @Query("SELECT * FROM anexo_contrato WHERE id_anexo_contrato = :idAnexo ORDER BY anexo_contrato.num_anexo ASC ")
     AnexoContrato getAnexos(String idAnexo);
 
-    @Query("SELECT * " +
+    @Query("SELECT anexo_contrato.*,  agricultor.*, especie.*, materiales.*, F.*, C.id_api, P.*, lote.* " +
             "FROM anexo_contrato " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN materiales ON (materiales.id_variedad = anexo_contrato.id_variedad_anexo) " +
             "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
+            "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_new ) " +
             "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
             "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
             "WHERE F.id_tempo_new = :year ORDER BY especie.desc_especie ASC ")
@@ -873,12 +811,13 @@ public interface MyDao {
 
 
 
-    @Query("SELECT * " +
+    @Query("SELECT *, C.id_api as c_id_api, C.desc_comuna as c_desc_comuna " +
             "FROM anexo_contrato " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN materiales ON (materiales.id_variedad = anexo_contrato.id_variedad_anexo) " +
             "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
+            "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_new ) " +
             "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
             "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
             "WHERE id_anexo_contrato = :idAnexo ORDER BY especie.desc_especie ASC ")

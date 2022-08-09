@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 14,
-    "identityHash": "47aaec46e6697d3594dcb52e8b591df7",
+    "identityHash": "66fa8ddaf91bebbc8c11074de121a252",
     "entities": [
       {
         "tableName": "fotos",
@@ -434,7 +434,7 @@
       },
       {
         "tableName": "comuna",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_comuna` TEXT NOT NULL, `desc_comuna` TEXT, `id_provincia_comuna` TEXT, PRIMARY KEY(`id_comuna`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_comuna` TEXT NOT NULL, `desc_comuna` TEXT, `id_provincia_comuna` TEXT, `id_api` TEXT, PRIMARY KEY(`id_comuna`))",
         "fields": [
           {
             "fieldPath": "id_comuna",
@@ -453,6 +453,12 @@
             "columnName": "id_provincia_comuna",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "id_api",
+            "columnName": "id_api",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -466,7 +472,7 @@
       },
       {
         "tableName": "anexo_contrato",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` TEXT NOT NULL, `num_anexo` TEXT, `id_variedad_anexo` TEXT, `temporada_anexo` TEXT, `id_especie_anexo` TEXT, `id_agricultor_anexo` TEXT, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL, `id_potrero` INTEGER NOT NULL, `superficie` INTEGER NOT NULL, `ready_batch` TEXT, `sectorial_office` TEXT, `field_sag` TEXT, `rch` TEXT, `sag_register_number` TEXT, `has_contrato` TEXT, `has_gps` TEXT, `orden_multiplicacion` TEXT, `sowing_date` TEXT, `lines_female` TEXT, `lines_male` TEXT, `sl_female` TEXT, `sl_real_sowing_female` TEXT, `sl_male` TEXT, `sl_real_sowing_male` TEXT, `sl_line_increase` TEXT, `sl_real_sowing_increase_line` TEXT, `results_raw_kgs` TEXT, `results_clean_kgs` TEXT, `yield_kg_ha` TEXT, `linea_incremento` TEXT, `raw_kgs_lot_uno` TEXT, `raw_kgs_lot_dos` TEXT, `raw_kgs_lot_tres` TEXT, `raw_kgs_lot_cuatro` TEXT, `raw_kgs_lot_cinco` TEXT, `total_kgs_raw` TEXT, `clean_kgs_lot_uno` TEXT, `clean_kgs_lot_dos` TEXT, `clean_kgs_lot_tres` TEXT, `clean_kgs_lot_cuatro` TEXT, `clean_kgs_lot_cinco` TEXT, `total_clean_kgs` TEXT, `germination_lot_uno` TEXT, `germination_lot_dos` TEXT, `germination_lot_tres` TEXT, `germination_lot_cuatro` TEXT, `germination_lot_cinco` TEXT, `humidity_lot_uno` TEXT, `humidity_lot_dos` TEXT, `humidity_lot_tres` TEXT, `humidity_lot_cuatro` TEXT, `humidity_lot_cinco` TEXT, `tsw_lot_uno` TEXT, `tsw_lot_dos` TEXT, `tsw_lot_tres` TEXT, `tsw_lot_cuatro` TEXT, `tsw_lot_cinco` TEXT, `id_de_quo` TEXT, `ha_destruidas` TEXT, `destruido` TEXT, PRIMARY KEY(`id_anexo_contrato`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` TEXT NOT NULL, `num_anexo` TEXT, `id_variedad_anexo` TEXT, `temporada_anexo` TEXT, `id_especie_anexo` TEXT, `id_agricultor_anexo` TEXT, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL, `id_potrero` INTEGER NOT NULL, `superficie` INTEGER NOT NULL, `ready_batch` TEXT, `sectorial_office` TEXT, `field_sag` TEXT, `rch` TEXT, `sag_register_number` TEXT, `has_contrato` TEXT, `has_gps` TEXT, `orden_multiplicacion` TEXT, `sowing_date` TEXT, `lines_female` TEXT, `lines_male` TEXT, `sl_female` TEXT, `sl_real_sowing_female` TEXT, `sl_male` TEXT, `sl_real_sowing_male` TEXT, `sl_line_increase` TEXT, `sl_real_sowing_increase_line` TEXT, `results_raw_kgs` TEXT, `results_clean_kgs` TEXT, `yield_kg_ha` TEXT, `linea_incremento` TEXT, `raw_kgs_lot_uno` TEXT, `raw_kgs_lot_dos` TEXT, `raw_kgs_lot_tres` TEXT, `raw_kgs_lot_cuatro` TEXT, `raw_kgs_lot_cinco` TEXT, `total_kgs_raw` TEXT, `clean_kgs_lot_uno` TEXT, `clean_kgs_lot_dos` TEXT, `clean_kgs_lot_tres` TEXT, `clean_kgs_lot_cuatro` TEXT, `clean_kgs_lot_cinco` TEXT, `total_clean_kgs` TEXT, `germination_lot_uno` TEXT, `germination_lot_dos` TEXT, `germination_lot_tres` TEXT, `germination_lot_cuatro` TEXT, `germination_lot_cinco` TEXT, `humidity_lot_uno` TEXT, `humidity_lot_dos` TEXT, `humidity_lot_tres` TEXT, `humidity_lot_cuatro` TEXT, `humidity_lot_cinco` TEXT, `tsw_lot_uno` TEXT, `tsw_lot_dos` TEXT, `tsw_lot_tres` TEXT, `tsw_lot_cuatro` TEXT, `tsw_lot_cinco` TEXT, `id_de_quo` TEXT, `ha_destruidas` TEXT, `destruido` TEXT, `condicion` TEXT, PRIMARY KEY(`id_anexo_contrato`))",
         "fields": [
           {
             "fieldPath": "id_anexo_contrato",
@@ -831,6 +837,12 @@
           {
             "fieldPath": "destruido",
             "columnName": "destruido",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "condicion",
+            "columnName": "condicion",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -2630,7 +2642,7 @@
       },
       {
         "tableName": "anexo_correo_fechas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_ac_cor_fech` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ac_corr_fech` INTEGER NOT NULL, `id_fieldman` INTEGER NOT NULL, `inicio_despano` TEXT, `correo_inicio_despano` INTEGER NOT NULL, `cinco_porciento_floracion` TEXT, `correo_cinco_porciento_floracion` INTEGER NOT NULL, `inicio_corte_seda` TEXT, `correo_inicio_corte_seda` INTEGER NOT NULL, `inicio_cosecha` TEXT, `correo_inicio_cosecha` INTEGER NOT NULL, `termino_cosecha` TEXT, `correo_termino_cosecha` INTEGER NOT NULL, `termino_labores_post_cosechas` TEXT, `correo_termino_labores_post_cosechas` INTEGER NOT NULL, `detalle_labores` TEXT, `id_asistente` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_ac_cor_fech` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ac_corr_fech` INTEGER NOT NULL, `estado_sincro_corr_fech` INTEGER NOT NULL, `id_fieldman` INTEGER NOT NULL, `inicio_despano` TEXT, `correo_inicio_despano` INTEGER NOT NULL, `cinco_porciento_floracion` TEXT, `correo_cinco_porciento_floracion` INTEGER NOT NULL, `inicio_corte_seda` TEXT, `correo_inicio_corte_seda` INTEGER NOT NULL, `inicio_cosecha` TEXT, `hora_inicio_cosecha` TEXT, `correo_inicio_cosecha` INTEGER NOT NULL, `termino_cosecha` TEXT, `correo_termino_cosecha` INTEGER NOT NULL, `termino_labores_post_cosechas` TEXT, `correo_termino_labores_post_cosechas` INTEGER NOT NULL, `detalle_labores` TEXT, `id_asistente` INTEGER NOT NULL, `siem_tempra_grami` TEXT, `tipo_graminea` TEXT, `fecha_destruccion_semillero` TEXT, `hora_destruccion_semillero` TEXT, `destruc_semill_ensayo` TEXT, `cantidad_has_destruidas` REAL, `motivo_destruccion` TEXT)",
         "fields": [
           {
             "fieldPath": "id_ac_cor_fech",
@@ -2641,6 +2653,12 @@
           {
             "fieldPath": "id_ac_corr_fech",
             "columnName": "id_ac_corr_fech",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estado_sincro_corr_fech",
+            "columnName": "estado_sincro_corr_fech",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -2693,6 +2711,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "hora_inicio_cosecha",
+            "columnName": "hora_inicio_cosecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "correo_inicio_cosecha",
             "columnName": "correo_inicio_cosecha",
             "affinity": "INTEGER",
@@ -2733,6 +2757,48 @@
             "columnName": "id_asistente",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "siem_tempra_grami",
+            "columnName": "siem_tempra_grami",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tipo_graminea",
+            "columnName": "tipo_graminea",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_destruccion_semillero",
+            "columnName": "fecha_destruccion_semillero",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hora_destruccion_semillero",
+            "columnName": "hora_destruccion_semillero",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "destruc_semill_ensayo",
+            "columnName": "destruc_semill_ensayo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cantidad_has_destruidas",
+            "columnName": "cantidad_has_destruidas",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "motivo_destruccion",
+            "columnName": "motivo_destruccion",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -3396,7 +3462,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '47aaec46e6697d3594dcb52e8b591df7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '66fa8ddaf91bebbc8c11074de121a252')"
     ]
   }
 }

@@ -5,6 +5,7 @@ import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
 import cl.smapdev.curimapu.clases.relaciones.SubirFechasRetro;
 import cl.smapdev.curimapu.clases.relaciones.resFecha;
+import cl.smapdev.curimapu.clases.tablas.WeatherApiStatus;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -33,4 +34,12 @@ public interface ApiService {
 
     @GET("comprobacion.php")
     Call<Respuesta> comprobacion(@Query("id") int id_dispo, @Query("id_usuario") int id_user, @Query("id_cab") int id_cab);
+
+
+    @GET("index.php")
+    Call<WeatherApiStatus> getData(
+            @Query("api_lang") String language,
+            @Query("localidad") String localidad,
+            @Query("affiliate_id") String userId,
+            @Query("v") String version);
 }

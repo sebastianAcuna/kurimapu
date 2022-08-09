@@ -184,7 +184,7 @@ public class Descargas {
         if(gsonDescargas.getArray_fechas_anexos() != null && gsonDescargas.getArray_fechas_anexos().size() > 0){
             try{
                 for (AnexoCorreoFechas fch : gsonDescargas.getArray_fechas_anexos()){
-                    AnexoCorreoFechas f = MainActivity.myAppDB.myDao().getAnexoCorreoFechasByAnexo(fch.getId_ac_corr_fech());
+                    AnexoCorreoFechas f = MainActivity.myAppDB.DaoAnexosFechas().getAnexoCorreoFechasByAnexo(fch.getId_ac_corr_fech());
                     if(f != null){
                         f.setCorreo_cinco_porciento_floracion(fch.getCorreo_cinco_porciento_floracion());
                         f.setCorreo_inicio_corte_seda(fch.getCorreo_inicio_corte_seda());
@@ -201,9 +201,9 @@ public class Descargas {
                         f.setTermino_labores_post_cosechas(fch.getTermino_labores_post_cosechas());
 
 
-                        MainActivity.myAppDB.myDao().UpdateFechasAnexos(f);
+                        MainActivity.myAppDB.DaoAnexosFechas().UpdateFechasAnexos(f);
                     }else{
-                        MainActivity.myAppDB.myDao().insertFechasAnexos(fch);
+                        MainActivity.myAppDB.DaoAnexosFechas().insertFechasAnexos(fch);
                     }
                 }
 

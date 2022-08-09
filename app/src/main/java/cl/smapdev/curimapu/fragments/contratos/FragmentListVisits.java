@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -37,14 +39,25 @@ import java.util.concurrent.Future;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.VisitasListAdapter;
+import cl.smapdev.curimapu.clases.adapters.WeatherAdapter;
+import cl.smapdev.curimapu.clases.modelo.WeatherApiRequest;
+import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
+import cl.smapdev.curimapu.clases.tablas.WeatherApi;
+import cl.smapdev.curimapu.clases.tablas.WeatherApiStatus;
+import cl.smapdev.curimapu.clases.tablas.WeatherUnits;
+import cl.smapdev.curimapu.clases.tablas.WeatherWind;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentContratos;
 import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
 import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragmentListVisits extends Fragment {
 
@@ -54,6 +67,11 @@ public class FragmentListVisits extends Fragment {
     private ImageView ic_collapse;
     private AnexoContrato anexoContrato = null;
     private Button btn_nueva_visita, btn_carpeta_virtual;
+    private TextView lbl_titulo_comuna;
+
+    private RecyclerView weather_list;
+
+    private WeatherAdapter weatherAdapter;
 
     private List<VisitasCompletas> visitasCompletas = Collections.emptyList();
 
@@ -134,6 +152,9 @@ public class FragmentListVisits extends Fragment {
         btn_nueva_visita = view.findViewById(R.id.btn_nueva_visita);
         btn_carpeta_virtual = view.findViewById(R.id.btn_carpeta_virtual);
 
+        weather_list = view.findViewById(R.id.weather_list);
+        lbl_titulo_comuna = view.findViewById(R.id.lbl_titulo_comuna);
+
 
         setHasOptionsMenu(true);
 
@@ -178,6 +199,19 @@ public class FragmentListVisits extends Fragment {
 //            DialogFirma df = new DialogFirma();
 //            df.show(getActivity().getSupportFragmentManager(), "TEST_FIRMA");
         });
+
+        LinearLayoutManager lManagerVisitas = null;
+        if (activity != null){
+            lManagerVisitas  = new LinearLayoutManager(
+                    activity,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+            );
+        }
+        weather_list.setHasFixedSize(true);
+        weather_list.setLayoutManager(lManagerVisitas);
+
+
 
     }
 
@@ -269,6 +303,82 @@ public class FragmentListVisits extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        if(anexoContrato != null){
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+
+            Future<AnexoCompleto> anexoCompletoFuture = executor.submit(() ->
+                    MainActivity
+                            .myAppDB
+                            .myDao()
+                            .getAnexoCompletoById(anexoContrato.getId_anexo_contrato()) );
+
+
+            try {
+                AnexoCompleto anexoCompleto = anexoCompletoFuture.get();
+                if(anexoCompleto.getComuna() != null && anexoCompleto.getComuna().getId_api() != null ){
+
+                    lbl_titulo_comuna.setText(anexoCompleto.getComuna().getDesc_comuna());
+
+                    WeatherApiRequest weatherApiRequest = new WeatherApiRequest(anexoCompleto.getComuna().getId_api());
+                    Call<WeatherApiStatus> call =  weatherApiRequest.obtenerData();
+                    call.enqueue(new Callback<WeatherApiStatus>() {
+                        @Override
+                        public void onResponse(@NonNull Call<WeatherApiStatus> call, @NonNull Response<WeatherApiStatus> response) {
+
+                            if(response.errorBody() != null){
+                                Toasty.error(requireActivity(),
+                                        "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
+                                return;
+                            }
+
+                            if(response.code() == 200 && response.isSuccessful()){
+
+                                WeatherApiStatus status = response.body();
+
+                                if(status == null ){
+                                    Toasty.error(requireActivity(),
+                                            "Respuesta nula", Toast.LENGTH_LONG, true).show();
+                                    return;
+                                }
+
+                                if(status.getStatus() != 0){
+                                    Toasty.error(requireActivity(),
+                                            "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
+                                    return;
+                                }
+
+                                List<WeatherApi> weatherApiList = new ArrayList<>();
+
+                                weatherApiList.add(status.getDay().getDayOne());
+                                weatherApiList.add(status.getDay().getDayTwo());
+                                weatherApiList.add(status.getDay().getDayThree());
+                                weatherApiList.add(status.getDay().getDayFour());
+                                weatherApiList.add(status.getDay().getDayFive());
+
+
+                                weatherAdapter = new WeatherAdapter(weatherApiList);
+
+                                weather_list.setAdapter(weatherAdapter);
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<WeatherApiStatus> call, @NonNull Throwable t) {
+                            Toasty.error(requireActivity(),
+                                    "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
+                        }
+                    });
+
+                }
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
     @Override

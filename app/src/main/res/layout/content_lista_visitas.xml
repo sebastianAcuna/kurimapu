@@ -9,6 +9,23 @@
     android:padding="@dimen/padding_small"
     android:background="@color/colorBackground">
 
+    <TextView
+        android:id="@+id/lbl_titulo_comuna"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/weather_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_titulo_comuna"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
 
     <Button
         android:id="@+id/btn_nueva_visita"
@@ -16,7 +33,7 @@
         android:layout_height="wrap_content"
         android:text="@string/nueva_visita"
         android:layout_marginTop="@dimen/padding_small"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weather_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_carpeta_virtual"
         />
@@ -27,7 +44,7 @@
         android:layout_height="wrap_content"
         android:text="@string/c_virtual"
         android:layout_marginTop="@dimen/padding_small"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weather_list"
         app:layout_constraintStart_toEndOf="@id/btn_nueva_visita"
         app:layout_constraintEnd_toEndOf="parent"
         />

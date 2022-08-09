@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.clases.bd;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
+import cl.smapdev.curimapu.clases.bd.daos.DaoAnexosFechas;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListSiembra;
 import cl.smapdev.curimapu.clases.bd.daos.DaoEvaluaciones;
 import cl.smapdev.curimapu.clases.bd.daos.DaoFirmasTemp;
@@ -60,5 +61,6 @@ public abstract class MyAppBD extends RoomDatabase {
         public abstract DaoEvaluaciones DaoEvaluaciones();
         public abstract DaoCheckListSiembra DaoClSiembra();
         public abstract DaoFirmasTemp DaoFirmas();
+        public abstract DaoAnexosFechas DaoAnexosFechas();
 
 }

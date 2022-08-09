@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.utilidades;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.exifinterface.media.ExifInterface;
@@ -65,6 +68,9 @@ public class Utilidades {
 
 
 //    21-ca0493
+
+
+    public static final String affiliate_id = "vb7jbic553ts";
 
 
     public static final String IP_PRODUCCION = "192.168.1.17";
@@ -372,6 +378,34 @@ public class Utilidades {
         }catch (Exception e){
             return "";
         }
+    }
+
+    public static void levantarHora(final EditText edit, Context context ){
+        String hora = Utilidades.hora();
+
+        String[] horaRota;
+        try{
+            if(!TextUtils.isEmpty(edit.getText())){
+                horaRota = edit.getText().toString().split(":");
+            }else{
+                horaRota = hora.split(":");
+            }
+        }catch (Exception e){
+            horaRota = hora.split(":");
+        }
+
+        TimePickerDialog timePickerDialog =  new TimePickerDialog(context, (timePicker, i, i1) -> {
+            String horaShow = (i < 10) ? "0"+i : i+"";
+            String minutosShow = (i1 < 10) ? "0"+i1 : i1+"";
+
+            String horaFinal = horaShow+":"+minutosShow+":00";
+            edit.setText(horaFinal);
+        },
+                Integer.parseInt(horaRota[0]),
+                Integer.parseInt(horaRota[1]),
+                true
+        );
+        timePickerDialog.show();
     }
 
 

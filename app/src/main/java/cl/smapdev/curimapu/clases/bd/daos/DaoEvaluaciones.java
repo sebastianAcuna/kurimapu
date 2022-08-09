@@ -29,8 +29,8 @@ public interface DaoEvaluaciones {
     @Update
     int updateEvaluaciones(Evaluaciones evaluaciones);
 
-    @Query("SELECT * FROM anexo_recomendaciones WHERE id_ac = :id_ac ")
-    List<Evaluaciones> getEvaluacionesByAC( int id_ac );
+    @Query("SELECT * FROM anexo_recomendaciones WHERE id_ac = :id_ace ")
+    List<Evaluaciones> getEvaluacionesByAC( int id_ace );
 
     @Query("SELECT * FROM anexo_recomendaciones WHERE id_ac = :id_ac AND estado = :estado ")
     List<Evaluaciones> getEvaluacionesByEstado( int id_ac, String estado );

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.clases.tablas.Config;
+import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -36,5 +37,19 @@ public class RetrofitClient {
                     .build();
         }
         return retrofit;
+    }
+
+    public static Retrofit getWeather(){
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        String url = "http://api.meteored.cl/";
+
+        return new Retrofit.Builder()
+                .baseUrl(url)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
     }
 }

@@ -424,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case Utilidades.FRAGMENT_CONFIG:
                     case Utilidades.FRAGMENT_FICHAS:
                     case Utilidades.FRAGMENT_VISITAS:
-
+                    case Utilidades.FRAGMENT_ANEXO_FICHA:
                         cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_right, R.anim.slide_out_right);
                         cambiarNavigation(R.id.nv_inicio);
                     break;

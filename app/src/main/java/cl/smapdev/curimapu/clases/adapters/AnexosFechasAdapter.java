@@ -34,7 +34,7 @@ public class AnexosFechasAdapter extends RecyclerView.Adapter<AnexosCorreosFecha
     @NonNull
     @Override
     public AnexosCorreosFechasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_anexos,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_anexos_fechas,parent,false);
         return new AnexosCorreosFechasViewHolder(view);
     }
 
@@ -42,6 +42,17 @@ public class AnexosFechasAdapter extends RecyclerView.Adapter<AnexosCorreosFecha
     @Override
     public void onBindViewHolder(@NonNull AnexosCorreosFechasViewHolder holder, int position) {
         holder.bind(anexoCorreosFechasList.get(position), itemClickListenerCambiar, context);
+    }
+
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override

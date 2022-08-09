@@ -104,9 +104,32 @@
         android:layout_height="wrap_content"
         android:textAlignment="textEnd"
         app:layout_constraintStart_toEndOf="@id/lbl_potrero"
-        app:layout_constraintTop_toBottomOf="@id/lbl_potrero"
+        app:layout_constraintTop_toBottomOf="@id/lbl_comuna"
         app:layout_constraintEnd_toEndOf="parent"
         tool:text="Yerbas Buenas"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        />
+
+    <TextView
+        android:id="@+id/lbl_condicion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/comuna"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="@string/condicion"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        />
+
+    <TextView
+        android:id="@+id/condicion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/lbl_condicion"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="Convencional"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         />
 
@@ -114,7 +137,7 @@
         android:id="@+id/contenedor_resumen_correo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/comuna"
+        app:layout_constraintTop_toBottomOf="@id/condicion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         >
@@ -135,8 +158,7 @@
             app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/corr_5_floracion"
-            android:src="@drawable/ic_baseline_email_24_si"
-            app:tint="@color/colorGreen"
+            android:src="@drawable/ic_baseline_email_24_no"
 
             />
 
@@ -147,8 +169,7 @@
             app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
             app:layout_constraintStart_toEndOf="@id/corr_inicio_despano"
             app:layout_constraintEnd_toStartOf="@id/corr_inicio_corte_seda"
-            android:src="@drawable/ic_baseline_email_24_si"
-            app:tint="@color/colorGreen"
+            android:src="@drawable/ic_baseline_email_24_no"
 
             />
         <ImageView
@@ -158,8 +179,7 @@
             app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
             app:layout_constraintStart_toEndOf="@id/corr_5_floracion"
             app:layout_constraintEnd_toStartOf="@id/corr_inicio_cosecha"
-            android:src="@drawable/ic_baseline_email_24_si"
-            app:tint="@color/colorGreen"
+            android:src="@drawable/ic_baseline_email_24_no"
 
             />
         <ImageView
@@ -169,8 +189,7 @@
             app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
             app:layout_constraintStart_toEndOf="@id/corr_inicio_corte_seda"
             app:layout_constraintEnd_toStartOf="@id/corr_termino_cosecha"
-            android:src="@drawable/ic_baseline_email_24_si"
-            app:tint="@color/colorGreen"
+            android:src="@drawable/ic_baseline_email_24_no"
 
             />
         <ImageView
@@ -180,8 +199,7 @@
             app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
             app:layout_constraintStart_toEndOf="@id/corr_inicio_cosecha"
             app:layout_constraintEnd_toStartOf="@id/corr_termino_labores"
-            android:src="@drawable/ic_baseline_email_24_si"
-            app:tint="@color/colorGreen"
+            android:src="@drawable/ic_baseline_email_24_no"
 
             />
         <ImageView
@@ -190,8 +208,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
             app:layout_constraintStart_toEndOf="@id/corr_termino_cosecha"
-            android:src="@drawable/ic_baseline_email_24_si"
-            app:tint="@color/colorGreen"
+            android:src="@drawable/ic_baseline_email_24_no"
 
             />
 
@@ -221,6 +238,7 @@
             android:id="@+id/lbl_inicio_despano"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/lbl_titulo_detalle_correos"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_inicio_despano"
@@ -245,11 +263,10 @@
             android:id="@+id/iv_inicio_despano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_email_24_si"
+            android:src="@drawable/ic_baseline_email_24_no"
             app:layout_constraintTop_toBottomOf="@id/lbl_titulo_detalle_correos"
             app:layout_constraintStart_toEndOf="@id/tv_inicio_despano"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/colorGreen"
             />
 
         <TextView
@@ -282,12 +299,11 @@
             android:id="@+id/iv_5_floracion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_email_24_si"
+            android:src="@drawable/ic_baseline_email_24_no"
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_inicio_despano"
             app:layout_constraintStart_toEndOf="@id/tv_5_floracion"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/colorGreen"
             />
 
         <TextView
@@ -320,12 +336,11 @@
             android:id="@+id/iv_inicio_corte_seda"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_email_24_si"
+            android:src="@drawable/ic_baseline_email_24_no"
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_5_floracion"
             app:layout_constraintStart_toEndOf="@id/tv_inicio_corte_seda"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/colorGreen"
             />
 
         <TextView
@@ -358,12 +373,11 @@
             android:id="@+id/iv_inicio_cosecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_email_24_si"
+            android:src="@drawable/ic_baseline_email_24_no"
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_inicio_corte_seda"
             app:layout_constraintStart_toEndOf="@id/tv_inicio_cosecha"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/colorGreen"
             />
 
         <TextView
@@ -396,12 +410,11 @@
             android:id="@+id/iv_termino_cosecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_email_24_si"
+            android:src="@drawable/ic_baseline_email_24_no"
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_inicio_cosecha"
             app:layout_constraintStart_toEndOf="@id/tv_termino_cosecha"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/colorGreen"
             />
 
         <TextView
@@ -432,12 +445,11 @@
             android:id="@+id/iv_termino_labores"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_email_24_si"
+            android:src="@drawable/ic_baseline_email_24_no"
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_termino_cosecha"
             app:layout_constraintStart_toEndOf="@id/tv_termino_labores"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/colorGreen"
             />
 
 
