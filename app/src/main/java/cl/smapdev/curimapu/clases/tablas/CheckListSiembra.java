@@ -21,6 +21,8 @@ public class CheckListSiembra {
     private int estado_documento;
     @Expose
     private String clave_unica;
+    @Expose
+    private int id_usuario;
 
     //suelo
     @Expose
@@ -129,12 +131,10 @@ public class CheckListSiembra {
     private String responsable_aseo_pre_siembra;
     @Expose
     private String rut_responsable_aseo_pre_siembra;
-    @Expose
-    private String firma_responsable_aso_pre_siembra;
+
     @Expose
     private String responsable_revision_limpieza_pre_siembra;
-    @Expose
-    private String firma_revision_limpieza_pre_siembra;
+
 
 
     //aseo maquinaria post siembra
@@ -151,11 +151,7 @@ public class CheckListSiembra {
     @Expose
     private String rut_responsable_aseo_post_siembra;
     @Expose
-    private String firma_responsable_aseo_post_siembra;
-    @Expose
     private String encargado_revision_limpieza_post_siembra;
-    @Expose
-    private String firma_revision_limpieza_post_siembra;
 
 
     //general
@@ -174,11 +170,7 @@ public class CheckListSiembra {
     @Expose
     private String nombre_responsable_campo;
     @Expose
-    private String firma_responsable_campo;
-    @Expose
     private String nombre_operario_maquina;
-    @Expose
-    private String firma_operario_maquina;
 
     //salida
     @Expose
@@ -190,12 +182,113 @@ public class CheckListSiembra {
     @Expose
     private String nombre_responsable_campo_termino;
     @Expose
-    private String firma_responsable_campo_termino;
-    @Expose
     private String nombre_operario_maquina_termino;
+
+
+    @Expose
+    private String firma_responsable_aso_pre_siembra;
+    private String stringed_responsable_aso_pre_siembra;
+
+    @Expose
+    private String firma_revision_limpieza_pre_siembra;
+    private String stringed_revision_limpieza_pre_siembra;
+
+    @Expose
+    private String firma_responsable_aseo_post_siembra;
+    private String stringed_responsable_aseo_post_siembra;
+
+    @Expose
+    private String firma_revision_limpieza_post_siembra;
+    private String stringed_revision_limpieza_post_siembra;
+
+    @Expose
+    private String firma_responsable_campo;
+    private String stringed_responsable_campo;
+
+    @Expose
+    private String firma_operario_maquina;
+    private String stringed_operario_maquina;
+
+    @Expose
+    private String firma_responsable_campo_termino;
+    private String stringed_responsable_campo_termino;
+
     @Expose
     private String firma_operario_maquina_termino;
+    private String stringed_operario_maquina_termino;
 
+
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+
+    public String getStringed_responsable_aso_pre_siembra() {
+        return stringed_responsable_aso_pre_siembra;
+    }
+
+    public void setStringed_responsable_aso_pre_siembra(String stringed_responsable_aso_pre_siembra) {
+        this.stringed_responsable_aso_pre_siembra = stringed_responsable_aso_pre_siembra;
+    }
+
+    public String getStringed_revision_limpieza_pre_siembra() {
+        return stringed_revision_limpieza_pre_siembra;
+    }
+
+    public void setStringed_revision_limpieza_pre_siembra(String stringed_revision_limpieza_pre_siembra) {
+        this.stringed_revision_limpieza_pre_siembra = stringed_revision_limpieza_pre_siembra;
+    }
+
+    public String getStringed_responsable_aseo_post_siembra() {
+        return stringed_responsable_aseo_post_siembra;
+    }
+
+    public void setStringed_responsable_aseo_post_siembra(String stringed_responsable_aseo_post_siembra) {
+        this.stringed_responsable_aseo_post_siembra = stringed_responsable_aseo_post_siembra;
+    }
+
+    public String getStringed_revision_limpieza_post_siembra() {
+        return stringed_revision_limpieza_post_siembra;
+    }
+
+    public void setStringed_revision_limpieza_post_siembra(String stringed_revision_limpieza_post_siembra) {
+        this.stringed_revision_limpieza_post_siembra = stringed_revision_limpieza_post_siembra;
+    }
+
+    public String getStringed_responsable_campo() {
+        return stringed_responsable_campo;
+    }
+
+    public void setStringed_responsable_campo(String stringed_responsable_campo) {
+        this.stringed_responsable_campo = stringed_responsable_campo;
+    }
+
+    public String getStringed_operario_maquina() {
+        return stringed_operario_maquina;
+    }
+
+    public void setStringed_operario_maquina(String stringed_operario_maquina) {
+        this.stringed_operario_maquina = stringed_operario_maquina;
+    }
+
+    public String getStringed_responsable_campo_termino() {
+        return stringed_responsable_campo_termino;
+    }
+
+    public void setStringed_responsable_campo_termino(String stringed_responsable_campo_termino) {
+        this.stringed_responsable_campo_termino = stringed_responsable_campo_termino;
+    }
+
+    public String getStringed_operario_maquina_termino() {
+        return stringed_operario_maquina_termino;
+    }
+
+    public void setStringed_operario_maquina_termino(String stringed_operario_maquina_termino) {
+        this.stringed_operario_maquina_termino = stringed_operario_maquina_termino;
+    }
 
     public String getClave_unica() {
         return clave_unica;

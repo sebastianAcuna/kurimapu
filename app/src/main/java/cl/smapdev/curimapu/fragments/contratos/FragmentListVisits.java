@@ -191,13 +191,12 @@ public class FragmentListVisits extends Fragment {
 
 
         btn_carpeta_virtual.setOnClickListener(view1 -> {
+
             activity.cambiarFragment(
                     new FragmentCheckList(),
                     Utilidades.FRAGMENT_CHECKLIST,
                     R.anim.slide_in_left,R.anim.slide_out_left
             );
-//            DialogFirma df = new DialogFirma();
-//            df.show(getActivity().getSupportFragmentManager(), "TEST_FIRMA");
         });
 
         LinearLayoutManager lManagerVisitas = null;
@@ -376,6 +375,8 @@ public class FragmentListVisits extends Fragment {
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
+
+            executor.shutdown();
 
         }
 

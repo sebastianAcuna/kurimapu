@@ -40,7 +40,7 @@ public class NestedCheckListViewHolder extends RecyclerView.ViewHolder {
 
 
         if(nestedChecklist.isUploaded()){
-            btn_subir_check.setBackgroundColor(view.getContext().getColor(R.color.colorGreen));
+            btn_subir_check.setColorFilter(view.getContext().getColor(R.color.colorGreen));
         }else{
             btn_ver_pdf.setEnabled(false);
             btn_ver_pdf.setColorFilter(view.getContext().getColor(R.color.colorGrey));

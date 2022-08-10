@@ -1369,17 +1369,32 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintTop_toBottomOf="@id/et_distancia_hileras"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/sp_cheque_caidas"
+                app:layout_constraintEnd_toStartOf="@id/grupo_cheque_caidas"
                 />
 
-            <Spinner
-                android:id="@+id/sp_cheque_caidas"
+            <RadioGroup
+                android:id="@+id/grupo_cheque_caidas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_small"
+                android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/et_distancia_hileras"
                 app:layout_constraintStart_toEndOf="@id/lbl_cheque_caidas"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_cheque_caidas_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_cheque_caidas_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
 
             <TextView
                 android:id="@+id/lbl_numero_semillas_mt"
@@ -1388,7 +1403,7 @@
                 android:text="@string/n_semillas_mt"
                 android:layout_marginTop="@dimen/padding_small"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintTop_toBottomOf="@id/sp_cheque_caidas"
+                app:layout_constraintTop_toBottomOf="@id/grupo_cheque_caidas"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/et_numero_semillas_mt"
                 />
@@ -1399,7 +1414,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
-                app:layout_constraintTop_toBottomOf="@id/sp_cheque_caidas"
+                app:layout_constraintTop_toBottomOf="@id/grupo_cheque_caidas"
                 app:layout_constraintStart_toEndOf="@id/lbl_numero_semillas_mt"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:autofillHints="" />
@@ -1712,7 +1727,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_check_white_48dp"
                 app:tint="@color/colorGreen"
-                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_aseo_ingreso"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo"
                 app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_aseo_ingreso"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:visibility="gone"
@@ -2215,6 +2230,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:maxLines="1"
+                android:drawableEnd="@drawable/ic_date_range"
+                android:drawableTint="@color/colorSecondaryVariant"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/lbl_fecha_ingreso"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -2238,6 +2255,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="time"
                 android:maxLines="1"
+                android:drawableEnd="@drawable/ic_time"
+                android:drawableTint="@color/colorSecondaryVariant"
                 app:layout_constraintTop_toBottomOf="@id/et_fecha_ingreso"
                 app:layout_constraintStart_toEndOf="@id/lbl_hora_ingreso"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -2259,8 +2278,7 @@
                 android:id="@+id/et_nombre_supervisor_ingreso_siembra"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="time"
-                android:maxLines="1"
+                android:inputType="text"
                 app:layout_constraintTop_toBottomOf="@id/et_hora_ingreso"
                 app:layout_constraintStart_toEndOf="@id/lbl_nombre_supervisor_ingreso_siembra"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -2282,8 +2300,7 @@
                 android:id="@+id/et_nombre_responsable_campo_ingreso"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="time"
-                android:maxLines="1"
+                android:inputType="text"
                 app:layout_constraintTop_toBottomOf="@id/et_nombre_supervisor_ingreso_siembra"
                 app:layout_constraintStart_toEndOf="@id/lbl_nombre_responsable_campo_ingreso"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -2340,8 +2357,7 @@
                 android:id="@+id/et_operador_maquina_ingreso"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="time"
-                android:maxLines="1"
+                android:inputType="text"
                 app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_campo_ingreso"
                 app:layout_constraintStart_toEndOf="@id/lbl_nombre_operador_maquina_ingreso"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -2431,6 +2447,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:maxLines="1"
+                android:drawableEnd="@drawable/ic_date_range"
+                android:drawableTint="@color/colorSecondaryVariant"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/lbl_fecha_termino"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -2454,6 +2472,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="time"
                 android:maxLines="1"
+                android:drawableEnd="@drawable/ic_time"
+                android:drawableTint="@color/colorSecondaryVariant"
                 app:layout_constraintTop_toBottomOf="@id/et_fecha_termino"
                 app:layout_constraintStart_toEndOf="@id/lbl_hora_termino"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -2475,8 +2495,7 @@
                 android:id="@+id/et_nombre_supervisor_termino_siembra"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="time"
-                android:maxLines="1"
+                android:inputType="text"
                 app:layout_constraintTop_toBottomOf="@id/et_hora_termino"
                 app:layout_constraintStart_toEndOf="@id/lbl_nombre_supervisor_termino_siembra"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -2498,8 +2517,7 @@
                 android:id="@+id/et_nombre_responsable_campo_termino"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="time"
-                android:maxLines="1"
+                android:inputType="text"
                 app:layout_constraintTop_toBottomOf="@id/et_nombre_supervisor_termino_siembra"
                 app:layout_constraintStart_toEndOf="@id/lbl_nombre_responsable_campo_termino"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -2554,8 +2572,7 @@
                 android:id="@+id/et_operador_maquina_termino"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="time"
-                android:maxLines="1"
+                android:inputType="text"
                 app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_campo_termino"
                 app:layout_constraintStart_toEndOf="@id/lbl_nombre_operador_maquina_ingreso_termino"
                 app:layout_constraintEnd_toEndOf="parent"

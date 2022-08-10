@@ -73,6 +73,11 @@ public class Utilidades {
     public static final String affiliate_id = "vb7jbic553ts";
 
 
+    public static final int TIPO_DOCUMENTO_CAPACITACION_SIEMBRA = 1;
+    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 2;
+//    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
+//    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
+
     public static final String IP_PRODUCCION = "192.168.1.17";
 //    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
@@ -112,6 +117,17 @@ public class Utilidades {
     public static final String SHARED_VISIT_TEMPORADA = "shared_visit_temporada";
     public static final String SHARED_VISIT_ESPECIE_ID = "shared_visit_especie_id";
 
+
+    public static final String DIALOG_TAG_RESPONSABLE_ASEO_INGRESO="RESPONSABLE_ASEO_INGRESO";
+    public static final String DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO="REVISOR_LIMPIEZA_INGRESO";
+    public static final String DIALOG_TAG_RESPONSABLE_ASEO_SALIDA="RESPONSABLE_ASEO_SALIDA";
+    public static final String DIALOG_TAG_REVISOR_LIMPIEZA_SALIDA="REVISOR_LIMPIEZA_SALIDA";
+    public static final String DIALOG_TAG_RESPONSABLE_CAMPO_INGRESO="RESPONSABLE_CAMPO_INGRESO";
+    public static final String DIALOG_TAG_RESPONSABLE_OPERARIO_INGRESO="RESPONSABLE_OPERARIO_INGRESO";
+    public static final String DIALOG_TAG_RESPONSABLE_OPERARIO_TERMINO="RESPONSABLE_OPERARIO_TERMINO";
+    public static final String DIALOG_TAG_RESPONSABLE_CAMPO_TERMINO="RESPONSABLE_CAMPO_TERMINO";
+
+    public static final String DIALOG_TAG_WEBVIEW_PDF="DIALOG_TAG_WEBVIEW_PDF";
 
     public static final String VISTA_FOTOS = "vista";
 

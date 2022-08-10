@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 14,
-    "identityHash": "66fa8ddaf91bebbc8c11074de121a252",
+    "identityHash": "f8aadca5a64e7736075b78cf7b81ae66",
     "entities": [
       {
         "tableName": "fotos",
@@ -2916,7 +2916,7 @@
       },
       {
         "tableName": "anexo_checklist_siembra",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_cl_siembra` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ac_cl_siembra` INTEGER NOT NULL, `apellido_checklist` TEXT, `estado_sincronizacion` INTEGER NOT NULL, `estado_documento` INTEGER NOT NULL, `clave_unica` TEXT, `chequeo_aislacion` INTEGER NOT NULL, `cama_semilla` TEXT, `cultivo_anterior` TEXT, `estado_humedad` TEXT, `compactacion` TEXT, `protocolo_siembra` INTEGER NOT NULL, `fotografia_cartel_identificacion` INTEGER NOT NULL, `se_indica_fecha_siembra_lc` INTEGER NOT NULL, `relacion_m` REAL NOT NULL, `relacion_h` REAL NOT NULL, `foto_envase` INTEGER NOT NULL, `foto_semilla` INTEGER NOT NULL, `mezcla` TEXT, `cantidad_aplicada` REAL NOT NULL, `cantidad_envase_h` REAL NOT NULL, `lote_hembra` TEXT, `cantidad_envase_m` REAL NOT NULL, `lote_macho` TEXT, `especie` TEXT, `variedad` TEXT, `ogm` INTEGER NOT NULL, `anexo_curimapu` TEXT, `prestador_servicio` TEXT, `estado_discos` TEXT, `sembradora_marca` TEXT, `sembradora_modelo` TEXT, `trocha` REAL NOT NULL, `tipo_sembradora` TEXT, `chequeo_selector` TEXT, `estado_maquina` TEXT, `desterronadores` INTEGER NOT NULL, `presion_neumaticos` TEXT, `especie_lote_anterior` TEXT, `rueda_angosta` INTEGER NOT NULL, `largo_guia` REAL NOT NULL, `sistema_fertilizacion` TEXT, `distancia_hileras` REAL NOT NULL, `cheque_caidas` INTEGER NOT NULL, `numero_semillas` REAL NOT NULL, `profundidad_fertilizante` REAL NOT NULL, `profundidad_siembra` REAL NOT NULL, `distancia_fertilizante_semilla` REAL NOT NULL, `tarros_semilla_pre_siembra` INTEGER NOT NULL, `discos_sembradores_pre_siembra` INTEGER NOT NULL, `estructura_maquinaria_pre_siembra` INTEGER NOT NULL, `lugar_limpieza_pre_siembra` TEXT, `responsable_aseo_pre_siembra` TEXT, `rut_responsable_aseo_pre_siembra` TEXT, `firma_responsable_aso_pre_siembra` TEXT, `responsable_revision_limpieza_pre_siembra` TEXT, `firma_revision_limpieza_pre_siembra` TEXT, `tarros_semilla_post_siembra` INTEGER NOT NULL, `discos_sembradores_post_siembra` INTEGER NOT NULL, `estructura_maquinaria_post_cosecha` INTEGER NOT NULL, `lugar_limpieza_post_siembra` TEXT, `responsable_aseo_post_siembra` TEXT, `rut_responsable_aseo_post_siembra` TEXT, `firma_responsable_aseo_post_siembra` TEXT, `encargado_revision_limpieza_post_siembra` TEXT, `firma_revision_limpieza_post_siembra` TEXT, `desempeno_siembra` TEXT, `observacion_general` TEXT, `fecha_ingreso` TEXT, `hora_ingreso` TEXT, `nombre_supervisor_siembra` TEXT, `nombre_responsable_campo` TEXT, `firma_responsable_campo` TEXT, `nombre_operario_maquina` TEXT, `firma_operario_maquina` TEXT, `fecha_termino` TEXT, `hora_termino` TEXT, `nombre_supervisor_siembra_termino` TEXT, `nombre_responsable_campo_termino` TEXT, `firma_responsable_campo_termino` TEXT, `nombre_operario_maquina_termino` TEXT, `firma_operario_maquina_termino` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_cl_siembra` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ac_cl_siembra` INTEGER NOT NULL, `apellido_checklist` TEXT, `estado_sincronizacion` INTEGER NOT NULL, `estado_documento` INTEGER NOT NULL, `clave_unica` TEXT, `id_usuario` INTEGER NOT NULL, `chequeo_aislacion` INTEGER NOT NULL, `cama_semilla` TEXT, `cultivo_anterior` TEXT, `estado_humedad` TEXT, `compactacion` TEXT, `protocolo_siembra` INTEGER NOT NULL, `fotografia_cartel_identificacion` INTEGER NOT NULL, `se_indica_fecha_siembra_lc` INTEGER NOT NULL, `relacion_m` REAL NOT NULL, `relacion_h` REAL NOT NULL, `foto_envase` INTEGER NOT NULL, `foto_semilla` INTEGER NOT NULL, `mezcla` TEXT, `cantidad_aplicada` REAL NOT NULL, `cantidad_envase_h` REAL NOT NULL, `lote_hembra` TEXT, `cantidad_envase_m` REAL NOT NULL, `lote_macho` TEXT, `especie` TEXT, `variedad` TEXT, `ogm` INTEGER NOT NULL, `anexo_curimapu` TEXT, `prestador_servicio` TEXT, `estado_discos` TEXT, `sembradora_marca` TEXT, `sembradora_modelo` TEXT, `trocha` REAL NOT NULL, `tipo_sembradora` TEXT, `chequeo_selector` TEXT, `estado_maquina` TEXT, `desterronadores` INTEGER NOT NULL, `presion_neumaticos` TEXT, `especie_lote_anterior` TEXT, `rueda_angosta` INTEGER NOT NULL, `largo_guia` REAL NOT NULL, `sistema_fertilizacion` TEXT, `distancia_hileras` REAL NOT NULL, `cheque_caidas` INTEGER NOT NULL, `numero_semillas` REAL NOT NULL, `profundidad_fertilizante` REAL NOT NULL, `profundidad_siembra` REAL NOT NULL, `distancia_fertilizante_semilla` REAL NOT NULL, `tarros_semilla_pre_siembra` INTEGER NOT NULL, `discos_sembradores_pre_siembra` INTEGER NOT NULL, `estructura_maquinaria_pre_siembra` INTEGER NOT NULL, `lugar_limpieza_pre_siembra` TEXT, `responsable_aseo_pre_siembra` TEXT, `rut_responsable_aseo_pre_siembra` TEXT, `responsable_revision_limpieza_pre_siembra` TEXT, `tarros_semilla_post_siembra` INTEGER NOT NULL, `discos_sembradores_post_siembra` INTEGER NOT NULL, `estructura_maquinaria_post_cosecha` INTEGER NOT NULL, `lugar_limpieza_post_siembra` TEXT, `responsable_aseo_post_siembra` TEXT, `rut_responsable_aseo_post_siembra` TEXT, `encargado_revision_limpieza_post_siembra` TEXT, `desempeno_siembra` TEXT, `observacion_general` TEXT, `fecha_ingreso` TEXT, `hora_ingreso` TEXT, `nombre_supervisor_siembra` TEXT, `nombre_responsable_campo` TEXT, `nombre_operario_maquina` TEXT, `fecha_termino` TEXT, `hora_termino` TEXT, `nombre_supervisor_siembra_termino` TEXT, `nombre_responsable_campo_termino` TEXT, `nombre_operario_maquina_termino` TEXT, `firma_responsable_aso_pre_siembra` TEXT, `stringed_responsable_aso_pre_siembra` TEXT, `firma_revision_limpieza_pre_siembra` TEXT, `stringed_revision_limpieza_pre_siembra` TEXT, `firma_responsable_aseo_post_siembra` TEXT, `stringed_responsable_aseo_post_siembra` TEXT, `firma_revision_limpieza_post_siembra` TEXT, `stringed_revision_limpieza_post_siembra` TEXT, `firma_responsable_campo` TEXT, `stringed_responsable_campo` TEXT, `firma_operario_maquina` TEXT, `stringed_operario_maquina` TEXT, `firma_responsable_campo_termino` TEXT, `stringed_responsable_campo_termino` TEXT, `firma_operario_maquina_termino` TEXT, `stringed_operario_maquina_termino` TEXT)",
         "fields": [
           {
             "fieldPath": "id_cl_siembra",
@@ -2953,6 +2953,12 @@
             "columnName": "clave_unica",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "id_usuario",
+            "columnName": "id_usuario",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "chequeo_aislacion",
@@ -3243,20 +3249,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "firma_responsable_aso_pre_siembra",
-            "columnName": "firma_responsable_aso_pre_siembra",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "responsable_revision_limpieza_pre_siembra",
             "columnName": "responsable_revision_limpieza_pre_siembra",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "firma_revision_limpieza_pre_siembra",
-            "columnName": "firma_revision_limpieza_pre_siembra",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -3297,20 +3291,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "firma_responsable_aseo_post_siembra",
-            "columnName": "firma_responsable_aseo_post_siembra",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "encargado_revision_limpieza_post_siembra",
             "columnName": "encargado_revision_limpieza_post_siembra",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "firma_revision_limpieza_post_siembra",
-            "columnName": "firma_revision_limpieza_post_siembra",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -3351,20 +3333,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "firma_responsable_campo",
-            "columnName": "firma_responsable_campo",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "nombre_operario_maquina",
             "columnName": "nombre_operario_maquina",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "firma_operario_maquina",
-            "columnName": "firma_operario_maquina",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -3393,20 +3363,104 @@
             "notNull": false
           },
           {
-            "fieldPath": "firma_responsable_campo_termino",
-            "columnName": "firma_responsable_campo_termino",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "nombre_operario_maquina_termino",
             "columnName": "nombre_operario_maquina_termino",
             "affinity": "TEXT",
             "notNull": false
           },
           {
+            "fieldPath": "firma_responsable_aso_pre_siembra",
+            "columnName": "firma_responsable_aso_pre_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stringed_responsable_aso_pre_siembra",
+            "columnName": "stringed_responsable_aso_pre_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_revision_limpieza_pre_siembra",
+            "columnName": "firma_revision_limpieza_pre_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stringed_revision_limpieza_pre_siembra",
+            "columnName": "stringed_revision_limpieza_pre_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_responsable_aseo_post_siembra",
+            "columnName": "firma_responsable_aseo_post_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stringed_responsable_aseo_post_siembra",
+            "columnName": "stringed_responsable_aseo_post_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_revision_limpieza_post_siembra",
+            "columnName": "firma_revision_limpieza_post_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stringed_revision_limpieza_post_siembra",
+            "columnName": "stringed_revision_limpieza_post_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_responsable_campo",
+            "columnName": "firma_responsable_campo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stringed_responsable_campo",
+            "columnName": "stringed_responsable_campo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_operario_maquina",
+            "columnName": "firma_operario_maquina",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stringed_operario_maquina",
+            "columnName": "stringed_operario_maquina",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_responsable_campo_termino",
+            "columnName": "firma_responsable_campo_termino",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stringed_responsable_campo_termino",
+            "columnName": "stringed_responsable_campo_termino",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "firma_operario_maquina_termino",
             "columnName": "firma_operario_maquina_termino",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stringed_operario_maquina_termino",
+            "columnName": "stringed_operario_maquina_termino",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -3462,7 +3516,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '66fa8ddaf91bebbc8c11074de121a252')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f8aadca5a64e7736075b78cf7b81ae66')"
     ]
   }
 }

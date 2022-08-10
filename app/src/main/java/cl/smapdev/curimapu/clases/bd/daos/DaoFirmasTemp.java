@@ -4,6 +4,8 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import java.util.List;
+
 import cl.smapdev.curimapu.clases.temporales.TempFirmas;
 
 @Dao
@@ -14,6 +16,10 @@ public interface DaoFirmasTemp {
 
     @Insert
     long  insertFirma(TempFirmas tempFirmas);
+
+
+    @Query("SELECT * FROM temp_firmas WHERE tipo_documento = :tipo_documento")
+    List<TempFirmas> getFirmasByDocum(int tipo_documento);
 
 
 }

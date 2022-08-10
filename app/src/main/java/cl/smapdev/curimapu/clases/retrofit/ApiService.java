@@ -1,5 +1,6 @@
 package cl.smapdev.curimapu.clases.retrofit;
 
+import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
@@ -9,6 +10,7 @@ import cl.smapdev.curimapu.clases.tablas.WeatherApiStatus;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -22,6 +24,11 @@ public interface ApiService {
 
     @POST("subida_de_datos.php")
     Call<Respuesta> enviarDatos(@Body SubidaDatos subidaDatos);
+
+
+//    @Multipart
+    @POST("subir_checklists.php")
+    Call<Respuesta> subirCheckList(@Body CheckListRequest checkListRequest);
 
 
 
@@ -42,4 +49,6 @@ public interface ApiService {
             @Query("localidad") String localidad,
             @Query("affiliate_id") String userId,
             @Query("v") String version);
+
+
 }

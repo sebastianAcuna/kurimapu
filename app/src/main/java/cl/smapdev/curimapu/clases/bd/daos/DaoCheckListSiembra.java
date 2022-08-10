@@ -27,8 +27,18 @@ public interface DaoCheckListSiembra {
     @Query("SELECT * FROM anexo_checklist_siembra WHERE id_ac_cl_siembra = :id_ac;")
     List<CheckListSiembra> getAllClSiembraByAc(int id_ac);
 
+
     @Query("DELETE FROM anexo_checklist_siembra WHERE id_cl_siembra = :id_siembra; ")
     void deleteClSiembraById(int id_siembra);
 
+    @Query("SELECT * FROM anexo_checklist_siembra WHERE estado_sincronizacion = 0; ")
+    List<CheckListSiembra> getClSiembraToSync();
+
+
+    @Query("SELECT * FROM anexo_checklist_siembra WHERE id_cl_siembra = :id ;")
+    CheckListSiembra getClSiembraById( int id );
+
+    @Query("SELECT * FROM anexo_checklist_siembra WHERE id_cl_siembra = :id AND estado_sincronizacion = :estado_sinc ;")
+    CheckListSiembra getClSiembraById( int id , int estado_sinc);
 
 }

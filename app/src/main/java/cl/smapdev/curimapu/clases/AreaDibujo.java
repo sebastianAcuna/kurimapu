@@ -105,10 +105,10 @@ public class AreaDibujo  extends View {
     }
 
 
-    public boolean saveAsImage(String name){
+    public String saveAsImage(String name){
 
         if (paths.size() <= 0 || paints.size() <= 0){
-            return true;
+            return "";
         }
         String signPath = Environment.getExternalStoragePublicDirectory("DCIM")
                 + File.separator + Utilidades.DIRECTORIO_IMAGEN
@@ -117,10 +117,10 @@ public class AreaDibujo  extends View {
         try {
             fopt = new FileOutputStream(file);
             saveCanvas();
-            return true;
+            return signPath;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return false;
+            return "";
         }
     }
 }

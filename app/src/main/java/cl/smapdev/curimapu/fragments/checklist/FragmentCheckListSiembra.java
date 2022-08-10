@@ -23,7 +23,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -38,8 +42,11 @@ import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
+import cl.smapdev.curimapu.clases.temporales.TempFirmas;
+import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.dialogos.DialogFirma;
+import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
 import es.dmoral.toasty.Toasty;
 
 public class FragmentCheckListSiembra extends Fragment {
@@ -136,6 +143,9 @@ public class FragmentCheckListSiembra extends Fragment {
     private EditText et_sistema_fertilizacion;
     private EditText et_distancia_hileras;
     private Spinner  sp_cheque_caidas;
+    private RadioGroup grupo_cheque_caidas;
+    private RadioButton btn_cheque_caidas_si;
+    private RadioButton btn_cheque_caidas_no;
     private EditText et_numero_semillas_mt;
     private EditText et_profundidad_fertilizante;
     private EditText et_profundidad_siembra;
@@ -231,6 +241,26 @@ public class FragmentCheckListSiembra extends Fragment {
     private Usuario usuario;
     private Config config;
 
+    private CheckListSiembra checkListSiembra;
+
+    private final ArrayList<String> chk_1 = new ArrayList<>();
+    private final ArrayList<String> chk_2 = new ArrayList<>();
+    private final ArrayList<String> chk_3 = new ArrayList<>();
+
+
+
+    public void setCheckListSiembra(CheckListSiembra checkListSiembra) {
+        this.checkListSiembra = checkListSiembra;
+    }
+
+    public static FragmentCheckListSiembra newInstance( CheckListSiembra checkListSiembra ){
+
+        FragmentCheckListSiembra fs = new FragmentCheckListSiembra();
+
+        fs.setCheckListSiembra( checkListSiembra );
+
+        return fs;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -252,6 +282,10 @@ public class FragmentCheckListSiembra extends Fragment {
 
         bind(view);
 
+
+        chk_1.addAll(Arrays.asList(getResources().getStringArray(R.array.desplegable_checklist_1)));
+        chk_2.addAll(Arrays.asList(getResources().getStringArray(R.array.desplegable_checklist_2)));
+        chk_3.addAll(Arrays.asList(getResources().getStringArray(R.array.desplegable_checklist_3)));
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<AnexoCompleto> futureVisitas = executor.submit(() ->
@@ -280,6 +314,359 @@ public class FragmentCheckListSiembra extends Fragment {
             e.printStackTrace();
         }
         executor.shutdown();
+
+
+        if(checkListSiembra != null){
+
+            levantarDatos();
+
+        }
+    }
+
+    private void levantarDatos() {
+
+
+        if(checkListSiembra.getChequeo_aislacion() > 0){
+            btn_chequeo_si.setChecked((checkListSiembra.getChequeo_aislacion() == 1));
+            btn_chequeo_no.setChecked((checkListSiembra.getChequeo_aislacion() == 2));
+        }
+
+        if(checkListSiembra.getCama_semilla() != null && !checkListSiembra.getCama_semilla().isEmpty()){
+              int d = chk_1.indexOf(checkListSiembra.getCama_semilla());
+              sp_cama_semilla.setSelection(d);
+        }
+
+        if(checkListSiembra.getCultivo_anterior() != null && !checkListSiembra.getCultivo_anterior().isEmpty()){
+            et_cultivo_anterior.setText(checkListSiembra.getCultivo_anterior());
+        }
+
+        if(checkListSiembra.getEstado_humedad() != null && !checkListSiembra.getEstado_humedad().isEmpty()){
+            int d = chk_1.indexOf(checkListSiembra.getEstado_humedad());
+            sp_estado_humedad.setSelection(d);
+        }
+
+        if(checkListSiembra.getCompactacion() != null && !checkListSiembra.getCompactacion().isEmpty()){
+            int d = chk_2.indexOf(checkListSiembra.getCompactacion());
+            sp_compactacion.setSelection(d);
+        }
+
+        if(checkListSiembra.getProtocolo_siembra() > 0){
+            et_protocolo_siembra.setText(String.valueOf(checkListSiembra.getProtocolo_siembra()));
+        }
+
+        if(checkListSiembra.getFotografia_cartel_identificacion() > 0){
+            btn_fotografia_si.setChecked((checkListSiembra.getFotografia_cartel_identificacion() == 1));
+            btn_fotografia_no.setChecked((checkListSiembra.getFotografia_cartel_identificacion() == 2));
+        }
+
+        if(checkListSiembra.getSe_indica_fecha_siembra_lc() > 0){
+            btn_indica_fecha_siembra_si.setChecked((checkListSiembra.getSe_indica_fecha_siembra_lc() == 1));
+            btn_indica_fecha_siembra_no.setChecked((checkListSiembra.getSe_indica_fecha_siembra_lc() == 2));
+        }
+
+        if(checkListSiembra.getRelacion_m() > 0){
+            et_relacion_m.setText(String.valueOf(checkListSiembra.getRelacion_m()));
+        }
+
+        if(checkListSiembra.getRelacion_h() > 0){
+            et_relacion_h.setText(String.valueOf(checkListSiembra.getRelacion_h()));
+        }
+
+        if(checkListSiembra.getFoto_envase() > 0){
+            btn_foto_envase_si.setChecked((checkListSiembra.getFoto_envase() == 1));
+            btn_foto_envase_no.setChecked((checkListSiembra.getFoto_envase() == 2));
+        }
+
+        if(checkListSiembra.getFoto_semilla() > 0){
+            btn_foto_semilla_si.setChecked((checkListSiembra.getFoto_semilla() == 1));
+            btn_foto_semilla_no.setChecked((checkListSiembra.getFoto_semilla() == 2));
+        }
+
+        if(checkListSiembra.getMezcla() != null && !checkListSiembra.getMezcla().isEmpty()){
+            et_mezcla.setText(checkListSiembra.getMezcla());
+        }
+
+        if(checkListSiembra.getCantidad_aplicada() > 0){
+            et_cantidad_fertilizante.setText(String.valueOf(checkListSiembra.getCantidad_aplicada()));
+        }
+
+        if(checkListSiembra.getCantidad_envase_h() > 0){
+            et_cantidad_envases_h.setText(String.valueOf(checkListSiembra.getCantidad_envase_h()));
+        }
+
+        if(checkListSiembra.getLote_hembra() != null && !checkListSiembra.getLote_hembra().isEmpty()){
+            et_lote_hembra.setText(String.valueOf(checkListSiembra.getLote_hembra()));
+        }
+
+        if(checkListSiembra.getCantidad_envase_m() > 0){
+            et_cantidad_envases_m.setText(String.valueOf(checkListSiembra.getCantidad_envase_m()));
+        }
+
+        if(checkListSiembra.getLote_macho() != null && !checkListSiembra.getLote_macho().isEmpty()){
+            et_lote_macho.setText(checkListSiembra.getLote_macho());
+        }
+
+        if(checkListSiembra.getEspecie() != null && !checkListSiembra.getEspecie().isEmpty()){
+            et_especie.setText(checkListSiembra.getEspecie());
+        }
+
+        if(checkListSiembra.getVariedad() != null && !checkListSiembra.getVariedad().isEmpty()){
+            et_variedad.setText(checkListSiembra.getVariedad());
+        }
+
+        if(checkListSiembra.getOgm() > 0){
+            btn_ogm_si.setChecked((checkListSiembra.getOgm() == 1));
+            btn_ogm_no.setChecked((checkListSiembra.getOgm() == 2));
+        }
+
+        if(checkListSiembra.getAnexo_curimapu() != null && !checkListSiembra.getAnexo_curimapu().isEmpty()){
+            et_anexo_curimapu.setText(checkListSiembra.getAnexo_curimapu());
+        }
+
+        if(checkListSiembra.getPrestador_servicio() != null && !checkListSiembra.getPrestador_servicio().isEmpty()){
+            et_prestador_servicio.setText(checkListSiembra.getPrestador_servicio());
+        }
+
+        if(checkListSiembra.getEstado_discos() != null && !checkListSiembra.getEstado_discos().isEmpty()){
+            int d = chk_1.indexOf(checkListSiembra.getEstado_discos());
+            sp_estado_discos.setSelection(d);
+        }
+
+        if(checkListSiembra.getSembradora_marca() != null && !checkListSiembra.getSembradora_marca().isEmpty()){
+            et_sembradora_marca.setText(checkListSiembra.getSembradora_marca());
+        }
+
+        if(checkListSiembra.getSembradora_modelo() != null && !checkListSiembra.getSembradora_modelo().isEmpty()){
+            et_sembradora_modelo.setText(checkListSiembra.getSembradora_modelo());
+        }
+
+        if(checkListSiembra.getTrocha() > 0){
+            et_trocha.setText(String.valueOf(checkListSiembra.getTrocha()));
+        }
+
+
+        if(checkListSiembra.getTipo_sembradora() != null && !checkListSiembra.getTipo_sembradora().isEmpty()){
+            int d = chk_3.indexOf(checkListSiembra.getTipo_sembradora());
+            sp_tipo_sembradora.setSelection(d);
+        }
+
+        if(checkListSiembra.getChequeo_selector() != null && !checkListSiembra.getChequeo_selector().isEmpty()){
+            int d = chk_1.indexOf(checkListSiembra.getChequeo_selector());
+            sp_chequeo_selector.setSelection(d);
+        }
+
+        if(checkListSiembra.getEstado_maquina() != null && !checkListSiembra.getEstado_maquina().isEmpty()){
+            int d = chk_1.indexOf(checkListSiembra.getEstado_maquina());
+            sp_estado_maquina.setSelection(d);
+        }
+
+
+        if(checkListSiembra.getDesterronadores() > 0){
+            btn_desterronadores_si.setChecked((checkListSiembra.getDesterronadores() == 1));
+            btn_desterronadores_no.setChecked((checkListSiembra.getDesterronadores() == 2));
+        }
+
+        if(checkListSiembra.getPresion_neumaticos() != null && !checkListSiembra.getPresion_neumaticos().isEmpty()){
+            int d = chk_1.indexOf(checkListSiembra.getPresion_neumaticos());
+            sp_presion_neumaticos.setSelection(d);
+        }
+
+        if(checkListSiembra.getEspecie_lote_anterior() != null && !checkListSiembra.getEspecie_lote_anterior().isEmpty()){
+            et_especie_lote.setText(checkListSiembra.getEspecie_lote_anterior());
+        }
+
+        if(checkListSiembra.getRueda_angosta() > 0){
+            btn_rueda_angosta_si.setChecked((checkListSiembra.getRueda_angosta() == 1));
+            btn_rueda_angosta_no.setChecked((checkListSiembra.getRueda_angosta() == 2));
+        }
+
+        if(checkListSiembra.getLargo_guia() > 0){
+            et_largo_guia.setText(String.valueOf(checkListSiembra.getLargo_guia()));
+        }
+
+        if(checkListSiembra.getSistema_fertilizacion() != null && !checkListSiembra.getSistema_fertilizacion().isEmpty()){
+            et_sistema_fertilizacion.setText(checkListSiembra.getSistema_fertilizacion());
+        }
+
+        if(checkListSiembra.getDistancia_hileras() > 0){
+            et_distancia_hileras.setText(String.valueOf(checkListSiembra.getDistancia_hileras()));
+        }
+
+
+        if(checkListSiembra.getCheque_caidas() > 0){
+            btn_cheque_caidas_si.setChecked((checkListSiembra.getCheque_caidas() == 1));
+            btn_cheque_caidas_no.setChecked((checkListSiembra.getCheque_caidas() == 2));
+        }
+
+        if(checkListSiembra.getNumero_semillas() > 0){
+            et_numero_semillas_mt.setText(String.valueOf(checkListSiembra.getNumero_semillas()));
+        }
+
+        if(checkListSiembra.getProfundidad_fertilizante() > 0){
+            et_profundidad_fertilizante.setText(String.valueOf(checkListSiembra.getProfundidad_fertilizante()));
+        }
+
+        if(checkListSiembra.getProfundidad_siembra() > 0){
+            et_profundidad_siembra.setText(String.valueOf(checkListSiembra.getProfundidad_siembra()));
+        }
+
+        if(checkListSiembra.getDistancia_fertilizante_semilla() > 0){
+            et_dist_entre_fert_semilla.setText(String.valueOf(checkListSiembra.getDistancia_fertilizante_semilla()));
+        }
+
+        if(checkListSiembra.getTarros_semilla_pre_siembra() > 0){
+            btn_tarros_semilla_si.setChecked((checkListSiembra.getTarros_semilla_pre_siembra() == 1));
+            btn_tarros_semilla_no.setChecked((checkListSiembra.getTarros_semilla_pre_siembra() == 2));
+        }
+
+        if(checkListSiembra.getDiscos_sembradores_pre_siembra() > 0){
+            btn_discos_sembradores_si.setChecked((checkListSiembra.getDiscos_sembradores_pre_siembra() == 1));
+            btn_discos_sembradores_no.setChecked((checkListSiembra.getDiscos_sembradores_pre_siembra() == 2));
+        }
+
+        if(checkListSiembra.getEstructura_maquinaria_pre_siembra() > 0){
+            btn_estructura_maquinaria_si.setChecked((checkListSiembra.getEstructura_maquinaria_pre_siembra() == 1));
+            btn_estructura_maquinaria_no.setChecked((checkListSiembra.getEstructura_maquinaria_pre_siembra() == 2));
+        }
+
+        if(checkListSiembra.getLugar_limpieza_pre_siembra() != null && !checkListSiembra.getLugar_limpieza_pre_siembra().isEmpty()){
+            et_lugar_limpieza.setText(checkListSiembra.getLugar_limpieza_pre_siembra());
+        }
+
+        if(checkListSiembra.getResponsable_aseo_pre_siembra() != null && !checkListSiembra.getResponsable_aseo_pre_siembra().isEmpty()){
+            et_responsable_aseo.setText(checkListSiembra.getResponsable_aseo_pre_siembra());
+        }
+
+        if(checkListSiembra.getRut_responsable_aseo_pre_siembra() != null && !checkListSiembra.getRut_responsable_aseo_pre_siembra().isEmpty()){
+            et_rut_responsable_aseo.setText(checkListSiembra.getRut_responsable_aseo_pre_siembra());
+        }
+
+        if(checkListSiembra.getFirma_responsable_aso_pre_siembra() != null && !checkListSiembra.getFirma_responsable_aso_pre_siembra().isEmpty()){
+            btn_firma_responsable_aseo_ingreso.setEnabled(false);
+            check_firma_responsable_aseo_ingreso.setVisibility(View.VISIBLE);
+        }
+
+        if(checkListSiembra.getResponsable_revision_limpieza_pre_siembra() != null && !checkListSiembra.getResponsable_revision_limpieza_pre_siembra().isEmpty()){
+            et_responsable_revision_limpieza_ingreso.setText(checkListSiembra.getResponsable_revision_limpieza_pre_siembra());
+        }
+
+        if(checkListSiembra.getFirma_revision_limpieza_pre_siembra() != null && !checkListSiembra.getFirma_revision_limpieza_pre_siembra().isEmpty()){
+            btn_firma_responsable_revision_limpieza_ingreso.setEnabled(false);
+            check_firma_responsable_revision_limpieza_ingreso.setVisibility(View.VISIBLE);
+        }
+
+        if(checkListSiembra.getTarros_semilla_pre_siembra() > 0){
+            btn_tarros_semilla_post_siembra_si.setChecked((checkListSiembra.getTarros_semilla_pre_siembra() == 1));
+            btn_tarros_semilla_post_siembra_no.setChecked((checkListSiembra.getTarros_semilla_pre_siembra() == 2));
+        }
+
+        if(checkListSiembra.getDiscos_sembradores_pre_siembra() > 0){
+            btn_discos_sembradores_post_siembra_si.setChecked((checkListSiembra.getDiscos_sembradores_pre_siembra() == 1));
+            btn_discos_sembradores_post_siembra_no.setChecked((checkListSiembra.getDiscos_sembradores_pre_siembra() == 2));
+        }
+
+        if(checkListSiembra.getEstructura_maquinaria_pre_siembra() > 0){
+            btn_estructura_maquinaria_post_siembra_si.setChecked((checkListSiembra.getEstructura_maquinaria_pre_siembra() == 1));
+            btn_estructura_maquinaria_post_siembra_no.setChecked((checkListSiembra.getEstructura_maquinaria_pre_siembra() == 2));
+        }
+
+        if(checkListSiembra.getLugar_limpieza_post_siembra() != null && !checkListSiembra.getLugar_limpieza_post_siembra().isEmpty()){
+            et_lugar_limpieza_post_siembra.setText(checkListSiembra.getLugar_limpieza_post_siembra());
+        }
+
+        if(checkListSiembra.getResponsable_aseo_post_siembra() != null && !checkListSiembra.getResponsable_aseo_post_siembra().isEmpty()){
+            et_responsable_aseo_post_siembra.setText(checkListSiembra.getResponsable_aseo_post_siembra());
+        }
+
+        if(checkListSiembra.getRut_responsable_aseo_post_siembra() != null && !checkListSiembra.getRut_responsable_aseo_post_siembra().isEmpty()){
+            et_rut_responsable_aseo_post_siembra.setText(checkListSiembra.getRut_responsable_aseo_post_siembra());
+        }
+
+        if(checkListSiembra.getFirma_responsable_aseo_post_siembra() != null && !checkListSiembra.getFirma_responsable_aseo_post_siembra().isEmpty()){
+            btn_firma_responsable_aseo_ingreso_post_siembra.setEnabled(false);
+            check_firma_responsable_aseo_ingreso_post_siembra.setVisibility(View.VISIBLE);
+        }
+
+        if(checkListSiembra.getEncargado_revision_limpieza_post_siembra() != null && !checkListSiembra.getEncargado_revision_limpieza_post_siembra().isEmpty()){
+            et_responsable_revision_limpieza_ingreso_post_siembra.setText(checkListSiembra.getEncargado_revision_limpieza_post_siembra());
+        }
+
+        if(checkListSiembra.getFirma_revision_limpieza_post_siembra() != null && !checkListSiembra.getFirma_revision_limpieza_post_siembra().isEmpty()){
+            btn_firma_responsable_revision_limpieza_ingreso_post_siembra.setEnabled(false);
+            check_firma_responsable_revision_limpieza_ingreso_post_siembra.setVisibility(View.VISIBLE);
+        }
+
+
+        if(checkListSiembra.getDesempeno_siembra() != null && !checkListSiembra.getDesempeno_siembra().isEmpty()){
+            int d = chk_1.indexOf(checkListSiembra.getDesempeno_siembra());
+            sp_desempeno_siembra.setSelection(d);
+        }
+
+        if(checkListSiembra.getObservacion_general() != null && !checkListSiembra.getObservacion_general().isEmpty()){
+            et_observaciones_general.setText(checkListSiembra.getObservacion_general());
+        }
+
+        if(checkListSiembra.getFecha_ingreso() != null &&  !checkListSiembra.getFecha_ingreso().isEmpty()){
+            et_fecha_ingreso.setText(checkListSiembra.getFecha_ingreso());
+        }
+
+        if(checkListSiembra.getHora_ingreso() != null &&  !checkListSiembra.getHora_ingreso().isEmpty()){
+            et_hora_ingreso.setText(checkListSiembra.getHora_ingreso());
+        }
+
+        if(checkListSiembra.getNombre_supervisor_siembra() != null &&  !checkListSiembra.getNombre_supervisor_siembra().isEmpty()){
+            et_nombre_supervisor_ingreso_siembra.setText(checkListSiembra.getNombre_supervisor_siembra());
+        }
+
+        if(checkListSiembra.getNombre_responsable_campo() != null &&  !checkListSiembra.getNombre_responsable_campo().isEmpty()){
+            et_nombre_responsable_campo_ingreso.setText(checkListSiembra.getNombre_responsable_campo());
+        }
+
+        if(checkListSiembra.getFirma_responsable_campo_termino() != null &&  !checkListSiembra.getFirma_responsable_campo_termino().isEmpty()){
+            btn_firma_responsable_campo_ingreso.setEnabled(false);
+            check_firma_responsable_campo_ingreso.setVisibility(View.VISIBLE);
+        }
+
+        if(checkListSiembra.getNombre_operario_maquina() != null &&  !checkListSiembra.getNombre_operario_maquina().isEmpty()){
+            et_operador_maquina_ingreso.setText(checkListSiembra.getNombre_operario_maquina());
+        }
+
+        if(checkListSiembra.getFirma_operario_maquina() != null &&  !checkListSiembra.getFirma_operario_maquina().isEmpty()){
+            btn_firma_operario_maquina_ingreso.setEnabled(false);
+            check_firma_operario_maquina_ingreso.setVisibility(View.VISIBLE);
+        }
+
+        if(checkListSiembra.getFecha_termino() != null &&  !checkListSiembra.getFecha_termino().isEmpty()){
+            et_fecha_termino.setText(checkListSiembra.getFecha_termino());
+        }
+
+        if(checkListSiembra.getHora_termino() != null &&  !checkListSiembra.getHora_termino().isEmpty()){
+            et_hora_termino.setText(checkListSiembra.getHora_termino());
+        }
+
+        if(checkListSiembra.getNombre_supervisor_siembra_termino() != null &&  !checkListSiembra.getNombre_supervisor_siembra_termino().isEmpty()){
+            et_nombre_supervisor_termino_siembra.setText(checkListSiembra.getNombre_supervisor_siembra_termino());
+        }
+
+        if(checkListSiembra.getNombre_responsable_campo_termino() != null &&  !checkListSiembra.getNombre_responsable_campo_termino().isEmpty()){
+            et_nombre_responsable_campo_termino.setText(checkListSiembra.getNombre_responsable_campo_termino());
+        }
+
+        if(checkListSiembra.getFirma_responsable_campo_termino() != null &&  !checkListSiembra.getFirma_responsable_campo_termino().isEmpty()){
+            btn_firma_responsable_campo_termino.setEnabled(false);
+            check_firma_responsable_campo_termino.setVisibility(View.VISIBLE);
+        }
+
+        if(checkListSiembra.getNombre_operario_maquina_termino() != null &&  !checkListSiembra.getNombre_operario_maquina_termino().isEmpty()){
+            et_operador_maquina_termino.setText(checkListSiembra.getNombre_operario_maquina_termino());
+        }
+
+        if(checkListSiembra.getFirma_operario_maquina_termino() != null &&  !checkListSiembra.getFirma_operario_maquina_termino().isEmpty()){
+            btn_firma_operario_maquina_termino.setEnabled(false);
+            check_firma_operario_maquina_termino.setVisibility(View.VISIBLE);
+        }
+
+        btn_guardar_cl_siembra.setText("EDITAR");
     }
 
 
@@ -407,7 +794,9 @@ public class FragmentCheckListSiembra extends Fragment {
          et_largo_guia = view.findViewById(R.id.et_largo_guia);
          et_sistema_fertilizacion = view.findViewById(R.id.et_sistema_fertilizacion);
          et_distancia_hileras = view.findViewById(R.id.et_distancia_hileras);
-         sp_cheque_caidas = view.findViewById(R.id.sp_cheque_caidas);
+         grupo_cheque_caidas = view.findViewById(R.id.grupo_cheque_caidas);
+         btn_cheque_caidas_si = view.findViewById(R.id.btn_cheque_caidas_si);
+         btn_cheque_caidas_no = view.findViewById(R.id.btn_cheque_caidas_no);
          et_numero_semillas_mt = view.findViewById(R.id.et_numero_semillas_mt);
          et_profundidad_fertilizante = view.findViewById(R.id.et_profundidad_fertilizante);
          et_profundidad_siembra = view.findViewById(R.id.et_profundidad_siembra);
@@ -556,20 +945,407 @@ public class FragmentCheckListSiembra extends Fragment {
         et_fecha_termino.setOnFocusChangeListener((view1, b) -> {if(b) levantarFecha(et_fecha_termino);} );
         et_fecha_termino.setOnClickListener(view1 -> levantarFecha(et_fecha_ingreso));
 
-        et_hora_ingreso.setOnFocusChangeListener((view1, b) -> {if(b) levantarHora(et_hora_ingreso);} );
-        et_hora_termino.setOnFocusChangeListener((view1, b) -> {if(b) levantarHora(et_hora_termino);} );
-        et_hora_ingreso.setOnClickListener(view1 -> levantarHora(et_hora_ingreso));
-        et_hora_termino.setOnClickListener(view1 -> levantarHora(et_hora_termino));
+        et_hora_ingreso.setOnFocusChangeListener((view1, b) -> {if(b) Utilidades.levantarHora(et_hora_ingreso, requireActivity());} );
+        et_hora_termino.setOnFocusChangeListener((view1, b) -> {if(b) Utilidades.levantarHora(et_hora_termino, requireActivity());} );
+        et_hora_ingreso.setOnClickListener(view1 -> Utilidades.levantarHora(et_hora_ingreso, requireActivity()));
+        et_hora_termino.setOnClickListener(view1 -> Utilidades.levantarHora(et_hora_termino, requireActivity()));
 
 
+//        check_firma_responsable_aseo_ingreso
+//                check_firma_responsable_revision_limpieza_ingreso
 
 
-        btn_firma_responsable_aseo_ingreso.setOnClickListener(view1 -> levantarDialogo("RESPONSABLE_ASEO_INGRESO"));
-        btn_firma_responsable_revision_limpieza_ingreso.setOnClickListener(view1 -> levantarDialogo("REVISOR_LIMPIEZA_INGRESO"));
-        btn_firma_responsable_aseo_ingreso_post_siembra.setOnClickListener(view1 -> levantarDialogo("RESPONSABLE_ASEO_SALIDA"));
-        btn_firma_responsable_revision_limpieza_ingreso_post_siembra.setOnClickListener(view1 -> levantarDialogo("REVISOR_LIMPIEZA_SALIDA"));
-        btn_firma_responsable_campo_ingreso.setOnClickListener(view1 -> levantarDialogo("RESPONSABLE_CAMPO_INGRESO"));
-        btn_firma_responsable_campo_termino.setOnClickListener(view1 -> levantarDialogo("RESPONSABLE_CAMPO_TERMINO"));
+        btn_firma_responsable_aseo_ingreso.setOnClickListener(view1 -> {
+            if(et_responsable_aseo.getText().toString().isEmpty() ||
+                    et_rut_responsable_aseo.getText().toString().isEmpty()){
+                Toasty.warning(
+                        requireActivity(),
+                        "Debe ingresar nombre y rut de responsable",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            Fragment prev = requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_RESPONSABLE_ASEO_INGRESO);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+
+            String etRA = et_responsable_aseo.getText().toString()
+                    .trim()
+                    .toLowerCase(Locale.ROOT)
+                    .replaceAll(" ", "_")
+                    .replaceAll("ñ", "n")
+                    .replaceAll("á", "a")
+                    .replaceAll("é", "e")
+                    .replaceAll("í", "i")
+                    .replaceAll("ó", "o")
+                    .replaceAll("ú", "u")
+                    +"_"+
+                    Utilidades.fechaActualConHora()
+                        .replaceAll(" " ,"")
+                        .replaceAll("-" ,"")
+                        .replaceAll(":", "_")+".png";
+
+            DialogFirma dialogo = DialogFirma.newInstance(
+                    Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
+                    etRA,
+                    Utilidades.DIALOG_TAG_RESPONSABLE_ASEO_INGRESO,
+                    isSaved -> {
+                        if(isSaved){
+                            check_firma_responsable_aseo_ingreso.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    );
+
+            dialogo.show(ft, Utilidades.DIALOG_TAG_RESPONSABLE_ASEO_INGRESO);
+        });
+
+        btn_firma_responsable_revision_limpieza_ingreso.setOnClickListener(view1 -> {
+
+            if(et_responsable_revision_limpieza_ingreso.getText().toString().isEmpty()){
+                Toasty.warning(
+                        requireActivity(),
+                        "Debe ingresar nombre de responsable",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            Fragment prev = requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+
+            String etRA = et_responsable_revision_limpieza_ingreso.getText().toString()
+                    .trim()
+                    .toLowerCase(Locale.ROOT)
+                    .replaceAll(" ", "_")
+                    .replaceAll("ñ", "n")
+                    .replaceAll("á", "a")
+                    .replaceAll("é", "e")
+                    .replaceAll("í", "i")
+                    .replaceAll("ó", "o")
+                    .replaceAll("ú", "u")
+                    +"_"+
+                    Utilidades.fechaActualConHora()
+                            .replaceAll(" " ,"")
+                            .replaceAll("-" ,"")
+                            .replaceAll(":", "_")+".png";
+
+            DialogFirma dialogo = DialogFirma.newInstance(
+                    Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
+                    etRA,
+                    Utilidades.DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO,
+                    isSaved -> {
+                        if(isSaved){
+                            check_firma_responsable_revision_limpieza_ingreso
+                                    .setVisibility(View.VISIBLE);
+                        }
+                    }
+            );
+
+            dialogo.show(ft, Utilidades.DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO);
+
+        });
+
+
+        btn_firma_responsable_aseo_ingreso_post_siembra.setOnClickListener(view1 -> {
+
+            if(et_responsable_aseo_post_siembra.getText().toString().isEmpty() ||
+                    et_rut_responsable_aseo_post_siembra.getText().toString().isEmpty() ){
+                Toasty.warning(
+                        requireActivity(),
+                        "Debe ingresar nombre y rut de responsable",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            Fragment prev = requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_RESPONSABLE_ASEO_SALIDA);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+
+            String etRA = et_responsable_aseo_post_siembra.getText().toString()
+                    .trim()
+                    .toLowerCase(Locale.ROOT)
+                    .replaceAll(" ", "_")
+                    .replaceAll("ñ", "n")
+                    .replaceAll("á", "a")
+                    .replaceAll("é", "e")
+                    .replaceAll("í", "i")
+                    .replaceAll("ó", "o")
+                    .replaceAll("ú", "u")
+                    +"_"+
+                    Utilidades.fechaActualConHora()
+                            .replaceAll(" " ,"")
+                            .replaceAll("-" ,"")
+                            .replaceAll(":", "_")+".png";
+
+            DialogFirma dialogo = DialogFirma.newInstance(
+                    Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
+                    etRA,
+                    Utilidades.DIALOG_TAG_RESPONSABLE_ASEO_SALIDA,
+                    isSaved -> {
+                        if(isSaved){
+                            check_firma_responsable_aseo_ingreso_post_siembra
+                                    .setVisibility(View.VISIBLE);
+                        }
+                    }
+            );
+
+            dialogo.show(ft, Utilidades.DIALOG_TAG_RESPONSABLE_ASEO_SALIDA);
+        });
+
+        btn_firma_responsable_revision_limpieza_ingreso_post_siembra.setOnClickListener(view1 -> {
+
+            if(et_responsable_revision_limpieza_ingreso_post_siembra.getText().toString().isEmpty()  ){
+                Toasty.warning(
+                        requireActivity(),
+                        "Debe ingresar nombre de responsable",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            Fragment prev = requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_REVISOR_LIMPIEZA_SALIDA);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+
+            String etRA = et_responsable_revision_limpieza_ingreso_post_siembra.getText().toString()
+                    .trim()
+                    .toLowerCase(Locale.ROOT)
+                    .replaceAll(" ", "_")
+                    .replaceAll("ñ", "n")
+                    .replaceAll("á", "a")
+                    .replaceAll("é", "e")
+                    .replaceAll("í", "i")
+                    .replaceAll("ó", "o")
+                    .replaceAll("ú", "u")
+                    +"_"+
+                    Utilidades.fechaActualConHora()
+                            .replaceAll(" " ,"")
+                            .replaceAll("-" ,"")
+                            .replaceAll(":", "_")+".png";
+
+            DialogFirma dialogo = DialogFirma.newInstance(
+                    Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
+                    etRA,
+                    Utilidades.DIALOG_TAG_REVISOR_LIMPIEZA_SALIDA,
+                    isSaved -> {
+                        if(isSaved){
+                            check_firma_responsable_revision_limpieza_ingreso_post_siembra
+                                    .setVisibility(View.VISIBLE);
+                        }
+                    }
+            );
+
+            dialogo.show(ft, Utilidades.DIALOG_TAG_REVISOR_LIMPIEZA_SALIDA);
+        });
+
+
+        btn_firma_responsable_campo_ingreso.setOnClickListener(view1 -> {
+            if(et_nombre_responsable_campo_ingreso.getText().toString().isEmpty()  ){
+                Toasty.warning(
+                        requireActivity(),
+                        "Debe ingresar nombre de responsable",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            Fragment prev = requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_RESPONSABLE_CAMPO_INGRESO);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+
+            String etRA = et_nombre_responsable_campo_ingreso.getText().toString()
+                    .trim()
+                    .toLowerCase(Locale.ROOT)
+                    .replaceAll(" ", "_")
+                    .replaceAll("ñ", "n")
+                    .replaceAll("á", "a")
+                    .replaceAll("é", "e")
+                    .replaceAll("í", "i")
+                    .replaceAll("ó", "o")
+                    .replaceAll("ú", "u")
+                    +"_"+
+                    Utilidades.fechaActualConHora()
+                            .replaceAll(" " ,"")
+                            .replaceAll("-" ,"")
+                            .replaceAll(":", "_")+".png";
+
+            DialogFirma dialogo = DialogFirma.newInstance(
+                    Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
+                    etRA,
+                    Utilidades.DIALOG_TAG_RESPONSABLE_CAMPO_INGRESO,
+                    isSaved -> {
+                        if(isSaved){
+                            check_firma_responsable_campo_ingreso
+                                    .setVisibility(View.VISIBLE);
+                        }
+                    }
+            );
+
+            dialogo.show(ft, Utilidades.DIALOG_TAG_RESPONSABLE_CAMPO_INGRESO);
+        });
+
+        btn_firma_operario_maquina_ingreso.setOnClickListener(view1 -> {
+            if(et_operador_maquina_ingreso.getText().toString().isEmpty()  ){
+                Toasty.warning(
+                        requireActivity(),
+                        "Debe ingresar nombre de responsable",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            Fragment prev = requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_RESPONSABLE_OPERARIO_INGRESO);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+
+            String etRA = et_operador_maquina_ingreso.getText().toString()
+                    .trim()
+                    .toLowerCase(Locale.ROOT)
+                    .replaceAll(" ", "_")
+                    .replaceAll("ñ", "n")
+                    .replaceAll("á", "a")
+                    .replaceAll("é", "e")
+                    .replaceAll("í", "i")
+                    .replaceAll("ó", "o")
+                    .replaceAll("ú", "u")
+                    +"_"+
+                    Utilidades.fechaActualConHora()
+                            .replaceAll(" " ,"")
+                            .replaceAll("-" ,"")
+                            .replaceAll(":", "_")+".png";
+
+            DialogFirma dialogo = DialogFirma.newInstance(
+                    Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
+                    etRA,
+                    Utilidades.DIALOG_TAG_RESPONSABLE_OPERARIO_INGRESO,
+                    isSaved -> {
+                        if(isSaved){
+                            check_firma_operario_maquina_ingreso
+                                    .setVisibility(View.VISIBLE);
+                        }
+                    }
+            );
+
+            dialogo.show(ft, Utilidades.DIALOG_TAG_RESPONSABLE_OPERARIO_INGRESO);
+        });
+
+        btn_firma_operario_maquina_termino.setOnClickListener(view1 -> {
+            if(et_operador_maquina_termino.getText().toString().isEmpty()  ){
+                Toasty.warning(
+                        requireActivity(),
+                        "Debe ingresar nombre de responsable",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            Fragment prev = requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_RESPONSABLE_OPERARIO_TERMINO);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+
+            String etRA = et_operador_maquina_termino.getText().toString()
+                    .trim()
+                    .toLowerCase(Locale.ROOT)
+                    .replaceAll(" ", "_")
+                    .replaceAll("ñ", "n")
+                    .replaceAll("á", "a")
+                    .replaceAll("é", "e")
+                    .replaceAll("í", "i")
+                    .replaceAll("ó", "o")
+                    .replaceAll("ú", "u")
+                    +"_"+
+                    Utilidades.fechaActualConHora()
+                            .replaceAll(" " ,"")
+                            .replaceAll("-" ,"")
+                            .replaceAll(":", "_")+".png";
+
+            DialogFirma dialogo = DialogFirma.newInstance(
+                    Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
+                    etRA,
+                    Utilidades.DIALOG_TAG_RESPONSABLE_OPERARIO_TERMINO,
+                    isSaved -> {
+                        if(isSaved){
+                            check_firma_operario_maquina_termino
+                                    .setVisibility(View.VISIBLE);
+                        }
+                    }
+            );
+
+            dialogo.show(ft, Utilidades.DIALOG_TAG_RESPONSABLE_OPERARIO_TERMINO);
+        });
+
+        btn_firma_responsable_campo_termino.setOnClickListener(view1 -> {
+
+            if(et_nombre_responsable_campo_termino.getText().toString().isEmpty()  ){
+                Toasty.warning(
+                        requireActivity(),
+                        "Debe ingresar nombre de responsable",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            Fragment prev = requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_RESPONSABLE_CAMPO_TERMINO);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+
+            String etRA = et_nombre_responsable_campo_termino.getText().toString()
+                    .trim()
+                    .toLowerCase(Locale.ROOT)
+                    .replaceAll(" ", "_")
+                    .replaceAll("ñ", "n")
+                    .replaceAll("á", "a")
+                    .replaceAll("é", "e")
+                    .replaceAll("í", "i")
+                    .replaceAll("ó", "o")
+                    .replaceAll("ú", "u")
+                    +"_"+
+                    Utilidades.fechaActualConHora()
+                            .replaceAll(" " ,"")
+                            .replaceAll("-" ,"")
+                            .replaceAll(":", "_")+".png";
+
+            DialogFirma dialogo = DialogFirma.newInstance(
+                    Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
+                    etRA,
+                    Utilidades.DIALOG_TAG_RESPONSABLE_CAMPO_TERMINO,
+                    isSaved -> {
+                        if(isSaved){
+                            check_firma_responsable_campo_termino
+                                    .setVisibility(View.VISIBLE);
+                        }
+                    }
+            );
+
+            dialogo.show(ft, Utilidades.DIALOG_TAG_RESPONSABLE_CAMPO_TERMINO);
+
+        });
 
     }
 
@@ -586,11 +1362,22 @@ public class FragmentCheckListSiembra extends Fragment {
         siembra.setId_ac_cl_siembra(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
 
 
-        String claveUnica = config.getId()+""+config.getId_usuario()+""+Utilidades.fechaActualConHora();
+        if(checkListSiembra == null){
+            String claveUnica = config.getId()
+                    +""+config.getId_usuario()
+                    +""+Utilidades.fechaActualConHora()
+                    .replaceAll(" ", "")
+                    .replaceAll("-", "")
+                    .replaceAll(":", "");
+
+            siembra.setClave_unica( claveUnica );
+        }else{
+            siembra.setClave_unica( checkListSiembra.getClave_unica() );
+        }
 
         //suelo
         if(btn_chequeo_si.isChecked() || btn_chequeo_no.isChecked()){
-            int chequeoAislacion = (btn_chequeo_si.isSelected()) ? 1 : 0;
+            int chequeoAislacion = (btn_chequeo_si.isSelected()) ? 1 : 2;
             siembra.setChequeo_aislacion(chequeoAislacion);
         }
 
@@ -621,12 +1408,12 @@ public class FragmentCheckListSiembra extends Fragment {
         }
 
         if(btn_fotografia_si.isChecked() || btn_fotografia_no.isChecked()){
-            int fotografiaCartel = (btn_fotografia_si.isChecked()) ? 1 : 0;
+            int fotografiaCartel = (btn_fotografia_si.isChecked()) ? 1 : 2;
             siembra.setFotografia_cartel_identificacion(fotografiaCartel);
         }
 
         if(btn_indica_fecha_siembra_si.isChecked() || btn_indica_fecha_siembra_no.isChecked()){
-            int indicaFechaSiembra = (btn_indica_fecha_siembra_si.isChecked()) ? 1 : 0;
+            int indicaFechaSiembra = (btn_indica_fecha_siembra_si.isChecked()) ? 1 : 2;
             siembra.setSe_indica_fecha_siembra_lc(indicaFechaSiembra);
         }
 
@@ -643,12 +1430,12 @@ public class FragmentCheckListSiembra extends Fragment {
         //chequeo envases
 
         if(btn_foto_envase_si.isChecked() || btn_foto_envase_no.isChecked()){
-            int fotoEnvase = (btn_foto_envase_si.isChecked()) ? 1 : 0;
+            int fotoEnvase = (btn_foto_envase_si.isChecked()) ? 1 : 2;
             siembra.setFoto_envase(fotoEnvase);
         }
 
         if(btn_foto_semilla_si.isChecked() || btn_foto_semilla_no.isChecked()){
-            int fotoSemilla = (btn_foto_semilla_si.isChecked()) ? 1 : 0;
+            int fotoSemilla = (btn_foto_semilla_si.isChecked()) ? 1 : 2;
             siembra.setFoto_semilla(fotoSemilla);
         }
 
@@ -697,7 +1484,7 @@ public class FragmentCheckListSiembra extends Fragment {
         }
 
         if(btn_ogm_si.isChecked() || btn_ogm_no.isChecked()){
-            int ogm = (btn_ogm_si.isChecked()) ? 1 : 0;
+            int ogm = (btn_ogm_si.isChecked()) ? 1 : 2;
             siembra.setOgm(ogm);
         }
 
@@ -743,7 +1530,7 @@ public class FragmentCheckListSiembra extends Fragment {
         }
 
         if(btn_desterronadores_si.isChecked() || btn_desterronadores_no.isChecked()){
-            int desterronadores = (btn_desterronadores_si.isChecked()) ? 1 : 0;
+            int desterronadores = (btn_desterronadores_si.isChecked()) ? 1 : 2;
             siembra.setDesterronadores(desterronadores);
         }
 
@@ -757,7 +1544,7 @@ public class FragmentCheckListSiembra extends Fragment {
             siembra.setEspecie_lote_anterior(especieLote);
         }
         if(btn_rueda_angosta_si.isChecked() || btn_rueda_angosta_no.isChecked()){
-            int ruedaAngosta = (btn_rueda_angosta_si.isChecked()) ? 1 : 0;
+            int ruedaAngosta = (btn_rueda_angosta_si.isChecked()) ? 1 : 2;
             siembra.setRueda_angosta(ruedaAngosta);
         }
         if(!et_largo_guia.getText().toString().isEmpty()){
@@ -774,7 +1561,7 @@ public class FragmentCheckListSiembra extends Fragment {
         }
 
         if(btn_chequeo_si.isChecked() || btn_chequeo_no.isChecked()){
-            int chequeo = (btn_chequeo_si.isChecked()) ? 1 : 0;
+            int chequeo = (btn_chequeo_si.isChecked()) ? 1 : 2;
             siembra.setRueda_angosta(chequeo);
         }
         if(!et_numero_semillas_mt.getText().toString().isEmpty()){
@@ -798,15 +1585,15 @@ public class FragmentCheckListSiembra extends Fragment {
 
         //aseo maquinaria pre siembra
         if(btn_tarros_semilla_si.isChecked() || btn_tarros_semilla_no.isChecked()){
-            int tarrosSemillas = (btn_tarros_semilla_si.isChecked()) ? 1 : 0;
+            int tarrosSemillas = (btn_tarros_semilla_si.isChecked()) ? 1 : 2;
             siembra.setTarros_semilla_pre_siembra(tarrosSemillas);
         }
         if(btn_discos_sembradores_si.isChecked() || btn_discos_sembradores_no.isChecked()){
-            int discosSembradores = (btn_discos_sembradores_si.isChecked()) ? 1 : 0;
+            int discosSembradores = (btn_discos_sembradores_si.isChecked()) ? 1 : 2;
             siembra.setDiscos_sembradores_pre_siembra(discosSembradores);
         }
         if(btn_estructura_maquinaria_si.isChecked() || btn_estructura_maquinaria_no.isChecked()){
-            int estructuraMaquinaria = (btn_estructura_maquinaria_si.isChecked()) ? 1 : 0;
+            int estructuraMaquinaria = (btn_estructura_maquinaria_si.isChecked()) ? 1 : 2;
             siembra.setEstructura_maquinaria_pre_siembra(estructuraMaquinaria);
         }
 
@@ -834,16 +1621,16 @@ public class FragmentCheckListSiembra extends Fragment {
 
         //aseo maquinaria post siembra
         if(btn_tarros_semilla_post_siembra_si.isChecked() || btn_tarros_semilla_post_siembra_no.isChecked()){
-            int tarroSemillaPostSiembra = (btn_tarros_semilla_post_siembra_si.isChecked()) ? 1 : 0;
+            int tarroSemillaPostSiembra = (btn_tarros_semilla_post_siembra_si.isChecked()) ? 1 : 2;
             siembra.setTarros_semilla_post_siembra(tarroSemillaPostSiembra);
         }
         if(btn_discos_sembradores_post_siembra_si.isChecked() || btn_discos_sembradores_post_siembra_no.isChecked()){
-            int discosSembradoresPostSiembra = (btn_discos_sembradores_post_siembra_si.isChecked()) ? 1 : 0;
+            int discosSembradoresPostSiembra = (btn_discos_sembradores_post_siembra_si.isChecked()) ? 1 : 2;
             siembra.setDiscos_sembradores_post_siembra(discosSembradoresPostSiembra);
         }
 
         if(btn_estructura_maquinaria_post_siembra_si.isChecked() || btn_estructura_maquinaria_post_siembra_no.isChecked()){
-            int estrucutraMaquinariaPostSiembra = (btn_estructura_maquinaria_post_siembra_si.isChecked()) ? 1 : 0;
+            int estrucutraMaquinariaPostSiembra = (btn_estructura_maquinaria_post_siembra_si.isChecked()) ? 1 : 2;
             siembra.setEstructura_maquinaria_post_cosecha(estrucutraMaquinariaPostSiembra);
         }
 
@@ -943,19 +1730,102 @@ public class FragmentCheckListSiembra extends Fragment {
         //firma
 
 
+
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
-        Future<Long> newIdFuture =  executor.submit(() ->
-            MainActivity.myAppDB.DaoClSiembra().insertClSiembra(siembra));
+        Future<List<TempFirmas>> firmasF = executor.submit(()
+                -> MainActivity.myAppDB.DaoFirmas()
+                .getFirmasByDocum(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA));
+
+        Future<Config> configFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getConfig());
+
+
+        if(checkListSiembra != null){
+            siembra.setFirma_responsable_aso_pre_siembra(checkListSiembra.getFirma_responsable_aso_pre_siembra());
+            siembra.setFirma_revision_limpieza_pre_siembra(checkListSiembra.getFirma_revision_limpieza_pre_siembra());
+            siembra.setFirma_responsable_aseo_post_siembra(checkListSiembra.getFirma_responsable_aseo_post_siembra());
+            siembra.setFirma_revision_limpieza_post_siembra(checkListSiembra.getFirma_revision_limpieza_post_siembra());
+            siembra.setFirma_responsable_campo(checkListSiembra.getFirma_responsable_campo());
+            siembra.setFirma_operario_maquina(checkListSiembra.getFirma_operario_maquina());
+            siembra.setFirma_operario_maquina_termino(checkListSiembra.getFirma_operario_maquina_termino());
+            siembra.setFirma_responsable_campo_termino(checkListSiembra.getFirma_responsable_campo_termino());
+        }
+
+
 
         try {
-            long newId = newIdFuture.get();
+            List<TempFirmas> firmas = firmasF.get();
+            Config config = configFuture.get();
+            siembra.setId_usuario(config.getId_usuario());
 
-            if(newId > 0) {
-                Toasty.success(requireActivity(), "Guardado con exito", Toast.LENGTH_LONG, true).show();
-            }else{
-                Toasty.error(requireActivity(), "No se pudo guardar con exito", Toast.LENGTH_LONG, true).show();
+            for (TempFirmas ff : firmas ){
+
+                switch (ff.getLugar_firma()){
+                    case Utilidades.DIALOG_TAG_RESPONSABLE_ASEO_INGRESO:
+                        siembra.setFirma_responsable_aso_pre_siembra(ff.getPath());
+                        break;
+                    case Utilidades.DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO:
+                        siembra.setFirma_revision_limpieza_pre_siembra(ff.getPath());
+                        break;
+                    case Utilidades.DIALOG_TAG_RESPONSABLE_ASEO_SALIDA:
+                        siembra.setFirma_responsable_aseo_post_siembra(ff.getPath());
+                        break;
+                    case Utilidades.DIALOG_TAG_REVISOR_LIMPIEZA_SALIDA:
+                        siembra.setFirma_revision_limpieza_post_siembra(ff.getPath());
+                        break;
+                    case Utilidades.DIALOG_TAG_RESPONSABLE_CAMPO_INGRESO:
+                        siembra.setFirma_responsable_campo(ff.getPath());
+                        break;
+                    case Utilidades.DIALOG_TAG_RESPONSABLE_OPERARIO_INGRESO:
+                        siembra.setFirma_operario_maquina(ff.getPath());
+                        break;
+                    case Utilidades.DIALOG_TAG_RESPONSABLE_OPERARIO_TERMINO:
+                        siembra.setFirma_operario_maquina_termino(ff.getPath());
+                        break;
+                    case Utilidades.DIALOG_TAG_RESPONSABLE_CAMPO_TERMINO:
+                        siembra.setFirma_responsable_campo_termino(ff.getPath());
+                        break;
+                }
             }
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Future<Long> newIdFuture = null;
+        Future<Integer> UpdIdFuture = null;
+
+        if(checkListSiembra == null){
+             newIdFuture =  executor.submit(() ->
+                    MainActivity.myAppDB.DaoClSiembra().insertClSiembra(siembra));
+        }else{
+
+            siembra.setId_cl_siembra(checkListSiembra.getId_cl_siembra());
+            UpdIdFuture =  executor.submit(() ->
+                    MainActivity.myAppDB.DaoClSiembra().updateClSiembra(siembra));
+        }
+
+
+
+        try {
+
+            if(checkListSiembra == null && newIdFuture != null){
+                long newId = newIdFuture.get();
+                if(newId > 0) {
+                    Toasty.success(requireActivity(), "Guardado con exito", Toast.LENGTH_LONG, true).show();
+                    cancelar();
+                }else{
+                    Toasty.error(requireActivity(), "No se pudo guardar con exito", Toast.LENGTH_LONG, true).show();
+                }
+            }else if(checkListSiembra != null && UpdIdFuture != null){
+                long newId = UpdIdFuture.get();
+                if(newId > 0) {
+                    Toasty.success(requireActivity(), "Editado con exito", Toast.LENGTH_LONG, true).show();
+                }else{
+                    Toasty.error(requireActivity(), "No se pudo editar con exito", Toast.LENGTH_LONG, true).show();
+                }
+            }
+
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             Toasty.warning(requireActivity(), "Error al guardar ->"+ e.getMessage(), Toast.LENGTH_LONG, true).show();
@@ -966,27 +1836,12 @@ public class FragmentCheckListSiembra extends Fragment {
 
 
     private void cancelar() {
-        //eliminar firmas si es que las hay
-
-        //devolver a checklists
-    }
-
-
-    private void levantarDialogo(String tipoFirma){
-
-
-
-        switch (tipoFirma){
-            case "RESPONSABLE_ASEO_INGRESO":break;
-            case "REVISOR_LIMPIEZA_INGRESO":break;
-            case "RESPONSABLE_ASEO_SALIDA":break;
-            case "REVISOR_LIMPIEZA_SALIDA":break;
-            case "RESPONSABLE_CAMPO_INGRESO":break;
-            case "RESPONSABLE_CAMPO_TERMINO":break;
-        }
-
-            DialogFirma df = new DialogFirma();
-            df.show(requireActivity().getSupportFragmentManager(), "FIRMA_USUARIOSDIALOG");
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(()
+                -> MainActivity.myAppDB.DaoFirmas()
+                .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA));
+        executorService.shutdown();
+        activity.onBackPressed();
     }
 
     private void showAlertForConfirmarGuardar(){
@@ -997,6 +1852,17 @@ public class FragmentCheckListSiembra extends Fragment {
         RadioButton rbtn_pendiente = viewInfalted.findViewById(R.id.rbtn_pendiente);
         EditText et_apellido = viewInfalted.findViewById(R.id.et_apellido);
 
+
+        if(checkListSiembra != null){
+
+            et_apellido.setText(checkListSiembra.getApellido_checklist());
+
+            if(checkListSiembra.getEstado_documento() > 0){
+                rbtn_activo.setChecked(checkListSiembra.getEstado_documento() == 1);
+                rbtn_pendiente.setChecked(checkListSiembra.getEstado_documento() == 2);
+            }
+
+        }
 
         final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
@@ -1014,7 +1880,7 @@ public class FragmentCheckListSiembra extends Fragment {
                     Toasty.error(requireActivity(), "Debes seleccionar un estado e ingresar una descripcion", Toast.LENGTH_LONG, true).show();
                     return;
                 }
-                int state = (rbtn_activo.isChecked()) ? 1 : 0;
+                int state = (rbtn_activo.isChecked()) ? 1 : 2;
                 boolean isSaved = guardar(state, et_apellido.getText().toString());
                 if(isSaved) builder.dismiss();
 
@@ -1023,28 +1889,6 @@ public class FragmentCheckListSiembra extends Fragment {
         });
         builder.setCancelable(false);
         builder.show();
-    }
-
-    private void levantarHora(final EditText edit ){
-        String hora = Utilidades.hora();
-
-        String[] horaRota;
-
-        if(!TextUtils.isEmpty(edit.getText())){
-            horaRota = edit.getText().toString().split(":");
-        }else{
-            horaRota = hora.split(":");
-        }
-
-        TimePickerDialog timePickerDialog =  new TimePickerDialog(getContext(), (timePicker, i, i1) -> {
-            String horaFinal = i+":"+i1+":00";
-            edit.setText(horaFinal);
-        },
-                Integer.parseInt(horaRota[0]),
-                Integer.parseInt(horaRota[1]),
-                true
-        );
-        timePickerDialog.show();
     }
 
     private void levantarFecha(final EditText edit){
