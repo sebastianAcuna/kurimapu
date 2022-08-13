@@ -4,12 +4,22 @@ public class CheckListDetails {
 
     private int id;
     private int tipo_documento;
+
+    private String clave_unica;
     private String  description;
     private int  idAnexo;
     private boolean isUploaded;
     private int  estado;
     private String descEstado;
 
+
+    public String getClave_unica() {
+        return clave_unica;
+    }
+
+    public void setClave_unica(String clave_unica) {
+        this.clave_unica = clave_unica;
+    }
 
     public int getIdAnexo() {
         return idAnexo;

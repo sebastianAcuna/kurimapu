@@ -110,6 +110,13 @@ public class AreaDibujo  extends View {
         if (paths.size() <= 0 || paints.size() <= 0){
             return "";
         }
+        File miFile = new File(Environment.getExternalStoragePublicDirectory("DCIM"), Utilidades.DIRECTORIO_IMAGEN);
+        boolean isCreada = miFile.exists();
+
+        if (!isCreada){
+            isCreada=miFile.mkdirs();
+        }
+
         String signPath = Environment.getExternalStoragePublicDirectory("DCIM")
                 + File.separator + Utilidades.DIRECTORIO_IMAGEN
                 + File.separator + name;

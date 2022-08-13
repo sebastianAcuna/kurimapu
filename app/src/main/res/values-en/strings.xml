@@ -421,4 +421,5 @@ Depending on the state, it can be edited or not.</string>
     <string name="max">Max:</string>
     <string name="velocidad">Velocidad:</string>
     <string name="rafagas">Rafagas:</string>
+    <string name="subida_de_datos">Subida de datos</string>
 </resources>

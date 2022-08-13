@@ -127,11 +127,10 @@ public class FragmentResumen extends Fragment {
                     if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 ) {
                         tmp = temp_visitas;
                         visitasCompletas = visitasCompletasFuture.get();
-                        ac  = visitasCompletas.getAnexoCompleto().getAnexoContrato();
-                    }else{
-                        Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
-                        ac = anexo.get();
                     }
+
+                    Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+                    ac = anexo.get();
 
                     FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
                     Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
@@ -221,6 +220,12 @@ public class FragmentResumen extends Fragment {
                                     String nombreTabla = "";
                                     if (!fs.getTabla().equals("")){
                                         switch (fs.getTabla()){
+
+                                            case "condicion":
+                                                nombreCampoTableta = "condicion";
+                                                nombreTabla = "anexo_contrato";
+                                                break;
+
                                             case "cliente":
                                                 nombreCampoTableta = (fs.getCampo().equals("razon_social")) ? "razon_social_clientes" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
@@ -239,7 +244,7 @@ public class FragmentResumen extends Fragment {
                                                 nombreTabla = fs.getTabla();
                                                 break;
                                             case "libro_campo":
-                                                nombreCampoTableta = fs.getCampo();
+                                                nombreCampoTableta = " valor_detalle ";
                                                 nombreTabla = "detalle_visita_prop";
                                                 break;
                                             case "lote":
@@ -316,6 +321,7 @@ public class FragmentResumen extends Fragment {
 
                                         switch (fs.getTabla()){
                                             case "anexo_contrato" :
+                                            case "condicion" :
                                                 consulta += " WHERE id_anexo_contrato = ? ";
                                                 ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
@@ -331,10 +337,10 @@ public class FragmentResumen extends Fragment {
                                                 ob = Utilidades.appendValue(ob,idCliente);
                                                 break;
                                             case "libro_campo":
-                                                consulta += " INNER JOIN pro_cli_mat USING (id_prop_mat_cli)  ";
-                                                consulta += " LEFT JOIN visita USING (id_visita)  ";
-                                                consulta += " WHERE visita.id_ac = ? AND  AND prop_cli_mat.campo = '"+nombreCampoTableta+"' ";
-                                                consulta += " ORDER BY id_det_vis_prop DESC LIMIT 1 ";
+                                                consulta += " INNER JOIN pro_cli_mat ON (detalle_visita_prop.id_prop_mat_cli_detalle = pro_cli_mat.id_prop_mat_cli)  ";
+                                                consulta += " LEFT JOIN visita ON (detalle_visita_prop.id_visita_detalle = visita.id_visita)  ";
+                                                consulta += " WHERE visita.id_anexo_visita = ? AND pro_cli_mat.campo = '"+nombreCampoTableta+"' ";
+                                                consulta += " ORDER BY id_det_vis_prop_detalle DESC LIMIT 1 ";
                                                 ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
                                             case "comuna":

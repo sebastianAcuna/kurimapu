@@ -109,15 +109,17 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
 
             AnexoCompleto anexos = anexo.getAnexoCompleto();
             AnexoCorreoFechas anexoCorreos = anexo.getAnexoCorreoFichas();
-            Comuna comunas = anexo.getComuna();
-
-
+            Comuna comunas = anexo.getAnexoCompleto().getComuna();
 
             num_anexo.setText(anexos.getAnexoContrato().getAnexo_contrato().toUpperCase());
             especie.setText(anexos.getEspecie().getDesc_especie().toUpperCase());
             agricultor.setText(anexos.getAgricultor().getNombre_agricultor().toUpperCase());
             potrero.setText(anexos.getLotes().getNombre_lote().toUpperCase());
-            comuna.setText(comunas.getDesc_comuna().toUpperCase());
+
+            if(comunas != null){
+                comuna.setText(comunas.getDesc_comuna().toUpperCase());
+            }
+
 
             condicion.setText(anexos.getAnexoContrato().getCondicion());
 
@@ -154,7 +156,6 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
                 iv_inicio_cosecha.setImageDrawable((anexoCorreos.getCorreo_inicio_cosecha() > 0) ? correoSi: correoNo );
                 iv_termino_cosecha.setImageDrawable((anexoCorreos.getCorreo_termino_cosecha() > 0) ? correoSi : correoNo );
                 iv_termino_labores.setImageDrawable((anexoCorreos.getCorreo_termino_labores_post_cosechas() > 0) ? correoSi : correoNo );
-
 
 
                 tv_inicio_despano.setText(inicioDespano);

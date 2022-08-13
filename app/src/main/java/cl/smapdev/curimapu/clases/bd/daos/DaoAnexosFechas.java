@@ -46,7 +46,7 @@ public interface DaoAnexosFechas {
             "M.desc_variedad, " +
             "E.desc_especie, " +
             "AC.id_anexo_contrato, " +
-            "C.desc_comuna AS foo_desc_comuna, " +
+            "C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna, " +
             "V.fecha_visita, " +
             "AC.condicion " +
             "FROM anexo_contrato AC  " +
@@ -77,7 +77,7 @@ public interface DaoAnexosFechas {
             "M.desc_variedad, " +
             "E.desc_especie, " +
             "AC.id_anexo_contrato, " +
-            "C.desc_comuna AS foo_desc_comuna, " +
+            "C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna, " +
             "V.fecha_visita, " +
             "AC.condicion " +
             "FROM anexo_contrato AC  " +

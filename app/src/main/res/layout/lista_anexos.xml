@@ -118,7 +118,7 @@
         app:layout_constraintStart_toStartOf="parent"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:textColor="@color/colorPrimary"
-        android:text="@string/nuevo"
+        android:text="@string/nueva_visita"
         android:layout_marginTop="@dimen/padding_small"
         />
 

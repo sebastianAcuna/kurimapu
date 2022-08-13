@@ -698,9 +698,9 @@ public class FragmentCheckListSiembra extends Fragment {
         tv_potrero.setText(anexoCompleto.getLotes().getNombre_lote());
         tv_rch.setText(anexoCompleto.getAnexoContrato().getRch());
 
-//        tv_sag_ogm.setText(anexoCompleto.getAnexoContrato().getAnexo_contrato());
-//        tv_sag_idase.setText(anexoCompleto.getAnexoContrato().getAnexo_contrato());
-//        tv_condicion_semilla.setText(anexoCompleto.getAnexoContrato().getAnexo_contrato());
+        tv_sag_ogm.setText(anexoCompleto.getAnexoContrato().getSag_register_number());
+        tv_sag_idase.setText(anexoCompleto.getAnexoContrato().getSag_register_idase());
+        tv_condicion_semilla.setText(anexoCompleto.getAnexoContrato().getCondicion());
         tv_supervisor_curimapu.setText(usuario.getNombre()+ " " +usuario.getApellido_p());
 
 

@@ -11,6 +11,7 @@ import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
+import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
@@ -48,6 +49,11 @@ public class GsonDescargas {
     @Embedded
     private List<pro_cli_mat> pro_cli_matList;
 
+
+
+    @SerializedName("array_check_list_siembra")
+    @Embedded
+    private List<CheckListSiembra> checkListSiembras;
 
     @SerializedName("array_temporada")
     @Embedded
@@ -174,6 +180,14 @@ public class GsonDescargas {
     @Embedded
     private List<AnexoCorreoFechas> array_fechas_anexos;
 
+
+    public List<CheckListSiembra> getCheckListSiembras() {
+        return checkListSiembras;
+    }
+
+    public void setCheckListSiembras(List<CheckListSiembra> checkListSiembras) {
+        this.checkListSiembras = checkListSiembras;
+    }
 
     public List<Evaluaciones> getEvaluaciones() {
         return evaluaciones;

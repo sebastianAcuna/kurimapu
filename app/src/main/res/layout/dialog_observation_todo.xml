@@ -76,6 +76,7 @@
             <TextView
                 android:id="@+id/tv_titulo_recom"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/recomendacion_anterior"
@@ -87,6 +88,7 @@
                 />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_recom_rankear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -337,7 +339,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintHorizontal_weight="0.1"
-                android:src="@drawable/ic_expand_up"
+                android:src="@drawable/ic_expand_down"
                 app:layout_constraintTop_toBottomOf="@id/rv_recom_pendientes"
                 app:layout_constraintStart_toEndOf="@id/txt_titulo_rechazadas"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -349,6 +351,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:id="@+id/rv_recom_rechazo"
                 android:layout_width="0dp"
                 android:layout_height="250dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/txt_titulo_rechazadas"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -372,8 +375,9 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:id="@+id/ic_collapse_aprobada"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+
                 app:layout_constraintHorizontal_weight="0.1"
-                android:src="@drawable/ic_expand_up"
+                android:src="@drawable/ic_expand_down"
                 app:layout_constraintTop_toBottomOf="@id/rv_recom_rechazo"
                 app:layout_constraintStart_toEndOf="@id/txt_titulo_aprobadas"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -385,6 +389,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:id="@+id/rv_recom_aprobadas"
                 android:layout_width="0dp"
                 android:layout_height="250dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/txt_titulo_aprobadas"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

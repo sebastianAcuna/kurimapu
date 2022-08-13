@@ -48,7 +48,6 @@ import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.TablaAnexosFechas;
 import cl.smapdev.curimapu.clases.adapters.AnexosAdapter;
 import cl.smapdev.curimapu.clases.adapters.AnexosFechasAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;

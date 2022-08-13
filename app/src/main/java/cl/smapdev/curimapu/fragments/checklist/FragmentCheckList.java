@@ -173,6 +173,7 @@ public class FragmentCheckList extends Fragment {
                     tmp.setId(clSiembra.getId_cl_siembra());
                     tmp.setIdAnexo(clSiembra.getId_ac_cl_siembra());
                     tmp.setEstado(clSiembra.getEstado_documento());
+                    tmp.setClave_unica(clSiembra.getClave_unica());
                     tmp.setDescEstado((clSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA" );
                     nested.add(tmp);
                 }
@@ -220,7 +221,7 @@ public class FragmentCheckList extends Fragment {
 
                     String URLPDF = "http://" + Utilidades.IP_PRODUCCION + "/curimapu/docs/pdf/checklistSiembra.php?clave_unica=";
                     Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(URLPDF+"272220220810165310"));
+                    i.setData(Uri.parse(URLPDF+detailsPDF.getClave_unica()));
                     startActivity(i);
 
                 },

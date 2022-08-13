@@ -1,7 +1,6 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,10 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,8 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,7 +50,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -65,7 +58,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -79,7 +71,6 @@ import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Config;
-import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
@@ -108,17 +99,18 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private final ArrayList<String> maleza = new ArrayList<>();
 
     private TextInputLayout obs_growth, obs_weed, obs_fito,obs_harvest,obs_overall, obs_humedad;
-    private EditText et_obs, et_recomendacion, et_obs_growth, et_obs_weed, et_obs_fito, et_obs_harvest, et_obs_overall,et_obs_humedad,et_percent_humedad;
+    private EditText et_obs, et_obs_growth, et_obs_weed, et_obs_fito, et_obs_harvest, et_obs_overall,et_obs_humedad,et_percent_humedad;
 
     /* IMAGENES */
     private RecyclerView rwAgronomo, rwCliente;
 
-//    private static final String FIELDBOOKKEY = "fieldbookkey";
     private static final int COD_FOTO = 005;
 
     private File fileImagen;
 
-    private int fieldbook;
+
+    private EditText et_fecha_estimada;
+    private EditText et_fecha_arranca;
 
     private FloatingActionButton material_private, material_public;
 
@@ -148,8 +140,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         progressBar = new ProgressDialog(activity);
         progressBar.setTitle(getResources().getString(R.string.espere));
         progressBar.show();
-//        crecimiento = getResources().getStringArray(R.array.crecimiento);
-//        maleza = getResources().getStringArray(R.array.maleza);
 
     }
 
@@ -202,11 +192,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                     if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 ) {
                         tmp = temp_visitas;
                         visitasCompletas = visitasCompletasFuture.get();
-                        ac  = visitasCompletas.getAnexoCompleto().getAnexoContrato();
-                    }else{
-                        Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
-                        ac = anexo.get();
                     }
+
+                    Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+                    ac = anexo.get();
 
                     FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
                     Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
@@ -214,7 +203,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         ft.remove(prev);
                     }
 
-                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, (TempVisitas tm)->{});
+                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, this::cargarTemp);
                     dialogo.show(ft, "EVALUACION_RECOMENDACION");
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
@@ -226,6 +215,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         }
     }
 
+
+    private void cargarTemp(TempVisitas tempVisitas) {
+        temp_visitas = tempVisitas;
+    }
 
     private void chargeAll(){
 
@@ -317,7 +310,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             sp_malezas.setSelection(maleza.indexOf(temp_visitas.getWeed_state_temp_visita()));
 
             et_obs.setText(temp_visitas.getObservation_temp_visita());
-            et_recomendacion.setText(temp_visitas.getRecomendation_temp_visita());
 
             et_obs_harvest.setText(temp_visitas.getObs_cosecha());
             et_obs_overall.setText(temp_visitas.getObs_overall());
@@ -326,6 +318,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             et_obs_fito.setText(temp_visitas.getObs_fito());
             et_obs_growth.setText(temp_visitas.getObs_creci());
             et_percent_humedad.setText(String.valueOf(temp_visitas.getPercent_humedad()));
+
+
+            et_fecha_arranca.setText(Utilidades.voltearFechaVista(temp_visitas.getFecha_estimada_arranca()));
+            et_fecha_estimada.setText(Utilidades.voltearFechaVista(temp_visitas.getFecha_estimada_cosecha()));
 
 
             et_percent_humedad.setSelectAllOnFocus(true);
@@ -350,8 +346,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 sp_humedad.setEnabled(false);
                 sp_malezas.setEnabled(false);
                 et_obs.setEnabled(false);
-                et_recomendacion.setEnabled(false);
                 btn_guardar.setEnabled(false);
+
+                et_fecha_estimada.setEnabled(false);
+                et_fecha_arranca.setEnabled(false);
 
                 et_obs_fito.setEnabled(false);
                 et_obs_overall.setEnabled(false);
@@ -457,7 +455,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         btn_guardar = view.findViewById(R.id.btn_guardar);
 
         et_obs = view.findViewById(R.id.et_obs);
-        et_recomendacion = view.findViewById(R.id.et_recomendacion);
         et_obs_fito = view.findViewById(R.id.et_obs_fito);
         et_obs_growth = view.findViewById(R.id.et_obs_growth);
         et_obs_harvest = view.findViewById(R.id.et_obs_harvest);
@@ -473,6 +470,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         obs_overall = view.findViewById(R.id.obs_overall);
         obs_humedad = view.findViewById(R.id.obs_humedad);
 
+
+        et_fecha_estimada = view.findViewById(R.id.et_fecha_estimada);
+        et_fecha_arranca = view.findViewById(R.id.et_fecha_arranca);
+
         btn_volver = view.findViewById(R.id.btn_volver);
 
         sp_fenologico.setOnItemSelectedListener(this);
@@ -483,7 +484,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         sp_crecimiento.setOnItemSelectedListener(this);
         sp_cosecha.setOnItemSelectedListener(this);
 
-        et_recomendacion.setOnFocusChangeListener(this);
         et_obs.setOnFocusChangeListener(this);
         et_obs_growth.setOnFocusChangeListener(this);
         et_obs_weed.setOnFocusChangeListener(this);
@@ -492,6 +492,9 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         et_obs_fito.setOnFocusChangeListener(this);
         et_obs_humedad.setOnFocusChangeListener(this);
         et_percent_humedad.setOnFocusChangeListener(this);
+
+        et_fecha_estimada.setOnFocusChangeListener(this);
+        et_fecha_arranca.setOnFocusChangeListener(this);
 
 
         btn_volver.setOnClickListener(this);
@@ -512,10 +515,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 case R.id.sp_feno:
                     temp_visitas.setPhenological_state_temp_visita(fenologico.get(i));
                     temp_visitas.setEtapa_temp_visitas(Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
-
                     prefs.edit().putInt(Utilidades.SHARED_ETAPA_SELECTED, Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition())).apply();
-
-//                    cambiarSubtitulo("Estado fenologico : "+sp_fenologico.getSelectedItem());
                     break;
                 case R.id.sp_cosecha:
                     obs_harvest.setVisibility(View.VISIBLE);
@@ -594,17 +594,21 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     @Override
     public void onFocusChange(View view, boolean b) {
         String text = "";
+        if(b){
+            switch (view.getId()){
+                case R.id.et_fecha_estimada:
+                        Utilidades.levantarFecha(et_fecha_estimada, view.getContext());
+                    break;
+
+                case R.id.et_fecha_arranca:
+                    Utilidades.levantarFecha(et_fecha_arranca, view.getContext());
+                    break;
+            }
+        }
         if (!b){
             switch (view.getId()){
                 case R.id.et_obs:
                     temp_visitas.setObservation_temp_visita(quitarTildes(et_obs.getText().toString().toUpperCase()));
-                    break;
-                case R.id.et_recomendacion:
-                    text = et_recomendacion.getText().toString().toUpperCase();
-                    for (int i = 0; i < forbiddenWords.length; i++){
-                        text = text.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                    }
-                    temp_visitas.setRecomendation_temp_visita(text);
                     break;
                 case R.id.et_obs_growth:
                     text = et_obs_growth.getText().toString().toUpperCase();
@@ -661,6 +665,14 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                         temp_visitas.setPercent_humedad(0);
                         Toasty.warning(activity, "No se pudo guardar el porcentaje, formato incorrecto.", Toast.LENGTH_SHORT, true).show();
                     }
+                    break;
+
+                case R.id.et_fecha_estimada:
+                        temp_visitas.setFecha_estimada_cosecha(Utilidades.voltearFechaBD(et_fecha_estimada.getText().toString()));
+                    break;
+
+                case R.id.et_fecha_arranca:
+                        temp_visitas.setFecha_estimada_arranca(Utilidades.voltearFechaBD(et_fecha_arranca.getText().toString()));
                     break;
             }
 
@@ -793,10 +805,21 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         }
 
 
-        if(temp_visitas.getEvaluacion() <= 0.0 || temp_visitas.getComentario_evaluacion().isEmpty()){
-            Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes realizar la evaluacion de la visita anterior", "entiendo");
-            return;
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+
+        Future<VisitasCompletas> visitasCompletasFuture = exec.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+
+        try {
+            VisitasCompletas cc = visitasCompletasFuture.get();
+
+            if((temp_visitas.getEvaluacion() <= 0.0 || temp_visitas.getComentario_evaluacion().isEmpty()) && cc != null && cc.getVisitas() != null){
+                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes realizar la evaluacion de la visita anterior", "entiendo");
+                return;
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
+
 
         int fotosClientes = MainActivity.myAppDB.myDao().getCantFotos(temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) ,0);
         int fotosAgricultores = MainActivity.myAppDB.myDao().getCantFotos(temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) ,2);
@@ -855,7 +878,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
          visitas.setEvaluacion(temp_visitas.getEvaluacion());
          visitas.setComentario_evaluacion(temp_visitas.getComentario_evaluacion());
          visitas.setId_evaluacion(temp_visitas.getId_evaluacion());
-
+        visitas.setFecha_estimada_arranca(temp_visitas.getFecha_estimada_arranca());
+        visitas.setFecha_estimada_cosecha(temp_visitas.getFecha_estimada_cosecha());
 
 
          double percent =  0.0;
@@ -874,7 +898,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
          String obsMaleza = et_obs_weed.getText().toString().toUpperCase();
          String obsOverall = et_obs_overall.getText().toString().toUpperCase();
          String etobs = et_obs.getText().toString().toUpperCase();
-         String etrecom = et_recomendacion.getText().toString().toUpperCase();
 
 
          for (int i = 0; i < forbiddenWords.length; i++){
@@ -885,12 +908,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
              obsMaleza = obsMaleza.replace(forbiddenWords[i],forbiddenReplacement[i]);
              obsOverall = obsOverall.replace(forbiddenWords[i],forbiddenReplacement[i]);
              etobs = etobs.replace(forbiddenWords[i],forbiddenReplacement[i]);
-             etrecom = etrecom.replace(forbiddenWords[i],forbiddenReplacement[i]);
 
          }
 
          visitas.setObservation_visita((TextUtils.isEmpty(temp_visitas.getObservation_temp_visita()) ? etobs : temp_visitas.getObservation_temp_visita().toUpperCase()));
-         visitas.setRecomendation_visita((TextUtils.isEmpty(temp_visitas.getRecomendation_temp_visita()) ? etrecom : temp_visitas.getRecomendation_temp_visita().toUpperCase()));
 
 
          visitas.setObs_cosecha((TextUtils.isEmpty(temp_visitas.getObs_cosecha())) ? obsCosecha : temp_visitas.getObs_cosecha().toUpperCase());
@@ -1000,12 +1021,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             }
 
             List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndViewVisitas( 2, temp_visitas.getId_anexo_temp_visita(), temp_visitas.getId_visita_local(), visitaServidor, idDispo);
-            adapterAgronomo = new FotosListAdapter(myImageList,activity, new FotosListAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(Fotos fotos) {
-                    showAlertForUpdate(fotos);
-                }
-            }, fotos -> {
+            adapterAgronomo = new FotosListAdapter(myImageList,activity, this::showAlertForUpdate, fotos -> {
 
                 if (temp_visitas.getAction_temp_visita() == 2){
                     Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),"Visita en estado terminado, no puedes cambiar el estado de las fotos.","entiendo");
@@ -1083,17 +1099,12 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
             List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(0, temp_visitas.getId_anexo_temp_visita(),temp_visitas.getId_visita_local() , visitaServidor,idDispo );
 
-            adapterCliente = new FotosListAdapter(myImageList, activity, new FotosListAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(Fotos fotos) {
-                    showAlertForUpdate(fotos);
-                }
-            }, fotos -> {
+            adapterCliente = new FotosListAdapter(myImageList, activity, this::showAlertForUpdate, fotos -> {
                 if (temp_visitas.getAction_temp_visita() == 2) {
                     Utilidades.avisoListo(activity, getResources().getString(R.string.title_dialog_agron), "Visita en estado terminado, no puedes cambiar el estado de las fotos.", "entiendo");
                 } else {
                     if (!fotos.isFavorita()) {
-                        int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookFichaAndVista(fieldbook, temp_visitas.getId_anexo_temp_visita(), 0, temp_visitas.getId_temp_visita());
+                        int favoritas = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookFichaAndVista(0, temp_visitas.getId_anexo_temp_visita(), 0, temp_visitas.getId_temp_visita());
 
                         if (favoritas < 3) {
                             cambiarFavorita(fotos);
@@ -1119,41 +1130,21 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 .setView(viewInfalted)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("aceptar", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                })
-                .setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
+                .setPositiveButton("aceptar", (dialogInterface, i) -> { })
+                .setNegativeButton("cancelar", (dialog, which) -> { })
                 .create();
 
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-                Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        MainActivity activity = (MainActivity) getActivity();
-                        if (activity != null){
-                            activity.cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_right, R.anim.slide_out_right);
-                        }
-                        builder.dismiss();
-                    }
-                });
-                c.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder.dismiss();
-                    }
-                });
-            }
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
+            b.setOnClickListener(v -> {
+                MainActivity activity = (MainActivity) getActivity();
+                if (activity != null){
+                    activity.cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_right, R.anim.slide_out_right);
+                }
+                builder.dismiss();
+            });
+            c.setOnClickListener(v -> builder.dismiss());
         });
         builder.setCancelable(false);
         builder.show();
@@ -1167,38 +1158,18 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 .setView(viewInfalted)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("aceptar", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                })
-                .setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
+                .setPositiveButton("aceptar", (dialogInterface, i) -> { })
+                .setNegativeButton("cancelar", (dialog, which) -> { })
                 .create();
 
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-                Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setOnSave();
-                        builder.dismiss();
-                    }
-                });
-                c.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder.dismiss();
-                    }
-                });
-            }
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
+            b.setOnClickListener(v -> {
+                setOnSave();
+                builder.dismiss();
+            });
+            c.setOnClickListener(v -> builder.dismiss());
         });
         builder.setCancelable(false);
         builder.show();
@@ -1215,72 +1186,20 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 .setView(viewInfalted)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                })/*.setNegativeButton("cancelar",null)*/.create();
-
-
-        builder22.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button a = builder22.getButton(AlertDialog.BUTTON_POSITIVE);
-                a.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder22.dismiss();
-                        activity.cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_left, R.anim.slide_out_left);
-
-                    }
-                });
-            }
-        });
-        builder22.setCancelable(true);
-        builder22.show();
-    }
-
-
-    private void showAlertForRankear(final Visitas visitaAnterior, final TempVisitas temp_visitas){
-        View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_rankear,null);
-
-        final AlertDialog builder = new AlertDialog.Builder(requireActivity())
-                .setView(viewInfalted)
-                .setCancelable(false)
-                .setPositiveButton("Guardar", (dialogInterface, i) -> { })
+                .setPositiveButton("Aceptar", (dialogInterface, i) -> { })
                 .create();
 
 
-        final TextView fecha_utima_visita = viewInfalted.findViewById(R.id.tv_fecha_rankear);
-        final TextView recomendacion_ultima = viewInfalted.findViewById(R.id.tv_recom_rankear);
-        final RatingBar rating = viewInfalted.findViewById(R.id.ratingBar);
-        final EditText comentario_nuevo = viewInfalted.findViewById(R.id.et_comentario);
+        builder22.setOnShowListener(dialog -> {
+            Button a = builder22.getButton(AlertDialog.BUTTON_POSITIVE);
+            a.setOnClickListener(v -> {
+                builder22.dismiss();
+                activity.cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_left, R.anim.slide_out_left);
 
-
-        String fecha_last = "Fecha: " + visitaAnterior.getFecha_visita() + " " + visitaAnterior.getHora_visita();
-
-
-        fecha_utima_visita.setText(fecha_last);
-        recomendacion_ultima.setText(visitaAnterior.getRecomendation_visita());
-
-        builder.setOnShowListener(dialogInterface -> {
-            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-
-            b.setOnClickListener(view -> {
-                if(rating.getRating() > 0.0 && !TextUtils.isEmpty(comentario_nuevo.getText().toString())){
-
-                    temp_visitas.setEvaluacion(rating.getRating());
-                    temp_visitas.setComentario_evaluacion(comentario_nuevo.getText().toString());
-                    temp_visitas.setId_evaluacion(visitaAnterior.getId_visita());
-                    builder.dismiss();
-
-                }else{
-                    Snackbar.make(view, "Debe evaluar y comentar para guardar ", Snackbar.LENGTH_LONG).show();
-                }
             });
         });
-        builder.setCancelable(false);
-        builder.show();
+        builder22.setCancelable(true);
+        builder22.show();
     }
 
 
@@ -1348,11 +1267,13 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                                 agregarImagenToClientes();
                                 Toasty.success(activity, "Foto eliminada con exito", Toast.LENGTH_SHORT, true).show();
                                 builder.dismiss();
+                                return;
                             }
 
                             if(!file.delete()){
                                 Toasty.warning(activity, "Por favor vuelva a intentarlo", Toast.LENGTH_SHORT, true).show();
                                 builder.dismiss();
+                                return;
                             }
 
                             MainActivity.myAppDB.myDao().deleteFotos(foto);
@@ -1368,10 +1289,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                             builder.dismiss();
                         }
                     });
-
                     c.setOnClickListener(v -> builder.dismiss());
-
-
                 });
 
                 builder.setCancelable(false);
@@ -1394,7 +1312,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
-        // get the file url
         if(savedInstanceState != null && savedInstanceState.getParcelable("file_uri") != null){
             Uri ui = savedInstanceState.getParcelable("file_uri");
             if (ui != null && ui.getPath() != null){
@@ -1405,10 +1322,9 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     }
 
-    void cambiarSubtitulo(String feno){
+    void cambiarSubtitulo(){
 
         AnexoCompleto anexoCompleto = MainActivity.myAppDB.myDao().getAnexoCompletoById(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
-
 
         if (activity != null && anexoCompleto != null){
             activity.updateView(getResources().getString(R.string.app_name), "Anexo " + anexoCompleto.getAnexoContrato().getAnexo_contrato());
@@ -1419,7 +1335,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        cambiarSubtitulo("");
+        cambiarSubtitulo();
 
     }
 }

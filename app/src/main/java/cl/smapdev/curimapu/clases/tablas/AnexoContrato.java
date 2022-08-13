@@ -214,6 +214,260 @@ public class AnexoContrato {
     @SerializedName("condicion")
     private String condicion;
 
+    @SerializedName("lote_cliente")
+    private String lote_cliente;
+
+    @SerializedName("sag_register_idase")
+    private String sag_register_idase;
+
+
+    @SerializedName("objetivo_humedad_cosecha")
+    public String objetivo_humedad_cosecha;
+
+    @SerializedName("humedad_recepcion")
+    public String humedad_recepcion;
+
+    @SerializedName("fecha_inicio_proceso_semilla_prelimipia")
+    public String fecha_inicio_proceso_semilla_prelimipia;
+
+    @SerializedName("vigor")
+    public String vigor;
+
+    @SerializedName("rendimiento_kg_ha")
+    public String rendimiento_kg_ha;
+
+    @SerializedName("porcentaje_cumplimiento_target")
+    public String porcentaje_cumplimiento_target;
+
+    @SerializedName("porcentaje_conversion")
+    public String porcentaje_conversion;
+
+    @SerializedName("xanthomonas")
+    public String xanthomonas;
+
+    @SerializedName("pseudomonas_syringae")
+    public String pseudomonas_syringae;
+
+    @SerializedName("pseudomonas_phaseolicola")
+    public String pseudomonas_phaseolicola;
+
+    @SerializedName("evento_gmo_linea_hembra")
+    public String evento_gmo_linea_hembra;
+
+    @SerializedName("resolucion_sag_hembra")
+    public String resolucion_sag_hembra;
+
+    @SerializedName("evento_gmo_linea_macho")
+    public String evento_gmo_linea_macho;
+
+    @SerializedName("resolucion_sag_macho")
+    public String resolucion_sag_macho;
+
+    @SerializedName("nombre_potrero_sag")
+    public String nombre_potrero_sag;
+
+    @SerializedName("oecd")
+    public String oecd;
+
+    @SerializedName("fecha_llegada_semilla_aeropuerto_scl")
+    public String fecha_llegada_semilla_aeropuerto_scl;
+
+    @SerializedName("fecha_recepcion_semilla_curimapu")
+    public String fecha_recepcion_semilla_curimapu;
+
+    @SerializedName("dia_desde_recepcion_hasta_siembra")
+    public String dia_desde_recepcion_hasta_siembra;
+
+    @SerializedName("base_cliente")
+    public String base_cliente;
+
+    @SerializedName("base_agriculto")
+    public String base_agriculto;
+
+
+    public String getSag_register_idase() {
+        return sag_register_idase;
+    }
+
+    public void setSag_register_idase(String sag_register_idase) {
+        this.sag_register_idase = sag_register_idase;
+    }
+
+    public String getObjetivo_humedad_cosecha() {
+        return objetivo_humedad_cosecha;
+    }
+
+    public void setObjetivo_humedad_cosecha(String objetivo_humedad_cosecha) {
+        this.objetivo_humedad_cosecha = objetivo_humedad_cosecha;
+    }
+
+    public String getHumedad_recepcion() {
+        return humedad_recepcion;
+    }
+
+    public void setHumedad_recepcion(String humedad_recepcion) {
+        this.humedad_recepcion = humedad_recepcion;
+    }
+
+    public String getFecha_inicio_proceso_semilla_prelimipia() {
+        return fecha_inicio_proceso_semilla_prelimipia;
+    }
+
+    public void setFecha_inicio_proceso_semilla_prelimipia(String fecha_inicio_proceso_semilla_prelimipia) {
+        this.fecha_inicio_proceso_semilla_prelimipia = fecha_inicio_proceso_semilla_prelimipia;
+    }
+
+    public String getVigor() {
+        return vigor;
+    }
+
+    public void setVigor(String vigor) {
+        this.vigor = vigor;
+    }
+
+    public String getRendimiento_kg_ha() {
+        return rendimiento_kg_ha;
+    }
+
+    public void setRendimiento_kg_ha(String rendimiento_kg_ha) {
+        this.rendimiento_kg_ha = rendimiento_kg_ha;
+    }
+
+    public String getPorcentaje_cumplimiento_target() {
+        return porcentaje_cumplimiento_target;
+    }
+
+    public void setPorcentaje_cumplimiento_target(String porcentaje_cumplimiento_target) {
+        this.porcentaje_cumplimiento_target = porcentaje_cumplimiento_target;
+    }
+
+    public String getPorcentaje_conversion() {
+        return porcentaje_conversion;
+    }
+
+    public void setPorcentaje_conversion(String porcentaje_conversion) {
+        this.porcentaje_conversion = porcentaje_conversion;
+    }
+
+    public String getXanthomonas() {
+        return xanthomonas;
+    }
+
+    public void setXanthomonas(String xanthomonas) {
+        this.xanthomonas = xanthomonas;
+    }
+
+    public String getPseudomonas_syringae() {
+        return pseudomonas_syringae;
+    }
+
+    public void setPseudomonas_syringae(String pseudomonas_syringae) {
+        this.pseudomonas_syringae = pseudomonas_syringae;
+    }
+
+    public String getPseudomonas_phaseolicola() {
+        return pseudomonas_phaseolicola;
+    }
+
+    public void setPseudomonas_phaseolicola(String pseudomonas_phaseolicola) {
+        this.pseudomonas_phaseolicola = pseudomonas_phaseolicola;
+    }
+
+    public String getEvento_gmo_linea_hembra() {
+        return evento_gmo_linea_hembra;
+    }
+
+    public void setEvento_gmo_linea_hembra(String evento_gmo_linea_hembra) {
+        this.evento_gmo_linea_hembra = evento_gmo_linea_hembra;
+    }
+
+    public String getResolucion_sag_hembra() {
+        return resolucion_sag_hembra;
+    }
+
+    public void setResolucion_sag_hembra(String resolucion_sag_hembra) {
+        this.resolucion_sag_hembra = resolucion_sag_hembra;
+    }
+
+    public String getEvento_gmo_linea_macho() {
+        return evento_gmo_linea_macho;
+    }
+
+    public void setEvento_gmo_linea_macho(String evento_gmo_linea_macho) {
+        this.evento_gmo_linea_macho = evento_gmo_linea_macho;
+    }
+
+    public String getResolucion_sag_macho() {
+        return resolucion_sag_macho;
+    }
+
+    public void setResolucion_sag_macho(String resolucion_sag_macho) {
+        this.resolucion_sag_macho = resolucion_sag_macho;
+    }
+
+    public String getNombre_potrero_sag() {
+        return nombre_potrero_sag;
+    }
+
+    public void setNombre_potrero_sag(String nombre_potrero_sag) {
+        this.nombre_potrero_sag = nombre_potrero_sag;
+    }
+
+    public String getOecd() {
+        return oecd;
+    }
+
+    public void setOecd(String oecd) {
+        this.oecd = oecd;
+    }
+
+    public String getFecha_llegada_semilla_aeropuerto_scl() {
+        return fecha_llegada_semilla_aeropuerto_scl;
+    }
+
+    public void setFecha_llegada_semilla_aeropuerto_scl(String fecha_llegada_semilla_aeropuerto_scl) {
+        this.fecha_llegada_semilla_aeropuerto_scl = fecha_llegada_semilla_aeropuerto_scl;
+    }
+
+    public String getFecha_recepcion_semilla_curimapu() {
+        return fecha_recepcion_semilla_curimapu;
+    }
+
+    public void setFecha_recepcion_semilla_curimapu(String fecha_recepcion_semilla_curimapu) {
+        this.fecha_recepcion_semilla_curimapu = fecha_recepcion_semilla_curimapu;
+    }
+
+    public String getDia_desde_recepcion_hasta_siembra() {
+        return dia_desde_recepcion_hasta_siembra;
+    }
+
+    public void setDia_desde_recepcion_hasta_siembra(String dia_desde_recepcion_hasta_siembra) {
+        this.dia_desde_recepcion_hasta_siembra = dia_desde_recepcion_hasta_siembra;
+    }
+
+    public String getBase_cliente() {
+        return base_cliente;
+    }
+
+    public void setBase_cliente(String base_cliente) {
+        this.base_cliente = base_cliente;
+    }
+
+    public String getBase_agriculto() {
+        return base_agriculto;
+    }
+
+    public void setBase_agriculto(String base_agriculto) {
+        this.base_agriculto = base_agriculto;
+    }
+
+    public String getLote_cliente() {
+        return lote_cliente;
+    }
+
+    public void setLote_cliente(String lote_cliente) {
+        this.lote_cliente = lote_cliente;
+    }
 
     public String getCondicion() {
         return condicion;

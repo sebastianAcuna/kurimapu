@@ -12,6 +12,10 @@ import androidx.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
@@ -19,6 +23,7 @@ import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
+import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
@@ -227,6 +232,41 @@ public class Descargas {
                     MainActivity.myAppDB.myDao().deleteProCliMat();
                 }
 
+
+
+                if(gsonDescargas.getCheckListSiembras() != null && gsonDescargas.getCheckListSiembras().size() > 0 ){
+
+                    ExecutorService ex = Executors.newSingleThreadExecutor();
+
+
+                    for (CheckListSiembra ck : gsonDescargas.getCheckListSiembras()){
+
+                        Future<CheckListSiembra> chkF = ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().getCLSiembraByClaveUnica(ck.getClave_unica()));
+
+
+                        try {
+                            CheckListSiembra chk  = chkF.get();
+
+                            //update
+                            if(chk != null){
+                                ck.setId_cl_siembra(chk.getId_cl_siembra());
+                                ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().updateClSiembra(ck)).get();
+                            }
+                            else{
+                                //insert
+                                ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().insertClSiembra(ck));
+                            }
+
+
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    ex.shutdown();
+
+                }
 
                 if (gsonDescargas.getTemporadas() != null && gsonDescargas.getTemporadas().size() > 0){
                     try {

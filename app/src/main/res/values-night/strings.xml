@@ -138,6 +138,7 @@
     <string name="max">Max:</string>
     <string name="velocidad">Velocidad:</string>
     <string name="rafagas">Rafagas:</string>
+    <string name="subida_de_datos">Subida de datos</string>
 
     <string-array name="desplegable_checklist_1">
         <item>@string/select</item>

@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -253,6 +252,12 @@ public class FragmentSowing extends Fragment {
                                     String nombreTabla = "";
                                     if (!fs.getTabla().equals("")){
                                         switch (fs.getTabla()){
+
+                                            case "condicion":
+                                                nombreCampoTableta = "condicion";
+                                                nombreTabla = "anexo_contrato";
+                                                break;
+
                                             case "cliente":
                                                 nombreCampoTableta = (fs.getCampo().equals("razon_social")) ? "razon_social_clientes" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
@@ -348,6 +353,7 @@ public class FragmentSowing extends Fragment {
 
                                         switch (fs.getTabla()){
                                             case "anexo_contrato" :
+                                            case "condicion" :
                                                 consulta += " WHERE id_anexo_contrato = ? ";
                                                 ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
@@ -554,7 +560,7 @@ public class FragmentSowing extends Fragment {
                                         editTexts.get(i).setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                levantarFecha(editTexts.get(finalI1));
+                                                levantarFechaSowing(editTexts.get(finalI1));
                                             }
                                         });
                                     }
@@ -600,7 +606,7 @@ public class FragmentSowing extends Fragment {
                                             break;
                                         case InputType.TYPE_CLASS_DATETIME:
                                             if (b) {
-                                                levantarFecha(editTexts.get(finalI));
+                                                levantarFechaSowing(editTexts.get(finalI));
                                             } else {
                                                 if (!TextUtils.isEmpty(editTexts.get(finalI).getText().toString())) {
                                                     detalle_visita_prop temp = new detalle_visita_prop();
@@ -723,7 +729,7 @@ public class FragmentSowing extends Fragment {
         }
     }
 
-    private void levantarFecha(final EditText edit){
+    private void levantarFechaSowing(final EditText edit){
 
 
         String fecha = Utilidades.fechaActualSinHora();
@@ -878,7 +884,7 @@ public class FragmentSowing extends Fragment {
                     editTextsView.get(i).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            levantarFecha(editTextsView.get(finalI));
+                            levantarFechaSowing(editTextsView.get(finalI));
                         }
                     });
 
@@ -886,7 +892,7 @@ public class FragmentSowing extends Fragment {
                         @Override
                         public void onFocusChange(View v, boolean hasFocus) {
                             if (hasFocus){
-                                levantarFecha(editTextsView.get(finalI));
+                                levantarFechaSowing(editTextsView.get(finalI));
                             }
                         }
                     });
@@ -1089,11 +1095,10 @@ public class FragmentSowing extends Fragment {
                     if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 ) {
                         tmp = temp_visitas;
                         visitasCompletas = visitasCompletasFuture.get();
-                        ac  = visitasCompletas.getAnexoCompleto().getAnexoContrato();
-                    }else{
-                        Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
-                        ac = anexo.get();
                     }
+
+                    Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+                    ac = anexo.get();
 
                     FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
                     Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
@@ -1101,7 +1106,9 @@ public class FragmentSowing extends Fragment {
                         ft.remove(prev);
                     }
 
-                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, (TempVisitas tm)->{});
+                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, (TempVisitas tm)->{
+                        System.out.println();
+                    });
                     dialogo.show(ft, "EVALUACION_RECOMENDACION");
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();

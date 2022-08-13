@@ -38,6 +38,9 @@ public interface DaoCheckListSiembra {
     @Query("SELECT * FROM anexo_checklist_siembra WHERE id_cl_siembra = :id ;")
     CheckListSiembra getClSiembraById( int id );
 
+    @Query("SELECT * FROM anexo_checklist_siembra WHERE clave_unica = :clave_unica ")
+    CheckListSiembra getCLSiembraByClaveUnica( String clave_unica );
+
     @Query("SELECT * FROM anexo_checklist_siembra WHERE id_cl_siembra = :id AND estado_sincronizacion = :estado_sinc ;")
     CheckListSiembra getClSiembraById( int id , int estado_sinc);
 

@@ -19,11 +19,6 @@ public class AnexoWithDates implements Serializable {
     @Embedded
     AnexoCorreoFechas AnexoCorreoFichas;
 
-
-    @Embedded(prefix = "foo_")
-    Comuna comuna;
-
-
     @Embedded(prefix = "usu_")
     Usuario usuario;
 
@@ -45,14 +40,6 @@ public class AnexoWithDates implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public Comuna getComuna() {
-        return comuna;
-    }
-
-    public void setComuna(Comuna comuna) {
-        this.comuna = comuna;
     }
 
     public cl.smapdev.curimapu.clases.relaciones.AnexoCompleto getAnexoCompleto() {

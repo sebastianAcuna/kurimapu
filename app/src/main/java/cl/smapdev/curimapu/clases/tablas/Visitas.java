@@ -137,6 +137,34 @@ public class Visitas {
     @Expose
     private  int id_evaluacion;
 
+
+    @SerializedName("fecha_estimada_cosecha")
+    @Expose
+    private String fecha_estimada_cosecha;
+
+
+
+    @SerializedName("fecha_estimada_arranca")
+    @Expose
+    private String fecha_estimada_arranca;
+
+
+    public String getFecha_estimada_cosecha() {
+        return fecha_estimada_cosecha;
+    }
+
+    public void setFecha_estimada_cosecha(String fecha_estimada_cosecha) {
+        this.fecha_estimada_cosecha = fecha_estimada_cosecha;
+    }
+
+    public String getFecha_estimada_arranca() {
+        return fecha_estimada_arranca;
+    }
+
+    public void setFecha_estimada_arranca(String fecha_estimada_arranca) {
+        this.fecha_estimada_arranca = fecha_estimada_arranca;
+    }
+
     public int getId_evaluacion() {
         return id_evaluacion;
     }

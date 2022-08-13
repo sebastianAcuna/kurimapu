@@ -136,7 +136,11 @@ public class DialogObservationTodo  extends DialogFragment {
             cl_recomendacion.setVisibility( View.VISIBLE );
             btn_evaluacion.setEnabled( false );
 
+            btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         }else if(this.visitasCompletas == null){
+            btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             ratingBar.setEnabled(false);
             et_comentario.setEnabled(false);
             btn_guardar_evaluacion.setEnabled(false);
@@ -144,6 +148,8 @@ public class DialogObservationTodo  extends DialogFragment {
             cl_recomendacion.setVisibility( View.VISIBLE );
             tv_fecha_rankear.setText("SIN VISITAS PREVIAS REGISTRADAS");
         }else{
+            btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             cl_evaluacion.setVisibility( View.VISIBLE );
             cl_recomendacion.setVisibility( View.GONE );
             String fecha_last = "Fecha: " + this.visitasCompletas.getVisitas().getFecha_visita() + " " + this.visitasCompletas.getVisitas().getHora_visita();
@@ -155,11 +161,15 @@ public class DialogObservationTodo  extends DialogFragment {
 
 
         btn_recomendaciones.setOnClickListener(view1 -> {
+            btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             cl_evaluacion.setVisibility( View.GONE );
             cl_recomendacion.setVisibility( View.VISIBLE );
         });
 
         btn_evaluacion.setOnClickListener(view1 -> {
+            btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             cl_evaluacion.setVisibility( View.VISIBLE );
             cl_recomendacion.setVisibility( View.GONE );
         });
@@ -195,13 +205,18 @@ public class DialogObservationTodo  extends DialogFragment {
         this.tempVisitas.setComentario_evaluacion( comentario );
 
         ExecutorService executor  = Executors.newSingleThreadExecutor();
-        executor.submit(() -> MainActivity.myAppDB.myDao().updateTempVisitas(this.tempVisitas));
-        Toasty.success(requireActivity(), "Evaluacion guardada temporalmente, no olvide guardar la visita para confirmar los cambios.", Toast.LENGTH_LONG, true).show();
-        this.onSaveRating.onFinishSaveRating(this.tempVisitas);
-        Dialog dialog = getDialog();
-        if (dialog != null){
-            getDialog().dismiss();
+        try {
+            executor.submit(() -> MainActivity.myAppDB.myDao().updateTempVisitas(this.tempVisitas)).get();
+            Toasty.success(requireActivity(), "Evaluacion guardada temporalmente, no olvide guardar la visita para confirmar los cambios.", Toast.LENGTH_LONG, true).show();
+            this.onSaveRating.onFinishSaveRating(this.tempVisitas);
+            Dialog dialog = getDialog();
+            if (dialog != null){
+                getDialog().dismiss();
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
+
     }
 
 

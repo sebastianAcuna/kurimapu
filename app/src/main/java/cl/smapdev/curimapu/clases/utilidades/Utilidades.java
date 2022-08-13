@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.utilidades;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -67,9 +68,6 @@ public class Utilidades {
     public static final String FRAGMENT_ANEXO_FICHA = "fragment_anexo_ficha";
 
 
-//    21-ca0493
-
-
     public static final String affiliate_id = "vb7jbic553ts";
 
 
@@ -78,7 +76,8 @@ public class Utilidades {
 //    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
 //    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
 
-    public static final String IP_PRODUCCION = "192.168.1.17";
+//    public static final String IP_PRODUCCION = "192.168.1.17";
+    public static final String IP_PRODUCCION = "www.pruebas-erp.cl";
 //    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_PRUEBAS = "190.13.170.26";
@@ -422,6 +421,33 @@ public class Utilidades {
                 true
         );
         timePickerDialog.show();
+    }
+
+    public static void levantarFecha(final EditText edit, Context context){
+
+        String fecha = Utilidades.fechaActualSinHora();
+        String[] fechaRota;
+
+        if (!TextUtils.isEmpty(edit.getText())){
+            try{ fechaRota = Utilidades.voltearFechaBD(edit.getText().toString()).split("-"); }
+            catch (Exception e){  fechaRota = fecha.split("-");  }
+        }else{  fechaRota = fecha.split("-"); }
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context, (datePicker, year, month, dayOfMonth) -> {
+
+            month = month + 1;
+            String mes = "", dia;
+
+            if (month < 10) { mes = "0" + month; }
+            else { mes = String.valueOf(month); }
+
+            if (dayOfMonth < 10) dia = "0" + dayOfMonth;
+            else dia = String.valueOf(dayOfMonth);
+
+            String finalDate = dia + "-" + mes + "-" + year;
+            edit.setText(finalDate);
+        }, Integer.parseInt(fechaRota[0]), (Integer.parseInt(fechaRota[1]) - 1), Integer.parseInt(fechaRota[2]));
+        datePickerDialog.show();
+
     }
 
 

@@ -189,20 +189,6 @@ public interface MyDao {
     @Query("UPDATE config SET servidorSeleccionado = :servidor ;")
     void updateServidor(String servidor);
 
-
-//    @Query("SELECT * FROM anexo_correo_fechas ACF  " +
-//            " INNER JOIN anexo_contrato  AC ON (AC.id_anexo_contrato = ACF.id_ac_corr_fech) " +
-//            " INNER JOIN usuarios U ON U.id_usuario = ACF.id_fieldman " +
-//            " INNER JOIN agricultor A ON (A.id_agricultor = AC.id_agricultor_anexo) " +
-//            " INNER JOIN lote L ON (L.lote = AC.id_potrero) " +
-//            " INNER JOIN predio P ON (P.id_pred = L.id_pred_lote) " +
-//            " INNER JOIN ficha_new FN ON (FN.id_ficha_new = AC.id_ficha_contrato) " +
-//            " INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
-//            " INNER JOIN especie E ON (E.id_especie = M.id_especie_variedad) ")
-//
-//    List<AnexoCorreoFechas> getDetallesSag();
-
-
     /*FOTOS FICHAS */
     @Insert
     long insertFotosFichas(FotosFichas fotos);
@@ -394,7 +380,7 @@ public interface MyDao {
     @Insert
     List<Long> setVisita(List<Visitas> visitas);
 
-    @Query("SELECT * FROM visita V " +
+    @Query("SELECT *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna FROM visita V " +
             "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = AC.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
@@ -409,7 +395,7 @@ public interface MyDao {
     List<VisitasCompletas> getVisitasCompletas(String idAnexo, String annoDesde);
 
 
-    @Query("SELECT * FROM visita V " +
+    @Query("SELECT *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna FROM visita V " +
             "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = AC.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
@@ -424,7 +410,8 @@ public interface MyDao {
             "ORDER BY V.fecha_visita DESC, V.hora_visita DESC, V.id_visita DESC")
     List<VisitasCompletas> getVisitasCompletasWithFotos(String idAnexo);
 
-    @Query("SELECT * FROM visita V " +
+    @Query("SELECT * , C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna " +
+            "FROM visita V " +
             "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = AC.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
@@ -439,7 +426,9 @@ public interface MyDao {
             "ORDER BY V.fecha_visita, V.hora_visita, V.id_visita DESC")
     List<VisitasCompletas> getVisitasCompletasWithFotos(String idAnexo, int etapa, String annoDesde);
 
-    @Query("SELECT * FROM visita V INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +
+    @Query("SELECT *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna  " +
+            "FROM visita V " +
+            "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato = V.id_anexo_visita) " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = AC.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo) " +
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo) " +
@@ -470,11 +459,12 @@ public interface MyDao {
     int updateVisitasBack(int idCab);
 
 
-    @Query("SELECT * FROM visita V " +
+    @Query("SELECT *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna  " +
+            "FROM visita V " +
             "INNER JOIN anexo_contrato AC ON (AC.id_anexo_contrato  = V.id_anexo_visita)" +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = AC.id_agricultor_anexo)" +
             "LEFT  JOIN region ON (region.id_region = agricultor.region_agricultor)" +
-            "INNER JOIN comuna ON (comuna.id_comuna = agricultor.comuna_agricultor)" +
+            "INNER JOIN comuna C ON (C.id_comuna = agricultor.comuna_agricultor)" +
             "INNER JOIN especie ON (especie.id_especie = AC.id_especie_anexo)" +
             "INNER JOIN materiales M ON (M.id_variedad = AC.id_variedad_anexo)" +
             "INNER JOIN ficha_new  F ON (F.id_ficha_new = AC.id_ficha_contrato) " +
@@ -781,7 +771,7 @@ public interface MyDao {
 
     /* ANEXOS*/
 
-    @Query("SELECT  * " +
+    @Query("SELECT  * , C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna " +
             "FROM anexo_contrato " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
@@ -797,7 +787,7 @@ public interface MyDao {
     @Query("SELECT * FROM anexo_contrato WHERE id_anexo_contrato = :idAnexo ORDER BY anexo_contrato.num_anexo ASC ")
     AnexoContrato getAnexos(String idAnexo);
 
-    @Query("SELECT anexo_contrato.*,  agricultor.*, especie.*, materiales.*, F.*, C.id_api, P.*, lote.* " +
+    @Query("SELECT *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna " +
             "FROM anexo_contrato " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
@@ -811,7 +801,7 @@ public interface MyDao {
 
 
 
-    @Query("SELECT *, C.id_api as c_id_api, C.desc_comuna as c_desc_comuna " +
+    @Query("SELECT *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna " +
             "FROM anexo_contrato " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +

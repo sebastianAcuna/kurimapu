@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,13 +35,19 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.PrimeraPrioridadAdapter;
 import cl.smapdev.curimapu.clases.adapters.SitiosNoVisitadosAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
+import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.relaciones.SitiosNoVisitadosAnexos;
@@ -48,6 +57,7 @@ import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
+import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
@@ -86,6 +96,12 @@ public class FragmentPrincipal extends Fragment {
 
     private LinearLayout contenedor_botones;
 
+
+    private TextView lbl_muestra_subidas;
+    private ImageView  img_muestra_subidas;
+
+    private ConstraintLayout contenedor_botonera_subida;
+    private Button btn_subir_check;
 
 
     private Button btn_descargar;
@@ -177,6 +193,18 @@ public class FragmentPrincipal extends Fragment {
         lista_sitios_no_visitados = view.findViewById(R.id.lista_sitios_no_visitados);
         lista_primera_prioridad = view.findViewById(R.id.lista_primera_prioridad);
 
+        lbl_muestra_subidas = view.findViewById(R.id.lbl_muestra_subidas);
+        img_muestra_subidas = view.findViewById(R.id.img_muestra_subidas);
+        contenedor_botonera_subida = view.findViewById(R.id.contenedor_botonera_subida);
+        btn_subir_check = view.findViewById(R.id.btn_subir_check);
+
+
+
+        lbl_muestra_subidas.setOnClickListener(view1 -> ocultarBotoneraSubida());
+        img_muestra_subidas.setOnClickListener(view1 -> ocultarBotoneraSubida());
+
+
+        btn_subir_check.setOnClickListener(view1 -> preparaSubirChecklist());
 
         cargarToolbar();
 
@@ -251,6 +279,11 @@ public class FragmentPrincipal extends Fragment {
 
     }
 
+    void ocultarBotoneraSubida(){
+        contenedor_botonera_subida.setVisibility((contenedor_botonera_subida.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
+        img_muestra_subidas.setImageDrawable((contenedor_botonera_subida.getVisibility() == View.VISIBLE) ?  getResources().getDrawable(R.drawable.ic_expand_down) : getResources().getDrawable(R.drawable.ic_expand_up));
+    }
+
     void prepararVisitaAgrupada(int contadorVisitas){
         Visitas v= MainActivity.myAppDB.myDao().getVisitas(idVisitasSeleccionadas.get(contadorVisitas));
         subirVisita(v, null);
@@ -273,6 +306,61 @@ public class FragmentPrincipal extends Fragment {
         inflater.inflate(R.menu.menu_inicio, menu);
     }
 
+
+    public void preparaSubirChecklist(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<List<CheckListSiembra>> chkF = executorService.submit(()
+                -> MainActivity.myAppDB.DaoClSiembra()
+                .getClSiembraToSync());
+
+        try {
+            List<CheckListSiembra> chk = chkF.get();
+
+            if(chk.size() <= 0){
+                executorService.shutdown();
+                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                return;
+            }
+
+            CheckListRequest chkS = new CheckListRequest();
+
+            chkS.setCheckListSiembras( chk );
+            prepararSubir( chkS );
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void prepararSubir(CheckListRequest checkListRequest){
+
+        InternetStateClass mm = new InternetStateClass(activity, result -> {
+            if(!result){
+                Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
+                return;
+            }
+
+
+            ProgressDialog pd = new ProgressDialog(activity);
+            pd.setMessage("conectandose a internet, espere por favor");
+            pd.show();
+
+
+            if(pd.isShowing()){
+                pd.dismiss();
+            }
+
+            new CheckListSync( checkListRequest, requireActivity(), (state, message) -> {
+                if(state){
+                    Toasty.success(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+                }else{
+                    Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+                }
+            });
+
+        }, 1);
+        mm.execute();
+    }
 
     void prepararVisitas(){
         if(contenedor_botones == null){ return; }
@@ -305,7 +393,7 @@ public class FragmentPrincipal extends Fragment {
 
         ArrayList<Visitas> visitas1 = new ArrayList<>();
         int totalContadas = 0;
-        int cantidadAMostrar = 3;
+        int cantidadAMostrar = 2;
         for (final Visitas v2 : visitas) {
             visitas1.add(v2);
             if (visitas1.size() == cantidadAMostrar){

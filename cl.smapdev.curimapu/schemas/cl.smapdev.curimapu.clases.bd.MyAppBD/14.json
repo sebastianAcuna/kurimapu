@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 14,
-    "identityHash": "f8aadca5a64e7736075b78cf7b81ae66",
+    "identityHash": "98dbe8c92aebaafb9e6e62b43e042cd5",
     "entities": [
       {
         "tableName": "fotos",
@@ -472,7 +472,7 @@
       },
       {
         "tableName": "anexo_contrato",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` TEXT NOT NULL, `num_anexo` TEXT, `id_variedad_anexo` TEXT, `temporada_anexo` TEXT, `id_especie_anexo` TEXT, `id_agricultor_anexo` TEXT, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL, `id_potrero` INTEGER NOT NULL, `superficie` INTEGER NOT NULL, `ready_batch` TEXT, `sectorial_office` TEXT, `field_sag` TEXT, `rch` TEXT, `sag_register_number` TEXT, `has_contrato` TEXT, `has_gps` TEXT, `orden_multiplicacion` TEXT, `sowing_date` TEXT, `lines_female` TEXT, `lines_male` TEXT, `sl_female` TEXT, `sl_real_sowing_female` TEXT, `sl_male` TEXT, `sl_real_sowing_male` TEXT, `sl_line_increase` TEXT, `sl_real_sowing_increase_line` TEXT, `results_raw_kgs` TEXT, `results_clean_kgs` TEXT, `yield_kg_ha` TEXT, `linea_incremento` TEXT, `raw_kgs_lot_uno` TEXT, `raw_kgs_lot_dos` TEXT, `raw_kgs_lot_tres` TEXT, `raw_kgs_lot_cuatro` TEXT, `raw_kgs_lot_cinco` TEXT, `total_kgs_raw` TEXT, `clean_kgs_lot_uno` TEXT, `clean_kgs_lot_dos` TEXT, `clean_kgs_lot_tres` TEXT, `clean_kgs_lot_cuatro` TEXT, `clean_kgs_lot_cinco` TEXT, `total_clean_kgs` TEXT, `germination_lot_uno` TEXT, `germination_lot_dos` TEXT, `germination_lot_tres` TEXT, `germination_lot_cuatro` TEXT, `germination_lot_cinco` TEXT, `humidity_lot_uno` TEXT, `humidity_lot_dos` TEXT, `humidity_lot_tres` TEXT, `humidity_lot_cuatro` TEXT, `humidity_lot_cinco` TEXT, `tsw_lot_uno` TEXT, `tsw_lot_dos` TEXT, `tsw_lot_tres` TEXT, `tsw_lot_cuatro` TEXT, `tsw_lot_cinco` TEXT, `id_de_quo` TEXT, `ha_destruidas` TEXT, `destruido` TEXT, `condicion` TEXT, PRIMARY KEY(`id_anexo_contrato`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` TEXT NOT NULL, `num_anexo` TEXT, `id_variedad_anexo` TEXT, `temporada_anexo` TEXT, `id_especie_anexo` TEXT, `id_agricultor_anexo` TEXT, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL, `id_potrero` INTEGER NOT NULL, `superficie` INTEGER NOT NULL, `ready_batch` TEXT, `sectorial_office` TEXT, `field_sag` TEXT, `rch` TEXT, `sag_register_number` TEXT, `has_contrato` TEXT, `has_gps` TEXT, `orden_multiplicacion` TEXT, `sowing_date` TEXT, `lines_female` TEXT, `lines_male` TEXT, `sl_female` TEXT, `sl_real_sowing_female` TEXT, `sl_male` TEXT, `sl_real_sowing_male` TEXT, `sl_line_increase` TEXT, `sl_real_sowing_increase_line` TEXT, `results_raw_kgs` TEXT, `results_clean_kgs` TEXT, `yield_kg_ha` TEXT, `linea_incremento` TEXT, `raw_kgs_lot_uno` TEXT, `raw_kgs_lot_dos` TEXT, `raw_kgs_lot_tres` TEXT, `raw_kgs_lot_cuatro` TEXT, `raw_kgs_lot_cinco` TEXT, `total_kgs_raw` TEXT, `clean_kgs_lot_uno` TEXT, `clean_kgs_lot_dos` TEXT, `clean_kgs_lot_tres` TEXT, `clean_kgs_lot_cuatro` TEXT, `clean_kgs_lot_cinco` TEXT, `total_clean_kgs` TEXT, `germination_lot_uno` TEXT, `germination_lot_dos` TEXT, `germination_lot_tres` TEXT, `germination_lot_cuatro` TEXT, `germination_lot_cinco` TEXT, `humidity_lot_uno` TEXT, `humidity_lot_dos` TEXT, `humidity_lot_tres` TEXT, `humidity_lot_cuatro` TEXT, `humidity_lot_cinco` TEXT, `tsw_lot_uno` TEXT, `tsw_lot_dos` TEXT, `tsw_lot_tres` TEXT, `tsw_lot_cuatro` TEXT, `tsw_lot_cinco` TEXT, `id_de_quo` TEXT, `ha_destruidas` TEXT, `destruido` TEXT, `condicion` TEXT, `lote_cliente` TEXT, `sag_register_idase` TEXT, `objetivo_humedad_cosecha` TEXT, `humedad_recepcion` TEXT, `fecha_inicio_proceso_semilla_prelimipia` TEXT, `vigor` TEXT, `rendimiento_kg_ha` TEXT, `porcentaje_cumplimiento_target` TEXT, `porcentaje_conversion` TEXT, `xanthomonas` TEXT, `pseudomonas_syringae` TEXT, `pseudomonas_phaseolicola` TEXT, `evento_gmo_linea_hembra` TEXT, `resolucion_sag_hembra` TEXT, `evento_gmo_linea_macho` TEXT, `resolucion_sag_macho` TEXT, `nombre_potrero_sag` TEXT, `oecd` TEXT, `fecha_llegada_semilla_aeropuerto_scl` TEXT, `fecha_recepcion_semilla_curimapu` TEXT, `dia_desde_recepcion_hasta_siembra` TEXT, `base_cliente` TEXT, `base_agriculto` TEXT, PRIMARY KEY(`id_anexo_contrato`))",
         "fields": [
           {
             "fieldPath": "id_anexo_contrato",
@@ -845,6 +845,144 @@
             "columnName": "condicion",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "lote_cliente",
+            "columnName": "lote_cliente",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sag_register_idase",
+            "columnName": "sag_register_idase",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "objetivo_humedad_cosecha",
+            "columnName": "objetivo_humedad_cosecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "humedad_recepcion",
+            "columnName": "humedad_recepcion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_inicio_proceso_semilla_prelimipia",
+            "columnName": "fecha_inicio_proceso_semilla_prelimipia",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vigor",
+            "columnName": "vigor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rendimiento_kg_ha",
+            "columnName": "rendimiento_kg_ha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "porcentaje_cumplimiento_target",
+            "columnName": "porcentaje_cumplimiento_target",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "porcentaje_conversion",
+            "columnName": "porcentaje_conversion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "xanthomonas",
+            "columnName": "xanthomonas",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pseudomonas_syringae",
+            "columnName": "pseudomonas_syringae",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pseudomonas_phaseolicola",
+            "columnName": "pseudomonas_phaseolicola",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "evento_gmo_linea_hembra",
+            "columnName": "evento_gmo_linea_hembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "resolucion_sag_hembra",
+            "columnName": "resolucion_sag_hembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "evento_gmo_linea_macho",
+            "columnName": "evento_gmo_linea_macho",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "resolucion_sag_macho",
+            "columnName": "resolucion_sag_macho",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_potrero_sag",
+            "columnName": "nombre_potrero_sag",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "oecd",
+            "columnName": "oecd",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_llegada_semilla_aeropuerto_scl",
+            "columnName": "fecha_llegada_semilla_aeropuerto_scl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_recepcion_semilla_curimapu",
+            "columnName": "fecha_recepcion_semilla_curimapu",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dia_desde_recepcion_hasta_siembra",
+            "columnName": "dia_desde_recepcion_hasta_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "base_cliente",
+            "columnName": "base_cliente",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "base_agriculto",
+            "columnName": "base_agriculto",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -940,7 +1078,7 @@
       },
       {
         "tableName": "temp_visitas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` TEXT, `phenological_state_temp_visita` TEXT, `growth_status_temp_visita` TEXT, `weed_state_temp_visita` TEXT, `phytosanitary_state_temp_visita` TEXT, `harvest_temp_visita` TEXT, `overall_status_temp_visita` TEXT, `humidity_floor_temp_visita` TEXT, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT, `obs_fito` TEXT, `obs_creci` TEXT, `obs_maleza` TEXT, `obs_cosecha` TEXT, `obs_overall` TEXT, `obs_humedad` TEXT, `percent_humedad` REAL NOT NULL, `action_temp_visita` INTEGER NOT NULL, `etapa_temp_visitas` INTEGER NOT NULL, `id_visita_local` INTEGER NOT NULL, `id_dispo` INTEGER NOT NULL, `evaluacion` REAL NOT NULL, `comentario_evaluacion` TEXT, `id_evaluacion` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` TEXT, `phenological_state_temp_visita` TEXT, `growth_status_temp_visita` TEXT, `weed_state_temp_visita` TEXT, `phytosanitary_state_temp_visita` TEXT, `harvest_temp_visita` TEXT, `overall_status_temp_visita` TEXT, `humidity_floor_temp_visita` TEXT, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT, `obs_fito` TEXT, `obs_creci` TEXT, `obs_maleza` TEXT, `obs_cosecha` TEXT, `obs_overall` TEXT, `obs_humedad` TEXT, `percent_humedad` REAL NOT NULL, `action_temp_visita` INTEGER NOT NULL, `etapa_temp_visitas` INTEGER NOT NULL, `id_visita_local` INTEGER NOT NULL, `id_dispo` INTEGER NOT NULL, `evaluacion` REAL NOT NULL, `comentario_evaluacion` TEXT, `id_evaluacion` INTEGER NOT NULL, `fecha_estimada_cosecha` TEXT, `fecha_estimada_arranca` TEXT)",
         "fields": [
           {
             "fieldPath": "id_temp_visita",
@@ -1091,6 +1229,18 @@
             "columnName": "id_evaluacion",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "fecha_estimada_cosecha",
+            "columnName": "fecha_estimada_cosecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_estimada_arranca",
+            "columnName": "fecha_estimada_arranca",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -1290,7 +1440,7 @@
       },
       {
         "tableName": "visita",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_visita` TEXT, `phenological_state_visita` TEXT, `growth_status_visita` TEXT, `weed_state_visita` TEXT, `phytosanitary_state_visita` TEXT, `harvest_visita` TEXT, `overall_status_visita` TEXT, `humidity_floor_visita` TEXT, `observation_visita` TEXT, `recomendation_visita` TEXT, `estado_server_visitas` INTEGER NOT NULL, `estado_visita` INTEGER NOT NULL, `etapa_visitas` INTEGER NOT NULL, `fecha_visita` TEXT, `hora_visita` TEXT, `temporada` TEXT, `obs_fito` TEXT, `obs_creci` TEXT, `obs_maleza` TEXT, `obs_cosecha` TEXT, `obs_overall` TEXT, `obs_humedad` TEXT, `id_user_visita` INTEGER NOT NULL, `cabecera_visita` INTEGER NOT NULL, `porcentaje_humedad` REAL NOT NULL, `id_visita_local` INTEGER NOT NULL, `id_dispo` INTEGER NOT NULL, `tomadas` INTEGER NOT NULL, `evaluacion` REAL NOT NULL, `comentario_evaluacion` TEXT, `id_evaluacion` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_visita` TEXT, `phenological_state_visita` TEXT, `growth_status_visita` TEXT, `weed_state_visita` TEXT, `phytosanitary_state_visita` TEXT, `harvest_visita` TEXT, `overall_status_visita` TEXT, `humidity_floor_visita` TEXT, `observation_visita` TEXT, `recomendation_visita` TEXT, `estado_server_visitas` INTEGER NOT NULL, `estado_visita` INTEGER NOT NULL, `etapa_visitas` INTEGER NOT NULL, `fecha_visita` TEXT, `hora_visita` TEXT, `temporada` TEXT, `obs_fito` TEXT, `obs_creci` TEXT, `obs_maleza` TEXT, `obs_cosecha` TEXT, `obs_overall` TEXT, `obs_humedad` TEXT, `id_user_visita` INTEGER NOT NULL, `cabecera_visita` INTEGER NOT NULL, `porcentaje_humedad` REAL NOT NULL, `id_visita_local` INTEGER NOT NULL, `id_dispo` INTEGER NOT NULL, `tomadas` INTEGER NOT NULL, `evaluacion` REAL NOT NULL, `comentario_evaluacion` TEXT, `id_evaluacion` INTEGER NOT NULL, `fecha_estimada_cosecha` TEXT, `fecha_estimada_arranca` TEXT)",
         "fields": [
           {
             "fieldPath": "id_visita",
@@ -1483,6 +1633,18 @@
             "columnName": "id_evaluacion",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "fecha_estimada_cosecha",
+            "columnName": "fecha_estimada_cosecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_estimada_arranca",
+            "columnName": "fecha_estimada_arranca",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -3516,7 +3678,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f8aadca5a64e7736075b78cf7b81ae66')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '98dbe8c92aebaafb9e6e62b43e042cd5')"
     ]
   }
 }
