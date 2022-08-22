@@ -315,7 +315,7 @@ public class FragmentListVisits extends Fragment {
 
             try {
                 AnexoCompleto anexoCompleto = anexoCompletoFuture.get();
-                if(anexoCompleto.getComuna() != null && anexoCompleto.getComuna().getId_api() != null ){
+                if(anexoCompleto != null && anexoCompleto.getComuna() != null && anexoCompleto.getComuna().getId_api() != null ){
 
                     lbl_titulo_comuna.setText(anexoCompleto.getComuna().getDesc_comuna());
 

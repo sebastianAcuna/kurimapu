@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 14,
-    "identityHash": "98dbe8c92aebaafb9e6e62b43e042cd5",
+    "identityHash": "c5a978f8732278011ddb047c69d9f2ca",
     "entities": [
       {
         "tableName": "fotos",
@@ -472,7 +472,7 @@
       },
       {
         "tableName": "anexo_contrato",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` TEXT NOT NULL, `num_anexo` TEXT, `id_variedad_anexo` TEXT, `temporada_anexo` TEXT, `id_especie_anexo` TEXT, `id_agricultor_anexo` TEXT, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL, `id_potrero` INTEGER NOT NULL, `superficie` INTEGER NOT NULL, `ready_batch` TEXT, `sectorial_office` TEXT, `field_sag` TEXT, `rch` TEXT, `sag_register_number` TEXT, `has_contrato` TEXT, `has_gps` TEXT, `orden_multiplicacion` TEXT, `sowing_date` TEXT, `lines_female` TEXT, `lines_male` TEXT, `sl_female` TEXT, `sl_real_sowing_female` TEXT, `sl_male` TEXT, `sl_real_sowing_male` TEXT, `sl_line_increase` TEXT, `sl_real_sowing_increase_line` TEXT, `results_raw_kgs` TEXT, `results_clean_kgs` TEXT, `yield_kg_ha` TEXT, `linea_incremento` TEXT, `raw_kgs_lot_uno` TEXT, `raw_kgs_lot_dos` TEXT, `raw_kgs_lot_tres` TEXT, `raw_kgs_lot_cuatro` TEXT, `raw_kgs_lot_cinco` TEXT, `total_kgs_raw` TEXT, `clean_kgs_lot_uno` TEXT, `clean_kgs_lot_dos` TEXT, `clean_kgs_lot_tres` TEXT, `clean_kgs_lot_cuatro` TEXT, `clean_kgs_lot_cinco` TEXT, `total_clean_kgs` TEXT, `germination_lot_uno` TEXT, `germination_lot_dos` TEXT, `germination_lot_tres` TEXT, `germination_lot_cuatro` TEXT, `germination_lot_cinco` TEXT, `humidity_lot_uno` TEXT, `humidity_lot_dos` TEXT, `humidity_lot_tres` TEXT, `humidity_lot_cuatro` TEXT, `humidity_lot_cinco` TEXT, `tsw_lot_uno` TEXT, `tsw_lot_dos` TEXT, `tsw_lot_tres` TEXT, `tsw_lot_cuatro` TEXT, `tsw_lot_cinco` TEXT, `id_de_quo` TEXT, `ha_destruidas` TEXT, `destruido` TEXT, `condicion` TEXT, `lote_cliente` TEXT, `sag_register_idase` TEXT, `objetivo_humedad_cosecha` TEXT, `humedad_recepcion` TEXT, `fecha_inicio_proceso_semilla_prelimipia` TEXT, `vigor` TEXT, `rendimiento_kg_ha` TEXT, `porcentaje_cumplimiento_target` TEXT, `porcentaje_conversion` TEXT, `xanthomonas` TEXT, `pseudomonas_syringae` TEXT, `pseudomonas_phaseolicola` TEXT, `evento_gmo_linea_hembra` TEXT, `resolucion_sag_hembra` TEXT, `evento_gmo_linea_macho` TEXT, `resolucion_sag_macho` TEXT, `nombre_potrero_sag` TEXT, `oecd` TEXT, `fecha_llegada_semilla_aeropuerto_scl` TEXT, `fecha_recepcion_semilla_curimapu` TEXT, `dia_desde_recepcion_hasta_siembra` TEXT, `base_cliente` TEXT, `base_agriculto` TEXT, PRIMARY KEY(`id_anexo_contrato`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_anexo_contrato` TEXT NOT NULL, `num_anexo` TEXT, `id_variedad_anexo` TEXT, `temporada_anexo` TEXT, `id_especie_anexo` TEXT, `id_agricultor_anexo` TEXT, `protero` TEXT, `id_ficha_contrato` INTEGER NOT NULL, `id_potrero` INTEGER NOT NULL, `superficie` INTEGER NOT NULL, `ready_batch` TEXT, `sectorial_office` TEXT, `field_sag` TEXT, `rch` TEXT, `sag_register_number` TEXT, `has_contrato` TEXT, `has_gps` TEXT, `orden_multiplicacion` TEXT, `sowing_date` TEXT, `lines_female` TEXT, `lines_male` TEXT, `sl_female` TEXT, `sl_real_sowing_female` TEXT, `sl_male` TEXT, `sl_real_sowing_male` TEXT, `sl_line_increase` TEXT, `sl_real_sowing_increase_line` TEXT, `results_raw_kgs` TEXT, `results_clean_kgs` TEXT, `yield_kg_ha` TEXT, `linea_incremento` TEXT, `raw_kgs_lot_uno` TEXT, `raw_kgs_lot_dos` TEXT, `raw_kgs_lot_tres` TEXT, `raw_kgs_lot_cuatro` TEXT, `raw_kgs_lot_cinco` TEXT, `total_kgs_raw` TEXT, `clean_kgs_lot_uno` TEXT, `clean_kgs_lot_dos` TEXT, `clean_kgs_lot_tres` TEXT, `clean_kgs_lot_cuatro` TEXT, `clean_kgs_lot_cinco` TEXT, `total_clean_kgs` TEXT, `germination_lot_uno` TEXT, `germination_lot_dos` TEXT, `germination_lot_tres` TEXT, `germination_lot_cuatro` TEXT, `germination_lot_cinco` TEXT, `humidity_lot_uno` TEXT, `humidity_lot_dos` TEXT, `humidity_lot_tres` TEXT, `humidity_lot_cuatro` TEXT, `humidity_lot_cinco` TEXT, `tsw_lot_uno` TEXT, `tsw_lot_dos` TEXT, `tsw_lot_tres` TEXT, `tsw_lot_cuatro` TEXT, `tsw_lot_cinco` TEXT, `id_de_quo` TEXT, `ha_destruidas` TEXT, `destruido` TEXT, `condicion` TEXT, `lote_cliente` TEXT, `sag_register_idase` TEXT, `objetivo_humedad_cosecha` TEXT, `humedad_recepcion` TEXT, `fecha_inicio_proceso_semilla_prelimipia` TEXT, `vigor` TEXT, `rendimiento_kg_ha` TEXT, `porcentaje_cumplimiento_target` TEXT, `porcentaje_conversion` TEXT, `xanthomonas` TEXT, `pseudomonas_syringae` TEXT, `pseudomonas_phaseolicola` TEXT, `evento_gmo_linea_hembra` TEXT, `resolucion_sag_hembra` TEXT, `evento_gmo_linea_macho` TEXT, `resolucion_sag_macho` TEXT, `nombre_potrero_sag` TEXT, `oecd` TEXT, `fecha_llegada_semilla_aeropuerto_scl` TEXT, `fecha_recepcion_semilla_curimapu` TEXT, `dia_desde_recepcion_hasta_siembra` TEXT, `base_cliente` TEXT, `base_agricultor` TEXT, PRIMARY KEY(`id_anexo_contrato`))",
         "fields": [
           {
             "fieldPath": "id_anexo_contrato",
@@ -979,8 +979,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "base_agriculto",
-            "columnName": "base_agriculto",
+            "fieldPath": "base_agricultor",
+            "columnName": "base_agricultor",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -3678,7 +3678,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '98dbe8c92aebaafb9e6e62b43e042cd5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c5a978f8732278011ddb047c69d9f2ca')"
     ]
   }
 }

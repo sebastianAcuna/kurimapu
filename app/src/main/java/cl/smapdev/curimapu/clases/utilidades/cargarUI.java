@@ -147,8 +147,8 @@ public class cargarUI {
 
         for (pro_cli_mat fs : list) {
             boolean eslista  = false;
-            String nombre = (ss.equals("eng")) ? fs.getNombre_en() : fs.getNombre_es();
-            String nombreElemento = (ss.equals("eng")) ? fs.getNombre_elemento_en() : fs.getNombre_elemento_es();
+            String nombre =  fs.getNombre_es() + "\n(" +fs.getNombre_en() + ")";
+            String nombreElemento = fs.getNombre_elemento_es()+"\n("+fs.getNombre_elemento_en()+")";
 
             if (!titulosUsados.contains(nombre)) {
 

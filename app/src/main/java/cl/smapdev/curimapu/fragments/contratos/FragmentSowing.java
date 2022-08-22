@@ -938,13 +938,6 @@ public class FragmentSowing extends Fragment {
                     public void onClick(View v) {
 
                         boolean vacio = false;
-//                        if (editTextsView.size() > 0) {
-//                            for (int i = 0; i < editTextsView.size(); i++) {
-//                                if (TextUtils.isEmpty(editTextsView.get(i).getText().toString())){
-//                                    vacio = true;
-//                                }
-//                            }
-//                        }
 
                         if (!vacio){
                             if (editTextsView.size() > 0) {

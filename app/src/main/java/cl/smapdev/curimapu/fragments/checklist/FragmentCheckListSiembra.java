@@ -1614,7 +1614,7 @@ public class FragmentCheckListSiembra extends Fragment {
 
         if(!et_responsable_revision_limpieza_ingreso.getText().toString().isEmpty()){
             String responsableRevisionLimpieza = et_responsable_revision_limpieza_ingreso.getText().toString();
-            siembra.setEncargado_revision_limpieza_post_siembra(responsableRevisionLimpieza);
+            siembra.setResponsable_revision_limpieza_pre_siembra(responsableRevisionLimpieza);
         }
         //firma
 

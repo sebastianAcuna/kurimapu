@@ -146,12 +146,12 @@ public class FragmentCheckList extends Fragment {
 
         List<CheckLists> checkLists = new ArrayList<>();
 
-        CheckLists capacitacionSiembra = new CheckLists();
-        capacitacionSiembra.setDescCheckList("CAPACITACION SIEMBRA");
-        capacitacionSiembra.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-        capacitacionSiembra.setExpanded(false);
-        capacitacionSiembra.setDetails(Collections.emptyList());
-        capacitacionSiembra.setTipoCheckList(5);
+//        CheckLists capacitacionSiembra = new CheckLists();
+//        capacitacionSiembra.setDescCheckList("CAPACITACION SIEMBRA");
+//        capacitacionSiembra.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+//        capacitacionSiembra.setExpanded(false);
+//        capacitacionSiembra.setDetails(Collections.emptyList());
+//        capacitacionSiembra.setTipoCheckList(5);
 
 
         CheckLists checkListSiembra = new CheckLists();
@@ -189,7 +189,7 @@ public class FragmentCheckList extends Fragment {
 
         ex.shutdown();
 
-        checkLists.add(capacitacionSiembra);
+//        checkLists.add(capacitacionSiembra);
         checkLists.add(checkListSiembra);
 
 

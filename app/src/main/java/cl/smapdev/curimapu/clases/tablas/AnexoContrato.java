@@ -281,8 +281,8 @@ public class AnexoContrato {
     @SerializedName("base_cliente")
     public String base_cliente;
 
-    @SerializedName("base_agriculto")
-    public String base_agriculto;
+    @SerializedName("base_agricultor")
+    public String base_agricultor;
 
 
     public String getSag_register_idase() {
@@ -453,12 +453,12 @@ public class AnexoContrato {
         this.base_cliente = base_cliente;
     }
 
-    public String getBase_agriculto() {
-        return base_agriculto;
+    public String getBase_agricultor() {
+        return base_agricultor;
     }
 
     public void setBase_agriculto(String base_agriculto) {
-        this.base_agriculto = base_agriculto;
+        this.base_agricultor = base_agriculto;
     }
 
     public String getLote_cliente() {

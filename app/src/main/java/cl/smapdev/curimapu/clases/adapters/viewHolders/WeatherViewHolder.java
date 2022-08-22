@@ -54,21 +54,21 @@ public class WeatherViewHolder extends RecyclerView.ViewHolder {
 
 
         String year = "";
-        int month = 0;
-        int day = 0;
+        String month = "";
+        String day = "";
         String fecha = "";
 
         if(!weatherApi.getDate().isEmpty()){
 
             year = weatherApi.getDate().substring(0, 4);
-            month = Integer.parseInt(weatherApi.getDate().substring(5, 6));
-            day = Integer.parseInt(weatherApi.getDate().substring(7, 8));
+            month = weatherApi.getDate().substring(4, 6);
+            day = weatherApi.getDate().substring(6, 8);
 
 
-           String newMonth = (month < 10) ? "0" + month : month+"";
-           String newDay = (day < 10) ? "0" + day : day+"";
+//           String newMonth =  month;
+//           String newDay = (day < 10) ? "0" + day : day+"";
 
-            fecha = newDay + "/" + newMonth + "/" + year;
+            fecha = day + "/" + month + "/" + year;
         }
 
 
