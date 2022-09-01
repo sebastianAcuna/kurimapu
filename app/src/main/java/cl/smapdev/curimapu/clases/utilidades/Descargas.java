@@ -25,6 +25,7 @@ import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
+import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
@@ -302,16 +303,33 @@ public class Descargas {
                 }
 
                 if (gsonDescargas.getEvaluaciones() != null && gsonDescargas.getEvaluaciones().size() > 0){
-                    try {
+                    ExecutorService ex = Executors.newSingleThreadExecutor();
+                    for (Evaluaciones ck : gsonDescargas.getEvaluaciones()){
 
-                        MainActivity.myAppDB.DaoEvaluaciones().deleteAllEvaluaciones();
-                        MainActivity.myAppDB.DaoEvaluaciones().insertEvaluaciones(gsonDescargas.getEvaluaciones());
+                        Future<Evaluaciones> chkF = ex.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByClaveUnica(ck.getClave_unica_recomendacion()));
 
-                    }catch (SQLiteException e) {
-                        Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
-                        Log.e("SQLITE", e.getMessage());
-                        problema[0] = true;
+
+                        try {
+                            Evaluaciones chk  = chkF.get();
+
+                            //update
+                            if(chk != null){
+                                ck.setId_ac_recom(chk.getId_ac_recom());
+                                ex.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().updateEvaluaciones(ck)).get();
+                            }
+                            else{
+                                //insert
+                                ex.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().insertEvaluaciones(ck));
+                            }
+
+
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
                     }
+
+                    ex.shutdown();
                 }else{
                     MainActivity.myAppDB.myDao().deleteCrops();
                 }

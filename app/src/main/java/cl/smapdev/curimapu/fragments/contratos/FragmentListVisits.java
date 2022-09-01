@@ -117,30 +117,30 @@ public class FragmentListVisits extends Fragment {
         return inflater.inflate(R.layout.fragment_lista_visitas, container, false);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_visitas, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_visitas_recom:
-                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-                Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
-                if(prev != null){
-                    ft.remove(prev);
-                }
-
-                DialogObservationTodo dialogo = DialogObservationTodo.newInstance(anexoContrato, null, null , (TempVisitas tm)->{});
-                dialogo.show(ft, "EVALUACION_RECOMENDACION");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        menu.clear();
+//        inflater.inflate(R.menu.menu_visitas, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.menu_visitas_recom:
+//                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+//                Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
+//                if(prev != null){
+//                    ft.remove(prev);
+//                }
+//
+//                DialogObservationTodo dialogo = DialogObservationTodo.newInstance(anexoContrato, null, null , (TempVisitas tm)->{});
+//                dialogo.show(ft, "EVALUACION_RECOMENDACION");
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
 
     @Override
@@ -156,7 +156,7 @@ public class FragmentListVisits extends Fragment {
         lbl_titulo_comuna = view.findViewById(R.id.lbl_titulo_comuna);
 
 
-        setHasOptionsMenu(true);
+//        setHasOptionsMenu(true);
 
         cargarListaGrande();
 

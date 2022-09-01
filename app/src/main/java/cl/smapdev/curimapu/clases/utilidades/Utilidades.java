@@ -76,8 +76,8 @@ public class Utilidades {
 //    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
 //    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
 
-//    public static final String IP_PRODUCCION = "192.168.1.17";
-    public static final String IP_PRODUCCION = "www.zcloud.cl";
+    public static final String IP_PRODUCCION = "192.168.1.42";
+//    public static final String IP_PRODUCCION = "www.zcloud.cl";
 //    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_PRUEBAS = "190.13.170.26";

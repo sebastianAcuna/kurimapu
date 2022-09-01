@@ -46,9 +46,11 @@ import cl.smapdev.curimapu.clases.adapters.PrimeraPrioridadAdapter;
 import cl.smapdev.curimapu.clases.adapters.SitiosNoVisitadosAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.modelo.CheckListSync;
+import cl.smapdev.curimapu.clases.modelo.RecomendacionesSync;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
+import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.relaciones.SitiosNoVisitadosAnexos;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
@@ -101,7 +103,7 @@ public class FragmentPrincipal extends Fragment {
     private ImageView  img_muestra_subidas;
 
     private ConstraintLayout contenedor_botonera_subida;
-    private Button btn_subir_check;
+    private Button btn_subir_check, btn_subir_recomendaciones;
 
 
     private Button btn_descargar;
@@ -197,6 +199,7 @@ public class FragmentPrincipal extends Fragment {
         img_muestra_subidas = view.findViewById(R.id.img_muestra_subidas);
         contenedor_botonera_subida = view.findViewById(R.id.contenedor_botonera_subida);
         btn_subir_check = view.findViewById(R.id.btn_subir_check);
+        btn_subir_recomendaciones = view.findViewById(R.id.btn_subir_recomendaciones);
 
 
 
@@ -204,6 +207,7 @@ public class FragmentPrincipal extends Fragment {
         img_muestra_subidas.setOnClickListener(view1 -> ocultarBotoneraSubida());
 
 
+        btn_subir_recomendaciones.setOnClickListener(view1 -> preparaSubirRecomendaciones());
         btn_subir_check.setOnClickListener(view1 -> preparaSubirChecklist());
 
         cargarToolbar();
@@ -306,6 +310,61 @@ public class FragmentPrincipal extends Fragment {
         inflater.inflate(R.menu.menu_inicio, menu);
     }
 
+
+    public void preparaSubirRecomendaciones(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<List<Evaluaciones>> chkF = executorService.submit(()
+                -> MainActivity.myAppDB.DaoEvaluaciones()
+                .getEvaluacionesPendientesSync());
+
+        try {
+            List<Evaluaciones> chk = chkF.get();
+
+            if(chk.size() <= 0){
+                executorService.shutdown();
+//                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                return;
+            }
+
+            RecomendacionesRequest chkS = new RecomendacionesRequest();
+
+            chkS.setEvaluacionesList(chk);
+            prepararSubirRecomendaciones( chkS );
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void prepararSubirRecomendaciones( RecomendacionesRequest recomendacionesRequest){
+        InternetStateClass mm = new InternetStateClass(activity, result -> {
+            if(!result){
+                Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
+                return;
+            }
+
+
+            ProgressDialog pd = new ProgressDialog(activity);
+            pd.setMessage("conectandose a internet, espere por favor");
+            pd.show();
+
+
+            if(pd.isShowing()){
+                pd.dismiss();
+            }
+
+            new RecomendacionesSync( recomendacionesRequest, requireActivity(), (state, message) -> {
+                if(state){
+                    Toasty.success(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+                }else{
+                    Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+                }
+            });
+
+        }, 1);
+        mm.execute();
+    }
 
     public void preparaSubirChecklist(){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -552,7 +611,6 @@ public class FragmentPrincipal extends Fragment {
             MainActivity.myAppDB.myDao().updateVisitasSubidasTomadasBack();
             MainActivity.myAppDB.myDao().updateDetalleSubidasTomadasBack();
             MainActivity.myAppDB.myDao().updateFotosSubidasTomadasBack();
-            MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesTomadasBack();
 
 
             int cantidadSuma = 0;
@@ -560,7 +618,6 @@ public class FragmentPrincipal extends Fragment {
 
             List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubirLimit(v.getId_visita());
             List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosLimit(v.getId_visita());
-            List<Evaluaciones> evaluaciones = MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByAC(Integer.parseInt(v.getId_anexo_visita()));
 
 
             visitas.add(v);
@@ -608,7 +665,6 @@ public class FragmentPrincipal extends Fragment {
             list.setDetalle_visita_props(detalles);
             list.setFotosList(fts);
             list.setId_dispo(config.getId());
-            list.setEvaluaciones(evaluaciones);
             list.setId_usuario(config.getId_usuario());
             list.setCantidadSuma(cantidadSuma);
             list.setVersion(Utilidades.APPLICATION_VERSION);
@@ -708,7 +764,6 @@ public class FragmentPrincipal extends Fragment {
                                     }
                                     int detalles = MainActivity.myAppDB.myDao().updateDetalleVisitaSubidasTomadas(re.getCabeceraRespuesta());
                                     int fotos = MainActivity.myAppDB.myDao().updateFotosSubidasTomada(re.getCabeceraRespuesta());
-                                    int evaluaciones = MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesSubidasTomada(re.getCabeceraRespuesta());
 
                                     if (respuesta[0] == 2) {
 
@@ -734,6 +789,8 @@ public class FragmentPrincipal extends Fragment {
                                                 btn_sube_marcadas.setVisibility(View.INVISIBLE);
                                             if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
                                         }
+
+                                        preparaSubirRecomendaciones();
                                         Toasty.success(activity, "Se subio La visita con exito", Toast.LENGTH_SHORT, true).show();
                                     }
                                     break;
@@ -877,7 +934,7 @@ public class FragmentPrincipal extends Fragment {
                         anexo = true;
                         for (VisitaDetalle vd : getVisitaDetalle){
                             if (
-                                    (vd.getPro_cli_mat() != null && vd.getPro_cli_mat().getId_sub_propiedad_pcm() == 101) &&
+                                    (vd.getPro_cli_mat() != null && vd.getPro_cli_mat().getMarca_sitios_no_visitados() == 1) &&
                                             (vd.getDetalle_visita_prop() != null && vd.getDetalle_visita_prop().getValor_detalle().equals(""))
                             ) {
                                 anexoParaFechaHarvest.add(Integer.parseInt(vd.visitas.getId_anexo_visita()));
@@ -893,10 +950,7 @@ public class FragmentPrincipal extends Fragment {
                             for (Visitas nel : laVisita){
                                 anexo1 = true;
                                 anexoPasando.add(Integer.parseInt(nel.getId_anexo_visita()));
-                                if((fechaHarvest.size() > 0 && anexoParaFechaHarvest.size() > 0) && !fechaHarvest.get(anexoParaFechaHarvest.indexOf(Integer.parseInt(nel.getId_anexo_visita()))).equals("")){
-
-                                    fechaAnexo.add(fechaHarvest.get(anexoParaFechaHarvest.indexOf(Integer.parseInt(nel.getId_anexo_visita()))));
-                                }else{
+                                if(fechaHarvest.size() >= 0 ){
                                     fechaAnexo.add(nel.getFecha_visita());
                                 }
                             }

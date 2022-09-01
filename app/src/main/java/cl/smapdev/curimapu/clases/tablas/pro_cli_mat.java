@@ -58,9 +58,20 @@ public class pro_cli_mat {
     private String campo;
 
 
+    @SerializedName("marca_sitios_no_visitados")
+    private int marca_sitios_no_visitados;
+
     @SerializedName("id_sub_propiedad_pcm")
     private int id_sub_propiedad_pcm;
 
+
+    public int getMarca_sitios_no_visitados() {
+        return marca_sitios_no_visitados;
+    }
+
+    public void setMarca_sitios_no_visitados(int marca_sitios_no_visitados) {
+        this.marca_sitios_no_visitados = marca_sitios_no_visitados;
+    }
 
     public int getId_sub_propiedad_pcm() {
         return id_sub_propiedad_pcm;

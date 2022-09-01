@@ -50,6 +50,9 @@ public class TempVisitas {
 
     private  int id_evaluacion;
 
+
+    private String clave_unica_visita;
+
     @SerializedName("fecha_estimada_cosecha")
     @Expose
     private String fecha_estimada_cosecha;
@@ -60,6 +63,14 @@ public class TempVisitas {
     @Expose
     private String fecha_estimada_arranca;
 
+
+    public String getClave_unica_visita() {
+        return clave_unica_visita;
+    }
+
+    public void setClave_unica_visita(String clave_unica_visita) {
+        this.clave_unica_visita = clave_unica_visita;
+    }
 
     public String getFecha_estimada_cosecha() {
         return fecha_estimada_cosecha;

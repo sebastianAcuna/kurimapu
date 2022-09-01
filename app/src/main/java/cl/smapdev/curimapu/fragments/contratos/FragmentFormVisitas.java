@@ -71,6 +71,7 @@ import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Config;
+import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
@@ -808,9 +809,15 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         ExecutorService exec = Executors.newSingleThreadExecutor();
 
         Future<VisitasCompletas> visitasCompletasFuture = exec.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
-
+        Future<List<Evaluaciones>> evas = exec.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByACObliga(Integer.parseInt(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""))));
         try {
             VisitasCompletas cc = visitasCompletasFuture.get();
+            List<Evaluaciones> evs = evas.get();
+
+            if(evs.size() <= 0){
+                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes agregar una recomendacion para esta visita.", "entiendo");
+                return;
+            }
 
             if((temp_visitas.getEvaluacion() <= 0.0 || temp_visitas.getComentario_evaluacion().isEmpty()) && cc != null && cc.getVisitas() != null){
                 Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes realizar la evaluacion de la visita anterior", "entiendo");
@@ -930,6 +937,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
          visitas.setHora_visita(fechaHora[1]);
          visitas.setFecha_visita(fechaHora[0]);
 
+         visitas.setClave_unica_visita(temp_visitas.getClave_unica_visita());
+
          long idVisita = 0;
 
          if (prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0)  > 0 ){
@@ -943,6 +952,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
              idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
          }
 
+         MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesObligadas(Integer.parseInt(an.getId_anexo_contrato()));
          MainActivity.myAppDB.myDao().updateFotosWithVisita((int) idVisita, temp_visitas.getId_anexo_temp_visita());
          MainActivity.myAppDB.myDao().updateDetallesToVisits((int) idVisita);
 
@@ -974,6 +984,13 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 if (prefs != null){
                     temp_visitas.setId_anexo_temp_visita(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                     temp_visitas.setId_temp_visita(0);
+
+                    String claveUnica = prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")
+                            +""+Utilidades.fechaActualConHora()
+                            .replaceAll(" ", "")
+                            .replaceAll("-", "")
+                            .replaceAll(":", "");
+                    temp_visitas.setClave_unica_visita(claveUnica);
                 }
                 MainActivity.myAppDB.myDao().setTempVisitas(temp_visitas);
                 temp_visitas = MainActivity.myAppDB.myDao().getTempFichas();

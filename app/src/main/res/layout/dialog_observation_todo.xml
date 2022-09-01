@@ -41,7 +41,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
+android:visibility="gone"
             android:id="@+id/cl_evaluacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -206,7 +206,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="gone"
+            android:visibility="visible"
         android:id="@+id/cl_recomendacion"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -255,10 +255,13 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 app:layout_constraintTop_toBottomOf="@id/cont_nueva_recom"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_add_recom"
-                style="@style/input_date_forms"
+                android:drawableStart="@drawable/ic_date_range"
+                android:drawableTint="?colorSecondaryVariant"
+                android:windowSoftInputMode="stateHidden"
                 android:layout_width="0dp"
                 android:inputType="date"
                 android:maxLength="10"
+                android:layout_marginHorizontal="@dimen/padding"
                 android:layout_height="wrap_content"
                 />
 

@@ -12,6 +12,7 @@ import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.CheckListAdapter;
 import cl.smapdev.curimapu.clases.adapters.NestedCheckListAdapter;
 import cl.smapdev.curimapu.clases.tablas.CheckListDetails;
+import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class NestedCheckListViewHolder extends RecyclerView.ViewHolder {
 
@@ -38,6 +39,10 @@ public class NestedCheckListViewHolder extends RecyclerView.ViewHolder {
                      NestedCheckListAdapter.OnClickListener onclickSubir ) {
 
 
+        if(nestedChecklist.getTipo_documento() == Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA){
+            btn_subir_check.setVisibility(View.GONE);
+            btn_editar.setVisibility(View.GONE);
+        }
 
         if(nestedChecklist.isUploaded()){
             btn_subir_check.setColorFilter(view.getContext().getColor(R.color.colorGreen));

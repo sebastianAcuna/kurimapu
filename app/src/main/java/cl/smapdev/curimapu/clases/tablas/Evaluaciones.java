@@ -16,6 +16,17 @@ public class Evaluaciones {
     @SerializedName("id_ac")
     @Expose
     private int id_ac;
+
+
+    @SerializedName("clave_unica")
+    @Expose
+    private String clave_unica_recomendacion;
+
+
+    @SerializedName("clave_unica_visita")
+    @Expose
+    private String clave_unica_visita;
+
     @SerializedName("descripcion_recom")
     @Expose
     private String descripcion_recom;
@@ -59,6 +70,34 @@ public class Evaluaciones {
     @Expose
     private int marca_evaluacion_server;
 
+    @SerializedName("obliga_visita")
+    @Expose
+    private  int obliga_visita;
+
+
+    public String getClave_unica_visita() {
+        return clave_unica_visita;
+    }
+
+    public void setClave_unica_visita(String clave_unica_visita) {
+        this.clave_unica_visita = clave_unica_visita;
+    }
+
+    public int getObliga_visita() {
+        return obliga_visita;
+    }
+
+    public void setObliga_visita(int obliga_visita) {
+        this.obliga_visita = obliga_visita;
+    }
+
+    public String getClave_unica_recomendacion() {
+        return clave_unica_recomendacion;
+    }
+
+    public void setClave_unica_recomendacion(String clave_unica_recomendacion) {
+        this.clave_unica_recomendacion = clave_unica_recomendacion;
+    }
 
     public int getMarca_evaluacion_server() {
         return marca_evaluacion_server;

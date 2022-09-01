@@ -11,6 +11,7 @@ import cl.smapdev.curimapu.clases.bd.daos.MyDao;
 import cl.smapdev.curimapu.clases.tablas.AgrPredTemp;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
+import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Config;
@@ -54,7 +55,7 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         Visitas.class, CropRotation.class, pro_cli_mat.class, Temporada.class, detalle_visita_prop.class, Provincia.class, Errores.class,
         Lotes.class, Predios.class, TipoRiego.class, TipoSuelo.class, Maquinaria.class, TipoTenenciaMaquinaria.class, TipoTenenciaTerreno.class,
         FichaMaquinaria.class, Clientes.class, CardViewsResumen.class, cli_pcm.class, quotation.class, FotosFichas.class, AgrPredTemp.class, FichasNew.class,
-        AnexoCorreoFechas.class, Evaluaciones.class, CheckListSiembra.class, TempFirmas.class
+        AnexoCorreoFechas.class, Evaluaciones.class, CheckListSiembra.class, TempFirmas.class, CheckListCosecha.class
         }, version = 14)
 public abstract class MyAppBD extends RoomDatabase {
         public abstract MyDao myDao();

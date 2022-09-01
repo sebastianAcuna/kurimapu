@@ -2,6 +2,7 @@ package cl.smapdev.curimapu.clases.retrofit;
 
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
+import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
 import cl.smapdev.curimapu.clases.relaciones.SubirFechasRetro;
@@ -31,6 +32,8 @@ public interface ApiService {
     Call<Respuesta> subirCheckList(@Body CheckListRequest checkListRequest);
 
 
+    @POST("subir_recomendaciones.php")
+    Call<Respuesta> subirRecomendaciones(@Body RecomendacionesRequest recomendacionesRequest);
 
     @POST("comprobar_servidor.php")
     Call<Respuesta> comprobarServidor(@Body SubidaDatos subidaDatos);

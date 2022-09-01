@@ -146,18 +146,33 @@ public class FragmentCheckList extends Fragment {
 
         List<CheckLists> checkLists = new ArrayList<>();
 
-//        CheckLists capacitacionSiembra = new CheckLists();
-//        capacitacionSiembra.setDescCheckList("CAPACITACION SIEMBRA");
-//        capacitacionSiembra.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-//        capacitacionSiembra.setExpanded(false);
-//        capacitacionSiembra.setDetails(Collections.emptyList());
-//        capacitacionSiembra.setTipoCheckList(5);
+
+        CheckLists capacitacionSiembra = new CheckLists();
+        capacitacionSiembra.setDescCheckList("CAPACITACION SIEMBRA");
+        capacitacionSiembra.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+        capacitacionSiembra.setExpanded(false);
+
+        CheckListDetails tmpCap = new CheckListDetails();
+        List<CheckListDetails> chklist = new ArrayList<>();
+        tmpCap.setDescription("CHARLA 5 MIN");
+        tmpCap.setUploaded(true);
+        tmpCap.setId(1);
+        tmpCap.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+        tmpCap.setEstado(1);
+        tmpCap.setClave_unica("capacitacion_siembra.pdf");
+        tmpCap.setDescEstado("SIN ESTADO");
+        tmpCap.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA);
+        chklist.add(tmpCap);
+        capacitacionSiembra.setDetails(chklist);
+        capacitacionSiembra.setTipoCheckList(Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA);
+
 
 
         CheckLists checkListSiembra = new CheckLists();
         checkListSiembra.setDescCheckList("CHECK LIST SIEMBRA");
         checkListSiembra.setIdAnexo(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
         checkListSiembra.setExpanded(false);
+        checkListSiembra.setTipoCheckList(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA);
 
         List<CheckListSiembra> clSiembras;
         Future<List<CheckListSiembra>> clSiembraFuture = ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().getAllClSiembraByAc(checkListSiembra.getIdAnexo()));
@@ -174,6 +189,7 @@ public class FragmentCheckList extends Fragment {
                     tmp.setIdAnexo(clSiembra.getId_ac_cl_siembra());
                     tmp.setEstado(clSiembra.getEstado_documento());
                     tmp.setClave_unica(clSiembra.getClave_unica());
+                    tmp.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA);
                     tmp.setDescEstado((clSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA" );
                     nested.add(tmp);
                 }
@@ -189,9 +205,8 @@ public class FragmentCheckList extends Fragment {
 
         ex.shutdown();
 
-//        checkLists.add(capacitacionSiembra);
+        checkLists.add(capacitacionSiembra);
         checkLists.add(checkListSiembra);
-
 
         LinearLayoutManager lManager = null;
         if (activity != null){
@@ -218,70 +233,103 @@ public class FragmentCheckList extends Fragment {
                 },
                 (checkListPDF, detailsPDF) -> {
 
-
-                    String URLPDF = "http://" + Utilidades.IP_PRODUCCION + "/curimapu/docs/pdf/checklistSiembra.php?clave_unica=";
+                    String URLPDF = "";
                     Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(URLPDF+detailsPDF.getClave_unica()));
+
+                    switch (checkListPDF.getTipoCheckList()){
+
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
+                             URLPDF = "http://" + Utilidades.IP_PRODUCCION + "/curimapu/docs/pdf/checklistSiembra.php?clave_unica=";
+                            i.setData(Uri.parse(URLPDF+detailsPDF.getClave_unica()));
+                        break;
+                        case Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA:
+                            URLPDF = "http://" + Utilidades.IP_PRODUCCION + "/curimapu/docs/pdf/capacitacion_siembra.pdf";
+                            i.setData(Uri.parse(URLPDF));
+                        break;
+                    }
+
+
                     startActivity(i);
 
                 },
                 (checkListEditar, detailsEditar) -> {
 
-                    ExecutorService executorService = Executors.newSingleThreadExecutor();
-                    executorService.submit(()
-                            -> MainActivity.myAppDB.DaoFirmas()
-                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA));
-                    executorService.shutdown();
+                    switch (checkListEditar.getTipoCheckList()){
 
-                    ExecutorService exec = Executors.newSingleThreadExecutor();
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
+                            ExecutorService executorService = Executors.newSingleThreadExecutor();
+                            executorService.submit(()
+                                    -> MainActivity.myAppDB.DaoFirmas()
+                                    .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA));
+                            executorService.shutdown();
 
-                    Future<CheckListSiembra> ck = exec.submit(()
-                            -> MainActivity.myAppDB.DaoClSiembra()
-                            .getClSiembraById(detailsEditar.getId()));
+                            ExecutorService exec = Executors.newSingleThreadExecutor();
 
-                    try {
-                        CheckListSiembra cls = ck.get();
-                        FragmentCheckListSiembra  fs = FragmentCheckListSiembra.newInstance(cls);
-                        activity.cambiarFragment(
-                                fs,
-                                Utilidades.FRAGMENT_CHECKLIST_SIEMBRA,
-                                R.anim.slide_in_left,R.anim.slide_out_left
-                        );
+                            Future<CheckListSiembra> ck = exec.submit(()
+                                    -> MainActivity.myAppDB.DaoClSiembra()
+                                    .getClSiembraById(detailsEditar.getId()));
+
+                            try {
+                                CheckListSiembra cls = ck.get();
+                                FragmentCheckListSiembra  fs = FragmentCheckListSiembra.newInstance(cls);
+                                activity.cambiarFragment(
+                                        fs,
+                                        Utilidades.FRAGMENT_CHECKLIST_SIEMBRA,
+                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                );
 
 
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        default:
+                            break;
+
                     }
+
+
                 },
                 (checkListSubir, detailsSubir) -> {
 
-                    ExecutorService executorService = Executors.newSingleThreadExecutor();
-                    Future<CheckListSiembra> chkF = executorService.submit(()
-                            -> MainActivity.myAppDB.DaoClSiembra()
-                            .getClSiembraById(detailsSubir.getId(), 0));
 
-                    try {
-                        CheckListSiembra checkListSiembras = chkF.get();
+                    switch (checkListSubir.getTipoCheckList()){
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
 
-                        if(checkListSiembras == null){
-                            executorService.shutdown();
-                            Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
-                            return;
-                        }
+                            ExecutorService executorService = Executors.newSingleThreadExecutor();
+                            Future<CheckListSiembra> chkF = executorService.submit(()
+                                    -> MainActivity.myAppDB.DaoClSiembra()
+                                    .getClSiembraById(detailsSubir.getId(), 0));
 
-                        CheckListRequest chk = new CheckListRequest();
+                            try {
+                                CheckListSiembra checkListSiembras = chkF.get();
 
-                        List<CheckListSiembra> chkList = new ArrayList<>();
-                        chkList.add( checkListSiembras );
+                                if(checkListSiembras == null){
+                                    executorService.shutdown();
+                                    Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                                    return;
+                                }
 
-                        chk.setCheckListSiembras( chkList );
-                        prepararSubir( chk );
+                                CheckListRequest chk = new CheckListRequest();
+
+                                List<CheckListSiembra> chkList = new ArrayList<>();
+                                chkList.add( checkListSiembras );
+
+                                chk.setCheckListSiembras( chkList );
+                                prepararSubir( chk );
 
 
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
-                        executorService.shutdown();
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                                executorService.shutdown();
+                            }
+
+                            break;
+
+                        default:
+                            break;
                     }
+
                 }
         );
 

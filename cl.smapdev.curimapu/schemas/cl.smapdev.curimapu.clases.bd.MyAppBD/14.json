@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 14,
-    "identityHash": "c5a978f8732278011ddb047c69d9f2ca",
+    "identityHash": "2d9ac6e6c49622df8df3f3f6fc93a4d5",
     "entities": [
       {
         "tableName": "fotos",
@@ -1078,7 +1078,7 @@
       },
       {
         "tableName": "temp_visitas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` TEXT, `phenological_state_temp_visita` TEXT, `growth_status_temp_visita` TEXT, `weed_state_temp_visita` TEXT, `phytosanitary_state_temp_visita` TEXT, `harvest_temp_visita` TEXT, `overall_status_temp_visita` TEXT, `humidity_floor_temp_visita` TEXT, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT, `obs_fito` TEXT, `obs_creci` TEXT, `obs_maleza` TEXT, `obs_cosecha` TEXT, `obs_overall` TEXT, `obs_humedad` TEXT, `percent_humedad` REAL NOT NULL, `action_temp_visita` INTEGER NOT NULL, `etapa_temp_visitas` INTEGER NOT NULL, `id_visita_local` INTEGER NOT NULL, `id_dispo` INTEGER NOT NULL, `evaluacion` REAL NOT NULL, `comentario_evaluacion` TEXT, `id_evaluacion` INTEGER NOT NULL, `fecha_estimada_cosecha` TEXT, `fecha_estimada_arranca` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_temp_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_temp_visita` TEXT, `phenological_state_temp_visita` TEXT, `growth_status_temp_visita` TEXT, `weed_state_temp_visita` TEXT, `phytosanitary_state_temp_visita` TEXT, `harvest_temp_visita` TEXT, `overall_status_temp_visita` TEXT, `humidity_floor_temp_visita` TEXT, `observation_temp_visita` TEXT, `recomendation_temp_visita` TEXT, `obs_fito` TEXT, `obs_creci` TEXT, `obs_maleza` TEXT, `obs_cosecha` TEXT, `obs_overall` TEXT, `obs_humedad` TEXT, `percent_humedad` REAL NOT NULL, `action_temp_visita` INTEGER NOT NULL, `etapa_temp_visitas` INTEGER NOT NULL, `id_visita_local` INTEGER NOT NULL, `id_dispo` INTEGER NOT NULL, `evaluacion` REAL NOT NULL, `comentario_evaluacion` TEXT, `id_evaluacion` INTEGER NOT NULL, `clave_unica_visita` TEXT, `fecha_estimada_cosecha` TEXT, `fecha_estimada_arranca` TEXT)",
         "fields": [
           {
             "fieldPath": "id_temp_visita",
@@ -1229,6 +1229,12 @@
             "columnName": "id_evaluacion",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "clave_unica_visita",
+            "columnName": "clave_unica_visita",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "fecha_estimada_cosecha",
@@ -1440,7 +1446,7 @@
       },
       {
         "tableName": "visita",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_visita` TEXT, `phenological_state_visita` TEXT, `growth_status_visita` TEXT, `weed_state_visita` TEXT, `phytosanitary_state_visita` TEXT, `harvest_visita` TEXT, `overall_status_visita` TEXT, `humidity_floor_visita` TEXT, `observation_visita` TEXT, `recomendation_visita` TEXT, `estado_server_visitas` INTEGER NOT NULL, `estado_visita` INTEGER NOT NULL, `etapa_visitas` INTEGER NOT NULL, `fecha_visita` TEXT, `hora_visita` TEXT, `temporada` TEXT, `obs_fito` TEXT, `obs_creci` TEXT, `obs_maleza` TEXT, `obs_cosecha` TEXT, `obs_overall` TEXT, `obs_humedad` TEXT, `id_user_visita` INTEGER NOT NULL, `cabecera_visita` INTEGER NOT NULL, `porcentaje_humedad` REAL NOT NULL, `id_visita_local` INTEGER NOT NULL, `id_dispo` INTEGER NOT NULL, `tomadas` INTEGER NOT NULL, `evaluacion` REAL NOT NULL, `comentario_evaluacion` TEXT, `id_evaluacion` INTEGER NOT NULL, `fecha_estimada_cosecha` TEXT, `fecha_estimada_arranca` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_visita` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_anexo_visita` TEXT, `clave_unica_visita` TEXT, `phenological_state_visita` TEXT, `growth_status_visita` TEXT, `weed_state_visita` TEXT, `phytosanitary_state_visita` TEXT, `harvest_visita` TEXT, `overall_status_visita` TEXT, `humidity_floor_visita` TEXT, `observation_visita` TEXT, `recomendation_visita` TEXT, `estado_server_visitas` INTEGER NOT NULL, `estado_visita` INTEGER NOT NULL, `etapa_visitas` INTEGER NOT NULL, `fecha_visita` TEXT, `hora_visita` TEXT, `temporada` TEXT, `obs_fito` TEXT, `obs_creci` TEXT, `obs_maleza` TEXT, `obs_cosecha` TEXT, `obs_overall` TEXT, `obs_humedad` TEXT, `id_user_visita` INTEGER NOT NULL, `cabecera_visita` INTEGER NOT NULL, `porcentaje_humedad` REAL NOT NULL, `id_visita_local` INTEGER NOT NULL, `id_dispo` INTEGER NOT NULL, `tomadas` INTEGER NOT NULL, `evaluacion` REAL NOT NULL, `comentario_evaluacion` TEXT, `id_evaluacion` INTEGER NOT NULL, `fecha_estimada_cosecha` TEXT, `fecha_estimada_arranca` TEXT)",
         "fields": [
           {
             "fieldPath": "id_visita",
@@ -1451,6 +1457,12 @@
           {
             "fieldPath": "id_anexo_visita",
             "columnName": "id_anexo_visita",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clave_unica_visita",
+            "columnName": "clave_unica_visita",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -1726,7 +1738,7 @@
       },
       {
         "tableName": "pro_cli_mat",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_prop_mat_cli` INTEGER NOT NULL, `id_cli` INTEGER NOT NULL, `id_materiales` TEXT, `id_prop` INTEGER NOT NULL, `id_etapa` INTEGER NOT NULL, `id_tempo` TEXT, `nombre_es` TEXT, `nombre_en` TEXT, `nombre_elemento_en` TEXT, `nombre_elemento_es` TEXT, `aplica` TEXT, `orden` INTEGER NOT NULL, `tipo_cambio` TEXT, `es_lista` TEXT, `foraneo` TEXT, `tabla` TEXT, `campo` TEXT, `id_sub_propiedad_pcm` INTEGER NOT NULL, PRIMARY KEY(`id_prop_mat_cli`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_prop_mat_cli` INTEGER NOT NULL, `id_cli` INTEGER NOT NULL, `id_materiales` TEXT, `id_prop` INTEGER NOT NULL, `id_etapa` INTEGER NOT NULL, `id_tempo` TEXT, `nombre_es` TEXT, `nombre_en` TEXT, `nombre_elemento_en` TEXT, `nombre_elemento_es` TEXT, `aplica` TEXT, `orden` INTEGER NOT NULL, `tipo_cambio` TEXT, `es_lista` TEXT, `foraneo` TEXT, `tabla` TEXT, `campo` TEXT, `marca_sitios_no_visitados` INTEGER NOT NULL, `id_sub_propiedad_pcm` INTEGER NOT NULL, PRIMARY KEY(`id_prop_mat_cli`))",
         "fields": [
           {
             "fieldPath": "id_prop_mat_cli",
@@ -1829,6 +1841,12 @@
             "columnName": "campo",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "marca_sitios_no_visitados",
+            "columnName": "marca_sitios_no_visitados",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "id_sub_propiedad_pcm",
@@ -2974,7 +2992,7 @@
       },
       {
         "tableName": "anexo_recomendaciones",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_ac_recom` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ac` INTEGER NOT NULL, `descripcion_recom` TEXT, `estado` TEXT, `observacion_recom` TEXT, `fecha_plazo` TEXT, `user_tx` TEXT, `nombre_crea` TEXT, `fecha_hora_tx` TEXT, `user_mod` TEXT, `nombre_mod` TEXT, `fecha_hora_mod` TEXT, `estado_server` INTEGER NOT NULL, `cabecera_server` INTEGER NOT NULL, `marca_evaluacion_server` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_ac_recom` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ac` INTEGER NOT NULL, `clave_unica_recomendacion` TEXT, `clave_unica_visita` TEXT, `descripcion_recom` TEXT, `estado` TEXT, `observacion_recom` TEXT, `fecha_plazo` TEXT, `user_tx` TEXT, `nombre_crea` TEXT, `fecha_hora_tx` TEXT, `user_mod` TEXT, `nombre_mod` TEXT, `fecha_hora_mod` TEXT, `estado_server` INTEGER NOT NULL, `cabecera_server` INTEGER NOT NULL, `marca_evaluacion_server` INTEGER NOT NULL, `obliga_visita` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id_ac_recom",
@@ -2987,6 +3005,18 @@
             "columnName": "id_ac",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "clave_unica_recomendacion",
+            "columnName": "clave_unica_recomendacion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clave_unica_visita",
+            "columnName": "clave_unica_visita",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "descripcion_recom",
@@ -3063,6 +3093,12 @@
           {
             "fieldPath": "marca_evaluacion_server",
             "columnName": "marca_evaluacion_server",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obliga_visita",
+            "columnName": "obliga_visita",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -3673,12 +3709,86 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "anexo_checklist_cosecha",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_cl_siembra` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ac_cl_siembra` INTEGER NOT NULL, `apellido_checklist` TEXT, `estado_sincronizacion` INTEGER NOT NULL, `estado_documento` INTEGER NOT NULL, `clave_unica` TEXT, `prestador_servicio` TEXT, `sembradora_marca` TEXT, `sembradora_modelo` TEXT, `nombre_operario_maquina` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_cl_siembra",
+            "columnName": "id_cl_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_ac_cl_siembra",
+            "columnName": "id_ac_cl_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apellido_checklist",
+            "columnName": "apellido_checklist",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado_sincronizacion",
+            "columnName": "estado_sincronizacion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estado_documento",
+            "columnName": "estado_documento",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clave_unica",
+            "columnName": "clave_unica",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "prestador_servicio",
+            "columnName": "prestador_servicio",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sembradora_marca",
+            "columnName": "sembradora_marca",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sembradora_modelo",
+            "columnName": "sembradora_modelo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_operario_maquina",
+            "columnName": "nombre_operario_maquina",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_cl_siembra"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c5a978f8732278011ddb047c69d9f2ca')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2d9ac6e6c49622df8df3f3f6fc93a4d5')"
     ]
   }
 }

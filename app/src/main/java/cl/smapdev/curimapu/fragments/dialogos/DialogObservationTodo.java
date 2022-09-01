@@ -338,13 +338,31 @@ public class DialogObservationTodo  extends DialogFragment {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<Config> configFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getConfig());
         Usuario usuario = null;
+        String claveUnica = "";
         try {
             Config config = configFuture.get();
             Future<Usuario> usuarioFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getUsuarioById(config.getId_usuario()));
             usuario = usuarioFuture.get();
 
+            claveUnica = config.getId()
+                    +""+config.getId_usuario()
+                    +""+Utilidades.fechaActualConHora()
+                    .replaceAll(" ", "")
+                    .replaceAll("-", "")
+                    .replaceAll(":", "");
+
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
+
+            String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder cadena = new StringBuilder();
+            for (int x = 0; x < 150; x++) {
+                int indiceAleatorio = (int) (banco.length() * Math.random());
+                char caracterAleatorio = banco.charAt(indiceAleatorio);
+                cadena.append(caracterAleatorio);
+            }
+            claveUnica = cadena.toString();
+
         }
         executor.shutdown();
 
@@ -352,6 +370,13 @@ public class DialogObservationTodo  extends DialogFragment {
 
         Evaluaciones eva = new Evaluaciones();
 
+
+        eva.setClave_unica_visita(tempVisitas.getClave_unica_visita());
+
+        eva.setObliga_visita( (this.tempVisitas == null) ? 0 : 1);
+
+
+        eva.setClave_unica_recomendacion( claveUnica );
         eva.setEstado("P");
         eva.setDescripcion_recom(et_nueva_recom.getText().toString().toLowerCase(Locale.ROOT).trim());
         eva.setFecha_hora_tx(Utilidades.fechaActualConHora());
@@ -434,19 +459,41 @@ public class DialogObservationTodo  extends DialogFragment {
         ExecutorService executorUser = Executors.newSingleThreadExecutor();
         Future<Config> configFuture = executorUser.submit(() -> MainActivity.myAppDB.myDao().getConfig());
         Usuario usuario = null;
+        String claveUnica = "";
         try {
             Config config = configFuture.get();
             Future<Usuario> usuarioFuture = executorUser.submit(() -> MainActivity.myAppDB.myDao().getUsuarioById(config.getId_usuario()));
             usuario = usuarioFuture.get();
             evaluacion.setUser_mod(usuario.getRut_usuario());
+
+            claveUnica = config.getId()
+                    +""+config.getId_usuario()
+                    +""+Utilidades.fechaActualConHora()
+                    .replaceAll(" ", "")
+                    .replaceAll("-", "")
+                    .replaceAll(":", "");
+
+
             evaluacion.setNombre_mod(usuario.getNombre() +" "+ usuario.getApellido_p());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
+            String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder cadena = new StringBuilder();
+            for (int x = 0; x < 150; x++) {
+                int indiceAleatorio = (int) (banco.length() * Math.random());
+                char caracterAleatorio = banco.charAt(indiceAleatorio);
+                cadena.append(caracterAleatorio);
+            }
+            claveUnica = cadena.toString();
+
         }
         executorUser.shutdown();
 
-
+        if(evaluacion.getClave_unica_recomendacion() == null ){
+            evaluacion.setClave_unica_recomendacion( claveUnica );
+        }
         evaluacion.setEstado(nuevoEstado);
+        evaluacion.setEstado_server(0);
         evaluacion.setFecha_hora_mod(Utilidades.fechaActualConHora());
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
