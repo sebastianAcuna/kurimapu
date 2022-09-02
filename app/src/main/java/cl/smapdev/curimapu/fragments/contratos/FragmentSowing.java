@@ -349,12 +349,14 @@ public class FragmentSowing extends Fragment {
                                         String  consulta = "SELECT " + nombreCampoTableta + " " +
                                                     " FROM " + nombreTabla + " ";
 
-
-
                                         switch (fs.getTabla()){
                                             case "anexo_contrato" :
                                             case "condicion" :
                                                 consulta += " WHERE id_anexo_contrato = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
+                                            case "anexo_checklist_siembra" :
+                                                consulta += " WHERE id_ac_cl_siembra = ? AND estado_documento = 1 ORDER BY id_cl_siembra DESC LIMIT 1 ";
                                                 ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
                                             case "anexo_correo_fechas":
