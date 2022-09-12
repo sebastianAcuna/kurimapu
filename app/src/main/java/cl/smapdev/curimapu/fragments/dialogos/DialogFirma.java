@@ -32,7 +32,7 @@ public class DialogFirma  extends DialogFragment {
 
 
     public interface IOnSave {
-        void onSave(boolean isSaved);
+        void onSave(boolean isSaved, String path);
     }
 
 
@@ -117,7 +117,7 @@ public class DialogFirma  extends DialogFragment {
                                 "No pudimos guardar tu firma, vuelva a intentarlo",
                                 Toast.LENGTH_SHORT, true)
                         .show();
-                iOnSave.onSave(false);
+                iOnSave.onSave(false, "");
 
                 if (di != null){ di.dismiss(); }
                 return;
@@ -132,7 +132,7 @@ public class DialogFirma  extends DialogFragment {
             tempFirmas.setLugar_firma( this.lugar );
             exe.submit(() -> MainActivity.myAppDB.DaoFirmas().insertFirma(tempFirmas));
 
-            iOnSave.onSave(true);
+            iOnSave.onSave(true, savePath);
 
             if (di != null){
                 di.dismiss();

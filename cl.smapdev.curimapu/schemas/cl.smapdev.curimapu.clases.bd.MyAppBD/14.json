@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 14,
-    "identityHash": "2d9ac6e6c49622df8df3f3f6fc93a4d5",
+    "identityHash": "0295f737b6f4c668a24724ca282b811e",
     "entities": [
       {
         "tableName": "fotos",
@@ -3783,12 +3783,166 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "anexo_checklist_capacitacion_siembra",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_cl_cap_siembra` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_ac_cl_cap_siembra` INTEGER NOT NULL, `apellido_checklist` TEXT, `estado_sincronizacion` INTEGER NOT NULL, `estado_documento` INTEGER NOT NULL, `clave_unica` TEXT, `id_usuario` INTEGER NOT NULL, `fecha_hora_tx` TEXT, `fecha_hora_mod` TEXT, `id_usuario_mod` INTEGER NOT NULL, `impartidor` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_cl_cap_siembra",
+            "columnName": "id_cl_cap_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_ac_cl_cap_siembra",
+            "columnName": "id_ac_cl_cap_siembra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apellido_checklist",
+            "columnName": "apellido_checklist",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado_sincronizacion",
+            "columnName": "estado_sincronizacion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estado_documento",
+            "columnName": "estado_documento",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clave_unica",
+            "columnName": "clave_unica",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id_usuario",
+            "columnName": "id_usuario",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fecha_hora_tx",
+            "columnName": "fecha_hora_tx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_hora_mod",
+            "columnName": "fecha_hora_mod",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id_usuario_mod",
+            "columnName": "id_usuario_mod",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "impartidor",
+            "columnName": "impartidor",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_cl_cap_siembra"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "anexo_checklist_capacitacion_siembra_detalle",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_cl_cap_siembra_detalle` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `clave_unica_cl_cap_siembra_detalle` TEXT, `clave_unica_cl_cap_siembra` TEXT, `fecha_cl_cap_siembra_detalle` TEXT, `area_cl_cap_siembra_detalle` TEXT, `nombre_cl_cap_siembra_detalle` TEXT, `rut_cl_cap_siembra_detalle` TEXT, `firma_cl_cap_siembra_detalle` TEXT, `stringed_cl_cap_siembra_detalle` TEXT, `estado_sincronizacion_detalle` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id_cl_cap_siembra_detalle",
+            "columnName": "id_cl_cap_siembra_detalle",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clave_unica_cl_cap_siembra_detalle",
+            "columnName": "clave_unica_cl_cap_siembra_detalle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clave_unica_cl_cap_siembra",
+            "columnName": "clave_unica_cl_cap_siembra",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fecha_cl_cap_siembra_detalle",
+            "columnName": "fecha_cl_cap_siembra_detalle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "area_cl_cap_siembra_detalle",
+            "columnName": "area_cl_cap_siembra_detalle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre_cl_cap_siembra_detalle",
+            "columnName": "nombre_cl_cap_siembra_detalle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rut_cl_cap_siembra_detalle",
+            "columnName": "rut_cl_cap_siembra_detalle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firma_cl_cap_siembra_detalle",
+            "columnName": "firma_cl_cap_siembra_detalle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stringed_cl_cap_siembra_detalle",
+            "columnName": "stringed_cl_cap_siembra_detalle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado_sincronizacion_detalle",
+            "columnName": "estado_sincronizacion_detalle",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_cl_cap_siembra_detalle"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2d9ac6e6c49622df8df3f3f6fc93a4d5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0295f737b6f4c668a24724ca282b811e')"
     ]
   }
 }

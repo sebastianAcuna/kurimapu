@@ -556,18 +556,18 @@ public class FragmentCheckListSiembra extends Fragment {
         }
 
         if(checkListSiembra.getTarros_semilla_pre_siembra() > 0){
-            btn_tarros_semilla_post_siembra_si.setChecked((checkListSiembra.getTarros_semilla_pre_siembra() == 1));
-            btn_tarros_semilla_post_siembra_no.setChecked((checkListSiembra.getTarros_semilla_pre_siembra() == 2));
+            btn_tarros_semilla_post_siembra_si.setChecked((checkListSiembra.getTarros_semilla_post_siembra() == 1));
+            btn_tarros_semilla_post_siembra_no.setChecked((checkListSiembra.getTarros_semilla_post_siembra() == 2));
         }
 
         if(checkListSiembra.getDiscos_sembradores_pre_siembra() > 0){
-            btn_discos_sembradores_post_siembra_si.setChecked((checkListSiembra.getDiscos_sembradores_pre_siembra() == 1));
-            btn_discos_sembradores_post_siembra_no.setChecked((checkListSiembra.getDiscos_sembradores_pre_siembra() == 2));
+            btn_discos_sembradores_post_siembra_si.setChecked((checkListSiembra.getDiscos_sembradores_post_siembra() == 1));
+            btn_discos_sembradores_post_siembra_no.setChecked((checkListSiembra.getDiscos_sembradores_post_siembra() == 2));
         }
 
         if(checkListSiembra.getEstructura_maquinaria_pre_siembra() > 0){
-            btn_estructura_maquinaria_post_siembra_si.setChecked((checkListSiembra.getEstructura_maquinaria_pre_siembra() == 1));
-            btn_estructura_maquinaria_post_siembra_no.setChecked((checkListSiembra.getEstructura_maquinaria_pre_siembra() == 2));
+            btn_estructura_maquinaria_post_siembra_si.setChecked((checkListSiembra.getEstructura_maquinaria_post_cosecha() == 1));
+            btn_estructura_maquinaria_post_siembra_no.setChecked((checkListSiembra.getEstructura_maquinaria_post_cosecha() == 2));
         }
 
         if(checkListSiembra.getLugar_limpieza_post_siembra() != null && !checkListSiembra.getLugar_limpieza_post_siembra().isEmpty()){
@@ -993,7 +993,7 @@ public class FragmentCheckListSiembra extends Fragment {
                     Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
                     etRA,
                     Utilidades.DIALOG_TAG_RESPONSABLE_ASEO_INGRESO,
-                    isSaved -> {
+                    (isSaved, path) -> {
                         if(isSaved){
                             check_firma_responsable_aseo_ingreso.setVisibility(View.VISIBLE);
                         }
@@ -1041,7 +1041,7 @@ public class FragmentCheckListSiembra extends Fragment {
                     Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
                     etRA,
                     Utilidades.DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO,
-                    isSaved -> {
+                    (isSaved, path) -> {
                         if(isSaved){
                             check_firma_responsable_revision_limpieza_ingreso
                                     .setVisibility(View.VISIBLE);
@@ -1093,7 +1093,7 @@ public class FragmentCheckListSiembra extends Fragment {
                     Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
                     etRA,
                     Utilidades.DIALOG_TAG_RESPONSABLE_ASEO_SALIDA,
-                    isSaved -> {
+                    (isSaved, path) -> {
                         if(isSaved){
                             check_firma_responsable_aseo_ingreso_post_siembra
                                     .setVisibility(View.VISIBLE);
@@ -1142,7 +1142,7 @@ public class FragmentCheckListSiembra extends Fragment {
                     Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
                     etRA,
                     Utilidades.DIALOG_TAG_REVISOR_LIMPIEZA_SALIDA,
-                    isSaved -> {
+                    (isSaved, path) -> {
                         if(isSaved){
                             check_firma_responsable_revision_limpieza_ingreso_post_siembra
                                     .setVisibility(View.VISIBLE);
@@ -1191,7 +1191,7 @@ public class FragmentCheckListSiembra extends Fragment {
                     Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
                     etRA,
                     Utilidades.DIALOG_TAG_RESPONSABLE_CAMPO_INGRESO,
-                    isSaved -> {
+                    (isSaved, path) -> {
                         if(isSaved){
                             check_firma_responsable_campo_ingreso
                                     .setVisibility(View.VISIBLE);
@@ -1239,7 +1239,7 @@ public class FragmentCheckListSiembra extends Fragment {
                     Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
                     etRA,
                     Utilidades.DIALOG_TAG_RESPONSABLE_OPERARIO_INGRESO,
-                    isSaved -> {
+                    (isSaved, path) -> {
                         if(isSaved){
                             check_firma_operario_maquina_ingreso
                                     .setVisibility(View.VISIBLE);
@@ -1286,7 +1286,7 @@ public class FragmentCheckListSiembra extends Fragment {
                     Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
                     etRA,
                     Utilidades.DIALOG_TAG_RESPONSABLE_OPERARIO_TERMINO,
-                    isSaved -> {
+                    (isSaved, path) -> {
                         if(isSaved){
                             check_firma_operario_maquina_termino
                                     .setVisibility(View.VISIBLE);
@@ -1335,7 +1335,7 @@ public class FragmentCheckListSiembra extends Fragment {
                     Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA,
                     etRA,
                     Utilidades.DIALOG_TAG_RESPONSABLE_CAMPO_TERMINO,
-                    isSaved -> {
+                    (isSaved, path) -> {
                         if(isSaved){
                             check_firma_responsable_campo_termino
                                     .setVisibility(View.VISIBLE);
@@ -1377,7 +1377,7 @@ public class FragmentCheckListSiembra extends Fragment {
 
         //suelo
         if(btn_chequeo_si.isChecked() || btn_chequeo_no.isChecked()){
-            int chequeoAislacion = (btn_chequeo_si.isSelected()) ? 1 : 2;
+            int chequeoAislacion = (btn_chequeo_si.isChecked()) ? 1 : 2;
             siembra.setChequeo_aislacion(chequeoAislacion);
         }
 
@@ -1494,6 +1494,13 @@ public class FragmentCheckListSiembra extends Fragment {
         }
 
         //regulacion de siembra
+
+        if(btn_cheque_caidas_si.isChecked() || btn_cheque_caidas_no.isChecked()){
+            int fotoEnvase = (btn_cheque_caidas_si.isChecked()) ? 1 : 2;
+            siembra.setCheque_caidas(fotoEnvase);
+        }
+
+
         if(!et_prestador_servicio.getText().toString().isEmpty()){
             String prestadorServicio = et_prestador_servicio.getText().toString();
             siembra.setPrestador_servicio(prestadorServicio);

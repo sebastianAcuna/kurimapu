@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         tool:text="CHECKLIST COSECHA"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_exand_rv"

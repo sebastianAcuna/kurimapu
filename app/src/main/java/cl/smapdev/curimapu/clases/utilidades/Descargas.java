@@ -18,11 +18,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
+import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
+import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
+import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
@@ -157,8 +160,6 @@ public class Descargas {
     public static boolean[] volqueoDatos(GsonDescargas gsonDescargas, Activity activity){
 
         boolean[] problema = {false, false};
-//        GsonDescargas gsonDescargas  = response.body();
-//        Toast.makeText(activity, gsonDescargas.toString(), Toast.LENGTH_SHORT).show();
         if( gsonDescargas == null) {
             Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", "respuesta nula", "aceptar");
             return problema;
@@ -220,54 +221,97 @@ public class Descargas {
             }
         }
 
-                if (gsonDescargas.getPro_cli_matList() != null && gsonDescargas.getPro_cli_matList().size() > 0){
-                    try {
-                        MainActivity.myAppDB.myDao().deleteProCliMat();
-                        List<Long> inserts = MainActivity.myAppDB.myDao().insertInterfaz(gsonDescargas.getPro_cli_matList());
-                    }catch (SQLiteException e){
-                        Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
-                        Log.e("SQLITE",e.getMessage());
-                        problema[0] = true;
+        if (gsonDescargas.getPro_cli_matList() != null && gsonDescargas.getPro_cli_matList().size() > 0){
+            try {
+                MainActivity.myAppDB.myDao().deleteProCliMat();
+                List<Long> inserts = MainActivity.myAppDB.myDao().insertInterfaz(gsonDescargas.getPro_cli_matList());
+            }catch (SQLiteException e){
+                Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
+                Log.e("SQLITE",e.getMessage());
+                problema[0] = true;
+            }
+        }else{
+            MainActivity.myAppDB.myDao().deleteProCliMat();
+        }
+
+
+        if(gsonDescargas.getCheckListSiembras() != null && gsonDescargas.getCheckListSiembras().size() > 0 ){
+            ExecutorService ex = Executors.newSingleThreadExecutor();
+            for (CheckListSiembra ck : gsonDescargas.getCheckListSiembras()){
+                Future<CheckListSiembra> chkF = ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().getCLSiembraByClaveUnica(ck.getClave_unica()));
+                try {
+                    CheckListSiembra chk  = chkF.get();
+                    //update
+                    if(chk != null){
+                        ck.setId_cl_siembra(chk.getId_cl_siembra());
+                        ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().updateClSiembra(ck)).get();
                     }
-                }else{
-                    MainActivity.myAppDB.myDao().deleteProCliMat();
+                    else{
+                        //insert
+                        ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().insertClSiembra(ck));
+                    }
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
                 }
+            }
+            ex.shutdown();
+        }
 
 
+        if(gsonDescargas.getCheckListCapCompletos() != null && gsonDescargas.getCheckListCapCompletos().size() > 0 ){
+            ExecutorService ex = Executors.newSingleThreadExecutor();
+            for (CheckListCapCompleto ck : gsonDescargas.getCheckListCapCompletos()){
 
-                if(gsonDescargas.getCheckListSiembras() != null && gsonDescargas.getCheckListSiembras().size() > 0 ){
-
-                    ExecutorService ex = Executors.newSingleThreadExecutor();
-
-
-                    for (CheckListSiembra ck : gsonDescargas.getCheckListSiembras()){
-
-                        Future<CheckListSiembra> chkF = ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().getCLSiembraByClaveUnica(ck.getClave_unica()));
-
-
-                        try {
-                            CheckListSiembra chk  = chkF.get();
-
-                            //update
-                            if(chk != null){
-                                ck.setId_cl_siembra(chk.getId_cl_siembra());
-                                ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().updateClSiembra(ck)).get();
-                            }
-                            else{
-                                //insert
-                                ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().insertClSiembra(ck));
-                            }
+                Future<CheckListCapacitacionSiembra> chkF = ex.submit(()
+                        -> MainActivity.myAppDB
+                        .DaoCheckListCapSiembra()
+                        .getClCapSiembraByClaveUnica(ck.getCabecera().getClave_unica()));
+                try {
+                    CheckListCapacitacionSiembra chk  = chkF.get();
+                    //update
+                    if(chk != null){
+                        ck.getCabecera().setId_cl_cap_siembra(chk.getId_cl_cap_siembra());
+                        ex.submit(()
+                                -> MainActivity.myAppDB.DaoCheckListCapSiembra()
+                                .updateCapacitacionSiembra(ck.getCabecera())
+                        ).get();
+                    }
+                    else{
+                        //insert
+                        ex.submit(() -> MainActivity.myAppDB.DaoCheckListCapSiembra()
+                                .insertCapacitacionSiembra(ck.getCabecera()));
+                    }
 
 
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
+                    for (CheckListCapacitacionSiembraDetalle detalle : ck.getDetalles()) {
+
+                        CheckListCapacitacionSiembraDetalle chkDF = ex.submit(()
+                                -> MainActivity.myAppDB
+                                .DaoCheckListCapSiembra()
+                                .getCapSiembraDetallesByClaveUnica(
+                                        detalle.getClave_unica_cl_cap_siembra_detalle())).get();
+
+
+                        if(chkDF != null){
+                            detalle.setId_cl_cap_siembra_detalle(chkDF.getId_cl_cap_siembra_detalle());
+                            ex.submit(()
+                                    -> MainActivity.myAppDB.DaoCheckListCapSiembra()
+                                    .updateDetalle(detalle)
+                            ).get();
+                        }
+                        else{
+                            //insert
+                            ex.submit(() -> MainActivity.myAppDB.DaoCheckListCapSiembra()
+                                    .insertCapacitacionSiembraDetalle(detalle)).get();
                         }
 
                     }
-
-                    ex.shutdown();
-
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
                 }
+            }
+            ex.shutdown();
+        }
 
                 if (gsonDescargas.getTemporadas() != null && gsonDescargas.getTemporadas().size() > 0){
                     try {

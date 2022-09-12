@@ -66,10 +66,6 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> 
         holder.rv_lista_detalle.setLayoutManager(lm);
         holder.rv_lista_detalle.setAdapter(nested);
 
-        if(checkList.getTipoCheckList() == Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA) {
-            holder.btn_nuevo.setVisibility(View.GONE);
-        }
-
         holder.btn_nuevo.setOnClickListener(view -> onClickNuevo.onItemClick(checkList));
 
         holder.btn_exand_rv.setOnClickListener(view -> {

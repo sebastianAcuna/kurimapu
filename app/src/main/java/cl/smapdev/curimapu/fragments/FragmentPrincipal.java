@@ -48,6 +48,7 @@ import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.modelo.RecomendacionesSync;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
+import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
@@ -59,6 +60,8 @@ import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
+import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
+import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
@@ -372,10 +375,19 @@ public class FragmentPrincipal extends Fragment {
                 -> MainActivity.myAppDB.DaoClSiembra()
                 .getClSiembraToSync());
 
+
+        Future<List<CheckListCapacitacionSiembra>> checkListCapacitacionSiembraFuture
+                = executorService.submit(()
+                -> MainActivity.myAppDB.DaoCheckListCapSiembra()
+                .getClCapSiembraByEstado( 0));
+
         try {
             List<CheckListSiembra> chk = chkF.get();
 
-            if(chk.size() <= 0){
+            List<CheckListCapacitacionSiembra> capSiembraCab
+                    = checkListCapacitacionSiembraFuture.get();
+
+            if(chk.size() <= 0 && capSiembraCab.size() <= 0){
                 executorService.shutdown();
                 Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 return;
@@ -383,7 +395,32 @@ public class FragmentPrincipal extends Fragment {
 
             CheckListRequest chkS = new CheckListRequest();
 
-            chkS.setCheckListSiembras( chk );
+            List<CheckListCapCompleto> chkList = new ArrayList<>();
+            if(capSiembraCab.size() > 0){
+
+                for (CheckListCapacitacionSiembra clc : capSiembraCab){
+
+                    CheckListCapCompleto completo = new CheckListCapCompleto();
+
+                    List<CheckListCapacitacionSiembraDetalle> detalle =
+                            executorService.submit(() -> MainActivity.myAppDB
+                                    .DaoCheckListCapSiembra()
+                                    .getCapSiembraDetallesByPadre(clc.getClave_unica())
+                            ).get();
+
+                    completo.setCabecera(clc);
+                    completo.setDetalles(detalle);
+
+                    chkList.add( completo );
+
+                }
+                chkS.setCheckListCapCompletos( chkList );
+            }
+
+            if(chk.size() > 0){
+                chkS.setCheckListSiembras( chk );
+            }
+
             prepararSubir( chkS );
 
         } catch (ExecutionException | InterruptedException e) {
@@ -447,7 +484,7 @@ public class FragmentPrincipal extends Fragment {
         visitas_titulo.setVisibility(View.VISIBLE);
         visitas_titulo.setText("Visitas pendientes por subir (ROJAS)");
         visitas_marca.setVisibility(View.VISIBLE);
-        visitas_marca.setText("pinche cada visita para marcarla (solo de a 3), para subirla inmeditamente mantenga presionado el botón.");
+        visitas_marca.setText("para subirla mantenga presionado el botón de cada visita.");
 
 
         ArrayList<Visitas> visitas1 = new ArrayList<>();

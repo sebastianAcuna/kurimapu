@@ -13,10 +13,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
+import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
+import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
@@ -54,7 +56,30 @@ public class CheckListSync {
         Future<Config> configFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getConfig());
 
 
-        if (checkListRequest.getCheckListSiembras().size() > 0){
+        if(checkListRequest.getCheckListCapCompletos() != null &&
+                checkListRequest.getCheckListCapCompletos().size() > 0){
+
+            List<CheckListCapCompleto> clCapacitacionSiembraList = new ArrayList<>();
+
+            for (CheckListCapCompleto completo : checkListRequest.getCheckListCapCompletos()){
+
+                for (CheckListCapacitacionSiembraDetalle detalle : completo.getDetalles()){
+                    if(detalle.getFirma_cl_cap_siembra_detalle() != null &&
+                            !detalle.getFirma_cl_cap_siembra_detalle().isEmpty()){
+                        String stringed =  Utilidades.imageToString(detalle.getFirma_cl_cap_siembra_detalle());
+                        detalle.setStringed_cl_cap_siembra_detalle( stringed.isEmpty() ? "" : stringed );
+                    }
+                }
+                clCapacitacionSiembraList.add(completo);
+
+            }
+
+            checkListRequest.setCheckListCapCompletos(clCapacitacionSiembraList);
+
+        }
+
+        if (checkListRequest.getCheckListSiembras() != null
+                && checkListRequest.getCheckListSiembras().size() > 0){
             List<CheckListSiembra>  chkS = new ArrayList<>();
             for (CheckListSiembra chk : checkListRequest.getCheckListSiembras()){
 
@@ -125,7 +150,6 @@ public class CheckListSync {
             }
 
             checkListRequest.setCheckListSiembras(chkS);
-
         }
 
         try {
@@ -159,18 +183,50 @@ public class CheckListSync {
                             return;
                         }
 
-                        for (CheckListSiembra chk : checkListRequest.getCheckListSiembras()) {
 
-                            chk.setEstado_sincronizacion(1);
+                        if(checkListRequest.getCheckListCapCompletos() != null
+                                && checkListRequest.getCheckListCapCompletos().size() > 0){
+                            for (CheckListCapCompleto chk : checkListRequest.getCheckListCapCompletos()) {
+                                try {
+                                    //cabecera
+                                    chk.getCabecera().setEstado_sincronizacion(1);
 
-                            try {
-                                executor.submit(() -> MainActivity.myAppDB
-                                        .DaoClSiembra()
-                                        .updateClSiembra(chk)).get();
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
+                                    executor.submit(() -> MainActivity.myAppDB
+                                            .DaoCheckListCapSiembra()
+                                            .updateCapacitacionSiembra(chk.getCabecera())).get();
+
+                                    for (CheckListCapacitacionSiembraDetalle ck : chk.getDetalles() ){
+
+                                        ck.setEstado_sincronizacion_detalle(1);
+                                        executor.submit(() -> MainActivity.myAppDB
+                                                .DaoCheckListCapSiembra()
+                                                .updateDetalle(ck)).get();
+                                    }
+
+
+                                } catch (ExecutionException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
+
+
+                        if(checkListRequest.getCheckListSiembras() != null
+                                && checkListRequest.getCheckListSiembras().size() > 0){
+                            for (CheckListSiembra chk : checkListRequest.getCheckListSiembras()) {
+
+                                chk.setEstado_sincronizacion(1);
+
+                                try {
+                                    executor.submit(() -> MainActivity.myAppDB
+                                            .DaoClSiembra()
+                                            .updateClSiembra(chk)).get();
+                                } catch (ExecutionException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
 
                         IResponse.onResponseData(true, res.getMensajeRespuesta());
                         pd.dismiss();

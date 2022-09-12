@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<ScrollView-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tool="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+
+<!--    >-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:padding="@dimen/padding_small"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView
+        android:id="@+id/lbl_numero_anexo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        android:text="@string/numero_de_anexo"
+        />
+    <TextView
+        android:id="@+id/tv_numero_anexo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_numero_anexo"
+        app:layout_constraintStart_toStartOf="parent"
+        tool:text="23-TR2243"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+
+    <TextView
+        android:id="@+id/lbl_variedad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        android:text="@string/variedad"
+        />
+    <TextView
+        android:id="@+id/tv_variedad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="COL-24431fC"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contenedor_vista"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_numero_anexo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <TextView
+            android:id="@+id/lbl_agricultor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/agricultor"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+        <TextView
+            android:id="@+id/tv_agricultor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_agricultor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tool:text="SEBASTIAN MATIAS ACUñA PINILLA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <TextView
+            android:id="@+id/lbl_potrero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_agricultor"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/potrero"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+        <TextView
+            android:id="@+id/tv_potrero"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_potrero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_rch"
+            tool:text="PATA DE GALLINA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_rch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_agricultor"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/rch"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+        <TextView
+            android:id="@+id/tv_rch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_potrero"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_potrero"
+            tool:text="445266CHSJ"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+
+        <TextView
+            android:id="@+id/lbl_sag_ogm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_potrero"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/registro_sag_ogm"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+        <TextView
+            android:id="@+id/tv_sag_ogm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_sag_ogm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_sag_idase"
+            tool:text="SAG OGM"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_sag_idase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_potrero"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/registro_sag_idase"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+        <TextView
+            android:id="@+id/tv_sag_idase"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_sag_idase"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_sag_ogm"
+            tool:text="SAG IDASE"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_condicion_semilla"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_sag_ogm"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/condicion_semilla"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+        <TextView
+            android:id="@+id/tv_condicion_semilla"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_condicion_semilla"
+            app:layout_constraintStart_toStartOf="parent"
+            tool:text="CONDICION SEMILLA"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <TextView
+            android:id="@+id/lbl_supervisor_curimapu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_condicion_semilla"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/supervisor_curimapu_en_cosecha"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+        <TextView
+            android:id="@+id/tv_supervisor_curimapu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_supervisor_curimapu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tool:text="SOFIA CONCHA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/btn_oculta_cabecera"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_expand_down"
+        app:layout_constraintTop_toBottomOf="@id/contenedor_vista"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/colorOnBackground" />
+
+
+    <View
+        android:id="@+id/divider_cabecera"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/btn_oculta_cabecera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/titulo_charla_cinco"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/contenido_ogm"
+        app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintEnd_toStartOf="@id/btn_charla_cinco"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <Button
+        android:id="@+id/btn_charla_cinco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LEER CHARLA 5 MIN."
+        android:backgroundTint="@color/colorSecondaryVariant"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/titulo_charla_cinco"
+        />
+
+
+    <TextView
+        android:id="@+id/titulo_impartidor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/impartido_por"
+        app:layout_constraintTop_toBottomOf="@id/btn_charla_cinco"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintEnd_toStartOf="@id/btn_charla_cinco"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <EditText
+        android:id="@+id/et_impartidor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_small"
+        android:drawableStart="@drawable/ic_person"
+        android:drawableTint="@color/colorSecondaryVariant"
+        app:layout_constraintTop_toBottomOf="@id/btn_charla_cinco"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/titulo_charla_cinco"
+        />
+
+    <View
+        android:id="@+id/divider_lista"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/et_impartidor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="ASISTENTES"
+        android:layout_marginTop="@dimen/padding_small"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintTop_toBottomOf="@id/divider_lista"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_agregar_usuario"
+        />
+
+    <Button
+        android:id="@+id/btn_agregar_usuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/divider_lista"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Nuevo asistente"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lista_capacitacion_siembra"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_guardar_cl_siembra"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_agregar_usuario" />
+
+    <Button
+    android:id="@+id/btn_guardar_cl_siembra"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/lista_capacitacion_siembra"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_marginTop="@dimen/padding"
+    android:text="@string/guardar"/>
+
+    <Button
+        android:id="@+id/btn_cancelar_cl_siembra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lista_capacitacion_siembra"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/padding"
+        android:text="@string/nav_cancel"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+<!--</ScrollView>-->

@@ -433,6 +433,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_right, R.anim.slide_out_right);
                         break;
                     case Utilidades.FRAGMENT_CHECKLIST_SIEMBRA:
+                    case Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_SIEMBRA:
                         cambiarFragment(new FragmentCheckList(), Utilidades.FRAGMENT_CHECKLIST, R.anim.slide_in_right, R.anim.slide_out_right);
                         break;
                    /* case Utilidades.FRAGMENT_TAKE_PHOTO:

@@ -55,6 +55,11 @@ public class GsonDescargas {
     @Embedded
     private List<CheckListSiembra> checkListSiembras;
 
+
+    @SerializedName("array_check_list_capacitacion_siembra")
+    @Embedded
+    private List<CheckListCapCompleto> checkListCapCompletos;
+
     @SerializedName("array_temporada")
     @Embedded
     private List<Temporada> temporadas;
@@ -180,6 +185,14 @@ public class GsonDescargas {
     @Embedded
     private List<AnexoCorreoFechas> array_fechas_anexos;
 
+
+    public List<CheckListCapCompleto> getCheckListCapCompletos() {
+        return checkListCapCompletos;
+    }
+
+    public void setCheckListCapCompletos(List<CheckListCapCompleto> checkListCapCompletos) {
+        this.checkListCapCompletos = checkListCapCompletos;
+    }
 
     public List<CheckListSiembra> getCheckListSiembras() {
         return checkListSiembras;

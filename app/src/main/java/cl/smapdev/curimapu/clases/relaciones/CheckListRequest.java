@@ -23,6 +23,9 @@ public class CheckListRequest {
     @SerializedName("checkListSiembras")
     private List<CheckListSiembra> checkListSiembras;
 
+    @SerializedName("checkListCapacitacionSiembras")
+    private List<CheckListCapCompleto> checkListCapCompletos;
+
 
     public int getIdDispo() {
         return idDispo;
@@ -62,5 +65,13 @@ public class CheckListRequest {
 
     public void setCheckListSiembras(List<CheckListSiembra> checkListSiembras) {
         this.checkListSiembras = checkListSiembras;
+    }
+
+    public List<CheckListCapCompleto> getCheckListCapCompletos() {
+        return checkListCapCompletos;
+    }
+
+    public void setCheckListCapCompletos(List<CheckListCapCompleto> checkListCapCompletos) {
+        this.checkListCapCompletos = checkListCapCompletos;
     }
 }

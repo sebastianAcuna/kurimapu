@@ -815,12 +815,12 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             List<Evaluaciones> evs = evas.get();
 
             if(evs.size() <= 0){
-                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes agregar una recomendacion para esta visita.", "entiendo");
+                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes agregar una recomendacion para esta visita. ( estrella de arriba a la derecha )", "entiendo");
                 return;
             }
 
             if((temp_visitas.getEvaluacion() <= 0.0 || temp_visitas.getComentario_evaluacion().isEmpty()) && cc != null && cc.getVisitas() != null){
-                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes realizar la evaluacion de la visita anterior", "entiendo");
+                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes realizar la evaluacion de la visita anterior. ( estrella de arriba a la derecha )", "entiendo");
                 return;
             }
         } catch (ExecutionException | InterruptedException e) {

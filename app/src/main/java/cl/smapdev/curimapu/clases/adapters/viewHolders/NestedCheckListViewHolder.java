@@ -39,11 +39,6 @@ public class NestedCheckListViewHolder extends RecyclerView.ViewHolder {
                      NestedCheckListAdapter.OnClickListener onclickSubir ) {
 
 
-        if(nestedChecklist.getTipo_documento() == Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA){
-            btn_subir_check.setVisibility(View.GONE);
-            btn_editar.setVisibility(View.GONE);
-        }
-
         if(nestedChecklist.isUploaded()){
             btn_subir_check.setColorFilter(view.getContext().getColor(R.color.colorGreen));
         }else{

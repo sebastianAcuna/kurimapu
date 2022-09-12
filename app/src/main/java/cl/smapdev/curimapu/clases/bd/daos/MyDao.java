@@ -85,7 +85,7 @@ public interface MyDao {
             "LEFT JOIN detalle_visita_prop DVP ON (DVP.id_visita_detalle = V.id_visita) " +
             "LEFT JOIN pro_cli_mat PCM ON (PCM.id_prop_mat_cli = DVP.id_prop_mat_cli_detalle) " +
             "WHERE id_anexo_visita = :id_ac  " +
-            "AND V.fecha_visita IS NOT NULL AND ( (PCM.id_sub_propiedad_pcm = 164 AND valor_detalle IS NOT NULL ) OR valor_detalle IS NULL ); ")
+            "AND V.fecha_visita IS NOT NULL AND ( (PCM.marca_sitios_no_visitados = 1 AND valor_detalle IS NOT NULL ) OR valor_detalle IS NULL ); ")
     List<VisitaDetalle> getVisitaDetalle(int id_ac);
 
     @Query("SELECT * FROM visita V WHERE V.id_anexo_visita = :id_ac  GROUP BY V.id_visita ORDER BY V.fecha_visita DESC LIMIT 1;")

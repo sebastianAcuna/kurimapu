@@ -49,7 +49,7 @@ import cl.smapdev.curimapu.R;
 
 public class Utilidades {
 
-    public static final String APPLICATION_VERSION = "4.0.0000";
+    public static final String APPLICATION_VERSION = "4.0.0609";
 
     public static final String FRAGMENT_INICIO = "fragment_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -57,6 +57,7 @@ public class Utilidades {
     public static final String FRAGMENT_CONTRATOS = "fragment_contratos";
     public static final String FRAGMENT_CHECKLIST = "fragment_checklist";
     public static final String FRAGMENT_CHECKLIST_SIEMBRA = "fragment_checklist_siembra";
+    public static final String FRAGMENT_CHECKLIST_CAPACITACION_SIEMBRA = "fragment_checklist_capacitacion_siembra";
     public static final String FRAGMENT_LOGIN = "fragment_login";
     public static final String FRAGMENT_CONFIG = "fragment_config";
     public static final String FRAGMENT_FOTOS = "fragment_fotos";
@@ -76,9 +77,9 @@ public class Utilidades {
 //    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
 //    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
 
-    public static final String IP_PRODUCCION = "192.168.1.42";
+//    public static final String IP_PRODUCCION = "192.168.1.42";
 //    public static final String IP_PRODUCCION = "www.pruebas-erp.cl";
-//    public static final String IP_PRODUCCION = "www.zcloud.cl";
+    public static final String IP_PRODUCCION = "www.zcloud.cl";
 //    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_PRUEBAS = "190.13.170.26";
@@ -118,6 +119,8 @@ public class Utilidades {
     public static final String SHARED_VISIT_ESPECIE_ID = "shared_visit_especie_id";
 
 
+    public static final String DIALOG_TAG_CAPACITACION_SIEMBRA="CAPACITACION_SIEMBRA";
+    public static final String DIALOG_TAG_FIRMA_CAPACITACION_SIEMBRA="CAPACITACION_FIRMA__SIEMBRA";
     public static final String DIALOG_TAG_RESPONSABLE_ASEO_INGRESO="RESPONSABLE_ASEO_INGRESO";
     public static final String DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO="REVISOR_LIMPIEZA_INGRESO";
     public static final String DIALOG_TAG_RESPONSABLE_ASEO_SALIDA="RESPONSABLE_ASEO_SALIDA";

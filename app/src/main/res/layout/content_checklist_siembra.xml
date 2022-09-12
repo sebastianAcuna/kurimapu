@@ -2241,7 +2241,7 @@
                 android:id="@+id/lbl_hora_ingreso"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/fecha_de_ingreso"
+                android:text="@string/hora_de_ingreso"
                 android:layout_marginTop="@dimen/padding_small"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintTop_toBottomOf="@id/et_fecha_ingreso"

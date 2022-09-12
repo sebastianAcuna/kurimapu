@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:padding="@dimen/padding"
+    android:layout_margin="@dimen/padding"
+    android:background="@color/colorBackgroundList">
+
+    <TextView
+        android:id="@+id/lbl_fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/fecha"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        />
+    <TextView
+        android:id="@+id/tv_fecha_asistente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tool:text="02-09-2022"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintStart_toEndOf="@id/lbl_fecha"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/padding_small"
+        />
+
+    <TextView
+        android:id="@+id/lbl_rut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_rut_asistente"
+        android:text="@string/rut"
+        android:layout_marginEnd="@dimen/padding_small"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        />
+    <TextView
+        android:id="@+id/tv_rut_asistente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tool:text="18804066-7"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/padding_small"
+        />
+
+    <TextView
+        android:id="@+id/lbl_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_fecha_asistente"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/area"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        />
+    <TextView
+        android:id="@+id/tv_area_asistente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tool:text="AGRICULTOR"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_area"
+        />
+
+    <TextView
+        android:id="@+id/lbl_nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_area_asistente"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/nombre"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        />
+    <TextView
+        android:id="@+id/tv_nombre_asistente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tool:text="SEBASTIAN ACUNA"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_nombre"
+        />
+
+
+    <Button
+        android:id="@+id/btn_firma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_nombre_asistente"
+        android:drawableRight="@drawable/ic_sign"
+        android:text="@string/firmar"
+         />
+
+
+    <ImageView
+        android:id="@+id/iv_trash"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_nombre_asistente"
+        android:src="@drawable/ic_delete"
+        app:tint="@color/colorRedLight" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

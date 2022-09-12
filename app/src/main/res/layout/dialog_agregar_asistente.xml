@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+
+        <!-- empiezan fechas -->
+        <TextView
+            android:id="@+id/lbl_fecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="@string/fecha_mayus"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_fecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:inputType="date"
+            app:layout_constraintTop_toBottomOf="@id/lbl_fecha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:drawableStart="@drawable/ic_date_range"
+            android:drawableTint="@color/colorPrimary"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_area"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="@string/area"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_fecha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/lbl_area"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
+
+        <TextView
+            android:id="@+id/lbl_nombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="@string/nombre"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_area"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_nombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/lbl_nombre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
+
+        <TextView
+            android:id="@+id/lbl_rut"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="@string/rut"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_nombre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_rut"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:inputType="date"
+            android:maxLength="12"
+            app:layout_constraintTop_toBottomOf="@id/lbl_rut"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_firma"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/firmar"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_rut"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_firma"
+            />
+
+       <Button
+            android:id="@+id/btn_firma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/firmar"
+            app:layout_constraintTop_toBottomOf="@id/et_rut"
+            app:layout_constraintStart_toEndOf="@id/lbl_firma"
+            app:layout_constraintEnd_toStartOf="@id/iv_firma"
+            />
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_firma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check_white_48dp"
+            app:tint="@color/colorGreen"
+            app:layout_constraintTop_toBottomOf="@id/et_rut"
+            app:layout_constraintStart_toEndOf="@id/btn_firma"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+
+        <Button
+            android:id="@+id/btn_guardar_anexo_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/guardar"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/btn_firma"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btn_posponer_anexo_fecha"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_small"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/nav_cancel"
+            app:layout_constraintTop_toBottomOf="@id/btn_firma"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_guardar_anexo_fecha" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -139,6 +139,13 @@
     <string name="velocidad">Velocidad:</string>
     <string name="rafagas">Rafagas:</string>
     <string name="subida_de_datos">Subida de datos</string>
+    <string name="contenido_ogm">Contenido OGM:</string>
+    <string name="impartido_por">Impartido por:</string>
+    <string name="area">AREA</string>
+    <string name="nombre">NOMBRE</string>
+    <string name="rut">RUT</string>
+    <string name="fecha_mayus">FECHA</string>
+    <string name="hora_de_ingreso">HORA DE INGRESO</string>
 
     <string-array name="desplegable_checklist_1">
         <item>@string/select</item>
