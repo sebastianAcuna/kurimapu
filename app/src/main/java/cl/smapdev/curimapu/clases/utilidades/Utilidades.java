@@ -418,6 +418,7 @@ public class Utilidades {
             inte[1] = 0;
         }
 
+
         return inte;
     }
 
