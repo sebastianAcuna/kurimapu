@@ -1,7 +1,6 @@
 package cl.smapdev.curimapu.clases.tablas;
 
 
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 

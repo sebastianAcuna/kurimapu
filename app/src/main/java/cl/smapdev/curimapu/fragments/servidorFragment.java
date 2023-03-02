@@ -112,7 +112,7 @@ public class servidorFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(TextUtils.isEmpty(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, ""))){
-                    shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRODUCCION).apply();
+                    shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API).apply();
                 }
 
                 if (!TextUtils.isEmpty(shared.getString(Utilidades.SHARED_SERVER_ID_USER, "")) &&
@@ -122,7 +122,7 @@ public class servidorFragment extends Fragment {
                         Config cnf = MainActivity.myAppDB.myDao().getConfig();
 
                         cnf.setId_usuario_suplandato(Integer.parseInt(shared.getString(Utilidades.SHARED_SERVER_ID_USER, String.valueOf(cnf.getId_usuario()))));
-                        cnf.setServidorSeleccionado(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRODUCCION));
+                        cnf.setServidorSeleccionado(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API));
 
                         MainActivity.myAppDB.myDao().updateConfig(cnf);
 
@@ -136,7 +136,7 @@ public class servidorFragment extends Fragment {
             }
         });
 
-        if (cnf.getServidorSeleccionado().equals(Utilidades.IP_PRODUCCION)){
+        if (cnf.getServidorSeleccionado().equals(Utilidades.URL_SERVER_API)){
             rbProduccion.setChecked(true);
         }else if (cnf.getServidorSeleccionado().equals(Utilidades.IP_DESARROLLO)){
             rbDesarrollo.setChecked(true);
@@ -144,28 +144,19 @@ public class servidorFragment extends Fragment {
             rbPruebas.setChecked(true);
         }
 
-        rbDesarrollo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shared.edit().remove(Utilidades.SHARED_SERVER_ID_SERVER).apply();
-                shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_DESARROLLO).apply();
-            }
+        rbDesarrollo.setOnClickListener(v -> {
+            shared.edit().remove(Utilidades.SHARED_SERVER_ID_SERVER).apply();
+            shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_DESARROLLO).apply();
         });
 
-        rbPruebas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shared.edit().remove(Utilidades.SHARED_SERVER_ID_SERVER).apply();
-                shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRUEBAS).apply();
-            }
+        rbPruebas.setOnClickListener(v -> {
+            shared.edit().remove(Utilidades.SHARED_SERVER_ID_SERVER).apply();
+            shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRUEBAS).apply();
         });
 
-        rbProduccion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shared.edit().remove(Utilidades.SHARED_SERVER_ID_SERVER).apply();
-                shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRODUCCION).apply();
-            }
+        rbProduccion.setOnClickListener(v -> {
+            shared.edit().remove(Utilidades.SHARED_SERVER_ID_SERVER).apply();
+            shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API).apply();
         });
 
     }

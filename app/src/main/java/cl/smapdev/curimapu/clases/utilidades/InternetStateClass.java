@@ -14,11 +14,11 @@ import cl.smapdev.curimapu.R;
 public class InternetStateClass extends AsyncTask<Void, Boolean , Boolean> {
 
     private ProgressDialog progressDialog;
-    private WeakReference<Context> activity;
+    private final WeakReference<Context> activity;
     private Boolean tipoConexion1 = false, tipoConexion2 = true;
 
-    private returnValuesFromAsyntask mListener;
-    private int lugar;
+    private final returnValuesFromAsyntask mListener;
+    private final int lugar;
 
     public InternetStateClass(Context reference, returnValuesFromAsyntask mListener, int lugar) {
         this.activity = new WeakReference<>(reference);

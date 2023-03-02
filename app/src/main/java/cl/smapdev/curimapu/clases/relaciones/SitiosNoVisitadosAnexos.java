@@ -16,31 +16,31 @@ import cl.smapdev.curimapu.clases.tablas.Variedad;
 
 public class SitiosNoVisitadosAnexos implements Serializable {
     @Embedded
-     AnexoContrato anexoContrato;
+    AnexoContrato anexoContrato;
 
     @Embedded(prefix = "vari_")
-     Variedad variedad;
+    Variedad variedad;
 
     @Embedded
-     Especie especie;
+    Especie especie;
 
     @Embedded
-     Lotes lotes;
+    Lotes lotes;
 
     @Embedded(prefix = "predi_")
-     Predios predios;
+    Predios predios;
 
     @Embedded(prefix = "fichas_")
-     FichasNew fichasNew;
+    FichasNew fichasNew;
 
     @Embedded(prefix = "usu_")
-     Usuario usuario;
+    Usuario usuario;
 
     @Embedded(prefix = "agri_")
-     Agricultor agricultor;
+    Agricultor agricultor;
 
     @Embedded(prefix = "tempo_")
-     Temporada temporada;
+    Temporada temporada;
 
 
     public AnexoContrato getAnexoContrato() {

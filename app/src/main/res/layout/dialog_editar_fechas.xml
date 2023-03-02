@@ -1,98 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp">
+    android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:padding="16dp">
 
 
     <!-- empiezan fechas -->
    <TextView
        android:id="@+id/lbl_inicio_despano"
-       android:layout_width="200dp"
+       android:layout_width="0dp"
        android:layout_height="wrap_content"
        app:layout_constraintHorizontal_weight="3"
-       android:text="inicio despano"
+       android:text="@string/inicio_despano"
        android:textSize="18sp"
        app:layout_constraintTop_toTopOf="@id/et_inicio_despano"
        app:layout_constraintBottom_toBottomOf="@id/et_inicio_despano"
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintEnd_toStartOf="@id/et_inicio_despano"
-
        />
 
     <EditText
         android:id="@+id/et_inicio_despano"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
         android:inputType="date"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/lbl_inicio_despano"
-        app:layout_constraintEnd_toEndOf="@id/lbl_inicio_despano"
+        app:layout_constraintEnd_toEndOf="parent"
         android:drawableStart="@drawable/ic_date_range"
         android:drawableTint="@color/colorPrimary"
         />
 
-    <ImageView
-        android:id="@+id/correo_envia_inicio_despano"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintHorizontal_weight="3"
-        android:src="@drawable/ic_baseline_email_24_no"
-        app:layout_constraintTop_toTopOf="@id/et_inicio_despano"
-        app:layout_constraintBottom_toBottomOf="@id/et_inicio_despano"
-        app:layout_constraintStart_toEndOf="@id/et_inicio_despano"
-
-        />
-
 
     <TextView
-    android:id="@+id/cinco_porc_floracion"
-        android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    app:layout_constraintHorizontal_weight="3"
-    android:text="5% floracion"
-    android:textSize="18sp"
-    app:layout_constraintTop_toTopOf="@id/et_cinco_porc_floracion"
-    app:layout_constraintBottom_toBottomOf="@id/et_cinco_porc_floracion"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/et_cinco_porc_floracion"
+        android:id="@+id/cinco_porc_floracion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="3"
+        android:text="@string/_5_floracion"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@id/et_cinco_porc_floracion"
+        app:layout_constraintBottom_toBottomOf="@id/et_cinco_porc_floracion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/et_cinco_porc_floracion"
     />
 
     <EditText
         android:id="@+id/et_cinco_porc_floracion"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
         android:inputType="date"
         app:layout_constraintTop_toBottomOf="@id/et_inicio_despano"
         app:layout_constraintStart_toEndOf="@id/cinco_porc_floracion"
-        app:layout_constraintEnd_toStartOf="@id/correo_envia_cinco_porc_floracion"
+        app:layout_constraintEnd_toEndOf="parent"
         android:drawableStart="@drawable/ic_date_range"
         android:drawableTint="@color/colorPrimary"
 
         />
 
-    <ImageView
-        android:id="@+id/correo_envia_cinco_porc_floracion"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintHorizontal_weight="3"
-        android:src="@drawable/ic_baseline_email_24_no"
-        app:layout_constraintTop_toTopOf="@id/et_cinco_porc_floracion"
-        app:layout_constraintBottom_toBottomOf="@id/et_cinco_porc_floracion"
-        app:layout_constraintStart_toEndOf="@id/et_cinco_porc_floracion"
-
-        />
-
     <TextView
         android:id="@+id/inicio_corte_seda"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
-        android:text="inicio corte seda"
+        android:text="@string/inicio_corte_seda"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="@id/et_inicio_corte_seda"
         app:layout_constraintBottom_toBottomOf="@id/et_inicio_corte_seda"
@@ -102,36 +82,24 @@
 
     <EditText
         android:id="@+id/et_inicio_corte_seda"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
         android:inputType="date"
         app:layout_constraintTop_toBottomOf="@id/et_cinco_porc_floracion"
         app:layout_constraintStart_toEndOf="@id/inicio_corte_seda"
-        app:layout_constraintEnd_toStartOf="@id/correo_envia_inicio_corte_seda"
+        app:layout_constraintEnd_toEndOf="parent"
         android:drawableStart="@drawable/ic_date_range"
         android:drawableTint="@color/colorPrimary"
 
         />
 
-    <ImageView
-        android:id="@+id/correo_envia_inicio_corte_seda"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintHorizontal_weight="3"
-        android:src="@drawable/ic_baseline_email_24_no"
-        app:layout_constraintTop_toTopOf="@id/et_inicio_corte_seda"
-        app:layout_constraintBottom_toBottomOf="@id/et_inicio_corte_seda"
-        app:layout_constraintStart_toEndOf="@id/et_inicio_corte_seda"
-
-        />
-
     <TextView
         android:id="@+id/inicio_cosecha"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
-        android:text="inicio cosecha"
+        android:text="@string/inicio_cosecha"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="@id/et_inicio_cosecha"
         app:layout_constraintBottom_toBottomOf="@id/et_inicio_cosecha"
@@ -142,37 +110,39 @@
 
     <EditText
         android:id="@+id/et_inicio_cosecha"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
         android:inputType="date"
         app:layout_constraintTop_toBottomOf="@id/et_inicio_corte_seda"
         app:layout_constraintStart_toEndOf="@id/inicio_cosecha"
-        app:layout_constraintEnd_toStartOf="@id/correo_envia_inicio_cosecha"
+        app:layout_constraintEnd_toEndOf="parent"
         android:drawableStart="@drawable/ic_date_range"
         android:drawableTint="@color/colorPrimary"
 
 
         />
 
-    <ImageView
-        android:id="@+id/correo_envia_inicio_cosecha"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintHorizontal_weight="3"
-        android:src="@drawable/ic_baseline_email_24_no"
-        app:layout_constraintTop_toTopOf="@id/et_inicio_cosecha"
-        app:layout_constraintBottom_toBottomOf="@id/et_inicio_cosecha"
-        app:layout_constraintStart_toEndOf="@id/et_inicio_cosecha"
+    <EditText
+        android:id="@+id/et_inicio_cosecha_hora"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        app:layout_constraintTop_toBottomOf="@id/et_inicio_cosecha"
+        app:layout_constraintStart_toStartOf="@id/et_inicio_cosecha"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:drawableStart="@drawable/ic_time"
+        android:drawableTint="@color/colorPrimary"
 
         />
 
+
     <TextView
         android:id="@+id/termino_cosecha"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
-        android:text="Termino cosecha"
+        android:text="@string/termino_cosecha"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="@id/et_termino_cosecha"
         app:layout_constraintBottom_toBottomOf="@id/et_termino_cosecha"
@@ -183,37 +153,26 @@
 
     <EditText
         android:id="@+id/et_termino_cosecha"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
         android:inputType="date"
-        app:layout_constraintTop_toBottomOf="@id/et_inicio_cosecha"
+        app:layout_constraintTop_toBottomOf="@id/et_inicio_cosecha_hora"
         app:layout_constraintStart_toEndOf="@id/termino_cosecha"
-        app:layout_constraintEnd_toStartOf="@id/correo_envia_termino_cosecha"
+       app:layout_constraintEnd_toEndOf="parent"
         android:drawableStart="@drawable/ic_date_range"
         android:drawableTint="@color/colorPrimary"
 
         />
 
-    <ImageView
-        android:id="@+id/correo_envia_termino_cosecha"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintHorizontal_weight="3"
-        android:src="@drawable/ic_baseline_email_24_no"
-        app:layout_constraintTop_toTopOf="@id/et_termino_cosecha"
-        app:layout_constraintBottom_toBottomOf="@id/et_termino_cosecha"
-        app:layout_constraintStart_toEndOf="@id/et_termino_cosecha"
-
-        />
 
 
     <TextView
         android:id="@+id/termino_labores_post_cosecha"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
-        android:text="Termino labores post cosecha"
+        android:text="@string/termino_labores_post_cosecha"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="@id/et_termino_labores_post_cosecha"
         app:layout_constraintBottom_toBottomOf="@id/et_termino_labores_post_cosecha"
@@ -223,48 +182,289 @@
 
     <EditText
         android:id="@+id/et_termino_labores_post_cosecha"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
         android:inputType="date"
         app:layout_constraintTop_toBottomOf="@id/et_termino_cosecha"
         app:layout_constraintStart_toEndOf="@id/termino_labores_post_cosecha"
-        app:layout_constraintEnd_toStartOf="@id/correo_envia_termino_labores_post_cosecha"
+       app:layout_constraintEnd_toEndOf="parent"
         android:drawableStart="@drawable/ic_date_range"
         android:drawableTint="@color/colorPrimary"
         />
 
- <ImageView
-     android:id="@+id/correo_envia_termino_labores_post_cosecha"
-     android:layout_width="40dp"
-     android:layout_height="40dp"
-     app:layout_constraintHorizontal_weight="3"
-     android:src="@drawable/ic_baseline_email_24_no"
-     app:layout_constraintTop_toTopOf="@id/et_termino_labores_post_cosecha"
-     app:layout_constraintBottom_toBottomOf="@id/et_termino_labores_post_cosecha"
-     app:layout_constraintStart_toEndOf="@id/et_termino_labores_post_cosecha"
-     />
 
 
- <com.google.android.material.textfield.TextInputLayout
-     android:id="@+id/con_detalle_labores"
-     android:layout_width="0dp"
-     android:layout_height="wrap_content"
-     app:layout_constraintHorizontal_weight="0.3"
-     android:layout_margin="10dp"
-     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-     android:hint="Detalle labores"
-     app:layout_constraintTop_toBottomOf="@id/correo_envia_termino_labores_post_cosecha"
-     app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintEnd_toEndOf="parent"
-     >
-
-  <com.google.android.material.textfield.TextInputEditText
-      android:id="@+id/et_detalle_labores"
-      android:layout_width="match_parent"
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/con_detalle_labores"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:inputType="textMultiLine"
-      />
- </com.google.android.material.textfield.TextInputLayout>
+      android:layout_marginTop="@dimen/padding_small"
+      style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+      android:hint="@string/detalle_labores"
+      app:layout_constraintTop_toBottomOf="@id/et_termino_labores_post_cosecha"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+   <com.google.android.material.textfield.TextInputEditText
+       android:id="@+id/et_detalle_labores"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:inputType="textMultiLine"
+       android:maxHeight="150dp"
+       />
+  </com.google.android.material.textfield.TextInputLayout>
+
+    <View
+        android:id="@+id/divider_ogm"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/con_detalle_labores"
+        android:layout_marginTop="@dimen/padding"/>
+
+    <TextView
+        android:id="@+id/lbl_titulo_siembra_temprana"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ogm_siembra_temprana_gram_nea"
+        app:layout_constraintTop_toBottomOf="@id/divider_ogm"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/padding"
+
+        />
+
+        <TextView
+            android:id="@+id/fecha_siembra_temprana"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="@string/fecha"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/et_fecha_siembra_temprada"
+            app:layout_constraintBottom_toBottomOf="@id/et_fecha_siembra_temprada"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_fecha_siembra_temprada"
+            />
+
+        <EditText
+            android:id="@+id/et_fecha_siembra_temprada"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:inputType="date"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_siembra_temprana"
+            app:layout_constraintStart_toEndOf="@id/fecha_siembra_temprana"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:drawableStart="@drawable/ic_date_range"
+            android:drawableTint="@color/colorPrimary"
+            />
+
+        <TextView
+            android:id="@+id/tipo_siembra_temprana"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="@string/tipo_gram_nea"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/et_tipo_siembra_temprada"
+            app:layout_constraintBottom_toBottomOf="@id/et_tipo_siembra_temprada"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_tipo_siembra_temprada"
+            />
+
+        <EditText
+            android:id="@+id/et_tipo_siembra_temprada"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/et_fecha_siembra_temprada"
+            app:layout_constraintStart_toEndOf="@id/tipo_siembra_temprana"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <View
+            android:id="@+id/divider_destruccion"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/et_tipo_siembra_temprada"
+            android:layout_marginTop="@dimen/padding"/>
+
+        <TextView
+            android:id="@+id/lbl_titulo_destruccion_semillero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/destruccion_de_semillero_ensayo"
+            app:layout_constraintTop_toBottomOf="@id/divider_destruccion"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/padding"
+            />
+
+        <TextView
+            android:id="@+id/fecha_destruccion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="@string/fecha_y_hora_destrucci_n"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/et_fecha_destruccion"
+            app:layout_constraintBottom_toBottomOf="@id/et_hora_destruccion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_fecha_destruccion"
+            />
+
+        <EditText
+            android:id="@+id/et_fecha_destruccion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:inputType="date"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_destruccion_semillero"
+            app:layout_constraintStart_toEndOf="@id/fecha_destruccion"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:drawableStart="@drawable/ic_date_range"
+            android:drawableTint="@color/colorPrimary"
+            />
+        <EditText
+            android:id="@+id/et_hora_destruccion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            app:layout_constraintTop_toBottomOf="@id/et_fecha_destruccion"
+            app:layout_constraintStart_toStartOf="@id/et_fecha_destruccion"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:drawableStart="@drawable/ic_time"
+            android:drawableTint="@color/colorPrimary"
+
+            />
+
+
+        <TextView
+            android:id="@+id/destruccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="@string/destrucci_n"
+            android:textSize="18sp"
+            android:textAlignment="textStart"
+            app:layout_constraintTop_toBottomOf="@id/et_hora_destruccion"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_rb_destruccion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_hora_destruccion"
+            app:layout_constraintStart_toEndOf="@id/destruccion"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|end"
+            >
+            <RadioButton
+                android:id="@+id/rbtn_parcial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/parcial"
+                />
+
+            <RadioButton
+                android:id="@+id/rbtn_completo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/completo"
+                />
+        </RadioGroup>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cont_detalle_destruccion"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/grupo_rb_destruccion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/cantidad_ha_destruccion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="3"
+                android:text="@string/cantidad_has_destruidas"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="@id/et_cantidad_ha_destruccion"
+                app:layout_constraintBottom_toBottomOf="@id/et_cantidad_ha_destruccion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_cantidad_ha_destruccion"
+                />
+
+            <EditText
+                android:id="@+id/et_cantidad_ha_destruccion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="3"
+                android:inputType="numberDecimal"
+               app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/cantidad_ha_destruccion"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/con_motivo_destruccion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                android:hint="@string/motivo"
+                app:layout_constraintTop_toBottomOf="@id/et_cantidad_ha_destruccion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_motivo_destruccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:maxHeight="150dp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <Button
+        android:id="@+id/btn_guardar_anexo_fecha"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/guardar"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintTop_toBottomOf="@id/cont_detalle_destruccion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btn_posponer_anexo_fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_small"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="@string/nav_cancel"
+        app:layout_constraintTop_toBottomOf="@id/cont_detalle_destruccion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_guardar_anexo_fecha" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

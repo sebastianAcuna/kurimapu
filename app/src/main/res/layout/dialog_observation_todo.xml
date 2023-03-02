@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/scrolls"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_small">
+
+
+    <Button
+        android:id="@+id/btn_evaluacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_small"
+        android:text="evaluacion"
+        android:textSize="12sp"
+        android:drawableRight="@drawable/ic_star_black_24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_recomendaciones"
+        />
+
+    <Button
+        android:id="@+id/btn_recomendaciones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="recomendaciones"
+        android:textSize="11sp"
+        android:layout_margin="@dimen/padding_small"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_evaluacion"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+android:visibility="gone"
+            android:id="@+id/cl_evaluacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_recomendaciones">
+
+            <TextView
+                android:id="@+id/tv_titulo_rankear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/visita_anterior_text"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_fecha_rankear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_titulo_rankear"
+                tool:text="Fecha: 2022-07-06 12:33:54" />
+
+            <TextView
+                android:id="@+id/tv_titulo_recom"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/recomendacion_anterior"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_fecha_rankear"
+
+                />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_recom_rankear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_titulo_recom"
+                tool:text="PARA EL CONTROL DE HOJA ANCHA REALIZAR APLICACION DE VENCEWEED. 1.25 LT/HA DE VENCEWEED MAS 62 GR/HA DE PRESIDE/
+REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CLIMATICA.(DEBE HABER SOL).
+ EL PASTOREO DEBE REALIZARSE HASTA MAXIMO PRIMERA SEMANA DE SEPTIEMBRE." />
+
+            <TextView
+                android:id="@+id/tv_waring"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/title_warning_ranked"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/holo_red_dark"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_recom_rankear"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_titulo_ranking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/pregunta_ranking"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_waring"
+
+                />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_titulo_ranking"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_titulo_obs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="start"
+                android:text="@string/comentario"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingBar"
+
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/cont_et_comentario"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="500"
+                app:errorEnabled="true"
+                app:helperText="@string/comentario_evaluacion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_titulo_obs">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_comentario"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLength="500"
+                    android:maxLines="5"
+                    android:minLines="2" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_guardar_evaluacion"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/guardar"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginTop="@dimen/padding_small"
+                app:layout_constraintTop_toBottomOf="@id/cont_et_comentario"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <Button
+                android:id="@+id/btn_posponer_evaluacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:layout_marginTop="@dimen/padding_small"
+                android:text="@string/posponer"
+                app:layout_constraintTop_toBottomOf="@id/cont_et_comentario"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_guardar_evaluacion" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+        android:id="@+id/cl_recomendacion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_recomendaciones">
+
+        <TextView
+            android:id="@+id/tv_titulo_recomendaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/recomendaciones"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/cont_nueva_recom"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="500"
+                app:errorEnabled="true"
+                android:hint="@string/recomendaciones"
+                app:helperText="@string/comentario_evaluacion"
+                app:layout_constraintEnd_toStartOf="@id/btn_add_recom"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_titulo_recomendaciones">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_nueva_recom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLength="500"
+                    android:maxLines="3"
+                    android:minLines="2" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <EditText
+                android:id="@+id/fecha_plazo"
+                android:hint="@string/fecha_plazo"
+                app:layout_constraintTop_toBottomOf="@id/cont_nueva_recom"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_add_recom"
+                android:drawableStart="@drawable/ic_date_range"
+                android:drawableTint="?colorSecondaryVariant"
+                android:windowSoftInputMode="stateHidden"
+                android:layout_width="0dp"
+                android:inputType="date"
+                android:maxLength="10"
+                android:layout_marginHorizontal="@dimen/padding"
+                android:layout_height="wrap_content"
+                />
+
+
+            <Button
+                android:id="@+id/btn_add_recom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/agregar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cont_nueva_recom"
+                app:layout_constraintStart_toEndOf="@id/fecha_plazo"
+                />
+
+
+            <View
+                android:id="@+id/divider12"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintTop_toBottomOf="@id/btn_add_recom"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            <TextView
+                android:id="@+id/txt_titulo_pendientes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="0.7"
+                android:text="@string/pendientes"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                app:layout_constraintTop_toBottomOf="@id/divider12"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/padding_small"
+                app:layout_constraintEnd_toStartOf="@id/ic_collapse"
+                android:gravity="center"/>
+
+
+            <ImageView
+                android:id="@+id/ic_collapse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="0.1"
+                android:src="@drawable/ic_expand_up"
+                app:layout_constraintTop_toBottomOf="@id/divider12"
+                app:layout_constraintStart_toEndOf="@id/txt_titulo_pendientes"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/padding_small"
+                app:tint="@color/colorPrimary" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recom_pendientes"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                app:layout_constraintTop_toBottomOf="@id/txt_titulo_pendientes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/txt_titulo_rechazadas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="0.7"
+                android:text="@string/rechazadas"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                app:layout_constraintTop_toBottomOf="@id/rv_recom_pendientes"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/padding_small"
+                app:layout_constraintEnd_toStartOf="@id/ic_collapse_rechazo"
+                android:gravity="center"/>
+
+
+            <ImageView
+                android:id="@+id/ic_collapse_rechazo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="0.1"
+                android:src="@drawable/ic_expand_down"
+                app:layout_constraintTop_toBottomOf="@id/rv_recom_pendientes"
+                app:layout_constraintStart_toEndOf="@id/txt_titulo_rechazadas"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/padding_small"
+                app:tint="@color/colorPrimary" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recom_rechazo"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/txt_titulo_rechazadas"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/txt_titulo_aprobadas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="0.7"
+                android:text="@string/realizadas"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                app:layout_constraintTop_toBottomOf="@id/rv_recom_rechazo"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/padding_small"
+                app:layout_constraintEnd_toStartOf="@id/ic_collapse_aprobada"
+                android:gravity="center"/>
+
+
+            <ImageView
+                android:id="@+id/ic_collapse_aprobada"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintHorizontal_weight="0.1"
+                android:src="@drawable/ic_expand_down"
+                app:layout_constraintTop_toBottomOf="@id/rv_recom_rechazo"
+                app:layout_constraintStart_toEndOf="@id/txt_titulo_aprobadas"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/padding_small"
+                app:tint="@color/colorPrimary" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recom_aprobadas"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/txt_titulo_aprobadas"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+        <Button
+            android:id="@+id/btn_cerrar_recomendaciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_small"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/cerrar"
+            app:layout_constraintTop_toBottomOf="@id/rv_recom_aprobadas"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

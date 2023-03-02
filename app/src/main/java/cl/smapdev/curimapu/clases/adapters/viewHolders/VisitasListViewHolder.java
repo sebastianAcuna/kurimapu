@@ -3,11 +3,13 @@ package cl.smapdev.curimapu.clases.adapters.viewHolders;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -22,14 +24,18 @@ import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class VisitasListViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView nombre_agricultor, nombre_etapa, nombre_detalle_etapa,fecha_lista_visitas,hora_lista_visitas;
-    private ImageView imagen_referencial;
-    private CardView cardview_visitas;
+    private final TextView nombre_agricultor;
+    private final TextView nombre_etapa;
+    private final TextView nombre_detalle_etapa;
+    private final TextView fecha_lista_visitas;
+    private final TextView hora_lista_visitas;
+    private final Button btn_ver;
+    private final Button btn_eliminar;
+    private final ConstraintLayout cardview_visitas;
 
     public VisitasListViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        imagen_referencial  = itemView.findViewById(R.id.imagen_referencial);
         nombre_agricultor  = itemView.findViewById(R.id.nombre_agricultor);
         nombre_etapa  = itemView.findViewById(R.id.nombre_etapa);
         nombre_detalle_etapa  = itemView.findViewById(R.id.nombre_detalle_etapa);
@@ -37,10 +43,13 @@ public class VisitasListViewHolder extends RecyclerView.ViewHolder {
         cardview_visitas  = itemView.findViewById(R.id.cardview_visitas);
         hora_lista_visitas  = itemView.findViewById(R.id.hora_lista_visitas);
 
+        btn_ver  = itemView.findViewById(R.id.btn_Ver);
+        btn_eliminar  = itemView.findViewById(R.id.btn_eliminar);
+
     }
 
 
-    public void bind(final VisitasCompletas elem, final VisitasListAdapter.OnItemClickListener clickListener, final VisitasListAdapter.OnItemLongClickListener longClickListener, Context context){
+    public void bind(final VisitasCompletas elem, final VisitasListAdapter.OnItemClickListener clickListenerVer, final VisitasListAdapter.OnItemClickListener clickListenerEliminar, Context context){
 
         if (context != null){
 
@@ -50,47 +59,14 @@ public class VisitasListViewHolder extends RecyclerView.ViewHolder {
                 configid = config.getId();
             }
 
-           // final Fotos fotos = MainActivity.myAppDB.myDao().getFoto(elem.getVisitas().getId_anexo_visita(), elem.getVisitas().getId_visita(), elem.getVisitas().getId_visita_local(), configid);
+            btn_ver.setOnClickListener(view -> clickListenerVer.onItemClick(view, elem));
 
-            if(elem.getFotos() !=null){
-                final Fotos fotos = elem.getFotos();
-
-                if (fotos != null){
-                    imagen_referencial.setVisibility(View.VISIBLE);
-//                    Picasso.get().load("file:///"+fotos.getRuta()).resize(800,600).centerCrop().into(imagen_referencial);
-
-//                    Drawable d = Drawable.createFromPath(fotos.getRuta());
-//                    imagen_referencial.setImageDrawable(d);
-
-                    imagen_referencial.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            clickListener.onItemClick(view, elem, fotos);
-                        }
-                    });
-
-
-                }else{
-                    imagen_referencial.setVisibility(View.GONE);
-                    imagen_referencial.setImageDrawable(null);
-                }
+            if(elem.getVisitas().getEstado_server_visitas() > 0){
+                btn_eliminar.setEnabled(false);
+            }else{
+                btn_eliminar.setEnabled(true);
+                btn_eliminar.setOnClickListener(view -> clickListenerEliminar.onItemClick(view, elem));
             }
-
-            cardview_visitas.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickListener.onItemClick(view, elem, null);
-                }
-            });
-
-
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    longClickListener.onItemLongClick(view, elem, null);
-                    return false;
-                }
-            });
 
 
             hora_lista_visitas.setText(elem.getVisitas().getHora_visita());

@@ -15,15 +15,16 @@ import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class UserViewHolder extends RecyclerView.ViewHolder {
-    private TextView tvUser,name;
-    private ConstraintLayout constraintLayout;
+    private final TextView tvUser;
+    private final TextView name;
+    private final ConstraintLayout constraintLayout;
 
 
     public UserViewHolder(@NonNull View itemView) {
         super(itemView);
-        tvUser = (TextView) itemView.findViewById(R.id.user_login_list);
-        name = (TextView) itemView.findViewById(R.id.user_name_list);
-        constraintLayout = (ConstraintLayout) itemView.findViewById(R.id.container_usuarios_server);
+        tvUser = itemView.findViewById(R.id.user_login_list);
+        name = itemView.findViewById(R.id.user_name_list);
+        constraintLayout = itemView.findViewById(R.id.container_usuarios_server);
     }
 
 
@@ -46,12 +47,7 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
                 tvUser.setTextColor(context.getColor(R.color.colorOnSurface));
             }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(user);
-                }
-            });
+            itemView.setOnClickListener(v -> listener.onItemClick(user));
         }
 
 

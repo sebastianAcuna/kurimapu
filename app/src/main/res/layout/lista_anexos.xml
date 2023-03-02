@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:padding="@dimen/padding_small"
+    android:layout_margin="@dimen/padding_small"
+    android:background="@color/colorBackgroundList"
+    android:elevation="@dimen/padding"
+    >
+
+    <TextView
+        android:id="@+id/num_anexo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/especie"
+        tool:text="23-TR1337"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        />
+
+    <TextView
+        android:id="@+id/especie"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/num_anexo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        tool:text="TREBOL ROSADO"
+        />
+
+    <TextView
+        android:id="@+id/lbl_agricultor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/num_anexo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/especie"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="@string/agricultor"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        />
+
+    <TextView
+        android:id="@+id/agricultor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_agricultor"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="RICARDO BRUN FREY"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        />
+
+    <TextView
+        android:id="@+id/lbl_potrero"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/agricultor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lbl_variedad"
+        android:text="@string/potrero"
+        android:layout_marginTop="@dimen/padding_small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        />
+
+    <TextView
+        android:id="@+id/potrero"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_potrero"
+        app:layout_constraintEnd_toStartOf="@id/lbl_variedad"
+        tool:text="SANTA AMELIA"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        />
+
+    <TextView
+        android:id="@+id/lbl_variedad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/lbl_potrero"
+        app:layout_constraintTop_toBottomOf="@id/agricultor"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="@string/variedad"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        />
+
+    <TextView
+        android:id="@+id/variedad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/lbl_potrero"
+        app:layout_constraintTop_toBottomOf="@id/lbl_potrero"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="RGT-JAVVA"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        />
+
+    <Button
+        android:id="@+id/btn_add_visita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/variedad"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/nueva_visita"
+        android:layout_marginTop="@dimen/padding_small"
+        />
+
+    <Button
+        android:id="@+id/btn_menu_visita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Colored"
+        app:layout_constraintTop_toBottomOf="@id/variedad"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/detalle"
+        android:layout_marginTop="@dimen/padding_small"
+        />
+
+    <View
+        android:id="@+id/divider14"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintTop_toBottomOf="@id/btn_menu_visita"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

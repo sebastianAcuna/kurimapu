@@ -18,6 +18,10 @@ public class AnexoCorreoFechas {
     @Expose
     private int id_ac_corr_fech;
 
+    @SerializedName("estado_sincro_corr_fech")
+    @Expose
+    private int estado_sincro_corr_fech;
+
     @SerializedName("id_fieldman")
     @Expose
     private int id_fieldman;
@@ -52,6 +56,11 @@ public class AnexoCorreoFechas {
     @Expose
     private String inicio_cosecha;
 
+    @SerializedName("hora_inicio_cosecha")
+    @Expose
+    private String hora_inicio_cosecha;
+
+
     @SerializedName("correo_inicio_cosecha")
     @Expose
     private int correo_inicio_cosecha;
@@ -80,6 +89,108 @@ public class AnexoCorreoFechas {
     @Expose
     private int id_asistente;
 
+
+
+    @SerializedName("siem_tempra_grami")
+    @Expose
+    private String siem_tempra_grami;
+
+    @SerializedName("tipo_graminea")
+    @Expose
+    private String tipo_graminea;
+
+    @SerializedName("fecha_destruccion_semillero")
+    @Expose
+    private String fecha_destruccion_semillero;
+
+    @SerializedName("hora_destruccion_semillero")
+    @Expose
+    private String hora_destruccion_semillero;
+
+    @SerializedName("destruc_semill_ensayo")
+    @Expose
+    private String destruc_semill_ensayo;
+
+    @SerializedName("cantidad_has_destruidas")
+    @Expose
+    private Double cantidad_has_destruidas;
+
+    @SerializedName("motivo_destruccion")
+    @Expose
+    private String motivo_destruccion;
+
+
+    public int getEstado_sincro_corr_fech() {
+        return estado_sincro_corr_fech;
+    }
+
+    public void setEstado_sincro_corr_fech(int estado_sincro_corr_fech) {
+        this.estado_sincro_corr_fech = estado_sincro_corr_fech;
+    }
+
+    public String getSiem_tempra_grami() {
+        return siem_tempra_grami;
+    }
+
+    public void setSiem_tempra_grami(String siem_tempra_grami) {
+        this.siem_tempra_grami = siem_tempra_grami;
+    }
+
+    public String getTipo_graminea() {
+        return tipo_graminea;
+    }
+
+    public void setTipo_graminea(String tipo_graminea) {
+        this.tipo_graminea = tipo_graminea;
+    }
+
+    public String getFecha_destruccion_semillero() {
+        return fecha_destruccion_semillero;
+    }
+
+    public void setFecha_destruccion_semillero(String fecha_destruccion_semillero) {
+        this.fecha_destruccion_semillero = fecha_destruccion_semillero;
+    }
+
+    public String getHora_destruccion_semillero() {
+        return hora_destruccion_semillero;
+    }
+
+    public void setHora_destruccion_semillero(String hora_destruccion_semillero) {
+        this.hora_destruccion_semillero = hora_destruccion_semillero;
+    }
+
+    public String getDestruc_semill_ensayo() {
+        return destruc_semill_ensayo;
+    }
+
+    public void setDestruc_semill_ensayo(String destruc_semill_ensayo) {
+        this.destruc_semill_ensayo = destruc_semill_ensayo;
+    }
+
+    public Double getCantidad_has_destruidas() {
+        return cantidad_has_destruidas;
+    }
+
+    public void setCantidad_has_destruidas(Double cantidad_has_destruidas) {
+        this.cantidad_has_destruidas = cantidad_has_destruidas;
+    }
+
+    public String getMotivo_destruccion() {
+        return motivo_destruccion;
+    }
+
+    public void setMotivo_destruccion(String motivo_destruccion) {
+        this.motivo_destruccion = motivo_destruccion;
+    }
+
+    public String getHora_inicio_cosecha() {
+        return hora_inicio_cosecha;
+    }
+
+    public void setHora_inicio_cosecha(String hora_inicio_cosecha) {
+        this.hora_inicio_cosecha = hora_inicio_cosecha;
+    }
 
     public int getId_ac_cor_fech() {
         return id_ac_cor_fech;

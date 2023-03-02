@@ -112,19 +112,15 @@ public class FragmentLogin extends Fragment {
             final String androidID = Settings.System.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             Config config = MainActivity.myAppDB.myDao().getConfig();
 
-//            System.out.println(androidID);
             Log.e("IMEI", androidID);
 
             final int id = (config == null) ? 0 : config.getId();
 
-            InternetStateClass mm = new InternetStateClass(activity, new returnValuesFromAsyntask() {
-                @Override
-                public void myMethod(boolean result) {
-                    if (result) {
-                        Descargas.primeraDescarga(activity, androidID, id, Utilidades.APPLICATION_VERSION);
-                    } else {
-                        Toasty.warning(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
-                    }
+            InternetStateClass mm = new InternetStateClass(activity, result -> {
+                if (result) {
+                    Descargas.primeraDescarga(activity, androidID, id, Utilidades.APPLICATION_VERSION);
+                } else {
+                    Toasty.warning(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
                 }
             }, 1);
             mm.execute();
@@ -163,10 +159,10 @@ public class FragmentLogin extends Fragment {
                         activity.cambiarFragment(new servidorFragment(), Utilidades.FRAGMENT_SERVIDOR, R.anim.slide_in_left, R.anim.slide_out_left);
                     }else{
                         shared.edit().putString(Utilidades.SHARED_SERVER_ID_USER, String.valueOf(usuario.getId_usuario())).apply();
-                        shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRODUCCION).apply();
+                        shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API).apply();
 
                         Config cn = MainActivity.myAppDB.myDao().getConfig();
-                        cn.setServidorSeleccionado(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRODUCCION));
+                        cn.setServidorSeleccionado(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API));
                         cn.setId_usuario_suplandato(usuario.getId_usuario());
                         MainActivity.myAppDB.myDao().updateConfig(cn);
 

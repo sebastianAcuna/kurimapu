@@ -20,11 +20,11 @@ import cl.smapdev.curimapu.clases.tablas.Fotos;
 
 public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.ImageViewHolder> {
 
-    private List<Fotos> images;
-//    private int[] images;
-    private OnItemClickListener itemClickListener;
-    private OnItemLongClickListener itemLongClickListener;
-    private Context context;
+    private final List<Fotos> images;
+    //    private int[] images;
+    private final OnItemClickListener itemClickListener;
+    private final OnItemLongClickListener itemLongClickListener;
+    private final Context context;
 
 
     public FotosListAdapter(List<Fotos> images, Context context, OnItemClickListener itemClickListener , OnItemLongClickListener itemLongClickListener){
@@ -48,7 +48,7 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         holder.bind(images.get(position), itemClickListener, itemLongClickListener,context);
-        }
+    }
 
 
     @Override
@@ -89,20 +89,12 @@ public class FotosListAdapter extends RecyclerView.Adapter<FotosListAdapter.Imag
                 imageTitle.setText(fotos.getNombre_foto());
                 imageTitle.setEnabled(false);
 
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        itemClickListener.onItemClick(fotos);
-                    }
-                });
+                itemView.setOnClickListener(v -> itemClickListener.onItemClick(fotos));
 
 
-                itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        itemLongClickListener.onItemLongClick(fotos);
-                        return true;
-                    }
+                itemView.setOnLongClickListener(v -> {
+                    itemLongClickListener.onItemLongClick(fotos);
+                    return true;
                 });
 
             }

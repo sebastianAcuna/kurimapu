@@ -1,9 +1,10 @@
 package cl.smapdev.curimapu.fragments.contratos;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,13 +13,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -29,11 +31,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
@@ -41,21 +43,28 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.CropRotationAdapter;
 import cl.smapdev.curimapu.clases.adapters.GenericAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
+import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
+import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.UnidadMedida;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
+import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.cargarUI;
+import cl.smapdev.curimapu.coroutines.ApplicationExecutors;
+import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
 import es.dmoral.toasty.Toasty;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class FragmentSowing extends Fragment {
 
@@ -93,8 +102,8 @@ public class FragmentSowing extends Fragment {
     private ArrayList<String> um = null;
     private ArrayList<String> idUm = null;
 
-    private String[] forbiddenWords = new String[]{"á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú"};
-    private String[] forbiddenReplacement = new String[]{"a", "e", "i", "o", "u", "A", "E", "I", "O", "U"};
+    private final String[] forbiddenWords = new String[]{"á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú"};
+    private final String[] forbiddenReplacement = new String[]{"a", "e", "i", "o", "u", "A", "E", "I", "O", "U"};
 
 
 
@@ -144,17 +153,16 @@ public class FragmentSowing extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-
+        setHasOptionsMenu(true);
         Bundle bundle = getArguments();
         if (bundle != null){
             this.fieldbook = bundle.getInt(FIELDGENERIC);
         }
 
         if(getUserVisibleHint()) {
-            new LazyLoad(true).execute();
+            cargarInterfaz();
         }
-      /*  global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, getActivity(), prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook, global);
-        setearOnFocus();*/
+
     }
 
 
@@ -164,8 +172,31 @@ public class FragmentSowing extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null){
             this.fieldbook = bundle.getInt(FIELDGENERIC);
-
         }
+    }
+
+
+    public void cargarInterfaz(){
+        ApplicationExecutors exec = new ApplicationExecutors();
+
+        ProgressDialog progressBar = new ProgressDialog(activity);
+        progressBar.setTitle("cargando interfaz...");
+        progressBar.show();
+
+
+        exec.getBackground().execute(()-> {
+            int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+            exec.getMainThread().execute(()-> {
+                if (Globalview != null){
+                    global = cargarUI.cargarUI(Globalview, R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
+                }
+                setearOnFocus();
+                if  (progressBar.isShowing()){
+                    progressBar.dismiss();
+                }
+            });
+        });
+        exec.shutDownBackground();
     }
 
     @Override
@@ -173,41 +204,8 @@ public class FragmentSowing extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
-//                if(fieldbook <= 0){
-//                    Utilidades.avisoListo(activity, "Hey!", "Antes de completar el libro de campo debes ingresar un estado fenologico", "ENTIENDO");
-//                }
-//                AsyncTask.execute(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (progressBar != null && progressBar.isShowing()){
-                            new LazyLoad(false).execute();
-//                        }
-//                    }
-//                });
 
-                if (Globalview.findViewWithTag("FOTOS_"+fieldbook) == null){
-                    if (Globalview.findViewById(R.id.container_linear_fotos) != null){
-                        LinearLayout ly = Globalview.findViewById(R.id.container_linear_fotos);
-                        if (ly != null){
-                            if(activity != null){
-                                try{
-                                    FrameLayout fm = (FrameLayout) new FrameLayout(activity);
-//                            if (fm != null){
-                                    fm.setId(View.generateViewId());
-                                    fm.setTag("FOTOS_" + fieldbook);
-                                    ly.addView(fm);
-
-                                    if(ly.findViewWithTag("FOTOS_" + fieldbook) != null){
-                                        activity.getSupportFragmentManager().beginTransaction().replace(fm.getId(), FragmentFotos.getInstance(fieldbook), Utilidades.FRAGMENT_FOTOS).commit();
-                                    }
-//                                }
-                                }catch (NullPointerException  e){
-                                    Toasty.warning(activity, "No se pudo cargar las fotos", Toast.LENGTH_SHORT, true).show();
-                                }
-                            }
-                        }
-                    }
-                }
+                cargarInterfaz();
 
             }
         }
@@ -241,15 +239,22 @@ public class FragmentSowing extends Fragment {
                                     String nombreTabla = "";
                                     if (!fs.getTabla().equals("")){
                                         switch (fs.getTabla()){
+
+                                            case "condicion":
+                                                nombreCampoTableta = "condicion";
+                                                nombreTabla = "anexo_contrato";
+                                                break;
+
                                             case "cliente":
                                                 nombreCampoTableta = (fs.getCampo().equals("razon_social")) ? "razon_social_clientes" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
                                                 break;
 
-                                            case "anexo_correo_fechas":
-                                                nombreCampoTableta = fs.getCampo();
+                                            case "comuna":
+                                                nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "desc_comuna" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
                                                 break;
+
                                             case "especie":
                                                 nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "desc_especie" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
@@ -301,6 +306,10 @@ public class FragmentSowing extends Fragment {
                                                 nombreCampoTableta = (fs.getCampo().equals("valor")) ? "valor_detalle" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
                                                 break;
+                                            case "anexo_correo_fechas":
+                                                nombreCampoTableta = fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
 
                                             case "usuarios":
                                                 nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "nombre || ' ' || apellido_p AS nombre " : fs.getCampo();
@@ -325,13 +334,16 @@ public class FragmentSowing extends Fragment {
                                         }
 
                                         String  consulta = "SELECT " + nombreCampoTableta + " " +
-                                                " FROM " + nombreTabla + " ";
-
-
+                                                    " FROM " + nombreTabla + " ";
 
                                         switch (fs.getTabla()){
                                             case "anexo_contrato" :
+                                            case "condicion" :
                                                 consulta += " WHERE id_anexo_contrato = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
+                                            case "anexo_checklist_siembra" :
+                                                consulta += " WHERE id_ac_cl_siembra = ? AND estado_documento = 1 ORDER BY id_cl_siembra DESC LIMIT 1 ";
                                                 ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
                                             case "anexo_correo_fechas":
@@ -364,6 +376,7 @@ public class FragmentSowing extends Fragment {
                                                 consulta += " INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = FN.id_ficha_new WHERE AC.id_anexo_contrato = ? ";
                                                 ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
+//
                                             case "predio":
                                                 int idPredio  = MainActivity.myAppDB.myDao().getIdPredioByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 consulta += " WHERE id_pred = ? ";
@@ -428,20 +441,14 @@ public class FragmentSowing extends Fragment {
                             final int finalI = i;
 
                             if(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0){
-                                imageViews.get(i).setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        imageViews.get(finalI).requestFocus();
-                                        avisoActivaFicha(id_importante.get(index));
-                                    }
+                                imageViews.get(i).setOnClickListener(v -> {
+                                    imageViews.get(finalI).requestFocus();
+                                    avisoActivaFicha(id_importante.get(index));
                                 });
 
-                                imageViews.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                                    @Override
-                                    public void onFocusChange(View v, boolean hasFocus) {
-                                        if (hasFocus){
-                                            avisoActivaFicha(id_importante.get(index));
-                                        }
+                                imageViews.get(i).setOnFocusChangeListener((v, hasFocus) -> {
+                                    if (hasFocus){
+                                        avisoActivaFicha(id_importante.get(index));
                                     }
                                 });
                             }
@@ -515,8 +522,6 @@ public class FragmentSowing extends Fragment {
                                     editTexts.get(i).setText(datoDetalle);
 
 
-                                    //editTexts.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0));
-
                                     break;
                                 case InputType.TYPE_CLASS_DATETIME:
 
@@ -528,81 +533,84 @@ public class FragmentSowing extends Fragment {
                                             editTexts.get(i).setEnabled(false);
                                         }
                                     }
-                                    editTexts.get(i).setText(Utilidades.voltearFechaVista(datoDetalleFecha));
+                                    String nuevaFecha = Utilidades.voltearFechaVista(datoDetalleFecha);
+                                    nuevaFecha = (nuevaFecha.equals("")) ? datoDetalleFecha : nuevaFecha;
+                                    editTexts.get(i).setText(nuevaFecha);
                                     final int finalI1 = i;
                                     if (editTexts.get(i).isEnabled()){
-                                        editTexts.get(i).setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                levantarFecha(editTexts.get(finalI1));
-                                            }
-                                        });
+                                        editTexts.get(i).setOnClickListener(v -> levantarFechaSowing(editTexts.get(finalI1)));
                                     }
 
                                     break;
                             }
 
                             final int finalI = i;
-                            editTexts.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                                @Override
-                                public void onFocusChange(View view, boolean b) {
 
-                                    int index = id_generica.indexOf(editTexts.get(finalI).getId());
-
-                                    switch (editTexts.get(finalI).getInputType()) {
-                                        case InputType.TYPE_CLASS_TEXT:
-                                        case InputType.TYPE_CLASS_NUMBER:
-                                        case InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED:
-                                            if (!b) {
-                                                if (!TextUtils.isEmpty(editTexts.get(finalI).getText().toString())){
-
-                                                    String text = editTexts.get(finalI).getText().toString().toUpperCase();
-                                                    for (int i = 0; i < forbiddenWords.length; i++){
-                                                        text = text.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                                                    }
+                            EditText tempText = editTexts.get(finalI);
 
 
-                                                    detalle_visita_prop temp = new detalle_visita_prop();
-                                                    temp.setValor_detalle(text);
-                                                    temp.setEstado_detalle(0);
-                                                    temp.setId_visita_detalle(0);
-                                                    temp.setId_prop_mat_cli_detalle(id_importante.get(index));
+                            tempText.setOnFocusChangeListener((view, b) -> {
 
-                                                    int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-                                                    if (idAEditar > 0){
-                                                        temp.setId_det_vis_prop_detalle(idAEditar);
-                                                        MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
-                                                    }else{
-                                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-                                                    }
+                                int index1 = id_generica.indexOf(editTexts.get(finalI).getId());
+
+
+                                switch (tempText.getInputType()) {
+                                    case InputType.TYPE_CLASS_TEXT:
+                                    case InputType.TYPE_CLASS_NUMBER:
+                                    case InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED:
+                                        if (!b) {
+                                            if (TextUtils.isEmpty(tempText.getText().toString())){
+                                                break;
+                                            }
+
+                                            String text = tempText.getText().toString().toUpperCase();
+                                            for (int i1 = 0; i1 < forbiddenWords.length; i1++){
+                                                text = text.replace(forbiddenWords[i1],forbiddenReplacement[i1]);
+                                            }
+
+
+                                            detalle_visita_prop temp = new detalle_visita_prop();
+                                            temp.setValor_detalle(text);
+                                            temp.setEstado_detalle(0);
+                                            temp.setId_visita_detalle(0);
+                                            temp.setId_prop_mat_cli_detalle(id_importante.get(index1));
+
+                                            int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index1), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+                                            if (idAEditar > 0){
+                                                temp.setId_det_vis_prop_detalle(idAEditar);
+                                                MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
+                                            }else{
+                                                MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
+                                            }
+                                        }
+                                        break;
+                                    case InputType.TYPE_CLASS_DATETIME:
+                                        if (b) {
+                                            levantarFechaSowing(editTexts.get(finalI));
+                                        } else {
+                                            if (!TextUtils.isEmpty(editTexts.get(finalI).getText().toString())) {
+                                                detalle_visita_prop temp = new detalle_visita_prop();
+
+                                                String prevValue = editTexts.get(finalI).getText().toString();
+                                                String fe = Utilidades.voltearFechaBD(prevValue);
+
+                                                fe = (fe == "") ? prevValue : fe;
+
+                                                temp.setValor_detalle(fe);
+                                                temp.setEstado_detalle(0);
+                                                temp.setId_visita_detalle(0);
+                                                temp.setId_prop_mat_cli_detalle(id_importante.get(index1));
+
+                                                int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index1), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+                                                if (idAEditar > 0) {
+                                                    temp.setId_det_vis_prop_detalle(idAEditar);
+                                                    MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
+                                                } else {
+                                                    MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
                                                 }
                                             }
-                                            break;
-                                        case InputType.TYPE_CLASS_DATETIME:
-                                            if (b) {
-                                                levantarFecha(editTexts.get(finalI));
-                                            } else {
-                                                if (!TextUtils.isEmpty(editTexts.get(finalI).getText().toString())) {
-                                                    detalle_visita_prop temp = new detalle_visita_prop();
-
-                                                    String fe = Utilidades.voltearFechaBD(editTexts.get(finalI).getText().toString());
-
-                                                    temp.setValor_detalle(fe);
-                                                    temp.setEstado_detalle(0);
-                                                    temp.setId_visita_detalle(0);
-                                                    temp.setId_prop_mat_cli_detalle(id_importante.get(index));
-
-                                                    int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-                                                    if (idAEditar > 0) {
-                                                        temp.setId_det_vis_prop_detalle(idAEditar);
-                                                        MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
-                                                    } else {
-                                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-                                                    }
-                                                }
-                                            }
-                                            break;
-                                    }
+                                        }
+                                        break;
                                 }
                             });
                         }
@@ -697,47 +705,47 @@ public class FragmentSowing extends Fragment {
             }catch (Exception e){
                 Log.e("ERROR ARRAY EDIT TEXT", e.getLocalizedMessage());
             }
-
         }
     }
 
-    private void levantarFecha(final EditText edit){
+    private void levantarFechaSowing(final EditText edit){
 
 
         String fecha = Utilidades.fechaActualSinHora();
         String[] fechaRota;
 
-        if (!TextUtils.isEmpty(edit.getText())){
+        String prevValue = edit.getText().toString();
+
+        if (!TextUtils.isEmpty(prevValue)){
             try{
-               fechaRota = Utilidades.voltearFechaBD(edit.getText().toString()).split("-");
+                String[] canSplit = prevValue.split("-");
+                if( canSplit.length <= 1){
+                    edit.setText(prevValue);
+                    return;
+                }
+                fechaRota = Utilidades.voltearFechaBD(prevValue).split("-");
+
             }catch (Exception e){
                 fechaRota = fecha.split("-");
             }
         }else{
             fechaRota = fecha.split("-");
         }
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
 
-                month = month + 1;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (datePicker, year, month, dayOfMonth) -> {
 
-                String mes = "", dia;
+            month = month + 1;
+            String mes = "", dia;
 
-                if (month < 10) {
-                    mes = "0" + month;
-                } else {
-                    mes = String.valueOf(month);
-                }
-                if (dayOfMonth < 10) dia = "0" + dayOfMonth;
-                else dia = String.valueOf(dayOfMonth);
+            if (month < 10) { mes = "0" + month; }
+            else {  mes = String.valueOf(month); }
 
-                String finalDate = dia + "-" + mes + "-" + year;
-//                edit.setHint("");
-                edit.setText(finalDate);
-            }
+            if (dayOfMonth < 10) dia = "0" + dayOfMonth;
+            else dia = String.valueOf(dayOfMonth);
+
+            String finalDate = dia + "-" + mes + "-" + year;
+            edit.setText(finalDate);
         }, Integer.parseInt(fechaRota[0]), (Integer.parseInt(fechaRota[1]) - 1), Integer.parseInt(fechaRota[2]));
-//        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
 
     }
@@ -753,7 +761,7 @@ public class FragmentSowing extends Fragment {
 
 
         final List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByIdProp(id_importante,prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""),idClienteFinal,prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
-        ConstraintLayout constraintLayout = (ConstraintLayout) viewInfalted.findViewById(R.id.container_alert_empty);
+        ConstraintLayout constraintLayout = viewInfalted.findViewById(R.id.container_alert_empty);
         ConstraintSet constraintSet = new ConstraintSet();
 
         View old = null;
@@ -782,26 +790,26 @@ public class FragmentSowing extends Fragment {
                 switch (tipoDato[2]) {
                     case "STRING":
                     default:
-                        eh = (EditText) new EditText(new ContextThemeWrapper(activity, R.style.sub_titles_forms));
+                        eh = new EditText(new ContextThemeWrapper(activity, R.style.sub_titles_forms));
                         eh.setInputType(InputType.TYPE_CLASS_TEXT);
                         eh.setHint(activity.getResources().getString(R.string.valor));
                         break;
                     case "DECIMAL":
-                        eh = (EditText) new EditText(new ContextThemeWrapper(activity, R.style.sub_titles_forms));
+                        eh = new EditText(new ContextThemeWrapper(activity, R.style.sub_titles_forms));
                         eh.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
                         eh.setHint(activity.getResources().getString(R.string.valor));
                         break;
                     case "DATE":
-                        eh = (EditText) new EditText(new ContextThemeWrapper(activity, R.style.input_date_forms));
+                        eh = new EditText(new ContextThemeWrapper(activity, R.style.input_date_forms));
                         eh.setInputType(InputType.TYPE_CLASS_DATETIME);
                         break;
                     case "SPINNER":
-                        etS = (Spinner) new Spinner(activity);
+                        etS = new Spinner(activity);
                         break;
                 }
 
                 View et = null;
-                et = (eh != null) ? (EditText) eh : (Spinner) etS;
+                et = (eh != null) ? eh : etS;
 
                 et.setId(View.generateViewId());
 
@@ -852,19 +860,11 @@ public class FragmentSowing extends Fragment {
 
                 if (editTextsView.get(i).getInputType() == InputType.TYPE_CLASS_DATETIME) {
                     final int finalI = i;
-                    editTextsView.get(i).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            levantarFecha(editTextsView.get(finalI));
-                        }
-                    });
+                    editTextsView.get(i).setOnClickListener(v -> levantarFechaSowing(editTextsView.get(finalI)));
 
-                    editTextsView.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                        @Override
-                        public void onFocusChange(View v, boolean hasFocus) {
-                            if (hasFocus){
-                                levantarFecha(editTextsView.get(finalI));
-                            }
+                    editTextsView.get(i).setOnFocusChangeListener((v, hasFocus) -> {
+                        if (hasFocus){
+                            levantarFechaSowing(editTextsView.get(finalI));
                         }
                     });
                 }
@@ -885,99 +885,62 @@ public class FragmentSowing extends Fragment {
         final AlertDialog builder = new AlertDialog.Builder(activity)
                 .setView(viewInfalted)
                 .setTitle("Nuevo elemento")
-                .setPositiveButton("Modificar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
+                .setPositiveButton("Modificar", (dialogInterface, i) -> {
                 })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
+                .setNegativeButton("Cancelar", (dialogInterface, i) -> {
                 })
                 .create();
 
 
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-                Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
 
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            b.setOnClickListener(v -> {
 
-                        boolean vacio = false;
-//                        if (editTextsView.size() > 0) {
-//                            for (int i = 0; i < editTextsView.size(); i++) {
-//                                if (TextUtils.isEmpty(editTextsView.get(i).getText().toString())){
-//                                    vacio = true;
-//                                }
-//                            }
-//                        }
+                boolean vacio = false;
 
-                        if (!vacio){
-                            if (editTextsView.size() > 0) {
-                                for (int i = 0; i < editTextsView.size(); i++) {
+                if (!vacio){
+                    if (editTextsView.size() > 0) {
+                        for (int i = 0; i < editTextsView.size(); i++) {
 
-                                    int index = id_g.indexOf(editTextsView.get(i).getId());
-                                    detalle_visita_prop temp = new detalle_visita_prop();
-                                    if (editTextsView.get(i).getInputType() == InputType.TYPE_CLASS_DATETIME) {
-                                        String fe = Utilidades.voltearFechaBD(editTextsView.get(i).getText().toString());
-                                        temp.setValor_detalle(fe);
-                                    } else {
-                                        temp.setValor_detalle(editTextsView.get(i).getText().toString());
-                                    }
-
-                                    temp.setEstado_detalle(0);
-                                    temp.setId_visita_detalle(0);
-                                    temp.setId_prop_mat_cli_detalle(id_i.get(index));
-
-//                                    int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_i.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-//                                    if (idAEditar > 0) {
-//                                        temp.setId_det_vis_prop_detalle(idAEditar);
-//                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-//                                    } else {
-                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-//                                    }
-                                }
+                            int index = id_g.indexOf(editTextsView.get(i).getId());
+                            detalle_visita_prop temp = new detalle_visita_prop();
+                            if (editTextsView.get(i).getInputType() == InputType.TYPE_CLASS_DATETIME) {
+                                String fe = Utilidades.voltearFechaBD(editTextsView.get(i).getText().toString());
+                                temp.setValor_detalle(fe);
+                            } else {
+                                temp.setValor_detalle(editTextsView.get(i).getText().toString());
                             }
 
-                            if (spinners.size() > 0) {
-                                for (int i = 0; i < spinners.size(); i++) {
-                                    int index = id_g.indexOf(spinners.get(i).getId());
-                                    detalle_visita_prop temp = new detalle_visita_prop();
-                                    temp.setValor_detalle(spinners.get(i).getSelectedItem().toString());
-                                    temp.setEstado_detalle(0);
-                                    temp.setId_visita_detalle(0);
-                                    temp.setId_prop_mat_cli_detalle(id_i.get(index));
-//                                    int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_i.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-//                                    if (idAEditar > 0) {
-//                                        temp.setId_det_vis_prop_detalle(idAEditar);
-//                                        MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
-//                                    } else {
-                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-//                                    }
-                                }
-                            }
+                            temp.setEstado_detalle(0);
+                            temp.setId_visita_detalle(0);
+                            temp.setId_prop_mat_cli_detalle(id_i.get(index));
 
-
-                            setearOnFocus();
-                            builder.dismiss();
-                        }else{
-                            Snackbar.make(viewInfalted.getRootView(),"Debe completar todos los campos", Snackbar.LENGTH_LONG).show();
-                           // Utilidades.avisoListo(activity,"Falta algo","Debe completar todos los campos antes de guardar","entiendo");
+                                MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
                         }
                     }
-                });
-                c.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        builder.dismiss();
+
+                    if (spinners.size() > 0) {
+                        for (int i = 0; i < spinners.size(); i++) {
+                            int index = id_g.indexOf(spinners.get(i).getId());
+                            detalle_visita_prop temp = new detalle_visita_prop();
+                            temp.setValor_detalle(spinners.get(i).getSelectedItem().toString());
+                            temp.setEstado_detalle(0);
+                            temp.setId_visita_detalle(0);
+                            temp.setId_prop_mat_cli_detalle(id_i.get(index));
+                                MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
+                        }
                     }
-                });
-            }
+
+
+                    setearOnFocus();
+                    builder.dismiss();
+                }else{
+                    Snackbar.make(viewInfalted.getRootView(),"Debe completar todos los campos", Snackbar.LENGTH_LONG).show();
+                   }
+            });
+            c.setOnClickListener(view -> builder.dismiss());
         });
 
         builder.setCancelable(false);
@@ -988,7 +951,7 @@ public class FragmentSowing extends Fragment {
     private class LazyLoad extends AsyncTask<Void, Void, ArrayList<ArrayList>>{
 
         private ProgressDialog progressBar;
-        private  boolean show;
+        private final boolean show;
 
         public LazyLoad(boolean show) {
            this.show = show;
@@ -1024,7 +987,7 @@ public class FragmentSowing extends Fragment {
 
 
             if (Globalview != null){
-                global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));;
+                global = cargarUI.cargarUI(Globalview, R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
                 setearOnFocus();
             }
             if (show && progressBar != null && progressBar.isShowing()){
@@ -1039,6 +1002,58 @@ public class FragmentSowing extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu_visitas, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_visitas_recom:
+
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+
+                TempVisitas tmp = null;
+                VisitasCompletas visitasCompletas = null;
+                AnexoContrato ac = null;
+                try {
+                    Future<TempVisitas> temp_visitasF = executor.submit(() -> MainActivity.myAppDB.myDao().getTempFichas());
+
+                    TempVisitas temp_visitas = temp_visitasF.get();
+                    Future<VisitasCompletas> visitasCompletasFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita()));
+
+                    if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 ) {
+                        tmp = temp_visitas;
+                        visitasCompletas = visitasCompletasFuture.get();
+                    }
+
+                    Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+                    ac = anexo.get();
+
+                    FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+                    Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
+                    if (prev != null) {
+                        ft.remove(prev);
+                    }
+
+                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, (TempVisitas tm)->{
+                        System.out.println();
+                    });
+                    dialogo.show(ft, "EVALUACION_RECOMENDACION");
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                executor.shutdown();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -1050,7 +1065,7 @@ public class FragmentSowing extends Fragment {
                     if (ly != null){
                         if(activity != null){
                             try{
-                                FrameLayout fm = (FrameLayout) new FrameLayout(activity);
+                                FrameLayout fm = new FrameLayout(activity);
 //                            if (fm != null){
                                 fm.setId(View.generateViewId());
                                 fm.setTag("FOTOS_" + fieldbook);

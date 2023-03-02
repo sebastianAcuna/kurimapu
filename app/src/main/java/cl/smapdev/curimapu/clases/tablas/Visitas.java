@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "visita")
 public class Visitas {
-/* AGREGAR ID LOCAL E ID DISPOSITIVO */
+    /* AGREGAR ID LOCAL E ID DISPOSITIVO */
 
 
 
@@ -20,6 +20,12 @@ public class Visitas {
     @SerializedName("id_ac")
     @Expose
     private String id_anexo_visita;
+
+
+    @SerializedName("clave_unica_visita")
+    @Expose
+    private String clave_unica_visita;
+
 
     @SerializedName("estado_fen")
     @Expose
@@ -121,6 +127,8 @@ public class Visitas {
     private int tomadas;
 
 
+
+
     @SerializedName("evaluacion")
     @Expose
     private float evaluacion;
@@ -134,6 +142,40 @@ public class Visitas {
     @SerializedName("id_evaluacion")
     @Expose
     private  int id_evaluacion;
+
+
+    @SerializedName("fecha_estimada_cosecha")
+    @Expose
+    private String fecha_estimada_cosecha;
+
+    @SerializedName("fecha_estimada_arranca")
+    @Expose
+    private String fecha_estimada_arranca;
+
+
+    public String getClave_unica_visita() {
+        return clave_unica_visita;
+    }
+
+    public void setClave_unica_visita(String clave_unica_visita) {
+        this.clave_unica_visita = clave_unica_visita;
+    }
+
+    public String getFecha_estimada_cosecha() {
+        return fecha_estimada_cosecha;
+    }
+
+    public void setFecha_estimada_cosecha(String fecha_estimada_cosecha) {
+        this.fecha_estimada_cosecha = fecha_estimada_cosecha;
+    }
+
+    public String getFecha_estimada_arranca() {
+        return fecha_estimada_arranca;
+    }
+
+    public void setFecha_estimada_arranca(String fecha_estimada_arranca) {
+        this.fecha_estimada_arranca = fecha_estimada_arranca;
+    }
 
     public int getId_evaluacion() {
         return id_evaluacion;

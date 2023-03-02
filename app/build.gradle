@@ -3,12 +3,11 @@ apply plugin: 'com.android.application'
 def project_path = "cl.smapdev.curimapu_vegetables"
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 33
     defaultConfig {
         applicationId "cl.smapdev.curimapu_vegetables"
         minSdkVersion 26
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -28,30 +27,31 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'cl.smapdev.curimapu'
 
 }
 
 dependencies {
-    def room_version = "2.4.1"
+    def room_version = "2.5.0"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.preference:preference:1.1.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.android.material:material:1.2.1'
-    implementation 'com.android.support:design:29.0.0'
+    implementation 'com.android.support:design:33.0.0'
     implementation 'com.github.clans:fab:1.6.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.android.gms:play-services-location:17.1.0'
     implementation 'com.github.akndmr:ColorPrefUtil:1.0.1'
-    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-runtime:2.5.0"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
 
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 

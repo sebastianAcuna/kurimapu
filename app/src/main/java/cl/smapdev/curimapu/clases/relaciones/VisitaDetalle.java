@@ -3,8 +3,6 @@ package cl.smapdev.curimapu.clases.relaciones;
 import androidx.room.Embedded;
 
 import cl.smapdev.curimapu.clases.tablas.Visitas;
-import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
-import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
 
 public class VisitaDetalle {
 
@@ -13,10 +11,10 @@ public class VisitaDetalle {
 
 
     @Embedded
-    public detalle_visita_prop detalle_visita_prop;
+    public cl.smapdev.curimapu.clases.tablas.detalle_visita_prop detalle_visita_prop;
 
     @Embedded
-    public pro_cli_mat pro_cli_mat;
+    public cl.smapdev.curimapu.clases.tablas.pro_cli_mat pro_cli_mat;
 
 
     public Visitas getVisitas() {

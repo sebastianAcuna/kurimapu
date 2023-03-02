@@ -28,7 +28,8 @@ public class RetrofitClient {
                 .create();
 
         if (retrofit ==null){
-            String url = "http://"+direccion+"/curimapu_vegetables/core/models/android/";
+            String urlFija = "/core/models/android/";
+            String url = direccion+urlFija;
             retrofit = new Retrofit.Builder()
                     .baseUrl(url)
                     .client(okHttpClient)
@@ -36,5 +37,19 @@ public class RetrofitClient {
                     .build();
         }
         return retrofit;
+    }
+
+    public static Retrofit getWeather(){
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        String url = "http://api.meteored.cl/";
+
+        return new Retrofit.Builder()
+                .baseUrl(url)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
     }
 }

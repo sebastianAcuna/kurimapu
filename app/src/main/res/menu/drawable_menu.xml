@@ -29,6 +29,7 @@
             android:id="@+id/nv_anexo_fecha"
             android:title="@string/subtitle_anexo_fecha"
             android:checked="true"
+            android:visible="false"
             android:icon="@drawable/ic_baseline_perm_contact_calendar_24"
             />
 

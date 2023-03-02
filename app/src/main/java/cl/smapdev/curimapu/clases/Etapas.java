@@ -24,16 +24,8 @@ public class Etapas {
         return numeroEtapa;
     }
 
-    public void setNumeroEtapa(int numeroEtapa) {
-        this.numeroEtapa = numeroEtapa;
-    }
-
     public String getDescEtapa() {
         return descEtapa;
-    }
-
-    public void setDescEtapa(String descEtapa) {
-        this.descEtapa = descEtapa;
     }
 
     public boolean isEtapaSelected() {

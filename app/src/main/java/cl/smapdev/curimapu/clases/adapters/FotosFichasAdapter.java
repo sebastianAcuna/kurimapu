@@ -19,11 +19,11 @@ import cl.smapdev.curimapu.clases.tablas.FotosFichas;
 
 public class FotosFichasAdapter extends RecyclerView.Adapter<FotosFichasAdapter.ImageViewFichasHolder> {
 
-    private List<FotosFichas> images;
+    private final List<FotosFichas> images;
     //    private int[] images;
-    private OnItemClickListener itemClickListener;
-    private OnItemLongClickListener itemLongClickListener;
-    private Context context;
+    private final OnItemClickListener itemClickListener;
+    private final OnItemLongClickListener itemLongClickListener;
+    private final Context context;
 
 
     public FotosFichasAdapter(List<FotosFichas> images, Context context, OnItemClickListener itemClickListener , OnItemLongClickListener itemLongClickListener){
@@ -80,20 +80,12 @@ public class FotosFichasAdapter extends RecyclerView.Adapter<FotosFichasAdapter.
                 imageTitle.setText(fotos.getNombre_foto_ficha());
                 imageTitle.setEnabled(false);
 
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        itemClickListener.onItemClick(fotos);
-                    }
-                });
+                itemView.setOnClickListener(v -> itemClickListener.onItemClick(fotos));
 
 
-                itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        itemLongClickListener.onItemLongClick(fotos);
-                        return true;
-                    }
+                itemView.setOnLongClickListener(v -> {
+                    itemLongClickListener.onItemLongClick(fotos);
+                    return true;
                 });
 
             }

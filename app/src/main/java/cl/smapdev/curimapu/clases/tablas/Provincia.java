@@ -17,7 +17,7 @@ public class Provincia  {
     @SerializedName("nombre")
     private String nombre_provincia;
 
-     @SerializedName("id_region")
+    @SerializedName("id_region")
     private String id_region_provincia;
 
 

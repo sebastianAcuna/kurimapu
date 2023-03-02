@@ -192,7 +192,6 @@ public class FichasNew  implements Serializable {
     @Expose
     private String observacion_negocio_ficha;
 
-
     @SerializedName("rut_fieldman_ass")
     @ColumnInfo( name = "rut_fieldman_ass")
     @Expose
@@ -205,7 +204,6 @@ public class FichasNew  implements Serializable {
     public void setRut_fieldman_ass(String rut_fieldman_ass) {
         this.rut_fieldman_ass = rut_fieldman_ass;
     }
-
 
     public String getPredio_ficha() {
         return predio_ficha;

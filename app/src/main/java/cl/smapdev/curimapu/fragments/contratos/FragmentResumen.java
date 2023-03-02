@@ -5,37 +5,41 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
-import cl.smapdev.curimapu.clases.tablas.Usuario;
-import cl.smapdev.curimapu.clases.tablas.Visitas;
-import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
+import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
+import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.cargarUI;
+import cl.smapdev.curimapu.coroutines.ApplicationExecutors;
+import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
 
 public class FragmentResumen extends Fragment {
 
@@ -46,6 +50,7 @@ public class FragmentResumen extends Fragment {
             production_location, has_contrato, has_customer, fieldman, rch,ptos_ampros;
 
     private SharedPreferences prefs;
+    private ProgressDialog progressBar;
 
     private View Globalview;
 
@@ -53,16 +58,20 @@ public class FragmentResumen extends Fragment {
     private ArrayList<Integer> id_importante = null;
     private ArrayList<Integer> id_generica = null;
     private ArrayList<TextView> textViews = null;
-    private ArrayList<EditText> editTexts  = null;
-    private ArrayList<RecyclerView> recyclerViews  = null;
-    private ArrayList<ImageView> imageViews  = null;
-    private ArrayList<Spinner> spinners  = null;
+    private final ArrayList<EditText> editTexts  = null;
+    private final ArrayList<RecyclerView> recyclerViews  = null;
+    private final ArrayList<ImageView> imageViews  = null;
+    private final ArrayList<Spinner> spinners  = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
 
+
+        progressBar = new ProgressDialog(activity);
+        progressBar.setTitle(getResources().getString(R.string.espere));
+        progressBar.show();
 
         if (activity != null) prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
     }
@@ -79,22 +88,93 @@ public class FragmentResumen extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bind(view);
+        setHasOptionsMenu(true);
 
-        new LazyLoad(true).execute();
-
-
-        if (prefs != null){
-//            llenarResumen(MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
-        }
+        if(progressBar.isShowing()) progressBar.dismiss();
+        cargarInterfaz();
 
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu_visitas, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_visitas_recom:
+
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+
+                TempVisitas tmp = null;
+                VisitasCompletas visitasCompletas = null;
+                AnexoContrato ac = null;
+                try {
+                    Future<TempVisitas> temp_visitasF = executor.submit(() -> MainActivity.myAppDB.myDao().getTempFichas());
+
+                    TempVisitas temp_visitas = temp_visitasF.get();
+                    Future<VisitasCompletas> visitasCompletasFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita()));
+
+                    if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 ) {
+                        tmp = temp_visitas;
+                        visitasCompletas = visitasCompletasFuture.get();
+                    }
+
+                    Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+                    ac = anexo.get();
+
+                    FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+                    Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
+                    if (prev != null) {
+                        ft.remove(prev);
+                    }
+
+                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, (TempVisitas tm)->{});
+                    dialogo.show(ft, "EVALUACION_RECOMENDACION");
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                executor.shutdown();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    public void cargarInterfaz(){
+        ApplicationExecutors exec = new ApplicationExecutors();
+
+        ProgressDialog progressBar = new ProgressDialog(activity);
+        progressBar.setTitle("cargando interfaz...");
+        progressBar.show();
+
+
+        exec.getBackground().execute(()-> {
+            int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+
+            exec.getMainThread().execute(()-> {
+                if (Globalview != null){
+                    global = cargarUI.cargarUI(Globalview, R.id.relative_constraint_resumen, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), 1,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
+                    setearOnFocus();
+                    if  (progressBar.isShowing()){
+                        progressBar.dismiss();
+                    }
+                }
+            });
+        });
+
+        exec.shutDownBackground();
+    }
 
     private class LazyLoad extends AsyncTask<Void, Void, ArrayList<ArrayList>> {
 
         private ProgressDialog progressBar;
-        private  boolean show;
+        private final boolean show;
 
         public LazyLoad(boolean show) {
             this.show = show;
@@ -125,7 +205,7 @@ public class FragmentResumen extends Fragment {
         protected void onPostExecute(ArrayList<ArrayList> aVoid) {
             super.onPostExecute(aVoid);
             int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
-            global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_resumen, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), 1,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));;
+            global = cargarUI.cargarUI(Globalview, R.id.relative_constraint_resumen, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), 1,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
             setearOnFocus();
             if (show && progressBar != null && progressBar.isShowing()){
                 progressBar.dismiss();
@@ -160,21 +240,33 @@ public class FragmentResumen extends Fragment {
                                     String nombreTabla = "";
                                     if (!fs.getTabla().equals("")){
                                         switch (fs.getTabla()){
+
+                                            case "condicion":
+                                                nombreCampoTableta = "condicion";
+                                                nombreTabla = "anexo_contrato";
+                                                break;
+
                                             case "cliente":
                                                 nombreCampoTableta = (fs.getCampo().equals("razon_social")) ? "razon_social_clientes" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
                                                 break;
 
+                                            case "comuna":
+                                                nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "desc_comuna" : fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
                                             case "especie":
                                                 nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "desc_especie" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
                                                 break;
-
                                             case "materiales":
                                                 nombreCampoTableta = (fs.getCampo().equals("nom_hibrido")) ? "desc_hibrido_variedad" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
                                                 break;
-
+                                            case "libro_campo":
+                                                nombreCampoTableta = " valor_detalle ";
+                                                nombreTabla = "detalle_visita_prop";
+                                                break;
                                             case "lote":
                                                 nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "nombre_lote" : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
@@ -221,7 +313,10 @@ public class FragmentResumen extends Fragment {
                                                 nombreCampoTableta = (fs.getCampo().equals("nombre")) ? "nombre || ' ' || apellido_p AS nombre " : fs.getCampo();
                                                 nombreTabla = fs.getTabla();
                                                 break;
-
+                                            case "anexo_correo_fechas":
+                                                nombreCampoTableta = fs.getCampo();
+                                                nombreTabla = fs.getTabla();
+                                                break;
                                             case "detalle_quotation":
                                                 nombreCampoTableta =  fs.getCampo();
                                                 nombreTabla = "quotation";
@@ -246,7 +341,12 @@ public class FragmentResumen extends Fragment {
 
                                         switch (fs.getTabla()){
                                             case "anexo_contrato" :
+                                            case "condicion" :
                                                 consulta += " WHERE id_anexo_contrato = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
+                                            case "anexo_checklist_siembra" :
+                                                consulta += " WHERE id_ac_cl_siembra = ? AND estado_documento = 1 ORDER BY id_cl_siembra DESC LIMIT 1 ";
                                                 ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
                                                 break;
 
@@ -256,7 +356,22 @@ public class FragmentResumen extends Fragment {
                                                 consulta += " WHERE id_clientes_tabla = ? ";
                                                 ob = Utilidades.appendValue(ob,idCliente);
                                                 break;
-
+                                            case "libro_campo":
+                                                consulta += " INNER JOIN pro_cli_mat ON (detalle_visita_prop.id_prop_mat_cli_detalle = pro_cli_mat.id_prop_mat_cli)  ";
+                                                consulta += " LEFT JOIN visita ON (detalle_visita_prop.id_visita_detalle = visita.id_visita)  ";
+                                                consulta += " WHERE visita.id_anexo_visita = ? AND pro_cli_mat.campo = '"+nombreCampoTableta+"' ";
+                                                consulta += " ORDER BY id_det_vis_prop_detalle DESC LIMIT 1 ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
+                                            case "comuna":
+                                                consulta += " INNER JOIN ficha_new FN ON FN.id_comuna_new = comuna.id_comuna ";
+                                                consulta += " INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = FN.id_ficha_new WHERE AC.id_anexo_contrato = ? ";
+                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
+                                            case "anexo_correo_fechas":
+                                                consulta += "WHERE id_ac_corr_fech = ?";
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                break;
                                             case "especie":
                                                 consulta += " WHERE id_especie = ? ";
                                                 ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""));
@@ -342,9 +457,6 @@ public class FragmentResumen extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (activity != null){
-            //activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumenes, FragmentFotos.getInstance(1), Utilidades.FRAGMENT_FOTOS).commit();
-        }
     }
 
     @Override
@@ -352,14 +464,7 @@ public class FragmentResumen extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
-//                AsyncTask.execute(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (progressBar != null && progressBar.isShowing()){
-                             new LazyLoad(false).execute();
-//                        }
-//                    }
-//                });
+                cargarInterfaz();
 
             }
         }
@@ -368,36 +473,6 @@ public class FragmentResumen extends Fragment {
 
     private void bind(View view){
 
-        /*fecha_resumen = (TextView) view.findViewById(R.id.fecha_resumen);
-        estado_fenologico = (TextView) view.findViewById(R.id.estado_fenologico);
-        estado_general = (TextView) view.findViewById(R.id.estado_general);
-        estado_crecimiento = (TextView) view.findViewById(R.id.estado_crecimiento);
-        estado_maleza = (TextView) view.findViewById(R.id.estado_maleza);
-        estado_fito = (TextView) view.findViewById(R.id.estado_fito);
-        humedad_suelo = (TextView) view.findViewById(R.id.humedad_suelo);
-        cosecha = (TextView) view.findViewById(R.id.cosecha);
-        observation = (TextView) view.findViewById(R.id.observation);
-        recomendaciones = (TextView) view.findViewById(R.id.recomendaciones);
-        anexo = (TextView) view.findViewById(R.id.anexo);
-        orden_culplica = (TextView) view.findViewById(R.id.orden_culplica);
-        cliente = (TextView) view.findViewById(R.id.cliente);
-        especie = (TextView) view.findViewById(R.id.especie);
-        variedad = (TextView) view.findViewById(R.id.variedad);
-        ready_batch = (TextView) view.findViewById(R.id.ready_batch);
-        raw_batch = (TextView) view.findViewById(R.id.raw_batch);
-        grower = (TextView) view.findViewById(R.id.grower);
-        predio = (TextView) view.findViewById(R.id.predio);
-        potrero = (TextView) view.findViewById(R.id.potrero);
-        siembra_sag = (TextView) view.findViewById(R.id.siembra_sag);
-        sag_register_number = (TextView) view.findViewById(R.id.sag_register_number);
-        irrigation_system = (TextView) view.findViewById(R.id.irrigation_system);
-        soil_type = (TextView) view.findViewById(R.id.soil_type);
-        production_location = (TextView) view.findViewById(R.id.production_location);
-        has_contrato = (TextView) view.findViewById(R.id.has_contrato);
-        has_customer = (TextView) view.findViewById(R.id.has_customer);
-        fieldman = (TextView) view.findViewById(R.id.fieldman);
-        rch = (TextView) view.findViewById(R.id.rch);
-        ptos_ampros = (TextView) view.findViewById(R.id.ptos_ampros);*/
 
     }
 

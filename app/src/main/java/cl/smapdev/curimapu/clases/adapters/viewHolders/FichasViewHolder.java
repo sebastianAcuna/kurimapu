@@ -14,17 +14,20 @@ import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 
 public class FichasViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView tv_region_fichas,tv_comuna_fichas,tv_agricultor_fichas,tv_negocio_fichas;
-    private ImageView img_activated;
+    private final TextView tv_region_fichas;
+    private final TextView tv_comuna_fichas;
+    private final TextView tv_agricultor_fichas;
+    private final TextView tv_negocio_fichas;
+    private final ImageView img_activated;
 
     public FichasViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        tv_region_fichas = (TextView) itemView.findViewById(R.id.tv_region_fichas);
-        tv_comuna_fichas = (TextView) itemView.findViewById(R.id.tv_comuna_fichas);
-        tv_agricultor_fichas = (TextView) itemView.findViewById(R.id.tv_agricultor_fichas);
-        tv_negocio_fichas = (TextView) itemView.findViewById(R.id.tv_negocio_fichas);
-        img_activated = (ImageView) itemView.findViewById(R.id.img_activated);
+        tv_region_fichas = itemView.findViewById(R.id.tv_region_fichas);
+        tv_comuna_fichas = itemView.findViewById(R.id.tv_comuna_fichas);
+        tv_agricultor_fichas = itemView.findViewById(R.id.tv_agricultor_fichas);
+        tv_negocio_fichas = itemView.findViewById(R.id.tv_negocio_fichas);
+        img_activated = itemView.findViewById(R.id.img_activated);
 
     }
 
@@ -52,20 +55,12 @@ public class FichasViewHolder extends RecyclerView.ViewHolder {
 
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClickListener.onItemClick(fichas);
-                }
-            });
+            itemView.setOnClickListener(v -> itemClickListener.onItemClick(fichas));
 
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    itemLongClickListener.onItemLongClick(fichas);
-                    return true;
-                }
+            itemView.setOnLongClickListener(v -> {
+                itemLongClickListener.onItemLongClick(fichas);
+                return true;
             });
 
         }

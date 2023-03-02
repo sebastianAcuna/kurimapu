@@ -107,14 +107,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-//        importDB();
-//        myAppDB.myDao().updateServidor(Utilidades.IP_PRODUCCION);
-//        myAppDB.myDao().updateVisitaTest();
-//
-//        List<Visitas> visitas =  myAppDB.myDao().getVisitasPorSubir();
-//        for (Visitas v : visitas){
-//            myAppDB.myDao().updateFotoTest();
-//        }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String ss = prefs.getString("lang", "eng");
@@ -143,12 +135,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Config config1 = MainActivity.myAppDB.myDao().getConfig();
         if (config1 != null){
             if (config1.getServidorSeleccionado().length() <= 0){
-                config1.setServidorSeleccionado(Utilidades.IP_PRODUCCION);
+                config1.setServidorSeleccionado(Utilidades.URL_SERVER_API);
                 MainActivity.myAppDB.myDao().updateConfig(config1);
             }
         }else{
             Config config2 = new Config();
-            config2.setServidorSeleccionado(Utilidades.IP_PRODUCCION);
+            config2.setServidorSeleccionado(Utilidades.URL_SERVER_API);
             MainActivity.myAppDB.myDao().setConfig(config2);
         }
 
@@ -320,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nv_anexo_fecha:
-                cambiarFragment(new FragmentAnexoFechas(), Utilidades.FRAGMENT_ANEXO_FICHA, R.anim.slide_in_left, R.anim.slide_out_left);
+//                cambiarFragment(new FragmentAnexoFechas(), Utilidades.FRAGMENT_ANEXO_FICHA, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
 
             case R.id.nv_configs:

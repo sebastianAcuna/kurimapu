@@ -3,6 +3,9 @@ package cl.smapdev.curimapu.clases.temporales;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "temp_visitas")
 public class TempVisitas {
 
@@ -42,11 +45,48 @@ public class TempVisitas {
     private int id_dispo;
 
 
-
     private float evaluacion;
     private String comentario_evaluacion;
 
     private  int id_evaluacion;
+
+
+    private String clave_unica_visita;
+
+    @SerializedName("fecha_estimada_cosecha")
+    @Expose
+    private String fecha_estimada_cosecha;
+
+
+
+    @SerializedName("fecha_estimada_arranca")
+    @Expose
+    private String fecha_estimada_arranca;
+
+
+    public String getClave_unica_visita() {
+        return clave_unica_visita;
+    }
+
+    public void setClave_unica_visita(String clave_unica_visita) {
+        this.clave_unica_visita = clave_unica_visita;
+    }
+
+    public String getFecha_estimada_cosecha() {
+        return fecha_estimada_cosecha;
+    }
+
+    public void setFecha_estimada_cosecha(String fecha_estimada_cosecha) {
+        this.fecha_estimada_cosecha = fecha_estimada_cosecha;
+    }
+
+    public String getFecha_estimada_arranca() {
+        return fecha_estimada_arranca;
+    }
+
+    public void setFecha_estimada_arranca(String fecha_estimada_arranca) {
+        this.fecha_estimada_arranca = fecha_estimada_arranca;
+    }
 
     public int getId_evaluacion() {
         return id_evaluacion;

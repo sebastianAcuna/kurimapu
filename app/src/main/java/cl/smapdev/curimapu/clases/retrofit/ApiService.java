@@ -1,13 +1,17 @@
 package cl.smapdev.curimapu.clases.retrofit;
 
+import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
+import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
 import cl.smapdev.curimapu.clases.relaciones.SubirFechasRetro;
 import cl.smapdev.curimapu.clases.relaciones.resFecha;
+import cl.smapdev.curimapu.clases.tablas.WeatherApiStatus;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -23,6 +27,13 @@ public interface ApiService {
     Call<Respuesta> enviarDatos(@Body SubidaDatos subidaDatos);
 
 
+    //    @Multipart
+    @POST("subir_checklists.php")
+    Call<Respuesta> subirCheckList(@Body CheckListRequest checkListRequest);
+
+
+    @POST("subir_recomendaciones.php")
+    Call<Respuesta> subirRecomendaciones(@Body RecomendacionesRequest recomendacionesRequest);
 
     @POST("comprobar_servidor.php")
     Call<Respuesta> comprobarServidor(@Body SubidaDatos subidaDatos);
@@ -33,4 +44,14 @@ public interface ApiService {
 
     @GET("comprobacion.php")
     Call<Respuesta> comprobacion(@Query("id") int id_dispo, @Query("id_usuario") int id_user, @Query("id_cab") int id_cab);
+
+
+    @GET("index.php")
+    Call<WeatherApiStatus> getData(
+            @Query("api_lang") String language,
+            @Query("localidad") String localidad,
+            @Query("affiliate_id") String userId,
+            @Query("v") String version);
+
+
 }

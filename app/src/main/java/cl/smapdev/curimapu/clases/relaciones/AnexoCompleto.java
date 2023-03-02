@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import cl.smapdev.curimapu.clases.tablas.Comuna;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
 import cl.smapdev.curimapu.clases.tablas.Lotes;
@@ -32,13 +33,22 @@ public class AnexoCompleto implements Serializable {
 
     @Embedded
     private FichasNew fichas;
-
     @Embedded
     private Predios predios;
-
     @Embedded
     private Lotes lotes;
 
+    @Embedded(prefix = "c_")
+    private Comuna comuna;
+
+
+    public Comuna getComuna() {
+        return comuna;
+    }
+
+    public void setComuna(Comuna comuna) {
+        this.comuna = comuna;
+    }
 
     public FichasNew getFichas() {
         return fichas;
