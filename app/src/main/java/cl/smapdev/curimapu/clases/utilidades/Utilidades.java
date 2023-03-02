@@ -49,7 +49,8 @@ import cl.smapdev.curimapu.R;
 
 public class Utilidades {
 
-    public static final String APPLICATION_VERSION = "4.0.0609";
+//    public static final String APPLICATION_VERSION = "4.0.0912";
+    public static final String APPLICATION_VERSION = "4.1.0000";
 
     public static final String FRAGMENT_INICIO = "fragment_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -57,7 +58,11 @@ public class Utilidades {
     public static final String FRAGMENT_CONTRATOS = "fragment_contratos";
     public static final String FRAGMENT_CHECKLIST = "fragment_checklist";
     public static final String FRAGMENT_CHECKLIST_SIEMBRA = "fragment_checklist_siembra";
+    public static final String FRAGMENT_CHECKLIST_COSECHA = "fragment_checklist_cosecha";
     public static final String FRAGMENT_CHECKLIST_CAPACITACION_SIEMBRA = "fragment_checklist_capacitacion_siembra";
+    public static final String FRAGMENT_CHECKLIST_DEVOLUCION_SEMILLA = "fragment_checklist_devolucion_semilla";
+    public static final String FRAGMENT_CHECKLIST_CAPACITACION_COSECHA = "fragment_checklist_capacitacion_cosecha";
+    public static final String FRAGMENT_CHECKLIST_LIMPIEZA_CAMIONES = "fragment_checklist_limpieza_camiones";
     public static final String FRAGMENT_LOGIN = "fragment_login";
     public static final String FRAGMENT_CONFIG = "fragment_config";
     public static final String FRAGMENT_FOTOS = "fragment_fotos";
@@ -74,12 +79,16 @@ public class Utilidades {
 
     public static final int TIPO_DOCUMENTO_CAPACITACION_SIEMBRA = 1;
     public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 2;
-//    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
-//    public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
+    public static final int TIPO_DOCUMENTO_CAPACITACION_COSECHA = 3;
+    public static final int TIPO_DOCUMENTO_CHECKLIST_COSECHA = 4;
+    public static final int TIPO_DOCUMENTO_CHECKLIST_LIMPIEZA_CAMIONES = 5;
+    public static final int TIPO_DOCUMENTO_CHECKLIST_DEVOLUCION_SEMILLA = 6;
 
 //    public static final String IP_PRODUCCION = "192.168.1.42";
-//    public static final String IP_PRODUCCION = "www.pruebas-erp.cl";
-    public static final String IP_PRODUCCION = "www.zcloud.cl";
+    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
+    public static final String URL_SERVER_API = "https://"+IP_PRODUCCION+"";
+//    public static final String URL_SERVER_API = "http://"+IP_PRODUCCION+"/curimapu";
+
 //    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_PRUEBAS = "190.13.170.26";
@@ -97,13 +106,9 @@ public class Utilidades {
     public static final String SHARED_SERVER_ID_SERVER = "server_server_id";
 
     /*DIALOGO FILTRO FICHAS*/
-    public static final String SHARED_FILTER_FICHAS_REGION = "filter_fichas_region";
     public static final String SHARED_FILTER_FICHAS_COMUNA = "filter_fichas_comuna";
     public static final String SHARED_FILTER_FICHAS_RADIO = "filter_fichas_radio";
     public static final String SHARED_FILTER_FICHAS_YEAR = "filter_fichas_anno";
-    public static final String SHARED_FILTER_FICHAS_HA = "filter_fichas_ha";
-    public static final String SHARED_FILTER_FICHAS_NOMB_AG = "filter_fichas_nom_ag";
-    public static final String SHARED_FILTER_FICHAS_OF_NEG = "filter_fichas_of_neg";
 
     public static final String SHARED_FILTER_VISITAS_YEAR = "filter_visitas_anno";
     public static final String SHARED_FILTER_VISITAS_ESPECIE = "filter_visitas_especie";
@@ -116,11 +121,14 @@ public class Utilidades {
     public static final String SHARED_VISIT_VISITA_ID = "shared_visit_visita_id";
     public static final String SHARED_VISIT_MATERIAL_ID = "shared_visit_material_id";
     public static final String SHARED_VISIT_TEMPORADA = "shared_visit_temporada";
-    public static final String SHARED_VISIT_ESPECIE_ID = "shared_visit_especie_id";
 
 
     public static final String DIALOG_TAG_CAPACITACION_SIEMBRA="CAPACITACION_SIEMBRA";
+    public static final String DIALOG_TAG_CAPACITACION_COSECHA="CAPACITACION_COSECHA";
+    public static final String DIALOG_TAG_LIMPIEZA_CAMIONES="LIPIEZA_CAMIONES";
     public static final String DIALOG_TAG_FIRMA_CAPACITACION_SIEMBRA="CAPACITACION_FIRMA__SIEMBRA";
+    public static final String DIALOG_TAG_FIRMA_LIMPIEZA_CAMIONES="DIALOG_TAG_FIRMA_LIMPIEZA_CAMIONES";
+    public static final String DIALOG_TAG_FIRMA_CAPACITACION_COSECHA="CAPACITACION_FIRMA__COSECHA";
     public static final String DIALOG_TAG_RESPONSABLE_ASEO_INGRESO="RESPONSABLE_ASEO_INGRESO";
     public static final String DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO="REVISOR_LIMPIEZA_INGRESO";
     public static final String DIALOG_TAG_RESPONSABLE_ASEO_SALIDA="RESPONSABLE_ASEO_SALIDA";
@@ -130,10 +138,21 @@ public class Utilidades {
     public static final String DIALOG_TAG_RESPONSABLE_OPERARIO_TERMINO="RESPONSABLE_OPERARIO_TERMINO";
     public static final String DIALOG_TAG_RESPONSABLE_CAMPO_TERMINO="RESPONSABLE_CAMPO_TERMINO";
 
-    public static final String DIALOG_TAG_WEBVIEW_PDF="DIALOG_TAG_WEBVIEW_PDF";
+    public static final String DIALOG_TAG_RESPONSABLE_DEVOLUCION_SIEMBRA="RESPONSABLE_DEVOLUCION_SIEMBRA";
+    public static final String DIALOG_TAG_REVISOR_DEVOLUCION_SIEMBRA="REVISOR_DEVOLUCION_SIEMBRA";
+
 
     public static final String VISTA_FOTOS = "vista";
 
+
+    public static boolean isNumeric(String texto){
+        try{
+            Integer.parseInt(texto);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 
 
     public static long compararFechas(String inputString2){
@@ -194,56 +213,6 @@ public class Utilidades {
         }
     }
 
-
-    public static Date SumaRestarFecha(int sumaresta){
-
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, sumaresta);
-        return c.getTime();
-
-    }
-
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    public static Date SumaRestarFecha(int sumaresta, String opcion){
-//        Calendar c = Calendar.getInstance();
-//        Date now = c.getTime();
-//
-//        LocalDate date = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//        //Con Java9
-//        //LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
-//        TemporalUnit unidadTemporal = null;
-//        switch(opcion){
-//            case "DAYS":
-//                unidadTemporal = ChronoUnit.DAYS;
-//                break;
-//            case "MONTHS":
-//                unidadTemporal = ChronoUnit.MONTHS;
-//                break;
-//            case "YEARS":
-//                unidadTemporal = ChronoUnit.YEARS;
-//                break;
-//            default:
-//                //Controlar error
-//        }
-//        LocalDate dateResultado = date.minus(sumaresta, unidadTemporal);
-//        return Date.from(dateResultado.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//    }
-
-    public static class MyXAxisValueFormatter extends ValueFormatter {
-
-        private final String[] mValues;
-
-        public MyXAxisValueFormatter(String[] values) {
-            this.mValues = values;
-        }
-
-        @Override
-        public String getFormattedValue(float value) {
-            return ((int) value > 0) ? mValues[(int) value]: "";
-        }
-    }
-
-
     public static int getPhenoState(int position){
 
         int res;
@@ -286,15 +255,6 @@ public class Utilidades {
         return df.format(new Date());
     }
 
-    public static String[] getAnoCompleto(int anno){
-        String[] str = new String[2];
-        str[0] = anno+"-01-01";
-        str[1] = anno+"-12-31";
-
-
-        return str;
-    }
-
     public static String getStateString(int position){
 
         String estado;
@@ -319,46 +279,6 @@ public class Utilidades {
             case 5:
                 estado = "Unspecified";
             break;
-        }
-
-        return estado;
-    }
-    public static String getStateDetailString(int position){
-
-        String estado;
-
-        switch (position){
-            case 0:
-            default:
-                estado = "none";
-                break;
-            case 1:
-                estado = "Sowing";
-                break;
-            case 2:
-                estado = "Transplant";
-                break;
-            case 3:
-                estado = "Vegetative";
-                break;
-            case 4:
-                estado = "pre-flowering";
-                break;
-            case 5:
-                estado = "flowering";
-                break;
-            case 6:
-                estado = "Fill";
-                break;
-            case 7:
-                estado = "Pre-Harvest";
-                break;
-            case 8:
-                estado = "Post-harvest";
-                break;
-            case 9:
-                estado = "Unspecified";
-                break;
         }
 
         return estado;
@@ -466,19 +386,6 @@ public class Utilidades {
         return new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
     }
 
-    public static String horaMin(){
-        return new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
-    }
-
-    public static String fechaFromDate(Date fecha){
-        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(fecha);
-    }
-
-
-    public static Date horaFormat(String hora) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        return  sdf.parse(hora);
-    }
 
     public static String fechaActualSinHoraNombre(){
 
@@ -497,23 +404,6 @@ public class Utilidades {
     public static String fechaActualInvSinHora(){
         return new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
     }
-
-
-
-    /* Checks if external storage is available for read and write */
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
-    }
-
-    /* Checks if external storage is available to at least read */
-    public static boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
-    }
-
-
 
     public static Integer[] neededRotation(Uri ff) {
         Integer[] inte = new Integer[2];
@@ -552,72 +442,16 @@ public class Utilidades {
                 .setView(viewInfalted)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(textButton, new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
+                .setPositiveButton(textButton, (dialogInterface, i) -> {
                 })
                 .create();
 
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder.dismiss();
-                    }
-                });
-            }
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+            b.setOnClickListener(v -> builder.dismiss());
         });
         builder.setCancelable(false);
         builder.show();
-    }
-
-    static public String formatear(String rut){
-        int cont=0;
-        String format;
-        if(rut.length() == 0){
-            return "";
-        }else{
-            rut = rut.replace(".", "");
-            rut = rut.replace("-", "");
-            format = "-"+rut.substring(rut.length()-1);
-            for(int i = rut.length()-2;i>=0;i--){
-                format = rut.charAt(i) + format;
-                cont++;
-                if(cont == 3 && i != 0){
-                    format = "."+format;
-                    cont = 0;
-                }
-            }
-            return format;
-        }
-    }
-
-    public static boolean validarRut(String rut) {
-
-        boolean validacion = false;
-        try {
-            rut =  rut.toUpperCase();
-            rut = rut.replace(".", "");
-            rut = rut.replace("-", "");
-            int rutAux = Integer.parseInt(rut.substring(0, rut.length() - 1));
-
-            char dv = rut.charAt(rut.length() - 1);
-
-            int m = 0, s = 1;
-            for (; rutAux != 0; rutAux /= 10) {
-                s = (s + rutAux % 10 * (9 - m++ % 6)) % 11;
-            }
-            if (dv == (char) (s != 0 ? s + 47 : 75)) {
-                validacion = true;
-            }
-
-        } catch (Exception e) {
-        }
-        return validacion;
     }
 
     public static Object[] appendValue(Object[] obj, Object newObj) {

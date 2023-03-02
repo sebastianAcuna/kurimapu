@@ -1,0 +1,1662 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_small"
+        >
+
+        <TextView
+            android:id="@+id/lbl_numero_anexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/numero_de_anexo"
+            />
+        <TextView
+            android:id="@+id/tv_numero_anexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_numero_anexo"
+            app:layout_constraintStart_toStartOf="parent"
+            tool:text="23-TR2243"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_variedad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/variedad"
+            />
+        <TextView
+            android:id="@+id/tv_variedad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
+            app:layout_constraintEnd_toEndOf="parent"
+            tool:text="COL-24431fC"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/contenedor_vista"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_numero_anexo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_agricultor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/agricultor"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_agricultor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_agricultor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tool:text="SEBASTIAN MATIAS ACUñA PINILLA"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+            <TextView
+                android:id="@+id/lbl_potrero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_agricultor"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/potrero"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_potrero"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_potrero"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_rch"
+                tool:text="PATA DE GALLINA"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+
+            <TextView
+                android:id="@+id/lbl_rch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_agricultor"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/rch"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_rch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_potrero"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_potrero"
+                tool:text="445266CHSJ"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+
+
+            <TextView
+                android:id="@+id/lbl_sag_ogm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_potrero"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/registro_sag_ogm"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_sag_ogm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_sag_ogm"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_sag_idase"
+                tool:text="SAG OGM"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+
+            <TextView
+                android:id="@+id/lbl_sag_idase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_potrero"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/registro_sag_idase"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_sag_idase"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_sag_idase"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_sag_ogm"
+                tool:text="SAG IDASE"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+
+            <TextView
+                android:id="@+id/lbl_condicion_semilla"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_sag_ogm"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/condicion_semilla"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_condicion_semilla"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_condicion_semilla"
+                app:layout_constraintStart_toStartOf="parent"
+                tool:text="CONDICION SEMILLA"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+            <TextView
+                android:id="@+id/lbl_supervisor_curimapu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_condicion_semilla"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/supervisor_curimapu_en_cosecha"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+            <TextView
+                android:id="@+id/tv_supervisor_curimapu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lbl_supervisor_curimapu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tool:text="SOFIA CONCHA"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ImageView
+            android:id="@+id/btn_oculta_cabecera"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_vista"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+
+        <View
+            android:id="@+id/divider_cabecera"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_cabecera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_titulo_suelo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/responsable_cosecha"
+            android:text="AGRICULTOR/ENCARGADO RESPONSABLE EN COSECHA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+
+        <EditText
+            android:id="@+id/responsable_cosecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_titulo_suelo"
+
+            android:inputType="text"
+            android:maxLines="1"
+            android:autofillHints=""
+            />
+
+        <TextView
+            android:id="@+id/lbl_fecha_inicio_cosecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/responsable_cosecha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/fecha_inicio_cosecha"
+            android:text="FECHA INICIO COSECHA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+
+        <EditText
+            android:id="@+id/fecha_inicio_cosecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/responsable_cosecha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_fecha_inicio_cosecha"
+
+            android:inputType="date"
+            android:maxLines="1"
+            android:drawableEnd="@drawable/ic_date_range"
+            android:drawableTint="@color/colorSecondaryVariant"
+            android:autofillHints=""
+            />
+
+        <TextView
+            android:id="@+id/lbl_hora_inicio_cosecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/fecha_inicio_cosecha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/hora_inicio_cosecha"
+            android:text="FECHA INICIO COSECHA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+
+        <EditText
+            android:id="@+id/hora_inicio_cosecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/fecha_inicio_cosecha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_hora_inicio_cosecha"
+            android:inputType="time"
+            android:maxLines="1"
+            android:drawableEnd="@drawable/ic_time"
+            android:drawableTint="@color/colorSecondaryVariant"
+            android:autofillHints=""
+            />
+
+        <TextView
+            android:id="@+id/lbl_capacitacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/hora_inicio_cosecha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/grupo_capacitacion"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:text="CAPACITACION"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_capacitacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/hora_inicio_cosecha"
+            app:layout_constraintStart_toEndOf="@id/lbl_capacitacion"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <RadioButton
+                android:id="@+id/btn_capacitacion_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si"
+                tool:layout_editor_absoluteX="199dp"
+                tool:layout_editor_absoluteY="95dp" />
+            <RadioButton
+                android:id="@+id/btn_capacitacion_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no"
+                tool:layout_editor_absoluteX="199dp"
+                tool:layout_editor_absoluteY="95dp" />
+        </RadioGroup>
+
+
+        <View
+            android:id="@+id/divider_responsable"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/grupo_capacitacion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/lbl_titulo_siembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_responsable"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_condicion_potrero"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="CONDICIONES DEL POTRERO"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <ImageView
+            android:id="@+id/btn_oculta_condicion_potrero"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/divider_responsable"
+            app:layout_constraintStart_toEndOf="@id/lbl_titulo_siembra"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+            android:id="@+id/cont_condicion_potrero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_condicion_potrero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_acceso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="ACCESO"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_acceso"
+                />
+
+            <Spinner
+                android:id="@+id/sp_acceso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_acceso"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_control_maleza"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="CONTROL DE MALEZAS"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_acceso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_acceso"
+                />
+
+            <Spinner
+                android:id="@+id/sp_control_maleza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toBottomOf="@id/sp_acceso"
+                app:layout_constraintStart_toEndOf="@id/lbl_acceso"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_corte_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/sp_control_maleza"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_corte_macho"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="CORTE DE MACHOS"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_corte_macho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/sp_control_maleza"
+                app:layout_constraintStart_toEndOf="@id/lbl_corte_macho"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_cortemacho_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_cortemacho_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+            </RadioGroup>
+
+
+            <TextView
+                android:id="@+id/lbl_eliminacion_regueros"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/grupo_corte_macho"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_eliminacion_regueros"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="ELIMINACION DE REGUEROS"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_eliminacion_regueros"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_corte_macho"
+                app:layout_constraintStart_toEndOf="@id/lbl_eliminacion_regueros"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_eliminacion_regueros_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_eliminacion_regueros_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_humedad_suelo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="HUMEDAD DEL SUELO"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_eliminacion_regueros"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_humedad_suelo"
+                />
+
+            <Spinner
+                android:id="@+id/sp_humedad_suelo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_eliminacion_regueros"
+                app:layout_constraintStart_toEndOf="@id/lbl_acceso"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_estado_visual"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="ESTADO VISUAL"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_humedad_suelo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_estado_visual"
+                />
+
+            <Spinner
+                android:id="@+id/sp_estado_visual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toBottomOf="@id/sp_humedad_suelo"
+                app:layout_constraintStart_toEndOf="@id/lbl_estado_visual"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_humedad_cosecha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="HUMEDAD DE COSECHA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_estado_visual"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/sp_humedad_cosecha"
+                />
+
+            <Spinner
+                android:id="@+id/sp_humedad_cosecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:entries="@array/desplegable_checklist_1"
+                app:layout_constraintTop_toBottomOf="@id/sp_estado_visual"
+                app:layout_constraintStart_toEndOf="@id/lbl_humedad_cosecha"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_cometario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="COMENTARIOS"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/sp_humedad_cosecha"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_comentario"
+                />
+
+            <EditText
+                android:id="@+id/et_comentario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                app:layout_constraintTop_toBottomOf="@id/sp_humedad_cosecha"
+                app:layout_constraintStart_toEndOf="@id/lbl_cometario"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/lbl_titulo_chequeo_envases"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_condicion_potrero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_cosechadora"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="COSECHADORA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_cosechadora"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_condicion_potrero"
+            app:layout_constraintStart_toEndOf="@id/lbl_titulo_chequeo_envases"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cont_cosechadora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_oculta_cosechadora"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+
+            <TextView
+                android:id="@+id/lbl_prestador_servicio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="PRESTADOR DE SERVICIO"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_prestador_servicio"
+                />
+
+            <EditText
+                android:id="@+id/et_prestador_servicio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_prestador_servicio"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_operador_maquina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="OPERADOR DE LA MAQUINA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_prestador_servicio"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_operador_maquina"
+                />
+
+            <EditText
+                android:id="@+id/et_operador_maquina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_prestador_servicio"
+                app:layout_constraintStart_toEndOf="@id/lbl_operador_maquina"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_marca_maquina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="MARCA MAQUINA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_operador_maquina"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_marca_maquina"
+                />
+
+            <EditText
+                android:id="@+id/et_marca_maquina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_operador_maquina"
+                app:layout_constraintStart_toEndOf="@id/lbl_marca_maquina"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_modelo_maquina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="MODELO MAQUINA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_marca_maquina"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_modelo_maquina"
+                />
+
+            <EditText
+                android:id="@+id/et_modelo_maquina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_marca_maquina"
+                app:layout_constraintStart_toEndOf="@id/lbl_modelo_maquina"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_cosecha_anterior"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="COSECHA ANTERIOR"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_modelo_maquina"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_cosecha_anterior"
+                />
+
+            <EditText
+                android:id="@+id/et_cosecha_anterior"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_modelo_maquina"
+                app:layout_constraintStart_toEndOf="@id/lbl_cosecha_anterior"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/lbl_aseo_ingreso"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_cosechadora"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_aseo_ingreso"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="ASEO MAQUINARIA - INGRESO AL CAMPO"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_aseo_ingreso"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_cosechadora"
+            app:layout_constraintStart_toEndOf="@id/lbl_aseo_ingreso"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+            android:id="@+id/cont_aseo_ingreso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_aseo_ingreso"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_fecha_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_fecha_ingreso"
+                android:text="FECHA REVISION DE LIMPIEZA"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_fecha_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_fecha_ingreso"
+                android:layout_marginTop="@dimen/padding_small"
+                android:inputType="date"
+                android:maxLines="1"
+                android:drawableEnd="@drawable/ic_date_range"
+                android:drawableTint="@color/colorSecondaryVariant"
+                android:autofillHints=""
+                />
+
+            <TextView
+                android:id="@+id/lbl_cabezal_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="CABEZAL"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_fecha_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_cabezal_ingreso"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_cabezal_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/et_fecha_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_cabezal_ingreso"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_cabezal_ingreso_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_cabezal_ingreso_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_elevadores_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="ELEVADORES"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_cabezal_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_elevadores_ingreso"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_elevadores_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_cabezal_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_elevadores_ingreso"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_elevadores_ingreso_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_elevadores_ingreso_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_concavos_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="CONCAVOS"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_elevadores_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_concavos_ingreso"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_concavos_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_elevadores_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_concavos_ingreso"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_concavos_ingreso_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_concavos_ingreso_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_harneros_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="HARNEROS"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_concavos_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_harneros_ingreso"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_harneros_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_concavos_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_harneros_ingreso"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_harneros_ingreso_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_harneros_ingreso_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_tolva_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TOLVA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_harneros_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_tolva_ingreso"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_tolva_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_harneros_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_tolva_ingreso"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_tolva_ingreso_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_tolva_ingreso_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_descarga_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="DESCARGA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_tolva_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_tolva_ingreso"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_descarga_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_tolva_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_descarga_ingreso"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_descarga_ingreso_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_descarga_ingreso_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+
+            <TextView
+                android:id="@+id/lbl_lugar_limpieza_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lugar_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_descarga_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_lugar_limpieza_ingreso"
+                />
+
+            <EditText
+                android:id="@+id/et_lugar_limpieza_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_descarga_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_lugar_limpieza_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_responsable_aseo_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/responsable_aseo"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_lugar_limpieza_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_responsable_aseo_ingreso"
+                />
+
+            <EditText
+                android:id="@+id/et_responsable_aseo_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_lugar_limpieza_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_responsable_aseo_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_rut_responsable_aseo_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/rut_responsable_aseo_de_ingreso"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_aseo_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_rut_responsable_aseo_ingreso"
+                />
+
+            <EditText
+                android:id="@+id/et_rut_responsable_aseo_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_aseo_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_rut_responsable_aseo_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_responsable_aseo_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_responsable_aseo_de_ingreso"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable_aseo_ingreso"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_responsable_aseo_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable_aseo_ingreso"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_responsable_aseo_ingreso"
+                />
+            <ImageView
+                android:id="@+id/check_firma_responsable_aseo_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo_ingreso"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_aseo_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/lbl_responsable_revision_limpieza_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/responsable_curimapu_revision_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_aseo_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_responsable_revision_limpieza_ingreso"
+                />
+
+            <EditText
+                android:id="@+id/et_responsable_revision_limpieza_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_aseo_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_responsable_revision_limpieza_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_responsable_revision_limpieza_ingreso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_responsable_curimapu_revision_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_ingreso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable_revision_limpieza_ingreso"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_responsable_revision_limpieza_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_ingreso"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable_revision_limpieza_ingreso"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_responsable_revision_limpieza_ingreso"
+                />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/check_firma_responsable_revision_limpieza_ingreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_ingreso"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_revision_limpieza_ingreso"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+        <TextView
+            android:id="@+id/lbl_aseo_salida"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cont_aseo_ingreso"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_oculta_aseo_salida"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="ASEO MAQUINARIA - SALIDA DEL CAMPO"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageView
+            android:id="@+id/btn_oculta_aseo_salida"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_down"
+            app:layout_constraintTop_toBottomOf="@id/cont_aseo_ingreso"
+            app:layout_constraintStart_toEndOf="@id/lbl_aseo_salida"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorOnBackground" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+            android:id="@+id/cont_aseo_salida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_aseo_salida"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_fecha_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_fecha_salida"
+                android:text="FECHA REVISION DE LIMPIEZA"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_fecha_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_fecha_salida"
+                android:layout_marginTop="@dimen/padding_small"
+                android:inputType="date"
+                android:maxLines="1"
+                android:drawableEnd="@drawable/ic_date_range"
+                android:drawableTint="@color/colorSecondaryVariant"
+                android:autofillHints=""
+                />
+
+            <TextView
+                android:id="@+id/lbl_cabezal_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="CABEZAL"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_fecha_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_cabezal_salida"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_cabezal_salida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/et_fecha_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_cabezal_salida"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_cabezal_salida_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_cabezal_salida_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_elevadores_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="ELEVADORES"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_cabezal_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_elevadores_salida"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_elevadores_salida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_cabezal_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_elevadores_salida"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_elevadores_salida_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_elevadores_salida_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_concavos_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="CONCAVOS"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_elevadores_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_concavos_salida"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_concavos_salida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_elevadores_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_concavos_salida"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_concavos_salida_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_concavos_salida_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_harneros_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="HARNEROS"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_concavos_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_harneros_salida"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_harneros_salida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_concavos_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_harneros_salida"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_harneros_salida_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_harneros_salida_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_tolva_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TOLVA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_harneros_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_tolva_salida"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_tolva_salida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_harneros_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_tolva_salida"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_tolva_salida_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_tolva_salida_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lbl_descarga_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="DESCARGA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_tolva_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/grupo_tolva_salida"
+                />
+
+            <RadioGroup
+                android:id="@+id/grupo_descarga_salida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/grupo_tolva_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_descarga_salida"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/btn_descarga_salida_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si" />
+
+                <RadioButton
+                    android:id="@+id/btn_descarga_salida_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+
+            </RadioGroup>
+
+
+            <TextView
+                android:id="@+id/lbl_lugar_limpieza_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/lugar_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_descarga_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_lugar_limpieza_salida"
+                />
+
+            <EditText
+                android:id="@+id/et_lugar_limpieza_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/grupo_descarga_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_lugar_limpieza_salida"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_responsable_aseo_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/responsable_aseo"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_lugar_limpieza_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_responsable_aseo_salida"
+                />
+
+            <EditText
+                android:id="@+id/et_responsable_aseo_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_lugar_limpieza_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_responsable_aseo_salida"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_rut_responsable_aseo_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="RUT RESPONSABLE ASEO DE SALIDA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_aseo_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_rut_responsable_aseo_salida"
+                />
+
+            <EditText
+                android:id="@+id/et_rut_responsable_aseo_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_aseo_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_rut_responsable_aseo_salida"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_responsable_aseo_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="FIRMA RESPONSABLE ASEO DE SALIDA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable_aseo_salida"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_responsable_aseo_salida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable_aseo_salida"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_responsable_aseo_salida"
+                />
+            <ImageView
+                android:id="@+id/check_firma_responsable_aseo_salida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_rut_responsable_aseo_salida"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_aseo_salida"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/lbl_responsable_revision_limpieza_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/responsable_curimapu_revision_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_aseo_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_responsable_revision_limpieza_salida"
+                />
+
+            <EditText
+                android:id="@+id/et_responsable_revision_limpieza_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable_aseo_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_responsable_revision_limpieza_salida"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autofillHints="" />
+
+            <TextView
+                android:id="@+id/lbl_firma_responsable_revision_limpieza_salida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/firma_responsable_curimapu_revision_de_limpieza"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_salida"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable_revision_limpieza_salida"
+                />
+
+            <Button
+                android:id="@+id/btn_firma_responsable_revision_limpieza_salida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_salida"
+                app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable_revision_limpieza_salida"
+                app:layout_constraintEnd_toStartOf="@id/check_firma_responsable_revision_limpieza_salida"
+                />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/check_firma_responsable_revision_limpieza_salida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                app:layout_constraintTop_toBottomOf="@id/et_responsable_revision_limpieza_salida"
+                app:layout_constraintStart_toEndOf="@id/btn_firma_responsable_revision_limpieza_salida"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <View
+            android:id="@+id/divider_botonera"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/cont_aseo_salida"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/btn_guardar_cl_siembra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_botonera"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/guardar"/>
+
+        <Button
+            android:id="@+id/btn_cancelar_cl_siembra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_botonera"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/nav_cancel"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

@@ -5,7 +5,10 @@ import androidx.room.RoomDatabase;
 
 import cl.smapdev.curimapu.clases.bd.daos.DaoAnexosFechas;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListCapSiembra;
+import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListCosecha;
+import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListLimpiezaCamiones;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListSiembra;
+import cl.smapdev.curimapu.clases.bd.daos.DaoChecklistDevolucionSemilla;
 import cl.smapdev.curimapu.clases.bd.daos.DaoEvaluaciones;
 import cl.smapdev.curimapu.clases.bd.daos.DaoFirmasTemp;
 import cl.smapdev.curimapu.clases.bd.daos.MyDao;
@@ -15,7 +18,10 @@ import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
+import cl.smapdev.curimapu.clases.tablas.CheckListLimpiezaCamiones;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
+import cl.smapdev.curimapu.clases.tablas.ChecklistDevolucionSemilla;
+import cl.smapdev.curimapu.clases.tablas.ChecklistLimpiezaCamionesDetalle;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
@@ -62,7 +68,7 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         cli_pcm.class, quotation.class, FotosFichas.class, AgrPredTemp.class, FichasNew.class,
         AnexoCorreoFechas.class, Evaluaciones.class, CheckListSiembra.class, TempFirmas.class,
         CheckListCosecha.class, CheckListCapacitacionSiembra.class,
-        CheckListCapacitacionSiembraDetalle.class
+        CheckListCapacitacionSiembraDetalle.class, CheckListLimpiezaCamiones.class, ChecklistLimpiezaCamionesDetalle.class, ChecklistDevolucionSemilla.class
         }, version = 14)
 public abstract class MyAppBD extends RoomDatabase {
         public abstract MyDao myDao();
@@ -71,5 +77,8 @@ public abstract class MyAppBD extends RoomDatabase {
         public abstract DaoFirmasTemp DaoFirmas();
         public abstract DaoAnexosFechas DaoAnexosFechas();
         public abstract DaoCheckListCapSiembra DaoCheckListCapSiembra();
+        public abstract DaoCheckListCosecha DaoCheckListCosecha();
+        public abstract DaoCheckListLimpiezaCamiones DaoCheckListLimpiezaCamiones();
+        public abstract DaoChecklistDevolucionSemilla DaoCheckListDevolucionSemilla();
 
 }

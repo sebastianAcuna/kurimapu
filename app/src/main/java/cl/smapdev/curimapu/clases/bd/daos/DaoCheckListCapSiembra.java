@@ -15,27 +15,27 @@ import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
 public interface DaoCheckListCapSiembra {
 
 
-    @Query(" SELECT * FROM anexo_checklist_capacitacion_siembra WHERE id_ac_cl_cap_siembra = :id_ac ")
-    List<CheckListCapacitacionSiembra> getAllClCapSiembraByAc(int id_ac);
+    @Query(" SELECT * FROM anexo_checklist_capacitacion_siembra WHERE id_ac_cl_cap_siembra = :id_ac AND tipo_capacitacion = :tipo_capacitacion")
+    List<CheckListCapacitacionSiembra> getAllClCapSiembraByAc(int id_ac, int tipo_capacitacion);
 
-    @Query(" SELECT * FROM anexo_checklist_capacitacion_siembra WHERE id_cl_cap_siembra = :id_cap ")
-    CheckListCapacitacionSiembra getClCapSiembraByAc(int id_cap);
+    @Query(" SELECT * FROM anexo_checklist_capacitacion_siembra WHERE id_cl_cap_siembra = :id_cap AND  tipo_capacitacion = :tipo_capacitacion")
+    CheckListCapacitacionSiembra getClCapSiembraByAc(int id_cap, int tipo_capacitacion);
 
 
     @Query(" SELECT * FROM anexo_checklist_capacitacion_siembra WHERE clave_unica = :clave_unica ")
     CheckListCapacitacionSiembra getClCapSiembraByClaveUnica(String clave_unica);
 
     @Query(" SELECT * FROM anexo_checklist_capacitacion_siembra WHERE id_cl_cap_siembra = :id_cap " +
-            " AND estado_sincronizacion = :estado_sinc ")
-    CheckListCapacitacionSiembra getClCapSiembraByAcAndEstado(int id_cap, int estado_sinc);
+            " AND estado_sincronizacion = :estado_sinc AND  tipo_capacitacion = :tipo_capacitacion  ")
+    CheckListCapacitacionSiembra getClCapSiembraByAcAndEstado(int id_cap, int estado_sinc, int tipo_capacitacion);
 
     @Query(" SELECT * FROM anexo_checklist_capacitacion_siembra WHERE " +
-            " estado_sincronizacion = :estado_sinc ")
-    List<CheckListCapacitacionSiembra> getClCapSiembraByEstado(int estado_sinc);
+            " estado_sincronizacion = :estado_sinc AND  tipo_capacitacion = :tipo_capacitacion")
+    List<CheckListCapacitacionSiembra> getClCapSiembraByEstado(int estado_sinc, int tipo_capacitacion);
 
     @Query("SELECT * FROM anexo_checklist_capacitacion_siembra_detalle " +
-            "WHERE clave_unica_cl_cap_siembra = :clave_unica OR clave_unica_cl_cap_siembra = 0 ")
-    List<CheckListCapacitacionSiembraDetalle> getCapSiembraDetallesByPadre(String clave_unica);
+            "WHERE ( clave_unica_cl_cap_siembra = :clave_unica OR clave_unica_cl_cap_siembra = 0) AND tipo_detalle_capacitacion = :tipo_detalle ")
+    List<CheckListCapacitacionSiembraDetalle> getCapSiembraDetallesByPadre(String clave_unica, int tipo_detalle);
 
 
     @Query("SELECT * FROM anexo_checklist_capacitacion_siembra_detalle " +
@@ -44,14 +44,14 @@ public interface DaoCheckListCapSiembra {
 
 
     @Query("DELETE FROM anexo_checklist_capacitacion_siembra_detalle " +
-            " WHERE clave_unica_cl_cap_siembra = '0' ")
-    void deleteDetalles();
+            " WHERE clave_unica_cl_cap_siembra = '0' AND  tipo_detalle_capacitacion = :tipo_capacitacion ")
+    void deleteDetalles(int tipo_capacitacion);
 
 
     @Query("UPDATE anexo_checklist_capacitacion_siembra_detalle " +
             "SET clave_unica_cl_cap_siembra = :clave_unica  " +
-            "WHERE clave_unica_cl_cap_siembra = 0 ")
-    void updateCapacitacionSiembraDetalleConCero(String clave_unica);
+            "WHERE clave_unica_cl_cap_siembra = 0 AND  tipo_detalle_capacitacion = :tipo_capacitacion ")
+    void updateCapacitacionSiembraDetalleConCero(String clave_unica, int tipo_capacitacion);
 
     @Update
     void updateDetalle(CheckListCapacitacionSiembraDetalle detalle);

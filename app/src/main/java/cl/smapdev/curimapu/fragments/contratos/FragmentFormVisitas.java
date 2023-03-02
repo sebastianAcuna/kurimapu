@@ -3,19 +3,15 @@ package cl.smapdev.curimapu.fragments.contratos;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,9 +25,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +33,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,23 +41,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.github.clans.fab.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import cl.smapdev.curimapu.BuildConfig;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.FotosListAdapter;
@@ -79,6 +76,7 @@ import cl.smapdev.curimapu.clases.utilidades.CameraUtils;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
 import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
+import cl.smapdev.curimapu.infraestructure.utils.coroutines.ApplicationExecutors;
 import es.dmoral.toasty.Toasty;
 
 import static android.app.Activity.RESULT_OK;
@@ -93,6 +91,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private SharedPreferences prefs;
 
     private TempVisitas temp_visitas;
+    private String currentPhotoPath;
 
     private final ArrayList<String> fenologico = new ArrayList<>();
     private final ArrayList<String> cosecha = new ArrayList<>();
@@ -130,17 +129,17 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         MainActivity a = (MainActivity) getActivity();
         if ( a != null) activity = a;
 
+
         prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+
+        progressBar = new ProgressDialog(activity);
+        progressBar.setTitle(getResources().getString(R.string.espere));
+        progressBar.show();
 
         fenologico.addAll(Arrays.asList(getResources().getStringArray(R.array.fenologico)));
         cosecha.addAll(Arrays.asList(getResources().getStringArray(R.array.cosecha)));
         crecimiento.addAll(Arrays.asList(getResources().getStringArray(R.array.crecimiento)));
         maleza.addAll(Arrays.asList(getResources().getStringArray(R.array.maleza)));
-
-
-        progressBar = new ProgressDialog(activity);
-        progressBar.setTitle(getResources().getString(R.string.espere));
-        progressBar.show();
 
     }
 
@@ -155,7 +154,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         super.onViewCreated(view, savedInstanceState);
         bind(view);
         setHasOptionsMenu(true);
-       new LazyLoad().execute();
+
 
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
@@ -164,8 +163,37 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             }
         }
 
-    }
+        ApplicationExecutors exec = new ApplicationExecutors();
 
+        //hilo principal
+
+
+        exec.getBackground().execute(()->{
+            if (temp_visitas == null){
+                temp_visitas = new TempVisitas();
+                if (prefs != null){
+                    temp_visitas.setId_anexo_temp_visita(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
+                    temp_visitas.setId_temp_visita(0);
+
+                    String claveUnica = UUID.randomUUID().toString();
+                    temp_visitas.setClave_unica_visita(claveUnica);
+                }
+                MainActivity.myAppDB.myDao().setTempVisitas(temp_visitas);
+                temp_visitas = MainActivity.myAppDB.myDao().getTempFichas();
+            }
+            exec.getMainThread().execute(()->{
+                chargeAll();
+                if (progressBar != null && progressBar.isShowing()){
+                    progressBar.dismiss();
+                }
+
+            });
+        });
+
+        exec.shutDownBackground();
+
+
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -176,44 +204,41 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_visitas_recom:
+        if (item.getItemId() == R.id.menu_visitas_recom) {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
 
-                ExecutorService executor = Executors.newSingleThreadExecutor();
+            TempVisitas tmp = null;
+            VisitasCompletas visitasCompletas = null;
+            AnexoContrato ac = null;
+            try {
+                Future<TempVisitas> temp_visitasF = executor.submit(() -> MainActivity.myAppDB.myDao().getTempFichas());
 
-                TempVisitas tmp = null;
-                VisitasCompletas visitasCompletas = null;
-                AnexoContrato ac = null;
-                try {
-                    Future<TempVisitas> temp_visitasF = executor.submit(() -> MainActivity.myAppDB.myDao().getTempFichas());
+                TempVisitas temp_visitas = temp_visitasF.get();
+                Future<VisitasCompletas> visitasCompletasFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita()));
 
-                    TempVisitas temp_visitas = temp_visitasF.get();
-                    Future<VisitasCompletas> visitasCompletasFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita()));
-
-                    if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 ) {
-                        tmp = temp_visitas;
-                        visitasCompletas = visitasCompletasFuture.get();
-                    }
-
-                    Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
-                    ac = anexo.get();
-
-                    FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-                    Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
-                    if (prev != null) {
-                        ft.remove(prev);
-                    }
-
-                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, this::cargarTemp);
-                    dialogo.show(ft, "EVALUACION_RECOMENDACION");
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
+                if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2) {
+                    tmp = temp_visitas;
+                    visitasCompletas = visitasCompletasFuture.get();
                 }
-                executor.shutdown();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+
+                Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+                ac = anexo.get();
+
+                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+                Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+
+                DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, this::cargarTemp);
+                dialogo.show(ft, "EVALUACION_RECOMENDACION");
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            executor.shutdown();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -222,7 +247,9 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     }
 
     private void chargeAll(){
-
+        if (progressBar != null && progressBar.isShowing()){
+            progressBar.dismiss();
+        }
         if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 &&  temp_visitas.getEvaluacion() <= 0.0){
 
 
@@ -294,6 +321,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             }
 
         });
+
+
     }
 
     /*
@@ -683,35 +712,50 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
 
     /* IMAGENES */
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
 
     private void abrirCamara(int vista){
 
-        prefs.edit().remove(Utilidades.VISTA_FOTOS).apply();
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        File miFile = new File(Environment.getExternalStoragePublicDirectory("DCIM"), Utilidades.DIRECTORIO_IMAGEN);
-        boolean isCreada = miFile.exists();
+//        if(intent.resolveActivity(requireActivity().getPackageManager()) == null) {
+//            Toasty.error(requireActivity(), "No se pudo crear la imagen 1", Toast.LENGTH_LONG, true).show();
+//            return;
+//        };
 
-        if (!isCreada){
-            isCreada=miFile.mkdirs();
+        File photoFile = null;
+        try{
+            photoFile = createImageFile();
+        }catch (IOException e){
+            Log.e("ERROR IMAGEN", e.getLocalizedMessage());
+            Toasty.error(requireActivity(), "No se pudo crear la imagen 2", Toast.LENGTH_LONG, true).show();
         }
 
-        if(isCreada){
-
-            long consecutivo = System.currentTimeMillis()/1000;
-            String nombre = consecutivo+"_"+vista+"_0.jpg";
-            String path = Environment.getExternalStoragePublicDirectory("DCIM") + File.separator + Utilidades.DIRECTORIO_IMAGEN + File.separator + nombre;
-
-            fileImagen=new File(path);
-
-            prefs.edit().putInt(Utilidades.VISTA_FOTOS, vista).apply();
-
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fileImagen));
-            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder.build());
-
-            startActivityForResult(intent, COD_FOTO);
+        if(photoFile == null) {
+            Toasty.error(requireActivity(), "No se pudo crear la imagen 3", Toast.LENGTH_LONG, true).show();
+            return;
         }
+
+        prefs.edit().remove(Utilidades.VISTA_FOTOS).putInt(Utilidades.VISTA_FOTOS, vista).apply();
+
+        Uri photoUri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID+".provider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+        startActivityForResult(intent, COD_FOTO);
     }
 
 
@@ -719,81 +763,82 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == COD_FOTO && resultCode == RESULT_OK) {
 
-            if (fileImagen != null) {
+            try {
+                Bitmap originalBtm = BitmapFactory.decodeFile(currentPhotoPath);
+                Bitmap nuevaFoto = CameraUtils.escribirFechaImg(originalBtm, activity);
 
-                Bitmap bm = BitmapFactory.decodeFile(fileImagen.getAbsolutePath());
-                Integer[] inte = Utilidades.neededRotation(Uri.fromFile(fileImagen));
+                Log.e("RUTA", currentPhotoPath);
+                currentPhotoPath = currentPhotoPath.replaceAll("Pictures/", "");
+                Log.e("RUTA", currentPhotoPath);
 
-                int rotation = inte[1];
-                int rotationInDegrees = inte[0];
+                File file = new File(currentPhotoPath);
 
-                Matrix m = new Matrix();
-                if (rotation != 0) {
-                    m.preRotate(rotationInDegrees);
-                }
+                FileOutputStream fos = new FileOutputStream(file);
+                nuevaFoto.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
+                guardarBD();
 
-            if (bm != null){
-                Bitmap src = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), m, true);
-
-                ByteArrayOutputStream bos = null;
-                try {
-                    bos = new ByteArrayOutputStream();
-                    CameraUtils.escribirFechaImg(src, activity).compress(Bitmap.CompressFormat.JPEG, 100, bos);
-                    byte[] bitmapdata = bos.toByteArray();
-
-                    FileOutputStream fos = new FileOutputStream(fileImagen.getAbsoluteFile());
-                    fos.write(bitmapdata);
-                    fos.flush();
-                    fos.close();
-
-                } catch (IOException e) {
-                    Log.e("ERROR -- FOTOS", e.getLocalizedMessage());
-                }
+            }catch (Exception e){
+            Log.e("FOTOS", e.getLocalizedMessage());
+                System.out.println(e);
             }
-                guardarBD(fileImagen);
-            }
-
         }
+
     }
 
 
-    private void guardarBD(File path){
-
-        Fotos fotos = new Fotos();
-        fotos.setFecha(Utilidades.fechaActualConHora());
+    private void guardarBD(){
 
 
-        fotos.setFieldbook((prefs.getInt(Utilidades.VISTA_FOTOS,0) == 2) ? 0 : Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
-        fotos.setHora(Utilidades.hora());
-        fotos.setNombre_foto(path.getName());
-        fotos.setFavorita(false);
-        fotos.setPlano(0);
+        ApplicationExecutors exec = new ApplicationExecutors();
+        exec.getBackground().execute(()->{
+            Fotos fotos = new Fotos();
+            fotos.setFecha(Utilidades.fechaActualConHora());
 
-        if(temp_visitas != null){
-            fotos.setId_ficha_fotos(temp_visitas.getId_anexo_temp_visita());
-        }
-        fotos.setVista(prefs.getInt(Utilidades.VISTA_FOTOS, 0));
-        fotos.setRuta(path.getAbsolutePath());
+            Log.e("RUTA 2", currentPhotoPath);
+
+            File file = new File(currentPhotoPath);
+
+            fotos.setFieldbook((prefs.getInt(Utilidades.VISTA_FOTOS,0) == 2) ? 0 : Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
+            fotos.setHora(Utilidades.hora());
+            fotos.setNombre_foto(file.getName());
+            fotos.setFavorita(false);
+            fotos.setPlano(0);
+
+            if(temp_visitas != null){
+                fotos.setId_ficha_fotos(temp_visitas.getId_anexo_temp_visita());
+            }
+            fotos.setVista(prefs.getInt(Utilidades.VISTA_FOTOS, 0));
+            fotos.setRuta(currentPhotoPath);
 
 
-        fotos.setId_visita_foto(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+            fotos.setId_visita_foto(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
 
 
-        Config config = MainActivity.myAppDB.myDao().getConfig();
-        if (config != null){
-            fotos.setId_dispo_foto(config.getId());
-        }
+            Config config = MainActivity.myAppDB.myDao().getConfig();
+            if (config != null){
+                fotos.setId_dispo_foto(config.getId());
+            }
 
-        MainActivity.myAppDB.myDao().insertFotos(fotos);
+            MainActivity.myAppDB.myDao().insertFotos(fotos);
 
-        if (adapterAgronomo != null){
-            adapterAgronomo.notifyDataSetChanged();
-        }
+            exec.getMainThread().execute(()->{
+                agregarImagenToAgronomos();
+//                if (adapterAgronomo != null){
+//
+//
+//                    adapterAgronomo.notifyDataSetChanged();
+//                }
 
-        if (adapterCliente != null){
-            adapterCliente.notifyDataSetChanged();
-        }
+                agregarImagenToClientes();
+//                if (adapterCliente != null){
+//                    adapterCliente.notifyDataSetChanged();
+//                }
+            });
+
+        });
+
+        exec.shutDownBackground();
 
     }
 
@@ -963,54 +1008,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
          showAlertForSave("Genial", "Se guardo todo como corresponde");
     }
 
-
-
-
-    private class LazyLoad extends AsyncTask<Void, Void, Void>{
-
-
-        @Override
-        protected void onPreExecute() {
-
-
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            if (temp_visitas == null){
-                temp_visitas = new TempVisitas();
-                if (prefs != null){
-                    temp_visitas.setId_anexo_temp_visita(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
-                    temp_visitas.setId_temp_visita(0);
-
-                    String claveUnica = prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")
-                            +""+Utilidades.fechaActualConHora()
-                            .replaceAll(" ", "")
-                            .replaceAll("-", "")
-                            .replaceAll(":", "");
-                    temp_visitas.setClave_unica_visita(claveUnica);
-                }
-                MainActivity.myAppDB.myDao().setTempVisitas(temp_visitas);
-                temp_visitas = MainActivity.myAppDB.myDao().getTempFichas();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            chargeAll();
-
-            if (progressBar != null && progressBar.isShowing()){
-                progressBar.dismiss();
-            }
-        }
-    }
-
-
     private void agregarImagenToAgronomos(){
 
         if (temp_visitas != null && rwAgronomo != null){
@@ -1062,8 +1059,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         }
     }
 
-
-
     private void cambiarFavorita(Fotos fotos){
 
         if (fotos.isFavorita()){
@@ -1085,8 +1080,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         }
 
     }
-
-
 
     private void agregarImagenToClientes(){
 
@@ -1192,9 +1185,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         builder.show();
     }
 
-
-
-
     private void showAlertForSave(String title, String message){
         View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_empty,null);
 
@@ -1218,7 +1208,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         builder22.setCancelable(true);
         builder22.show();
     }
-
 
     private void showAlertForUpdate(final Fotos foto){
         View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_big_img,null);
@@ -1256,7 +1245,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         builder.setCancelable(false);
         builder.show();
     }
-
 
     void showAlertForEliminarFoto(final Fotos foto){
 

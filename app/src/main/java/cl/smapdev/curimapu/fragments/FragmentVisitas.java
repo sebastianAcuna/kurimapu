@@ -1,5 +1,6 @@
 package cl.smapdev.curimapu.fragments;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 
@@ -40,7 +42,6 @@ import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.Tabla;
 import cl.smapdev.curimapu.clases.adapters.AnexosAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
@@ -49,6 +50,7 @@ import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.contratos.FragmentListVisits;
 import cl.smapdev.curimapu.fragments.dialogos.DialogFilterTables;
+import cl.smapdev.curimapu.infraestructure.utils.coroutines.ApplicationExecutors;
 
 public class FragmentVisitas extends Fragment {
 
@@ -118,6 +120,7 @@ public class FragmentVisitas extends Fragment {
         } catch (ExecutionException | InterruptedException e) {
             temporadaList = Collections.emptyList();
             e.printStackTrace();
+            executor.shutdown();
         }
 
         setHasOptionsMenu(true);
@@ -193,27 +196,32 @@ public class FragmentVisitas extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && context != null){
-                List<AnexoCompleto> trabajo = (List<AnexoCompleto>) intent.getSerializableExtra(DialogFilterTables.LLAVE_FILTER_TABLAS);
-                if (trabajo != null ){
-                    spinner_toolbar.setTag(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.size() - 1));
-                    spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.size() - 1));
-                    crearAdaptador(trabajo);
-                }
+                ApplicationExecutors exec = new ApplicationExecutors();
+
+                exec.getBackground().execute(()->{
+                    List<AnexoCompleto> trabajo = (List<AnexoCompleto>) intent.getSerializableExtra(DialogFilterTables.LLAVE_FILTER_TABLAS);
+
+                    exec.getMainThread().execute(()-> crearAdaptador(trabajo));
+                });
+
+                exec.shutDownBackground();
             }
         }
     }
 
 
     public void cargarLista( String fecha ){
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<List<AnexoCompleto>> anexoCompleto = executor.submit( () -> MainActivity.myAppDB.myDao().getAnexosByYear( fecha ));
 
-        try {
-            crearAdaptador(anexoCompleto.get());
-            executor.shutdown();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        ApplicationExecutors exec = new ApplicationExecutors();
+
+        exec.getBackground().execute(()->{
+            List<AnexoCompleto> anexoCompleto = MainActivity.myAppDB.myDao().getAnexosByYear( fecha );
+
+            exec.getMainThread().execute(()-> crearAdaptador(anexoCompleto));
+        });
+
+        exec.shutDownBackground();
+
     }
 
     public void crearAdaptador( List<AnexoCompleto> anexo ) {
@@ -228,9 +236,12 @@ public class FragmentVisitas extends Fragment {
 
     public void nuevaVisita (AnexoCompleto anexo) {
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            /* eliminara detalles de las propiedades (todas)*/
+        ProgressDialog  progressBar = new ProgressDialog(activity);
+        progressBar.setProgress(0);
+        progressBar.setTitle("preparando nueva visita");
+        progressBar.show();
+        ApplicationExecutors exec = new ApplicationExecutors();
+        exec.getBackground().execute(()->{
             MainActivity.myAppDB.myDao().deleteTempVisitas();
             MainActivity.myAppDB.myDao().deleteDetalleVacios();
 
@@ -250,18 +261,24 @@ public class FragmentVisitas extends Fragment {
                     }
                 }
             }
+
+            if (prefs != null){
+                prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, anexo.getAnexoContrato().getId_ficha_contrato()).apply();
+                prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, anexo.getAnexoContrato().getId_especie_anexo()).apply();
+                prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, anexo.getAnexoContrato().getId_anexo_contrato()).apply();
+                prefs.edit().putString(Utilidades.SHARED_VISIT_TEMPORADA, anexo.getAnexoContrato().getTemporada_anexo()).apply();
+                prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
+            }
+
+            exec.getMainThread().execute(()-> {
+                activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
+                if(progressBar.isShowing()){
+                    progressBar.setProgress(100);
+                    progressBar.dismiss();
+                }
+            });
         });
-
-        if (prefs != null){
-            prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, anexo.getAnexoContrato().getId_ficha_contrato()).apply();
-            prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, anexo.getAnexoContrato().getId_especie_anexo()).apply();
-            prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, anexo.getAnexoContrato().getId_anexo_contrato()).apply();
-            prefs.edit().putString(Utilidades.SHARED_VISIT_TEMPORADA, anexo.getAnexoContrato().getTemporada_anexo()).apply();
-            prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
-        }
-
-        activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left,R.anim.slide_out_left);
-
+        exec.shutDownBackground();
     }
 
     public void mostrarMenu (AnexoCompleto anexo) {

@@ -145,12 +145,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Config config1 = MainActivity.myAppDB.myDao().getConfig();
         if (config1 != null){
             if (config1.getServidorSeleccionado().length() <= 0){
-                config1.setServidorSeleccionado(Utilidades.IP_PRODUCCION);
+                config1.setServidorSeleccionado(Utilidades.URL_SERVER_API);
                 MainActivity.myAppDB.myDao().updateConfig(config1);
             }
         }else{
             Config config2 = new Config();
-            config2.setServidorSeleccionado(Utilidades.IP_PRODUCCION);
+            config2.setServidorSeleccionado(Utilidades.URL_SERVER_API);
             MainActivity.myAppDB.myDao().setConfig(config2);
         }
 
@@ -434,6 +434,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case Utilidades.FRAGMENT_CHECKLIST_SIEMBRA:
                     case Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_SIEMBRA:
+                    case Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_COSECHA:
+                    case Utilidades.FRAGMENT_CHECKLIST_LIMPIEZA_CAMIONES:
+                    case Utilidades.FRAGMENT_CHECKLIST_COSECHA:
+                    case Utilidades.FRAGMENT_CHECKLIST_DEVOLUCION_SEMILLA:
                         cambiarFragment(new FragmentCheckList(), Utilidades.FRAGMENT_CHECKLIST, R.anim.slide_in_right, R.anim.slide_out_right);
                         break;
                    /* case Utilidades.FRAGMENT_TAKE_PHOTO:

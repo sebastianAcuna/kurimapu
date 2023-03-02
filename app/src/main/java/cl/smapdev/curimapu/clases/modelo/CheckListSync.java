@@ -14,12 +14,16 @@ import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
+import cl.smapdev.curimapu.clases.relaciones.CheckListLimpiezaCamionesCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
+import cl.smapdev.curimapu.clases.tablas.ChecklistDevolucionSemilla;
+import cl.smapdev.curimapu.clases.tablas.ChecklistLimpiezaCamionesDetalle;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import retrofit2.Call;
@@ -152,6 +156,91 @@ public class CheckListSync {
             checkListRequest.setCheckListSiembras(chkS);
         }
 
+        if (checkListRequest.getCheckListCosechas() != null
+                && checkListRequest.getCheckListCosechas().size() > 0){
+            List<CheckListCosecha>  chkS = new ArrayList<>();
+            for (CheckListCosecha chk : checkListRequest.getCheckListCosechas()){
+
+                if(chk.getFirma_responsable_aseo_ingreso() != null &&
+                        !chk.getFirma_responsable_aseo_ingreso().isEmpty()){
+
+                    String stringed =  Utilidades.imageToString(chk.getFirma_responsable_aseo_ingreso());
+                    chk.setStringed_responsable_aso_ingreso( stringed.isEmpty() ? "" : stringed );
+                }
+
+                if(chk.getFirma_responsable_curimapu_ingreso() != null &&
+                        !chk.getFirma_responsable_curimapu_ingreso().isEmpty()){
+
+                    String stringed =  Utilidades.imageToString(chk.getFirma_responsable_curimapu_ingreso());
+                    chk.setStringed_responsable_curimapu_ingreso( stringed.isEmpty() ? "" : stringed );
+
+                }
+
+                if(chk.getFirma_responsable_aseo_salida() != null &&
+                        !chk.getFirma_responsable_aseo_salida().isEmpty()){
+
+                    String stringed =  Utilidades.imageToString(chk.getFirma_responsable_aseo_salida());
+                    chk.setStringed_responsable_aso_salida( stringed.isEmpty() ? "" : stringed );
+
+                }
+
+                if(chk.getFirma_responsable_curimapu_salida() != null &&
+                        !chk.getFirma_responsable_curimapu_salida().isEmpty()){
+
+                    String stringed =  Utilidades.imageToString(chk.getFirma_responsable_curimapu_salida());
+                    chk.setStringed_responsable_curimapu_salida( stringed.isEmpty() ? "" : stringed );
+                }
+                chkS.add(chk);
+            }
+
+            checkListRequest.setCheckListCosechas(chkS);
+        }
+
+
+        if (checkListRequest.getCheckListDevolucionSemilla() != null
+                && checkListRequest.getCheckListDevolucionSemilla().size() > 0){
+            List<ChecklistDevolucionSemilla>  chkS = new ArrayList<>();
+            for (ChecklistDevolucionSemilla chk : checkListRequest.getCheckListDevolucionSemilla()){
+
+                if(chk.getFirma_responsable() != null &&
+                        !chk.getFirma_responsable().isEmpty()){
+
+                    String stringed =  Utilidades.imageToString(chk.getFirma_responsable());
+                    chk.setStringed_responsable( stringed.isEmpty() ? "" : stringed );
+                }
+
+                if(chk.getFirma_revisor_bodega() != null &&
+                        !chk.getFirma_revisor_bodega().isEmpty()){
+
+                    String stringed =  Utilidades.imageToString(chk.getFirma_revisor_bodega());
+                    chk.setStringed_revisor_bodega( stringed.isEmpty() ? "" : stringed );
+
+                }
+                chkS.add(chk);
+            }
+
+            checkListRequest.setCheckListDevolucionSemilla(chkS);
+        }
+
+        if(checkListRequest.getCheckListLimpiezaCamionesCompletos() != null && checkListRequest.getCheckListLimpiezaCamionesCompletos().size() > 0){
+            List<CheckListLimpiezaCamionesCompleto> clLimpiezaCamionesList = new ArrayList<>();
+
+            for (CheckListLimpiezaCamionesCompleto completo : checkListRequest.getCheckListLimpiezaCamionesCompletos()){
+
+                for (ChecklistLimpiezaCamionesDetalle detalle : completo.getDetalles()){
+                    if(detalle.getFirma_cl_limpieza_camiones_detalle() != null &&
+                            !detalle.getFirma_cl_limpieza_camiones_detalle().isEmpty()){
+                        String stringed =  Utilidades.imageToString(detalle.getFirma_cl_limpieza_camiones_detalle());
+                        detalle.setStringed_cl_limpieza_camiones_detalle( stringed.isEmpty() ? "" : stringed );
+                    }
+                }
+                clLimpiezaCamionesList.add(completo);
+
+            }
+
+            checkListRequest.setCheckListLimpiezaCamionesCompletos(clLimpiezaCamionesList);
+        }
+
         try {
             Config config = configFuture.get();
             checkListRequest.setIdDispo(config.getId());
@@ -227,11 +316,73 @@ public class CheckListSync {
                             }
                         }
 
+                        if(checkListRequest.getCheckListDevolucionSemilla() != null
+                                && checkListRequest.getCheckListDevolucionSemilla().size() > 0){
+                            for (ChecklistDevolucionSemilla chk : checkListRequest.getCheckListDevolucionSemilla()) {
+
+                                chk.setEstado_sincronizacion(1);
+
+                                try {
+                                    executor.submit(() -> MainActivity.myAppDB
+                                            .DaoCheckListDevolucionSemilla()
+                                            .updateClDevolucionSemilla(chk)).get();
+                                } catch (ExecutionException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        if(checkListRequest.getCheckListCosechas() != null
+                                && checkListRequest.getCheckListCosechas().size() > 0){
+                            for (CheckListCosecha chk : checkListRequest.getCheckListCosechas()) {
+
+                                chk.setEstado_sincronizacion(1);
+
+                                try {
+                                    executor.submit(() -> MainActivity.myAppDB
+                                            .DaoCheckListCosecha()
+                                            .updateClCosecha(chk)).get();
+                                } catch (ExecutionException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        if(checkListRequest.getCheckListLimpiezaCamionesCompletos() != null
+                                && checkListRequest.getCheckListLimpiezaCamionesCompletos().size() > 0){
+                            for (CheckListLimpiezaCamionesCompleto chk : checkListRequest.getCheckListLimpiezaCamionesCompletos()) {
+                                try {
+                                    //cabecera
+                                    chk.getCabecera().setEstado_sincronizacion(1);
+
+                                    executor.submit(() -> MainActivity.myAppDB
+                                            .DaoCheckListLimpiezaCamiones()
+                                            .updateLimpiezaCamiones(chk.getCabecera())).get();
+
+                                    for (ChecklistLimpiezaCamionesDetalle ck : chk.getDetalles() ){
+
+                                        ck.setEstado_sincronizacion_detalle(1);
+                                        executor.submit(() -> MainActivity.myAppDB
+                                                .DaoCheckListLimpiezaCamiones()
+                                                .updateDetalle(ck)).get();
+                                    }
+
+
+                                } catch (ExecutionException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
 
                         IResponse.onResponseData(true, res.getMensajeRespuesta());
                         pd.dismiss();
                         executor.shutdown();
 
+                    }else{
+                        pd.dismiss();
+                        IResponse.onResponseData(false, response.message());
+                        executor.shutdown();
                     }
                 }
 

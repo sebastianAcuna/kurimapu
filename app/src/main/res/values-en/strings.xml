@@ -429,4 +429,6 @@ Depending on the state, it can be edited or not.</string>
     <string name="rut">RUT</string>
     <string name="fecha_mayus">FECHA</string>
     <string name="hora_de_ingreso">HORA DE INGRESO</string>
+    <string name="destruccion_de_semillero">Destruccion de semillero</string>
+    <string name="siembra_temprana">Siembra Temprana</string>
 </resources>

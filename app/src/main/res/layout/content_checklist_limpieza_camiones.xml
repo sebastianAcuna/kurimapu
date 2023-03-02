@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<ScrollView-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tool="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+
+<!--    >-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:padding="@dimen/padding_small"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView
+        android:id="@+id/lbl_numero_anexo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        android:text="@string/numero_de_anexo"
+        />
+    <TextView
+        android:id="@+id/tv_numero_anexo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_numero_anexo"
+        app:layout_constraintStart_toStartOf="parent"
+        tool:text="23-TR2243"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+
+    <TextView
+        android:id="@+id/lbl_variedad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        android:text="@string/variedad"
+        />
+    <TextView
+        android:id="@+id/tv_variedad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="COL-24431fC"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+
+    <View
+        android:id="@+id/divider_cabecera"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/tv_variedad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="DETALLE"
+        android:layout_marginTop="@dimen/padding_small"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_agregar_usuario"
+        />
+
+    <Button
+        android:id="@+id/btn_agregar_usuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="AGREGAR"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lista_limpieza_camiones"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_guardar_cl_siembra"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_agregar_usuario" />
+
+    <Button
+    android:id="@+id/btn_guardar_cl_siembra"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/lista_limpieza_camiones"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_marginTop="@dimen/padding"
+    android:text="@string/guardar"/>
+
+    <Button
+        android:id="@+id/btn_cancelar_cl_siembra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lista_limpieza_camiones"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/padding"
+        android:text="@string/nav_cancel"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+<!--</ScrollView>-->

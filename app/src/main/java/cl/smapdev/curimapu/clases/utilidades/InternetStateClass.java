@@ -43,6 +43,7 @@ public class InternetStateClass extends AsyncTask<Void, Boolean , Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... voids) {
+
         ConnectivityManager cm = (ConnectivityManager) activity.get().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             NetworkInfo ni = cm.getActiveNetworkInfo();

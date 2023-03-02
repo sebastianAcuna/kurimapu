@@ -27,7 +27,6 @@ public class FragmentContratos extends Fragment {
     private ViewPager viewPager;
     private  MainActivity activity;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,57 +54,9 @@ public class FragmentContratos extends Fragment {
 
 
         viewPager  = view.findViewById(R.id.view_pager);
-
-
             cargarTabs();
-//        new LazyLoad().execute();
 
     }
-
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (activity != null){
-               // activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumen, FragmentFotosResumen.getInstance(0), Utilidades.FRAGMENT_FOTOS_RESUMEN).commit();
-            }
-        }
-    }
-
-    private class LazyLoad extends AsyncTask<Void, Void, Void>{
-
-        private ProgressDialog progressBar;
-
-        @Override
-        protected void onPreExecute() {
-            progressBar = new ProgressDialog(activity);
-            progressBar.setTitle(getResources().getString(R.string.espere));
-            progressBar.show();
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            if (progressBar != null && progressBar.isShowing()){
-                progressBar.dismiss();
-            }
-            cargarTabs();
-        }
-    }
-
 
     private void cargarTabs(){
 
@@ -118,9 +69,10 @@ public class FragmentContratos extends Fragment {
             tabLayout.setupWithViewPager(viewPager);
             tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
+
+
         }catch(Exception e){
             Toasty.warning(activity, "Error capturado"+e.getLocalizedMessage(), Toast.LENGTH_SHORT, true).show();
-            //new LazyLoad().execute();
         }
 
     }

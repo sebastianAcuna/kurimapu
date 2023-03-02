@@ -11,7 +11,9 @@ import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
+import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
+import cl.smapdev.curimapu.clases.tablas.ChecklistDevolucionSemilla;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
@@ -55,6 +57,19 @@ public class GsonDescargas {
     @Embedded
     private List<CheckListSiembra> checkListSiembras;
 
+        @SerializedName("array_check_list_cosecha")
+    @Embedded
+    private List<CheckListCosecha> checkListCosecha;
+
+
+    @SerializedName("array_check_list_limpieza_camiones")
+    @Embedded
+    private List<CheckListLimpiezaCamionesCompleto> checkListLimpiezaCamionesCompletos;
+
+
+    @SerializedName("array_checklist_devolucion_semilla")
+    @Embedded
+    private List<ChecklistDevolucionSemilla> checklistDevolucionSemillas;
 
     @SerializedName("array_check_list_capacitacion_siembra")
     @Embedded
@@ -185,6 +200,30 @@ public class GsonDescargas {
     @Embedded
     private List<AnexoCorreoFechas> array_fechas_anexos;
 
+
+    public List<ChecklistDevolucionSemilla> getChecklistDevolucionSemillas() {
+        return checklistDevolucionSemillas;
+    }
+
+    public void setChecklistDevolucionSemillas(List<ChecklistDevolucionSemilla> checklistDevolucionSemillas) {
+        this.checklistDevolucionSemillas = checklistDevolucionSemillas;
+    }
+
+    public List<CheckListLimpiezaCamionesCompleto> getCheckListLimpiezaCamionesCompletos() {
+        return checkListLimpiezaCamionesCompletos;
+    }
+
+    public void setCheckListLimpiezaCamionesCompletos(List<CheckListLimpiezaCamionesCompleto> checkListLimpiezaCamionesCompletos) {
+        this.checkListLimpiezaCamionesCompletos = checkListLimpiezaCamionesCompletos;
+    }
+
+    public List<CheckListCosecha> getCheckListCosecha() {
+        return checkListCosecha;
+    }
+
+    public void setCheckListCosecha(List<CheckListCosecha> checkListCosecha) {
+        this.checkListCosecha = checkListCosecha;
+    }
 
     public List<CheckListCapCompleto> getCheckListCapCompletos() {
         return checkListCapCompletos;

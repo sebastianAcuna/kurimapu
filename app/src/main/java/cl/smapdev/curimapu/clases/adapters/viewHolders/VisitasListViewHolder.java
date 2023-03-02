@@ -59,23 +59,13 @@ public class VisitasListViewHolder extends RecyclerView.ViewHolder {
                 configid = config.getId();
             }
 
-            btn_ver.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickListenerVer.onItemClick(view, elem);
-                }
-            });
+            btn_ver.setOnClickListener(view -> clickListenerVer.onItemClick(view, elem));
 
             if(elem.getVisitas().getEstado_server_visitas() > 0){
                 btn_eliminar.setEnabled(false);
             }else{
                 btn_eliminar.setEnabled(true);
-                btn_eliminar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        clickListenerEliminar.onItemClick(view, elem);
-                    }
-                });
+                btn_eliminar.setOnClickListener(view -> clickListenerEliminar.onItemClick(view, elem));
             }
 
 

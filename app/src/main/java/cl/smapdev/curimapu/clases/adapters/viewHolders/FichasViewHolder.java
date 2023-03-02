@@ -55,20 +55,12 @@ public class FichasViewHolder extends RecyclerView.ViewHolder {
 
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClickListener.onItemClick(fichas);
-                }
-            });
+            itemView.setOnClickListener(v -> itemClickListener.onItemClick(fichas));
 
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    itemLongClickListener.onItemLongClick(fichas);
-                    return true;
-                }
+            itemView.setOnLongClickListener(v -> {
+                itemLongClickListener.onItemLongClick(fichas);
+                return true;
             });
 
         }

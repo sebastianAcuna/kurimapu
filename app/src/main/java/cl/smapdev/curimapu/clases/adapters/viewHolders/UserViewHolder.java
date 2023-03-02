@@ -47,12 +47,7 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
                 tvUser.setTextColor(context.getColor(R.color.colorOnSurface));
             }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(user);
-                }
-            });
+            itemView.setOnClickListener(v -> listener.onItemClick(user));
         }
 
 

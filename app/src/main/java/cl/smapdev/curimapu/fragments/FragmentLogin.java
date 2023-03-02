@@ -163,10 +163,10 @@ public class FragmentLogin extends Fragment {
                         activity.cambiarFragment(new servidorFragment(), Utilidades.FRAGMENT_SERVIDOR, R.anim.slide_in_left, R.anim.slide_out_left);
                     }else{
                         shared.edit().putString(Utilidades.SHARED_SERVER_ID_USER, String.valueOf(usuario.getId_usuario())).apply();
-                        shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRODUCCION).apply();
+                        shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API).apply();
 
                         Config cn = MainActivity.myAppDB.myDao().getConfig();
-                        cn.setServidorSeleccionado(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.IP_PRODUCCION));
+                        cn.setServidorSeleccionado(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API));
                         cn.setId_usuario_suplandato(usuario.getId_usuario());
                         MainActivity.myAppDB.myDao().updateConfig(cn);
 

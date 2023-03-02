@@ -155,7 +155,7 @@ public class FragmentCheckListCapacitacionSiembra extends Fragment {
                 MainActivity
                         .myAppDB
                         .DaoCheckListCapSiembra()
-                        .getCapSiembraDetallesByPadre(claveUnica));
+                        .getCapSiembraDetallesByPadre(claveUnica, Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA));
 
 
         try {
@@ -291,7 +291,7 @@ public class FragmentCheckListCapacitacionSiembra extends Fragment {
         btn_charla_cinco.setOnClickListener(view1 -> {
             String URLPDF = "";
             Intent i = new Intent(Intent.ACTION_VIEW);
-            URLPDF = "http://" + Utilidades.IP_PRODUCCION + "/curimapu/docs/pdf/capacitacion_siembra.pdf";
+            URLPDF = Utilidades.URL_SERVER_API+"/docs/pdf/capacitacion_siembra.pdf";
             i.setData(Uri.parse(URLPDF));
             startActivity(i);
         });
@@ -313,7 +313,7 @@ public class FragmentCheckListCapacitacionSiembra extends Fragment {
             }
 
 
-            DialogAsistentes dialogo = DialogAsistentes.newInstance(saved -> cargarListaAsistentes());
+            DialogAsistentes dialogo = DialogAsistentes.newInstance(saved -> cargarListaAsistentes(), Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA);
             dialogo.show(ft, Utilidades.DIALOG_TAG_CAPACITACION_SIEMBRA);
         });
 
@@ -327,7 +327,7 @@ public class FragmentCheckListCapacitacionSiembra extends Fragment {
                     MainActivity
                             .myAppDB
                             .DaoCheckListCapSiembra()
-                            .getCapSiembraDetallesByPadre(claveUnica));
+                            .getCapSiembraDetallesByPadre(claveUnica, Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA));
 
 
             List<CheckListCapacitacionSiembraDetalle> details = null;
@@ -371,7 +371,7 @@ public class FragmentCheckListCapacitacionSiembra extends Fragment {
                 MainActivity
                         .myAppDB
                         .DaoCheckListCapSiembra()
-                        .getCapSiembraDetallesByPadre(claveUnica));
+                        .getCapSiembraDetallesByPadre(claveUnica, Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA));
 
 
         try {
@@ -405,6 +405,7 @@ public class FragmentCheckListCapacitacionSiembra extends Fragment {
             cabecera.setId_usuario(usuario.getId_usuario());
 
             cabecera.setImpartidor(et_impartidor.getText().toString());
+            cabecera.setTipo_capacitacion(Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA);
 
             if( capSiembra == null){
                 String claveUnicaI = config.getId()
@@ -437,7 +438,7 @@ public class FragmentCheckListCapacitacionSiembra extends Fragment {
 
 
             executor.submit(() -> MainActivity.myAppDB.DaoCheckListCapSiembra()
-                    .updateCapacitacionSiembraDetalleConCero(cabecera.getClave_unica()))
+                    .updateCapacitacionSiembraDetalleConCero(cabecera.getClave_unica(), Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA))
                     .get();
 
 

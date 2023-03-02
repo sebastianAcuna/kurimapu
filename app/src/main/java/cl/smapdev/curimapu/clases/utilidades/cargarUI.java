@@ -3,8 +3,10 @@ package cl.smapdev.curimapu.clases.utilidades;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -32,10 +35,13 @@ import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
+import es.dmoral.toasty.Toasty;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class cargarUI {
+
+    static final String COORDENADA = "COORDENADA";
 
     public static ArrayList<ArrayList> cargarUI(View view, int idConstraint, Activity activity, String idMaterial, int idEtapa, int cliente, ArrayList<ArrayList> all, String temporada){
 
@@ -499,6 +505,59 @@ public class cargarUI {
                                     break;
                             }
 
+
+                            EditText finalEt1 = et;
+                            if(fs.getValidacion() != null && fs.getValidacion().equals(COORDENADA)){
+                                finalEt1.addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    }
+
+                                    @Override
+                                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    }
+
+                                    @Override
+                                    public void afterTextChanged(Editable editable) {
+
+                                        if(editable.toString().isEmpty()) return;
+                                        if(editable.toString().equals("NO APLICA")) return;
+                                        if (finalEt1.getInputType() != (InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED) ) return;
+
+
+                                        String textoIngresado = finalEt1.getText().toString();
+
+                                        if(textoIngresado.charAt(0) != '-' && !Utilidades.isNumeric(String.valueOf(textoIngresado.charAt(0)))){
+                                            Toasty.error(view.getContext(), "Debes ingresar signo - o un numero como primer caracter", Toast.LENGTH_LONG, true).show();
+                                            finalEt1.setText("");
+                                            return;
+                                        }
+
+                                        if(textoIngresado.indexOf(',') > 0){
+                                            finalEt1.setText(textoIngresado.replaceAll(",", "."));
+                                            return;
+                                        }
+
+                                        if(textoIngresado.indexOf('.') > 0){
+                                            String[] textoAntesDePunto = textoIngresado.split("\\.");
+                                            if(textoAntesDePunto[0].length() > 3){
+
+                                                Toasty.error(view.getContext(), "solo puede ingresar 3 caracteres antes del punto "+ textoAntesDePunto[0], Toast.LENGTH_LONG, true).show();
+                                                finalEt1.setText(textoIngresado.substring(0, 3));
+                                                return;
+                                            }
+
+                                            if(textoAntesDePunto.length > 1 && textoAntesDePunto[1].length() > 6){
+                                                Toasty.error(view.getContext(), "solo puede ingresar 6 caracteres despues del punto", Toast.LENGTH_LONG, true).show();
+                                                String nuevoTexto = textoAntesDePunto[0]+"."+textoAntesDePunto[1].substring(0, 6);
+                                                finalEt1.setText(nuevoTexto);
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+
+
                             Button button = new Button(activity);
                             int idButton = View.generateViewId();
                             button.setId(idButton);
@@ -518,19 +577,19 @@ public class cargarUI {
                             /* PROP */
                             constraintSet.connect(tv.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, pxValue);
                             constraintSet.connect(tv.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
-                            constraintSet.connect(tv.getId(), ConstraintSet.END, et.getId(), ConstraintSet.START, 0);
+                            constraintSet.connect(tv.getId(), ConstraintSet.END, finalEt.getId(), ConstraintSet.START, 0);
                             /* VAL */
-                            constraintSet.connect(et.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, pxValue);
-                            constraintSet.connect(et.getId(), ConstraintSet.START, tv.getId(), ConstraintSet.END, 0);
-                            constraintSet.connect(et.getId(), ConstraintSet.END, button.getId(), ConstraintSet.START, 0);
+                            constraintSet.connect(finalEt.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, pxValue);
+                            constraintSet.connect(finalEt.getId(), ConstraintSet.START, tv.getId(), ConstraintSet.END, 0);
+                            constraintSet.connect(finalEt.getId(), ConstraintSet.END, button.getId(), ConstraintSet.START, 0);
                             /* BUTTON */
 //                            constraintSet.setMargin(idButton, ConstraintSet.TOP, pxValue);
                             constraintSet.setMargin(idButton, ConstraintSet.BOTTOM, pxValue);
                             constraintSet.connect(button.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
-                            constraintSet.connect(button.getId(), ConstraintSet.START, et.getId(), ConstraintSet.END, 1);
+                            constraintSet.connect(button.getId(), ConstraintSet.START, finalEt.getId(), ConstraintSet.END, 1);
                             constraintSet.connect(button.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 1);
 
-                            editTexts.add(et);
+                            editTexts.add(finalEt);
                         }
                     }
 

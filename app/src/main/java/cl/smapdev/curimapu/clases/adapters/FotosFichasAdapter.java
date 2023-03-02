@@ -80,20 +80,12 @@ public class FotosFichasAdapter extends RecyclerView.Adapter<FotosFichasAdapter.
                 imageTitle.setText(fotos.getNombre_foto_ficha());
                 imageTitle.setEnabled(false);
 
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        itemClickListener.onItemClick(fotos);
-                    }
-                });
+                itemView.setOnClickListener(v -> itemClickListener.onItemClick(fotos));
 
 
-                itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        itemLongClickListener.onItemLongClick(fotos);
-                        return true;
-                    }
+                itemView.setOnLongClickListener(v -> {
+                    itemLongClickListener.onItemLongClick(fotos);
+                    return true;
                 });
 
             }

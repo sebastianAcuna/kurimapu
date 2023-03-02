@@ -19,6 +19,10 @@ public class CheckListCapacitacionSiembra {
     @Expose
     private int id_ac_cl_cap_siembra;
 
+    @SerializedName("tipo_capacitacion")
+    @Expose
+    private int tipo_capacitacion;
+
     @SerializedName("apellido_checklist")
     @Expose
     private String apellido_checklist;
@@ -55,6 +59,14 @@ public class CheckListCapacitacionSiembra {
     @Expose
     private String impartidor;
 
+
+    public int getTipo_capacitacion() {
+        return tipo_capacitacion;
+    }
+
+    public void setTipo_capacitacion(int tipo_capacitacion) {
+        this.tipo_capacitacion = tipo_capacitacion;
+    }
 
     public String getImpartidor() {
         return impartidor;

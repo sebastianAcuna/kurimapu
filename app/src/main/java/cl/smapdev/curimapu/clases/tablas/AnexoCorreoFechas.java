@@ -52,6 +52,16 @@ public class AnexoCorreoFechas {
     @Expose
     private int correo_inicio_corte_seda;
 
+
+
+    @SerializedName("correo_destruccion_semillero")
+    @Expose
+    private int correo_destruccion_semillero;
+
+    @SerializedName("correo_siembra_temprana")
+    @Expose
+    private int correo_siembra_temprana;
+
     @SerializedName("inicio_cosecha")
     @Expose
     private String inicio_cosecha;
@@ -119,6 +129,22 @@ public class AnexoCorreoFechas {
     @Expose
     private String motivo_destruccion;
 
+
+    public int getCorreo_destruccion_semillero() {
+        return correo_destruccion_semillero;
+    }
+
+    public void setCorreo_destruccion_semillero(int correo_destruccion_semillero) {
+        this.correo_destruccion_semillero = correo_destruccion_semillero;
+    }
+
+    public int getCorreo_siembra_temprana() {
+        return correo_siembra_temprana;
+    }
+
+    public void setCorreo_siembra_temprana(int correo_siembra_temprana) {
+        this.correo_siembra_temprana = correo_siembra_temprana;
+    }
 
     public int getEstado_sincro_corr_fech() {
         return estado_sincro_corr_fech;

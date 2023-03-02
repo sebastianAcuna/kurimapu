@@ -30,13 +30,13 @@ public class FragmentFieldbook extends Fragment {
     private ViewPager viewPager;
     private MainActivity activity;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MainActivity a = (MainActivity) getActivity();
 
         if (a!=null) activity = a;
+
     }
 
     @Nullable

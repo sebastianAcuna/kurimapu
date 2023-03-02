@@ -33,6 +33,8 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
     private final ImageView corr_inicio_cosecha;
     private final ImageView corr_termino_cosecha;
     private final ImageView corr_termino_labores;
+    private final ImageView corr_siembra_temprana;
+    private final ImageView corr_destruccion_semillero;
 
     private final ConstraintLayout contenedor_resumen_correo;
 
@@ -55,6 +57,12 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
     private final ImageView iv_termino_labores;
     private final TextView tv_detalle_labores;
     private final ConstraintLayout contenedor_detalle_correo;
+
+
+    private final TextView tv_siembra_temprana;
+    private final ImageView iv_siembra_temprana;
+    private final TextView tv_destruccion_semillero;
+    private final ImageView iv_destruccion_semillero;
 
     private final Button btn_add_visita;
     private final ImageView ver_detalle;
@@ -83,6 +91,11 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
         corr_inicio_cosecha = itemView.findViewById(R.id.corr_inicio_cosecha);
         corr_termino_cosecha = itemView.findViewById(R.id.corr_termino_cosecha);
         corr_termino_labores = itemView.findViewById(R.id.corr_termino_labores);
+        corr_siembra_temprana = itemView.findViewById(R.id.corr_siembra_temprana);
+        corr_destruccion_semillero = itemView.findViewById(R.id.corr_destruccion_semillero);
+
+
+
         contenedor_resumen_correo = itemView.findViewById(R.id.contenedor_resumen_correo);
         tv_inicio_despano = itemView.findViewById(R.id.tv_inicio_despano);
         iv_inicio_despano = itemView.findViewById(R.id.iv_inicio_despano);
@@ -97,6 +110,12 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
         tv_termino_labores = itemView.findViewById(R.id.tv_termino_labores);
         iv_termino_labores = itemView.findViewById(R.id.iv_termino_labores);
         tv_detalle_labores = itemView.findViewById(R.id.tv_detalle_labores);
+
+        tv_siembra_temprana = itemView.findViewById(R.id.tv_siembra_temprana);
+        iv_siembra_temprana = itemView.findViewById(R.id.iv_siembra_temprana);
+        tv_destruccion_semillero = itemView.findViewById(R.id.tv_destruccion_semillero);
+        iv_destruccion_semillero = itemView.findViewById(R.id.iv_destruccion_semillero);
+
         contenedor_detalle_correo = itemView.findViewById(R.id.contenedor_detalle_correo);
 
     }
@@ -132,14 +151,23 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
 
             if(anexoCorreos != null){
 
-                String inicioDespano = (anexoCorreos.getInicio_despano().equals("0000-00-00") ? "" : anexoCorreos.getInicio_despano());
-                String cincoPorciento = (anexoCorreos.getCinco_porciento_floracion().equals("0000-00-00") ? "" : anexoCorreos.getCinco_porciento_floracion());
-                String inicioCorteSeda = (anexoCorreos.getInicio_corte_seda().equals("0000-00-00") ? "" : anexoCorreos.getInicio_corte_seda());
-                String inicioCosecha = (anexoCorreos.getInicio_cosecha().equals("0000-00-00") ? "" : anexoCorreos.getInicio_cosecha());
-                String terminoCosecha = (anexoCorreos.getTermino_cosecha().equals("0000-00-00") ? "" : anexoCorreos.getTermino_cosecha());
-                String terminoLabores = (anexoCorreos.getTermino_labores_post_cosechas().equals("0000-00-00") ? "" : anexoCorreos.getTermino_labores_post_cosechas());
+                String inicioDespano = (anexoCorreos.getInicio_despano() != null && !anexoCorreos.getInicio_despano().equals("0000-00-00") ? anexoCorreos.getInicio_despano() : "" );
+                String cincoPorciento = (anexoCorreos.getCinco_porciento_floracion() != null && !anexoCorreos.getCinco_porciento_floracion().equals("0000-00-00") ? anexoCorreos.getCinco_porciento_floracion() :"" );
+                String inicioCorteSeda = (anexoCorreos.getInicio_corte_seda() != null && !anexoCorreos.getInicio_corte_seda().equals("0000-00-00") ? anexoCorreos.getInicio_corte_seda() : "" );
+                String inicioCosecha = (anexoCorreos.getInicio_cosecha() != null && !anexoCorreos.getInicio_cosecha().equals("0000-00-00") ? anexoCorreos.getInicio_cosecha() : "" );
+                String terminoCosecha = (anexoCorreos.getTermino_cosecha() != null && !anexoCorreos.getTermino_cosecha().equals("0000-00-00") ? anexoCorreos.getTermino_cosecha() : "" );
+                String terminoLabores = (anexoCorreos.getTermino_labores_post_cosechas() != null && !anexoCorreos.getTermino_labores_post_cosechas().equals("0000-00-00") ? anexoCorreos.getTermino_labores_post_cosechas() : "" );
                 String detalleTerminoLabores = anexoCorreos.getDetalle_labores();
 
+
+                String destruccionSemillero = (anexoCorreos.getFecha_destruccion_semillero() != null
+                        && !anexoCorreos.getFecha_destruccion_semillero().equals("0000-00-00") ?
+                        anexoCorreos.getFecha_destruccion_semillero() : "");
+                String siembraTemprana = (anexoCorreos.getSiem_tempra_grami() != null
+                        && !anexoCorreos.getSiem_tempra_grami().equals("0000-00-00") ?
+                        anexoCorreos.getSiem_tempra_grami() : "");
+
+                String horaDestruccionSemillero = (anexoCorreos.getHora_destruccion_semillero() == null) ? "" : anexoCorreos.getHora_destruccion_semillero();
                 String horaInicioCosecha = (anexoCorreos.getHora_inicio_cosecha() == null) ? "" : anexoCorreos.getHora_inicio_cosecha();
 
                 corr_inicio_despano.setImageDrawable((anexoCorreos.getCorreo_inicio_despano() > 0) ? correoSi : correoNo);
@@ -148,6 +176,11 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
                 corr_inicio_cosecha.setImageDrawable((anexoCorreos.getCorreo_inicio_cosecha() > 0) ? correoSi: correoNo );
                 corr_termino_cosecha.setImageDrawable((anexoCorreos.getCorreo_termino_cosecha() > 0) ? correoSi : correoNo );
                 corr_termino_labores.setImageDrawable((anexoCorreos.getCorreo_termino_labores_post_cosechas() > 0) ? correoSi : correoNo );
+                corr_siembra_temprana.setImageDrawable((anexoCorreos.getCorreo_siembra_temprana() > 0) ? correoSi : correoNo);
+                corr_destruccion_semillero.setImageDrawable((anexoCorreos.getCorreo_destruccion_semillero() > 0) ? correoSi : correoNo);
+
+
+
 
 
                 iv_inicio_despano.setImageDrawable((anexoCorreos.getCorreo_inicio_despano() > 0) ? correoSi : correoNo);
@@ -156,6 +189,16 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
                 iv_inicio_cosecha.setImageDrawable((anexoCorreos.getCorreo_inicio_cosecha() > 0) ? correoSi: correoNo );
                 iv_termino_cosecha.setImageDrawable((anexoCorreos.getCorreo_termino_cosecha() > 0) ? correoSi : correoNo );
                 iv_termino_labores.setImageDrawable((anexoCorreos.getCorreo_termino_labores_post_cosechas() > 0) ? correoSi : correoNo );
+
+
+
+
+                iv_siembra_temprana.setImageDrawable((anexoCorreos.getCorreo_siembra_temprana() > 0) ? correoSi : correoNo);
+                iv_destruccion_semillero.setImageDrawable((anexoCorreos.getCorreo_destruccion_semillero() > 0) ? correoSi : correoNo);
+
+
+                tv_siembra_temprana.setText(siembraTemprana);
+                tv_destruccion_semillero.setText(destruccionSemillero + " " + horaDestruccionSemillero);
 
 
                 tv_inicio_despano.setText(inicioDespano);

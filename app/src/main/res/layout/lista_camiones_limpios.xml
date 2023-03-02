@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/padding_small"
+    android:padding="@dimen/padding_small"
+    android:background="@color/colorBackgroundList">
+
+
+ <TextView
+     android:id="@+id/lbl_patente_camion"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:text="PATENTE CAMION"
+     app:layout_constraintTop_toTopOf="parent"
+     app:layout_constraintStart_toStartOf="parent"
+     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+     />
+
+    <TextView
+        android:id="@+id/patente_camion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_patente_camion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/patente_carro"
+        android:gravity="start"
+        tools:text="GC-TW-77"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+
+
+    <TextView
+        android:id="@+id/lbl_patente_carro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PATENTE CARRO"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        />
+
+    <TextView
+        android:id="@+id/patente_carro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_patente_camion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/patente_camion"
+        android:gravity="end"
+        tools:text="GC-TW-77"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <TextView
+        android:id="@+id/lbl_nombre_chofer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NOMBRE CHOFER"
+        app:layout_constraintTop_toBottomOf="@id/patente_camion"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        />
+
+    <TextView
+        android:id="@+id/nombre_chofer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_nombre_chofer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="SEBASTIAN ACUña"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:id="@+id/contenedor_detalle_camiones"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toBottomOf="@id/nombre_chofer"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       android:visibility="gone"
+       >
+
+      <TextView
+          android:id="@+id/lbl_estado_general_recepcion"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          android:layout_marginTop="@dimen/padding"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="ESTADO GENERAL RECEPCION CAMION EN CAMPO"
+         />
+
+      <TextView
+          android:id="@+id/estado_general_recepcion"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toBottomOf="@id/lbl_estado_general_recepcion"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="MUY LIMPIO EL CAMION"
+          />
+
+      <TextView
+          android:id="@+id/lbl_equipos_utilizados_limpieza"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toBottomOf="@id/estado_general_recepcion"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          android:layout_marginTop="@dimen/padding"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="EQUIPOS UTILIZADOS PARA LIMPIEZA"
+          />
+
+      <TextView
+          android:id="@+id/equipos_utilizados_limpieza"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+
+          app:layout_constraintTop_toBottomOf="@id/lbl_equipos_utilizados_limpieza"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="MANGUERA, JABON, AGUA"
+          />
+
+      <TextView
+          android:id="@+id/lbl_limpieza_puertas_laterales"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/padding"
+          app:layout_constraintTop_toBottomOf="@id/equipos_utilizados_limpieza"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/limpieza_puertas_laterales"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="LIMPIEZA DE PUERTAS LATERALES REALIZADA (Camion + Carro o No Aplica)"
+          />
+
+      <TextView
+          android:id="@+id/limpieza_puertas_laterales"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintTop_toTopOf="@id/lbl_limpieza_puertas_laterales"
+          app:layout_constraintBottom_toBottomOf="@id/lbl_limpieza_puertas_laterales"
+          android:gravity="center"
+          app:layout_constraintStart_toEndOf="@id/lbl_limpieza_puertas_laterales"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="SI"
+          />
+
+      <TextView
+          android:id="@+id/lbl_limpieza_puertas_traseras"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/padding"
+          app:layout_constraintTop_toBottomOf="@id/lbl_limpieza_puertas_laterales"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/limpieza_puertas_traseras"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="LIMPIEZA DE PUERTAS TRASERAS REALIZADA (C + C)"
+          />
+
+      <TextView
+          android:id="@+id/limpieza_puertas_traseras"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintTop_toTopOf="@id/lbl_limpieza_puertas_traseras"
+          app:layout_constraintBottom_toBottomOf="@id/lbl_limpieza_puertas_traseras"
+          android:gravity="center"
+          app:layout_constraintStart_toEndOf="@id/lbl_limpieza_puertas_traseras"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="NO"
+          />
+
+      <TextView
+          android:id="@+id/lbl_limpieza_piso_realizada"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/padding"
+          app:layout_constraintTop_toBottomOf="@id/lbl_limpieza_puertas_traseras"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/limpieza_piso_realizada"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="LIMPIEZA DE PISOS REALIZADA (C + C)"
+          />
+
+      <TextView
+          android:id="@+id/limpieza_piso_realizada"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintTop_toTopOf="@id/lbl_limpieza_piso_realizada"
+          app:layout_constraintBottom_toBottomOf="@id/lbl_limpieza_piso_realizada"
+          android:gravity="center"
+          app:layout_constraintStart_toEndOf="@id/lbl_limpieza_piso_realizada"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="NO"
+          />
+
+      <TextView
+          android:id="@+id/lbl_inspeccion_rejillas_mallas_realizada"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/padding"
+          app:layout_constraintTop_toBottomOf="@id/lbl_limpieza_piso_realizada"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/inspeccion_rejillas_mallas_realizada"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="INSPECCION DE REJILLAS Y MALLAS REALIZADA"
+          />
+
+      <TextView
+          android:id="@+id/inspeccion_rejillas_mallas_realizada"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintTop_toTopOf="@id/lbl_inspeccion_rejillas_mallas_realizada"
+          app:layout_constraintBottom_toBottomOf="@id/lbl_inspeccion_rejillas_mallas_realizada"
+          android:gravity="center"
+          app:layout_constraintStart_toEndOf="@id/lbl_inspeccion_rejillas_mallas_realizada"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="NO"
+          />
+
+      <TextView
+          android:id="@+id/lbl_pisos_costados_bateas_sin_orificio"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/padding"
+          app:layout_constraintTop_toBottomOf="@id/lbl_inspeccion_rejillas_mallas_realizada"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/pisos_costados_bateas_sin_orificio"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="PISOS, COSTADOS Y BATEA SIN ORIFICIOS (HERMETICIDAD)"
+          />
+
+      <TextView
+          android:id="@+id/pisos_costados_bateas_sin_orificio"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintTop_toTopOf="@id/lbl_pisos_costados_bateas_sin_orificio"
+          app:layout_constraintBottom_toBottomOf="@id/lbl_pisos_costados_bateas_sin_orificio"
+          android:gravity="center"
+          app:layout_constraintStart_toEndOf="@id/lbl_pisos_costados_bateas_sin_orificio"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="NO"
+          />
+
+      <TextView
+          android:id="@+id/lbl_camion_carro_limpio_revisado"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/padding"
+          app:layout_constraintTop_toBottomOf="@id/lbl_pisos_costados_bateas_sin_orificio"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/camion_carro_limpio_revisado"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="CAMION Y CARRO LIMPIO Y REVISADO"
+          />
+
+      <TextView
+          android:id="@+id/camion_carro_limpio_revisado"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintTop_toTopOf="@id/lbl_camion_carro_limpio_revisado"
+          app:layout_constraintBottom_toBottomOf="@id/lbl_camion_carro_limpio_revisado"
+          android:gravity="center"
+          app:layout_constraintStart_toEndOf="@id/lbl_camion_carro_limpio_revisado"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="NO"
+          />
+
+      <TextView
+          android:id="@+id/lbl_carpa_limpia_revisada"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/padding"
+          app:layout_constraintTop_toBottomOf="@id/lbl_camion_carro_limpio_revisado"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/carpa_limpia_revisada"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="CARPA LIMPIA Y REVISADA"
+          />
+
+      <TextView
+          android:id="@+id/carpa_limpia_revisada"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintTop_toTopOf="@id/lbl_carpa_limpia_revisada"
+          app:layout_constraintBottom_toBottomOf="@id/lbl_carpa_limpia_revisada"
+          android:gravity="center"
+          app:layout_constraintStart_toEndOf="@id/lbl_carpa_limpia_revisada"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="NO"
+          />
+
+      <TextView
+          android:id="@+id/lbl_sistema_cerrado_puertas"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/padding"
+          app:layout_constraintTop_toBottomOf="@id/lbl_carpa_limpia_revisada"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/sistema_cerrado_puertas"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="SISTEMA DE CERRADO DE PUERTAS( HERMETICO )"
+          />
+
+      <TextView
+          android:id="@+id/sistema_cerrado_puertas"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintTop_toTopOf="@id/lbl_sistema_cerrado_puertas"
+          app:layout_constraintBottom_toBottomOf="@id/lbl_sistema_cerrado_puertas"
+          android:gravity="center"
+          app:layout_constraintStart_toEndOf="@id/lbl_sistema_cerrado_puertas"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="NO"
+          />
+
+
+      <TextView
+          android:id="@+id/lbl_nivel_llenado_carga"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toBottomOf="@id/lbl_sistema_cerrado_puertas"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          android:layout_marginTop="@dimen/padding"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="NIVEL LLENADO CARGA"
+          />
+
+      <TextView
+          android:id="@+id/nivel_llenado_carga"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+
+          app:layout_constraintTop_toBottomOf="@id/lbl_nivel_llenado_carga"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="ALTO NIVEL"
+          />
+
+      <TextView
+          android:id="@+id/lbl_carga_anterior"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toBottomOf="@id/nivel_llenado_carga"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          android:layout_marginTop="@dimen/padding"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="CARGA ANTERIOR"
+          />
+
+      <TextView
+          android:id="@+id/carga_anterior"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+
+          app:layout_constraintTop_toBottomOf="@id/lbl_carga_anterior"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="ALTO NIVEL"
+          />
+
+      <TextView
+          android:id="@+id/lbl_sello_color_indica_condicion"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/padding"
+          app:layout_constraintTop_toBottomOf="@id/carga_anterior"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/sello_color_indica_condicion"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="SELLO COLOR QUE INDICA CONDICION"
+          />
+
+      <TextView
+          android:id="@+id/sello_color_indica_condicion"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintTop_toTopOf="@id/lbl_sello_color_indica_condicion"
+          app:layout_constraintBottom_toBottomOf="@id/lbl_sello_color_indica_condicion"
+          android:gravity="center"
+          app:layout_constraintStart_toEndOf="@id/lbl_sello_color_indica_condicion"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="NO"
+          />
+
+      <TextView
+          android:id="@+id/lbl_etiqueta_cosecha_adherida_camion"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/padding"
+          app:layout_constraintTop_toBottomOf="@id/lbl_sello_color_indica_condicion"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/etiqueta_cosecha_adherida_camion"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="ETIQUETA COSECHA ADHERIDA AL CAMION / JUMBOS"
+          />
+
+      <TextView
+          android:id="@+id/etiqueta_cosecha_adherida_camion"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintTop_toTopOf="@id/lbl_etiqueta_cosecha_adherida_camion"
+          app:layout_constraintBottom_toBottomOf="@id/lbl_etiqueta_cosecha_adherida_camion"
+          android:gravity="center"
+          app:layout_constraintStart_toEndOf="@id/lbl_etiqueta_cosecha_adherida_camion"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="NO"
+          />
+
+      <TextView
+          android:id="@+id/lbl_sello_verde_curimapu_cierre_camion"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toBottomOf="@id/lbl_etiqueta_cosecha_adherida_camion"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          android:layout_marginTop="@dimen/padding"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:text="SELLO VERDE CURIMAPU CIERRE CAMION"
+          />
+
+      <TextView
+          android:id="@+id/sello_verde_curimapu_cierre_camion"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toBottomOf="@id/lbl_sello_verde_curimapu_cierre_camion"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          tools:text="501222"
+          />
+
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+   <View
+       android:id="@+id/divider_botonera"
+       android:layout_width="0dp"
+       android:layout_height="1dp"
+       android:background="?android:attr/listDivider"
+
+       android:layout_marginTop="@dimen/padding_small"
+       app:layout_constraintEnd_toStartOf="@id/btn_exand_rv"
+       app:layout_constraintTop_toTopOf="@id/btn_exand_rv"
+       app:layout_constraintBottom_toBottomOf="@id/btn_exand_rv"
+       />
+
+   <ImageView
+       android:id="@+id/btn_exand_rv"
+       android:layout_width="60dp"
+       android:layout_height="60dp"
+       app:layout_constraintTop_toBottomOf="@id/contenedor_detalle_camiones"
+
+       android:src="@drawable/ic_expand_down"
+       app:tint="@color/colorOnBackground"
+       app:layout_constraintEnd_toEndOf="parent"
+       />
+
+
+   <Button
+       android:id="@+id/btn_firma"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/btn_exand_rv"
+       android:drawableRight="@drawable/ic_sign"
+       android:text="@string/firmar"
+       />
+
+
+   <ImageView
+       android:id="@+id/iv_trash"
+       android:layout_width="45dp"
+       android:layout_height="45dp"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/btn_exand_rv"
+       android:src="@drawable/ic_delete"
+       app:tint="@color/colorRedLight" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

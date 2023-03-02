@@ -35,28 +35,5 @@
 
     <color name="transparentBlack">#80000000</color>
 
-    <!--Color primary variant (dark)-->
-    <!--Color primary variant (light)-->
-    <!--    <color name="colorAccent">#d50000</color> &lt;!&ndash;Color primary variant (dark)&ndash;&gt;
-        <color name="colorAccentDark">#9b0000</color> &lt;!&ndash;Color primary variant (dark)&ndash;&gt;-->
-
-
-
-    <!--    <color name="lightPrimaryColor">#BBDEFB</color>
-        <color name="primaryText">#212121</color>
-        <color name="secondaryText">#757575</color>
-        <color name="dividerColor">#BDBDBD</color>
-        <color name="textIcons">#FFFFFF</color>
-        <color name="subToolbarColor">#FFFFFF</color>
-        <color name="toolbarColor">#2196F3</color>
-    &lt;!&ndash;    <color name="colorBackground">#FFFFFF</color>&ndash;&gt;
-        <color name="colorAlwaysGrey">#757575</color>
-        <color name="colorAlwaysGreyDark">#393939</color>
-        <color name="colorGold">#e5c100</color>
-
-
-        <color name="colorGreenLight">#94ec5d</color>
-
-        <color name="transparentBlack">#80000000</color>-->
 
 </resources>

@@ -212,6 +212,25 @@
 
             />
 
+        <ImageView
+            android:id="@+id/corr_siembra_temprana"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
+            app:layout_constraintStart_toEndOf="@id/corr_termino_labores"
+            android:src="@drawable/ic_baseline_email_24_no"
+
+            />
+        <ImageView
+            android:id="@+id/corr_destruccion_semillero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
+            app:layout_constraintStart_toEndOf="@id/corr_siembra_temprana"
+            android:src="@drawable/ic_baseline_email_24_no"
+
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -453,6 +472,8 @@
             />
 
 
+
+
         <TextView
             android:id="@+id/lbl_detalle_labores"
             android:layout_width="0dp"
@@ -475,6 +496,76 @@
             app:layout_constraintEnd_toEndOf="parent"
             />
 
+
+        <TextView
+            android:id="@+id/lbl_siembra_temprana"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_detalle_labores"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_termino_labores"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/siembra_temprana"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            />
+
+        <TextView
+            android:id="@+id/tv_siembra_temprana"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tool:text="2022-07-01"
+            android:layout_marginTop="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/tv_detalle_labores"
+            app:layout_constraintStart_toEndOf="@id/lbl_siembra_temprana"
+            app:layout_constraintEnd_toStartOf="@id/iv_siembra_temprana"
+            android:textAlignment="textEnd"
+            />
+
+        <ImageView
+            android:id="@+id/iv_siembra_temprana"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_email_24_no"
+            android:layout_marginTop="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/tv_detalle_labores"
+            app:layout_constraintStart_toEndOf="@id/tv_siembra_temprana"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/lbl_destruccion_semillero"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_siembra_temprana"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_termino_labores"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/destruccion_de_semillero"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            />
+
+        <TextView
+            android:id="@+id/tv_destruccion_semillero"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tool:text="2022-07-01"
+            android:layout_marginTop="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/lbl_siembra_temprana"
+            app:layout_constraintStart_toEndOf="@id/lbl_destruccion_semillero"
+            app:layout_constraintEnd_toStartOf="@id/iv_destruccion_semillero"
+            android:textAlignment="textEnd"
+            />
+
+        <ImageView
+            android:id="@+id/iv_destruccion_semillero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_email_24_no"
+            android:layout_marginTop="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/lbl_siembra_temprana"
+            app:layout_constraintStart_toEndOf="@id/tv_destruccion_semillero"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

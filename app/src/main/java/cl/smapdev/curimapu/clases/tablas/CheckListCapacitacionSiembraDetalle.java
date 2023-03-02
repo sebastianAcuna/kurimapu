@@ -14,6 +14,11 @@ public class CheckListCapacitacionSiembraDetalle {
     @Expose
     private int id_cl_cap_siembra_detalle;
 
+
+    @SerializedName("tipo_detalle_capacitacion")
+    @Expose
+    private int tipo_detalle_capacitacion;
+
     @SerializedName("clave_unica_cl_cap_siembra_detalle")
     @Expose
     private String clave_unica_cl_cap_siembra_detalle;
@@ -49,6 +54,15 @@ public class CheckListCapacitacionSiembraDetalle {
     @SerializedName("estado_sincronizacion_detalle")
     @Expose
     private int estado_sincronizacion_detalle;
+
+
+    public int getTipo_detalle_capacitacion() {
+        return tipo_detalle_capacitacion;
+    }
+
+    public void setTipo_detalle_capacitacion(int tipo_detalle_capacitacion) {
+        this.tipo_detalle_capacitacion = tipo_detalle_capacitacion;
+    }
 
     public int getEstado_sincronizacion_detalle() {
         return estado_sincronizacion_detalle;

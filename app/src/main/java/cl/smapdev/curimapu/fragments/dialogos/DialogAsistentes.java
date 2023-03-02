@@ -43,6 +43,8 @@ public class DialogAsistentes  extends DialogFragment {
     private Button btn_posponer_anexo_fecha;
     private Button btn_guardar_anexo_fecha;
 
+    private int tipoAsistene;
+
     private ImageView iv_firma;
     private IOnSave IOnSave;
 
@@ -51,9 +53,14 @@ public class DialogAsistentes  extends DialogFragment {
     }
 
 
-    public static DialogAsistentes newInstance( IOnSave onSave ){
+    public void setTipoAsistene(int tipoAsistene) {
+        this.tipoAsistene = tipoAsistene;
+    }
+
+    public static DialogAsistentes newInstance(IOnSave onSave, int tipoAsistene){
         DialogAsistentes dg = new DialogAsistentes();
         dg.setIOnSave( onSave );
+        dg.setTipoAsistene(tipoAsistene);
         return dg;
     }
 
@@ -92,7 +99,7 @@ public class DialogAsistentes  extends DialogFragment {
             FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
             Fragment prev = requireActivity()
                     .getSupportFragmentManager()
-                    .findFragmentByTag(Utilidades.DIALOG_TAG_FIRMA_CAPACITACION_SIEMBRA);
+                    .findFragmentByTag(tipoAsistene == Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA ? Utilidades.DIALOG_TAG_FIRMA_CAPACITACION_SIEMBRA : Utilidades.DIALOG_TAG_FIRMA_CAPACITACION_COSECHA);
             if (prev != null) {
                 ft.remove(prev);
             }
@@ -115,9 +122,9 @@ public class DialogAsistentes  extends DialogFragment {
                             .replaceAll(":", "_")+".png";
 
             DialogFirma dialogo = DialogFirma.newInstance(
-                    Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA,
+                    tipoAsistene,
                     etRA,
-                    Utilidades.DIALOG_TAG_FIRMA_CAPACITACION_SIEMBRA,
+                    tipoAsistene == Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA ? Utilidades.DIALOG_TAG_FIRMA_CAPACITACION_SIEMBRA : Utilidades.DIALOG_TAG_FIRMA_CAPACITACION_COSECHA,
                     (isSaved, path) -> {
                         if(isSaved){
                             iv_firma.setVisibility(View.VISIBLE);
@@ -125,7 +132,7 @@ public class DialogAsistentes  extends DialogFragment {
                     }
             );
 
-            dialogo.show(ft, Utilidades.DIALOG_TAG_FIRMA_CAPACITACION_SIEMBRA);
+            dialogo.show(ft, tipoAsistene == Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA ? Utilidades.DIALOG_TAG_FIRMA_CAPACITACION_SIEMBRA : Utilidades.DIALOG_TAG_FIRMA_CAPACITACION_COSECHA);
         });
 
         return builder.create();
@@ -174,12 +181,13 @@ public class DialogAsistentes  extends DialogFragment {
         detalle.setNombre_cl_cap_siembra_detalle(et_nombre.getText().toString());
         detalle.setRut_cl_cap_siembra_detalle(et_rut.getText().toString());
         detalle.setEstado_sincronizacion_detalle(0);
+        detalle.setTipo_detalle_capacitacion(tipoAsistene);
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
         try {
             List<TempFirmas> firmasFuture = executor.submit(() -> MainActivity.myAppDB.DaoFirmas()
-                    .getFirmasByDocum(Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA)).get();
+                    .getFirmasByDocum(tipoAsistene)).get();
 
 
             for (TempFirmas ff : firmasFuture){
@@ -187,7 +195,7 @@ public class DialogAsistentes  extends DialogFragment {
             }
 
             executor.submit(() -> MainActivity.myAppDB.DaoFirmas()
-                    .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA));
+                    .deleteFirmasByDoc(tipoAsistene));
 
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();

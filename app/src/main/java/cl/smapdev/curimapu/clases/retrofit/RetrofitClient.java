@@ -29,7 +29,8 @@ public class RetrofitClient {
                 .create();
 
         if (retrofit ==null){
-            String url = "http://"+direccion+"/curimapu/core/models/android/";
+            String urlFija = "/core/models/android/";
+            String url = direccion+urlFija;
             retrofit = new Retrofit.Builder()
                     .baseUrl(url)
                     .client(okHttpClient)

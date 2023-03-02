@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_small"
+        >
+
+        <TextView
+            android:id="@+id/lbl_numero_anexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/numero_de_anexo"
+            />
+        <TextView
+            android:id="@+id/tv_numero_anexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_numero_anexo"
+            app:layout_constraintStart_toStartOf="parent"
+            tool:text="23-TR2243"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_variedad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/variedad"
+            />
+        <TextView
+            android:id="@+id/tv_variedad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
+            app:layout_constraintEnd_toEndOf="parent"
+            tool:text="COL-24431fC"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <View
+            android:id="@+id/divider_cabecera"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/tv_variedad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_fecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_fecha"
+            android:text="Fecha"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+
+
+        <EditText
+            android:id="@+id/et_fecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_fecha"
+
+            android:inputType="date"
+            android:maxLines="1"
+            android:drawableEnd="@drawable/ic_date_range"
+            android:drawableTint="@color/colorSecondaryVariant"
+            android:autofillHints=""
+            />
+
+        <TextView
+            android:id="@+id/lbl_agronomo_responsable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_fecha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_agronomo_responsable"
+            android:text="AGRONOMO RESPONSABLE"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+
+        <EditText
+            android:id="@+id/et_agronomo_responsable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_fecha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_agronomo_responsable"
+            android:inputType="text"
+            android:maxLines="1"
+            android:autofillHints=""
+            />
+
+        <TextView
+            android:id="@+id/lbl_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_agronomo_responsable"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_agricultor"
+            android:text="AGRICULTOR"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+
+        <EditText
+            android:id="@+id/et_agricultor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_agronomo_responsable"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_agricultor"
+            android:inputType="text"
+            android:maxLines="1"
+            android:autofillHints=""
+            />
+
+        <TextView
+            android:id="@+id/lbl_numero_guia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_agricultor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_numero_guia"
+            android:text="NUMERO DE GUIA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+
+        <EditText
+            android:id="@+id/et_numero_guia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_agricultor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_numero_guia"
+            android:inputType="text"
+            android:maxLines="1"
+            />
+
+        <TextView
+            android:id="@+id/lbl_propuesta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_numero_guia"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_propuesta"
+            android:text="PROPUESTA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+
+        <EditText
+            android:id="@+id/et_propuesta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_numero_guia"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_propuesta"
+            android:inputType="text"
+            android:maxLines="1"
+            />
+
+        <TextView
+            android:id="@+id/lbl_especie"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_propuesta"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_especie"
+            android:text="ESPECIE"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+
+        <EditText
+            android:id="@+id/et_especie"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/et_propuesta"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_especie"
+            android:inputType="text"
+            android:maxLines="1"
+            />
+
+
+
+
+        <View
+            android:id="@+id/divider_responsable"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/et_especie"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/lbl_titulo_siembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_responsable"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="DETALLE HEMBRA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+            android:id="@+id/cont_condicion_potrero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_linea_hembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_linea_hembra"
+                android:text="LINEA HEMBRA"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_linea_hembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_linea_hembra"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+
+            <TextView
+                android:id="@+id/lbl_lote_hembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_linea_hembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_lote_hembra"
+                android:text="LOTE"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_lote_hembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_linea_hembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_lote_hembra"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+            <TextView
+                android:id="@+id/lbl_numero_envase_hembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_lote_hembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_numero_envase_hembra"
+                android:text="NUMERO DE ENVASES"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_numero_envase_hembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_lote_hembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_numero_envase_hembra"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+            <TextView
+                android:id="@+id/lbl_kg_aproximados_hembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_numero_envase_hembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_kg_aproximados_hembra"
+                android:text="KG APROXIMADOS"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_kg_aproximados_hembra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_numero_envase_hembra"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_kg_aproximados_hembra"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <View
+            android:id="@+id/divider_detalle_macho"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/cont_condicion_potrero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/lbl_titulo_macho"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_detalle_macho"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="DETALLE MACHO"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+            android:id="@+id/cont_macho"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_macho"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_linea_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_linea_macho"
+                android:text="LINEA MACHO"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_linea_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_linea_macho"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+
+            <TextView
+                android:id="@+id/lbl_lote_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_linea_macho"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_lote_macho"
+                android:text="LOTE"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_lote_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_linea_macho"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_lote_macho"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+            <TextView
+                android:id="@+id/lbl_numero_envase_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_lote_macho"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_numero_envase_macho"
+                android:text="NUMERO DE ENVASES"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_numero_envase_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_lote_macho"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_numero_envase_macho"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+            <TextView
+                android:id="@+id/lbl_kg_aproximados_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_numero_envase_macho"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_kg_aproximados_macho"
+                android:text="KG APROXIMADOS"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_kg_aproximados_macho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_numero_envase_macho"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_kg_aproximados_macho"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <View
+            android:id="@+id/divider_detalle_poli"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/cont_macho"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/lbl_titulo_poli"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_detalle_poli"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="DETALLE AUTOPOLINIZACION"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+            android:id="@+id/cont_poli"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_poli"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/lbl_linea_poli"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_linea_poli"
+                android:text="LINEA AUTOPOLINIZACION"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_linea_poli"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_linea_poli"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_marginTop="@dimen/padding_small"
+                />
+
+            <TextView
+                android:id="@+id/lbl_lote_poli"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_linea_poli"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_lote_poli"
+                android:text="LOTE"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_lote_poli"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_linea_poli"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_lote_poli"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+            <TextView
+                android:id="@+id/lbl_numero_envase_poli"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_lote_poli"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_numero_envase_poli"
+                android:text="NUMERO DE ENVASES"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_numero_envase_poli"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_lote_poli"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_numero_envase_poli"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+            <TextView
+                android:id="@+id/lbl_kg_aproximados_poli"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_numero_envase_poli"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_kg_aproximados_poli"
+                android:text="KG APROXIMADOS"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                />
+
+
+            <EditText
+                android:id="@+id/et_kg_aproximados_poli"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_numero_envase_poli"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_kg_aproximados_poli"
+                android:inputType="text"
+                android:maxLines="1"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/divider_firmas"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/cont_poli"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/lbl_titulo_firmas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_firmas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="FIRMAS"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_nombre_responsable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_firmas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_nombre_responsable"
+            android:text="NOMBRE RESPONSABLE"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+
+        <EditText
+            android:id="@+id/et_nombre_responsable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_firmas"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_nombre_responsable"
+            android:inputType="text"
+            android:maxLines="1"
+            />
+
+        <TextView
+            android:id="@+id/lbl_firma_responsable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="FIRMA RESPONSABLE"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintTop_toBottomOf="@id/et_nombre_responsable"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_firma_responsable"
+            />
+
+        <Button
+            android:id="@+id/btn_firma_responsable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/firmar"
+            app:layout_constraintTop_toBottomOf="@id/et_nombre_responsable"
+            app:layout_constraintStart_toEndOf="@id/lbl_firma_responsable"
+            app:layout_constraintEnd_toStartOf="@id/check_firma_responsable"
+            />
+        <ImageView
+            android:id="@+id/check_firma_responsable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check_white_48dp"
+            app:tint="@color/colorGreen"
+            app:layout_constraintTop_toBottomOf="@id/et_nombre_responsable"
+            app:layout_constraintStart_toEndOf="@id/btn_firma_responsable"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_nombre_revisor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_nombre_revisor"
+            android:text="NOMBRE REVISOR BODEGA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+
+        <EditText
+            android:id="@+id/et_nombre_revisor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_firma_responsable"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_nombre_revisor"
+            android:inputType="text"
+            android:maxLines="1"
+            />
+
+        <TextView
+            android:id="@+id/lbl_firma_revisor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="FIRMA RESPONSABLE"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintTop_toBottomOf="@id/et_nombre_revisor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_firma_revisor"
+            />
+
+        <Button
+            android:id="@+id/btn_firma_revisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/firmar"
+            app:layout_constraintTop_toBottomOf="@id/et_nombre_revisor"
+            app:layout_constraintStart_toEndOf="@id/lbl_firma_revisor"
+            app:layout_constraintEnd_toStartOf="@id/check_firma_revisor"
+            />
+        <ImageView
+            android:id="@+id/check_firma_revisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check_white_48dp"
+            app:tint="@color/colorGreen"
+            app:layout_constraintTop_toBottomOf="@id/et_nombre_revisor"
+            app:layout_constraintStart_toEndOf="@id/btn_firma_revisor"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            />
+
+
+        <View
+            android:id="@+id/divider_botonera"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/btn_firma_revisor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/btn_guardar_cl_siembra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_botonera"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/guardar"/>
+
+        <Button
+            android:id="@+id/btn_cancelar_cl_siembra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_botonera"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/nav_cancel"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

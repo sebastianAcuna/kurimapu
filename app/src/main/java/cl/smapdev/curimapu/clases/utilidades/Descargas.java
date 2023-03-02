@@ -19,6 +19,7 @@ import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
+import cl.smapdev.curimapu.clases.relaciones.CheckListLimpiezaCamionesCompleto;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
@@ -26,7 +27,11 @@ import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
+import cl.smapdev.curimapu.clases.tablas.CheckListLimpiezaCamiones;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
+import cl.smapdev.curimapu.clases.tablas.ChecklistDevolucionSemilla;
+import cl.smapdev.curimapu.clases.tablas.ChecklistLimpiezaCamionesDetalle;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
@@ -37,28 +42,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class Descargas {
-
-
-    public static void descargarBack(final WeakReference<Context> activity){
-
-        Config cnf = MainActivity.myAppDB.myDao().getConfig();
-
-        ApiService apiService = RetrofitClient.getClient(cnf.getServidorSeleccionado()).create(ApiService.class);
-        Call<GsonDescargas> call = apiService.descargarDatos(cnf.getId(), cnf.getId_usuario_suplandato(), Utilidades.APPLICATION_VERSION);
-        call.enqueue(new Callback<GsonDescargas>() {
-            @Override
-            public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
-//                boolean problema[]  = volqueoDatos(response.body(), activity.get().getApplicationContext());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
-                System.out.println(t.getMessage());
-            }
-        });
-
-    }
 
     public static void primeraDescarga(final MainActivity activity, String imei, int id, String version) {
 
@@ -103,7 +88,7 @@ public class Descargas {
                                 if (config == null) {
                                     Config config1 = new Config();
                                     config1.setId(id);
-                                    config1.setServidorSeleccionado(Utilidades.IP_PRODUCCION);
+                                    config1.setServidorSeleccionado(Utilidades.URL_SERVER_API);
                                     MainActivity.myAppDB.myDao().setConfig(config1);
                                 }else{
                                     MainActivity.myAppDB.myDao().updateConfig(id);
@@ -145,8 +130,6 @@ public class Descargas {
 
                 @Override
                 public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
-                    Log.e("ACAAAAAAAAAAAAAAAAA", t.getLocalizedMessage());
-                    Log.e("ACAAAAAAAAAAAAAAAAA2", t.getMessage());
                     t.printStackTrace();
                     System.out.println(t.getMessage());
                     Toasty.error(activity, "No se pudo descargar todo", Toast.LENGTH_SHORT, true).show();
@@ -199,6 +182,8 @@ public class Descargas {
                         f.setCorreo_inicio_despano(fch.getCorreo_inicio_despano());
                         f.setCorreo_termino_cosecha(fch.getCorreo_termino_cosecha());
                         f.setCorreo_termino_labores_post_cosechas(fch.getCorreo_termino_labores_post_cosechas());
+                        f.setCorreo_destruccion_semillero(fch.getCorreo_destruccion_semillero());
+                        f.setCorreo_siembra_temprana(fch.getCorreo_siembra_temprana());
 
                         f.setCinco_porciento_floracion(fch.getCinco_porciento_floracion());
                         f.setInicio_corte_seda(fch.getInicio_corte_seda());
@@ -207,6 +192,16 @@ public class Descargas {
                         f.setTermino_cosecha(fch.getTermino_cosecha());
                         f.setTermino_labores_post_cosechas(fch.getTermino_labores_post_cosechas());
 
+                        f.setCantidad_has_destruidas(fch.getCantidad_has_destruidas());
+                        f.setDestruc_semill_ensayo(fch.getDestruc_semill_ensayo());
+                        f.setMotivo_destruccion(fch.getMotivo_destruccion());
+                        f.setTipo_graminea(fch.getTipo_graminea());
+                        f.setSiem_tempra_grami(fch.getSiem_tempra_grami());
+                        f.setId_fieldman(fch.getId_fieldman());
+                        f.setHora_destruccion_semillero(fch.getHora_destruccion_semillero());
+                        f.setFecha_destruccion_semillero(fch.getFecha_destruccion_semillero());
+                        f.setHora_inicio_cosecha(fch.getHora_inicio_cosecha());
+                        f.setDetalle_labores(fch.getDetalle_labores());
 
                         MainActivity.myAppDB.DaoAnexosFechas().UpdateFechasAnexos(f);
                     }else{
@@ -235,6 +230,28 @@ public class Descargas {
         }
 
 
+        if(gsonDescargas.getChecklistDevolucionSemillas() != null && gsonDescargas.getChecklistDevolucionSemillas().size() > 0 ){
+            ExecutorService ex = Executors.newSingleThreadExecutor();
+            for (ChecklistDevolucionSemilla ck : gsonDescargas.getChecklistDevolucionSemillas()){
+                Future<ChecklistDevolucionSemilla> chkF = ex.submit(() -> MainActivity.myAppDB.DaoCheckListDevolucionSemilla().getCLDevolucionSemillaByClaveUnica(ck.getClave_unica()));
+                try {
+                    ChecklistDevolucionSemilla chk  = chkF.get();
+                    //update
+                    if(chk != null){
+                        ck.setId_cl_devolucion_semilla(chk.getId_cl_devolucion_semilla());
+                        ex.submit(() -> MainActivity.myAppDB.DaoCheckListDevolucionSemilla().updateClDevolucionSemilla(ck)).get();
+                    }
+                    else{
+                        //insert
+                        ex.submit(() -> MainActivity.myAppDB.DaoCheckListDevolucionSemilla().insertClDevolucionSemilla(ck));
+                    }
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            ex.shutdown();
+        }
+
         if(gsonDescargas.getCheckListSiembras() != null && gsonDescargas.getCheckListSiembras().size() > 0 ){
             ExecutorService ex = Executors.newSingleThreadExecutor();
             for (CheckListSiembra ck : gsonDescargas.getCheckListSiembras()){
@@ -249,6 +266,84 @@ public class Descargas {
                     else{
                         //insert
                         ex.submit(() -> MainActivity.myAppDB.DaoClSiembra().insertClSiembra(ck));
+                    }
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            ex.shutdown();
+        }
+
+        if(gsonDescargas.getCheckListCosecha() != null && gsonDescargas.getCheckListCosecha().size() > 0 ){
+            ExecutorService ex = Executors.newSingleThreadExecutor();
+            for (CheckListCosecha ck : gsonDescargas.getCheckListCosecha()){
+                Future<CheckListCosecha> chkF = ex.submit(() -> MainActivity.myAppDB.DaoCheckListCosecha().getCLCosechaByClaveUnica(ck.getClave_unica()));
+                try {
+                    CheckListCosecha chk  = chkF.get();
+                    //update
+                    if(chk != null){
+                        ck.setId_cl_siembra(chk.getId_cl_siembra());
+                        ex.submit(() -> MainActivity.myAppDB.DaoCheckListCosecha().updateClCosecha(ck)).get();
+                    }
+                    else{
+                        //insert
+                        ex.submit(() -> MainActivity.myAppDB.DaoCheckListCosecha().insertClCosecha(ck));
+                    }
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            ex.shutdown();
+        }
+
+
+        if(gsonDescargas.getCheckListLimpiezaCamionesCompletos() != null && gsonDescargas.getCheckListLimpiezaCamionesCompletos().size() > 0 ){
+            ExecutorService ex = Executors.newSingleThreadExecutor();
+            for (CheckListLimpiezaCamionesCompleto ck : gsonDescargas.getCheckListLimpiezaCamionesCompletos()){
+
+                Future<CheckListLimpiezaCamiones> chkF = ex.submit(()
+                        -> MainActivity.myAppDB
+                        .DaoCheckListLimpiezaCamiones()
+                        .getClLimpiezaCamionesByClaveUnica(ck.getCabecera().getClave_unica()));
+                try {
+                    CheckListLimpiezaCamiones chk  = chkF.get();
+                    //update
+                    if(chk != null){
+                        ck.getCabecera().setId_cl_limpieza_camiones(chk.getId_cl_limpieza_camiones());
+                        ex.submit(()
+                                -> MainActivity.myAppDB.DaoCheckListLimpiezaCamiones()
+                                .updateLimpiezaCamiones(ck.getCabecera())
+                        ).get();
+                    }
+                    else{
+                        //insert
+                        ex.submit(() -> MainActivity.myAppDB.DaoCheckListLimpiezaCamiones()
+                                .insertLimpiezaCamiones(ck.getCabecera()));
+                    }
+
+
+                    for (ChecklistLimpiezaCamionesDetalle detalle : ck.getDetalles()) {
+
+                        ChecklistLimpiezaCamionesDetalle chkDF = ex.submit(()
+                                -> MainActivity.myAppDB
+                                .DaoCheckListLimpiezaCamiones()
+                                .getLimpiezaCamionesDetallesByClaveUnica(
+                                        detalle.getClave_unica_cl_limpieza_camiones_detalle())).get();
+
+
+                        if(chkDF != null){
+                            detalle.setId_ac_cl_limpieza_camiones_detalle(chkDF.getId_ac_cl_limpieza_camiones_detalle());
+                            ex.submit(()
+                                    -> MainActivity.myAppDB.DaoCheckListLimpiezaCamiones()
+                                    .updateDetalle(detalle)
+                            ).get();
+                        }
+                        else{
+                            //insert
+                            ex.submit(() -> MainActivity.myAppDB.DaoCheckListLimpiezaCamiones()
+                                    .insertLimpiezaCamionesDetalle(detalle)).get();
+                        }
+
                     }
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
@@ -410,26 +505,14 @@ public class Descargas {
                     MainActivity.myAppDB.myDao().deleteAgriPredTemp();
                 }
 
-                // TODO: 05-06-2020  cambiar id de las fotos
                 if (gsonDescargas.getVisitasList() != null && gsonDescargas.getVisitasList().size() > 0){
                     try {
 
                         MainActivity.myAppDB.myDao().deleteVisitas();
                         List<Long> inserts = MainActivity.myAppDB.myDao().setVisita(gsonDescargas.getVisitasList());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-
                         for(Visitas ln : gsonDescargas.getVisitasList()){
                             MainActivity.myAppDB.myDao().updateFotos(ln.getId_visita(), ln.getId_visita_local(), ln.getId_dispo());
                         }
-//
-//                        if(inserts.size()  != gsonDescargas.getVisitasList().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         Log.e("SQLITE", e.getMessage());
@@ -444,15 +527,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteAnexos();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertAnexo(gsonDescargas.getAnexoContratoList());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getAnexoContratoList().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         Log.e("SQLITE", e.getMessage());
@@ -469,19 +543,7 @@ public class Descargas {
                     try {
 
                         MainActivity.myAppDB.myDao().deleteAgricultores();
-
-//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='agricultor'", null));
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertAgricultor(gsonDescargas.getAgricultorList());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//
-//                        if (inserts.size()  != gsonDescargas.getAgricultorList().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         Log.e("SQLITE", e.getMessage());
@@ -496,17 +558,8 @@ public class Descargas {
                     try {
 
                         MainActivity.myAppDB.myDao().deleteRegiones();
-//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='region'", null));
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertRegiones(gsonDescargas.getRegionList());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getRegionList().size()){
-//                            problema[0] = true;
-//                        }
+
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -522,17 +575,7 @@ public class Descargas {
                     try {
 
                         MainActivity.myAppDB.myDao().deleteQuotation();
-//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='region'", null));
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertQuotation(gsonDescargas.getQuotations());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getQuotations().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -547,17 +590,7 @@ public class Descargas {
                     try {
 
                         MainActivity.myAppDB.myDao().deleteProvincia();
-//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='provincia'", null));
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertProvincias(gsonDescargas.getProvinciaList());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getProvinciaList().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -573,17 +606,7 @@ public class Descargas {
                     try {
 
                         MainActivity.myAppDB.myDao().deleteCliPCM();
-//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='provincia'", null));
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertPCM(gsonDescargas.getCli_pcms());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getCli_pcms().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         Log.e("SQLITE", e.getMessage());
@@ -598,17 +621,7 @@ public class Descargas {
                     try {
 
                         MainActivity.myAppDB.myDao().deleteComuna();
-//                                MainActivity.myAppDB.myDao().consultaVoid(new SimpleSQLiteQuery("DELETE FROM sqlite_sequence WHERE name='comuna'", null));
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertComunas(gsonDescargas.getComunaList());
-//                        for (long l : inserts) {
-//                            if (l <= 0) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getComunaList().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -625,15 +638,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteEspecie();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertEspecie(gsonDescargas.getEspecieList());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getEspecieList().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -648,15 +652,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteVariedad();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertVariedad(gsonDescargas.getVariedadList());
-//                        for (long l : inserts) {
-//                            if (l <= 0) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getVariedadList().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -672,13 +667,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteFichas();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertFicha(gsonDescargas.getFichasList());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-
                         Config config = MainActivity.myAppDB.myDao().getConfig();
                         if (config != null){
                             for(FichasNew ln : gsonDescargas.getFichasList()){
@@ -686,11 +674,6 @@ public class Descargas {
                             }
                         }
 
-
-
-//                        if(inserts.size()  != gsonDescargas.getFichasList().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -706,15 +689,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteUM();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertUM(gsonDescargas.getUnidadMedidas());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getUnidadMedidas().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -730,16 +704,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteUsuario();
                         List<Long> inserts = MainActivity.myAppDB.myDao().setUsuarios(gsonDescargas.getUsuarios());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//
-//                        if(inserts.size()  != gsonDescargas.getUsuarios().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -754,16 +718,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deletePredios();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertPredios(gsonDescargas.getPredios());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//
-//                        if(inserts.size()  != gsonDescargas.getPredios().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         Log.e("SQLITE", e.getMessage());
@@ -778,16 +732,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteLotes();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertLotes(gsonDescargas.getLotes());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//
-//                        if(inserts.size()  != gsonDescargas.getLotes().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -802,15 +746,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteTipoRiego();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertTipoRiego(gsonDescargas.getTipoRiegos());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getTipoRiegos().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -826,15 +761,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteTipoSuelo();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertTipoSuelo(gsonDescargas.getTipoSuelos());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getTipoSuelos().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -850,15 +776,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteMaquinaria();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertMaquinara(gsonDescargas.getMaquinarias());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getMaquinarias().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -873,15 +790,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteTipoTenenciaMaquinaria();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertTipoTenenciaMaquinaria(gsonDescargas.getTipoTenenciaMaquinarias());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getTipoTenenciaMaquinarias().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -898,15 +806,6 @@ public class Descargas {
 
                         MainActivity.myAppDB.myDao().deleteTipoTenenciaTerreno();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertTipoTenenciaTerreno(gsonDescargas.getTipoTenenciaTerrenos());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getTipoTenenciaTerrenos().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -920,15 +819,6 @@ public class Descargas {
                     try {
                         MainActivity.myAppDB.myDao().deleteFichaMaquinaria();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertFichaMaquinaria(gsonDescargas.getFichaMaquinarias());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getFichaMaquinarias().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -942,15 +832,6 @@ public class Descargas {
                     try {
                         MainActivity.myAppDB.myDao().deleteClientes();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertClientes(gsonDescargas.getClientes());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getClientes().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;
@@ -965,15 +846,6 @@ public class Descargas {
                     try {
                         MainActivity.myAppDB.myDao().deleteResumenes();
                         List<Long> inserts = MainActivity.myAppDB.myDao().insertResumenes(gsonDescargas.getCardViewsResumen());
-//                        for (long l : inserts) {
-//                            if (l <= 0 ) {
-//                                problema[0] = true;
-//                                break;
-//                            }
-//                        }
-//                        if(inserts.size()  != gsonDescargas.getCardViewsResumen().size()){
-//                            problema[0] = true;
-//                        }
                     }catch (SQLiteException e) {
                         Toasty.error(activity, e.getMessage(), Toast.LENGTH_LONG, true).show();
                         problema[0] = true;

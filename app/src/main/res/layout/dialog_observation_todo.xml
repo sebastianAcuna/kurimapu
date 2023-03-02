@@ -232,7 +232,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:counterEnabled="true"
-                app:counterMaxLength="100"
+                app:counterMaxLength="500"
                 app:errorEnabled="true"
                 android:hint="@string/recomendaciones"
                 app:helperText="@string/comentario_evaluacion"
@@ -244,7 +244,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                     android:id="@+id/et_nueva_recom"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:maxLength="100"
+                    android:maxLength="500"
                     android:maxLines="3"
                     android:minLines="2" />
             </com.google.android.material.textfield.TextInputLayout>

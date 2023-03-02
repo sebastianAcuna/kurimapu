@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+
+        <!-- empiezan fechas -->
+        <TextView
+            android:id="@+id/lbl_nombre_chofer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NOMBRE CHOFER (*)"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_nombre_chofer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/lbl_nombre_chofer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_patente_camion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="PATENTE CAMION (*) "
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_nombre_chofer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_patente_camion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/lbl_patente_camion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
+
+        <TextView
+            android:id="@+id/lbl_patente_carro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="PATENTE CARRO (*) "
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_patente_camion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_patente_carro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/lbl_patente_carro"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
+
+        <TextView
+            android:id="@+id/lbl_estado_general"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="ESTADO GENERAL RECEPCION CAMION EN CAMPO (*)"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_patente_carro"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_estado_general"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/lbl_estado_general"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
+
+        <TextView
+            android:id="@+id/lbl_equipos_utilizados_limpieza"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="EQUIPOS UTILIZADOS PARA LIMPIEZA(*)"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_estado_general"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_equipos_utilizados_limpieza"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/lbl_equipos_utilizados_limpieza"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
+
+        <TextView
+            android:id="@+id/lbl_limpieza_puertas_laterales"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="LIMPIEZA DE PUERTAS LATERALES REALIZADA ( CAMION + CARRO O NO APLICA"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_equipos_utilizados_limpieza"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_limpieza_puertas_laterales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_limpieza_puertas_laterales"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_puertas_laterales_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si" />
+            <RadioButton
+                android:id="@+id/btn_puertas_laterales_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_limpieza_puertas_traseras"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="LIMPIEZA PUERTAS TRASERAS REALIZADAS (C+C)"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/grupo_limpieza_puertas_laterales"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_limpieza_puertas_traseras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_limpieza_puertas_traseras"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_puertas_traseras_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si" />
+            <RadioButton
+                android:id="@+id/btn_puertas_traseras_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_limpieza_piso_realizada"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="LIMPIEZA DE PISOS REALIZADA (C+C)"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/grupo_limpieza_puertas_traseras"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_limpieza_piso_realizada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_limpieza_piso_realizada"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_limpieza_piso_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si" />
+            <RadioButton
+                android:id="@+id/btn_limpieza_piso_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_inspeccion_rejillas_mallas_realizada"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="INSPECCION DE REJILLAS Y MALLAS REALIZADAS"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/grupo_limpieza_piso_realizada"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_inspeccion_rejillas_mallas_realizada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_inspeccion_rejillas_mallas_realizada"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_inspeccion_rejillas_mallas_realizada_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si" />
+            <RadioButton
+                android:id="@+id/btn_inspeccion_rejillas_mallas_realizada_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_pisos_costados_bateas_sin_orificio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="PISOS, COSTADOS Y BATEA SIN ORIFICIOS (HERMETICIDAD)"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/grupo_inspeccion_rejillas_mallas_realizada"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_pisos_costados_bateas_sin_orificio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_pisos_costados_bateas_sin_orificio"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_pisos_costados_bateas_sin_orificio_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si" />
+            <RadioButton
+                android:id="@+id/btn_pisos_costados_bateas_sin_orificio_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+        </RadioGroup>
+
+
+        <TextView
+            android:id="@+id/lbl_camion_carro_limpio_revisado"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="CAMION Y CARRO LIMPIO Y REVISADO"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/grupo_pisos_costados_bateas_sin_orificio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_camion_carro_limpio_revisado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_camion_carro_limpio_revisado"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_camion_carro_limpio_revisado_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si" />
+            <RadioButton
+                android:id="@+id/btn_camion_carro_limpio_revisado_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_carpa_limpia_revisada"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="CARPA LIMPIA Y REVISADA"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/grupo_camion_carro_limpio_revisado"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_carpa_limpia_revisada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_carpa_limpia_revisada"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_carpa_limpia_revisada_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si" />
+            <RadioButton
+                android:id="@+id/btn_carpa_limpia_revisada_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_sistema_cerrado_puertas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="SISTEMA DE CERRADO DE PUERTAS (HERMETICO)"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/grupo_carpa_limpia_revisada"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_sistema_cerrado_puertas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_sistema_cerrado_puertas"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_sistema_cerrado_puertas_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si" />
+            <RadioButton
+                android:id="@+id/btn_sistema_cerrado_puertas_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_nivel_llenado_carga"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="NIVEL LLENADO DE CARGA"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/grupo_sistema_cerrado_puertas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_nivel_llenado_carga"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/lbl_nivel_llenado_carga"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/lbl_carga_anterior"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="CARGA ANTERIOR"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_nivel_llenado_carga"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_carga_anterior"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/lbl_carga_anterior"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/lbl_sello_color_indica_condicion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="SELLO COLOR QUE INDICA CONDICION"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_carga_anterior"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_sello_color_indica_condicion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_sello_color_indica_condicion"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_sello_color_indica_condicion_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si" />
+            <RadioButton
+                android:id="@+id/btn_sello_color_indica_condicion_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_etiqueta_cosecha_adherida_camion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="ETIQUETA COSECHA ADHERIDA AL CAMION / JUMBOS"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/grupo_sello_color_indica_condicion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <RadioGroup
+            android:id="@+id/grupo_etiqueta_cosecha_adherida_camion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_etiqueta_cosecha_adherida_camion"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_etiqueta_cosecha_adherida_camion_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/si" />
+            <RadioButton
+                android:id="@+id/btn_etiqueta_cosecha_adherida_camion_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_sello_verde_curimapu_cierre_camion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="SELLO VERDE CURIMAPU CIERRE CAMION"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/grupo_etiqueta_cosecha_adherida_camion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_sello_verde_curimapu_cierre_camion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/lbl_sello_verde_curimapu_cierre_camion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/lbl_firma"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/firmar"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_sello_verde_curimapu_cierre_camion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_firma"
+            />
+
+       <Button
+            android:id="@+id/btn_firma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/firmar"
+            app:layout_constraintTop_toBottomOf="@id/et_sello_verde_curimapu_cierre_camion"
+            app:layout_constraintStart_toEndOf="@id/lbl_firma"
+            app:layout_constraintEnd_toStartOf="@id/iv_firma"
+            />
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_firma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check_white_48dp"
+            app:tint="@color/colorGreen"
+            app:layout_constraintTop_toBottomOf="@id/et_sello_verde_curimapu_cierre_camion"
+            app:layout_constraintStart_toEndOf="@id/btn_firma"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+
+        <Button
+            android:id="@+id/btn_guardar_anexo_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/guardar"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/btn_firma"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btn_posponer_anexo_fecha"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_small"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/nav_cancel"
+            app:layout_constraintTop_toBottomOf="@id/btn_firma"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_guardar_anexo_fecha" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

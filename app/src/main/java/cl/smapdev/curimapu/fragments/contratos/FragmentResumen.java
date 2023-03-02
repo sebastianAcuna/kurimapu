@@ -47,6 +47,7 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.cargarUI;
 import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
+import cl.smapdev.curimapu.infraestructure.utils.coroutines.ApplicationExecutors;
 
 public class FragmentResumen extends Fragment {
 
@@ -57,6 +58,7 @@ public class FragmentResumen extends Fragment {
             production_location, has_contrato, has_customer, fieldman, rch,ptos_ampros;
 
     private SharedPreferences prefs;
+    private ProgressDialog progressBar;
 
     private View Globalview;
 
@@ -75,6 +77,10 @@ public class FragmentResumen extends Fragment {
         activity = (MainActivity) getActivity();
 
 
+        progressBar = new ProgressDialog(activity);
+        progressBar.setTitle(getResources().getString(R.string.espere));
+        progressBar.show();
+
         if (activity != null) prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
     }
 
@@ -91,12 +97,9 @@ public class FragmentResumen extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         bind(view);
         setHasOptionsMenu(true);
-        new LazyLoad(true).execute();
 
-
-        if (prefs != null){
-//            llenarResumen(MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
-        }
+        if(progressBar.isShowing()) progressBar.dismiss();
+        cargarInterfaz();
 
 
     }
@@ -150,6 +153,31 @@ public class FragmentResumen extends Fragment {
         }
     }
 
+
+    public void cargarInterfaz(){
+        ApplicationExecutors exec = new ApplicationExecutors();
+
+        ProgressDialog progressBar = new ProgressDialog(activity);
+        progressBar.setTitle("cargando interfaz...");
+        progressBar.show();
+
+
+        exec.getBackground().execute(()-> {
+            int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+
+            exec.getMainThread().execute(()-> {
+                if (Globalview != null){
+                    global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_resumen, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), 1,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
+                    setearOnFocus();
+                    if  (progressBar.isShowing()){
+                        progressBar.dismiss();
+                    }
+                }
+            });
+        });
+
+        exec.shutDownBackground();
+    }
 
     private class LazyLoad extends AsyncTask<Void, Void, ArrayList<ArrayList>> {
 
@@ -437,9 +465,6 @@ public class FragmentResumen extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (activity != null){
-            //activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumenes, FragmentFotos.getInstance(1), Utilidades.FRAGMENT_FOTOS).commit();
-        }
     }
 
     @Override
@@ -447,14 +472,12 @@ public class FragmentResumen extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
-//                AsyncTask.execute(new Runnable() {
-//                    @Override
-//                    public void run() {
+                AsyncTask.execute(() -> {
 //                        if (progressBar != null && progressBar.isShowing()){
-                             new LazyLoad(false).execute();
+//                             new LazyLoad(false).execute();
+            cargarInterfaz();
 //                        }
-//                    }
-//                });
+                });
 
             }
         }
@@ -463,36 +486,6 @@ public class FragmentResumen extends Fragment {
 
     private void bind(View view){
 
-        /*fecha_resumen = (TextView) view.findViewById(R.id.fecha_resumen);
-        estado_fenologico = (TextView) view.findViewById(R.id.estado_fenologico);
-        estado_general = (TextView) view.findViewById(R.id.estado_general);
-        estado_crecimiento = (TextView) view.findViewById(R.id.estado_crecimiento);
-        estado_maleza = (TextView) view.findViewById(R.id.estado_maleza);
-        estado_fito = (TextView) view.findViewById(R.id.estado_fito);
-        humedad_suelo = (TextView) view.findViewById(R.id.humedad_suelo);
-        cosecha = (TextView) view.findViewById(R.id.cosecha);
-        observation = (TextView) view.findViewById(R.id.observation);
-        recomendaciones = (TextView) view.findViewById(R.id.recomendaciones);
-        anexo = (TextView) view.findViewById(R.id.anexo);
-        orden_culplica = (TextView) view.findViewById(R.id.orden_culplica);
-        cliente = (TextView) view.findViewById(R.id.cliente);
-        especie = (TextView) view.findViewById(R.id.especie);
-        variedad = (TextView) view.findViewById(R.id.variedad);
-        ready_batch = (TextView) view.findViewById(R.id.ready_batch);
-        raw_batch = (TextView) view.findViewById(R.id.raw_batch);
-        grower = (TextView) view.findViewById(R.id.grower);
-        predio = (TextView) view.findViewById(R.id.predio);
-        potrero = (TextView) view.findViewById(R.id.potrero);
-        siembra_sag = (TextView) view.findViewById(R.id.siembra_sag);
-        sag_register_number = (TextView) view.findViewById(R.id.sag_register_number);
-        irrigation_system = (TextView) view.findViewById(R.id.irrigation_system);
-        soil_type = (TextView) view.findViewById(R.id.soil_type);
-        production_location = (TextView) view.findViewById(R.id.production_location);
-        has_contrato = (TextView) view.findViewById(R.id.has_contrato);
-        has_customer = (TextView) view.findViewById(R.id.has_customer);
-        fieldman = (TextView) view.findViewById(R.id.fieldman);
-        rch = (TextView) view.findViewById(R.id.rch);
-        ptos_ampros = (TextView) view.findViewById(R.id.ptos_ampros);*/
 
     }
 

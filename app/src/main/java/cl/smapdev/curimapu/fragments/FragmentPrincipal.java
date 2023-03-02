@@ -49,6 +49,7 @@ import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.modelo.RecomendacionesSync;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
+import cl.smapdev.curimapu.clases.relaciones.CheckListLimpiezaCamionesCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
@@ -62,7 +63,10 @@ import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
+import cl.smapdev.curimapu.clases.tablas.CheckListLimpiezaCamiones;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
+import cl.smapdev.curimapu.clases.tablas.ChecklistLimpiezaCamionesDetalle;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
@@ -76,6 +80,7 @@ import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.utilidades.InternetStateClass;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.returnValuesFromAsyntask;
+import cl.smapdev.curimapu.infraestructure.utils.coroutines.ApplicationExecutors;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -325,7 +330,6 @@ public class FragmentPrincipal extends Fragment {
 
             if(chk.size() <= 0){
                 executorService.shutdown();
-//                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 return;
             }
 
@@ -376,55 +380,118 @@ public class FragmentPrincipal extends Fragment {
                 .getClSiembraToSync());
 
 
+        Future<List<CheckListCosecha>> chkFC = executorService.submit(()
+                -> MainActivity.myAppDB.DaoCheckListCosecha()
+                .getClCosechaToSync());
+
         Future<List<CheckListCapacitacionSiembra>> checkListCapacitacionSiembraFuture
                 = executorService.submit(()
                 -> MainActivity.myAppDB.DaoCheckListCapSiembra()
-                .getClCapSiembraByEstado( 0));
+                .getClCapSiembraByEstado( 0, Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA));
+
+        Future<List<CheckListCapacitacionSiembra>> checkListCapacitacionCosechaFuture
+                = executorService.submit(()
+                -> MainActivity.myAppDB.DaoCheckListCapSiembra()
+                .getClCapSiembraByEstado( 0, Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA));
+
+        Future<List<CheckListLimpiezaCamiones>> checkLisLimpiezaCamionesFuture
+                = executorService.submit(()
+                -> MainActivity.myAppDB.DaoCheckListLimpiezaCamiones()
+                .getClLimpiezaCamionesByEstado( 0));
 
         try {
+
             List<CheckListSiembra> chk = chkF.get();
+
+            List<CheckListCosecha> chkC = chkFC.get();
 
             List<CheckListCapacitacionSiembra> capSiembraCab
                     = checkListCapacitacionSiembraFuture.get();
 
-            if(chk.size() <= 0 && capSiembraCab.size() <= 0){
+            List<CheckListCapacitacionSiembra> capCosechaCab
+                    = checkListCapacitacionCosechaFuture.get();
+
+            List<CheckListLimpiezaCamiones> capLimpiezaCamionesCab
+                    = checkLisLimpiezaCamionesFuture.get();
+
+            if(chk.size() <= 0 && chkC.size() <= 0 && capSiembraCab.size() <= 0 && capCosechaCab.size() <=0 && capLimpiezaCamionesCab.size() <= 0){
                 executorService.shutdown();
                 Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 return;
             }
 
             CheckListRequest chkS = new CheckListRequest();
-
             List<CheckListCapCompleto> chkList = new ArrayList<>();
+            List<CheckListLimpiezaCamionesCompleto> chkListLimpiezaCamiones = new ArrayList<>();
+
             if(capSiembraCab.size() > 0){
 
-                for (CheckListCapacitacionSiembra clc : capSiembraCab){
-
-                    CheckListCapCompleto completo = new CheckListCapCompleto();
-
+                for (CheckListCapacitacionSiembra clc : capSiembraCab) {
                     List<CheckListCapacitacionSiembraDetalle> detalle =
                             executorService.submit(() -> MainActivity.myAppDB
                                     .DaoCheckListCapSiembra()
-                                    .getCapSiembraDetallesByPadre(clc.getClave_unica())
+                                    .getCapSiembraDetallesByPadre(clc.getClave_unica(), Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA)
                             ).get();
 
+                    CheckListCapCompleto completo = new CheckListCapCompleto();
                     completo.setCabecera(clc);
                     completo.setDetalles(detalle);
 
-                    chkList.add( completo );
-
+                    chkList.add(completo);
                 }
+
                 chkS.setCheckListCapCompletos( chkList );
+            }
+
+            if(capCosechaCab.size() > 0){
+
+                for (CheckListCapacitacionSiembra clc : capCosechaCab) {
+                    List<CheckListCapacitacionSiembraDetalle> detalle =
+                            executorService.submit(() -> MainActivity.myAppDB
+                                    .DaoCheckListCapSiembra()
+                                    .getCapSiembraDetallesByPadre(clc.getClave_unica(), Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA)
+                            ).get();
+
+                    CheckListCapCompleto completo = new CheckListCapCompleto();
+                    completo.setCabecera(clc);
+                    completo.setDetalles(detalle);
+
+                    chkList.add(completo);
+                }
+
+                chkS.setCheckListCapCompletos( chkList );
+            }
+
+            if(capLimpiezaCamionesCab.size() > 0){
+
+                for (CheckListLimpiezaCamiones clc : capLimpiezaCamionesCab) {
+                    List<ChecklistLimpiezaCamionesDetalle> detalle =
+                            executorService.submit(() -> MainActivity.myAppDB
+                                    .DaoCheckListLimpiezaCamiones()
+                                    .getLimpiezaCamionesDetallesByPadre(clc.getClave_unica())
+                            ).get();
+
+                    CheckListLimpiezaCamionesCompleto completo = new CheckListLimpiezaCamionesCompleto();
+                    completo.setCabecera(clc);
+                    completo.setDetalles(detalle);
+
+                    chkListLimpiezaCamiones.add(completo);
+                }
+                chkS.setCheckListLimpiezaCamionesCompletos( chkListLimpiezaCamiones );
+            }
+
+            if(chkC.size() > 0){
+                chkS.setCheckListCosechas(chkC);
             }
 
             if(chk.size() > 0){
                 chkS.setCheckListSiembras( chk );
             }
-
             prepararSubir( chkS );
 
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
+            executorService.shutdown();
         }
     }
 
@@ -940,21 +1007,13 @@ public class FragmentPrincipal extends Fragment {
     }
 
 
-    public class procesarInfo extends AsyncTask<Integer, Void, ArrayList<VisitasCompletas>> {
-        ArrayList<VisitasCompletas> listas;
+    public void procesarInfoNoVisitados (int tempo) {
 
+        ApplicationExecutors exec = new ApplicationExecutors();
+        exec.getBackground().execute(()->{
+            ArrayList<VisitasCompletas> listas = new ArrayList<>();
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            listas = new ArrayList<>();
-
-        }
-
-        @Override
-        protected ArrayList<VisitasCompletas> doInBackground(Integer... tempo) {
-
-            List<SitiosNoVisitadosAnexos> listAnexos = MainActivity.myAppDB.myDao().getSitiosNoVisitados(tempo[0]);
+            List<SitiosNoVisitadosAnexos> listAnexos = MainActivity.myAppDB.myDao().getSitiosNoVisitados(tempo);
             if(listAnexos.size() > 0 ){
                 for(SitiosNoVisitadosAnexos si : listAnexos){
                     ArrayList<Integer> anexoPasando = new ArrayList<>();
@@ -1019,33 +1078,21 @@ public class FragmentPrincipal extends Fragment {
                 }
             }
 
-            return listas;
-        }
+            exec.getMainThread().execute(()-> mostrarTablaNoVis(listas));
+        });
 
-        @Override
-        protected void onPostExecute(ArrayList<VisitasCompletas> strings) {
-            super.onPostExecute(strings);
+        exec.shutDownBackground();
 
-            mostrarTablaNoVis(strings);
-        }
+
     }
 
+    public void procesarInfoPrimera(int tempo){
+        ApplicationExecutors exec = new ApplicationExecutors();
 
-    public class procesarInfoPrimera extends AsyncTask<Integer, Void, ArrayList<VisitasCompletas>>{
-        ArrayList<VisitasCompletas> listas;
+        exec.getBackground().execute(()->{
+            ArrayList<VisitasCompletas> listas = new ArrayList<>();
 
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            listas = new ArrayList<>();
-
-        }
-
-        @Override
-        protected ArrayList<VisitasCompletas> doInBackground(Integer... tempo) {
-
-            List<VisitasCompletas> listAnexos = MainActivity.myAppDB.myDao().getPrimeraPrioridad(tempo[0]);
+            List<VisitasCompletas> listAnexos = MainActivity.myAppDB.myDao().getPrimeraPrioridad(tempo);
             if(listAnexos.size() > 0 ){
 
                 ArrayList<Integer> anexoPasando = new ArrayList<>();
@@ -1056,7 +1103,17 @@ public class FragmentPrincipal extends Fragment {
 
                     Visitas vv =    si.getVisitas();
 
-                    if(anexoPasando.indexOf(idAc) < 0 ){
+                    if(vv.getHarvest_visita() == null ||
+                            vv.getGrowth_status_visita() == null ||
+                            vv.getWeed_state_visita() == null ||
+                            vv.getPhytosanitary_state_visita() == null ||
+                            vv.getOverall_status_visita() == null ||
+                            vv.getHumidity_floor_visita() == null
+                    ){
+                        continue;
+                    }
+
+                    if(!anexoPasando.contains(idAc)){
                         if(
                                 (
                                         (vv.getHarvest_visita().equals("Rechazada") || vv.getHarvest_visita().equals("REJECTED")) ||
@@ -1118,21 +1175,15 @@ public class FragmentPrincipal extends Fragment {
                 }
             }
 
-            return listas;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<VisitasCompletas> strings) {
-            super.onPostExecute(strings);
-
-            mostrarTablaPrimera(strings);
-        }
+            exec.getMainThread().execute(()-> mostrarTablaPrimera(listas));
+        });
+        exec.shutDownBackground();
     }
 
-    void primeraPrioridad(int tempo){
 
+    void primeraPrioridad(int tempo){
         progressBar1.setVisibility(View.VISIBLE);
-        new procesarInfoPrimera().execute(tempo);
+        procesarInfoPrimera(tempo);
     }
 
 
@@ -1172,7 +1223,7 @@ public class FragmentPrincipal extends Fragment {
     void sitiosNoVisitados(int tempo){
 
         progressBar2.setVisibility(View.VISIBLE);
-        new procesarInfo().execute(tempo);
+        procesarInfoNoVisitados(tempo);
     }
 
 

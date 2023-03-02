@@ -7,8 +7,11 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.Layout;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -44,6 +47,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -64,6 +68,7 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.cargarUI;
 import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
+import cl.smapdev.curimapu.infraestructure.utils.coroutines.ApplicationExecutors;
 import es.dmoral.toasty.Toasty;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -162,10 +167,9 @@ public class FragmentSowing extends Fragment {
         }
 
         if(getUserVisibleHint()) {
-            new LazyLoad(true).execute();
+            cargarInterfaz();
         }
-      /*  global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, getActivity(), prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook, global);
-        setearOnFocus();*/
+
     }
 
 
@@ -175,8 +179,31 @@ public class FragmentSowing extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null){
             this.fieldbook = bundle.getInt(FIELDGENERIC);
-
         }
+    }
+
+
+    public void cargarInterfaz(){
+        ApplicationExecutors exec = new ApplicationExecutors();
+
+        ProgressDialog progressBar = new ProgressDialog(activity);
+        progressBar.setTitle("cargando interfaz...");
+        progressBar.show();
+
+
+        exec.getBackground().execute(()-> {
+            int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+            exec.getMainThread().execute(()-> {
+                if (Globalview != null){
+                    global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
+                }
+                setearOnFocus();
+                if  (progressBar.isShowing()){
+                    progressBar.dismiss();
+                }
+            });
+        });
+        exec.shutDownBackground();
     }
 
     @Override
@@ -184,41 +211,8 @@ public class FragmentSowing extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
-//                if(fieldbook <= 0){
-//                    Utilidades.avisoListo(activity, "Hey!", "Antes de completar el libro de campo debes ingresar un estado fenologico", "ENTIENDO");
-//                }
-//                AsyncTask.execute(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (progressBar != null && progressBar.isShowing()){
-                            new LazyLoad(false).execute();
-//                        }
-//                    }
-//                });
 
-//                if (Globalview.findViewWithTag("FOTOS_"+fieldbook) == null){
-//                    if (Globalview.findViewById(R.id.container_linear_fotos) != null){
-//                        LinearLayout ly = Globalview.findViewById(R.id.container_linear_fotos);
-//                        if (ly != null){
-//                            if(activity != null){
-//                                try{
-//                                    FrameLayout fm = new FrameLayout(activity);
-////                            if (fm != null){
-//                                    fm.setId(View.generateViewId());
-//                                    fm.setTag("FOTOS_" + fieldbook);
-//                                    ly.addView(fm);
-//
-//                                    if(ly.findViewWithTag("FOTOS_" + fieldbook) != null){
-//                                        activity.getSupportFragmentManager().beginTransaction().replace(fm.getId(), FragmentFotos.getInstance(fieldbook), Utilidades.FRAGMENT_FOTOS).commit();
-//                                    }
-////                                }
-//                                }catch (NullPointerException  e){
-//                                    Toasty.warning(activity, "No se pudo cargar las fotos", Toast.LENGTH_SHORT, true).show();
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
+                cargarInterfaz();
 
             }
         }
@@ -454,20 +448,14 @@ public class FragmentSowing extends Fragment {
                             final int finalI = i;
 
                             if(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0){
-                                imageViews.get(i).setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        imageViews.get(finalI).requestFocus();
-                                        avisoActivaFicha(id_importante.get(index));
-                                    }
+                                imageViews.get(i).setOnClickListener(v -> {
+                                    imageViews.get(finalI).requestFocus();
+                                    avisoActivaFicha(id_importante.get(index));
                                 });
 
-                                imageViews.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                                    @Override
-                                    public void onFocusChange(View v, boolean hasFocus) {
-                                        if (hasFocus){
-                                            avisoActivaFicha(id_importante.get(index));
-                                        }
+                                imageViews.get(i).setOnFocusChangeListener((v, hasFocus) -> {
+                                    if (hasFocus){
+                                        avisoActivaFicha(id_importante.get(index));
                                     }
                                 });
                             }
@@ -541,8 +529,6 @@ public class FragmentSowing extends Fragment {
                                     editTexts.get(i).setText(datoDetalle);
 
 
-                                    //editTexts.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0));
-
                                     break;
                                 case InputType.TYPE_CLASS_DATETIME:
 
@@ -559,81 +545,79 @@ public class FragmentSowing extends Fragment {
                                     editTexts.get(i).setText(nuevaFecha);
                                     final int finalI1 = i;
                                     if (editTexts.get(i).isEnabled()){
-                                        editTexts.get(i).setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                levantarFechaSowing(editTexts.get(finalI1));
-                                            }
-                                        });
+                                        editTexts.get(i).setOnClickListener(v -> levantarFechaSowing(editTexts.get(finalI1)));
                                     }
 
                                     break;
                             }
 
                             final int finalI = i;
-                            editTexts.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                                @Override
-                                public void onFocusChange(View view, boolean b) {
 
-                                    int index = id_generica.indexOf(editTexts.get(finalI).getId());
-
-                                    switch (editTexts.get(finalI).getInputType()) {
-                                        case InputType.TYPE_CLASS_TEXT:
-                                        case InputType.TYPE_CLASS_NUMBER:
-                                        case InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED:
-                                            if (!b) {
-                                                if (!TextUtils.isEmpty(editTexts.get(finalI).getText().toString())){
-
-                                                    String text = editTexts.get(finalI).getText().toString().toUpperCase();
-                                                    for (int i = 0; i < forbiddenWords.length; i++){
-                                                        text = text.replace(forbiddenWords[i],forbiddenReplacement[i]);
-                                                    }
+                            EditText tempText = editTexts.get(finalI);
 
 
-                                                    detalle_visita_prop temp = new detalle_visita_prop();
-                                                    temp.setValor_detalle(text);
-                                                    temp.setEstado_detalle(0);
-                                                    temp.setId_visita_detalle(0);
-                                                    temp.setId_prop_mat_cli_detalle(id_importante.get(index));
+                            tempText.setOnFocusChangeListener((view, b) -> {
 
-                                                    int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-                                                    if (idAEditar > 0){
-                                                        temp.setId_det_vis_prop_detalle(idAEditar);
-                                                        MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
-                                                    }else{
-                                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-                                                    }
+                                int index1 = id_generica.indexOf(editTexts.get(finalI).getId());
+
+
+                                switch (tempText.getInputType()) {
+                                    case InputType.TYPE_CLASS_TEXT:
+                                    case InputType.TYPE_CLASS_NUMBER:
+                                    case InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED:
+                                        if (!b) {
+                                            if (TextUtils.isEmpty(tempText.getText().toString())){
+                                                break;
+                                            }
+
+                                            String text = tempText.getText().toString().toUpperCase();
+                                            for (int i1 = 0; i1 < forbiddenWords.length; i1++){
+                                                text = text.replace(forbiddenWords[i1],forbiddenReplacement[i1]);
+                                            }
+
+
+                                            detalle_visita_prop temp = new detalle_visita_prop();
+                                            temp.setValor_detalle(text);
+                                            temp.setEstado_detalle(0);
+                                            temp.setId_visita_detalle(0);
+                                            temp.setId_prop_mat_cli_detalle(id_importante.get(index1));
+
+                                            int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index1), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+                                            if (idAEditar > 0){
+                                                temp.setId_det_vis_prop_detalle(idAEditar);
+                                                MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
+                                            }else{
+                                                MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
+                                            }
+                                        }
+                                        break;
+                                    case InputType.TYPE_CLASS_DATETIME:
+                                        if (b) {
+                                            levantarFechaSowing(editTexts.get(finalI));
+                                        } else {
+                                            if (!TextUtils.isEmpty(editTexts.get(finalI).getText().toString())) {
+                                                detalle_visita_prop temp = new detalle_visita_prop();
+
+                                                String prevValue = editTexts.get(finalI).getText().toString();
+                                                String fe = Utilidades.voltearFechaBD(prevValue);
+
+                                                fe = (fe == "") ? prevValue : fe;
+
+                                                temp.setValor_detalle(fe);
+                                                temp.setEstado_detalle(0);
+                                                temp.setId_visita_detalle(0);
+                                                temp.setId_prop_mat_cli_detalle(id_importante.get(index1));
+
+                                                int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index1), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+                                                if (idAEditar > 0) {
+                                                    temp.setId_det_vis_prop_detalle(idAEditar);
+                                                    MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
+                                                } else {
+                                                    MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
                                                 }
                                             }
-                                            break;
-                                        case InputType.TYPE_CLASS_DATETIME:
-                                            if (b) {
-                                                levantarFechaSowing(editTexts.get(finalI));
-                                            } else {
-                                                if (!TextUtils.isEmpty(editTexts.get(finalI).getText().toString())) {
-                                                    detalle_visita_prop temp = new detalle_visita_prop();
-
-                                                    String prevValue = editTexts.get(finalI).getText().toString();
-                                                    String fe = Utilidades.voltearFechaBD(prevValue);
-
-                                                    fe = (fe == "") ? prevValue : fe;
-
-                                                    temp.setValor_detalle(fe);
-                                                    temp.setEstado_detalle(0);
-                                                    temp.setId_visita_detalle(0);
-                                                    temp.setId_prop_mat_cli_detalle(id_importante.get(index));
-
-                                                    int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-                                                    if (idAEditar > 0) {
-                                                        temp.setId_det_vis_prop_detalle(idAEditar);
-                                                        MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
-                                                    } else {
-                                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-                                                    }
-                                                }
-                                            }
-                                            break;
-                                    }
+                                        }
+                                        break;
                                 }
                             });
                         }
@@ -883,19 +867,11 @@ public class FragmentSowing extends Fragment {
 
                 if (editTextsView.get(i).getInputType() == InputType.TYPE_CLASS_DATETIME) {
                     final int finalI = i;
-                    editTextsView.get(i).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            levantarFechaSowing(editTextsView.get(finalI));
-                        }
-                    });
+                    editTextsView.get(i).setOnClickListener(v -> levantarFechaSowing(editTextsView.get(finalI)));
 
-                    editTextsView.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                        @Override
-                        public void onFocusChange(View v, boolean hasFocus) {
-                            if (hasFocus){
-                                levantarFechaSowing(editTextsView.get(finalI));
-                            }
+                    editTextsView.get(i).setOnFocusChangeListener((v, hasFocus) -> {
+                        if (hasFocus){
+                            levantarFechaSowing(editTextsView.get(finalI));
                         }
                     });
                 }
@@ -916,92 +892,62 @@ public class FragmentSowing extends Fragment {
         final AlertDialog builder = new AlertDialog.Builder(activity)
                 .setView(viewInfalted)
                 .setTitle("Nuevo elemento")
-                .setPositiveButton("Modificar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
+                .setPositiveButton("Modificar", (dialogInterface, i) -> {
                 })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
+                .setNegativeButton("Cancelar", (dialogInterface, i) -> {
                 })
                 .create();
 
 
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-                Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
 
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            b.setOnClickListener(v -> {
 
-                        boolean vacio = false;
+                boolean vacio = false;
 
-                        if (!vacio){
-                            if (editTextsView.size() > 0) {
-                                for (int i = 0; i < editTextsView.size(); i++) {
+                if (!vacio){
+                    if (editTextsView.size() > 0) {
+                        for (int i = 0; i < editTextsView.size(); i++) {
 
-                                    int index = id_g.indexOf(editTextsView.get(i).getId());
-                                    detalle_visita_prop temp = new detalle_visita_prop();
-                                    if (editTextsView.get(i).getInputType() == InputType.TYPE_CLASS_DATETIME) {
-                                        String fe = Utilidades.voltearFechaBD(editTextsView.get(i).getText().toString());
-                                        temp.setValor_detalle(fe);
-                                    } else {
-                                        temp.setValor_detalle(editTextsView.get(i).getText().toString());
-                                    }
-
-                                    temp.setEstado_detalle(0);
-                                    temp.setId_visita_detalle(0);
-                                    temp.setId_prop_mat_cli_detalle(id_i.get(index));
-
-//                                    int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_i.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-//                                    if (idAEditar > 0) {
-//                                        temp.setId_det_vis_prop_detalle(idAEditar);
-//                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-//                                    } else {
-                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-//                                    }
-                                }
+                            int index = id_g.indexOf(editTextsView.get(i).getId());
+                            detalle_visita_prop temp = new detalle_visita_prop();
+                            if (editTextsView.get(i).getInputType() == InputType.TYPE_CLASS_DATETIME) {
+                                String fe = Utilidades.voltearFechaBD(editTextsView.get(i).getText().toString());
+                                temp.setValor_detalle(fe);
+                            } else {
+                                temp.setValor_detalle(editTextsView.get(i).getText().toString());
                             }
 
-                            if (spinners.size() > 0) {
-                                for (int i = 0; i < spinners.size(); i++) {
-                                    int index = id_g.indexOf(spinners.get(i).getId());
-                                    detalle_visita_prop temp = new detalle_visita_prop();
-                                    temp.setValor_detalle(spinners.get(i).getSelectedItem().toString());
-                                    temp.setEstado_detalle(0);
-                                    temp.setId_visita_detalle(0);
-                                    temp.setId_prop_mat_cli_detalle(id_i.get(index));
-//                                    int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_i.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-//                                    if (idAEditar > 0) {
-//                                        temp.setId_det_vis_prop_detalle(idAEditar);
-//                                        MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
-//                                    } else {
-                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-//                                    }
-                                }
-                            }
+                            temp.setEstado_detalle(0);
+                            temp.setId_visita_detalle(0);
+                            temp.setId_prop_mat_cli_detalle(id_i.get(index));
 
-
-                            setearOnFocus();
-                            builder.dismiss();
-                        }else{
-                            Snackbar.make(viewInfalted.getRootView(),"Debe completar todos los campos", Snackbar.LENGTH_LONG).show();
-                           // Utilidades.avisoListo(activity,"Falta algo","Debe completar todos los campos antes de guardar","entiendo");
+                                MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
                         }
                     }
-                });
-                c.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        builder.dismiss();
+
+                    if (spinners.size() > 0) {
+                        for (int i = 0; i < spinners.size(); i++) {
+                            int index = id_g.indexOf(spinners.get(i).getId());
+                            detalle_visita_prop temp = new detalle_visita_prop();
+                            temp.setValor_detalle(spinners.get(i).getSelectedItem().toString());
+                            temp.setEstado_detalle(0);
+                            temp.setId_visita_detalle(0);
+                            temp.setId_prop_mat_cli_detalle(id_i.get(index));
+                                MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
+                        }
                     }
-                });
-            }
+
+
+                    setearOnFocus();
+                    builder.dismiss();
+                }else{
+                    Snackbar.make(viewInfalted.getRootView(),"Debe completar todos los campos", Snackbar.LENGTH_LONG).show();
+                   }
+            });
+            c.setOnClickListener(view -> builder.dismiss());
         });
 
         builder.setCancelable(false);

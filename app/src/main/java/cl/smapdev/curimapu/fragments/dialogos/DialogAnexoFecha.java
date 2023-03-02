@@ -299,15 +299,30 @@ public class DialogAnexoFecha  extends DialogFragment  {
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             return;
         }
-//
-//        if(!et_inicio_cosecha.getText().toString().isEmpty() && et_inicio_cosecha_hora.getText().toString().isEmpty() ){
-//            String message = "Al ingresar fecha de inicio cosecha debes ingresar la hora de inicio cosecha ";
-//            Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
-//            return;
-//        }
+
+        if(!et_fecha_destruccion.getText().toString().isEmpty() && et_hora_destruccion.getText().toString().isEmpty()){
+            String message = "Al ingresar fecha de destruccion debes ingresar la hora de destruccion ";
+            Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+            return;
+        }
+
+        if(et_fecha_destruccion.getText().toString().isEmpty() && !et_hora_destruccion.getText().toString().isEmpty()){
+            String message = "Al ingresar hora de destruccion debes ingresar la fecha de destruccion ";
+            Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+            return;
+        }
 
         boolean isDestructionComplete = rbtn_parcial.isChecked();
         boolean isCompleteChecked = rbtn_completo.isChecked();
+
+        if((!et_fecha_destruccion.getText().toString().isEmpty() || !et_hora_destruccion.getText().toString().isEmpty()) && (!isDestructionComplete && !isCompleteChecked)){
+            String message = "Al ingresar fecha u hora de destruccion debes seleccionar parcial o completo ";
+            Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+            return;
+        }
+
+
+
 
         if(
             isDestructionComplete &&
