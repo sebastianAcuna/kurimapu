@@ -14,11 +14,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.room.Room;
-import androidx.room.migration.Migration;
 
 import android.Manifest;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,11 +23,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -47,7 +44,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -56,7 +52,6 @@ import cl.smapdev.curimapu.clases.bd.Migrations;
 import cl.smapdev.curimapu.clases.bd.MyAppBD;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
-import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentConfigs;
 import cl.smapdev.curimapu.fragments.FragmentFichas;
@@ -325,8 +320,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 cambiarFragment(new FragmentAnexoFechas(), Utilidades.FRAGMENT_ANEXO_FICHA, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
 
+            case R.id.nv_curiweb:
+                Config conf = MainActivity.myAppDB.myDao().getConfig();
+                Uri uri = Uri.parse("https://curiweb.zproduccion.cl/#/acceso-app?apiKey="+Utilidades.KEY_EXPORT+"&userId="+conf.getId_usuario() );
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                break;
+
             case R.id.nv_configs:
-                cambiarFragment(new FragmentConfigs(), Utilidades.FRAGMENT_CONFIG, R.anim.slide_in_left, R.anim.slide_out_left);
+                cambiarFragment(new FragmentConfigs(), Utilidades.FRAGMENT_WB, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
 
             case R.id.nv_salir:

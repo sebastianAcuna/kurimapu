@@ -184,7 +184,9 @@ public class Descargas {
                         f.setCorreo_termino_labores_post_cosechas(fch.getCorreo_termino_labores_post_cosechas());
                         f.setCorreo_destruccion_semillero(fch.getCorreo_destruccion_semillero());
                         f.setCorreo_siembra_temprana(fch.getCorreo_siembra_temprana());
+                        f.setCorreo_inicio_siembra(fch.getCorreo_inicio_siembra());
 
+                        f.setInicio_siembra(fch.getInicio_siembra());
                         f.setCinco_porciento_floracion(fch.getCinco_porciento_floracion());
                         f.setInicio_corte_seda(fch.getInicio_corte_seda());
                         f.setInicio_cosecha(fch.getInicio_cosecha());

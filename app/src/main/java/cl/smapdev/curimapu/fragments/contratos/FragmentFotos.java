@@ -175,19 +175,16 @@ public class FragmentFotos extends Fragment {
 
             }
         });
-        material_public.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        material_public.setOnClickListener(v -> {
 
-                if(fieldbook <= 0 ){
-                    Utilidades.avisoListo(activity, "!Hey", "No puedes ingresar una foto sin seleccionar un estado fenologico, seleccionalo y luego saca la foto.", "entendi");
-                }else {
-                    if (estado_visita == 2) {
-                        Utilidades.avisoListo(activity, getResources().getString(R.string.title_dialog_agron), getResources().getString(R.string.visitas_terminadas), getResources().getString(R.string.entiendo));
-                    } else {
-                        Utilidades.hideKeyboard(activity);
-                        //                    activity.cambiarFragmentFoto(FragmentTakePicture.getInstance(fieldbook, 0), Utilidades.FRAGMENT_TAKE_PHOTO, R.anim.slide_in_left,R.anim.slide_out_left);
-                        abrirCamara(0);
-                    }
+            if(fieldbook <= 0 ){
+                Utilidades.avisoListo(activity, "!Hey", "No puedes ingresar una foto sin seleccionar un estado fenologico, seleccionalo y luego saca la foto.", "entendi");
+            }else {
+                if (estado_visita == 2) {
+                    Utilidades.avisoListo(activity, getResources().getString(R.string.title_dialog_agron), getResources().getString(R.string.visitas_terminadas), getResources().getString(R.string.entiendo));
+                } else {
+                    Utilidades.hideKeyboard(activity);
+                    abrirCamara(0);
                 }
             }
         });
@@ -197,15 +194,15 @@ public class FragmentFotos extends Fragment {
 
 
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.CAMERA);
+        int result = ContextCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA);
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED ;
     }
 
     private void requestPermission() {
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(Objects.requireNonNull(getActivity()), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Toasty.normal(getActivity(), "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Toasty.normal(requireActivity(), "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 100);

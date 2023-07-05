@@ -148,6 +148,11 @@
     <string name="hora_de_ingreso">HORA DE INGRESO</string>
     <string name="destruccion_de_semillero">Destruccion de semillero</string>
     <string name="siembra_temprana">Siembra Temprana</string>
+    <string name="curiweb">Curiweb</string>
+    <string name="nav_take_pick_roots">Tomar foto raices</string>
+    <string name="fotografia_raices">fotografia raices</string>
+    <string name="fotos_raices">Fotos Raices</string>
+    <string name="inicio_siembra">Inicio siembra hembra</string>
 
     <string-array name="desplegable_checklist_1">
         <item>@string/select</item>

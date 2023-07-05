@@ -13,6 +13,10 @@ public class RespuestaFecha {
     @Expose
     private String anexo;
 
+    @SerializedName("correo_inicio_siembra")
+    @Expose
+    private int correo_inicio_siembra;
+
     @SerializedName("correo_inicio_despano")
     @Expose
     private int correo_inicio_despano;
@@ -45,6 +49,14 @@ public class RespuestaFecha {
     @Expose
     private String mensaje;
 
+
+    public int getCorreo_inicio_siembra() {
+        return correo_inicio_siembra;
+    }
+
+    public void setCorreo_inicio_siembra(int correo_inicio_siembra) {
+        this.correo_inicio_siembra = correo_inicio_siembra;
+    }
 
     public String getDetalle() {
         return detalle;

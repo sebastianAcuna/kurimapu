@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.relaciones;
 
 import androidx.room.Embedded;
+import androidx.room.Ignore;
 
 import java.io.Serializable;
 
@@ -15,7 +16,6 @@ public class AnexoWithDates implements Serializable {
     @Embedded
     AnexoCompleto AnexoCompleto;
 
-
     @Embedded
     AnexoCorreoFechas AnexoCorreoFichas;
 
@@ -25,6 +25,16 @@ public class AnexoWithDates implements Serializable {
     @Embedded
     Visitas visitas;
 
+    @Ignore
+    boolean faltaVisita;
+
+    public boolean isFaltaVisita() {
+        return faltaVisita;
+    }
+
+    public void setFaltaVisita(boolean faltaVisita) {
+        this.faltaVisita = faltaVisita;
+    }
 
     public Visitas getVisitas() {
         return visitas;

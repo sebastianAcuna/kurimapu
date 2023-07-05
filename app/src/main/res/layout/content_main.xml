@@ -16,13 +16,42 @@
         android:padding="10dp"
         android:id="@+id/relative_constraint_principal">
 
+        <LinearLayout
+            android:id="@+id/contenedor_alerta_inicio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_descargar"
+            app:layout_constraintBottom_toBottomOf="@id/btn_descargar"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_button_icon_red"
+                android:src="@drawable/baseline_warning_24"
+                android:layout_marginEnd="@dimen/padding_small"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FALTA FECHA DE INICIO SIEMBRA HEMBRA"
+                android:textColor="@color/colorError"
+                android:textStyle="bold"
+                android:textSize="12dp"
+                />
+        </LinearLayout>
+
         <Button
             android:id="@+id/btn_descargar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="descargar datos"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="descarga"
+            app:layout_constraintStart_toEndOf="@id/contenedor_alerta_inicio"
             app:layout_constraintTop_toTopOf="parent"
             android:backgroundTint="@android:color/holo_orange_dark"
             android:drawableLeft="@drawable/ic_download_white"

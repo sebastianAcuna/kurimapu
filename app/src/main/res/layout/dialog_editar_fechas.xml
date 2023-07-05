@@ -12,6 +12,33 @@
      android:padding="16dp">
 
 
+
+        <TextView
+            android:id="@+id/lbl_inicio_siembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="@string/inicio_siembra"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/et_inicio_siembra"
+            app:layout_constraintBottom_toBottomOf="@id/et_inicio_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_inicio_siembra"
+            />
+
+        <EditText
+            android:id="@+id/et_inicio_siembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:inputType="date"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_inicio_siembra"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:drawableStart="@drawable/ic_date_range"
+            android:drawableTint="@color/colorPrimary"
+            />
+
     <!-- empiezan fechas -->
    <TextView
        android:id="@+id/lbl_inicio_despano"
@@ -32,7 +59,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="3"
         android:inputType="date"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_inicio_siembra"
         app:layout_constraintStart_toEndOf="@id/lbl_inicio_despano"
         app:layout_constraintEnd_toEndOf="parent"
         android:drawableStart="@drawable/ic_date_range"

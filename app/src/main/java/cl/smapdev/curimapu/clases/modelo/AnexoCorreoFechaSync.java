@@ -125,6 +125,7 @@ public class AnexoCorreoFechaSync {
                                     acf.setCorreo_inicio_cosecha(fc.getCorreo_inicio_cosecha());
                                     acf.setCorreo_inicio_corte_seda(fc.getCorreo_inicio_corte_seda());
                                     acf.setCorreo_cinco_porciento_floracion(fc.getCorreo_cinco_porciento());
+                                    acf.setCorreo_inicio_siembra(fc.getCorreo_inicio_siembra());
                                     acf.setEstado_sincro_corr_fech(1);
                                     executor.submit(() -> MainActivity.myAppDB.DaoAnexosFechas().UpdateFechasAnexos(acf));
                                 }

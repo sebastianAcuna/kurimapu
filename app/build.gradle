@@ -14,7 +14,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$project_path/schemas".toString()]
+//                arguments = ["room.schemaLocation": "$project_path/schemas".toString()]
             }
         }
     }

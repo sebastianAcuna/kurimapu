@@ -30,7 +30,7 @@ public class Fotos {
 
     @SerializedName("vista")
     @Expose
-    private int vista; /*0: cliente, 1: agricultor 2: ambos*/
+    private int vista; /*0: cliente, 1: agricultor 2: ambos 3: raices */
 
     @SerializedName("plano")
     @Expose
@@ -78,6 +78,31 @@ public class Fotos {
     @Expose
     private int tomada_foto;
 
+
+    @SerializedName("medida_raices")
+    @Expose
+    private String medida_raices;
+
+    @SerializedName("acepto_regla_raices")
+    @Expose
+    private int acepto_regla_raices;
+
+
+    public int getAcepto_regla_raices() {
+        return acepto_regla_raices;
+    }
+
+    public void setAcepto_regla_raices(int acepto_regla_raices) {
+        this.acepto_regla_raices = acepto_regla_raices;
+    }
+
+    public String getMedida_raices() {
+        return medida_raices;
+    }
+
+    public void setMedida_raices(String medida_raices) {
+        this.medida_raices = medida_raices;
+    }
 
     public int getTomada_foto() {
         return tomada_foto;

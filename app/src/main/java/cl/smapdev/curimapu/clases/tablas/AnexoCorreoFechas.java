@@ -129,6 +129,31 @@ public class AnexoCorreoFechas {
     @Expose
     private String motivo_destruccion;
 
+    @SerializedName("inicio_siembra")
+    @Expose
+    private String inicio_siembra;
+
+
+    @SerializedName("correo_inicio_siembra")
+    @Expose
+    private int correo_inicio_siembra;
+
+
+    public String getInicio_siembra() {
+        return inicio_siembra;
+    }
+
+    public void setInicio_siembra(String inicio_siembra) {
+        this.inicio_siembra = inicio_siembra;
+    }
+
+    public int getCorreo_inicio_siembra() {
+        return correo_inicio_siembra;
+    }
+
+    public void setCorreo_inicio_siembra(int correo_inicio_siembra) {
+        this.correo_inicio_siembra = correo_inicio_siembra;
+    }
 
     public int getCorreo_destruccion_semillero() {
         return correo_destruccion_semillero;

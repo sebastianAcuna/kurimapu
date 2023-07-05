@@ -537,29 +537,6 @@ public class FragmentCreaFicha extends Fragment {
             }
         });
 
-
-        String anoActual = Utilidades.getAnno();
-        if (!TextUtils.isEmpty(anoActual)){
-            int Anno = Integer.parseInt(anoActual);
-
-            cont_rotacion_1.setHint("Cultivo "+String.valueOf(Anno - 5));
-            et_rotacion_1.setTag(Anno - 5);
-
-            cont_rotacion_2.setHint("Cultivo "+String.valueOf(Anno - 4));
-            et_rotacion_2.setTag(Anno - 4);
-
-            cont_rotacion_3.setHint("Cultivo "+String.valueOf(Anno - 3));
-            et_rotacion_3.setTag(Anno - 3);
-
-            cont_rotacion_4.setHint("Cultivo "+String.valueOf(Anno - 2));
-            et_rotacion_4.setTag(Anno - 2);
-
-            cont_rotacion_5.setHint("Cultivo "+String.valueOf(Anno - 1));
-            et_rotacion_5.setTag(Anno - 1);
-
-
-        }
-
     }
 
 
@@ -675,32 +652,20 @@ public class FragmentCreaFicha extends Fragment {
             List<CropRotation> cropRotations = MainActivity.myAppDB.myDao().getCropRotationLocal(fichasCompletas.getFichas().getId_ficha_local_ficha());
             if(cropRotations.size() > 0){
 
-                System.out.println(cropRotations.get(0).getCultivo_crop_rotation());
-                System.out.println(cropRotations.get(1).getCultivo_crop_rotation());
-                System.out.println(cropRotations.get(2).getCultivo_crop_rotation());
-                System.out.println(cropRotations.get(3).getCultivo_crop_rotation());
-                System.out.println(cropRotations.get(4).getCultivo_crop_rotation());
-
-
                 et_rotacion_1.setText(cropRotations.get(0).getCultivo_crop_rotation());
-                cont_rotacion_1.setHint("Cultivo "+cropRotations.get(0).getTemporada_crop_rotation());
-                et_rotacion_1.setTag(cropRotations.get(0).getTemporada_crop_rotation());
+                et_rotacion_1.setTag(5);
 
                 et_rotacion_2.setText(cropRotations.get(1).getCultivo_crop_rotation());
-                cont_rotacion_2.setHint("Cultivo "+cropRotations.get(1).getTemporada_crop_rotation());
-                et_rotacion_2.setTag(cropRotations.get(1).getTemporada_crop_rotation());
+                et_rotacion_2.setTag(4);
 
                 et_rotacion_3.setText(cropRotations.get(2).getCultivo_crop_rotation());
-                cont_rotacion_3.setHint("Cultivo "+cropRotations.get(2).getTemporada_crop_rotation());
-                et_rotacion_3.setTag(cropRotations.get(2).getTemporada_crop_rotation());
+                et_rotacion_3.setTag(3);
 
                 et_rotacion_4.setText(cropRotations.get(3).getCultivo_crop_rotation());
-                cont_rotacion_4.setHint("Cultivo "+cropRotations.get(3).getTemporada_crop_rotation());
-                et_rotacion_4.setTag(cropRotations.get(3).getTemporada_crop_rotation());
+                et_rotacion_4.setTag(2);
 
                 et_rotacion_5.setText(cropRotations.get(4).getCultivo_crop_rotation());
-                cont_rotacion_5.setHint("Cultivo "+cropRotations.get(4).getTemporada_crop_rotation());
-                et_rotacion_5.setTag(cropRotations.get(4).getTemporada_crop_rotation());
+                et_rotacion_5.setTag(1);
 
 
             }
@@ -933,14 +898,26 @@ public class FragmentCreaFicha extends Fragment {
         String norting = ti_norting.getText().toString();
         String easting = ti_easting.getText().toString();
 
+        String coordNorting;
+        String coordEasting;
+        try {
+            coordNorting = Utilidades.formatearCoordenada(norting);
+            coordEasting = Utilidades.formatearCoordenada(easting);
 
-//&& !TextUtils.isEmpty(admin) && !TextUtils.isEmpty(fonoAdmin)&&  !TextUtils.isEmpty(fonoAgro)
-        if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro)
-                && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion) && !TextUtils.isEmpty(has)
-                && !TextUtils.isEmpty(idAnno) && !TextUtils.isEmpty(idRegion) && !TextUtils.isEmpty(idComuna) && !TextUtils.isEmpty(norting) && !TextUtils.isEmpty(easting)
-                && sp_comuna_agricultor.getSelectedItemPosition() > 0
-                && sp_provincia_agricultor.getSelectedItemPosition() > 0
-                && sp_region_agricultor.getSelectedItemPosition() > 0 ){
+
+        }catch (Exception e){
+            Toasty.error(requireActivity(), (e.getMessage() != null) ? e.getMessage() : "No se pudo formatear la coordenada, debe contener 10 caracteres" , Toast.LENGTH_LONG, true).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(rutAgro) || TextUtils.isEmpty(nombreAgro)
+                || TextUtils.isEmpty(oferta) || TextUtils.isEmpty(localidad) ||  TextUtils.isEmpty(observacion)  || TextUtils.isEmpty(has)
+                || TextUtils.isEmpty(idAnno) || TextUtils.isEmpty(idRegion) || TextUtils.isEmpty(idComuna) || TextUtils.isEmpty(norting) || TextUtils.isEmpty(easting)
+                || sp_comuna_agricultor.getSelectedItemPosition() <= 0
+                || sp_provincia_agricultor.getSelectedItemPosition() <= 0
+                || sp_region_agricultor.getSelectedItemPosition() <= 0 ){
+            Utilidades.avisoListo(activity, "Falto algo", "Debe completar todos los campos con la marca (*) ", "OK");
+        }
 
 
             Config config = MainActivity.myAppDB.myDao().getConfig();
@@ -1005,8 +982,10 @@ public class FragmentCreaFicha extends Fragment {
             fichas.setId_provincia_ficha(idProvincias.get(sp_provincia_agricultor.getSelectedItemPosition()));
 
             try{
-                fichas.setNorting(Double.parseDouble(norting));
-                fichas.setEasting(Double.parseDouble(easting));
+
+
+                fichas.setNorting(Double.parseDouble(coordNorting));
+                fichas.setEasting(Double.parseDouble(coordEasting));
             }catch (ParseException e){
                 fichas.setNorting(0);
                 fichas.setEasting(0);
@@ -1055,16 +1034,13 @@ public class FragmentCreaFicha extends Fragment {
 
 
 
-                String anoActual = Utilidades.getAnno();
-                if (!TextUtils.isEmpty(anoActual)){
 
-                    int Anno = Integer.parseInt(anoActual);
 
                     ArrayList<CropRotation> cropRotations = new ArrayList<>();
                     CropRotation crp5 = new CropRotation();
 
                     crp5.setCultivo_crop_rotation(rotacion5);
-                    crp5.setTemporada_crop_rotation(String.valueOf(Anno - 1));
+                    crp5.setTemporada_crop_rotation("5");
                     crp5.setId_ficha_crop_rotation((int) idFichaNueva);
                     crp5.setId_ficha_local_cp((int) idFichaNueva);
                     crp5.setTipo_crop("P");
@@ -1072,7 +1048,7 @@ public class FragmentCreaFicha extends Fragment {
 
                     CropRotation crp1 = new CropRotation();
                     crp1.setCultivo_crop_rotation(rotacion4);
-                    crp1.setTemporada_crop_rotation(String.valueOf(Anno - 2));
+                    crp1.setTemporada_crop_rotation("4");
                     crp1.setId_ficha_crop_rotation((int) idFichaNueva);
                     crp1.setId_ficha_local_cp((int) idFichaNueva);
                     crp1.setTipo_crop("P");
@@ -1080,7 +1056,7 @@ public class FragmentCreaFicha extends Fragment {
 
                     CropRotation crp2 = new CropRotation();
                     crp2.setCultivo_crop_rotation(rotacion3);
-                    crp2.setTemporada_crop_rotation(String.valueOf(Anno - 3));
+                    crp2.setTemporada_crop_rotation("3");
                     crp2.setId_ficha_crop_rotation((int) idFichaNueva);
                     crp2.setId_ficha_local_cp((int) idFichaNueva);
                     crp2.setTipo_crop("P");
@@ -1088,7 +1064,7 @@ public class FragmentCreaFicha extends Fragment {
 
                     CropRotation crp3 = new CropRotation();
                     crp3.setCultivo_crop_rotation(rotacion2);
-                    crp3.setTemporada_crop_rotation(String.valueOf(Anno - 4));
+                    crp3.setTemporada_crop_rotation("2");
                     crp3.setId_ficha_crop_rotation((int) idFichaNueva);
                     crp3.setId_ficha_local_cp((int) idFichaNueva);
                     crp3.setTipo_crop("P");
@@ -1096,7 +1072,7 @@ public class FragmentCreaFicha extends Fragment {
 
                     CropRotation crp4 = new CropRotation();
                     crp4.setCultivo_crop_rotation(rotacion1);
-                    crp4.setTemporada_crop_rotation(String.valueOf(Anno - 5));
+                    crp4.setTemporada_crop_rotation("1");
                     crp4.setId_ficha_crop_rotation((int) idFichaNueva);
                     crp4.setId_ficha_local_cp((int) idFichaNueva);
                     crp4.setTipo_crop("P");
@@ -1104,7 +1080,6 @@ public class FragmentCreaFicha extends Fragment {
 
                     MainActivity.myAppDB.myDao().insertCrop(cropRotations);
 
-                }
 
 
                 fichas2.setNorting(fichas.getNorting());
@@ -1125,9 +1100,6 @@ public class FragmentCreaFicha extends Fragment {
             }
 
 
-        }else{
-            Utilidades.avisoListo(activity, "Falto algo", "Debe completar todos los campos con la marca (*) ", "OK");
-        }
 
 
 
@@ -1167,6 +1139,18 @@ public class FragmentCreaFicha extends Fragment {
 
         String norting = ti_norting.getText().toString();
         String easting = ti_easting.getText().toString();
+
+        String coordNorting;
+        String coordEasting;
+        try {
+            coordNorting = Utilidades.formatearCoordenada(norting);
+            coordEasting = Utilidades.formatearCoordenada(easting);
+
+
+        }catch (Exception e){
+            Toasty.error(requireActivity(), (e.getMessage() != null) ? e.getMessage() : "No se pudo formatear la coordenada, debe contener 10 caracteres" , Toast.LENGTH_LONG, true).show();
+            return;
+        }
 
 
         if (!TextUtils.isEmpty(rutAgro) && !TextUtils.isEmpty(nombreAgro) && !TextUtils.isEmpty(oferta) && !TextUtils.isEmpty(localidad) &&  !TextUtils.isEmpty(observacion)
@@ -1234,20 +1218,20 @@ public class FragmentCreaFicha extends Fragment {
                     crp1.setId_crop_rotation(crp.getId_crop_rotation());
                     crp1.setTipo_crop("P");
 
-                    if(et_rotacion_1.getTag().toString().equals(crp.getTemporada_crop_rotation())){
+                    if(et_rotacion_1.getTag().toString().equals("5")){
                         crp1.setCultivo_crop_rotation(et_rotacion_1.getText().toString().toUpperCase());
                     }
 
-                    if(et_rotacion_2.getTag().toString().equals(crp.getTemporada_crop_rotation())){
+                    if(et_rotacion_2.getTag().toString().equals("4")){
                         crp1.setCultivo_crop_rotation(et_rotacion_2.getText().toString().toUpperCase());
                     }
-                    if(et_rotacion_3.getTag().toString().equals(crp.getTemporada_crop_rotation())){
+                    if(et_rotacion_3.getTag().toString().equals("3")){
                         crp1.setCultivo_crop_rotation(et_rotacion_3.getText().toString().toUpperCase());
                     }
-                    if(et_rotacion_4.getTag().toString().equals(crp.getTemporada_crop_rotation())){
+                    if(et_rotacion_4.getTag().toString().equals("2")){
                         crp1.setCultivo_crop_rotation(et_rotacion_4.getText().toString().toUpperCase());
                     }
-                    if(et_rotacion_5.getTag().toString().equals(crp.getTemporada_crop_rotation())){
+                    if(et_rotacion_5.getTag().toString().equals("1")){
                         crp1.setCultivo_crop_rotation(et_rotacion_5.getText().toString().toUpperCase());
                     }
 
@@ -1257,58 +1241,54 @@ public class FragmentCreaFicha extends Fragment {
 
             }else{
 
-                String anoActual = Utilidades.getAnno();
-                if (!TextUtils.isEmpty(anoActual)){
 
-                    int Anno = Integer.parseInt(anoActual);
 
                     ArrayList<CropRotation> cropRotationss = new ArrayList<>();
                     CropRotation crp5 = new CropRotation();
 
+                CropRotation crp4 = new CropRotation();
+                crp4.setCultivo_crop_rotation(rotacion1);
+                crp4.setTemporada_crop_rotation("1");
+                crp4.setId_ficha_crop_rotation((int) fichas.getId_ficha());
+                crp4.setId_ficha_local_cp((int) fichas.getId_ficha());
+                crp4.setTipo_crop("P");
+
+                cropRotationss.add(crp4);
+
+                CropRotation crp3 = new CropRotation();
+                crp3.setCultivo_crop_rotation(rotacion2);
+                crp3.setTemporada_crop_rotation("2");
+                crp3.setId_ficha_crop_rotation((int) fichas.getId_ficha());
+                crp3.setId_ficha_local_cp((int)fichas.getId_ficha());
+                crp3.setTipo_crop("P");
+                cropRotationss.add(crp3);
+
+                CropRotation crp2 = new CropRotation();
+                crp2.setCultivo_crop_rotation(rotacion3);
+                crp2.setTemporada_crop_rotation("3");
+                crp2.setId_ficha_crop_rotation((int)fichas.getId_ficha());
+                crp2.setId_ficha_local_cp((int) fichas.getId_ficha());
+                crp2.setTipo_crop("P");
+                cropRotationss.add(crp2);
+
+                CropRotation crp1 = new CropRotation();
+                crp1.setCultivo_crop_rotation(rotacion4);
+                crp1.setTemporada_crop_rotation("4");
+                crp1.setId_ficha_crop_rotation((int) fichas.getId_ficha());
+                crp1.setId_ficha_local_cp((int) fichas.getId_ficha());
+                crp1.setTipo_crop("P");
+                cropRotationss.add(crp1);
+
                     crp5.setCultivo_crop_rotation(rotacion5);
-                    crp5.setTemporada_crop_rotation(String.valueOf(Anno - 1));
+                    crp5.setTemporada_crop_rotation("5");
                     crp5.setId_ficha_crop_rotation((int) fichas.getId_ficha());
                     crp5.setId_ficha_local_cp((int) fichas.getId_ficha());
                     crp5.setTipo_crop("P");
                     cropRotationss.add(crp5);
 
-                    CropRotation crp1 = new CropRotation();
-                    crp1.setCultivo_crop_rotation(rotacion4);
-                    crp1.setTemporada_crop_rotation(String.valueOf(Anno - 2));
-                    crp1.setId_ficha_crop_rotation((int) fichas.getId_ficha());
-                    crp1.setId_ficha_local_cp((int) fichas.getId_ficha());
-                    crp1.setTipo_crop("P");
-                    cropRotationss.add(crp1);
 
-                    CropRotation crp2 = new CropRotation();
-                    crp2.setCultivo_crop_rotation(rotacion3);
-                    crp2.setTemporada_crop_rotation(String.valueOf(Anno - 3));
-                    crp2.setId_ficha_crop_rotation((int)fichas.getId_ficha());
-                    crp2.setId_ficha_local_cp((int) fichas.getId_ficha());
-                    crp2.setTipo_crop("P");
-                    cropRotationss.add(crp2);
-
-                    CropRotation crp3 = new CropRotation();
-                    crp3.setCultivo_crop_rotation(rotacion2);
-                    crp3.setTemporada_crop_rotation(String.valueOf(Anno - 4));
-                    crp3.setId_ficha_crop_rotation((int) fichas.getId_ficha());
-                    crp3.setId_ficha_local_cp((int)fichas.getId_ficha());
-                    crp3.setTipo_crop("P");
-                    cropRotationss.add(crp3);
-
-                    CropRotation crp4 = new CropRotation();
-                    crp4.setCultivo_crop_rotation(rotacion1);
-                    crp4.setTemporada_crop_rotation(String.valueOf(Anno - 5));
-                    crp4.setId_ficha_crop_rotation((int) fichas.getId_ficha());
-                    crp4.setId_ficha_local_cp((int) fichas.getId_ficha());
-                    crp4.setTipo_crop("P");
-
-                    cropRotationss.add(crp4);
 
                     MainActivity.myAppDB.myDao().insertCrop(cropRotationss);
-
-                }
-
             }
 
 
@@ -1328,8 +1308,8 @@ public class FragmentCreaFicha extends Fragment {
 
 
             try{
-                fichas.setNorting(Double.parseDouble(norting));
-                fichas.setEasting(Double.parseDouble(easting));
+                fichas.setNorting(Double.parseDouble(coordNorting));
+                fichas.setEasting(Double.parseDouble(coordEasting));
             }catch (ParseException e){
                 fichas.setNorting(0);
                 fichas.setEasting(0);

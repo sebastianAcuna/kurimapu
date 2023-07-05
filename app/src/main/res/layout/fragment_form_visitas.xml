@@ -429,6 +429,9 @@
                     android:hint="@string/observations" />
             </com.google.android.material.textfield.TextInputLayout>
 
+
+
+
             <TextView
                 android:id="@+id/titulo_agronomo"
                 android:layout_width="0dp"
@@ -471,6 +474,28 @@
                 android:layout_centerHorizontal="true"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/titulo_clientes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/titulo_raices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fotos_raices"
+                android:gravity="center"
+                android:textAppearance="?android:textAppearanceLarge"
+                app:layout_constraintTop_toBottomOf="@id/fotos_clientes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fotos_raices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/titulo_raices"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="parent"
                 />
@@ -520,6 +545,15 @@
         style="@style/floatingButtons"
         >
 
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/foto_raices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_grass_24"
+            app:fab_label="@string/nav_take_pick_roots"
+            app:fab_colorNormal="@color/colorGold"
+            app:fab_size="normal" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/material_private"

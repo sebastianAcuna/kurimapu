@@ -479,26 +479,23 @@ public class FragmentSowing extends Fragment {
                             }
 
 
-                            check.get(i).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            check.get(i).setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-                                    detalle_visita_prop temp = new detalle_visita_prop();
-                                    if (isChecked){
-                                        temp.setValor_detalle(String.valueOf(1));
-                                        temp.setEstado_detalle(0);
-                                        temp.setId_visita_detalle(0);
-                                        temp.setId_prop_mat_cli_detalle(id_importante.get(index));
-                                        MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-                                    }else{
-                                        int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-                                        temp.setId_det_vis_prop_detalle(idAEditar);
-                                        temp.setValor_detalle(String.valueOf(0));
-                                        temp.setEstado_detalle(0);
-                                        temp.setId_visita_detalle(0);
-                                        temp.setId_prop_mat_cli_detalle(id_importante.get(index));
-                                        MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
-                                    }
+                                detalle_visita_prop temp = new detalle_visita_prop();
+                                if (isChecked){
+                                    temp.setValor_detalle(String.valueOf(1));
+                                    temp.setEstado_detalle(0);
+                                    temp.setId_visita_detalle(0);
+                                    temp.setId_prop_mat_cli_detalle(id_importante.get(index));
+                                    MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
+                                }else{
+                                    int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
+                                    temp.setId_det_vis_prop_detalle(idAEditar);
+                                    temp.setValor_detalle(String.valueOf(0));
+                                    temp.setEstado_detalle(0);
+                                    temp.setId_visita_detalle(0);
+                                    temp.setId_prop_mat_cli_detalle(id_importante.get(index));
+                                    MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
                                 }
                             });
                         }
@@ -510,6 +507,12 @@ public class FragmentSowing extends Fragment {
 //                    for (final EditText et : editTexts){
                         if (id_generica.contains(editTexts.get(i).getId())) {
                             int index = id_generica.indexOf(editTexts.get(i).getId());
+
+                            int idImportante = id_importante.get(index);
+
+                            pro_cli_mat fs = MainActivity.myAppDB.myDao().getProCliMatByIdProp(idImportante, idClienteFinal, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
+
+
 
                             editTexts.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0  && fieldbook > 0));
 
@@ -525,7 +528,7 @@ public class FragmentSowing extends Fragment {
                                             editTexts.get(i).setEnabled(false);
                                         }
                                     }
-                                    editTexts.get(i).setSelectAllOnFocus(true);
+//                                    editTexts.get(i).setSelectAllOnFocus(true);
                                     editTexts.get(i).setText(datoDetalle);
 
 
@@ -569,8 +572,19 @@ public class FragmentSowing extends Fragment {
                                             if (TextUtils.isEmpty(tempText.getText().toString())){
                                                 break;
                                             }
-
                                             String text = tempText.getText().toString().toUpperCase();
+
+                                            if(fs.getIdentificador().equals("50") || fs.getIdentificador().equals("51")){
+                                                    try {
+                                                        text = Utilidades.formatearCoordenada(text);
+                                                        tempText.setText(text);
+                                                    }catch (Exception e){
+                                                        Toasty.error(requireActivity(), (e.getMessage() != null) ? e.getMessage() : "coordenada invalida", Toast.LENGTH_LONG, true).show();
+
+                                                        break;
+                                                    }
+                                            }
+
                                             for (int i1 = 0; i1 < forbiddenWords.length; i1++){
                                                 text = text.replace(forbiddenWords[i1],forbiddenReplacement[i1]);
                                             }

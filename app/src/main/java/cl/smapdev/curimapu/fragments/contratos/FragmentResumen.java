@@ -95,7 +95,6 @@ public class FragmentResumen extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bind(view);
         setHasOptionsMenu(true);
 
         if(progressBar.isShowing()) progressBar.dismiss();
@@ -159,7 +158,9 @@ public class FragmentResumen extends Fragment {
 
         ProgressDialog progressBar = new ProgressDialog(activity);
         progressBar.setTitle("cargando interfaz...");
-        progressBar.show();
+        if(!progressBar.isShowing()){
+            progressBar.show();
+        }
 
 
         exec.getBackground().execute(()-> {
@@ -178,49 +179,6 @@ public class FragmentResumen extends Fragment {
 
         exec.shutDownBackground();
     }
-
-    private class LazyLoad extends AsyncTask<Void, Void, ArrayList<ArrayList>> {
-
-        private ProgressDialog progressBar;
-        private final boolean show;
-
-        public LazyLoad(boolean show) {
-            this.show = show;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if (show){
-                progressBar = new ProgressDialog(activity);
-                progressBar.setTitle(getResources().getString(R.string.espere));
-                progressBar.show();
-            }
-
-            super.onPreExecute();
-        }
-
-        @Override
-        protected ArrayList<ArrayList> doInBackground(Void... voids) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<ArrayList> aVoid) {
-            super.onPostExecute(aVoid);
-            int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
-            global = cargarUI.cargarUI(Globalview,R.id.relative_constraint_resumen, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), 1,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
-            setearOnFocus();
-            if (show && progressBar != null && progressBar.isShowing()){
-                progressBar.dismiss();
-            }
-        }
-    }
-
 
     private void setearOnFocus(){
         if (global != null && global.size() > 0){
@@ -454,10 +412,7 @@ public class FragmentResumen extends Fragment {
             }catch (Exception e){
                 Log.e("ERROR ARRAY RESUMEN", e.getMessage());
             }
-
-
         }
-
     }
 
 
@@ -472,21 +427,9 @@ public class FragmentResumen extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (activity != null){
-                AsyncTask.execute(() -> {
-//                        if (progressBar != null && progressBar.isShowing()){
-//                             new LazyLoad(false).execute();
-            cargarInterfaz();
-//                        }
-                });
-
+                AsyncTask.execute(() -> activity.runOnUiThread(() -> cargarInterfaz()));
             }
         }
-    }
-
-
-    private void bind(View view){
-
-
     }
 
 }

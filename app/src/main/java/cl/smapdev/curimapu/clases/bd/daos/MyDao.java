@@ -458,6 +458,19 @@ public interface MyDao {
     @Query("UPDATE visita SET estado_server_visitas = 0, cabecera_visita = 0, tomadas = 0  WHERE cabecera_visita = :idCab ")
     int updateVisitasBack(int idCab);
 
+    @Query("SELECT * FROM anexo_contrato AC WHERE " +
+            " id_anexo_contrato IN (SELECT id_anexo_visita FROM visita) AND " +
+            " ( id_anexo_contrato IN (SELECT id_ac_corr_fech FROM anexo_correo_fechas WHERE anexo_correo_fechas.inicio_siembra IS NULL OR anexo_correo_fechas.inicio_siembra = '' ) OR " +
+            " id_anexo_contrato NOT IN (SELECT id_ac_corr_fech FROM anexo_correo_fechas) ) AND " +
+            " AC.temporada_anexo = :tempo")
+    List<AnexoContrato> getAnexosSinFechaSiembra(String tempo);
+
+    @Query("SELECT * FROM anexo_contrato AC WHERE " +
+            " id_anexo_contrato IN (SELECT id_anexo_visita FROM visita) AND " +
+            " ( id_anexo_contrato IN (SELECT id_ac_corr_fech FROM anexo_correo_fechas WHERE anexo_correo_fechas.inicio_siembra IS NULL OR anexo_correo_fechas.inicio_siembra = '') OR " +
+            " id_anexo_contrato NOT IN (SELECT id_ac_corr_fech FROM anexo_correo_fechas) ) AND " +
+            " id_anexo_contrato = :id_ac LIMIT 1")
+    AnexoContrato getAnexosSinFechaSiembraByAc(String id_ac);
 
     @Query("SELECT *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna  " +
             "FROM visita V " +
@@ -514,10 +527,10 @@ public interface MyDao {
 
     /* CROP ROTATION */
 
-    @Query("SELECT * FROM crop_rotation WHERE id_ficha_crop_rotation = :idFicha AND tipo_crop = 'F'  ")
+    @Query("SELECT * FROM crop_rotation WHERE id_ficha_crop_rotation = :idFicha AND tipo_crop = 'F' LIMIT 5 ")
     List<CropRotation> getCropRotation(int idFicha);
 
-    @Query("SELECT * FROM crop_rotation WHERE id_ficha_local_cp = :idFicha AND tipo_crop = 'P'  ORDER BY  crop_rotation.temporada_crop_rotation ASC")
+    @Query("SELECT * FROM crop_rotation WHERE id_ficha_local_cp = :idFicha AND tipo_crop = 'P'  ORDER BY  crop_rotation.id_ficha_crop_rotation DESC, crop_rotation.temporada_crop_rotation ASC LIMIT 5")
     List<CropRotation> getCropRotationLocal(int idFicha);
 
     @Query("SELECT * FROM crop_rotation")
@@ -572,6 +585,7 @@ public interface MyDao {
     /* DETALLE*/
     @Query("DELETE FROM detalle_visita_prop WHERE estado_detalle = 1")
     void deleteDetalle();
+
 
 
 

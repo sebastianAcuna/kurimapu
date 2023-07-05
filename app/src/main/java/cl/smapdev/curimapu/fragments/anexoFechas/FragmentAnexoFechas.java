@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,6 +61,7 @@ import cl.smapdev.curimapu.clases.relaciones.SubirFechasRetro;
 import cl.smapdev.curimapu.clases.relaciones.resFecha;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
+import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
@@ -237,7 +239,14 @@ public class FragmentAnexoFechas extends Fragment {
                 anexoCompleto = executor.submit( () -> MainActivity.myAppDB.DaoAnexosFechas().getFechasSag( fecha , "%"+query+"%"));
             }
         try {
-            crearAdaptador(anexoCompleto.get());
+            List<AnexoWithDates> ann = anexoCompleto.get();
+
+            for (AnexoWithDates acDate : ann) {
+                AnexoContrato ac = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexosSinFechaSiembraByAc(acDate.getAnexoCompleto().getAnexoContrato().getId_anexo_contrato())).get();
+                ann.get(ann.indexOf(acDate)).setFaltaVisita((ac != null));
+            }
+
+            crearAdaptador(ann);
             executor.shutdown();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -254,7 +263,9 @@ public class FragmentAnexoFechas extends Fragment {
                     }
 
                     DialogAnexoFecha dialogo = DialogAnexoFecha.newInstance(anexos,(saved, query) -> {
-                        search_anexo_fecha.setQuery(query, true);
+//                        search_anexo_fecha.setQuery(null, false);
+//                       search_anexo_fecha.setQuery(search_anexo_fecha.getQuery().toString(), true);
+                        cargarLista(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()),query);
                     }, search_anexo_fecha.getQuery().toString());
                     dialogo.show(ft, "EDICION_ANEXO_FECHA");
                 },
@@ -300,8 +311,6 @@ public class FragmentAnexoFechas extends Fragment {
                 }
             });
 
-//            subirFechas(fechas);
-
         }, 1);
         mm.execute();
     }
@@ -346,6 +355,7 @@ public class FragmentAnexoFechas extends Fragment {
                                         acf.setCorreo_termino_cosecha(fc.getCorreo_termino_cosecha());
                                         acf.setCorreo_inicio_despano(fc.getCorreo_inicio_despano());
                                         acf.setCorreo_inicio_cosecha(fc.getCorreo_inicio_cosecha());
+                                        acf.setCorreo_inicio_siembra(fc.getCorreo_inicio_siembra());
                                         acf.setCorreo_inicio_corte_seda(fc.getCorreo_inicio_corte_seda());
                                         acf.setCorreo_cinco_porciento_floracion(fc.getCorreo_cinco_porciento());
                                         acf.setDetalle_labores(fc.getDetalle());

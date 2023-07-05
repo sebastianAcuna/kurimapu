@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
     private final TextView comuna;
 
     private final ImageView corr_inicio_despano;
+    private final ImageView corr_inicio_siembra;
     private final ImageView corr_5_floracion;
     private final ImageView corr_inicio_corte_seda;
     private final ImageView corr_inicio_cosecha;
@@ -38,13 +40,16 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
 
     private final ConstraintLayout contenedor_resumen_correo;
 
+    private LinearLayout contenedor_alerta;
 
 
 
     private final TextView condicion;
 
     private final TextView tv_inicio_despano;
+    private final TextView tv_inicio_siembra;
     private final ImageView iv_inicio_despano;
+    private final ImageView iv_inicio_siembra;
     private final TextView tv_5_floracion;
     private final ImageView iv_5_floracion;
     private final TextView tv_inicio_corte_seda;
@@ -85,6 +90,7 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
 
         condicion = itemView.findViewById(R.id.condicion);
 
+        corr_inicio_siembra = itemView.findViewById(R.id.corr_inicio_siembra);
         corr_inicio_despano = itemView.findViewById(R.id.corr_inicio_despano);
         corr_5_floracion = itemView.findViewById(R.id.corr_5_floracion);
         corr_inicio_corte_seda = itemView.findViewById(R.id.corr_inicio_corte_seda);
@@ -93,10 +99,13 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
         corr_termino_labores = itemView.findViewById(R.id.corr_termino_labores);
         corr_siembra_temprana = itemView.findViewById(R.id.corr_siembra_temprana);
         corr_destruccion_semillero = itemView.findViewById(R.id.corr_destruccion_semillero);
+        contenedor_alerta = itemView.findViewById(R.id.contenedor_alerta);
 
 
 
         contenedor_resumen_correo = itemView.findViewById(R.id.contenedor_resumen_correo);
+        tv_inicio_siembra = itemView.findViewById(R.id.tv_inicio_siembra);
+        iv_inicio_siembra = itemView.findViewById(R.id.iv_inicio_siembra);
         tv_inicio_despano = itemView.findViewById(R.id.tv_inicio_despano);
         iv_inicio_despano = itemView.findViewById(R.id.iv_inicio_despano);
         tv_5_floracion = itemView.findViewById(R.id.tv_5_floracion);
@@ -147,11 +156,11 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
             correoSi.setTint(itemView1.getContext().getColor(R.color.colorGreen));
             Drawable correoNo = itemView1.getContext().getDrawable(R.drawable.ic_baseline_email_24_no);
 
-
-
+        contenedor_alerta.setVisibility((anexo.isFaltaVisita()) ? View.VISIBLE : View.GONE);
             if(anexoCorreos != null){
 
                 String inicioDespano = (anexoCorreos.getInicio_despano() != null && !anexoCorreos.getInicio_despano().equals("0000-00-00") ? anexoCorreos.getInicio_despano() : "" );
+                String inicioSiembra = (anexoCorreos.getInicio_siembra() != null && !anexoCorreos.getInicio_siembra().equals("0000-00-00") ? anexoCorreos.getInicio_siembra() : "" );
                 String cincoPorciento = (anexoCorreos.getCinco_porciento_floracion() != null && !anexoCorreos.getCinco_porciento_floracion().equals("0000-00-00") ? anexoCorreos.getCinco_porciento_floracion() :"" );
                 String inicioCorteSeda = (anexoCorreos.getInicio_corte_seda() != null && !anexoCorreos.getInicio_corte_seda().equals("0000-00-00") ? anexoCorreos.getInicio_corte_seda() : "" );
                 String inicioCosecha = (anexoCorreos.getInicio_cosecha() != null && !anexoCorreos.getInicio_cosecha().equals("0000-00-00") ? anexoCorreos.getInicio_cosecha() : "" );
@@ -170,6 +179,8 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
                 String horaDestruccionSemillero = (anexoCorreos.getHora_destruccion_semillero() == null) ? "" : anexoCorreos.getHora_destruccion_semillero();
                 String horaInicioCosecha = (anexoCorreos.getHora_inicio_cosecha() == null) ? "" : anexoCorreos.getHora_inicio_cosecha();
 
+
+                corr_inicio_siembra.setImageDrawable((anexoCorreos.getCorreo_inicio_siembra() > 0) ? correoSi : correoNo);
                 corr_inicio_despano.setImageDrawable((anexoCorreos.getCorreo_inicio_despano() > 0) ? correoSi : correoNo);
                 corr_5_floracion.setImageDrawable((anexoCorreos.getCorreo_cinco_porciento_floracion() > 0) ? correoSi: correoNo );
                 corr_inicio_corte_seda.setImageDrawable((anexoCorreos.getCorreo_inicio_corte_seda() > 0) ? correoSi : correoNo );
@@ -183,6 +194,7 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
 
 
 
+                iv_inicio_siembra.setImageDrawable((anexoCorreos.getCorreo_inicio_siembra() > 0) ? correoSi : correoNo);
                 iv_inicio_despano.setImageDrawable((anexoCorreos.getCorreo_inicio_despano() > 0) ? correoSi : correoNo);
                 iv_5_floracion.setImageDrawable((anexoCorreos.getCorreo_cinco_porciento_floracion() > 0) ? correoSi: correoNo );
                 iv_inicio_corte_seda.setImageDrawable((anexoCorreos.getCorreo_inicio_corte_seda() > 0) ? correoSi : correoNo );
@@ -201,6 +213,7 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
                 tv_destruccion_semillero.setText(destruccionSemillero + " " + horaDestruccionSemillero);
 
 
+                tv_inicio_siembra.setText(inicioSiembra);
                 tv_inicio_despano.setText(inicioDespano);
                 tv_5_floracion.setText(cincoPorciento);
                 tv_inicio_corte_seda.setText(inicioCorteSeda);

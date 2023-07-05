@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -106,6 +107,7 @@ public class FragmentPrincipal extends Fragment {
 
     private LinearLayout contenedor_botones;
 
+    private LinearLayout contenedor_alerta_inicio;
 
     private TextView lbl_muestra_subidas;
     private ImageView  img_muestra_subidas;
@@ -193,6 +195,7 @@ public class FragmentPrincipal extends Fragment {
         visitas_marca = view.findViewById(R.id.visitas_marca);
 
         contenedor_botones = view.findViewById(R.id.contenedor_botones);
+        contenedor_alerta_inicio = view.findViewById(R.id.contenedor_alerta_inicio);
 
         titulo_sitios_no_visitados = view.findViewById(R.id.titulo_sitios_no_visitados);
         titulo_primera_prioridad = view.findViewById(R.id.titulo_primera_prioridad);
@@ -288,6 +291,24 @@ public class FragmentPrincipal extends Fragment {
             prepararVisitas();
         });
 
+        revisarAnexosPendienteFecha();
+    }
+
+
+    void revisarAnexosPendienteFecha(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<List<AnexoContrato>> anexosF = executorService.submit(()->MainActivity.myAppDB.myDao().getAnexosSinFechaSiembra(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
+
+        try {
+            List<AnexoContrato> anexos = anexosF.get();
+
+            contenedor_alerta_inicio.setVisibility((anexos.size() > 0) ? View.VISIBLE : View.GONE);
+            executorService.shutdown();
+
+        } catch (ExecutionException | InterruptedException e) {
+            executorService.shutdown();
+            Log.e("ERROR_ALERTA", "ERROR"+e.getMessage());
+        }
 
     }
 

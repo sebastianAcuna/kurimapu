@@ -24,6 +24,8 @@
     <!--    No tienes conexión a internet-->
     <string name="sync_up_menu">Uploads</string>
 
+    <string name="nav_take_pick_roots">Tomar foto raices</string>
+
 
     <!-- MENU LATERAL -->
     <string name="subtitles_visit">Annexes</string>
@@ -114,10 +116,10 @@ Depending on the state, it can be edited or not.</string>
 
     <string name="propiedad">Properties</string>
     <string name="valor">Value</string>
-    <string name="set_norting">Ingrese latitude</string>
-    <string name="set_easting">Ingrese longitude</string>
-    <string name="ingrese_norte_manual">ingrese latitude manual</string>
-    <string name="ingrese_easting_manual">ingrese longitude manual</string>
+    <string name="set_norting">Ingrese latitude (N) </string>
+    <string name="set_easting">Ingrese longitude (E) </string>
+    <string name="ingrese_norte_manual">ingrese latitude (N) manual</string>
+    <string name="ingrese_easting_manual">ingrese longitude (E) manual</string>
     <string name="observations">Observations</string>
 
 
@@ -431,4 +433,8 @@ Depending on the state, it can be edited or not.</string>
     <string name="hora_de_ingreso">HORA DE INGRESO</string>
     <string name="destruccion_de_semillero">Destruccion de semillero</string>
     <string name="siembra_temprana">Siembra Temprana</string>
+    <string name="curiweb">Curiweb</string>
+    <string name="fotografia_raices">fotografia raices</string>
+    <string name="fotos_raices">Fotos Raices</string>
+    <string name="inicio_siembra">Inicio siembra hembra</string>
 </resources>

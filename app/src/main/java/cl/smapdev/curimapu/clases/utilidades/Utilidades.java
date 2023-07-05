@@ -26,11 +26,15 @@ import androidx.exifinterface.media.ExifInterface;
 
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -42,7 +46,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import cl.smapdev.curimapu.R;
@@ -50,7 +56,7 @@ import cl.smapdev.curimapu.R;
 public class Utilidades {
 
 //    public static final String APPLICATION_VERSION = "4.0.0912";
-    public static final String APPLICATION_VERSION = "4.1.0000";
+    public static final String APPLICATION_VERSION = "4.2.0000";
 
     public static final String FRAGMENT_INICIO = "fragment_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -73,6 +79,7 @@ public class Utilidades {
     public static final String FRAGMENT_SERVIDOR = "fragment_servidor";
     public static final String FRAGMENT_ANEXO_FICHA = "fragment_anexo_ficha";
 
+    public static final String FRAGMENT_WB = "fragment_wb";
 
     public static final String affiliate_id = "vb7jbic553ts";
 
@@ -84,10 +91,12 @@ public class Utilidades {
     public static final int TIPO_DOCUMENTO_CHECKLIST_LIMPIEZA_CAMIONES = 5;
     public static final int TIPO_DOCUMENTO_CHECKLIST_DEVOLUCION_SEMILLA = 6;
 
-//    public static final String IP_PRODUCCION = "192.168.1.42";
-    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
-    public static final String URL_SERVER_API = "https://"+IP_PRODUCCION+"";
-//    public static final String URL_SERVER_API = "http://"+IP_PRODUCCION+"/curimapu";
+
+    public static final String KEY_EXPORT = "9aB4c5D7eF";
+    public static final String IP_PRODUCCION = "192.168.1.42";
+//    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
+//    public static final String URL_SERVER_API = "https://"+IP_PRODUCCION+"";
+    public static final String URL_SERVER_API = "http://"+IP_PRODUCCION+"/curimapu";
 
 //    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
@@ -145,6 +154,8 @@ public class Utilidades {
     public static final String VISTA_FOTOS = "vista";
 
 
+
+
     public static boolean isNumeric(String texto){
         try{
             Integer.parseInt(texto);
@@ -154,6 +165,23 @@ public class Utilidades {
         }
     }
 
+    public static String formatearCoordenada(String coordenada) throws Exception {
+
+        if(coordenada.isEmpty()) return "";
+        String nuevaCoordenada = coordenada;
+        if(coordenada.length() < 10){
+            throw new Exception("El largo de la coordenada debe ser de 10 caracteres.");
+        }
+
+        if(coordenada.length() > 10){
+            nuevaCoordenada = coordenada.substring(0, 10);
+        }
+
+        nuevaCoordenada = nuevaCoordenada.replaceAll("\\.", "").replaceAll("-", "");
+        nuevaCoordenada = nuevaCoordenada.substring(0, 2)+"."+nuevaCoordenada.substring(2);
+
+        return "-"+nuevaCoordenada;
+    }
 
     public static long compararFechas(String inputString2){
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -211,6 +239,19 @@ public class Utilidades {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static File createImageFile(Activity activity) throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        return image;
     }
 
     public static int getPhenoState(int position){
@@ -326,6 +367,10 @@ public class Utilidades {
         try{
             if(!TextUtils.isEmpty(edit.getText())){
                 horaRota = edit.getText().toString().split(":");
+
+                if(horaRota.length <= 1){
+                    horaRota= hora.split(":");
+                }
             }else{
                 horaRota = hora.split(":");
             }
