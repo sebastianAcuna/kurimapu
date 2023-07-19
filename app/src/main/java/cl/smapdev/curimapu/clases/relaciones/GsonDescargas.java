@@ -10,6 +10,7 @@ import cl.smapdev.curimapu.clases.tablas.AgrPredTemp;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
+import cl.smapdev.curimapu.clases.tablas.AnexoVilab;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
@@ -50,6 +51,11 @@ public class GsonDescargas {
     @SerializedName("array_detalle_prop")
     @Embedded
     private List<pro_cli_mat> pro_cli_matList;
+
+
+    @SerializedName("array_anexo_vilab")
+    @Embedded
+    private List<AnexoVilab> anexoVilabList;
 
 
 
@@ -122,6 +128,10 @@ public class GsonDescargas {
     @SerializedName("array_fichas")
     @Embedded
     private List<FichasNew> fichasList;
+
+    @SerializedName("array_prospectos")
+    @Embedded
+    private List<Fichas>  prospectosList;
 
     @SerializedName("array_um")
     @Embedded
@@ -200,6 +210,22 @@ public class GsonDescargas {
     @Embedded
     private List<AnexoCorreoFechas> array_fechas_anexos;
 
+
+    public List<AnexoVilab> getAnexoVilabList() {
+        return anexoVilabList;
+    }
+
+    public void setAnexoVilabList(List<AnexoVilab> anexoVilabList) {
+        this.anexoVilabList = anexoVilabList;
+    }
+
+    public List<Fichas> getProspectosList() {
+        return prospectosList;
+    }
+
+    public void setProspectosList(List<Fichas> prospectosList) {
+        this.prospectosList = prospectosList;
+    }
 
     public List<ChecklistDevolucionSemilla> getChecklistDevolucionSemillas() {
         return checklistDevolucionSemillas;

@@ -224,6 +224,9 @@ public interface MyDao {
     @Insert
     List<Long> insertFicha(List<FichasNew> fichas);
 
+    @Insert
+    List<Long> insertProsectos(List<Fichas> prospectos);
+
     @Update
     int updateFicha(Fichas fichas);
 
@@ -243,11 +246,15 @@ public interface MyDao {
             "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_ficha)" +
             "INNER JOIN region R ON (R.id_region = F.id_region_ficha)" +
             "INNER JOIN provincia P ON (P.id_provincia = C.id_provincia_comuna)" +
-            "WHERE anno = :year AND F.activa != 2 ")
+            "WHERE anno = :year  ")
     List<FichasCompletas> getFichasByYear(String year);
 
     @Query("DELETE FROM ficha_new ; ")
     void deleteFichas();
+
+
+    @Query("DELETE FROM ficha ; ")
+    void deleteProspectos();
 
 
     @RawQuery

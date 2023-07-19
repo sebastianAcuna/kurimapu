@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,11 +21,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,6 +48,7 @@ import cl.smapdev.curimapu.clases.modelo.WeatherApiRequest;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
+import cl.smapdev.curimapu.clases.tablas.AnexoVilab;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.WeatherApi;
 import cl.smapdev.curimapu.clases.tablas.WeatherApiStatus;
@@ -64,9 +69,11 @@ public class FragmentListVisits extends Fragment {
     private SharedPreferences prefs;
     private MainActivity activity;
     private RecyclerView lista_visitas;
-    private ImageView ic_collapse;
+    private ImageView ic_collapse, img_vilab;
     private AnexoContrato anexoContrato = null;
     private Button btn_nueva_visita, btn_carpeta_virtual;
+    private ConstraintLayout contenedor_vilab;
+    private TextView fecha_ndvi, indicador_ndvi;
     private TextView lbl_titulo_comuna;
 
     private RecyclerView weather_list;
@@ -154,6 +161,10 @@ public class FragmentListVisits extends Fragment {
 
         weather_list = view.findViewById(R.id.weather_list);
         lbl_titulo_comuna = view.findViewById(R.id.lbl_titulo_comuna);
+        img_vilab = view.findViewById(R.id.img_vilab);
+        fecha_ndvi = view.findViewById(R.id.fecha_ndvi);
+        indicador_ndvi = view.findViewById(R.id.indicador_ndvi);
+        contenedor_vilab = view.findViewById(R.id.contenedor_vilab);
 
 
 //        setHasOptionsMenu(true);
@@ -372,11 +383,25 @@ public class FragmentListVisits extends Fragment {
                     });
 
                 }
+
+                if(anexoCompleto != null){
+                    AnexoVilab vilab = executor.submit(()-> MainActivity.myAppDB.DaoVilab().getVilabByAc(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()))).get();
+                    if(vilab != null){
+                        String ndvi = (vilab.promedio_vilab == null) ? "n/a" : vilab.promedio_vilab;
+                        contenedor_vilab.setVisibility(View.VISIBLE);
+                        Picasso.get().load("file://"+ Environment.getExternalStorageDirectory()+"/DCIM/"+vilab.nombre_imagen).into(img_vilab);
+                        indicador_ndvi.setText("NDVI: "+ndvi);
+                        fecha_ndvi.setText("Fecha: "+vilab.fecha_imagen_ndvi);
+                    }
+                }
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
+                executor.shutdown();
             }
 
-            executor.shutdown();
+            if(!executor.isShutdown()){
+                executor.shutdown();
+            }
 
         }
 

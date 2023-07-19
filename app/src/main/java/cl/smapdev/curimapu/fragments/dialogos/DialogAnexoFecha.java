@@ -105,6 +105,9 @@ public class DialogAnexoFecha  extends DialogFragment  {
         AnexoCompleto anexoCompleto = this.anexos.getAnexoCompleto();
 
         builder.setTitle("Fechas Anexo " + anexoCompleto.getAnexoContrato().getAnexo_contrato());
+
+        et_cantidad_ha_destruccion.setText(anexoCompleto.getAnexoContrato().getHas_gps());
+
         if(anexoFechas != null){
 
 
@@ -186,6 +189,10 @@ public class DialogAnexoFecha  extends DialogFragment  {
 
             et_fecha_destruccion.setText(Utilidades.voltearFechaVista(anexoFechas.getFecha_destruccion_semillero()));
             et_hora_destruccion.setText(anexoFechas.getHora_destruccion_semillero());
+
+
+
+
             if(anexoFechas.getCantidad_has_destruidas() != null){
                 et_cantidad_ha_destruccion.setText(String.valueOf(anexoFechas.getCantidad_has_destruidas()));
             }
@@ -219,7 +226,6 @@ public class DialogAnexoFecha  extends DialogFragment  {
 
         rbtn_parcial.setOnClickListener(view1 -> {
             cont_detalle_destruccion.setVisibility(View.VISIBLE);
-            //eliminar data que tenga los cuadros de texto
         });
 
         rbtn_completo.setOnClickListener(view1 -> {

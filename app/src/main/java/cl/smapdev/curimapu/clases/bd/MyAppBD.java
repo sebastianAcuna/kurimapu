@@ -12,8 +12,10 @@ import cl.smapdev.curimapu.clases.bd.daos.DaoChecklistDevolucionSemilla;
 import cl.smapdev.curimapu.clases.bd.daos.DaoEvaluaciones;
 import cl.smapdev.curimapu.clases.bd.daos.DaoFirmasTemp;
 import cl.smapdev.curimapu.clases.bd.daos.MyDao;
+import cl.smapdev.curimapu.clases.bd.daos.DaoVilab;
 import cl.smapdev.curimapu.clases.tablas.AgrPredTemp;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
+import cl.smapdev.curimapu.clases.tablas.AnexoVilab;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
@@ -68,7 +70,8 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         cli_pcm.class, quotation.class, FotosFichas.class, AgrPredTemp.class, FichasNew.class,
         AnexoCorreoFechas.class, Evaluaciones.class, CheckListSiembra.class, TempFirmas.class,
         CheckListCosecha.class, CheckListCapacitacionSiembra.class,
-        CheckListCapacitacionSiembraDetalle.class, CheckListLimpiezaCamiones.class, ChecklistLimpiezaCamionesDetalle.class, ChecklistDevolucionSemilla.class
+        CheckListCapacitacionSiembraDetalle.class, CheckListLimpiezaCamiones.class,
+        ChecklistLimpiezaCamionesDetalle.class, ChecklistDevolucionSemilla.class, AnexoVilab.class
         }, version = 14)
 public abstract class MyAppBD extends RoomDatabase {
         public abstract MyDao myDao();
@@ -80,5 +83,6 @@ public abstract class MyAppBD extends RoomDatabase {
         public abstract DaoCheckListCosecha DaoCheckListCosecha();
         public abstract DaoCheckListLimpiezaCamiones DaoCheckListLimpiezaCamiones();
         public abstract DaoChecklistDevolucionSemilla DaoCheckListDevolucionSemilla();
+        public abstract DaoVilab DaoVilab();
 
 }

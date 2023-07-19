@@ -18,7 +18,7 @@ import retrofit2.http.Query;
 public interface ApiService {
 
     @GET("descarga_de_datos.php")
-    Call<GsonDescargas> descargarDatos(@Query("id") int id, @Query("id_usuario") int id_user, @Query("version") String version);
+    Call<GsonDescargas> descargarDatos(@Query("id") int id, @Query("id_usuario") int id_user, @Query("version") String version, @Query("temporada") String temporada);
 
     @GET("primera_descarga.php")
     Call<GsonDescargas> descargaPrimera(@Query("imei") String imei, @Query("id") int id, @Query("version") String version);

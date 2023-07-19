@@ -903,8 +903,6 @@ public class FragmentCreaFicha extends Fragment {
         try {
             coordNorting = Utilidades.formatearCoordenada(norting);
             coordEasting = Utilidades.formatearCoordenada(easting);
-
-
         }catch (Exception e){
             Toasty.error(requireActivity(), (e.getMessage() != null) ? e.getMessage() : "No se pudo formatear la coordenada, debe contener 10 caracteres" , Toast.LENGTH_LONG, true).show();
             return;
@@ -917,6 +915,7 @@ public class FragmentCreaFicha extends Fragment {
                 || sp_provincia_agricultor.getSelectedItemPosition() <= 0
                 || sp_region_agricultor.getSelectedItemPosition() <= 0 ){
             Utilidades.avisoListo(activity, "Falto algo", "Debe completar todos los campos con la marca (*) ", "OK");
+            return;
         }
 
 

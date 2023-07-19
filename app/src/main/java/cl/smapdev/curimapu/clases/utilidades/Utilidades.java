@@ -58,7 +58,7 @@ public class Utilidades {
 //    public static final String APPLICATION_VERSION = "4.0.0912";
     public static final String APPLICATION_VERSION = "4.2.0000";
 
-    public static final String FRAGMENT_INICIO = "fragment_inicio";
+    public static final String FRAGMENT_INICIO = "fragmental_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
     public static final String FRAGMENT_VISITAS = "fragment_visitas";
     public static final String FRAGMENT_CONTRATOS = "fragment_contratos";
@@ -95,6 +95,7 @@ public class Utilidades {
     public static final String KEY_EXPORT = "9aB4c5D7eF";
     public static final String IP_PRODUCCION = "192.168.1.42";
 //    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
+//    public static final String IP_PRODUCCION = "curiexport.pruebas-erp.cl";
 //    public static final String URL_SERVER_API = "https://"+IP_PRODUCCION+"";
     public static final String URL_SERVER_API = "http://"+IP_PRODUCCION+"/curimapu";
 
@@ -169,15 +170,17 @@ public class Utilidades {
 
         if(coordenada.isEmpty()) return "";
         String nuevaCoordenada = coordenada;
-        if(coordenada.length() < 10){
+        nuevaCoordenada = nuevaCoordenada.replaceAll("\\.", "").replaceAll("-", "");
+
+        if(nuevaCoordenada.length() < 8){
             throw new Exception("El largo de la coordenada debe ser de 10 caracteres.");
         }
 
-        if(coordenada.length() > 10){
-            nuevaCoordenada = coordenada.substring(0, 10);
+        if(nuevaCoordenada.length() > 8){
+            nuevaCoordenada = nuevaCoordenada.substring(0, 8);
         }
 
-        nuevaCoordenada = nuevaCoordenada.replaceAll("\\.", "").replaceAll("-", "");
+
         nuevaCoordenada = nuevaCoordenada.substring(0, 2)+"."+nuevaCoordenada.substring(2);
 
         return "-"+nuevaCoordenada;

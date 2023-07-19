@@ -3,9 +3,12 @@ package cl.smapdev.curimapu.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -62,6 +66,7 @@ import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
+import cl.smapdev.curimapu.clases.tablas.AnexoVilab;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
@@ -78,11 +83,13 @@ import cl.smapdev.curimapu.clases.tablas.FotosFichas;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
+import cl.smapdev.curimapu.clases.utilidades.DescargaImagenes;
 import cl.smapdev.curimapu.clases.utilidades.InternetStateClass;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.returnValuesFromAsyntask;
 import cl.smapdev.curimapu.infraestructure.utils.coroutines.ApplicationExecutors;
 import es.dmoral.toasty.Toasty;
+import kotlin.collections.EmptyList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -90,7 +97,12 @@ import retrofit2.Response;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static cl.smapdev.curimapu.clases.utilidades.Descargas.volqueoDatos;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.squareup.picasso.Picasso;
+
 public class FragmentPrincipal extends Fragment {
+
 
     private MainActivity activity;
 
@@ -115,12 +127,16 @@ public class FragmentPrincipal extends Fragment {
     private ConstraintLayout contenedor_botonera_subida;
     private Button btn_subir_check, btn_subir_recomendaciones;
 
+    private ProgressDialog vilabProgressDialog;
+
 
     private Button btn_descargar;
     private Button btn_preparar;
     private Button btn_sube_marcadas;
 
     private TextView visitas_titulo,visitas_marca;
+
+    private ImageView imagen_muestra;
 
 
 
@@ -148,6 +164,14 @@ public class FragmentPrincipal extends Fragment {
 
     private View view;
 
+    private Handler handler = new Handler();
+    private int retryDelay = 500;
+    private Runnable retryRunnable;
+
+    private int currentQueue = 1;
+    private int totalQueue;
+    private List<Integer> imagenesDescargadas = new ArrayList<>();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,9 +182,16 @@ public class FragmentPrincipal extends Fragment {
             progressDialogGeneral = new ProgressDialog(activity);
         }
 
+        vilabProgressDialog = new ProgressDialog(activity);
+
         temporadaList = MainActivity.myAppDB.myDao().getTemporada();
-        if (temporadaList.size() > 0){
-            for (Temporada t : temporadaList){
+        setSpecialSeason(temporadaList);
+
+    }
+
+    public void setSpecialSeason(List<Temporada> temporadas){
+        if (temporadas.size() > 0){
+            for (Temporada t : temporadas){
                 id_temporadas.add(t.getId_tempo_tempo());
                 desc_temporadas.add(t.getNombre_tempo());
 
@@ -169,7 +200,6 @@ public class FragmentPrincipal extends Fragment {
                 }
             }
         }
-
     }
 
     @Nullable
@@ -211,6 +241,8 @@ public class FragmentPrincipal extends Fragment {
         contenedor_botonera_subida = view.findViewById(R.id.contenedor_botonera_subida);
         btn_subir_check = view.findViewById(R.id.btn_subir_check);
         btn_subir_recomendaciones = view.findViewById(R.id.btn_subir_recomendaciones);
+
+        imagen_muestra = view.findViewById(R.id.imagen_muestra);
 
 
 
@@ -968,40 +1000,96 @@ public class FragmentPrincipal extends Fragment {
         Config cnf = MainActivity.myAppDB.myDao().getConfig();
         String vv = Utilidades.APPLICATION_VERSION;
         ApiService apiService = RetrofitClient.getClient(cnf.getServidorSeleccionado()).create(ApiService.class);
-        Call<GsonDescargas> call = apiService.descargarDatos(cnf.getId(), cnf.getId_usuario_suplandato(), vv);
+        Call<GsonDescargas> call = apiService.descargarDatos(cnf.getId(), cnf.getId_usuario_suplandato(), vv, id_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
         call.enqueue(new Callback<GsonDescargas>() {
             @Override
             public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
+                GsonDescargas gsonDescargas = response.body();
 
-                boolean[] problema = volqueoDatos(response.body(), getActivity());
-                if (!problema[0] && !problema[1]){
-                    temporadaList = MainActivity.myAppDB.myDao().getTemporada();
-                    if (temporadaList.size() > 0){
-                        for (Temporada t : temporadaList){
-                            id_temporadas.add(t.getId_tempo_tempo());
-                            desc_temporadas.add(t.getNombre_tempo());
+                if( gsonDescargas == null) {
+                    Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", "respuesta nula", "aceptar");
+                    return;
+                }
+
+                if(gsonDescargas.getRespuestas() != null && gsonDescargas.getRespuestas().size() > 0){
+                    for(Respuesta rsp : gsonDescargas.getRespuestas()){
+                        switch(rsp.getCodigoRespuesta()){
+                            case 5:
+                                    activity.cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
+                                    return;
+                            case 2:
+                                Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", rsp.getMensajeRespuesta()
+                                        +" por favor vuelva a intentarlo, si el problema persiste contacte con un administrador", "aceptar");
+                                return;
                         }
                     }
-                    cargarToolbar();
-                    Config config = MainActivity.myAppDB.myDao().getConfig();
-                    if (config != null){
-                        activity.cambiarNombreUser(config.getId_usuario());
-                    }
-                    Toasty.info(activity, "Todo descargado con exito", Toast.LENGTH_SHORT, true).show();
-                }else{
-                    if (problema[1]){
-//                                    Utilidades.avisoListo(activity, "ATENCION", "NO TIENES LA ULTIMA VERSION DE LA APLICACION, FAVOR ACTUALIZAR", "ËNTIENDO");
-                        activity.cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
-                    }
-                    Errores errores = new Errores();
-                    errores.setCodigo_error(66);
-                    errores.setMensaje_error("positivo en true al descargar home");
-                    MainActivity.myAppDB.myDao().setErrores(errores);
-                    Toasty.error(activity, "No se pudo descargar todo "+response.errorBody(), Toast.LENGTH_SHORT, true).show();
                 }
-                if (getView() != null) {
-                    progressDialog.dismiss();
-                }
+
+                progressDialog.setMessage("insertando datos...");
+                ExecutorService ex = Executors.newSingleThreadExecutor();
+                ex.execute(()->{
+                    Future<boolean[]> futureProblem = ex.submit(() -> volqueoDatos(gsonDescargas, getActivity()));
+                    Future<Config> futureConfig = ex.submit(() -> MainActivity.myAppDB.myDao().getConfig());
+                        new Thread(() -> {
+                            try {
+                                final boolean[] problema = futureProblem.get();
+                                Future<List<Temporada>> futureTempo = ex.submit(()->MainActivity.myAppDB.myDao().getTemporada());
+
+                                Config config = futureConfig.get();
+                                temporadaList = futureTempo.get();
+                                setSpecialSeason(temporadaList);
+//                                final boolean[] problema = {false,false};
+
+                                List<AnexoVilab> vilabList = ex.submit(() -> MainActivity.myAppDB.DaoVilab().getVilab()).get();
+                                activity.runOnUiThread(() -> {
+                                        DescargaImagenes descargaImagenes  =  DescargaImagenes.getInstance(activity);
+                                        ImageLoader imageLoader = new ImageLoader(descargaImagenes.getRequestQueue(), new ImageLoader.ImageCache() {
+                                            @Nullable
+                                            @Override
+                                            public Bitmap getBitmap(String url) {
+                                                return null;
+                                            }
+
+                                            @Override
+                                            public void putBitmap(String url, Bitmap bitmap) { }
+                                        });
+
+                                        totalQueue = vilabList.size();
+                                        imagenesDescargadas = new ArrayList<>();
+                                        int current = 1;
+                                        for (AnexoVilab avilab : vilabList){
+                                            downloadImage(avilab, imageLoader, descargaImagenes, 0, current);
+                                            current++;
+                                        }
+
+
+                                    if (!problema[0] && !problema[1]){
+                                        cargarToolbar();
+                                        if (config != null){
+                                            activity.cambiarNombreUser(config.getId_usuario());
+                                        }
+                                        progressDialog.dismiss();
+                                        Toasty.info(activity, "Todo descargado con exito", Toast.LENGTH_SHORT, true).show();
+                                        ex.shutdown();
+                                    }else{
+                                        Errores errores = new Errores();
+                                        errores.setCodigo_error(66);
+                                        errores.setMensaje_error("positivo en true al descargar home");
+                                        MainActivity.myAppDB.myDao().setErrores(errores);
+                                        progressDialog.dismiss();
+                                        Toasty.error(activity, "No se pudo descargar todo "+response.errorBody(), Toast.LENGTH_SHORT, true).show();
+                                        ex.shutdown();
+                                    }
+                                });
+                            }  catch (ExecutionException | InterruptedException e) {
+                                ex.shutdown();
+                                progressDialog.dismiss();
+                            }
+                        }).start();
+
+                });
+
+
             }
 
             @Override
@@ -1019,6 +1107,89 @@ public class FragmentPrincipal extends Fragment {
         });
     }
 
+
+    private void downloadImage(AnexoVilab avilab, ImageLoader imageLoader, DescargaImagenes descargaImagenes, int intento, int current){
+
+            String imgUrl = Utilidades.URL_SERVER_API+"/docs/levantar_adjunto.php?ruta_archivo="+avilab.ruta_img_vilab;
+
+            if(vilabProgressDialog != null && !vilabProgressDialog.isShowing() && current < totalQueue){
+                vilabProgressDialog.setTitle("Falta poco");
+                vilabProgressDialog.setMessage("descargando imagenes de vilab");
+                vilabProgressDialog.setMax(totalQueue);
+                vilabProgressDialog.show();
+            }
+
+            imageLoader.get(imgUrl, new ImageLoader.ImageListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("DESCARGA", currentQueue+" == "+totalQueue);
+                    if(currentQueue >= totalQueue || current == totalQueue && vilabProgressDialog.isShowing()){
+                        vilabProgressDialog.dismiss();
+                    }
+                    if(imagenesDescargadas.contains(avilab.id_vilab) || intento > 3) return;
+                    startRetryDelay(avilab, imageLoader, descargaImagenes, intento + 1, current);
+                }
+
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    Bitmap bitmap = response.getBitmap();
+
+                    Log.i("DESCARGA QUEUE", currentQueue+" == "+totalQueue);
+                    if(currentQueue >= totalQueue && vilabProgressDialog.isShowing()){
+                        vilabProgressDialog.dismiss();
+                    }
+
+                    if(imagenesDescargadas.contains(avilab.id_vilab)) return;
+                    if(bitmap == null) {
+                        if(intento > 3) return;
+                        startRetryDelay(avilab, imageLoader, descargaImagenes, intento + 1, current);
+                        return;
+                    }
+
+
+                    vilabProgressDialog.setProgress(currentQueue);
+                    descargaImagenes.saveImageToDisk(bitmap, avilab.nombre_imagen);
+                    imagenesDescargadas.add(avilab.id_vilab);
+
+                    currentQueue++;
+
+                    Log.i("DESCARGA CURRENT", current+" == "+totalQueue);
+                    if(current >= totalQueue && vilabProgressDialog.isShowing()){
+                        vilabProgressDialog.dismiss();
+                    }
+                    cancelRetry();
+                }
+            });
+    }
+
+    private void startRetryDelay(AnexoVilab avilab, ImageLoader imageLoader, DescargaImagenes descargaImagenes, int intento, int current) {
+        // Si ya existe un retardo de reintentar, no es necesario crear uno nuevo
+        if (retryRunnable != null) {
+            return;
+        }
+        retryRunnable = () -> downloadImage(avilab, imageLoader, descargaImagenes, intento, current);
+
+        handler.postDelayed(retryRunnable, retryDelay);
+    }
+
+    private void cancelRetry() {
+        // Cancelar el retardo de reintentar si existe
+        if (retryRunnable != null) {
+            handler.removeCallbacks(retryRunnable);
+            retryRunnable = null;
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        cancelRetry();
+        DescargaImagenes descargaImagenes  =  DescargaImagenes.getInstance(activity);
+        descargaImagenes.cancelQueue();
+
+    }
 
     @Override
     public void onResume() {
