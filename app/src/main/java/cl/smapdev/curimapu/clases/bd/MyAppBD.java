@@ -9,6 +9,7 @@ import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListCosecha;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListLimpiezaCamiones;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListSiembra;
 import cl.smapdev.curimapu.clases.bd.daos.DaoChecklistDevolucionSemilla;
+import cl.smapdev.curimapu.clases.bd.daos.DaoEstacionFloracion;
 import cl.smapdev.curimapu.clases.bd.daos.DaoEvaluaciones;
 import cl.smapdev.curimapu.clases.bd.daos.DaoFirmasTemp;
 import cl.smapdev.curimapu.clases.bd.daos.MyDao;
@@ -28,6 +29,9 @@ import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
+import cl.smapdev.curimapu.clases.tablas.EstacionFloracion;
+import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
+import cl.smapdev.curimapu.clases.tablas.EstacionFloracionEstaciones;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
@@ -71,7 +75,8 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         AnexoCorreoFechas.class, Evaluaciones.class, CheckListSiembra.class, TempFirmas.class,
         CheckListCosecha.class, CheckListCapacitacionSiembra.class,
         CheckListCapacitacionSiembraDetalle.class, CheckListLimpiezaCamiones.class,
-        ChecklistLimpiezaCamionesDetalle.class, ChecklistDevolucionSemilla.class, AnexoVilab.class
+        ChecklistLimpiezaCamionesDetalle.class, ChecklistDevolucionSemilla.class, AnexoVilab.class,
+        EstacionFloracion.class, EstacionFloracionDetalle.class, EstacionFloracionEstaciones.class
         }, version = 14)
 public abstract class MyAppBD extends RoomDatabase {
         public abstract MyDao myDao();
@@ -84,5 +89,7 @@ public abstract class MyAppBD extends RoomDatabase {
         public abstract DaoCheckListLimpiezaCamiones DaoCheckListLimpiezaCamiones();
         public abstract DaoChecklistDevolucionSemilla DaoCheckListDevolucionSemilla();
         public abstract DaoVilab DaoVilab();
+
+        public abstract DaoEstacionFloracion DaoEstacionFloracion();
 
 }

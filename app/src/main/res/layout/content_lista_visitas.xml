@@ -85,18 +85,27 @@
         android:layout_marginTop="@dimen/padding_small"
         app:layout_constraintTop_toBottomOf="@id/contenedor_vilab"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_carpeta_virtual"
         />
 
     <Button
         android:id="@+id/btn_carpeta_virtual"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_small"
         android:text="@string/c_virtual"
         android:layout_marginTop="@dimen/padding_small"
         app:layout_constraintTop_toBottomOf="@id/contenedor_vilab"
         app:layout_constraintStart_toEndOf="@id/btn_nueva_visita"
-        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <Button
+        android:id="@+id/btn_estacion_floracion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Est. Floracion"
+        app:layout_constraintTop_toBottomOf="@id/btn_carpeta_virtual"
+
+        app:layout_constraintStart_toStartOf="parent"
         />
 
 
@@ -108,7 +117,7 @@
         app:layout_constraintHorizontal_weight="0.7"
         tool:text="Visitas Anteriores"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintTop_toBottomOf="@id/btn_nueva_visita"
+        app:layout_constraintTop_toBottomOf="@id/btn_estacion_floracion"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/padding_small"
         app:layout_constraintEnd_toStartOf="@id/ic_collapse"

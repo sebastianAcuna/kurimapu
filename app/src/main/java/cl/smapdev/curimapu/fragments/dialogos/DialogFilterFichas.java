@@ -370,6 +370,8 @@ public class DialogFilterFichas extends DialogFragment {
                 consulta+= " AND F.id_comuna_ficha = ? ";
             }
 
+            consulta+= " ORDER BY F.activa ASC, F.id_ficha DESC ";
+
             List<FichasCompletas> fichasCompletas = MainActivity.myAppDB.myDao().getFichasFilter(new SimpleSQLiteQuery(consulta, ob));
             LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(activity);
             Intent i = new Intent("TAG_REFRESH");

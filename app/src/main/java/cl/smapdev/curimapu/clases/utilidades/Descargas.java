@@ -374,8 +374,32 @@ public class Descargas {
                         }
                         else{
                             //insert
+                            ChecklistLimpiezaCamionesDetalle det = new ChecklistLimpiezaCamionesDetalle();
+                            det.setLimpieza_anterior_limpieza_camiones(detalle.getLimpieza_anterior_limpieza_camiones());
+                            det.setClave_unica_cl_limpieza_camiones_detalle(detalle.getClave_unica_cl_limpieza_camiones_detalle());
+                            det.setClave_unica_cl_limpieza_camiones(detalle.getClave_unica_cl_limpieza_camiones());
+                            det.setNombre_chofer_limpieza_camiones(detalle.getNombre_chofer_limpieza_camiones());
+                            det.setPatente_camion_limpieza_camiones(detalle.getPatente_camion_limpieza_camiones());
+                            det.setPatente_carro_limpieza_camiones(detalle.getPatente_carro_limpieza_camiones());
+                            det.setEstado_general_recepcion_camion_campo_limpieza_camiones(detalle.getEstado_general_recepcion_camion_campo_limpieza_camiones());
+                            det.setEquipo_utilizado_limpieza_camiones(detalle.getEquipo_utilizado_limpieza_camiones());
+                            det.setLimpieza_puertas_laterales_limpieza_camiones(detalle.getLimpieza_puertas_laterales_limpieza_camiones());
+                            det.setLimpieza_puertas_traseras_limpieza_camiones(detalle.getLimpieza_puertas_traseras_limpieza_camiones());
+                            det.setLimpieza_piso_limpieza_camiones(detalle.getLimpieza_piso_limpieza_camiones());
+                            det.setInspeccion_rejillas_mallas_limpieza_camiones(detalle.getInspeccion_rejillas_mallas_limpieza_camiones());
+                            det.setPisos_costados_batea_sin_orificios_limpieza_camiones(detalle.getPisos_costados_batea_sin_orificios_limpieza_camiones());
+                            det.setCamion_carro_limpio_limpieza_camiones(detalle.getCamion_carro_limpio_limpieza_camiones());
+                            det.setCarpa_limpia_limpieza_camiones(detalle.getCarpa_limpia_limpieza_camiones());
+                            det.setSistema_cerrado_puertas_limpieza_camiones(detalle.getSistema_cerrado_puertas_limpieza_camiones());
+                            det.setNivel_llenado_carga_limpieza_camiones(detalle.getNivel_llenado_carga_limpieza_camiones());
+                            det.setSello_color_indica_condicion_limpieza_camiones(detalle.getSello_color_indica_condicion_limpieza_camiones());
+                            det.setEtiqueta_cosecha_adherida_camion_jumbo_limpieza_camiones(detalle.getEtiqueta_cosecha_adherida_camion_jumbo_limpieza_camiones());
+                            det.setSello_verde_curimapu_cierre_camion_limpieza_camiones(detalle.getSello_verde_curimapu_cierre_camion_limpieza_camiones());
+                            det.setFirma_cl_limpieza_camiones_detalle(detalle.getFirma_cl_limpieza_camiones_detalle());
+                            det.setStringed_cl_limpieza_camiones_detalle(detalle.getStringed_cl_limpieza_camiones_detalle());
+                            det.setEstado_sincronizacion_detalle(detalle.getEstado_sincronizacion_detalle());
                             ex.submit(() -> MainActivity.myAppDB.DaoCheckListLimpiezaCamiones()
-                                    .insertLimpiezaCamionesDetalle(detalle)).get();
+                                    .insertLimpiezaCamionesDetalle(det)).get();
                         }
 
                     }
@@ -389,6 +413,8 @@ public class Descargas {
 
         if(gsonDescargas.getCheckListCapCompletos() != null && gsonDescargas.getCheckListCapCompletos().size() > 0 ){
             ExecutorService ex = Executors.newSingleThreadExecutor();
+
+
             for (CheckListCapCompleto ck : gsonDescargas.getCheckListCapCompletos()){
 
                 Future<CheckListCapacitacionSiembra> chkF = ex.submit(()

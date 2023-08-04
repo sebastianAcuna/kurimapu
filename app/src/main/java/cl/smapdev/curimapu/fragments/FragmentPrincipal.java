@@ -51,11 +51,15 @@ import cl.smapdev.curimapu.clases.adapters.PrimeraPrioridadAdapter;
 import cl.smapdev.curimapu.clases.adapters.SitiosNoVisitadosAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.modelo.CheckListSync;
+import cl.smapdev.curimapu.clases.modelo.EstacionFloracionSync;
 import cl.smapdev.curimapu.clases.modelo.RecomendacionesSync;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListLimpiezaCamionesCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
+import cl.smapdev.curimapu.clases.relaciones.EstacionFloracionCompleto;
+import cl.smapdev.curimapu.clases.relaciones.EstacionFloracionRequest;
+import cl.smapdev.curimapu.clases.relaciones.EstacionesCompletas;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
@@ -76,6 +80,9 @@ import cl.smapdev.curimapu.clases.tablas.ChecklistLimpiezaCamionesDetalle;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
+import cl.smapdev.curimapu.clases.tablas.EstacionFloracion;
+import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
+import cl.smapdev.curimapu.clases.tablas.EstacionFloracionEstaciones;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
@@ -89,7 +96,6 @@ import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.returnValuesFromAsyntask;
 import cl.smapdev.curimapu.infraestructure.utils.coroutines.ApplicationExecutors;
 import es.dmoral.toasty.Toasty;
-import kotlin.collections.EmptyList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -125,7 +131,7 @@ public class FragmentPrincipal extends Fragment {
     private ImageView  img_muestra_subidas;
 
     private ConstraintLayout contenedor_botonera_subida;
-    private Button btn_subir_check, btn_subir_recomendaciones;
+    private Button btn_subir_check, btn_subir_recomendaciones, btn_subir_estaciones;
 
     private ProgressDialog vilabProgressDialog;
 
@@ -200,6 +206,7 @@ public class FragmentPrincipal extends Fragment {
                 }
             }
         }
+
     }
 
     @Nullable
@@ -240,6 +247,7 @@ public class FragmentPrincipal extends Fragment {
         img_muestra_subidas = view.findViewById(R.id.img_muestra_subidas);
         contenedor_botonera_subida = view.findViewById(R.id.contenedor_botonera_subida);
         btn_subir_check = view.findViewById(R.id.btn_subir_check);
+        btn_subir_estaciones = view.findViewById(R.id.btn_subir_estaciones);
         btn_subir_recomendaciones = view.findViewById(R.id.btn_subir_recomendaciones);
 
         imagen_muestra = view.findViewById(R.id.imagen_muestra);
@@ -252,6 +260,7 @@ public class FragmentPrincipal extends Fragment {
 
         btn_subir_recomendaciones.setOnClickListener(view1 -> preparaSubirRecomendaciones());
         btn_subir_check.setOnClickListener(view1 -> preparaSubirChecklist());
+        btn_subir_estaciones.setOnClickListener(view1 -> preparaSubirEstaciones());
 
         cargarToolbar();
 
@@ -264,6 +273,7 @@ public class FragmentPrincipal extends Fragment {
 
                 sitiosNoVisitados(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
                 primeraPrioridad(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
+                revisarAnexosPendienteFecha();
             }
 
             @Override
@@ -356,11 +366,12 @@ public class FragmentPrincipal extends Fragment {
 
     void cargarToolbar(){
         spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity,R.layout.spinner_template_toolbar_view, temporadaList));
+        recargarYear();
     }
 
 
     private void recargarYear(){
-        if (temporadaList.size() > 0){
+        if (temporadaList.size() > 0 && spinner_toolbar != null &&  spinner_toolbar.getAdapter() != null){
             spinner_toolbar.setSelection((marca_especial_temporada.isEmpty()) ? prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, temporadaList.size() - 1) : id_temporadas.indexOf(marca_especial_temporada));
         }
     }
@@ -424,6 +435,73 @@ public class FragmentPrincipal extends Fragment {
 
         }, 1);
         mm.execute();
+    }
+
+    private void prepararSubirEst(EstacionFloracionRequest checkListRequest){
+
+        new EstacionFloracionSync( checkListRequest, requireActivity(), (state, message) -> {
+            if(state){
+                Toasty.success(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+            }else{
+                Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+            }
+        });
+    }
+
+    public void preparaSubirEstaciones(){
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<List<EstacionFloracion>> chkF = executorService.submit(()
+                -> MainActivity.myAppDB.DaoEstacionFloracion()
+                .getEstacionesToSync());
+        try {
+
+            List<EstacionFloracion> estacionFloracions = chkF.get();
+
+            if(estacionFloracions.size() == 0){
+                executorService.shutdown();
+                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                return;
+            }
+
+            EstacionFloracionRequest floracionRequest = new EstacionFloracionRequest();
+            List<EstacionFloracionCompleto> estacionesFloracion = new ArrayList<>();
+
+
+            for (EstacionFloracion estacionFloracion : estacionFloracions){
+                List<EstacionesCompletas> estacionesCompletas = new ArrayList<>();
+
+                List<EstacionFloracionEstaciones> estaciones  =
+                        executorService.submit(() -> MainActivity.myAppDB
+                                .DaoEstacionFloracion().getEstacionesByPadre(estacionFloracion.getClave_unica_floracion())).get();
+
+                for (EstacionFloracionEstaciones estacion : estaciones){
+
+                    List<EstacionFloracionDetalle> detalles  =
+                            executorService.submit(() -> MainActivity.myAppDB
+                                    .DaoEstacionFloracion().getDetalleByClaveEstacion(estacion.getClave_unica_floracion_estaciones())).get();
+
+                    EstacionesCompletas estacionesCompleta = new EstacionesCompletas();
+                    estacionesCompleta.setEstaciones(estacion);
+                    estacionesCompleta.setDetalles(detalles);
+                    estacionesCompletas.add(estacionesCompleta);
+                }
+
+                EstacionFloracionCompleto completo = new EstacionFloracionCompleto();
+
+                completo.setEstacionFloracion(estacionFloracion);
+                completo.setEstaciones(estacionesCompletas);
+
+                estacionesFloracion.add(completo);
+            }
+
+            floracionRequest.setEstacionFloracionCompletos(estacionesFloracion);
+            prepararSubirEst( floracionRequest );
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            executorService.shutdown();
+        }
     }
 
     public void preparaSubirChecklist(){
@@ -1038,7 +1116,6 @@ public class FragmentPrincipal extends Fragment {
                                 Config config = futureConfig.get();
                                 temporadaList = futureTempo.get();
                                 setSpecialSeason(temporadaList);
-//                                final boolean[] problema = {false,false};
 
                                 List<AnexoVilab> vilabList = ex.submit(() -> MainActivity.myAppDB.DaoVilab().getVilab()).get();
                                 activity.runOnUiThread(() -> {
@@ -1065,6 +1142,7 @@ public class FragmentPrincipal extends Fragment {
 
                                     if (!problema[0] && !problema[1]){
                                         cargarToolbar();
+                                        revisarAnexosPendienteFecha();
                                         if (config != null){
                                             activity.cambiarNombreUser(config.getId_usuario());
                                         }
@@ -1110,7 +1188,7 @@ public class FragmentPrincipal extends Fragment {
 
     private void downloadImage(AnexoVilab avilab, ImageLoader imageLoader, DescargaImagenes descargaImagenes, int intento, int current){
 
-            String imgUrl = Utilidades.URL_SERVER_API+"/docs/levantar_adjunto.php?ruta_archivo="+avilab.ruta_img_vilab;
+            String imgUrl = Utilidades.URL_SERVER_API+"/../curimapu_docum/image_geos/"+avilab.nombre_imagen;
 
             if(vilabProgressDialog != null && !vilabProgressDialog.isShowing() && current < totalQueue){
                 vilabProgressDialog.setTitle("Falta poco");

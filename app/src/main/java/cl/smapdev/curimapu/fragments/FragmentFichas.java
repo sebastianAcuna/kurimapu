@@ -136,18 +136,14 @@ public class FragmentFichas extends Fragment {
         setHasOptionsMenu(true);
 
 
-        btn_subir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btn_subir.setEnabled(false);
-                antiguoMetodo();
-            }
+        btn_subir.setOnClickListener(view1 -> {
+            btn_subir.setEnabled(false);
+            antiguoMetodo();
         });
 
         spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, temporadaList));
+        spinner_toolbar.setEnabled(false);
 
-
-        //spinner_toolbar.setSelection(getResources().getStringArray(R.array.anos_toolbar).length - 1);
         recargarYear();
         spinner_toolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

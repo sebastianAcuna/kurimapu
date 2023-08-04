@@ -159,6 +159,18 @@ public class Fichas  implements Serializable {
     private String observacion_negocio_ficha;
 
 
+    @SerializedName("uuid")
+    @Expose
+    private String prospecto_uuid;
+
+
+    public String getProspecto_uuid() {
+        return prospecto_uuid;
+    }
+
+    public void setProspecto_uuid(String prospecto_uuid) {
+        this.prospecto_uuid = prospecto_uuid;
+    }
 
     public String getPredio_ficha() {
         return predio_ficha;

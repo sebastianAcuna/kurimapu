@@ -447,66 +447,22 @@
             />
 
 
-
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/cont_rotacion_1"
+            android:id="@+id/cont_rotacion_5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.2"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_margin="10dp"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider7"
-            app:layout_constraintEnd_toStartOf="@id/cont_rotacion_2"
-            android:hint="Cultivo 5 Años"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_rotacion_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text|textNoSuggestions"
-                android:maxLines="1"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/cont_rotacion_2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="0.2"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:layout_margin="10dp"
-            app:layout_constraintStart_toEndOf="@id/cont_rotacion_1"
-            app:layout_constraintTop_toBottomOf="@id/divider7"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:hint="Cultivo 4 Años"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_rotacion_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text|textNoSuggestions"
-                android:maxLines="1"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/cont_rotacion_3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="0.2"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:layout_margin="10dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/cont_rotacion_4"
-            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_2"
-            android:hint="Cultivo 3 Años"
+            android:hint="Cultivo 5 Año"
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_rotacion_3"
+                android:id="@+id/et_rotacion_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text|textNoSuggestions"
@@ -521,10 +477,10 @@
             app:layout_constraintHorizontal_weight="0.2"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_margin="10dp"
-            app:layout_constraintStart_toEndOf="@id/cont_rotacion_3"
-            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_2"
+            app:layout_constraintStart_toEndOf="@id/cont_rotacion_5"
+            app:layout_constraintTop_toBottomOf="@id/divider7"
             app:layout_constraintEnd_toEndOf="parent"
-            android:hint="Cultivo 2 Años"
+            android:hint="Cultivo 4 Años"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -536,21 +492,47 @@
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
+
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/cont_rotacion_5"
+            android:id="@+id/cont_rotacion_3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.2"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_margin="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_4"
-            app:layout_constraintEnd_toEndOf="@id/cont_rotacion_3"
-            android:hint="Cultivo 1 Año"
+            app:layout_constraintEnd_toStartOf="@id/cont_rotacion_2"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_5"
+            android:hint="Cultivo 3 Años"
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_rotacion_5"
+                android:id="@+id/et_rotacion_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_rotacion_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+
+
+            app:layout_constraintStart_toEndOf="@id/cont_rotacion_3"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="Cultivo 2 Años"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_rotacion_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text|textNoSuggestions"
@@ -559,12 +541,38 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cont_rotacion_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_3"
+            app:layout_constraintEnd_toEndOf="@id/cont_rotacion_3"
+            android:hint="Cultivo 1 Año"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_rotacion_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
         <TextView
             android:id="@+id/titulo_informativo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/datos_informativos"
-            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_5"
+            app:layout_constraintTop_toBottomOf="@id/cont_rotacion_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="@dimen/padding"

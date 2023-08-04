@@ -37,6 +37,7 @@
             android:title="@string/subtitles_config"
             android:checked="true"
             android:icon="@drawable/ic_settings"
+            android:visible="false"
             />
 
         <item

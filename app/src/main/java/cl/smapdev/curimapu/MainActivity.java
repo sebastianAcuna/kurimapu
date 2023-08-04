@@ -61,6 +61,7 @@ import cl.smapdev.curimapu.fragments.FragmentVisitas;
 import cl.smapdev.curimapu.fragments.anexoFechas.FragmentAnexoFechas;
 import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
 import cl.smapdev.curimapu.fragments.contratos.FragmentListVisits;
+import cl.smapdev.curimapu.fragments.estacion_floracion.FragmentListaEstacionFloracion;
 import cl.smapdev.curimapu.fragments.servidorFragment;
 
 
@@ -327,9 +328,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
 
-            case R.id.nv_configs:
-                cambiarFragment(new FragmentConfigs(), Utilidades.FRAGMENT_WB, R.anim.slide_in_left, R.anim.slide_out_left);
-                break;
+//            case R.id.nv_configs:
+//                cambiarFragment(new FragmentConfigs(), Utilidades.FRAGMENT_WB, R.anim.slide_in_left, R.anim.slide_out_left);
+//                break;
 
             case R.id.nv_salir:
                 if (shared != null){
@@ -432,6 +433,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
 
                     case Utilidades.FRAGMENT_CHECKLIST:
+                    case Utilidades.FRAGMENT_ESTACION_FLORACION:
                         cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_right, R.anim.slide_out_right);
                         break;
                     case Utilidades.FRAGMENT_CHECKLIST_SIEMBRA:
@@ -442,6 +444,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case Utilidades.FRAGMENT_CHECKLIST_DEVOLUCION_SEMILLA:
                         cambiarFragment(new FragmentCheckList(), Utilidades.FRAGMENT_CHECKLIST, R.anim.slide_in_right, R.anim.slide_out_right);
                         break;
+                    case Utilidades.FRAGMENT_NUEVA_ESTACION:
+                        cambiarFragment(new FragmentListaEstacionFloracion(), Utilidades.FRAGMENT_ESTACION_FLORACION, R.anim.slide_in_right, R.anim.slide_out_right);
+                        break;
+
                    /* case Utilidades.FRAGMENT_TAKE_PHOTO:
                         break;*/
                     default:

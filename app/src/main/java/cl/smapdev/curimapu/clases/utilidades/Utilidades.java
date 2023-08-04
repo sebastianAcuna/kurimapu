@@ -47,11 +47,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.relaciones.EstacionesCompletas;
+import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
 
 public class Utilidades {
 
@@ -62,6 +65,8 @@ public class Utilidades {
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
     public static final String FRAGMENT_VISITAS = "fragment_visitas";
     public static final String FRAGMENT_CONTRATOS = "fragment_contratos";
+    public static final String FRAGMENT_ESTACION_FLORACION = "FragmentListaEstacionFloracion";
+    public static final String FRAGMENT_NUEVA_ESTACION = "Fragment_nueva_estacion_floracion";
     public static final String FRAGMENT_CHECKLIST = "fragment_checklist";
     public static final String FRAGMENT_CHECKLIST_SIEMBRA = "fragment_checklist_siembra";
     public static final String FRAGMENT_CHECKLIST_COSECHA = "fragment_checklist_cosecha";
@@ -93,11 +98,11 @@ public class Utilidades {
 
 
     public static final String KEY_EXPORT = "9aB4c5D7eF";
-    public static final String IP_PRODUCCION = "192.168.1.42";
+//    public static final String IP_PRODUCCION = "192.168.1.42";
 //    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
-//    public static final String IP_PRODUCCION = "curiexport.pruebas-erp.cl";
-//    public static final String URL_SERVER_API = "https://"+IP_PRODUCCION+"";
-    public static final String URL_SERVER_API = "http://"+IP_PRODUCCION+"/curimapu";
+    public static final String IP_PRODUCCION = "curiexport.pruebas-erp.cl";
+    public static final String URL_SERVER_API = "https://"+IP_PRODUCCION+"";
+//    public static final String URL_SERVER_API = "http://"+IP_PRODUCCION+"/curimapu";
 
 //    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
@@ -131,6 +136,10 @@ public class Utilidades {
     public static final String SHARED_VISIT_VISITA_ID = "shared_visit_visita_id";
     public static final String SHARED_VISIT_MATERIAL_ID = "shared_visit_material_id";
     public static final String SHARED_VISIT_TEMPORADA = "shared_visit_temporada";
+
+
+    public static final String DIALOG_TAG_MUESTRA_ESTCION="DIALOG_TAG_MUESTRA_ESTCION";
+    public static final String DIALOG_TAG_ESTACIONES="DIALOG_TAG_ESTACIONES";
 
 
     public static final String DIALOG_TAG_CAPACITACION_SIEMBRA="CAPACITACION_SIEMBRA";
@@ -564,6 +573,35 @@ public class Utilidades {
             return "";
         }
 
+    }
+
+    public static String calculaPromediosEstacionFloracion(List<EstacionesCompletas> estacionesCompletasList, int cantidadMachos, String separador){
+        StringBuilder promedioMString = new StringBuilder();
+        String promedioHString = "";
+
+        for (int i = 1; i <= cantidadMachos; i++){
+            double promedio = 0;
+            double promedioH = 0;
+            for (EstacionesCompletas completas : estacionesCompletasList){
+
+                for (EstacionFloracionDetalle detalle : completas.getDetalles()){
+
+                    if(detalle.getTituloDato().equals("M"+i)){
+                        promedio += Double.parseDouble(detalle.getValor_dato()) / estacionesCompletasList.size();
+                    }
+
+                    if(detalle.getTipo_dato().equals("H")){
+                        promedioH += Double.parseDouble(detalle.getValor_dato()) / estacionesCompletasList.size();
+                    }
+                }
+            }
+
+            promedioMString.append("M").append(i).append(" = ").append(promedio).append(" ").append(separador);
+            promedioHString = "H = "+promedioH;
+
+        }
+
+        return promedioMString.append(promedioHString).toString();
     }
 
 }

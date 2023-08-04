@@ -59,6 +59,7 @@ import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentContratos;
 import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
 import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
+import cl.smapdev.curimapu.fragments.estacion_floracion.FragmentListaEstacionFloracion;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,7 +72,7 @@ public class FragmentListVisits extends Fragment {
     private RecyclerView lista_visitas;
     private ImageView ic_collapse, img_vilab;
     private AnexoContrato anexoContrato = null;
-    private Button btn_nueva_visita, btn_carpeta_virtual;
+    private Button btn_nueva_visita, btn_carpeta_virtual, btn_estacion_floracion;
     private ConstraintLayout contenedor_vilab;
     private TextView fecha_ndvi, indicador_ndvi;
     private TextView lbl_titulo_comuna;
@@ -158,6 +159,7 @@ public class FragmentListVisits extends Fragment {
         ic_collapse = view.findViewById(R.id.ic_collapse);
         btn_nueva_visita = view.findViewById(R.id.btn_nueva_visita);
         btn_carpeta_virtual = view.findViewById(R.id.btn_carpeta_virtual);
+        btn_estacion_floracion = view.findViewById(R.id.btn_estacion_floracion);
 
         weather_list = view.findViewById(R.id.weather_list);
         lbl_titulo_comuna = view.findViewById(R.id.lbl_titulo_comuna);
@@ -209,6 +211,18 @@ public class FragmentListVisits extends Fragment {
                     R.anim.slide_in_left,R.anim.slide_out_left
             );
         });
+
+        btn_estacion_floracion.setOnClickListener(view1 -> {
+
+            activity.cambiarFragment(
+                    new FragmentListaEstacionFloracion(),
+                    Utilidades.FRAGMENT_ESTACION_FLORACION,
+                    R.anim.slide_in_left,R.anim.slide_out_left
+            );
+        });
+
+
+
 
         LinearLayoutManager lManagerVisitas = null;
         if (activity != null){

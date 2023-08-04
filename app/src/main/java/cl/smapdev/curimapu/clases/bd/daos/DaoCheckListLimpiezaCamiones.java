@@ -47,6 +47,13 @@ public interface DaoCheckListLimpiezaCamiones {
             " WHERE clave_unica_cl_limpieza_camiones = '0' ")
     void deleteDetalles();
 
+//    @Query("DELETE FROM anexo_checklist_limpieza_camiones ")
+//    void deleteAllCabecera();
+//
+//    @Query("DELETE FROM anexo_checklist_limpieza_camiones_detalle ")
+//    void deleteAllDetalles();
+
+
 
     @Query("UPDATE anexo_checklist_limpieza_camiones_detalle " +
             "SET clave_unica_cl_limpieza_camiones = :clave_unica  " +

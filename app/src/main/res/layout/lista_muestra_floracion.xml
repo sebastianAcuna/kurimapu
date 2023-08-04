@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:padding="@dimen/padding_small"
+    android:layout_margin="1dp"
+    android:background="@color/colorBackgroundList"
+    android:elevation="@dimen/padding"
+    >
+
+    <TextView
+        android:id="@+id/tv_tipo_dato"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/padding_small"
+        tool:text="M1"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        />
+
+    <TextView
+        android:id="@+id/tv_valor_dato"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/padding_small"
+        tool:text="ACA"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <Button
+        android:id="@+id/btn_editar_estacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Colored"
+        app:layout_constraintTop_toBottomOf="@id/tv_valor_dato"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Editar"
+        android:layout_marginTop="@dimen/padding_small"
+        />
+
+    <View
+        android:id="@+id/divider14"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintTop_toBottomOf="@id/btn_editar_estacion"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

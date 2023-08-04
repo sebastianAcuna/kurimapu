@@ -246,7 +246,7 @@ public interface MyDao {
             "INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_ficha)" +
             "INNER JOIN region R ON (R.id_region = F.id_region_ficha)" +
             "INNER JOIN provincia P ON (P.id_provincia = C.id_provincia_comuna)" +
-            "WHERE anno = :year  ")
+            "WHERE anno = :year ORDER BY F.activa ASC, F.id_ficha DESC ")
     List<FichasCompletas> getFichasByYear(String year);
 
     @Query("DELETE FROM ficha_new ; ")
@@ -539,6 +539,9 @@ public interface MyDao {
 
     @Query("SELECT * FROM crop_rotation WHERE id_ficha_local_cp = :idFicha AND tipo_crop = 'P'  ORDER BY  crop_rotation.id_ficha_crop_rotation DESC, crop_rotation.temporada_crop_rotation ASC LIMIT 5")
     List<CropRotation> getCropRotationLocal(int idFicha);
+
+    @Query("SELECT * FROM crop_rotation WHERE id_ficha_crop_rotation = :idFicha AND tipo_crop = 'P'  ORDER BY  crop_rotation.id_ficha_crop_rotation DESC, crop_rotation.temporada_crop_rotation ASC LIMIT 5")
+    List<CropRotation> getCropRotationRemotos(int idFicha);
 
     @Query("SELECT * FROM crop_rotation")
     List<CropRotation> getCropRotation();

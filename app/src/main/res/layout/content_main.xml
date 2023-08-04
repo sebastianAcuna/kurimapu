@@ -123,6 +123,18 @@
                 android:drawableLeft="@drawable/ic_upload_white"
                 />
 
+            <Button
+                android:id="@+id/btn_subir_estaciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_subir_recomendaciones"
+                android:text="Subir Estaciones de floracion"
+                android:backgroundTint="@android:color/holo_orange_dark"
+                android:drawableLeft="@drawable/ic_upload_white"
+                />
+
 
 
             <Button
@@ -131,7 +143,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_subir_recomendaciones"
+                app:layout_constraintTop_toBottomOf="@id/btn_subir_estaciones"
                 android:text="preparar visitas \n para subir "
                 android:backgroundTint="@android:color/holo_green_dark"
                 android:drawableLeft="@drawable/ic_upload_white"

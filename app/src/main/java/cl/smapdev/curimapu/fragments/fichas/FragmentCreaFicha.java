@@ -649,23 +649,31 @@ public class FragmentCreaFicha extends Fragment {
             sp_agric.setSelection(rutAgricultores.indexOf(fichasCompletas.getAgricultor().getRut_agricultor()));
 
 
-            List<CropRotation> cropRotations = MainActivity.myAppDB.myDao().getCropRotationLocal(fichasCompletas.getFichas().getId_ficha_local_ficha());
+            List<CropRotation> cropRotations;
+
+            if(fichasCompletas.getFichas().isSubida()){
+                cropRotations = MainActivity.myAppDB.myDao().getCropRotationRemotos(fichasCompletas.getFichas().getId_ficha());
+            }else{
+                cropRotations = MainActivity.myAppDB.myDao().getCropRotationLocal(fichasCompletas.getFichas().getId_ficha_local_ficha());
+            }
+
+
             if(cropRotations.size() > 0){
 
                 et_rotacion_1.setText(cropRotations.get(0).getCultivo_crop_rotation());
-                et_rotacion_1.setTag(5);
+                et_rotacion_1.setTag("1");
 
                 et_rotacion_2.setText(cropRotations.get(1).getCultivo_crop_rotation());
-                et_rotacion_2.setTag(4);
+                et_rotacion_2.setTag("2");
 
                 et_rotacion_3.setText(cropRotations.get(2).getCultivo_crop_rotation());
-                et_rotacion_3.setTag(3);
+                et_rotacion_3.setTag("3");
 
                 et_rotacion_4.setText(cropRotations.get(3).getCultivo_crop_rotation());
-                et_rotacion_4.setTag(2);
+                et_rotacion_4.setTag("4");
 
                 et_rotacion_5.setText(cropRotations.get(4).getCultivo_crop_rotation());
-                et_rotacion_5.setTag(1);
+                et_rotacion_5.setTag("5");
 
 
             }
@@ -741,7 +749,7 @@ public class FragmentCreaFicha extends Fragment {
                 floating_picture_fichas.setEnabled(false);
             }
 
-            if(fichasCompletas.getFichas().isSubida()){
+            if(fichasCompletas.getFichas().isSubida() && (fichasCompletas.getFichas().getActiva() == 2 || fichasCompletas.getFichas().getActiva() == 3)){
                 sp_region_agricultor.setEnabled(false);
                 sp_provincia_agricultor.setEnabled(false);
                 sp_comuna_agricultor.setEnabled(false);
@@ -1201,8 +1209,14 @@ public class FragmentCreaFicha extends Fragment {
 
             fichas.setEspecie_ficha(idEspecies.get(sp_especie.getSelectedItemPosition()));
 
+            List<CropRotation> cropRotations;
+            if(fichasCompletas.getFichas().isSubida()){
+                cropRotations = MainActivity.myAppDB.myDao().getCropRotationRemotos(fichasCompletas.getFichas().getId_ficha());
+            }else{
+                cropRotations = MainActivity.myAppDB.myDao().getCropRotationLocal(fichasCompletas.getFichas().getId_ficha_local_ficha());
+            }
 
-            List<CropRotation> cropRotations = MainActivity.myAppDB.myDao().getCropRotationLocal(fichas.getId_ficha_local_ficha());
+//            List<CropRotation> cropRotations = MainActivity.myAppDB.myDao().getCropRotationLocal(fichas.getId_ficha_local_ficha());
             if (cropRotations.size() > 0){
 
 
@@ -1212,25 +1226,25 @@ public class FragmentCreaFicha extends Fragment {
                     crp1.setId_ficha_local_cp(crp.getId_ficha_local_cp());
                     crp1.setId_ficha_crop_rotation(crp.getId_ficha_crop_rotation());
                     crp1.setTemporada_crop_rotation(crp.getTemporada_crop_rotation());
-                    crp1.setEstado_subida_crop_rotation(crp.getEstado_subida_crop_rotation());
+                    crp1.setEstado_subida_crop_rotation(0);
                     crp1.setId_anexo_crop_rotation(crp.getId_anexo_crop_rotation());
                     crp1.setId_crop_rotation(crp.getId_crop_rotation());
                     crp1.setTipo_crop("P");
 
-                    if(et_rotacion_1.getTag().toString().equals("5")){
+                    if(et_rotacion_1.getTag().toString().equals(crp.getTemporada_crop_rotation())){
                         crp1.setCultivo_crop_rotation(et_rotacion_1.getText().toString().toUpperCase());
                     }
 
-                    if(et_rotacion_2.getTag().toString().equals("4")){
+                    if(et_rotacion_2.getTag().toString().equals(crp.getTemporada_crop_rotation())){
                         crp1.setCultivo_crop_rotation(et_rotacion_2.getText().toString().toUpperCase());
                     }
-                    if(et_rotacion_3.getTag().toString().equals("3")){
+                    if(et_rotacion_3.getTag().toString().equals(crp.getTemporada_crop_rotation())){
                         crp1.setCultivo_crop_rotation(et_rotacion_3.getText().toString().toUpperCase());
                     }
-                    if(et_rotacion_4.getTag().toString().equals("2")){
+                    if(et_rotacion_4.getTag().toString().equals(crp.getTemporada_crop_rotation())){
                         crp1.setCultivo_crop_rotation(et_rotacion_4.getText().toString().toUpperCase());
                     }
-                    if(et_rotacion_5.getTag().toString().equals("1")){
+                    if(et_rotacion_5.getTag().toString().equals(crp.getTemporada_crop_rotation())){
                         crp1.setCultivo_crop_rotation(et_rotacion_5.getText().toString().toUpperCase());
                     }
 
@@ -1302,7 +1316,7 @@ public class FragmentCreaFicha extends Fragment {
             fichas.setId_comuna_ficha(idComunas.get(sp_comuna_agricultor.getSelectedItemPosition()));
             fichas.setId_region_ficha(idRegiones.get(sp_region_agricultor.getSelectedItemPosition()));
             fichas.setId_provincia_ficha(idProvincias.get(sp_provincia_agricultor.getSelectedItemPosition()));
-
+            fichas.setSubida(false);
 
 
 
