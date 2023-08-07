@@ -101,6 +101,13 @@
     <string name="select">--Seleccione--</string>
 
 
+
+    <string-array name="plantas_voluntarias">
+        <item>@string/select</item>
+        <item>SI</item>
+        <item>NO</item>
+    </string-array>
+
     <!--    SPINNERS FORM  VISITA-->
     <string-array name="fenologico">
         <item>@string/select</item>

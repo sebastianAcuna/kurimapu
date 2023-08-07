@@ -14,6 +14,11 @@ public class TempVisitas {
     private String id_anexo_temp_visita;
 
 
+//    SI o NO
+    private String planta_voluntaria;
+
+    private String tipo_visita;
+
     private String phenological_state_temp_visita;
     private String growth_status_temp_visita;
     private String weed_state_temp_visita;
@@ -52,6 +57,23 @@ public class TempVisitas {
 
 
     private String clave_unica_visita;
+
+
+    public String getTipo_visita() {
+        return tipo_visita;
+    }
+
+    public void setTipo_visita(String tipo_visita) {
+        this.tipo_visita = tipo_visita;
+    }
+
+    public String getPlanta_voluntaria() {
+        return planta_voluntaria;
+    }
+
+    public void setPlanta_voluntaria(String planta_voluntaria) {
+        this.planta_voluntaria = planta_voluntaria;
+    }
 
     @SerializedName("fecha_estimada_cosecha")
     @Expose

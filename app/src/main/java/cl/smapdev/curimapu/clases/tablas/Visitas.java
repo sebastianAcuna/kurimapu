@@ -27,6 +27,10 @@ public class Visitas {
     private String clave_unica_visita;
 
 
+    @SerializedName("tipo_visita")
+    @Expose
+    private String tipo_visita;
+
     @SerializedName("estado_fen")
     @Expose
     private String phenological_state_visita;
@@ -152,6 +156,26 @@ public class Visitas {
     @Expose
     private String fecha_estimada_arranca;
 
+
+    //    SI o NO
+    private String planta_voluntaria;
+
+
+    public String getTipo_visita() {
+        return tipo_visita;
+    }
+
+    public void setTipo_visita(String tipo_visita) {
+        this.tipo_visita = tipo_visita;
+    }
+
+    public String getPlanta_voluntaria() {
+        return planta_voluntaria;
+    }
+
+    public void setPlanta_voluntaria(String planta_voluntaria) {
+        this.planta_voluntaria = planta_voluntaria;
+    }
 
     public String getClave_unica_visita() {
         return clave_unica_visita;

@@ -154,6 +154,12 @@
     <string name="fotos_raices">Fotos Raices</string>
     <string name="inicio_siembra">Inicio siembra hembra</string>
 
+    <string-array name="plantas_voluntarias">
+        <item>@string/select</item>
+        <item>SI</item>
+        <item>NO</item>
+    </string-array>
+
     <string-array name="desplegable_checklist_1">
         <item>@string/select</item>
         <item>BUENO</item>

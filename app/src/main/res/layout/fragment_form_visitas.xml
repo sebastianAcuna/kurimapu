@@ -14,523 +14,551 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/relative"
+            android:orientation="vertical"
             >
 
             <TextView
                 android:id="@+id/lbl_feno"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/estado_fenolog_gico"
                 android:textSize="18sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="@id/sp_feno"
-                app:layout_constraintEnd_toEndOf="@id/sp_feno"
                 />
 
 
             <Spinner
                 android:id="@+id/sp_feno"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lbl_feno"
-                app:layout_constraintEnd_toStartOf="@id/sp_crecimiento"
                 />
 
-            <TextView
-                android:id="@+id/lbl_crecimiento"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contenedor_estados"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/estado_de_crecimiento"
-                android:textSize="18sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="@id/sp_crecimiento"
-                app:layout_constraintEnd_toEndOf="@id/sp_crecimiento"
-                />
-
-            <Spinner
-                android:id="@+id/sp_crecimiento"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                app:layout_constraintTop_toBottomOf="@id/lbl_crecimiento"
-                app:layout_constraintStart_toEndOf="@id/sp_feno"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/obs_growth"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_small"
-                app:layout_constraintTop_toBottomOf="@id/sp_crecimiento"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/sp_crecimiento"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_marginTop="@dimen/padding_small"
                 >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_obs_growth"
+                <TextView
+                    android:id="@+id/lbl_crecimiento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:maxLines="5"
-                    android:hint="@string/observations" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <View
-                android:id="@+id/divider_primero"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintTop_toBottomOf="@id/obs_growth"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="@dimen/padding"
-
-                />
-
-            <TextView
-                android:id="@+id/lbl_malezas"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/estado_de_malezas"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/divider_primero"
-                app:layout_constraintStart_toStartOf="@id/sp_malezas"
-                app:layout_constraintEnd_toEndOf="@id/sp_malezas"/>
-
-            <Spinner
-                android:id="@+id/sp_malezas"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                app:layout_constraintTop_toBottomOf="@id/lbl_malezas"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/sp_fito"
-                />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/obs_weed"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/sp_malezas"
-                app:layout_constraintStart_toStartOf="@id/sp_malezas"
-                app:layout_constraintEnd_toEndOf="@id/sp_malezas"
-                android:layout_margin="@dimen/padding_small"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_obs_weed"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:maxHeight="100dp"
-                    android:height="100dp"
-                    android:hint="@string/observations" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <TextView
-                android:id="@+id/lbl_fitosanitario"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/estado_fitosanitario"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/divider_primero"
-                app:layout_constraintStart_toStartOf="@id/sp_fito"
-                app:layout_constraintEnd_toEndOf="@id/sp_fito"/>
-
-
-            <Spinner
-                android:id="@+id/sp_fito"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                app:layout_constraintTop_toBottomOf="@id/lbl_fitosanitario"
-                app:layout_constraintStart_toEndOf="@id/sp_malezas"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/obs_fito"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/sp_fito"
-                app:layout_constraintStart_toStartOf="@id/sp_fito"
-                app:layout_constraintEnd_toEndOf="@id/sp_fito"
-                android:layout_margin="@dimen/padding_small"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_obs_fito"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:hint="@string/observations"
-                    android:maxHeight="100dp"
-                    android:height="100dp"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-
-            <View
-                android:id="@+id/divider1"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintTop_toBottomOf="@id/obs_weed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="@dimen/padding"
-
-                />
-
-
-            <TextView
-                android:id="@+id/lbl_cosecha"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/cosecha"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/divider1"
-                app:layout_constraintStart_toStartOf="@id/sp_cosecha"
-                app:layout_constraintEnd_toEndOf="@id/sp_cosecha"/>
-
-            <Spinner
-                android:id="@+id/sp_cosecha"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                app:layout_constraintTop_toBottomOf="@id/lbl_cosecha"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/sp_general_cultivo"
-
-                />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/obs_harvest"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/sp_cosecha"
-                app:layout_constraintStart_toStartOf="@id/sp_cosecha"
-                app:layout_constraintEnd_toEndOf="@id/sp_cosecha"
-                android:layout_margin="@dimen/padding_small"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_obs_harvest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:hint="@string/observations"
-                    android:maxHeight="100dp"
-                    android:height="100dp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/lbl_general_cultivo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/estado_general"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="@id/sp_general_cultivo"
-                app:layout_constraintEnd_toEndOf="@id/sp_general_cultivo"
-                app:layout_constraintTop_toBottomOf="@id/divider1"/>
-
-            <Spinner
-                android:id="@+id/sp_general_cultivo"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                app:layout_constraintTop_toBottomOf="@id/lbl_general_cultivo"
-                app:layout_constraintStart_toEndOf="@id/sp_cosecha"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/obs_overall"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/sp_general_cultivo"
-                app:layout_constraintStart_toStartOf="@id/sp_general_cultivo"
-                app:layout_constraintEnd_toEndOf="@id/sp_general_cultivo"
-                android:layout_margin="@dimen/padding_small"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_obs_overall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:hint="@string/observations"
-                    android:maxHeight="100dp"
-                    android:height="100dp"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintTop_toBottomOf="@id/obs_overall"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="@dimen/padding" />
-
-            <TextView
-                android:id="@+id/lbl_humedad"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="@string/humedad_del_suelo"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="@+id/sp_humedad"
-                app:layout_constraintStart_toStartOf="@id/sp_humedad"
-                app:layout_constraintTop_toBottomOf="@id/divider2" />
-
-
-            <Spinner
-                android:id="@+id/sp_humedad"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_below="@id/lbl_humedad"
-                app:layout_constraintTop_toBottomOf="@id/lbl_humedad"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/ti_percent_humedad"
-                />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/obs_humedad"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/sp_humedad"
-                app:layout_constraintStart_toStartOf="@id/sp_humedad"
-                app:layout_constraintEnd_toEndOf="@id/sp_humedad"
-                android:layout_margin="@dimen/padding_small"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_obs_humedad"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:hint="@string/observations"
-                    android:maxHeight="100dp"
-                    android:height="100dp"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/lbl_percent_humedad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Potencial de Rendimiento"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/divider2"
-                app:layout_constraintBottom_toBottomOf="@id/lbl_humedad"
-                app:layout_constraintStart_toStartOf="@id/ti_percent_humedad"
-                app:layout_constraintEnd_toEndOf="@id/ti_percent_humedad"
-                />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ti_percent_humedad"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lbl_percent_humedad"
-                app:layout_constraintStart_toEndOf="@id/sp_humedad"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:hint="%"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_percent_humedad"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1"
+                    android:text="@string/estado_de_crecimiento"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     />
-            </com.google.android.material.textfield.TextInputLayout>
 
+                <Spinner
+                    android:id="@+id/sp_crecimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_crecimiento"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
 
-
-            <TextView
-                android:id="@+id/lbl_fecha_estimada"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="Fecha Estimada Cosecha"
-                android:layout_marginTop="@dimen/padding_small"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="@+id/et_fecha_estimada"
-                app:layout_constraintStart_toStartOf="@id/et_fecha_estimada"
-                app:layout_constraintTop_toBottomOf="@id/obs_humedad" />
-
-            <EditText
-                android:id="@+id/et_fecha_estimada"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="date"
-                android:drawableEnd="@drawable/ic_date_range"
-                android:drawableTint="@color/colorSecondaryVariant"
-                app:layout_constraintTop_toBottomOf="@id/lbl_fecha_estimada"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/et_fecha_arranca"
-                />
-
-            <TextView
-                android:id="@+id/lbl_fecha_arranca"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="Fecha Estimada Arranca"
-                android:layout_marginTop="@dimen/padding_small"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="@+id/et_fecha_arranca"
-                app:layout_constraintStart_toStartOf="@id/et_fecha_arranca"
-                app:layout_constraintTop_toBottomOf="@id/obs_humedad" />
-
-            <EditText
-                android:id="@+id/et_fecha_arranca"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="date"
-                android:drawableEnd="@drawable/ic_date_range"
-                android:drawableTint="@color/colorSecondaryVariant"
-                app:layout_constraintTop_toBottomOf="@id/lbl_fecha_estimada"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/et_fecha_estimada"
-                />
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInp_obs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/et_fecha_arranca"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="@dimen/padding">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_obs"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/obs_growth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:hint="@string/observations" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_margin="@dimen/padding_small"
+                    app:layout_constraintTop_toBottomOf="@id/sp_crecimiento"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_obs_growth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:maxLines="5"
+                        android:hint="@string/observations" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/lbl_malezas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/estado_de_malezas"
+                    android:textSize="18sp"
+                    android:layout_marginTop="@dimen/padding_small"
+                    app:layout_constraintTop_toBottomOf="@id/obs_growth"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
 
+                <Spinner
+                    android:id="@+id/sp_malezas"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_malezas"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/obs_weed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/sp_malezas"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_margin="@dimen/padding_small"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_obs_weed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:maxHeight="100dp"
+                        android:height="100dp"
+                        android:hint="@string/observations" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-            <TextView
-                android:id="@+id/titulo_agronomo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/fotos_agricultor"
-                android:gravity="center"
-                android:textAppearance="?android:textAppearanceLarge"
-                app:layout_constraintTop_toBottomOf="@id/btn_guardar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                <TextView
+                    android:id="@+id/lbl_fitosanitario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/estado_fitosanitario"
+                    android:textSize="18sp"
+                    android:layout_marginTop="@dimen/padding_small"
+                    app:layout_constraintTop_toBottomOf="@id/obs_weed"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fotos_agronomos"
-                android:layout_centerHorizontal="true"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/titulo_agronomo"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                <Spinner
+                    android:id="@+id/sp_fito"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_fitosanitario"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
 
-                />
 
-            <TextView
-                android:id="@+id/titulo_clientes"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/obs_fito"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/sp_fito"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_margin="@dimen/padding_small"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_obs_fito"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:hint="@string/observations"
+                        android:maxHeight="100dp"
+                        android:height="100dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/lbl_cosecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cosecha"
+                    android:textSize="18sp"
+                    android:layout_marginTop="@dimen/padding_small"
+                    app:layout_constraintTop_toBottomOf="@id/obs_fito"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <Spinner
+                    android:id="@+id/sp_cosecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_cosecha"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/obs_harvest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/sp_cosecha"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="@dimen/padding_small"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_obs_harvest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:hint="@string/observations"
+                        android:maxHeight="100dp"
+                        android:height="100dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lbl_general_cultivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/estado_general"
+                    android:textSize="18sp"
+                    android:layout_marginTop="@dimen/padding_small"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/obs_harvest"/>
+
+                <Spinner
+                    android:id="@+id/sp_general_cultivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_general_cultivo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/obs_overall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/sp_general_cultivo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="@dimen/padding_small"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_obs_overall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:hint="@string/observations"
+                        android:maxHeight="100dp"
+                        android:height="100dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/lbl_humedad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/humedad_del_suelo"
+                    android:textSize="18sp"
+                    android:layout_marginTop="@dimen/padding_small"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/obs_overall" />
+
+                <Spinner
+                    android:id="@+id/sp_humedad"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_humedad"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/obs_humedad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/sp_humedad"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="@dimen/padding_small"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_obs_humedad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:hint="@string/observations"
+                        android:maxHeight="100dp"
+                        android:height="100dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lbl_percent_humedad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Potencial de Rendimiento"
+                    android:textSize="18sp"
+                    android:layout_marginTop="@dimen/padding_small"
+                    app:layout_constraintTop_toBottomOf="@id/obs_humedad"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_percent_humedad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_percent_humedad"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:hint="%"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_percent_humedad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lbl_fecha_estimada"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Fecha Estimada Cosecha"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ti_percent_humedad" />
+
+                <EditText
+                    android:id="@+id/et_fecha_estimada"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:drawableEnd="@drawable/ic_date_range"
+                    android:drawableTint="@color/colorSecondaryVariant"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_fecha_estimada"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/lbl_fecha_arranca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Fecha Estimada Arranca"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:textSize="18sp"
+                    app:layout_goneMarginTop="@dimen/padding_small"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_fecha_estimada" />
+
+                <EditText
+                    android:id="@+id/et_fecha_arranca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:drawableEnd="@drawable/ic_date_range"
+                    android:drawableTint="@color/colorSecondaryVariant"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_fecha_arranca"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contenedor_monitoreo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/fotos_cliente"
-                android:gravity="center"
-                android:textAppearance="?android:textAppearanceLarge"
-                app:layout_constraintTop_toBottomOf="@id/fotos_agronomos"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:visibility="gone">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fotos_clientes"
+                <TextView
+                    android:id="@+id/lbl_planta_voluntaria"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Plantas voluntarias"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+
+                <Spinner
+                    android:id="@+id/sp_planta_voluntaria"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_planta_voluntaria"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contenedor_observaciones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/titulo_clientes"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="parent"
-                />
+                android:layout_marginTop="@dimen/padding_small"
+                >
 
-            <TextView
-                android:id="@+id/titulo_raices"
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInp_obs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="@dimen/padding">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_obs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:hint="@string/observations" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contenedor_imagenes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/fotos_raices"
-                android:gravity="center"
-                android:textAppearance="?android:textAppearanceLarge"
-                app:layout_constraintTop_toBottomOf="@id/fotos_clientes"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_marginTop="@dimen/padding_small"
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fotos_raices"
+                >
+                <TextView
+                    android:id="@+id/titulo_agronomo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fotos_agricultor"
+                    android:gravity="center"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fotos_agronomos"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/titulo_agronomo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    />
+
+                <TextView
+                    android:id="@+id/titulo_clientes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fotos_cliente"
+                    android:gravity="center"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    app:layout_constraintTop_toBottomOf="@id/fotos_agronomos"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fotos_clientes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/titulo_clientes"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/titulo_raices"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fotos_raices"
+                    android:gravity="center"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    app:layout_constraintTop_toBottomOf="@id/fotos_clientes"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fotos_raices"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/titulo_raices"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contenedor_botonera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/titulo_raices"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="parent"
-                />
+                >
+
+                <Button
+                    android:id="@+id/btn_guardar"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="@string/nav_save"
+                    android:drawableStart="@drawable/ic_save"
+                    android:layout_margin="@dimen/padding"
+                    android:padding="@dimen/padding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
 
 
-            <Button
-                android:id="@+id/btn_guardar"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:text="@string/nav_save"
-                android:drawableStart="@drawable/ic_save"
-                android:layout_margin="@dimen/padding"
-                android:padding="@dimen/padding"
-                app:layout_constraintTop_toBottomOf="@id/textInp_obs"
-                app:layout_constraintStart_toStartOf="parent"
+                    />
 
 
-                />
+                <Button
+                    android:id="@+id/btn_volver"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nav_back"
+                    android:drawableStart="@drawable/ic_arrow_back"
+                    android:layout_toEndOf="@id/btn_guardar"
+                    android:padding="@dimen/padding"
+                    android:layout_margin="@dimen/padding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_guardar"
+                    />
 
 
-            <Button
-                android:id="@+id/btn_volver"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="@string/nav_back"
-                android:drawableStart="@drawable/ic_arrow_back"
-                android:layout_toEndOf="@id/btn_guardar"
-                android:padding="@dimen/padding"
-                android:layout_margin="@dimen/padding"
-                app:layout_constraintTop_toBottomOf="@id/textInp_obs"
-                app:layout_constraintStart_toEndOf="@id/btn_guardar"
-                />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
     </ScrollView>
 
     <com.github.clans.fab.FloatingActionMenu

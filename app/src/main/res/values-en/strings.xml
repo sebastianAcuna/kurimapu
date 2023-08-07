@@ -85,6 +85,13 @@
     </string-array>
 
 
+    <string-array name="plantas_voluntarias">
+        <item>@string/select</item>
+        <item>SI</item>
+        <item>NO</item>
+    </string-array>
+
+
     <string name="visitas_terminadas">Visit in finished state, you cannot add more photos.</string>
     <!--    Visita en estado terminado, no puedes agregar mas fotos. -->
 

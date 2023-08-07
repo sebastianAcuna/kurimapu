@@ -32,6 +32,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -42,6 +43,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
@@ -52,6 +54,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -83,12 +86,19 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentFormVisitas extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, View.OnFocusChangeListener {
 
     private Spinner sp_fenologico,sp_cosecha,sp_crecimiento,sp_fito,sp_general_cultivo,sp_humedad,sp_malezas;
+    private Spinner sp_planta_voluntaria;
 
-    private TextView lbl_crecimiento, lbl_malezas, lbl_fitosanitario, lbl_cosecha, lbl_general_cultivo, lbl_humedad, lbl_percent_humedad, lbl_fecha_estimada;
+    private TextView titulo_raices;
+
+    private TabLayout tab_layout;
 
     private TextInputLayout ti_percent_humedad;
-    private View divider_primero, divider1, divider2;
     private Button btn_guardar, btn_volver;
+
+
+    private ConstraintLayout contenedor_estados, contenedor_imagenes, contenedor_observaciones, contenedor_monitoreo;
+
+
 
     private MainActivity activity;
     private SharedPreferences prefs;
@@ -98,6 +108,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private String medidaRaices;
 
     private final ArrayList<String> fenologico = new ArrayList<>();
+    private final ArrayList<String> planta_voluntaria = new ArrayList<>();
     private final ArrayList<String> cosecha = new ArrayList<>();
     private final ArrayList<String> crecimiento = new ArrayList<>();
     private final ArrayList<String> maleza = new ArrayList<>();
@@ -143,6 +154,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         progressBar.setTitle(getResources().getString(R.string.espere));
         progressBar.show();
 
+        planta_voluntaria.addAll(Arrays.asList(getResources().getStringArray(R.array.plantas_voluntarias)));
         fenologico.addAll(Arrays.asList(getResources().getStringArray(R.array.fenologico)));
         cosecha.addAll(Arrays.asList(getResources().getStringArray(R.array.cosecha)));
         crecimiento.addAll(Arrays.asList(getResources().getStringArray(R.array.crecimiento)));
@@ -254,11 +266,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             progressBar.dismiss();
         }
         if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 &&  temp_visitas.getEvaluacion() <= 0.0){
-
-
             ExecutorService executor = Executors.newSingleThreadExecutor();
-
-
             try {
                 Future<VisitasCompletas> visitasCompletasFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita()));
                 VisitasCompletas visitasCompletas = null;
@@ -294,61 +302,48 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         }
 
         cargarSpinners();
-
-
-//        DialogFotoRaices
-
-        foto_raices.setOnClickListener( v -> {
-
-            preguntarFotoRaices();
-//            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-//            Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("TOMAR_FOTO_RAICES");
-//            if(prev != null){
-//                ft.remove(prev);
-//            }
-//
-//            DialogFotoRaices dialogo = DialogFotoRaices.newInstance(temp_visitas);
-//            dialogo.show(ft, "TOMAR_FOTO_RAICES");
-        });
+        foto_raices.setOnClickListener( v -> preguntarFotoRaices());
 
         material_private.setOnClickListener(v -> {
 
             int cantidaAgr = MainActivity.myAppDB.myDao().getCantAgroByFieldViewAndFicha(0, 2, temp_visitas.getId_anexo_temp_visita(), temp_visitas.getId_temp_visita());
             if (cantidaAgr > 2){
                 Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.message_dialog_agron),getResources().getString(R.string.message_dialog_btn_ok));
-            }else{
-                if (temp_visitas.getAction_temp_visita() == 2){
-                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
-                }else{
-                    Utilidades.hideKeyboard(activity);
-                    abrirCamara(2, "0");
-                }
+                return;
             }
+
+            if (temp_visitas.getAction_temp_visita() == 2){
+                Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
+                return;
+            }
+
+            Utilidades.hideKeyboard(activity);
+            abrirCamara(2, "0");
+
         });
         material_public.setOnClickListener(v -> {
 
-            if (sp_fenologico.getSelectedItemPosition() > 0){
-                if (temp_visitas.getAction_temp_visita() == 2){
-                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
-                }else{
-                    Utilidades.hideKeyboard(activity);
-                    abrirCamara(0, "0");
-                }
-
-            }else{
-                Utilidades.avisoListo(activity, getResources().getString(R.string.falta_algo), getResources().getString(R.string.pheno_first),getResources().getString(R.string.entiendo));
+            if (sp_fenologico.getSelectedItemPosition()  ==  0) {
+                Utilidades.avisoListo(activity, getResources().getString(R.string.falta_algo), getResources().getString(R.string.pheno_first), getResources().getString(R.string.entiendo));
+                return;
             }
+            if (temp_visitas.getAction_temp_visita() == 2){
+                Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
+                return;
+            }
+
+            Utilidades.hideKeyboard(activity);
+            abrirCamara(0, "0");
 
         });
 
 
     }
 
-    /*
-    * GENERA LOS ONITEMSELECTEDLISTENER DE LOS SPINNERS
-    * */
     private void accionSpinners(){
         if (temp_visitas != null){
+            sp_planta_voluntaria.setSelection(planta_voluntaria.indexOf(temp_visitas.getPlanta_voluntaria()));
+
 
             sp_fenologico.setSelection(fenologico.indexOf(temp_visitas.getPhenological_state_temp_visita()));
             sp_cosecha.setSelection(cosecha.indexOf(temp_visitas.getHarvest_temp_visita()));
@@ -390,6 +385,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             if (temp_visitas.getAction_temp_visita() == 2){
                 sp_fenologico.setEnabled(false);
                 sp_cosecha.setEnabled(false);
+                sp_planta_voluntaria.setEnabled(false);
                 sp_crecimiento.setEnabled(false);
                 sp_fito.setEnabled(false);
                 sp_general_cultivo.setEnabled(false);
@@ -448,6 +444,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
         sp_fenologico.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, fenologico));
         sp_cosecha.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, cosecha));
+        sp_planta_voluntaria.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, planta_voluntaria));
         sp_crecimiento.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, crecimiento));
         sp_fito.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, crecimiento));
         sp_general_cultivo.setAdapter(new SpinnerAdapter(activity,R.layout.spinner_template_view, crecimiento));
@@ -479,9 +476,16 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         switch (view.getId()){
             case R.id.btn_guardar:
 
-                if (activity != null){
-                    showAlertAskForSave123("¿Esta seguro que desea guardar?", "Revise el libro de campo antes de hacerlo, si esta seguro, presione aceptar.");
+                if (activity == null ){
+                    Toasty.error(requireActivity(), "No encontramos algo importante , por favor, vuelva a realizar la visita", Toast.LENGTH_LONG, true).show();
+                    return;
                 }
+
+                String message = !sp_fenologico.getSelectedItem().toString().equals("MONITOREO")
+                        ? "Revise el libro de campo antes de hacerlo, si esta seguro, presione aceptar."
+                        : "";
+
+                showAlertAskForSave123("¿Esta seguro que desea guardar?", message);
                 break;
 
             case R.id.btn_volver:
@@ -497,24 +501,22 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     }
 
     private void bind(View view){
-        lbl_crecimiento = view.findViewById(R.id.lbl_crecimiento);
-        lbl_malezas = view.findViewById(R.id.lbl_malezas);
-        lbl_fitosanitario = view.findViewById(R.id.lbl_fitosanitario);
-        lbl_cosecha = view.findViewById(R.id.lbl_cosecha);
-        lbl_general_cultivo = view.findViewById(R.id.lbl_general_cultivo);
-        lbl_humedad = view.findViewById(R.id.lbl_humedad);
-        lbl_percent_humedad = view.findViewById(R.id.lbl_percent_humedad);
-        lbl_fecha_estimada = view.findViewById(R.id.lbl_fecha_estimada);
+        contenedor_estados = view.findViewById(R.id.contenedor_estados);
+        contenedor_monitoreo = view.findViewById(R.id.contenedor_monitoreo);
+        contenedor_imagenes = view.findViewById(R.id.contenedor_imagenes);
+        contenedor_observaciones = view.findViewById(R.id.contenedor_observaciones);
+        tab_layout =  requireActivity().findViewById(R.id.tab_layout);
 
-        divider_primero = view.findViewById(R.id.divider_primero);
-        divider1 = view.findViewById(R.id.divider1);
-        divider2 = view.findViewById(R.id.divider2);
+        titulo_raices = view.findViewById(R.id.titulo_raices);
+
+
 
         ti_percent_humedad = view.findViewById(R.id.ti_percent_humedad);
 
 
         sp_fenologico = view.findViewById(R.id.sp_feno);
         sp_cosecha = view.findViewById(R.id.sp_cosecha);
+        sp_planta_voluntaria = view.findViewById(R.id.sp_planta_voluntaria);
         sp_crecimiento = view.findViewById(R.id.sp_crecimiento);
         sp_fito = view.findViewById(R.id.sp_fito);
         sp_general_cultivo = view.findViewById(R.id.sp_general_cultivo);
@@ -551,6 +553,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         sp_fito.setOnItemSelectedListener(this);
         sp_crecimiento.setOnItemSelectedListener(this);
         sp_cosecha.setOnItemSelectedListener(this);
+        sp_planta_voluntaria.setOnItemSelectedListener(this);
 
         et_obs.setOnFocusChangeListener(this);
         et_obs_growth.setOnFocusChangeListener(this);
@@ -580,46 +583,21 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     public void modificarVista(boolean esMonitoreo){
         if(esMonitoreo){
-            sp_cosecha.setVisibility(View.GONE);
-            sp_crecimiento.setVisibility(View.GONE);
-            sp_fito.setVisibility(View.GONE);
-            sp_general_cultivo.setVisibility(View.GONE);
-            sp_humedad.setVisibility(View.GONE);
-            sp_malezas.setVisibility(View.GONE);
+            contenedor_estados.setVisibility(View.GONE);
+            titulo_raices.setVisibility(View.GONE);
+            rwRaices.setVisibility(View.GONE);
+            contenedor_monitoreo.setVisibility(View.VISIBLE);
+//            foto_raices.setVisibility(View.GONE);
 
-            obs_harvest.setVisibility(View.GONE);
-            obs_growth.setVisibility(View.GONE);
-            obs_weed.setVisibility(View.GONE);
-            obs_fito.setVisibility(View.GONE);
-            obs_harvest.setVisibility(View.GONE);
-            obs_overall.setVisibility(View.GONE);
-            obs_humedad.setVisibility(View.GONE);
-            obs_humedad.setVisibility(View.GONE);
+            Objects.requireNonNull(tab_layout.getTabAt(tab_layout.getTabCount() - 1)).view.setEnabled(false);
 
-
-            lbl_crecimiento.setVisibility(View.GONE);
-            lbl_malezas.setVisibility(View.GONE);
-            lbl_fitosanitario.setVisibility(View.GONE);
-            lbl_cosecha.setVisibility(View.GONE);
-            lbl_general_cultivo.setVisibility(View.GONE);
-            lbl_humedad.setVisibility(View.GONE);
-            lbl_percent_humedad.setVisibility(View.GONE);
-            lbl_fecha_estimada.setVisibility(View.GONE);
-
-
-            divider_primero.setVisibility(View.GONE);
-            divider1.setVisibility(View.GONE);
-            divider2.setVisibility(View.GONE);
-
-            ti_percent_humedad.setVisibility(View.GONE);
         }else{
-            sp_cosecha.setVisibility(View.VISIBLE);
-            sp_crecimiento.setVisibility(View.VISIBLE);
-            sp_fito.setVisibility(View.VISIBLE);
-            sp_general_cultivo.setVisibility(View.VISIBLE);
-            sp_humedad.setVisibility(View.VISIBLE);
-            sp_malezas.setVisibility(View.VISIBLE);
-
+            contenedor_estados.setVisibility(View.VISIBLE);
+            titulo_raices.setVisibility(View.VISIBLE);
+            rwRaices.setVisibility(View.VISIBLE);
+            contenedor_monitoreo.setVisibility(View.GONE);
+//            foto_raices.setVisibility(View.VISIBLE);
+            Objects.requireNonNull(tab_layout.getTabAt(tab_layout.getTabCount() - 1)).view.setEnabled(true);
         }
     }
 
@@ -632,14 +610,15 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                     temp_visitas.setEtapa_temp_visitas(Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
                     prefs.edit().putInt(Utilidades.SHARED_ETAPA_SELECTED, Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition())).apply();
 
-                    if(sp_fenologico.getSelectedItem().toString().equals("MONITOREO")){
-                        modificarVista(true);
-                    }else{
-                        modificarVista(false);
-                    }
+                    modificarVista(sp_fenologico.getSelectedItem().toString().equals("MONITOREO"));
+
                     break;
                 case R.id.sp_cosecha:
                     obs_harvest.setVisibility(View.VISIBLE);
+                    temp_visitas.setHarvest_temp_visita(cosecha.get(i));
+                    break;
+                case R.id.sp_planta_voluntaria:
+                    temp_visitas.setPlanta_voluntaria(planta_voluntaria.get(i));
                     temp_visitas.setHarvest_temp_visita(cosecha.get(i));
                     break;
                 case R.id.sp_crecimiento:
@@ -671,36 +650,37 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                     temp_visitas.setEtapa_temp_visitas(Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
                     break;
                 case R.id.sp_cosecha:
-                    obs_harvest.setVisibility(View.INVISIBLE);
+                    obs_harvest.setVisibility(View.GONE);
                     temp_visitas.setHarvest_temp_visita("");
                     break;
+                case R.id.sp_planta_voluntaria:
+                    temp_visitas.setPlanta_voluntaria("");
+                    break;
                 case R.id.sp_crecimiento:
-                    obs_growth.setVisibility(View.INVISIBLE);
+                    obs_growth.setVisibility(View.GONE);
                     temp_visitas.setGrowth_status_temp_visita("");
                     break;
                 case R.id.sp_fito:
-                    obs_fito.setVisibility(View.INVISIBLE);
+                    obs_fito.setVisibility(View.GONE);
                     temp_visitas.setPhytosanitary_state_temp_visita("");
                     break;
                 case R.id.sp_general_cultivo:
-                    obs_overall.setVisibility(View.INVISIBLE);
+                    obs_overall.setVisibility(View.GONE);
                     temp_visitas.setOverall_status_temp_visita("");
                     break;
                 case R.id.sp_humedad:
-                    obs_humedad.setVisibility(View.INVISIBLE);
+                    obs_humedad.setVisibility(View.GONE);
                     temp_visitas.setHumidity_floor_temp_visita("");
                     break;
                 case R.id.sp_malezas:
-                    obs_weed.setVisibility(View.INVISIBLE);
+                    obs_weed.setVisibility(View.GONE);
                     temp_visitas.setWeed_state_temp_visita("");
                     break;
             }
         }
     }
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
+    public void onNothingSelected(AdapterView<?> adapterView) {}
 
     String  quitarTildes(String texto){
         String nuevoTexto = texto;
@@ -800,11 +780,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             MainActivity.myAppDB.myDao().updateTempVisitas(temp_visitas);
         }
     }
-
-
-    /* IMAGENES */
-
-
 
     private void abrirCamara(int vista, String medida){
 
@@ -910,35 +885,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     }
 
 
-    private void setOnSave(){
 
-        if( temp_visitas == null){
-            Utilidades.avisoListo(activity, "Falta algo", "Algo salio mal, por favor revise el fieldbook", "entiendo");
-            return;
-        }
-
-
-        ExecutorService exec = Executors.newSingleThreadExecutor();
-
-        Future<VisitasCompletas> visitasCompletasFuture = exec.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
-        Future<List<Evaluaciones>> evas = exec.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByACObliga(Integer.parseInt(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""))));
-        try {
-            VisitasCompletas cc = visitasCompletasFuture.get();
-            List<Evaluaciones> evs = evas.get();
-
-            if(evs.size() <= 0){
-                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes agregar una recomendacion para esta visita. ( estrella de arriba a la derecha )", "entiendo");
-                return;
-            }
-
-            if((temp_visitas.getEvaluacion() <= 0.0 || temp_visitas.getComentario_evaluacion().isEmpty()) && cc != null && cc.getVisitas() != null){
-                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes realizar la evaluacion de la visita anterior. ( estrella de arriba a la derecha )", "entiendo");
-                return;
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
+    private void saveVisitaNormal(){
 
         int fotosClientes = MainActivity.myAppDB.myDao().getCantFotos(temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) ,0);
         int fotosAgricultores = MainActivity.myAppDB.myDao().getCantFotos(temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) ,2);
@@ -967,112 +915,217 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         }
 
         if( sp_fenologico.getSelectedItemPosition() <= 0 ||
-            sp_malezas.getSelectedItemPosition() <= 0    ||
-            sp_fito.getSelectedItemPosition() <= 0       ||
-            sp_cosecha.getSelectedItemPosition() <= 0    ||
-            sp_general_cultivo.getSelectedItemPosition() <= 0 ||
-            sp_humedad.getSelectedItemPosition() <= 0){
-             Utilidades.avisoListo(activity, "Hey", "no puede dejar elementos en '--seleccione--'.", "entiendo");
-             return;
-         }
+                sp_malezas.getSelectedItemPosition() <= 0    ||
+                sp_fito.getSelectedItemPosition() <= 0       ||
+                sp_cosecha.getSelectedItemPosition() <= 0    ||
+                sp_general_cultivo.getSelectedItemPosition() <= 0 ||
+                sp_humedad.getSelectedItemPosition() <= 0){
+            Utilidades.avisoListo(activity, "Hey", "no puede dejar elementos en '--seleccione--'.", "entiendo");
+            return;
+        }
 
-         if(TextUtils.isEmpty(et_percent_humedad.getText().toString()) || (Double.parseDouble(et_percent_humedad.getText().toString()) <= 0.0 || Double.parseDouble(et_percent_humedad.getText().toString()) > 200.0)){
-             Utilidades.avisoListo(activity, "Hey", "Debes ingresar un potencial de rendimiento sobre 0 y bajo 200 ", "entiendo");
-             return;
-         }
+        if(TextUtils.isEmpty(et_percent_humedad.getText().toString()) || (Double.parseDouble(et_percent_humedad.getText().toString()) <= 0.0 || Double.parseDouble(et_percent_humedad.getText().toString()) > 200.0)){
+            Utilidades.avisoListo(activity, "Hey", "Debes ingresar un potencial de rendimiento sobre 0 y bajo 200 ", "entiendo");
+            return;
+        }
 
 
-         Visitas visitas = new Visitas();
-         visitas.setGrowth_status_visita(temp_visitas.getGrowth_status_temp_visita());
-         visitas.setHarvest_visita(temp_visitas.getHarvest_temp_visita());
-         visitas.setHumidity_floor_visita(temp_visitas.getHumidity_floor_temp_visita());
-         visitas.setId_anexo_visita(temp_visitas.getId_anexo_temp_visita());
-         visitas.setOverall_status_visita(temp_visitas.getOverall_status_temp_visita());
-         visitas.setPhenological_state_visita(temp_visitas.getPhenological_state_temp_visita());
-         visitas.setPhytosanitary_state_visita(temp_visitas.getPhytosanitary_state_temp_visita());
-         visitas.setWeed_state_visita(temp_visitas.getWeed_state_temp_visita());
-         visitas.setEstado_server_visitas(0);
-         visitas.setEstado_visita(2);
-         visitas.setEtapa_visitas(temp_visitas.getEtapa_temp_visitas());
-         visitas.setEvaluacion(temp_visitas.getEvaluacion());
-         visitas.setComentario_evaluacion(temp_visitas.getComentario_evaluacion());
-         visitas.setId_evaluacion(temp_visitas.getId_evaluacion());
+        Visitas visitas = new Visitas();
+        visitas.setGrowth_status_visita(temp_visitas.getGrowth_status_temp_visita());
+        visitas.setHarvest_visita(temp_visitas.getHarvest_temp_visita());
+        visitas.setHumidity_floor_visita(temp_visitas.getHumidity_floor_temp_visita());
+        visitas.setId_anexo_visita(temp_visitas.getId_anexo_temp_visita());
+        visitas.setOverall_status_visita(temp_visitas.getOverall_status_temp_visita());
+        visitas.setPhenological_state_visita(temp_visitas.getPhenological_state_temp_visita());
+        visitas.setPhytosanitary_state_visita(temp_visitas.getPhytosanitary_state_temp_visita());
+        visitas.setWeed_state_visita(temp_visitas.getWeed_state_temp_visita());
+        visitas.setEstado_server_visitas(0);
+        visitas.setEstado_visita(2);
+        visitas.setEtapa_visitas(temp_visitas.getEtapa_temp_visitas());
+        visitas.setEvaluacion(temp_visitas.getEvaluacion());
+        visitas.setComentario_evaluacion(temp_visitas.getComentario_evaluacion());
+        visitas.setId_evaluacion(temp_visitas.getId_evaluacion());
         visitas.setFecha_estimada_arranca(temp_visitas.getFecha_estimada_arranca());
         visitas.setFecha_estimada_cosecha(temp_visitas.getFecha_estimada_cosecha());
+        visitas.setTipo_visita("NORMAL");
 
 
-         double percent =  0.0;
-         try{
-             percent = (temp_visitas.getPercent_humedad() <= 0.0 ) ? Double.parseDouble(et_percent_humedad.getText().toString()) : temp_visitas.getPercent_humedad();
-         }catch(Exception e){
-             percent = 0.0;
-         }
+        double percent =  0.0;
+        try{
+            percent = (temp_visitas.getPercent_humedad() <= 0.0 ) ? Double.parseDouble(et_percent_humedad.getText().toString()) : temp_visitas.getPercent_humedad();
+        }catch(Exception e){
+            percent = 0.0;
+        }
 
-         visitas.setPercent_humedad(percent);
+        visitas.setPercent_humedad(percent);
 
-         String obsCosecha = et_obs_harvest.getText().toString().toUpperCase();
-         String obsCreci = et_obs_growth.getText().toString().toUpperCase();
-         String obsFito = et_obs_fito.getText().toString().toUpperCase();
-         String obsHumedad = et_obs_humedad.getText().toString().toUpperCase();
-         String obsMaleza = et_obs_weed.getText().toString().toUpperCase();
-         String obsOverall = et_obs_overall.getText().toString().toUpperCase();
-         String etobs = et_obs.getText().toString().toUpperCase();
-
-
-         for (int i = 0; i < forbiddenWords.length; i++){
-             obsCosecha = obsCosecha.replace(forbiddenWords[i],forbiddenReplacement[i]);
-             obsCreci = obsCreci.replace(forbiddenWords[i],forbiddenReplacement[i]);
-             obsFito = obsFito.replace(forbiddenWords[i],forbiddenReplacement[i]);
-             obsHumedad = obsHumedad.replace(forbiddenWords[i],forbiddenReplacement[i]);
-             obsMaleza = obsMaleza.replace(forbiddenWords[i],forbiddenReplacement[i]);
-             obsOverall = obsOverall.replace(forbiddenWords[i],forbiddenReplacement[i]);
-             etobs = etobs.replace(forbiddenWords[i],forbiddenReplacement[i]);
-
-         }
-
-         visitas.setObservation_visita((TextUtils.isEmpty(temp_visitas.getObservation_temp_visita()) ? etobs : temp_visitas.getObservation_temp_visita().toUpperCase()));
+        String obsCosecha = et_obs_harvest.getText().toString().toUpperCase();
+        String obsCreci = et_obs_growth.getText().toString().toUpperCase();
+        String obsFito = et_obs_fito.getText().toString().toUpperCase();
+        String obsHumedad = et_obs_humedad.getText().toString().toUpperCase();
+        String obsMaleza = et_obs_weed.getText().toString().toUpperCase();
+        String obsOverall = et_obs_overall.getText().toString().toUpperCase();
+        String etobs = et_obs.getText().toString().toUpperCase();
 
 
-         visitas.setObs_cosecha((TextUtils.isEmpty(temp_visitas.getObs_cosecha())) ? obsCosecha : temp_visitas.getObs_cosecha().toUpperCase());
-         visitas.setObs_creci((TextUtils.isEmpty(temp_visitas.getObs_creci())) ? obsCreci : temp_visitas.getObs_creci().toUpperCase());
-         visitas.setObs_fito((TextUtils.isEmpty(temp_visitas.getObs_fito())) ? obsFito : temp_visitas.getObs_fito().toUpperCase());
-         visitas.setObs_humedad((TextUtils.isEmpty(temp_visitas.getObs_humedad())) ? obsHumedad : temp_visitas.getObs_humedad().toUpperCase());
-         visitas.setObs_maleza((TextUtils.isEmpty(temp_visitas.getObs_maleza())) ? obsMaleza : temp_visitas.getObs_maleza().toUpperCase());
-         visitas.setObs_overall((TextUtils.isEmpty(temp_visitas.getObs_overall())) ? obsOverall : temp_visitas.getObs_overall().toUpperCase());
+        for (int i = 0; i < forbiddenWords.length; i++){
+            obsCosecha = obsCosecha.replace(forbiddenWords[i],forbiddenReplacement[i]);
+            obsCreci = obsCreci.replace(forbiddenWords[i],forbiddenReplacement[i]);
+            obsFito = obsFito.replace(forbiddenWords[i],forbiddenReplacement[i]);
+            obsHumedad = obsHumedad.replace(forbiddenWords[i],forbiddenReplacement[i]);
+            obsMaleza = obsMaleza.replace(forbiddenWords[i],forbiddenReplacement[i]);
+            obsOverall = obsOverall.replace(forbiddenWords[i],forbiddenReplacement[i]);
+            etobs = etobs.replace(forbiddenWords[i],forbiddenReplacement[i]);
 
-         AnexoContrato an = MainActivity.myAppDB.myDao().getAnexos(temp_visitas.getId_anexo_temp_visita());
-         visitas.setTemporada(an.getTemporada_anexo());
+        }
 
-         String fecha = Utilidades.fechaActualConHora();
-         String[] fechaHora = fecha.split(" ");
+        visitas.setObservation_visita((TextUtils.isEmpty(temp_visitas.getObservation_temp_visita()) ? etobs : temp_visitas.getObservation_temp_visita().toUpperCase()));
 
-         visitas.setHora_visita(fechaHora[1]);
-         visitas.setFecha_visita(fechaHora[0]);
 
-         visitas.setClave_unica_visita(temp_visitas.getClave_unica_visita());
+        visitas.setObs_cosecha((TextUtils.isEmpty(temp_visitas.getObs_cosecha())) ? obsCosecha : temp_visitas.getObs_cosecha().toUpperCase());
+        visitas.setObs_creci((TextUtils.isEmpty(temp_visitas.getObs_creci())) ? obsCreci : temp_visitas.getObs_creci().toUpperCase());
+        visitas.setObs_fito((TextUtils.isEmpty(temp_visitas.getObs_fito())) ? obsFito : temp_visitas.getObs_fito().toUpperCase());
+        visitas.setObs_humedad((TextUtils.isEmpty(temp_visitas.getObs_humedad())) ? obsHumedad : temp_visitas.getObs_humedad().toUpperCase());
+        visitas.setObs_maleza((TextUtils.isEmpty(temp_visitas.getObs_maleza())) ? obsMaleza : temp_visitas.getObs_maleza().toUpperCase());
+        visitas.setObs_overall((TextUtils.isEmpty(temp_visitas.getObs_overall())) ? obsOverall : temp_visitas.getObs_overall().toUpperCase());
 
-         long idVisita = 0;
+        AnexoContrato an = MainActivity.myAppDB.myDao().getAnexos(temp_visitas.getId_anexo_temp_visita());
+        visitas.setTemporada(an.getTemporada_anexo());
 
-         if (prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0)  > 0 ){
+        String fecha = Utilidades.fechaActualConHora();
+        String[] fechaHora = fecha.split(" ");
 
-             idVisita = prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0);
-             visitas.setId_visita((int) idVisita);
-             visitas.setId_visita_local((int) idVisita);
-             MainActivity.myAppDB.myDao().updateVisita(visitas);
+        visitas.setHora_visita(fechaHora[1]);
+        visitas.setFecha_visita(fechaHora[0]);
 
-         }else{
-             idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
-         }
+        visitas.setClave_unica_visita(temp_visitas.getClave_unica_visita());
 
-         MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesObligadas(Integer.parseInt(an.getId_anexo_contrato()));
-         MainActivity.myAppDB.myDao().updateFotosWithVisita((int) idVisita, temp_visitas.getId_anexo_temp_visita());
-         MainActivity.myAppDB.myDao().updateDetallesToVisits((int) idVisita);
+        long idVisita = 0;
 
-         Visitas visitas1 = MainActivity.myAppDB.myDao().getVisitas((int) idVisita);
-         visitas1.setId_visita_local((int) idVisita);
-         MainActivity.myAppDB.myDao().updateVisita(visitas1);
+        if (prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0)  > 0 ){
 
-         showAlertForSave("Genial", "Se guardo todo como corresponde");
+            idVisita = prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0);
+            visitas.setId_visita((int) idVisita);
+            visitas.setId_visita_local((int) idVisita);
+            MainActivity.myAppDB.myDao().updateVisita(visitas);
+
+        }else{
+            idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
+        }
+
+        MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesObligadas(Integer.parseInt(an.getId_anexo_contrato()));
+        MainActivity.myAppDB.myDao().updateFotosWithVisita((int) idVisita, temp_visitas.getId_anexo_temp_visita());
+        MainActivity.myAppDB.myDao().updateDetallesToVisits((int) idVisita);
+
+        Visitas visitas1 = MainActivity.myAppDB.myDao().getVisitas((int) idVisita);
+        visitas1.setId_visita_local((int) idVisita);
+        MainActivity.myAppDB.myDao().updateVisita(visitas1);
+
+        showAlertForSave("Genial", "Se guardo todo como corresponde");
+
+    }
+
+
+    private void saveVisitaMonitoreo(){
+
+        if( sp_fenologico.getSelectedItemPosition() <= 0 || sp_planta_voluntaria.getSelectedItemPosition() <= 0){
+            Utilidades.avisoListo(activity, "Hey", "no puede dejar elementos en '--seleccione--'.", "entiendo");
+            return;
+        }
+
+        Visitas visitas = new Visitas();
+
+        visitas.setPhenological_state_visita(temp_visitas.getPhenological_state_temp_visita());
+        visitas.setPlanta_voluntaria(temp_visitas.getPlanta_voluntaria());
+
+        String etobs = et_obs.getText().toString().toUpperCase();
+
+
+        for (int i = 0; i < forbiddenWords.length; i++){
+            etobs = etobs.replace(forbiddenWords[i],forbiddenReplacement[i]);
+
+        }
+
+        visitas.setObservation_visita((TextUtils.isEmpty(temp_visitas.getObservation_temp_visita()) ? etobs : temp_visitas.getObservation_temp_visita().toUpperCase()));
+
+
+        AnexoContrato an = MainActivity.myAppDB.myDao().getAnexos(temp_visitas.getId_anexo_temp_visita());
+        visitas.setTemporada(an.getTemporada_anexo());
+
+        String fecha = Utilidades.fechaActualConHora();
+        String[] fechaHora = fecha.split(" ");
+
+        visitas.setId_anexo_visita(temp_visitas.getId_anexo_temp_visita());
+        visitas.setHora_visita(fechaHora[1]);
+        visitas.setFecha_visita(fechaHora[0]);
+        visitas.setEtapa_visitas(temp_visitas.getEtapa_temp_visitas());
+        visitas.setEvaluacion(temp_visitas.getEvaluacion());
+        visitas.setComentario_evaluacion(temp_visitas.getComentario_evaluacion());
+        visitas.setId_evaluacion(temp_visitas.getId_evaluacion());
+        visitas.setEstado_server_visitas(0);
+        visitas.setEstado_visita(2);
+
+        visitas.setClave_unica_visita(temp_visitas.getClave_unica_visita());
+        visitas.setTipo_visita("MONITOREO");
+
+        long idVisita = 0;
+
+        if (prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0)  > 0 ){
+
+            idVisita = prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0);
+            visitas.setId_visita((int) idVisita);
+            visitas.setId_visita_local((int) idVisita);
+            MainActivity.myAppDB.myDao().updateVisita(visitas);
+
+        }else{
+            idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
+        }
+
+        MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesObligadas(Integer.parseInt(an.getId_anexo_contrato()));
+        MainActivity.myAppDB.myDao().updateFotosWithVisita((int) idVisita, temp_visitas.getId_anexo_temp_visita());
+
+        Visitas visitas1 = MainActivity.myAppDB.myDao().getVisitas((int) idVisita);
+        visitas1.setId_visita_local((int) idVisita);
+        MainActivity.myAppDB.myDao().updateVisita(visitas1);
+
+        showAlertForSave("Genial", "Se guardo todo como corresponde");
+    }
+
+    private void setOnSave(){
+
+        if( temp_visitas == null){
+            Utilidades.avisoListo(activity, "Falta algo", "Algo salio mal, por favor revise la visita", "entiendo");
+            return;
+        }
+
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+
+        Future<VisitasCompletas> visitasCompletasFuture = exec.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+        Future<List<Evaluaciones>> evas = exec.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByACObliga(Integer.parseInt(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""))));
+        try {
+            VisitasCompletas cc = visitasCompletasFuture.get();
+            List<Evaluaciones> evs = evas.get();
+
+            if(evs.size() == 0){
+                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes agregar una recomendacion para esta visita. ( estrella de arriba a la derecha )", "entiendo");
+                return;
+            }
+
+            if((temp_visitas.getEvaluacion() == 0.0 || temp_visitas.getComentario_evaluacion().isEmpty()) && cc != null && cc.getVisitas() != null){
+                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes realizar la evaluacion de la visita anterior. ( estrella de arriba a la derecha )", "entiendo");
+                return;
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(!exec.isShutdown()) exec.shutdown();
+
+        if(sp_fenologico.getSelectedItem().toString().equals("MONITOREO")){
+            saveVisitaMonitoreo();
+        }else{
+            saveVisitaNormal();
+        }
     }
 
     private void agregarImagenToAgronomos(){
@@ -1315,6 +1368,12 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
 
     private void preguntarFotoRaices(){
+
+        if(sp_fenologico.getSelectedItem().toString().equals("MONITOREO")){
+            Toasty.error(requireActivity(), "Foto Raiz deshabilitada para monitoreo", Toast.LENGTH_LONG, true).show();
+            return;
+        }
+
         View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.foto_raices,null);
 
 

@@ -665,7 +665,7 @@ public class FragmentPrincipal extends Fragment {
         btn_preparar.setEnabled(true);
 
         List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir(); //2
-        if(visitas.size() <= 0) {
+        if(visitas.size() == 0) {
             visitas_titulo.setVisibility(View.VISIBLE);
             visitas_titulo.setText("no hay visitas pendientes");
             visitas_marca.setVisibility(View.VISIBLE);

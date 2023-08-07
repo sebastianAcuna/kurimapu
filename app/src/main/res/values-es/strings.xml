@@ -45,6 +45,13 @@
         <item>MONOGRANO</item>
     </string-array>
 
+
+    <string-array name="plantas_voluntarias">
+        <item>@string/select</item>
+        <item>SI</item>
+        <item>NO</item>
+    </string-array>
+
     <!-- FICHAS-->
     <string name="region">Region : </string>
     <string name="comuna">Comuna : </string>
