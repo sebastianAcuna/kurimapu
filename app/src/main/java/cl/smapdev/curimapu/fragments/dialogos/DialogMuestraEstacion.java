@@ -26,6 +26,7 @@ import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.tablas.EstacionFloracion;
 import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
 import cl.smapdev.curimapu.clases.tablas.EstacionFloracionEstaciones;
+import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import es.dmoral.toasty.Toasty;
 
 public class DialogMuestraEstacion extends DialogFragment {
@@ -98,6 +99,9 @@ public class DialogMuestraEstacion extends DialogFragment {
         if(detalle != null){
             et_valor_muestra.setText(detalle.getValor_dato());
         }
+
+        et_valor_muestra.requestFocus();
+
 
         btn_guardar_muestra.setOnClickListener(view1 -> onSave());
         btn_cancelar_muestra.setOnClickListener(view1 -> cerrar());

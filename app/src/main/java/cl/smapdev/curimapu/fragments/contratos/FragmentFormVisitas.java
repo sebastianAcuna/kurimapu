@@ -26,6 +26,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -83,6 +84,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     private Spinner sp_fenologico,sp_cosecha,sp_crecimiento,sp_fito,sp_general_cultivo,sp_humedad,sp_malezas;
 
+    private TextView lbl_crecimiento, lbl_malezas, lbl_fitosanitario, lbl_cosecha, lbl_general_cultivo, lbl_humedad, lbl_percent_humedad, lbl_fecha_estimada;
+
+    private TextInputLayout ti_percent_humedad;
+    private View divider_primero, divider1, divider2;
     private Button btn_guardar, btn_volver;
 
     private MainActivity activity;
@@ -492,6 +497,22 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     }
 
     private void bind(View view){
+        lbl_crecimiento = view.findViewById(R.id.lbl_crecimiento);
+        lbl_malezas = view.findViewById(R.id.lbl_malezas);
+        lbl_fitosanitario = view.findViewById(R.id.lbl_fitosanitario);
+        lbl_cosecha = view.findViewById(R.id.lbl_cosecha);
+        lbl_general_cultivo = view.findViewById(R.id.lbl_general_cultivo);
+        lbl_humedad = view.findViewById(R.id.lbl_humedad);
+        lbl_percent_humedad = view.findViewById(R.id.lbl_percent_humedad);
+        lbl_fecha_estimada = view.findViewById(R.id.lbl_fecha_estimada);
+
+        divider_primero = view.findViewById(R.id.divider_primero);
+        divider1 = view.findViewById(R.id.divider1);
+        divider2 = view.findViewById(R.id.divider2);
+
+        ti_percent_humedad = view.findViewById(R.id.ti_percent_humedad);
+
+
         sp_fenologico = view.findViewById(R.id.sp_feno);
         sp_cosecha = view.findViewById(R.id.sp_cosecha);
         sp_crecimiento = view.findViewById(R.id.sp_crecimiento);
@@ -557,6 +578,51 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         foto_raices = view.findViewById(R.id.foto_raices);
     }
 
+    public void modificarVista(boolean esMonitoreo){
+        if(esMonitoreo){
+            sp_cosecha.setVisibility(View.GONE);
+            sp_crecimiento.setVisibility(View.GONE);
+            sp_fito.setVisibility(View.GONE);
+            sp_general_cultivo.setVisibility(View.GONE);
+            sp_humedad.setVisibility(View.GONE);
+            sp_malezas.setVisibility(View.GONE);
+
+            obs_harvest.setVisibility(View.GONE);
+            obs_growth.setVisibility(View.GONE);
+            obs_weed.setVisibility(View.GONE);
+            obs_fito.setVisibility(View.GONE);
+            obs_harvest.setVisibility(View.GONE);
+            obs_overall.setVisibility(View.GONE);
+            obs_humedad.setVisibility(View.GONE);
+            obs_humedad.setVisibility(View.GONE);
+
+
+            lbl_crecimiento.setVisibility(View.GONE);
+            lbl_malezas.setVisibility(View.GONE);
+            lbl_fitosanitario.setVisibility(View.GONE);
+            lbl_cosecha.setVisibility(View.GONE);
+            lbl_general_cultivo.setVisibility(View.GONE);
+            lbl_humedad.setVisibility(View.GONE);
+            lbl_percent_humedad.setVisibility(View.GONE);
+            lbl_fecha_estimada.setVisibility(View.GONE);
+
+
+            divider_primero.setVisibility(View.GONE);
+            divider1.setVisibility(View.GONE);
+            divider2.setVisibility(View.GONE);
+
+            ti_percent_humedad.setVisibility(View.GONE);
+        }else{
+            sp_cosecha.setVisibility(View.VISIBLE);
+            sp_crecimiento.setVisibility(View.VISIBLE);
+            sp_fito.setVisibility(View.VISIBLE);
+            sp_general_cultivo.setVisibility(View.VISIBLE);
+            sp_humedad.setVisibility(View.VISIBLE);
+            sp_malezas.setVisibility(View.VISIBLE);
+
+        }
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (i > 0) {
@@ -565,6 +631,12 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                     temp_visitas.setPhenological_state_temp_visita(fenologico.get(i));
                     temp_visitas.setEtapa_temp_visitas(Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
                     prefs.edit().putInt(Utilidades.SHARED_ETAPA_SELECTED, Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition())).apply();
+
+                    if(sp_fenologico.getSelectedItem().toString().equals("MONITOREO")){
+                        modificarVista(true);
+                    }else{
+                        modificarVista(false);
+                    }
                     break;
                 case R.id.sp_cosecha:
                     obs_harvest.setVisibility(View.VISIBLE);
