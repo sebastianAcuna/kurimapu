@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/padding_small">
+
+
+    <TextView
+        android:id="@+id/lbl_titulo_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="¿Cómo desea guardar el documento?"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <TextView
+        android:id="@+id/lbl_desc_estado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="si selecciona finalizar, este no se podra volver a editar."
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/lbl_titulo_alert"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
+
+    <RadioGroup
+        android:id="@+id/grupo_radios_estado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/lbl_desc_estado"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center_horizontal"
+        >
+
+        <RadioButton
+            android:id="@+id/rbtn_guardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            />
+
+        <RadioButton
+            android:id="@+id/rbtn_finalizar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finalizar"
+            />
+
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

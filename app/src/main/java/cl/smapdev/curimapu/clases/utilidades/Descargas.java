@@ -210,6 +210,7 @@ public class Descargas {
                             f.setFecha_destruccion_semillero(fch.getFecha_destruccion_semillero());
                             f.setHora_inicio_cosecha(fch.getHora_inicio_cosecha());
                             f.setDetalle_labores(fch.getDetalle_labores());
+                            f.setEstado_sincro_corr_fech(1);
 
                             MainActivity.myAppDB.DaoAnexosFechas().UpdateFechasAnexos(f);
                         }else{

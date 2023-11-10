@@ -546,8 +546,10 @@ public interface MyDao {
     @Query("SELECT * FROM crop_rotation")
     List<CropRotation> getCropRotation();
 
-    @Query("DELETE FROM crop_rotation WHERE estado_subida_crop_rotation = 1 ")
+    @Query("DELETE FROM crop_rotation  ")
     void deleteCrops();
+
+
 
     @Query("SELECT * FROM crop_rotation WHERE estado_subida_crop_rotation = 0 ")
     List<CropRotation> getCropsPorSubir();
@@ -1052,6 +1054,12 @@ public interface MyDao {
 
     @Query("SELECT * FROM tipo_riego ")
     List<TipoRiego> getTipoRiego();
+
+    @Query("SELECT * FROM tipo_riego WHERE id_tipo_riego = :id")
+    TipoRiego getTipoRiegoById(String id);
+
+    @Query("SELECT * FROM tipo_riego WHERE vigencia = 'SI' ")
+    List<TipoRiego> getTipoRiegoVigente();
 
     @Query("DELETE FROM tipo_riego")
     void deleteTipoRiego();

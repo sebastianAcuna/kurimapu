@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -160,7 +162,8 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
 
                 estacionesCompletas.add(estCompletas);
             }
-            EstacionFloracionEstacionesAdapter adapter = new EstacionFloracionEstacionesAdapter(estacionesCompletas,
+            EstacionFloracionEstacionesAdapter adapter = new EstacionFloracionEstacionesAdapter(
+                    estacionesCompletas,
                     this::showAlertForConfirmarEliminar,
                     (v, update) -> {
                         if(et_cantidad_machos.getText().toString().isEmpty()){
@@ -185,7 +188,8 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
                         DialogEstaciones dialogo = DialogEstaciones.newInstance( ((estacionFloracionCompleto != null) ? estacionFloracionCompleto.getEstacionFloracion() : null),update,cantidadMachos,  saved -> cargarListaEstaciones());
                         dialogo.show(ft, Utilidades.DIALOG_TAG_ESTACIONES);
                     },
-                    requireActivity()
+                    requireActivity(),
+                    (estacionFloracionCompleto != null) ? estacionFloracionCompleto.getEstacionFloracion().getEstado_documento() : 0
             );
             lista_muestra_estaciones.setLayoutManager(new LinearLayoutManager(getContext(),
                     LinearLayoutManager.VERTICAL, false));
@@ -225,6 +229,14 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
         if(estacionFloracionCompleto != null){
             et_fecha.setText(Utilidades.voltearFechaVista(estacionFloracionCompleto.getEstacionFloracion().getFecha()));
             et_cantidad_machos.setText(String.valueOf(estacionFloracionCompleto.getEstacionFloracion().getCantidad_machos()));
+
+            if(estacionFloracionCompleto.getEstacionFloracion().getEstado_documento() == 1){
+                et_fecha.setEnabled(false);
+                et_cantidad_machos.setEnabled(false);
+                btn_agregar_muestra.setEnabled(false);
+                btn_guardar_estacion.setEnabled(false);
+            }
+
         }
 
 
@@ -275,11 +287,11 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
     });
 
 
-    btn_guardar_estacion.setOnClickListener(view1 -> onSave());
+    btn_guardar_estacion.setOnClickListener(view1 -> showAlertForConfirmarGuardar());
     btn_cancelar_estacion.setOnClickListener(view1 -> activity.onBackPressed());
     }
 
-    private void onSave() {
+    private void onSave(int estado) {
 
         if(et_fecha.getText().toString().isEmpty() || et_cantidad_machos.getText().toString().isEmpty()){
             Toasty.error(requireActivity(), "Debe completar todos los campos antes de guardar", Toast.LENGTH_LONG, true).show();
@@ -319,6 +331,8 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
             estacionFloracionInsert.setFecha(Utilidades.voltearFechaBD(et_fecha.getText().toString()));
             estacionFloracionInsert.setEstado_sincronizacion(0);
 
+            estacionFloracionInsert.setEstado_documento(estado);
+
 
             if(estacionFloracionCompleto != null){
                 estacionFloracionInsert.setFecha_crea(estacionFloracionCompleto.getEstacionFloracion().getFecha_crea());
@@ -351,6 +365,7 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
                                 .insertEstacionCabecera(estacionFloracionInsert)).get();
 
             }
+
 
 
             executor.submit(() ->
@@ -487,6 +502,48 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
         return cantidadMachosInput;
 
     }
+
+
+    private void showAlertForConfirmarGuardar(){
+        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_estacion,null);
+
+        RadioGroup grupo_radios_estado = viewInfalted.findViewById(R.id.grupo_radios_estado);
+        RadioButton rbtn_guardar = viewInfalted.findViewById(R.id.rbtn_guardar);
+        RadioButton rbtn_finalizar = viewInfalted.findViewById(R.id.rbtn_finalizar);
+
+
+        if(estacionFloracionCompleto != null){
+            rbtn_guardar.setChecked(estacionFloracionCompleto.getEstacionFloracion().getEstado_documento() == 0);
+            rbtn_finalizar.setChecked(estacionFloracionCompleto.getEstacionFloracion().getEstado_documento() == 1);
+        }
+
+        final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
+                .setView(viewInfalted)
+                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> { })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .create();
+
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
+            Button c = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE);
+            b.setOnClickListener(view -> {
+
+                if(!rbtn_guardar.isChecked() && !rbtn_finalizar.isChecked()){
+                    Toasty.error(requireActivity(),
+                            "Debes seleccionar un estado antes de guardar.",
+                            Toast.LENGTH_LONG, true).show();
+                    return;
+                }
+                int state = (rbtn_guardar.isChecked()) ? 0 : 1;
+                onSave(state);
+                builder.dismiss();
+            });
+            c.setOnClickListener(view -> builder.dismiss());
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

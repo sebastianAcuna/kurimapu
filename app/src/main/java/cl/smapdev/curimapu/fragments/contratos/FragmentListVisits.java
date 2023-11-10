@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -76,6 +77,9 @@ public class FragmentListVisits extends Fragment {
     private ConstraintLayout contenedor_vilab;
     private TextView fecha_ndvi, indicador_ndvi;
     private TextView lbl_titulo_comuna;
+
+    private TextView fecha_grafico;
+    private ImageView img_grafico;
 
     private RecyclerView weather_list;
 
@@ -165,13 +169,17 @@ public class FragmentListVisits extends Fragment {
         lbl_titulo_comuna = view.findViewById(R.id.lbl_titulo_comuna);
         img_vilab = view.findViewById(R.id.img_vilab);
         fecha_ndvi = view.findViewById(R.id.fecha_ndvi);
+        img_grafico = view.findViewById(R.id.img_grafico);
         indicador_ndvi = view.findViewById(R.id.indicador_ndvi);
         contenedor_vilab = view.findViewById(R.id.contenedor_vilab);
+        fecha_grafico = view.findViewById(R.id.fecha_grafico);
 
 
 //        setHasOptionsMenu(true);
 
         cargarListaGrande();
+
+        fecha_grafico.setText(Utilidades.fechaActualConHora());
 
 
         TextView txt_titulo_selected = view.findViewById(R.id.txt_titulo_selected);
@@ -403,10 +411,13 @@ public class FragmentListVisits extends Fragment {
                     if(vilab != null){
                         String ndvi = (vilab.promedio_vilab == null) ? "n/a" : vilab.promedio_vilab;
                         contenedor_vilab.setVisibility(View.VISIBLE);
-                        Picasso.get().load("file://"+ Environment.getExternalStorageDirectory()+"/DCIM/"+vilab.nombre_imagen).into(img_vilab);
+                        Picasso.get().load("file://"+ Environment.getExternalStorageDirectory()+"/DCIM/"+vilab.nombre_imagen).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_vilab);
                         indicador_ndvi.setText("NDVI: "+ndvi);
                         fecha_ndvi.setText("Fecha: "+vilab.fecha_imagen_ndvi);
                     }
+
+                    Picasso.get().load("file://"+ Environment.getExternalStorageDirectory()+"/DCIM/"+anexoCompleto.getAnexoContrato().getImagen_grafico()).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_grafico);
+
                 }
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();

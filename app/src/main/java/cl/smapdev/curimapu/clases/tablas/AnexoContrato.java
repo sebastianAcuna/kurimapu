@@ -284,6 +284,21 @@ public class AnexoContrato {
     @SerializedName("base_agricultor")
     public String base_agricultor;
 
+    @SerializedName("imagen_grafico")
+    public String imagen_grafico;
+
+
+    public void setBase_agricultor(String base_agricultor) {
+        this.base_agricultor = base_agricultor;
+    }
+
+    public String getImagen_grafico() {
+        return imagen_grafico;
+    }
+
+    public void setImagen_grafico(String imagen_grafico) {
+        this.imagen_grafico = imagen_grafico;
+    }
 
     public String getSag_register_idase() {
         return sag_register_idase;

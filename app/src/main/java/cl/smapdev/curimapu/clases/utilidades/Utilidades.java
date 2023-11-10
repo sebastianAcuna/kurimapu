@@ -58,8 +58,7 @@ import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
 
 public class Utilidades {
 
-//    public static final String APPLICATION_VERSION = "4.0.0912";
-    public static final String APPLICATION_VERSION = "4.2.0000";
+    public static final String APPLICATION_VERSION = "4.3.0002";
 
     public static final String FRAGMENT_INICIO = "fragmental_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -99,12 +98,11 @@ public class Utilidades {
 
     public static final String KEY_EXPORT = "9aB4c5D7eF";
 //    public static final String IP_PRODUCCION = "192.168.1.42";
-//    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
-    public static final String IP_PRODUCCION = "curiexport.pruebas-erp.cl";
+    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
+//    public static final String IP_PRODUCCION = "curiexport.pruebas-erp.cl";
     public static final String URL_SERVER_API = "https://"+IP_PRODUCCION+"";
 //    public static final String URL_SERVER_API = "http://"+IP_PRODUCCION+"/curimapu";
 
-//    public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_PRUEBAS = "190.13.170.26";
 
@@ -596,8 +594,8 @@ public class Utilidades {
                 }
             }
 
-            promedioMString.append("M").append(i).append(" = ").append(promedio).append(" ").append(separador);
-            promedioHString = "H = "+promedioH;
+            promedioMString.append("M").append(i).append(" = ").append(promedio).append("% ").append(separador);
+            promedioHString = "H = "+promedioH+"% ";
 
         }
 

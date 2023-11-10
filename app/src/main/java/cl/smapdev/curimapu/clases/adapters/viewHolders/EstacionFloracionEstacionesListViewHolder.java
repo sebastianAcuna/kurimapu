@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.adapters.viewHolders;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,20 +38,27 @@ public class EstacionFloracionEstacionesListViewHolder extends RecyclerView.View
     }
 
 
-    public void bind (final EstacionesCompletas estaciones, int numeroEstacion, EstacionFloracionEstacionesAdapter.OnItemClickListener onClickEliminar, EstacionFloracionEstacionesAdapter.OnItemClickListener onClickEditar, Context context){
+    public void bind (final EstacionesCompletas estaciones, int numeroEstacion,  int estado, EstacionFloracionEstacionesAdapter.OnItemClickListener onClickEliminar, EstacionFloracionEstacionesAdapter.OnItemClickListener onClickEditar, Context context){
 
         if( context  != null){
             tv_tipo_dato.setText("ESTACION " + numeroEstacion);
 
             StringBuilder texto = new StringBuilder();
             for (EstacionFloracionDetalle detalle : estaciones.getDetalles()){
-                texto.append(detalle.tituloDato).append(":").append(detalle.valor_dato).append(", ");
+                texto.append(detalle.tituloDato).append(":").append(detalle.valor_dato).append("% ").append(", ");
             }
             tv_valores_muestras.setText(texto);
 
 
             btn_eliminar_estacion.setOnClickListener(v -> onClickEliminar.onItemClick(v, estaciones));
             btn_editar_estacion.setOnClickListener(v -> onClickEditar.onItemClick(v, estaciones));
+
+            if(estado == 1){
+                btn_eliminar_estacion.setEnabled(false);
+                btn_eliminar_estacion.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                btn_editar_estacion.setEnabled(false);
+            }
+
         }
     }
 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/texto_temporada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="18sp"
+        android:padding="@dimen/padding_small"
+        android:text="Como usuario puede seleccionar entre descargar todas las temporadas juntas o solo la seleccionada "
+        />
+
+    <TextView
+        android:id="@+id/lbl_tempo_temporada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/texto_temporada"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Temp. seleccionada: "
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/temporada_seleccionada"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/texto_temporada"
+        app:layout_constraintStart_toEndOf="@+id/lbl_tempo_temporada"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="end"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:text="2023-2024 "
+
+        />
+
+
+    <RadioGroup
+        android:id="@+id/rd_grupo_seleccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/temporada_seleccionada"
+        android:gravity="start"
+        android:orientation="vertical"
+        >
+
+        <RadioButton
+            android:id="@+id/radio_todas_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:checked="false"
+            android:text="Todas las temporadas" />
+
+        <RadioButton
+            android:id="@+id/radio_actual_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:checked="true"
+            android:text="temporada seleccionada" />
+
+
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

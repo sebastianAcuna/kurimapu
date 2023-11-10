@@ -37,6 +37,7 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
     private final ImageView corr_termino_labores;
     private final ImageView corr_siembra_temprana;
     private final ImageView corr_destruccion_semillero;
+    private final ImageView corr_fin_destruccion_semillero;
 
     private final ConstraintLayout contenedor_resumen_correo;
 
@@ -69,6 +70,10 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
     private final TextView tv_destruccion_semillero;
     private final ImageView iv_destruccion_semillero;
 
+
+    private final TextView tv_fin_destruccion_semillero;
+    private final ImageView iv_fin_destruccion_semillero;
+
     private final Button btn_add_visita;
     private final ImageView ver_detalle;
 
@@ -100,6 +105,14 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
         corr_siembra_temprana = itemView.findViewById(R.id.corr_siembra_temprana);
         corr_destruccion_semillero = itemView.findViewById(R.id.corr_destruccion_semillero);
         contenedor_alerta = itemView.findViewById(R.id.contenedor_alerta);
+
+
+
+
+
+        corr_fin_destruccion_semillero = itemView.findViewById(R.id.corr_fin_destruccion_semillero);
+        tv_fin_destruccion_semillero = itemView.findViewById(R.id.tv_fin_destruccion_semillero);
+        iv_fin_destruccion_semillero = itemView.findViewById(R.id.iv_fin_destruccion_semillero);
 
 
 
@@ -176,7 +189,13 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
                         && !anexoCorreos.getSiem_tempra_grami().equals("0000-00-00") ?
                         anexoCorreos.getSiem_tempra_grami() : "");
 
+                String destruccionFinSemillero = (anexoCorreos.getFecha_fin_destruccion_semillero() != null
+                        && !anexoCorreos.getFecha_fin_destruccion_semillero().equals("0000-00-00") ?
+                        anexoCorreos.getFecha_fin_destruccion_semillero() : "");
+
                 String horaDestruccionSemillero = (anexoCorreos.getHora_destruccion_semillero() == null) ? "" : anexoCorreos.getHora_destruccion_semillero();
+                String horaFinDestruccionSemillero = (anexoCorreos.getHora_fin_destruccion_semillero() == null) ? "" : anexoCorreos.getHora_fin_destruccion_semillero();
+
                 String horaInicioCosecha = (anexoCorreos.getHora_inicio_cosecha() == null) ? "" : anexoCorreos.getHora_inicio_cosecha();
 
 
@@ -189,6 +208,7 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
                 corr_termino_labores.setImageDrawable((anexoCorreos.getCorreo_termino_labores_post_cosechas() > 0) ? correoSi : correoNo );
                 corr_siembra_temprana.setImageDrawable((anexoCorreos.getCorreo_siembra_temprana() > 0) ? correoSi : correoNo);
                 corr_destruccion_semillero.setImageDrawable((anexoCorreos.getCorreo_destruccion_semillero() > 0) ? correoSi : correoNo);
+                corr_fin_destruccion_semillero.setImageDrawable((anexoCorreos.getCorreo_fin_destruccion_semillero() > 0) ? correoSi : correoNo);
 
 
 
@@ -201,6 +221,7 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
                 iv_inicio_cosecha.setImageDrawable((anexoCorreos.getCorreo_inicio_cosecha() > 0) ? correoSi: correoNo );
                 iv_termino_cosecha.setImageDrawable((anexoCorreos.getCorreo_termino_cosecha() > 0) ? correoSi : correoNo );
                 iv_termino_labores.setImageDrawable((anexoCorreos.getCorreo_termino_labores_post_cosechas() > 0) ? correoSi : correoNo );
+                iv_fin_destruccion_semillero.setImageDrawable((anexoCorreos.getCorreo_fin_destruccion_semillero() > 0) ? correoSi : correoNo);
 
 
 
@@ -221,6 +242,7 @@ public class AnexosCorreosFechasViewHolder extends RecyclerView.ViewHolder {
                 tv_termino_cosecha.setText(terminoCosecha);
                 tv_termino_labores.setText(terminoLabores);
                 tv_detalle_labores.setText(detalleTerminoLabores);
+                tv_fin_destruccion_semillero.setText(destruccionFinSemillero + " " + horaFinDestruccionSemillero);
 
             }
 

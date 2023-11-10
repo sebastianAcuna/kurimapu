@@ -41,6 +41,18 @@ public class RespuestaFecha {
     @Expose
     private int correo_termino_labores;
 
+    @SerializedName("correo_destruccion_semillero")
+    @Expose
+    private int correo_destruccion_semillero;
+
+    @SerializedName("correo_siembra_temprana")
+    @Expose
+    private int correo_siembra_temprana;
+
+    @SerializedName("correo_fin_destruccion_semillero")
+    @Expose
+    private int correo_fin_destruccion_semillero;
+
     @SerializedName("detalle")
     @Expose
     private String detalle;
@@ -49,6 +61,29 @@ public class RespuestaFecha {
     @Expose
     private String mensaje;
 
+    public int getCorreo_siembra_temprana() {
+        return correo_siembra_temprana;
+    }
+
+    public void setCorreo_siembra_temprana(int correo_siembra_temprana) {
+        this.correo_siembra_temprana = correo_siembra_temprana;
+    }
+
+    public int getCorreo_destruccion_semillero() {
+        return correo_destruccion_semillero;
+    }
+
+    public void setCorreo_destruccion_semillero(int correo_destruccion_semillero) {
+        this.correo_destruccion_semillero = correo_destruccion_semillero;
+    }
+
+    public int getCorreo_fin_destruccion_semillero() {
+        return correo_fin_destruccion_semillero;
+    }
+
+    public void setCorreo_fin_destruccion_semillero(int correo_fin_destruccion_semillero) {
+        this.correo_fin_destruccion_semillero = correo_fin_destruccion_semillero;
+    }
 
     public int getCorreo_inicio_siembra() {
         return correo_inicio_siembra;

@@ -465,6 +465,44 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/fecha_fin_destruccion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:text="Fecha y Hora de Fin de destruccion"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/et_fecha_fin_destruccion"
+            app:layout_constraintBottom_toBottomOf="@id/et_hora_fin_destruccion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_fecha_fin_destruccion"
+            />
+
+        <EditText
+            android:id="@+id/et_fecha_fin_destruccion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="3"
+            android:inputType="date"
+            app:layout_constraintTop_toBottomOf="@id/cont_detalle_destruccion"
+            app:layout_constraintStart_toEndOf="@id/fecha_fin_destruccion"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:drawableStart="@drawable/ic_date_range"
+            android:drawableTint="@color/colorPrimary"
+            />
+        <EditText
+            android:id="@+id/et_hora_fin_destruccion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            app:layout_constraintTop_toBottomOf="@id/et_fecha_fin_destruccion"
+            app:layout_constraintStart_toStartOf="@id/et_fecha_fin_destruccion"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:drawableStart="@drawable/ic_time"
+            android:drawableTint="@color/colorPrimary"
+
+            />
+
 
 
     <Button
@@ -475,7 +513,7 @@
         android:text="@string/guardar"
         android:textColor="@color/colorPrimary"
         android:layout_marginTop="@dimen/padding_small"
-        app:layout_constraintTop_toBottomOf="@id/cont_detalle_destruccion"
+        app:layout_constraintTop_toBottomOf="@id/et_hora_fin_destruccion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -486,7 +524,7 @@
         android:layout_marginEnd="@dimen/padding_small"
         android:layout_marginTop="@dimen/padding_small"
         android:text="@string/nav_cancel"
-        app:layout_constraintTop_toBottomOf="@id/cont_detalle_destruccion"
+        app:layout_constraintTop_toBottomOf="@id/et_hora_fin_destruccion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_guardar_anexo_fecha" />
 

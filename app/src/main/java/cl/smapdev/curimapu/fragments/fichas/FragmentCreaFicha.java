@@ -577,6 +577,10 @@ public class FragmentCreaFicha extends Fragment {
 
 
         if (fichasCompletas != null){
+
+
+
+
             btn_save_agricultor.setText(getResources().getString(R.string.editar));
             sp_region_agricultor.setSelection(idRegiones.indexOf(fichasCompletas.getRegion().getId_region()));
 
@@ -633,6 +637,13 @@ public class FragmentCreaFicha extends Fragment {
             int positionTipoSuelo  = idTipoSuelos.indexOf(fichasCompletas.getFichas().getId_tipo_suelo());
             sp_tipo_suelo.setSelection(positionTipoSuelo);
 
+            TipoRiego tipoRiego = MainActivity.myAppDB.myDao().getTipoRiegoById(fichasCompletas.getFichas().getId_tipo_riego());
+            if(tipoRiego.getVigencia().equals("NO")){
+                List<TipoRiego> tipoRiegoList = MainActivity.myAppDB.myDao().getTipoRiego();
+                cargarSpinnerRiego(tipoRiegoList);
+            }
+
+
             int positionTipoRiego  = idTipoRiegos.indexOf(fichasCompletas.getFichas().getId_tipo_riego());
             sp_tipo_riego.setSelection(positionTipoRiego);
 
@@ -663,16 +674,16 @@ public class FragmentCreaFicha extends Fragment {
                 et_rotacion_1.setText(cropRotations.get(0).getCultivo_crop_rotation());
                 et_rotacion_1.setTag("1");
 
-                et_rotacion_2.setText(cropRotations.get(1).getCultivo_crop_rotation());
+                et_rotacion_2.setText(cropRotations.size() > 1 ? cropRotations.get(1).getCultivo_crop_rotation() : "");
                 et_rotacion_2.setTag("2");
 
-                et_rotacion_3.setText(cropRotations.get(2).getCultivo_crop_rotation());
+                et_rotacion_3.setText(cropRotations.size() > 2 ? cropRotations.get(2).getCultivo_crop_rotation() : "");
                 et_rotacion_3.setTag("3");
 
-                et_rotacion_4.setText(cropRotations.get(3).getCultivo_crop_rotation());
+                et_rotacion_4.setText(cropRotations.size() > 3 ? cropRotations.get(3).getCultivo_crop_rotation() : "");
                 et_rotacion_4.setTag("4");
 
-                et_rotacion_5.setText(cropRotations.get(4).getCultivo_crop_rotation());
+                et_rotacion_5.setText(cropRotations.size() > 4 ? cropRotations.get(4).getCultivo_crop_rotation() : "");
                 et_rotacion_5.setTag("5");
 
 
@@ -805,23 +816,9 @@ public class FragmentCreaFicha extends Fragment {
 
             double norting = (!TextUtils.isEmpty(ti_norting.getText())) ? Double.parseDouble(ti_norting.getText().toString()) : 0.0;
             double easting = (!TextUtils.isEmpty(ti_easting.getText())) ? Double.parseDouble(ti_easting.getText().toString()) : 0.0;
-//            double easting = 0.0;
-//
-
-
-//            Location coordenates = getLastBestLocation();
-//
-//
-//            if (coordenates != null) {
-//                norting =  coordenates.getAltitude();
-//                easting =  coordenates.getLongitude();
-//            }
-
 
             ti_norting.setText(String.valueOf(norting));
             ti_easting.setText(String.valueOf(easting));
-
-
 
         }
 
@@ -1534,9 +1531,8 @@ public class FragmentCreaFicha extends Fragment {
 
     }
 
-    private void cargarSpinnerIndependientes(){
-
-        List<TipoRiego> tipoRiegoList = MainActivity.myAppDB.myDao().getTipoRiego();
+    private void cargarSpinnerRiego(List<TipoRiego> tipoRiegoList) {
+        idTipoRiegos = new ArrayList<>();
 
         if (tipoRiegoList != null && tipoRiegoList.size() > 0){
             ArrayList<String> rg = new ArrayList<>();
@@ -1564,6 +1560,12 @@ public class FragmentCreaFicha extends Fragment {
             idTipoRiegos.add(contador,"");
             sp_tipo_riego.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
         }
+    }
+
+    private void cargarSpinnerIndependientes(){
+
+        List<TipoRiego> tipoRiegoList = MainActivity.myAppDB.myDao().getTipoRiegoVigente();
+        cargarSpinnerRiego(tipoRiegoList);
 
 
         List<TipoSuelo> tipoSueloList = MainActivity.myAppDB.myDao().getTipoSuelo();

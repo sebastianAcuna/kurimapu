@@ -2,11 +2,16 @@ package cl.smapdev.curimapu.fragments.dialogos;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -98,10 +103,11 @@ public class DialogMuestraEstacion extends DialogFragment {
 
         if(detalle != null){
             et_valor_muestra.setText(detalle.getValor_dato());
+            et_valor_muestra.selectAll();
+        }else{
+            et_valor_muestra.setText("");
+            et_valor_muestra.selectAll();
         }
-
-        et_valor_muestra.requestFocus();
-
 
         btn_guardar_muestra.setOnClickListener(view1 -> onSave());
         btn_cancelar_muestra.setOnClickListener(view1 -> cerrar());
@@ -123,11 +129,32 @@ public class DialogMuestraEstacion extends DialogFragment {
         }
     }
 
+
     public void cerrar(){
         Dialog dialog = getDialog();
         if( dialog != null ){
             dialog.dismiss();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+        et_valor_muestra.clearFocus();
+        lbl_tipo_muestra.requestFocus();
+        et_valor_muestra.setFocusable(true);
+        et_valor_muestra.requestFocus();
+
+        new Handler().postDelayed(() -> {
+            et_valor_muestra.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, 0f, 0f, 0));
+            et_valor_muestra.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, 0f, 0f, 0));
+            et_valor_muestra.selectAll();
+        }, 200);
+
+
+
     }
 
     public void onSave(){
@@ -183,6 +210,14 @@ public class DialogMuestraEstacion extends DialogFragment {
         et_valor_muestra = view.findViewById(R.id.et_valor_muestra);
         btn_guardar_muestra = view.findViewById(R.id.btn_guardar_muestra);
         btn_cancelar_muestra = view.findViewById(R.id.btn_cancelar_muestra);
+
+
+        et_valor_muestra.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus){
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(et_valor_muestra, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
 
     }
 

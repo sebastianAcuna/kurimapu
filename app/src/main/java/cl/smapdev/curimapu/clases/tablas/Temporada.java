@@ -27,6 +27,17 @@ public class Temporada {
     private int especial_temporada;
 
 
+    @SerializedName("default_season")
+    private int default_season;
+
+    public int getDefault_season() {
+        return default_season;
+    }
+
+    public void setDefault_season(int default_season) {
+        this.default_season = default_season;
+    }
+
     public int getEspecial_temporada() {
         return especial_temporada;
     }

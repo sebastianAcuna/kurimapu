@@ -339,8 +339,8 @@ public class DialogFilterFichas extends DialogFragment {
 
 
 //            if (estado >= 0){
-                consulta += "AND F.activa != ?";
-                ob = Utilidades.appendValue(ob, 2);
+//                consulta += "AND F.activa != ?";
+//                ob = Utilidades.appendValue(ob, 2);
 //            }
 
             if (!TextUtils.isEmpty(ha_disp)){

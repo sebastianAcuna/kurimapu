@@ -77,6 +77,20 @@ public class Usuario {
     @Expose
     private int tipo_usuario;
 
+
+    @SerializedName("multi_temporada")
+    @Expose
+    private int multi_temporada;
+
+
+    public int getMulti_temporada() {
+        return multi_temporada;
+    }
+
+    public void setMulti_temporada(int multi_temporada) {
+        this.multi_temporada = multi_temporada;
+    }
+
     public int getTipo_usuario() {
         return tipo_usuario;
     }

@@ -139,6 +139,43 @@ public class AnexoCorreoFechas {
     private int correo_inicio_siembra;
 
 
+    @SerializedName("fecha_fin_destruccion_semillero")
+    @Expose
+    private String fecha_fin_destruccion_semillero;
+
+    @SerializedName("hora_fin_destruccion_semillero")
+    @Expose
+    private String hora_fin_destruccion_semillero;
+
+    @SerializedName("correo_fin_destruccion_semillero")
+    @Expose
+    private int correo_fin_destruccion_semillero;
+
+
+    public String getFecha_fin_destruccion_semillero() {
+        return fecha_fin_destruccion_semillero;
+    }
+
+    public void setFecha_fin_destruccion_semillero(String fecha_fin_destruccion_semillero) {
+        this.fecha_fin_destruccion_semillero = fecha_fin_destruccion_semillero;
+    }
+
+    public String getHora_fin_destruccion_semillero() {
+        return hora_fin_destruccion_semillero;
+    }
+
+    public void setHora_fin_destruccion_semillero(String hora_fin_destruccion_semillero) {
+        this.hora_fin_destruccion_semillero = hora_fin_destruccion_semillero;
+    }
+
+    public int getCorreo_fin_destruccion_semillero() {
+        return correo_fin_destruccion_semillero;
+    }
+
+    public void setCorreo_fin_destruccion_semillero(int correo_fin_destruccion_semillero) {
+        this.correo_fin_destruccion_semillero = correo_fin_destruccion_semillero;
+    }
+
     public String getInicio_siembra() {
         return inicio_siembra;
     }

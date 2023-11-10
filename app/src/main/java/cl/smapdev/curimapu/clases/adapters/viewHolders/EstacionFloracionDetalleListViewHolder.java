@@ -37,7 +37,7 @@ public class EstacionFloracionDetalleListViewHolder extends RecyclerView.ViewHol
 
         if( context  != null){
             tv_tipo_dato.setText(estaciones.getTituloDato());
-            tv_valor_dato.setText(estaciones.getValor_dato());
+            tv_valor_dato.setText(estaciones.getValor_dato()+ "%");
             btn_editar_estacion.setOnClickListener((v) -> onClickEditar.onItemClick(v, estaciones));
 
 

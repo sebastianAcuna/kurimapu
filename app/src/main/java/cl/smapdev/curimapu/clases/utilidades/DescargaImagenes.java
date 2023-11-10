@@ -21,19 +21,21 @@ public class DescargaImagenes {
     private static DescargaImagenes instance;
     private RequestQueue requestQueue;
     private static Context context;
+    private static String folderName;
 
     private static final String TAG = "ImageDownloader";
 
-    private DescargaImagenes(Context context){
+    private DescargaImagenes(Context context, String folderName){
         DescargaImagenes.context = context;
+        DescargaImagenes.folderName = folderName;
         requestQueue = getRequestQueue();
     }
 
 
 
-    public static synchronized  DescargaImagenes getInstance(Context context){
+    public static synchronized  DescargaImagenes getInstance(Context context, String folderName){
         if(instance == null){
-            instance = new DescargaImagenes(context);
+            instance = new DescargaImagenes(context, folderName);
         }
 
         return instance;
@@ -58,22 +60,31 @@ public class DescargaImagenes {
 
 
     public void saveImageToDisk(Bitmap bitmap, String fileName) {
-        File directory = new File(Environment.getExternalStorageDirectory(), "/DCIM");
+//        File directory = new File(Environment.getExternalStorageDirectory(), "/DCIM");
+        boolean isFolderCreated = false;
+        File directory = new File(context.getExternalFilesDir(null), "/"+folderName);
         if (!directory.exists()) {
-            directory.mkdirs();
+           isFolderCreated  = directory.mkdirs();
+        }
+
+        if(!isFolderCreated){
+            Log.i(TAG, "No se pudo crear la carpeta: ");
+            return;
         }
 
         File file = new File(directory, fileName);
 
         FileOutputStream outputStream = null;
         try {
+
             outputStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             outputStream.flush();
             Log.i(TAG, "Image saved to disk: " + file.getAbsolutePath());
         } catch (IOException e) {
             Log.e(TAG, "Error saving image to disk: " + e.getMessage());
-        } finally {
+        }
+        finally {
             try {
                 if (outputStream != null) {
                     outputStream.close();

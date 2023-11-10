@@ -46,6 +46,9 @@ public class DialogAnexoFecha  extends DialogFragment  {
     private EditText et_termino_labores_post_cosecha;
     private EditText et_detalle_labores;
 
+    private EditText et_fecha_fin_destruccion;
+    private EditText et_hora_fin_destruccion;
+
     private Button btn_guardar_anexo_fecha;
     private Button btn_posponer_anexo_fecha;
     private IOnSave IOnSave;
@@ -119,6 +122,7 @@ public class DialogAnexoFecha  extends DialogFragment  {
             boolean inicioCosechaEnabled = anexoFechas.getCorreo_inicio_cosecha() > 0;
             boolean terminoCosechaEnabled = anexoFechas.getCorreo_termino_cosecha() > 0;
             boolean terminoLaboresEnabled = anexoFechas.getCorreo_termino_labores_post_cosechas() > 0;
+            boolean fechaFinDestruccionEnabled = anexoFechas.getCorreo_fin_destruccion_semillero() > 0;
 
             String inicioSiembra = (
                     anexoFechas.getInicio_siembra() != null &&
@@ -170,6 +174,8 @@ public class DialogAnexoFecha  extends DialogFragment  {
             et_inicio_cosecha_hora.setEnabled(!inicioCosechaEnabled);
             et_termino_cosecha.setEnabled(!terminoCosechaEnabled);
             et_termino_labores_post_cosecha.setEnabled(!terminoLaboresEnabled);
+            et_hora_fin_destruccion.setEnabled(!fechaFinDestruccionEnabled);
+            et_fecha_fin_destruccion.setEnabled(!fechaFinDestruccionEnabled);
 
 
             et_inicio_siembra.setText(inicioSiembra);
@@ -189,6 +195,13 @@ public class DialogAnexoFecha  extends DialogFragment  {
 
             et_fecha_destruccion.setText(Utilidades.voltearFechaVista(anexoFechas.getFecha_destruccion_semillero()));
             et_hora_destruccion.setText(anexoFechas.getHora_destruccion_semillero());
+
+
+
+            et_fecha_fin_destruccion.setText(Utilidades.voltearFechaVista(anexoFechas.getFecha_fin_destruccion_semillero()));
+            et_hora_fin_destruccion.setText(anexoFechas.getHora_fin_destruccion_semillero());
+
+
 
 
 
@@ -285,6 +298,13 @@ public class DialogAnexoFecha  extends DialogFragment  {
         et_termino_labores_post_cosecha.setOnFocusChangeListener((v1, b) -> {
             if (b){ levantarFecha(et_termino_labores_post_cosecha);  }
         });
+
+        et_fecha_fin_destruccion.setOnFocusChangeListener((v1, b)-> {
+            if(b){ levantarFecha(et_fecha_fin_destruccion);}
+        });
+        et_hora_fin_destruccion.setOnFocusChangeListener((v1, b)-> {
+            if(b){ Utilidades.levantarHora(et_hora_fin_destruccion, getActivity());}
+        });
     }
 
     @Override
@@ -330,6 +350,28 @@ public class DialogAnexoFecha  extends DialogFragment  {
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             return;
         }
+
+        if((!et_fecha_fin_destruccion.getText().toString().isEmpty() || !et_hora_fin_destruccion.getText().toString().isEmpty()) && et_fecha_destruccion.getText().toString().isEmpty()){
+            String message = "Para ingresar la fecha fin de destruccion , debes ingresar la fecha de inicio (destruccion de semillero) ";
+            Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+            return;
+        }
+
+
+
+        if(!et_fecha_fin_destruccion.getText().toString().isEmpty() && et_hora_fin_destruccion.getText().toString().isEmpty()){
+            String message = "Al ingresar fecha fin de  destruccion debes ingresar la hora fin de  destruccion ";
+            Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+            return;
+        }
+
+        if(et_fecha_fin_destruccion.getText().toString().isEmpty() && !et_hora_fin_destruccion.getText().toString().isEmpty()){
+            String message = "Al ingresar hora fin de  destruccion debes ingresar la fecha fin de  destruccion ";
+            Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
+            return;
+        }
+
+
 
         boolean isDestructionComplete = rbtn_parcial.isChecked();
         boolean isCompleteChecked = rbtn_completo.isChecked();
@@ -379,6 +421,9 @@ public class DialogAnexoFecha  extends DialogFragment  {
         fhc.setDetalle_labores(et_detalle_labores.getText().toString());
         fhc.setHora_inicio_cosecha(et_inicio_cosecha_hora.getText().toString());
 
+        fhc.setFecha_fin_destruccion_semillero(Utilidades.voltearFechaBD(et_fecha_fin_destruccion.getText().toString()));
+        fhc.setHora_fin_destruccion_semillero(et_hora_fin_destruccion.getText().toString());
+
         if(isDestructionComplete || isCompleteChecked){
             fhc.setCantidad_has_destruidas(Double.parseDouble(et_cantidad_ha_destruccion.getText().toString()));
             fhc.setMotivo_destruccion(et_motivo_destruccion.getText().toString());
@@ -398,6 +443,7 @@ public class DialogAnexoFecha  extends DialogFragment  {
         fhc.setCorreo_inicio_cosecha(anexoFechas == null ? 0: anexoFechas.getCorreo_inicio_cosecha());
         fhc.setCorreo_termino_cosecha(anexoFechas == null ? 0: anexoFechas.getCorreo_termino_cosecha());
         fhc.setCorreo_termino_labores_post_cosechas(anexoFechas == null ? 0: anexoFechas.getCorreo_termino_labores_post_cosechas());
+        fhc.setCorreo_fin_destruccion_semillero(anexoFechas == null ? 0 : anexoFechas.getCorreo_fin_destruccion_semillero());
 
         Config config = MainActivity.myAppDB.myDao().getConfig();
         fhc.setId_fieldman(config.getId_usuario());
@@ -483,6 +529,9 @@ public class DialogAnexoFecha  extends DialogFragment  {
         et_hora_destruccion = view.findViewById(R.id.et_hora_destruccion);
         et_cantidad_ha_destruccion = view.findViewById(R.id.et_cantidad_ha_destruccion);
         et_motivo_destruccion = view.findViewById(R.id.et_motivo_destruccion);
+
+        et_fecha_fin_destruccion = view.findViewById(R.id.et_fecha_fin_destruccion);
+        et_hora_fin_destruccion = view.findViewById(R.id.et_hora_fin_destruccion);
 
         rbtn_parcial = view.findViewById(R.id.rbtn_parcial);
         rbtn_completo = view.findViewById(R.id.rbtn_completo);

@@ -20,6 +20,18 @@ public class Config {
 
     private int id_usuario_suplandato;
 
+
+    private int multi_temporada;
+
+
+    public int getMulti_temporada() {
+        return multi_temporada;
+    }
+
+    public void setMulti_temporada(int multi_temporada) {
+        this.multi_temporada = multi_temporada;
+    }
+
     public String getServidorSeleccionado() {
         return servidorSeleccionado;
     }

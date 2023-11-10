@@ -27,6 +27,7 @@ public class EstacionFloracionListViewHolder extends RecyclerView.ViewHolder {
     private final Button btn_editar_estacion;
 
     private final TextView tv_resumen_promedio;
+    private final TextView tv_estado_documento;
 
 
     public EstacionFloracionListViewHolder(@NonNull View itemView) {
@@ -36,6 +37,7 @@ public class EstacionFloracionListViewHolder extends RecyclerView.ViewHolder {
         btn_eliminar_estacion  = itemView.findViewById(R.id.btn_eliminar_estacion);
         btn_editar_estacion  = itemView.findViewById(R.id.btn_editar_estacion);
         tv_resumen_promedio  = itemView.findViewById(R.id.tv_resumen_promedio);
+        tv_estado_documento  = itemView.findViewById(R.id.tv_estado_documento);
 
     }
 
@@ -48,10 +50,19 @@ public class EstacionFloracionListViewHolder extends RecyclerView.ViewHolder {
             btn_eliminar_estacion.setOnClickListener(view -> onClickEliminar.onItemClick(view, estaciones));
             btn_editar_estacion.setOnClickListener(view -> onClickEditar.onItemClick(view, estaciones));
 
+            tv_estado_documento.setText(estaciones.getEstacionFloracion().getEstado_documento() == 0  ? "Guardado" : "Finalizado");
+
 
             String texto = Utilidades.calculaPromediosEstacionFloracion(estaciones.getEstaciones(), estaciones.getEstacionFloracion().getCantidad_machos(), "; ");
 
             tv_resumen_promedio.setText(texto);
+
+
+            if(estaciones.getEstacionFloracion().getEstado_documento() == 1){
+                btn_editar_estacion.setText("VER");
+            }
+
+
         }
     }
 

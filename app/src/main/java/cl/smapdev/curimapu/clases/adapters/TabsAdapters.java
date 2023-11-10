@@ -21,6 +21,9 @@ public class TabsAdapters extends FragmentStatePagerAdapter {
         tabs = context.getResources().getStringArray(R.array.tabs);
     }
 
+
+
+
     @NonNull
     @Override
     public Fragment getItem(int position) {

@@ -18,7 +18,7 @@ public interface DaoEstacionFloracion {
 
 //    sincronizacion
 
-    @Query("SELECT * FROM estacion_floracion WHERE estado_sincronizacion = 0")
+    @Query("SELECT * FROM estacion_floracion WHERE estado_sincronizacion = 0 AND estado_documento = 1 ")
     List<EstacionFloracion> getEstacionesToSync();
 
     @Query("SELECT * FROM estacion_floracion WHERE id_ac_floracion = :id_ac ")

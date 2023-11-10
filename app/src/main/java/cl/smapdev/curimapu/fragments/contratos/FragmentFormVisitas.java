@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,6 +41,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 
 import com.github.clans.fab.FloatingActionButton;
@@ -75,6 +77,7 @@ import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.CameraUtils;
+import cl.smapdev.curimapu.clases.utilidades.CustomViewPager;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
 import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
@@ -91,6 +94,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private TextView titulo_raices;
 
     private TabLayout tab_layout;
+    private CustomViewPager viewPager;
 
     private TextInputLayout ti_percent_humedad;
     private Button btn_guardar, btn_volver;
@@ -280,21 +284,28 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                     anexoContrato = anexoContratoFuture.get();
                 }
 
-                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-                Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
-                if(prev != null){
-                    ft.remove(prev);
+                try {
+                    FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+                    Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
+                    if(prev != null){
+                        ft.remove(prev).commit();
+                    }
+                    if( visitasCompletas != null ){
+                        DialogObservationTodo dialogo = DialogObservationTodo.newInstance(
+                                anexoContrato,
+                                temp_visitas,
+                                visitasCompletas,
+                                (TempVisitas tp) -> { if(tp != null){ temp_visitas =  tp; }}
+                        );
+                        dialogo.show(ft, "EVALUACION_RECOMENDACION");
+                    }
+                }catch (IllegalStateException e){
+                    Log.e("ERROR_CONTEXT", e.getLocalizedMessage());
+                    Toast.makeText(activity, "Sin contexto para dialogo", Toast.LENGTH_SHORT).show();
                 }
 
-                if( visitasCompletas != null ){
-                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(
-                            anexoContrato,
-                            temp_visitas,
-                            visitasCompletas,
-                            (TempVisitas tp) -> { if(tp != null){ temp_visitas =  tp; }}
-                    );
-                    dialogo.show(ft, "EVALUACION_RECOMENDACION");
-                }
+
+
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -506,6 +517,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         contenedor_imagenes = view.findViewById(R.id.contenedor_imagenes);
         contenedor_observaciones = view.findViewById(R.id.contenedor_observaciones);
         tab_layout =  requireActivity().findViewById(R.id.tab_layout);
+        viewPager  = requireActivity().findViewById(R.id.view_pager);
 
         titulo_raices = view.findViewById(R.id.titulo_raices);
 
@@ -591,6 +603,10 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
             Objects.requireNonNull(tab_layout.getTabAt(tab_layout.getTabCount() - 1)).view.setEnabled(false);
 
+            viewPager.setSwipeEnabled(false);
+
+
+
         }else{
             contenedor_estados.setVisibility(View.VISIBLE);
             titulo_raices.setVisibility(View.VISIBLE);
@@ -598,6 +614,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             contenedor_monitoreo.setVisibility(View.GONE);
 //            foto_raices.setVisibility(View.VISIBLE);
             Objects.requireNonNull(tab_layout.getTabAt(tab_layout.getTabCount() - 1)).view.setEnabled(true);
+            viewPager.setSwipeEnabled(true);
         }
     }
 
@@ -888,6 +905,25 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     private void saveVisitaNormal(){
 
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        Future<VisitasCompletas> visitasCompletasFuture = exec.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
+
+
+        try {
+            VisitasCompletas cc = visitasCompletasFuture.get();
+
+            if((temp_visitas.getEvaluacion() == 0.0 || temp_visitas.getComentario_evaluacion().isEmpty()) && cc != null && cc.getVisitas() != null){
+                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes realizar la evaluacion de la visita anterior. ( estrella de arriba a la derecha )", "entiendo");
+                return;
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(!exec.isShutdown()) exec.shutdown();
+
+
+
         int fotosClientes = MainActivity.myAppDB.myDao().getCantFotos(temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) ,0);
         int fotosAgricultores = MainActivity.myAppDB.myDao().getCantFotos(temp_visitas.getId_anexo_temp_visita(), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) ,2);
 
@@ -1099,11 +1135,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         }
 
         ExecutorService exec = Executors.newSingleThreadExecutor();
-
-        Future<VisitasCompletas> visitasCompletasFuture = exec.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
         Future<List<Evaluaciones>> evas = exec.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByACObliga(Integer.parseInt(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""))));
-        try {
-            VisitasCompletas cc = visitasCompletasFuture.get();
+         try {
             List<Evaluaciones> evs = evas.get();
 
             if(evs.size() == 0){
@@ -1111,10 +1144,6 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                 return;
             }
 
-            if((temp_visitas.getEvaluacion() == 0.0 || temp_visitas.getComentario_evaluacion().isEmpty()) && cc != null && cc.getVisitas() != null){
-                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes realizar la evaluacion de la visita anterior. ( estrella de arriba a la derecha )", "entiendo");
-                return;
-            }
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

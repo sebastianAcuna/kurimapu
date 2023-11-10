@@ -80,6 +80,18 @@
         android:visibility="gone"
         />
 
+    <TextView
+        android:id="@+id/tv_estado_documento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/padding_small"
+        tool:text="Finalizado"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
     <Button
         android:id="@+id/btn_editar_estacion"
         android:layout_width="wrap_content"

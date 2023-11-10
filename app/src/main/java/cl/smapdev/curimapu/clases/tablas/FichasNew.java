@@ -197,6 +197,31 @@ public class FichasNew  implements Serializable {
     @Expose
     private String rut_fieldman_ass;
 
+    @SerializedName("latitud_ficha")
+    @ColumnInfo( name = "latitud_ficha_new")
+    private String latitud_ficha;
+
+    @SerializedName("longitud_ficha")
+    @ColumnInfo( name = "longitud_ficha_new")
+    private String longitud_ficha;
+
+
+    public String getLatitud_ficha() {
+        return latitud_ficha;
+    }
+
+    public void setLatitud_ficha(String latitud_ficha) {
+        this.latitud_ficha = latitud_ficha;
+    }
+
+    public String getLongitud_ficha() {
+        return longitud_ficha;
+    }
+
+    public void setLongitud_ficha(String longitud_ficha) {
+        this.longitud_ficha = longitud_ficha;
+    }
+
     public String getRut_fieldman_ass() {
         return rut_fieldman_ass;
     }

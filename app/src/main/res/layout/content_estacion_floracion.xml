@@ -11,7 +11,7 @@
         android:id="@+id/nueva_estacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="nueva estacion"
+        android:text="nueva muestra"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />

@@ -17,6 +17,9 @@ public class TipoRiego {
     @SerializedName("descripcion")
     private String descripcion;
 
+    @SerializedName("vigencia")
+    private String vigencia;
+
 
     public String getId_tipo_riego() {
         return id_tipo_riego;
@@ -32,5 +35,14 @@ public class TipoRiego {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+
+    public String getVigencia() {
+        return vigencia;
+    }
+
+    public void setVigencia(String vigencia) {
+        this.vigencia = vigencia;
     }
 }

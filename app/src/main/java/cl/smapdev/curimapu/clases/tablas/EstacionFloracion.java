@@ -25,6 +25,16 @@ public class EstacionFloracion {
     public int id_user_mod;
     public String fecha_mod;
 
+    public int estado_documento;
+
+
+    public int getEstado_documento() {
+        return estado_documento;
+    }
+
+    public void setEstado_documento(int estado_documento) {
+        this.estado_documento = estado_documento;
+    }
 
     public int getId_ac_floracion() {
         return id_ac_floracion;

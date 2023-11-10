@@ -20,11 +20,12 @@ import java.util.Objects;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.TabsAdapters;
+import cl.smapdev.curimapu.clases.utilidades.CustomViewPager;
 import es.dmoral.toasty.Toasty;
 
 public class FragmentContratos extends Fragment {
 
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     private  MainActivity activity;
 
     @Override
@@ -68,6 +69,7 @@ public class FragmentContratos extends Fragment {
             TabLayout tabLayout = activity.findViewById(R.id.tab_layout);
             tabLayout.setupWithViewPager(viewPager);
             tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
 
 
 

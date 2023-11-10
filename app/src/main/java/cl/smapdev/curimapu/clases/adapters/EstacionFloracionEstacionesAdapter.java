@@ -23,6 +23,7 @@ public class EstacionFloracionEstacionesAdapter extends RecyclerView.Adapter<Est
     private final OnItemClickListener itemClickListenerEliminar;
     private final OnItemClickListener itemClickListenerEditar;
     private final Context context;
+    private int estado;
 
     public interface OnItemClickListener{ void onItemClick(View view, EstacionesCompletas estaciones); }
 
@@ -30,11 +31,13 @@ public class EstacionFloracionEstacionesAdapter extends RecyclerView.Adapter<Est
     public EstacionFloracionEstacionesAdapter(List<EstacionesCompletas> estaciones,
                                               OnItemClickListener itemClickListenerEliminar,
                                               OnItemClickListener itemClickListenerEditar,
-                                              Context context) {
+                                              Context context,
+                                              int estado) {
         this.estaciones = estaciones;
         this.itemClickListenerEliminar = itemClickListenerEliminar;
         this.itemClickListenerEditar = itemClickListenerEditar;
         this.context = context;
+        this.estado = estado;
     }
 
     @NonNull
@@ -47,7 +50,7 @@ public class EstacionFloracionEstacionesAdapter extends RecyclerView.Adapter<Est
 
     @Override
     public void onBindViewHolder(@NonNull EstacionFloracionEstacionesListViewHolder holder, int position) {
-        holder.bind(estaciones.get(position), position + 1,  itemClickListenerEliminar, itemClickListenerEditar, context);
+        holder.bind(estaciones.get(position), position + 1,  estado,  itemClickListenerEliminar, itemClickListenerEditar, context);
     }
 
     @Override

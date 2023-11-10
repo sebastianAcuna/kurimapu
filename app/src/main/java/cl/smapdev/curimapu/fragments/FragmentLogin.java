@@ -154,6 +154,7 @@ public class FragmentLogin extends Fragment {
 
                 Config cnf = MainActivity.myAppDB.myDao().getConfig();
                 cnf.setId_usuario(usuario.getId_usuario());
+                cnf.setMulti_temporada(usuario.getMulti_temporada());
                 MainActivity.myAppDB.myDao().updateConfig(cnf);
 
                 MainActivity activity = (MainActivity) getActivity();

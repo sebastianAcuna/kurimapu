@@ -155,20 +155,14 @@
 
         <LinearLayout
             android:id="@+id/contenedor_resumen_icono_correo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/contenedor_alerta"
             >
 
             <ImageView
                 android:id="@+id/corr_inicio_siembra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/corr_inicio_despano"
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
@@ -177,9 +171,6 @@
                 android:id="@+id/corr_inicio_despano"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
-                app:layout_constraintStart_toEndOf="@id/corr_inicio_siembra"
-                app:layout_constraintEnd_toStartOf="@id/corr_5_floracion"
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
@@ -189,9 +180,6 @@
                 android:id="@+id/corr_5_floracion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
-                app:layout_constraintStart_toEndOf="@id/corr_inicio_despano"
-                app:layout_constraintEnd_toStartOf="@id/corr_inicio_corte_seda"
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
@@ -199,9 +187,6 @@
                 android:id="@+id/corr_inicio_corte_seda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
-                app:layout_constraintStart_toEndOf="@id/corr_5_floracion"
-                app:layout_constraintEnd_toStartOf="@id/corr_inicio_cosecha"
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
@@ -209,9 +194,6 @@
                 android:id="@+id/corr_inicio_cosecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
-                app:layout_constraintStart_toEndOf="@id/corr_inicio_corte_seda"
-                app:layout_constraintEnd_toStartOf="@id/corr_termino_cosecha"
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
@@ -219,9 +201,6 @@
                 android:id="@+id/corr_termino_cosecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
-                app:layout_constraintStart_toEndOf="@id/corr_inicio_cosecha"
-                app:layout_constraintEnd_toStartOf="@id/corr_termino_labores"
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
@@ -229,8 +208,6 @@
                 android:id="@+id/corr_termino_labores"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
-                app:layout_constraintStart_toEndOf="@id/corr_termino_cosecha"
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
@@ -239,8 +216,6 @@
                 android:id="@+id/corr_siembra_temprana"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
-                app:layout_constraintStart_toEndOf="@id/corr_termino_labores"
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
@@ -248,10 +223,14 @@
                 android:id="@+id/corr_destruccion_semillero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/lbl_titulo_correos"
-                app:layout_constraintStart_toEndOf="@id/corr_siembra_temprana"
                 android:src="@drawable/ic_baseline_email_24_no"
+                />
 
+            <ImageView
+                android:id="@+id/corr_fin_destruccion_semillero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_email_24_no"
                 />
 
         </LinearLayout>
@@ -651,6 +630,41 @@
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/lbl_siembra_temprana"
             app:layout_constraintStart_toEndOf="@id/tv_destruccion_semillero"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/lbl_fin_destruccion_semillero"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_destruccion_semillero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_termino_labores"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="Fin de destruccion de semillero"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            />
+
+        <TextView
+            android:id="@+id/tv_fin_destruccion_semillero"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tool:text="2022-07-01"
+            android:layout_marginTop="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/lbl_destruccion_semillero"
+            app:layout_constraintStart_toEndOf="@id/lbl_fin_destruccion_semillero"
+            app:layout_constraintEnd_toStartOf="@id/iv_fin_destruccion_semillero"
+            android:textAlignment="textEnd"
+            />
+
+        <ImageView
+            android:id="@+id/iv_fin_destruccion_semillero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_email_24_no"
+            android:layout_marginTop="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/lbl_destruccion_semillero"
+            app:layout_constraintStart_toEndOf="@id/tv_fin_destruccion_semillero"
             app:layout_constraintEnd_toEndOf="parent"
             />
 
