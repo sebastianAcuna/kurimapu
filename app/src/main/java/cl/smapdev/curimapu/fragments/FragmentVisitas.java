@@ -103,7 +103,7 @@ public class FragmentVisitas extends Fragment {
 
 
         spinner_toolbar = view.findViewById(R.id.spinner_toolbar);
-        spinner_toolbar.setEnabled(false);
+//        spinner_toolbar.setEnabled(false);
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<List<Temporada>> futuretemporadas = executor.submit( () -> MainActivity.myAppDB.myDao().getTemporada());

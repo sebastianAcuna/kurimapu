@@ -58,7 +58,7 @@ import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
 
 public class Utilidades {
 
-    public static final String APPLICATION_VERSION = "4.3.0002";
+    public static final String APPLICATION_VERSION = "4.3.0003";
 
     public static final String FRAGMENT_INICIO = "fragmental_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -86,7 +86,6 @@ public class Utilidades {
     public static final String FRAGMENT_WB = "fragment_wb";
 
     public static final String affiliate_id = "vb7jbic553ts";
-
 
     public static final int TIPO_DOCUMENTO_CAPACITACION_SIEMBRA = 1;
     public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 2;

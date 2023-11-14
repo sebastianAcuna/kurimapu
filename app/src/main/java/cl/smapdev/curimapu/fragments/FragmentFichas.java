@@ -141,8 +141,8 @@ public class FragmentFichas extends Fragment {
             antiguoMetodo();
         });
 
-        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, temporadaList));
-        spinner_toolbar.setEnabled(false);
+        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(requireActivity(),R.layout.spinner_template_toolbar_view, temporadaList));
+//        spinner_toolbar.setEnabled(false);
 
         recargarYear();
         spinner_toolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

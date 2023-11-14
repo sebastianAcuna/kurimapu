@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -66,7 +68,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FragmentListVisits extends Fragment {
+public class FragmentListVisits extends Fragment  {
 
     private SharedPreferences prefs;
     private MainActivity activity;
@@ -86,6 +88,10 @@ public class FragmentListVisits extends Fragment {
     private WeatherAdapter weatherAdapter;
 
     private List<VisitasCompletas> visitasCompletas = Collections.emptyList();
+
+    private ScaleGestureDetector scaleGestureDetector;
+    private float scaleFactor = 1.0f;
+    private float initialScaleFactor = 1.0f;
 
 
     @Override
@@ -116,6 +122,32 @@ public class FragmentListVisits extends Fragment {
         }
         executor.shutdown();
 
+
+        scaleGestureDetector = new ScaleGestureDetector(requireContext(), new ScaleGestureDetector.OnScaleGestureListener() {
+            @Override
+            public boolean onScale(@NonNull ScaleGestureDetector detector) {
+                Log.e("GESTURE", "GESTOR DE TACTO");
+                scaleFactor = initialScaleFactor * detector.getScaleFactor();
+                scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f)); // Limita el factor de escala dentro de ciertos límites
+
+                img_grafico.setScaleX(scaleFactor);
+                img_grafico.setScaleY(scaleFactor);
+
+                return false;
+            }
+
+            @Override
+            public boolean onScaleBegin(@NonNull ScaleGestureDetector detector) {
+                initialScaleFactor = scaleFactor;
+                return true;
+            }
+
+            @Override
+            public void onScaleEnd(@NonNull ScaleGestureDetector detector) {
+
+            }
+        });
+
     }
 
     @Override
@@ -128,32 +160,6 @@ public class FragmentListVisits extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_lista_visitas, container, false);
     }
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        menu.clear();
-//        inflater.inflate(R.menu.menu_visitas, menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.menu_visitas_recom:
-//                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-//                Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
-//                if(prev != null){
-//                    ft.remove(prev);
-//                }
-//
-//                DialogObservationTodo dialogo = DialogObservationTodo.newInstance(anexoContrato, null, null , (TempVisitas tm)->{});
-//                dialogo.show(ft, "EVALUACION_RECOMENDACION");
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -172,14 +178,19 @@ public class FragmentListVisits extends Fragment {
         img_grafico = view.findViewById(R.id.img_grafico);
         indicador_ndvi = view.findViewById(R.id.indicador_ndvi);
         contenedor_vilab = view.findViewById(R.id.contenedor_vilab);
-        fecha_grafico = view.findViewById(R.id.fecha_grafico);
+
+
+        img_grafico.setOnClickListener(v -> {
+            scaleFactor = 1.0f;
+            img_grafico.setScaleX(scaleFactor);
+            img_grafico.setScaleY(scaleFactor);
+        });
 
 
 //        setHasOptionsMenu(true);
 
         cargarListaGrande();
 
-        fecha_grafico.setText(Utilidades.fechaActualConHora());
 
 
         TextView txt_titulo_selected = view.findViewById(R.id.txt_titulo_selected);
@@ -287,9 +298,6 @@ public class FragmentListVisits extends Fragment {
         if (activity != null){
             activity.updateView(getResources().getString(R.string.app_name), (anexoContrato != null) ? " Resumen Anexo "+anexoContrato.getAnexo_contrato() : getResources().getString(R.string.subtitles_visit));
         }
-
-
-
     }
 
 
@@ -411,13 +419,12 @@ public class FragmentListVisits extends Fragment {
                     if(vilab != null){
                         String ndvi = (vilab.promedio_vilab == null) ? "n/a" : vilab.promedio_vilab;
                         contenedor_vilab.setVisibility(View.VISIBLE);
-                        Picasso.get().load("file://"+ Environment.getExternalStorageDirectory()+"/DCIM/"+vilab.nombre_imagen).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_vilab);
+                        Picasso.get().load("file://"+requireActivity().getFilesDir()+"/imagenes_vilab/"+vilab.nombre_imagen).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_vilab);
                         indicador_ndvi.setText("NDVI: "+ndvi);
                         fecha_ndvi.setText("Fecha: "+vilab.fecha_imagen_ndvi);
                     }
 
-                    Picasso.get().load("file://"+ Environment.getExternalStorageDirectory()+"/DCIM/"+anexoCompleto.getAnexoContrato().getImagen_grafico()).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_grafico);
-
+                    Picasso.get().load( "file://"+requireActivity().getFilesDir()+"/imagenes_grafico/"+anexoCompleto.getAnexoContrato().getImagen_grafico()).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_grafico);
                 }
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();

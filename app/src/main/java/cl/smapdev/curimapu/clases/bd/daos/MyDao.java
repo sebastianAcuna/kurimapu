@@ -665,7 +665,7 @@ public interface MyDao {
     @Query("SELECT * FROM usuarios WHERE id_usuario = :idUsuario")
     Usuario getUsuarioById(int idUsuario);
 
-    @Query("SELECT * FROM usuarios WHERE tipo_usuario != 5")
+    @Query("SELECT * FROM usuarios WHERE tipo_usuario != 5 ORDER BY usuarios.nombre, usuarios.apellido_p ASC ")
     List<Usuario> getUsuarioById();
 
     /*=======================================================================================*/

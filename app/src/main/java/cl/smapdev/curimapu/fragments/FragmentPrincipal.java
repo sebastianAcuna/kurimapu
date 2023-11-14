@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -88,6 +90,7 @@ import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.utilidades.DescargaImagenes;
+import cl.smapdev.curimapu.clases.utilidades.DescargaImagenesI;
 import cl.smapdev.curimapu.clases.utilidades.InternetStateClass;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.infraestructure.utils.coroutines.ApplicationExecutors;
@@ -117,6 +120,8 @@ public class FragmentPrincipal extends Fragment {
 
     private final ArrayList<String> id_temporadas = new ArrayList<>();
     private final ArrayList<String> desc_temporadas = new ArrayList<>();
+
+    private Handler handlerGrafico;
 
 
     private LinearLayout contenedor_botones;
@@ -181,10 +186,15 @@ public class FragmentPrincipal extends Fragment {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
 
+
         if (activity != null){
             prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
             progressDialogGeneral = new ProgressDialog(activity);
         }
+
+        handlerGrafico = new Handler(Looper.getMainLooper());
+
+
 
         vilabProgressDialog = new ProgressDialog(activity);
 
@@ -1090,7 +1100,131 @@ public class FragmentPrincipal extends Fragment {
     /* FIN SUBIR PROSPECTOS */
 
 
+    void descargarGraficos(){
+        ExecutorService ex = Executors.newSingleThreadExecutor();
+        Handler filesHandler = new Handler(Looper.getMainLooper());
+
+        ProgressDialog dialogFiles  = new ProgressDialog(requireActivity());
+        dialogFiles.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialogFiles.setMessage("descargando graficos...");
+        dialogFiles.setMax(100);
+
+        dialogFiles.setCancelable(false);
+        dialogFiles.show();
+
+        ex.execute(()->{
+            DescargaImagenes descargaImagenes  =  new DescargaImagenes(requireActivity(), "imagenes_grafico", new DescargaImagenesI() {
+                @Override
+                public void imageCompleted(int porcentaje) {
+                    filesHandler.post(() -> {
+                        if(dialogFiles.isShowing()){
+                            dialogFiles.setProgress(porcentaje);
+
+                            if(porcentaje >= 100){
+                                dialogFiles.dismiss();
+                                descargarVilab();
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void erroredImage(String error) {
+                    filesHandler.post(() -> {
+                        dialogFiles.dismiss();
+                        Log.e("ERROR",  error);
+//                        Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
+
+            List<AnexoCompleto> anexList = MainActivity.myAppDB.myDao().getAnexos();
+
+            if(anexList.size() == 0 && dialogFiles.isShowing()){
+                    dialogFiles.dismiss();
+            }
+
+            List<String> GraficosADescargar =  new ArrayList<>();
+            for (AnexoCompleto anexo: anexList){
+                if(anexo.getAnexoContrato().getImagen_grafico() != null && !anexo.getAnexoContrato().getImagen_grafico().isEmpty()){
+                    String imgUrl = Utilidades.URL_SERVER_API+"/../curimapu_docum/imagen_graficos/"+anexo.getAnexoContrato().getImagen_grafico();
+                    GraficosADescargar.add(imgUrl);
+                }
+            }
+
+            descargaImagenes.descargarEGuardarImagenes(GraficosADescargar);
+
+        });
+
+        ex.shutdown();
+
+    }
+
+    void descargarVilab(){
+        ExecutorService ex = Executors.newSingleThreadExecutor();
+        Handler filesHandler = new Handler(Looper.getMainLooper());
+
+        ProgressDialog dialogFiles  = new ProgressDialog(requireActivity());
+        dialogFiles.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        dialogFiles.setTitle("Falta poco...");
+        dialogFiles.setMessage("descargando imagenes vilab...");
+        dialogFiles.setMax(100);
+
+        dialogFiles.setCancelable(false);
+
+
+        dialogFiles.show();
+
+        ex.execute(()->{
+            DescargaImagenes descargaImagenes  =  new DescargaImagenes(requireActivity(), "imagenes_vilab", new DescargaImagenesI() {
+                @Override
+                public void imageCompleted(int porcentaje) {
+
+                        filesHandler.post(() -> {
+                            if(dialogFiles.isShowing()){
+                                dialogFiles.setProgress(porcentaje);
+
+                                if(porcentaje >= 100){
+                                    dialogFiles.dismiss();
+                                }
+                            }
+                        });
+                }
+
+                @Override
+                public void erroredImage(String error) {
+                    filesHandler.post(() -> {
+                        dialogFiles.dismiss();
+                        Log.e("ERROR",  error);
+//                        Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
+
+            List<AnexoVilab> vilabList = MainActivity.myAppDB.DaoVilab().getVilab();
+
+            if(vilabList.size() == 0 && dialogFiles.isShowing()){
+                dialogFiles.dismiss();
+            }
+
+            List<String> GraficosADescargar =  new ArrayList<>();
+            for (AnexoVilab avilab : vilabList){
+                if(avilab.getNombre_imagen() != null && !avilab.getNombre_imagen().isEmpty()){
+                    String imgUrl = Utilidades.URL_SERVER_API+"/../curimapu_docum/image_geos/"+avilab.getNombre_imagen();
+                    GraficosADescargar.add(imgUrl);
+                }
+            }
+
+            descargaImagenes.descargarEGuardarImagenes(GraficosADescargar);
+
+        });
+
+        ex.shutdown();
+
+    }
+
     void descargando(boolean conTemporada){
+
         final ProgressDialog progressDialog = new ProgressDialog(activity);
         if (getView() != null){
             progressDialog.setTitle("Espere un momento...");
@@ -1124,10 +1258,10 @@ public class FragmentPrincipal extends Fragment {
                         switch(rsp.getCodigoRespuesta()){
                             case 5:
                                 if(progressDialog.isShowing()){
-                                progressDialog.dismiss();
-                            }
-                                    activity.cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
-                                    return;
+                                    progressDialog.dismiss();
+                                }
+                                activity.cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
+                                return;
                             case 2:
                                 if(progressDialog.isShowing()){
                                     progressDialog.dismiss();
@@ -1139,40 +1273,19 @@ public class FragmentPrincipal extends Fragment {
                     }
                 }
 
-                progressDialog.setMessage("insertando datos...");
+                progressDialog.setMessage("guardando datos...");
                 ExecutorService ex = Executors.newSingleThreadExecutor();
                 ex.execute(()->{
-                    Future<boolean[]> futureProblem = ex.submit(() -> volqueoDatos(gsonDescargas, getActivity()));
+                    boolean[] problema = volqueoDatos(gsonDescargas, getActivity());
                     Future<Config> futureConfig = ex.submit(() -> MainActivity.myAppDB.myDao().getConfig());
-                        new Thread(() -> {
+                    Future<List<Temporada>> futureTempo = ex.submit(()->MainActivity.myAppDB.myDao().getTemporada());
+
+                        handlerGrafico.post(() -> {
                             try {
-                                final boolean[] problema = futureProblem.get();
-                                Future<List<Temporada>> futureTempo = ex.submit(()->MainActivity.myAppDB.myDao().getTemporada());
 
                                 Config config = futureConfig.get();
                                 temporadaList = futureTempo.get();
                                 setSpecialSeason(temporadaList);
-
-                                List<AnexoVilab> vilabList = ex.submit(() -> MainActivity.myAppDB.DaoVilab().getVilab()).get();
-                                List<AnexoCompleto> anexList = ex.submit(() -> MainActivity.myAppDB.myDao().getAnexos()).get();
-                                activity.runOnUiThread(() -> {
-                                        totalQueue = vilabList.size();
-                                        imagenesDescargadas = new ArrayList<>();
-                                        int current = 1;
-                                        for (AnexoVilab avilab : vilabList){
-                                            downloadImage(avilab, 0, current);
-                                            current++;
-                                        }
-                                    graficosDescargados = new ArrayList<>();
-
-                                        int currentGrafico = 1;
-                                        for (AnexoCompleto anexo: anexList){
-                                            if(anexo.getAnexoContrato().getImagen_grafico() != null && !anexo.getAnexoContrato().getImagen_grafico().isEmpty()){
-                                                downloadGrafico(anexo, 0, currentGrafico);
-                                                currentGrafico++;
-                                            }
-                                        }
-
 
                                     if (!problema[0] && !problema[1]){
                                         cargarToolbar();
@@ -1181,7 +1294,8 @@ public class FragmentPrincipal extends Fragment {
                                             activity.cambiarNombreUser(config.getId_usuario());
                                         }
                                         progressDialog.dismiss();
-                                        Toasty.info(activity, "Todo descargado con exito", Toast.LENGTH_SHORT, true).show();
+                                        Toasty.info(activity, "datos descargados con exito", Toast.LENGTH_SHORT, true).show();
+                                        descargarGraficos();
                                         ex.shutdown();
                                     }else{
                                         Errores errores = new Errores();
@@ -1192,12 +1306,12 @@ public class FragmentPrincipal extends Fragment {
                                         Toasty.error(activity, "No se pudo descargar todo "+response.errorBody(), Toast.LENGTH_SHORT, true).show();
                                         ex.shutdown();
                                     }
-                                });
+//                                });
                             }  catch (ExecutionException | InterruptedException e) {
                                 ex.shutdown();
                                 progressDialog.dismiss();
                             }
-                        }).start();
+                        });
                 });
             }
 
@@ -1215,157 +1329,7 @@ public class FragmentPrincipal extends Fragment {
             }
         });
     }
-    private void downloadGrafico(AnexoCompleto anexo,  int intento, int current){
 
-        DescargaImagenes descargaImagenes  =  DescargaImagenes.getInstance(requireActivity(), "imagenes_grafico");
-        ImageLoader imageLoader = new ImageLoader(descargaImagenes.getRequestQueue(), new ImageLoader.ImageCache() {
-            @Nullable
-            @Override
-            public Bitmap getBitmap(String url) {
-                return null;
-            }
-
-            @Override
-            public void putBitmap(String url, Bitmap bitmap) { }
-        });
-
-
-        String imgUrl = Utilidades.URL_SERVER_API+"/../curimapu_docum/imagen_graficos/"+anexo.getAnexoContrato().getImagen_grafico();
-
-        if(vilabProgressDialog != null && !vilabProgressDialog.isShowing() && current < totalQueue){
-            vilabProgressDialog.setTitle("Falta poco");
-            vilabProgressDialog.setMessage("descargando graficos por anexo");
-            vilabProgressDialog.setMax(totalQueue);
-            vilabProgressDialog.show();
-        }
-
-        imageLoader.get(imgUrl, new ImageLoader.ImageListener(){
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("DESCARGA", currentQueue+" == "+totalQueue);
-                if(currentQueue >= totalQueue || current == totalQueue && vilabProgressDialog.isShowing()){
-                    vilabProgressDialog.dismiss();
-                }
-                if(graficosDescargados.contains(anexo.getAnexoContrato().getId_anexo_contrato()) || intento > 3) return;
-                startRetryDelay(anexo, intento + 1, current);
-            }
-
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                Bitmap bitmap = response.getBitmap();
-
-                Log.i("DESCARGA QUEUE", currentQueue+" == "+totalQueue);
-                if(currentQueue >= totalQueue && vilabProgressDialog.isShowing()){
-                    vilabProgressDialog.dismiss();
-                }
-
-                if(graficosDescargados.contains(anexo.getAnexoContrato().getId_anexo_contrato())) return;
-                if(bitmap == null) {
-                    if(intento > 3) return;
-                    startRetryDelay(anexo, intento + 1, current);
-                    return;
-                }
-
-
-                vilabProgressDialog.setProgress(currentQueue);
-                descargaImagenes.saveImageToDisk(bitmap, anexo.getAnexoContrato().getImagen_grafico());
-                graficosDescargados.add(anexo.getAnexoContrato().getId_anexo_contrato());
-
-                currentQueue++;
-
-                if(current >= totalQueue && vilabProgressDialog.isShowing()){
-                    vilabProgressDialog.dismiss();
-                }
-                cancelRetry();
-            }
-        });
-    }
-
-
-    private void downloadImage(AnexoVilab avilab,  int intento, int current){
-
-            DescargaImagenes descargaImagenes  =  DescargaImagenes.getInstance(requireActivity(), "imagenes_vilab");
-            ImageLoader imageLoader = new ImageLoader(descargaImagenes.getRequestQueue(), new ImageLoader.ImageCache() {
-                @Nullable
-                @Override
-                public Bitmap getBitmap(String url) {
-                    return null;
-                }
-
-                @Override
-                public void putBitmap(String url, Bitmap bitmap) { }
-            });
-
-
-            String imgUrl = Utilidades.URL_SERVER_API+"/../curimapu_docum/image_geos/"+avilab.nombre_imagen;
-
-            if(vilabProgressDialog != null && !vilabProgressDialog.isShowing() && current < totalQueue){
-                vilabProgressDialog.setTitle("Falta poco");
-                vilabProgressDialog.setMessage("descargando imagenes de vilab");
-                vilabProgressDialog.setMax(totalQueue);
-                vilabProgressDialog.show();
-            }
-
-            imageLoader.get(imgUrl, new ImageLoader.ImageListener(){
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("DESCARGA", currentQueue+" == "+totalQueue);
-                    if(currentQueue >= totalQueue || current == totalQueue && vilabProgressDialog.isShowing()){
-                        vilabProgressDialog.dismiss();
-                    }
-                    if(imagenesDescargadas.contains(avilab.id_vilab) || intento > 3) return;
-                    startRetryDelay(avilab, intento + 1, current);
-                }
-
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    Bitmap bitmap = response.getBitmap();
-
-                    Log.i("DESCARGA QUEUE", currentQueue+" == "+totalQueue);
-                    if(currentQueue >= totalQueue && vilabProgressDialog.isShowing()){
-                        vilabProgressDialog.dismiss();
-                    }
-
-                    if(imagenesDescargadas.contains(avilab.id_vilab)) return;
-                    if(bitmap == null) {
-                        if(intento > 3) return;
-                        startRetryDelay(avilab,  intento + 1, current);
-                        return;
-                    }
-
-
-                    vilabProgressDialog.setProgress(currentQueue);
-                    descargaImagenes.saveImageToDisk(bitmap, avilab.nombre_imagen);
-                    imagenesDescargadas.add(avilab.id_vilab);
-
-                    currentQueue++;
-
-                    Log.i("DESCARGA CURRENT", current+" == "+totalQueue);
-                    if(current >= totalQueue && vilabProgressDialog.isShowing()){
-                        vilabProgressDialog.dismiss();
-                    }
-                    cancelRetry();
-                }
-            });
-    }
-
-    private void startRetryDelay(AnexoCompleto anexo,  int intento, int current) {
-        if (retryRunnable != null) {
-            return;
-        }
-        retryRunnable = () -> downloadGrafico(anexo, intento, current);
-        handler.postDelayed(retryRunnable, retryDelay);
-    }
-
-    private void startRetryDelay(AnexoVilab avilab, int intento, int current) {
-        if (retryRunnable != null) {
-            return;
-        }
-        retryRunnable = () -> downloadImage(avilab, intento, current);
-        handler.postDelayed(retryRunnable, retryDelay);
-    }
 
     private void cancelRetry() {
         if (retryRunnable != null) {
@@ -1379,8 +1343,6 @@ public class FragmentPrincipal extends Fragment {
         super.onStop();
 
         cancelRetry();
-        DescargaImagenes descargaImagenes  =  DescargaImagenes.getInstance(activity, "");
-        descargaImagenes.cancelQueue();
 
     }
 

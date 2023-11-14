@@ -146,7 +146,7 @@ public class FragmentAnexoFechas extends Fragment {
         setHasOptionsMenu(true);
 
         spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity,R.layout.spinner_template_toolbar_view, temporadaList));
-        spinner_toolbar.setEnabled(false);
+//        spinner_toolbar.setEnabled(false);
 
 
         if(marca_especial_temporada != null && !marca_especial_temporada.isEmpty() && spinner_toolbar != null){
