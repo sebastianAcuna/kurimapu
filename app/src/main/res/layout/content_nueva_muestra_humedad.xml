@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_small">
+
+
+        <TextView
+            android:id="@+id/lbl_numero_anexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/numero_de_anexo"
+            />
+        <TextView
+            android:id="@+id/tv_numero_anexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_numero_anexo"
+            app:layout_constraintStart_toStartOf="parent"
+            tool:text="23-TR2243"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+
+        <TextView
+            android:id="@+id/lbl_variedad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/variedad"
+            />
+        <TextView
+            android:id="@+id/tv_variedad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
+            app:layout_constraintEnd_toEndOf="parent"
+            tool:text="COL-24431fC"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <View
+            android:id="@+id/divider_cabecera"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/tv_variedad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/titulo_fecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Fecha"
+            app:layout_constraintTop_toTopOf="@id/et_fecha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_fecha"
+            app:layout_constraintBottom_toBottomOf="@id/et_fecha"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+
+        <EditText
+            android:id="@+id/et_fecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_small"
+            style="@style/input_date_forms"
+            android:focusable="false"
+            android:clickable="true"
+            android:inputType="none"
+            app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/titulo_fecha"
+            />
+
+        <TextView
+            android:id="@+id/titulo_cantidad_machos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Humedad"
+            app:layout_constraintTop_toTopOf="@id/et_cantidad_machos"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/et_cantidad_machos"
+            app:layout_constraintBottom_toBottomOf="@id/et_cantidad_machos"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+
+        <EditText
+            android:id="@+id/et_cantidad_machos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_small"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/et_fecha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/titulo_cantidad_machos"
+            />
+
+        <View
+            android:id="@+id/divider_lista"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/et_cantidad_machos"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            />
+
+
+        <Button
+            android:id="@+id/btn_guardar_estacion"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/divider_lista"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/guardar"/>
+
+        <Button
+            android:id="@+id/btn_cancelar_estacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/divider_lista"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/nav_cancel"/>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -26,4 +26,7 @@ public interface DaoVilab {
 
     @Insert
     void insertVilab(AnexoVilab vilab);
+
+    @Insert
+    void insertVilab(List<AnexoVilab> vilabs);
 }

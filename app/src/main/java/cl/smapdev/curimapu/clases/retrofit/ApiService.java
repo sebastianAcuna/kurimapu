@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.clases.retrofit;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.EstacionFloracionRequest;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
+import cl.smapdev.curimapu.clases.relaciones.MuestraHumedadRequest;
 import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
@@ -35,6 +36,9 @@ public interface ApiService {
 
     @POST("subir_estaciones.php")
     Call<Respuesta> subirEstaciones(@Body EstacionFloracionRequest estacionFloracionRequest);
+
+    @POST("subir_muestras.php")
+    Call<Respuesta> subirMuestras(@Body MuestraHumedadRequest muestraHumedadRequest);
 
     @POST("subir_recomendaciones.php")
     Call<Respuesta> subirRecomendaciones(@Body RecomendacionesRequest recomendacionesRequest);

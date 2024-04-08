@@ -100,12 +100,12 @@
 
             <Button
                 android:id="@+id/btn_subir_check"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_subir_estaciones"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="Subir CheckLists"
+                android:text="ChkList"
                 android:backgroundTint="@android:color/holo_blue_dark"
                 android:drawableLeft="@drawable/ic_upload_white"
                 />
@@ -125,12 +125,13 @@
 
             <Button
                 android:id="@+id/btn_subir_estaciones"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_subir_check"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_subir_recomendaciones"
-                android:text="Subir Estaciones de floracion"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="@dimen/padding_small"
+                android:text="Est. Flor."
                 android:backgroundTint="@android:color/holo_orange_dark"
                 android:drawableLeft="@drawable/ic_upload_white"
                 />
@@ -139,13 +140,26 @@
 
             <Button
                 android:id="@+id/btn_preparar"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_subir_muestras"
+                app:layout_constraintTop_toBottomOf="@id/btn_subir_estaciones"
+                android:text="visitas"
+                android:backgroundTint="@android:color/holo_green_dark"
+                android:drawableLeft="@drawable/ic_upload_white"
+                />
+
+            <Button
+                android:id="@+id/btn_subir_muestras"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/btn_preparar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_subir_estaciones"
-                android:text="preparar visitas \n para subir "
-                android:backgroundTint="@android:color/holo_green_dark"
+                android:layout_marginStart="@dimen/padding_small"
+                android:text="Muestras humedad"
+                android:backgroundTint="@android:color/holo_red_light"
                 android:drawableLeft="@drawable/ic_upload_white"
                 />
 
@@ -206,34 +220,59 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/imagen_muestra"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintTop_toBottomOf="@id/contenedor_botonera_subida"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone"
-            />
 
-        <TextView
-            app:layout_goneMarginTop="@dimen/padding"
-            android:id="@+id/titulo_primera_prioridad"
+        <View
+            android:id="@+id/divider15"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_botonera_subida"
+            android:background="?android:attr/listDivider"
+            android:layout_marginVertical="@dimen/padding"/>
+
+
+        <LinearLayout
+            android:id="@+id/contenedor_title_primera_prio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/imagen_muestra"
+            app:layout_constraintTop_toBottomOf="@id/divider15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="10dp"
-            />
+            android:orientation="horizontal"
+            android:gravity="center_vertical|fill_horizontal"
+
+            >
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/titulo_primera_prioridad"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Primera Prioridad"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                />
+
+                <Button
+                    android:id="@+id/btn_calcula_datos_primera_prio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="calcular datos"
+                    android:textSize="12sp"
+                    />
+
+
+
+        </LinearLayout>
+
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_primera_prioridad"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            app:layout_constraintTop_toBottomOf="@id/titulo_primera_prioridad"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_title_primera_prio"
             />
 
         <ProgressBar
@@ -241,31 +280,63 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/titulo_primera_prioridad"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/lista_primera_prioridad"
+            app:layout_constraintBottom_toBottomOf="@id/lista_primera_prioridad"
+            app:layout_constraintStart_toStartOf="@id/lista_primera_prioridad"
+            app:layout_constraintEnd_toEndOf="@id/lista_primera_prioridad"
             android:visibility="gone"/>
 
 
 
+        <View
+            android:id="@+id/divider16"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/lista_primera_prioridad"
+            android:background="?android:attr/listDivider"
+            android:layout_marginVertical="@dimen/padding"/>
 
-        <TextView
-            android:id="@+id/titulo_sitios_no_visitados"
+        <LinearLayout
+            android:id="@+id/contenedor_title_sitio_visitado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/lista_primera_prioridad"
+            app:layout_constraintTop_toBottomOf="@id/divider16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="10dp"
-            />
+            android:orientation="horizontal"
+            android:gravity="center_vertical|fill_horizontal"
+
+            >
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/titulo_sitios_no_visitados"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Sitios no visitados por mas de 7 dias"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                />
+
+            <Button
+                android:id="@+id/btn_calcula_datos_sitio_visita"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="calcular datos"
+                android:textSize="12sp"
+                />
+
+        </LinearLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_sitios_no_visitados"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/titulo_sitios_no_visitados"
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_title_sitio_visitado"
+            app:layout_constraintBottom_toBottomOf="parent"
 
             />
 
@@ -274,9 +345,10 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/titulo_sitios_no_visitados"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/lista_sitios_no_visitados"
+            app:layout_constraintBottom_toBottomOf="@id/lista_sitios_no_visitados"
+            app:layout_constraintStart_toStartOf="@id/lista_sitios_no_visitados"
+            app:layout_constraintEnd_toEndOf="@id/lista_sitios_no_visitados"
             android:visibility="gone"/>
 
 

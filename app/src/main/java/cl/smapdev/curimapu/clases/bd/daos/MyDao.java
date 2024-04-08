@@ -54,6 +54,7 @@ import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
 import cl.smapdev.curimapu.clases.tablas.quotation;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
+import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 @Dao
 public interface MyDao {
@@ -85,11 +86,11 @@ public interface MyDao {
             "LEFT JOIN detalle_visita_prop DVP ON (DVP.id_visita_detalle = V.id_visita) " +
             "LEFT JOIN pro_cli_mat PCM ON (PCM.id_prop_mat_cli = DVP.id_prop_mat_cli_detalle) " +
             "WHERE id_anexo_visita = :id_ac  " +
-            "AND V.fecha_visita IS NOT NULL AND ( (PCM.marca_sitios_no_visitados = 1 AND valor_detalle IS NOT NULL ) OR valor_detalle IS NULL ); ")
+            " AND ( identificador = "+Utilidades.IDENTIFICADOR_LC_FECHA_SIEMBRA+" OR identificador = "+Utilidades.IDENTIFICADOR_LC_FECHA_LINEA_HEMBRA+"  OR identificador = "+ Utilidades.IDENTIFICADOR_LC_FECHA_COSECHA +") AND V.id_visita_local > 0 ; ")
     List<VisitaDetalle> getVisitaDetalle(int id_ac);
 
     @Query("SELECT * FROM visita V WHERE V.id_anexo_visita = :id_ac  GROUP BY V.id_visita ORDER BY V.fecha_visita DESC LIMIT 1;")
-    List<Visitas> traeVisitaPorAnexo(int id_ac);
+    Visitas traeVisitaPorAnexo(int id_ac);
 
 
     @Query("SELECT * FROM visita V " +
@@ -808,6 +809,9 @@ public interface MyDao {
             "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
             "ORDER BY especie.desc_especie ASC ")
     List<AnexoCompleto> getAnexos();
+
+    @Query("SELECT * FROM anexo_contrato WHERE imagen_grafico IS NOT NULL OR imagen_grafico != '' ")
+    List<AnexoContrato> getAnexosConGraficos();
 
 
     @Query("SELECT * FROM anexo_contrato WHERE id_anexo_contrato = :idAnexo ORDER BY anexo_contrato.num_anexo ASC ")

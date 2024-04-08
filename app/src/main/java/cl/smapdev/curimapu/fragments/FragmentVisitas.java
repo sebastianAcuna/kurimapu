@@ -135,14 +135,14 @@ public class FragmentVisitas extends Fragment {
                 if (spinner_toolbar.getTag() != null ){
                     if (Integer.parseInt(spinner_toolbar.getTag().toString()) != i){
                         prefs.edit().putString(Utilidades.SELECTED_ANO,id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
-                        prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
+                        prefs.edit().putInt(Utilidades.FILTRO_TEMPORADA, i).apply();
                          cargarLista(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
                     }else{
                         spinner_toolbar.setTag(null);
                     }
                 }else{
                     prefs.edit().putString(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
-                    prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
+                    prefs.edit().putInt(Utilidades.FILTRO_TEMPORADA, i).apply();
                     cargarLista(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
                 }
             }
@@ -160,11 +160,9 @@ public class FragmentVisitas extends Fragment {
 
     private void recargarYear(){
         if (temporadaList.size() > 0){
-            spinner_toolbar.setSelection((marca_especial_temporada.isEmpty()) ? prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.size() - 1) : id_temporadas.indexOf(marca_especial_temporada));
+            spinner_toolbar.setSelection(prefs.getInt(Utilidades.FILTRO_TEMPORADA, (marca_especial_temporada.isEmpty()) ?  temporadaList.size() - 1 : id_temporadas.indexOf(marca_especial_temporada)));
         }
     }
-
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -202,7 +200,10 @@ public class FragmentVisitas extends Fragment {
                 exec.getBackground().execute(()->{
                     List<AnexoCompleto> trabajo = (List<AnexoCompleto>) intent.getSerializableExtra(DialogFilterTables.LLAVE_FILTER_TABLAS);
 
-                    exec.getMainThread().execute(()-> crearAdaptador(trabajo));
+                    exec.getMainThread().execute(()-> {
+                        recargarYear();
+                        crearAdaptador(trabajo);
+                    });
                 });
 
                 exec.shutDownBackground();
@@ -284,11 +285,11 @@ public class FragmentVisitas extends Fragment {
 
     public void mostrarMenu (AnexoCompleto anexo) {
         if (prefs != null) {
-            prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, anexo.getAnexoContrato().getId_ficha_contrato()).apply();
-            prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, anexo.getAnexoContrato().getId_anexo_contrato()).apply();
-            prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, anexo.getAnexoContrato().getId_especie_anexo()).apply();
-            prefs.edit().putString(Utilidades.SHARED_VISIT_TEMPORADA, anexo.getAnexoContrato().getTemporada_anexo()).apply();
-            prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
+            prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, anexo.getAnexoContrato().getId_ficha_contrato())
+                    .putString(Utilidades.SHARED_VISIT_ANEXO_ID, anexo.getAnexoContrato().getId_anexo_contrato())
+                    .putString(Utilidades.SHARED_VISIT_MATERIAL_ID, anexo.getAnexoContrato().getId_especie_anexo())
+                    .putString(Utilidades.SHARED_VISIT_TEMPORADA, anexo.getAnexoContrato().getTemporada_anexo())
+                    .putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
         }
 
         activity.cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_left, R.anim.slide_out_left);

@@ -25,11 +25,11 @@
     <color name="colorGrey">#DCD3D3D3</color>
 
 
-
     <!-- 32% opacity black -->
 
     <color name="colorGreenLight">#94ec5d</color>
     <color name="colorWarning">#e87400</color>
+    <color name="backgroundCircle">#D9D9D9</color>
     <color name="colorGreen">#ff669900</color>
     <color name="colorGold">#e5c100</color>
 

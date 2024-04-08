@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:padding="@dimen/padding_small"
+    android:layout_margin="@dimen/padding_small"
+    android:background="@color/colorBackgroundList"
+    android:elevation="@dimen/padding"
+    >
+
+    <TextView
+        android:id="@+id/tv_fecha_estacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/padding_small"
+        tool:text="03-01-2023"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        />
+
+    <TextView
+        android:id="@+id/tv_estado_sinc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/padding_small"
+        tool:text="SINCRONIZADO"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+
+
+    <TextView
+        android:id="@+id/tv_promedio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/tv_estado_sinc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_resumen_promedio"
+        android:layout_marginHorizontal="@dimen/padding_small"
+        android:layout_marginTop="@dimen/padding"
+        android:maxLines="5"
+        android:text="Muestra: "
+        android:textStyle="bold"
+        android:textSize="15sp"
+        />
+    <TextView
+        android:id="@+id/tv_resumen_promedio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/tv_estado_sinc"
+        app:layout_constraintStart_toEndOf="@id/tv_promedio"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/padding_small"
+        android:layout_marginTop="@dimen/padding"
+        android:maxLines="5"
+        tool:text="205%"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        />
+
+    <Button
+        android:id="@+id/btn_eliminar_estacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_resumen_promedio"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:textColor="@color/colorPrimary"
+        android:text="Eliminar"
+        android:layout_marginTop="@dimen/padding_small"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/tv_estado_documento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/tv_resumen_promedio"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/padding_small"
+        tool:text="Finalizado"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <Button
+        android:id="@+id/btn_editar_estacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Colored"
+        app:layout_constraintTop_toBottomOf="@id/tv_resumen_promedio"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Editar"
+        android:layout_marginTop="@dimen/padding_small"
+        />
+
+    <View
+        android:id="@+id/divider14"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_marginTop="@dimen/padding_small"
+        app:layout_constraintTop_toBottomOf="@id/btn_editar_estacion"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -117,7 +117,7 @@ public class DialogFilterFichas extends DialogFragment {
                 contador++;
             }
 
-            sp_dialog_region.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_view, rg));
+            sp_dialog_region.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_view, rg));
             //sp_dialog_region.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_REGION, 0));
 
         }
@@ -132,8 +132,8 @@ public class DialogFilterFichas extends DialogFragment {
                 contador++;
             }
 
-            sp_dialog_year.setAdapter(new SpinnerAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, rg));
-            sp_dialog_year.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, years.size() - 1));
+            sp_dialog_year.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_toolbar_view, rg));
+            sp_dialog_year.setSelection(prefs.getInt(Utilidades.FILTRO_TEMPORADA, years.size() - 1));
 
         }
 
@@ -153,15 +153,11 @@ public class DialogFilterFichas extends DialogFragment {
                 break;
         }
 
-//        sp_dialog_year.setAdapter(new SpinnerToolbarAdapter(Objects.requireNonNull(getActivity()),R.layout.spinner_template_toolbar_view, getResources().getStringArray(R.array.anos_toolbar)));
-
 
         cargarProvincia();
         cargarComuna();
         onset();
 
-
-//        sp_dialog_year.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, getResources().getStringArray(R.array.anos_toolbar).length - 1));
 
     }
 
@@ -172,7 +168,7 @@ public class DialogFilterFichas extends DialogFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 idAnno = idTemporadas.get(i);
                 prefs.edit().putString(Utilidades.SELECTED_ANO, idAnno).apply();
-                prefs.edit().putInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, i).apply();
+                prefs.edit().putInt(Utilidades.FILTRO_TEMPORADA, i).apply();
             }
 
             @Override

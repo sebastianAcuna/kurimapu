@@ -128,7 +128,7 @@ public class DialogFilterTables extends DialogFragment {
                 sp_dialog_year.setAdapter(new SpinnerAdapter(requireActivity(),R.layout.spinner_template_toolbar_view, rg));
 
                 if(!marca_especial_temporada.isEmpty()){
-                    sp_dialog_year.setSelection(idTemporadas.indexOf(marca_especial_temporada));
+                    sp_dialog_year.setSelection( prefs.getInt(Utilidades.FILTRO_TEMPORADA, idTemporadas.indexOf(marca_especial_temporada)));
                 }
 
             }
@@ -168,7 +168,7 @@ public class DialogFilterTables extends DialogFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 idAnno = idTemporadas.get(i);
                 prefs.edit().putString(Utilidades.SELECTED_ANO, idAnno).apply();
-                prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
+                prefs.edit().putInt(Utilidades.FILTRO_TEMPORADA, i).apply();
             }
 
             @Override

@@ -62,6 +62,7 @@ import cl.smapdev.curimapu.fragments.anexoFechas.FragmentAnexoFechas;
 import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
 import cl.smapdev.curimapu.fragments.contratos.FragmentListVisits;
 import cl.smapdev.curimapu.fragments.estacion_floracion.FragmentListaEstacionFloracion;
+import cl.smapdev.curimapu.fragments.muestra_humedad.FragmentListaMuestraHumedad;
 import cl.smapdev.curimapu.fragments.servidorFragment;
 
 
@@ -94,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .addMigrations(Migrations.MIGRATION_11_TO_12)
                 .addMigrations(Migrations.MIGRATION_12_TO_13)
                 .addMigrations(Migrations.MIGRATION_13_TO_14)
+                .addMigrations(Migrations.MIGRATION_14_TO_15)
+                .addMigrations(Migrations.MIGRATION_15_TO_16)
                 .build();
 
 
@@ -434,7 +437,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     case Utilidades.FRAGMENT_CHECKLIST:
                     case Utilidades.FRAGMENT_ESTACION_FLORACION:
+                    case Utilidades.FRAGMENT_MUESTRA_HUMEDAD:
                         cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_right, R.anim.slide_out_right);
+                        break;
+                    case Utilidades.FRAGMENT_NUEVA_MUESTRA:
+                        cambiarFragment(new FragmentListaMuestraHumedad(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_right, R.anim.slide_out_right);
                         break;
                     case Utilidades.FRAGMENT_CHECKLIST_SIEMBRA:
                     case Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_SIEMBRA:

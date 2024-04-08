@@ -25,7 +25,9 @@ import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
 import cl.smapdev.curimapu.clases.tablas.Lotes;
 import cl.smapdev.curimapu.clases.tablas.Maquinaria;
+import cl.smapdev.curimapu.clases.tablas.MuestraHumedad;
 import cl.smapdev.curimapu.clases.tablas.Predios;
+import cl.smapdev.curimapu.clases.tablas.PrimeraPrioridad;
 import cl.smapdev.curimapu.clases.tablas.Provincia;
 import cl.smapdev.curimapu.clases.tablas.Region;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
@@ -210,6 +212,31 @@ public class GsonDescargas {
     @Embedded
     private List<AnexoCorreoFechas> array_fechas_anexos;
 
+
+    @SerializedName("muestras")
+    @Embedded
+    private List<MuestraHumedad> array_muestra_humedad;
+
+    @SerializedName("array_primera_prioridad")
+    @Embedded
+    private List<PrimeraPrioridad> array_primera_prioridad;
+
+
+    public List<PrimeraPrioridad> getArray_primera_prioridad() {
+        return array_primera_prioridad;
+    }
+
+    public void setArray_primera_prioridad(List<PrimeraPrioridad> array_primera_prioridad) {
+        this.array_primera_prioridad = array_primera_prioridad;
+    }
+
+    public List<MuestraHumedad> getArray_muestra_humedad() {
+        return array_muestra_humedad;
+    }
+
+    public void setArray_muestra_humedad(List<MuestraHumedad> array_muestra_humedad) {
+        this.array_muestra_humedad = array_muestra_humedad;
+    }
 
     public List<AnexoVilab> getAnexoVilabList() {
         return anexoVilabList;

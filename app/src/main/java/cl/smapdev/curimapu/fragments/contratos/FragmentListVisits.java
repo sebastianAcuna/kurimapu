@@ -63,6 +63,7 @@ import cl.smapdev.curimapu.fragments.FragmentContratos;
 import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
 import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
 import cl.smapdev.curimapu.fragments.estacion_floracion.FragmentListaEstacionFloracion;
+import cl.smapdev.curimapu.fragments.muestra_humedad.FragmentListaMuestraHumedad;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,7 +76,7 @@ public class FragmentListVisits extends Fragment  {
     private RecyclerView lista_visitas;
     private ImageView ic_collapse, img_vilab;
     private AnexoContrato anexoContrato = null;
-    private Button btn_nueva_visita, btn_carpeta_virtual, btn_estacion_floracion;
+    private Button btn_nueva_visita, btn_carpeta_virtual, btn_estacion_floracion, btn_muestra_humedad;
     private ConstraintLayout contenedor_vilab;
     private TextView fecha_ndvi, indicador_ndvi;
     private TextView lbl_titulo_comuna;
@@ -170,6 +171,7 @@ public class FragmentListVisits extends Fragment  {
         btn_nueva_visita = view.findViewById(R.id.btn_nueva_visita);
         btn_carpeta_virtual = view.findViewById(R.id.btn_carpeta_virtual);
         btn_estacion_floracion = view.findViewById(R.id.btn_estacion_floracion);
+        btn_muestra_humedad = view.findViewById(R.id.btn_muestra_humedad);
 
         weather_list = view.findViewById(R.id.weather_list);
         lbl_titulo_comuna = view.findViewById(R.id.lbl_titulo_comuna);
@@ -240,6 +242,14 @@ public class FragmentListVisits extends Fragment  {
             );
         });
 
+
+        btn_muestra_humedad.setOnClickListener(view1 -> {
+            activity.cambiarFragment(
+                    new FragmentListaMuestraHumedad(),
+                    Utilidades.FRAGMENT_MUESTRA_HUMEDAD,
+                    R.anim.slide_in_left,R.anim.slide_out_left
+            );
+        });
 
 
 

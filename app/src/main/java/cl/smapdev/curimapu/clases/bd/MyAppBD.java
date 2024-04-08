@@ -12,6 +12,8 @@ import cl.smapdev.curimapu.clases.bd.daos.DaoChecklistDevolucionSemilla;
 import cl.smapdev.curimapu.clases.bd.daos.DaoEstacionFloracion;
 import cl.smapdev.curimapu.clases.bd.daos.DaoEvaluaciones;
 import cl.smapdev.curimapu.clases.bd.daos.DaoFirmasTemp;
+import cl.smapdev.curimapu.clases.bd.daos.DaoMuestraHumedad;
+import cl.smapdev.curimapu.clases.bd.daos.DaoPrimeraPrioridad;
 import cl.smapdev.curimapu.clases.bd.daos.MyDao;
 import cl.smapdev.curimapu.clases.bd.daos.DaoVilab;
 import cl.smapdev.curimapu.clases.tablas.AgrPredTemp;
@@ -38,7 +40,9 @@ import cl.smapdev.curimapu.clases.tablas.FichasNew;
 import cl.smapdev.curimapu.clases.tablas.FotosFichas;
 import cl.smapdev.curimapu.clases.tablas.Lotes;
 import cl.smapdev.curimapu.clases.tablas.Maquinaria;
+import cl.smapdev.curimapu.clases.tablas.MuestraHumedad;
 import cl.smapdev.curimapu.clases.tablas.Predios;
+import cl.smapdev.curimapu.clases.tablas.PrimeraPrioridad;
 import cl.smapdev.curimapu.clases.tablas.Provincia;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.TipoRiego;
@@ -76,8 +80,9 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         CheckListCosecha.class, CheckListCapacitacionSiembra.class,
         CheckListCapacitacionSiembraDetalle.class, CheckListLimpiezaCamiones.class,
         ChecklistLimpiezaCamionesDetalle.class, ChecklistDevolucionSemilla.class, AnexoVilab.class,
-        EstacionFloracion.class, EstacionFloracionDetalle.class, EstacionFloracionEstaciones.class
-        }, version = 14)
+        EstacionFloracion.class, EstacionFloracionDetalle.class, EstacionFloracionEstaciones.class, MuestraHumedad.class,
+        PrimeraPrioridad.class
+        }, version = 16)
 public abstract class MyAppBD extends RoomDatabase {
         public abstract MyDao myDao();
         public abstract DaoEvaluaciones DaoEvaluaciones();
@@ -89,7 +94,9 @@ public abstract class MyAppBD extends RoomDatabase {
         public abstract DaoCheckListLimpiezaCamiones DaoCheckListLimpiezaCamiones();
         public abstract DaoChecklistDevolucionSemilla DaoCheckListDevolucionSemilla();
         public abstract DaoVilab DaoVilab();
-
         public abstract DaoEstacionFloracion DaoEstacionFloracion();
+        public abstract DaoMuestraHumedad DaoMuestraHumedad();
+
+        public abstract DaoPrimeraPrioridad DaoPrimeraPrioridad();
 
 }

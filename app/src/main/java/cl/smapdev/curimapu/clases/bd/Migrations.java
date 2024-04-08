@@ -229,4 +229,40 @@ public class Migrations {
             database.execSQL("ALTER TABLE pro_cli_mat ADD COLUMN id_sub_propiedad_pcm INTEGER NOT NULL DEFAULT 0 ; ");
         }
     };
+
+    public static
+    final Migration MIGRATION_14_TO_15 = new Migration(14,15) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL(" CREATE TABLE primera_prioridad (" +
+                    "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ," +
+                    "id_ac INTEGER NOT NULL," +
+                    "numAnexo TEXT," +
+                    "nombreEspecie TEXT," +
+                    "nombreAgricultor TEXT," +
+                    "fechaUltimaVisita TEXT," +
+                    "colorCrecimiento TEXT," +
+                    "valorCrecimiento TEXT," +
+                    "colorFitosanitario TEXT," +
+                    "valorFitosanitario TEXT," +
+                    "colorGeneral TEXT," +
+                    "valorGeneral TEXT," +
+                    "colorNdvi TEXT," +
+                    "valorNdvi TEXT," +
+                    "colorMi TEXT," +
+                    "valorMi TEXT, " +
+                    "colormaleza TEXT," +
+                    "valormaleza TEXT," +
+                    "colorCosecha TEXT," +
+                    "valorCosecha TEXT " +
+                    "); ");
+        }
+    };
+
+    public static final Migration MIGRATION_15_TO_16 = new Migration(15, 16) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE primera_prioridad ADD COLUMN id_temporada INTEGER NOT NULL ;");
+        }
+    };
 }

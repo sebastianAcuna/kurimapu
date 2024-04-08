@@ -115,8 +115,16 @@
             android:layout_height="wrap_content"
             android:text="Est. Floracion"
             app:layout_constraintTop_toBottomOf="@id/btn_carpeta_virtual"
-
             app:layout_constraintStart_toStartOf="parent"
+            />
+        <Button
+            android:id="@+id/btn_muestra_humedad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Muestra Humedad"
+            android:layout_marginStart="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/btn_carpeta_virtual"
+            app:layout_constraintStart_toEndOf="@id/btn_estacion_floracion"
             />
 
 
@@ -128,7 +136,7 @@
             app:layout_constraintHorizontal_weight="0.7"
             tool:text="Visitas Anteriores"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            app:layout_constraintTop_toBottomOf="@id/btn_estacion_floracion"
+            app:layout_constraintTop_toBottomOf="@id/btn_muestra_humedad"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintEnd_toStartOf="@id/ic_collapse"
@@ -141,7 +149,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.1"
             android:src="@drawable/ic_expand_up"
-            app:layout_constraintTop_toBottomOf="@id/btn_nueva_visita"
+            app:layout_constraintTop_toBottomOf="@id/btn_muestra_humedad"
             app:layout_constraintStart_toEndOf="@id/txt_titulo_selected"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/padding_small"

@@ -154,7 +154,7 @@ public class FragmentFichas extends Fragment {
 
 
                         prefs.edit().putString(Utilidades.SELECTED_ANO,id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
-                        prefs.edit().putInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, i).apply();
+                        prefs.edit().putInt(Utilidades.FILTRO_TEMPORADA, i).apply();
 
                         cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
                     }else{
@@ -163,7 +163,7 @@ public class FragmentFichas extends Fragment {
                 }else{
 
                     prefs.edit().putString(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
-                    prefs.edit().putInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, i).apply();
+                    prefs.edit().putInt(Utilidades.FILTRO_TEMPORADA, i).apply();
 
                     cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
                 }
@@ -490,9 +490,11 @@ public class FragmentFichas extends Fragment {
             if (intent != null && context != null){
                 List<FichasCompletas> trabajo = (List<FichasCompletas>) intent.getSerializableExtra(DialogFilterFichas.LLAVE_ENVIO_OBJECTO);
                 if (trabajo != null ){
-                    spinner_toolbar.setTag(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, temporadaList.size() - 1));
-                    spinner_toolbar.setSelection(prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, temporadaList.size() - 1));
+                    spinner_toolbar.setTag(prefs.getInt(Utilidades.FILTRO_TEMPORADA, temporadaList.size() - 1));
+                    spinner_toolbar.setSelection(prefs.getInt(Utilidades.FILTRO_TEMPORADA, temporadaList.size() - 1));
+                    recargarYear();
                     cargarLista(trabajo);
+
                 }
             }
 
@@ -501,7 +503,7 @@ public class FragmentFichas extends Fragment {
 
     private void recargarYear(){
         if (temporadaList.size() > 0){
-            spinner_toolbar.setSelection((marca_especial_temporada.isEmpty()) ? prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, temporadaList.size() - 1) : id_temporadas.indexOf(marca_especial_temporada));
+            spinner_toolbar.setSelection(prefs.getInt(Utilidades.FILTRO_TEMPORADA, (marca_especial_temporada.isEmpty()) ?  temporadaList.size() - 1 : id_temporadas.indexOf(marca_especial_temporada)));
         }
     }
 
@@ -523,22 +525,15 @@ public class FragmentFichas extends Fragment {
 
 
 
-        fichasAdapter = new FichasAdapter(fichasCompletas, new FichasAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(FichasCompletas fichas) {
-                activity.cambiarFragment(FragmentCreaFicha.getInstance(fichas), Utilidades.FRAGMENT_CREA_FICHA,  R.anim.slide_in_left, R.anim.slide_out_left);
-
+        fichasAdapter = new FichasAdapter(fichasCompletas, fichas -> {
+            activity.cambiarFragment(FragmentCreaFicha.getInstance(fichas), Utilidades.FRAGMENT_CREA_FICHA, R.anim.slide_in_left, R.anim.slide_out_left);
+        }, fichas -> {
+            if (fichas.getFichas().getActiva() == 1){
+                avisoActivaFicha("Seleccione estado del prospecto", fichas);
+            }else{
+                Utilidades.avisoListo(activity,"Prospecto ya activado", "No se puede modificar en tableta, solo en web y por un administrador", "entiendo" );
             }
-        }, new FichasAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(FichasCompletas fichas) {
-                if (fichas.getFichas().getActiva() == 1){
-                    avisoActivaFicha("Seleccione estado del prospecto", fichas);
-                }else{
-                    Utilidades.avisoListo(activity,"Prospecto ya activado", "No se puede modificar en tableta, solo en web y por un administrador", "entiendo" );
-                }
 
-            }
         },activity);
 
 
