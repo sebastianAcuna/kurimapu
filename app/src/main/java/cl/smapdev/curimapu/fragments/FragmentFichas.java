@@ -31,17 +31,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.adapters.FichasAdapter;
+import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
+import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
@@ -50,9 +51,6 @@ import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
-import cl.smapdev.curimapu.clases.adapters.FichasAdapter;
-import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
-import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.FotosFichas;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
@@ -92,14 +90,13 @@ public class FragmentFichas extends Fragment {
     private ProgressDialog progressDialogGeneral;
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         activity = (MainActivity) getActivity();
-        if (activity != null){
+        if (activity != null) {
             prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
             progressDialogGeneral = new ProgressDialog(activity);
         }
@@ -123,11 +120,11 @@ public class FragmentFichas extends Fragment {
         btn_subir = view.findViewById(R.id.btn_subir);
 
         temporadaList = MainActivity.myAppDB.myDao().getTemporada();
-        if (temporadaList.size() > 0){
-            for (Temporada t : temporadaList){
+        if (temporadaList.size() > 0) {
+            for (Temporada t : temporadaList) {
                 id_temporadas.add(t.getId_tempo_tempo());
                 desc_temporadas.add(t.getNombre_tempo());
-                if (t.getEspecial_temporada() > 0){
+                if (t.getEspecial_temporada() > 0) {
                     marca_especial_temporada = t.getId_tempo_tempo();
                 }
             }
@@ -141,7 +138,7 @@ public class FragmentFichas extends Fragment {
             antiguoMetodo();
         });
 
-        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(requireActivity(),R.layout.spinner_template_toolbar_view, temporadaList));
+        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(requireActivity(), R.layout.spinner_template_toolbar_view, temporadaList));
 //        spinner_toolbar.setEnabled(false);
 
         recargarYear();
@@ -149,18 +146,18 @@ public class FragmentFichas extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                if (spinner_toolbar.getTag() != null ){
-                    if (Integer.parseInt(spinner_toolbar.getTag().toString()) != i){
+                if (spinner_toolbar.getTag() != null) {
+                    if (Integer.parseInt(spinner_toolbar.getTag().toString()) != i) {
 
 
-                        prefs.edit().putString(Utilidades.SELECTED_ANO,id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
+                        prefs.edit().putString(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                         prefs.edit().putInt(Utilidades.FILTRO_TEMPORADA, i).apply();
 
                         cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
-                    }else{
+                    } else {
                         spinner_toolbar.setTag(null);
                     }
-                }else{
+                } else {
 
                     prefs.edit().putString(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                     prefs.edit().putInt(Utilidades.FILTRO_TEMPORADA, i).apply();
@@ -184,16 +181,16 @@ public class FragmentFichas extends Fragment {
             }
         });
 
-        if (temporadaList.size() > 0){
+        if (temporadaList.size() > 0) {
             cargarLista(MainActivity.myAppDB.myDao().getFichasByYear(prefs.getString(Utilidades.SELECTED_ANO, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo())));
         }
 
     }
 
     /* SUBIR PROSPECTOS */
-    void antiguoMetodo(){
+    void antiguoMetodo() {
 
-        if (progressDialogGeneral != null && !progressDialogGeneral.isShowing()){
+        if (progressDialogGeneral != null && !progressDialogGeneral.isShowing()) {
             progressDialogGeneral.setTitle("Preparando datos para subir...");
             progressDialogGeneral.setCancelable(false);
             progressDialogGeneral.show();
@@ -213,11 +210,11 @@ public class FragmentFichas extends Fragment {
                     List<CropRotation> crops = MainActivity.myAppDB.myDao().getCropsPorSubir();
 
 
-                    if(visitas.size() <= 0 && detalles.size() <= 0 && fotos.size() <= 0){
+                    if (visitas.size() <= 0 && detalles.size() <= 0 && fotos.size() <= 0) {
                         if (fichas.size() > 0 || fotosFichas.size() > 0 || crops.size() > 0) {
 
 //                            if(Utilidades.exportDatabse(Utilidades.NOMBRE_DATABASE, activity.getPackageName())){
-                                probarTodo();
+                            probarTodo();
 //                            }else{
 //                                if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
 //                                Utilidades.avisoListo(getActivity(), "Hey", "NO PUDIMOS GENERAR EL RESPALDO A LA BASE DE DATOS, VUELVE A INTENTARLO, SI EL PROBLEMA PERSISTE CONTACTE CON UN ADMINISTRADOR.", "ENTIENDO");
@@ -228,10 +225,10 @@ public class FragmentFichas extends Fragment {
                             if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
                             Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                         }
-                    }else{
+                    } else {
                         btn_subir.setEnabled(true);
                         if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                        Utilidades.avisoListo(getActivity(), "ATENCION", "TIENE \n-" + visitas.size() + " VISITAS \n-"+fotos.size() + " FOTOS \nPENDIENTES ,POR FAVOR, SINCRONICE.", "ENTIENDO");
+                        Utilidades.avisoListo(getActivity(), "ATENCION", "TIENE \n-" + visitas.size() + " VISITAS \n-" + fotos.size() + " FOTOS \nPENDIENTES ,POR FAVOR, SINCRONICE.", "ENTIENDO");
                     }
 
                 } else {
@@ -244,9 +241,10 @@ public class FragmentFichas extends Fragment {
         mm.execute();
 
     }
-    void probarTodo(){
 
-        if (progressDialogGeneral.isShowing()){
+    void probarTodo() {
+
+        if (progressDialogGeneral.isShowing()) {
             progressDialogGeneral.setTitle("Preparando datos para subir...");
         }
         /* esto se mantendra igual */
@@ -255,10 +253,10 @@ public class FragmentFichas extends Fragment {
         List<Errores> errores = MainActivity.myAppDB.myDao().getErroresPorSubir();
 
         List<FotosFichas> fts_fichas = new ArrayList<>();
-        if (fotosFichas.size() > 0){
-            for (FotosFichas fs : fotosFichas){
-                String imagenString  = Utilidades.imageToString(fs.getRuta_foto_ficha());
-                if(imagenString.length() > 0){
+        if (fotosFichas.size() > 0) {
+            for (FotosFichas fs : fotosFichas) {
+                String imagenString = Utilidades.imageToString(fs.getRuta_foto_ficha());
+                if (imagenString.length() > 0) {
                     fs.setEncrypted_image(imagenString);
                     fts_fichas.add(fs);
                 }
@@ -269,19 +267,19 @@ public class FragmentFichas extends Fragment {
         int cantidadSuma = 0;
 
 
-        if (fotosFichas.size() > 0){
-            for (FotosFichas v: fotosFichas){
-                cantidadSuma+= v.getId_fotos_fichas();
+        if (fotosFichas.size() > 0) {
+            for (FotosFichas v : fotosFichas) {
+                cantidadSuma += v.getId_fotos_fichas();
             }
         }
         cantidadSuma = cantidadSuma + fotosFichas.size();
 
-        if (fichas.size() > 0){
-            for (Fichas v : fichas){
-                cantidadSuma+= v.getId_ficha();
+        if (fichas.size() > 0) {
+            for (Fichas v : fichas) {
+                cantidadSuma += v.getId_ficha();
             }
         }
-        cantidadSuma+= fichas.size();
+        cantidadSuma += fichas.size();
 
         Config config = MainActivity.myAppDB.myDao().getConfig();
         SubidaDatos list = new SubidaDatos();
@@ -299,10 +297,11 @@ public class FragmentFichas extends Fragment {
 
         subidaDatos(list);
     }
-    public void subidaDatos (SubidaDatos subidaDatos) {
+
+    public void subidaDatos(SubidaDatos subidaDatos) {
 
 
-        if(progressDialogGeneral.isShowing()) progressDialogGeneral.setTitle("subiendo datos");
+        if (progressDialogGeneral.isShowing()) progressDialogGeneral.setTitle("subiendo datos");
 
         Config config = MainActivity.myAppDB.myDao().getConfig();
         ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
@@ -311,70 +310,75 @@ public class FragmentFichas extends Fragment {
         call.enqueue(new Callback<Respuesta>() {
             @Override
             public void onResponse(@NonNull Call<Respuesta> call, @NonNull Response<Respuesta> response) {
-                if (response.isSuccessful()){
-                    switch (response.code()){
+                if (response.isSuccessful()) {
+                    switch (response.code()) {
                         case 200:
                             Respuesta resSubidaDatos = response.body();
-                            if (resSubidaDatos != null){
-                                switch (resSubidaDatos.getCodigoRespuesta()){
+                            if (resSubidaDatos != null) {
+                                switch (resSubidaDatos.getCodigoRespuesta()) {
                                     case 0:
                                         Toasty.info(activity, "pasando a segunda respuesta", Toast.LENGTH_SHORT, true).show();
                                         segundaRespuesta(resSubidaDatos.getCabeceraRespuesta());
                                         break;
                                     case 5:
                                         Utilidades.avisoListo(activity, "ATENCION", "NO POSEES LA ULTIMA VERSION DE LA APLICACION ", "entiendo");
-                                        if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                                        if (progressDialogGeneral.isShowing())
+                                            progressDialogGeneral.dismiss();
                                         break;
                                     default:
-                                        if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                                        Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  "+resSubidaDatos.getCodigoRespuesta()+"\nMENSAJE: \n"+resSubidaDatos.getMensajeRespuesta(), "ENTIENDO");
+                                        if (progressDialogGeneral.isShowing())
+                                            progressDialogGeneral.dismiss();
+                                        Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + resSubidaDatos.getCodigoRespuesta() + "\nMENSAJE: \n" + resSubidaDatos.getMensajeRespuesta(), "ENTIENDO");
                                         break;
                                 }
-                            }else{
-                                if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                                Utilidades.avisoListo(getActivity(),"ATENCION", "CUERPO DE RESPUESTA VACIO \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+response.message(), "ENTIENDO");
+                            } else {
+                                if (progressDialogGeneral.isShowing())
+                                    progressDialogGeneral.dismiss();
+                                Utilidades.avisoListo(getActivity(), "ATENCION", "CUERPO DE RESPUESTA VACIO \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + response.message(), "ENTIENDO");
                             }
                             break;
                         default:
                             if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                            Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS CON SERVIDOR \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+response.message(), "ENTIENDO");
+                            Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS CON SERVIDOR \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + response.message(), "ENTIENDO");
                             break;
                     }
-                }else{
+                } else {
                     if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        Utilidades.avisoListo(getActivity(),"ATENCION", "COMUNICACION FALLIDA \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+jObjError.getJSONObject("error").getString("message"), "ENTIENDO");
+                        Utilidades.avisoListo(getActivity(), "ATENCION", "COMUNICACION FALLIDA \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + jObjError.getJSONObject("error").getString("message"), "ENTIENDO");
 
                     } catch (Exception e) {
-                        Utilidades.avisoListo(getActivity(),"ATENCION", "COMUNICACION FALLIDA \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+e.getMessage(), "ENTIENDO");
+                        Utilidades.avisoListo(getActivity(), "ATENCION", "COMUNICACION FALLIDA \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + e.getMessage(), "ENTIENDO");
                     }
 
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<Respuesta> call, @NonNull Throwable t) {
                 if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMA EN LA COMUNICACION \nMENSAJE: \n"+t.getMessage(), "ENTIENDO");
+                Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMA EN LA COMUNICACION \nMENSAJE: \n" + t.getMessage(), "ENTIENDO");
             }
         });
 
     }
+
     private void segundaRespuesta(int cab) {
 
-        if(progressDialogGeneral.isShowing()){
+        if (progressDialogGeneral.isShowing()) {
             progressDialogGeneral.setTitle("esperando confirmacion...");
         }
 
-        final int[] respuesta = {0,0};
+        final int[] respuesta = {0, 0};
         Config config = MainActivity.myAppDB.myDao().getConfig();
         ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
         Call<Respuesta> callResponse = apiService.comprobacion(config.getId(), config.getId_usuario(), cab);
         callResponse.enqueue(new Callback<Respuesta>() {
             @Override
             public void onResponse(@NonNull Call<Respuesta> callResponse, @NonNull Response<Respuesta> response) {
-                if (response.isSuccessful()){
-                    switch (response.code()){
+                if (response.isSuccessful()) {
+                    switch (response.code()) {
                         case 200:
                             Respuesta re = response.body();
                             if (re != null) {
@@ -406,44 +410,47 @@ public class FragmentFichas extends Fragment {
                                             MainActivity.myAppDB.myDao().updateCropsBack(re.getCabeceraRespuesta());
 
 
-                                            Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  "+re.getCodigoRespuesta()+"\nMENSAJE: \n"+re.getMensajeRespuesta(), "ENTIENDO");
+                                            Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + re.getCodigoRespuesta() + "\nMENSAJE: \n" + re.getMensajeRespuesta(), "ENTIENDO");
 
                                             Toasty.success(activity, "Problema subiendo los datos , por favor, vuelva a intentarlo", Toast.LENGTH_SHORT, true).show();
-                                            if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                                        }else {
-                                            if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                                            if (progressDialogGeneral.isShowing())
+                                                progressDialogGeneral.dismiss();
+                                        } else {
+                                            if (progressDialogGeneral.isShowing())
+                                                progressDialogGeneral.dismiss();
                                             Toasty.success(activity, "Se subio Prospectos con exito", Toast.LENGTH_SHORT, true).show();
                                         }
                                         break;
 
                                     default:
-                                        if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                                        Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  "+re.getCodigoRespuesta()+"\nMENSAJE: \n"+re.getMensajeRespuesta(), "ENTIENDO");
+                                        if (progressDialogGeneral.isShowing())
+                                            progressDialogGeneral.dismiss();
+                                        Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + re.getCodigoRespuesta() + "\nMENSAJE: \n" + re.getMensajeRespuesta(), "ENTIENDO");
                                         break;
                                 }
                             } else {
                                 /* respuesta nula */
-                                if(progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                                if (progressDialogGeneral.isShowing())
+                                    progressDialogGeneral.dismiss();
                                 Toasty.error(activity, "Problema conectandonos al servidor, por favor vuelva a intentarlo ", Toast.LENGTH_SHORT, true).show();
                             }
                             break;
 
                         default:
                             if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                            Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMAS CON SERVIDOR \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+response.message(), "ENTIENDO");
+                            Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS CON SERVIDOR \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + response.message(), "ENTIENDO");
                             break;
                     }
-                }else{
+                } else {
                     if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        Utilidades.avisoListo(getActivity(),"ATENCION", "COMUNICACION FALLIDA EN COMPROBACION \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+jObjError.getJSONObject("error").getString("message"), "ENTIENDO");
+                        Utilidades.avisoListo(getActivity(), "ATENCION", "COMUNICACION FALLIDA EN COMPROBACION \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + jObjError.getJSONObject("error").getString("message"), "ENTIENDO");
 
                     } catch (Exception e) {
-                        Utilidades.avisoListo(getActivity(),"ATENCION", "COMUNICACION FALLIDA EN COMPROBACION \nCODIGO:  "+response.code()+"\nMENSAJE: \n"+e.getMessage(), "ENTIENDO");
+                        Utilidades.avisoListo(getActivity(), "ATENCION", "COMUNICACION FALLIDA EN COMPROBACION \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + e.getMessage(), "ENTIENDO");
                     }
                 }
-
 
 
             }
@@ -451,7 +458,7 @@ public class FragmentFichas extends Fragment {
             @Override
             public void onFailure(@NonNull Call<Respuesta> call, @NonNull Throwable t) {
                 if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                Utilidades.avisoListo(getActivity(),"ATENCION", "PROBLEMA EN LA COMUNICACION \nMENSAJE: \n"+t.getMessage(), "ENTIENDO");
+                Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMA EN LA COMUNICACION \nMENSAJE: \n" + t.getMessage(), "ENTIENDO");
             }
         });
     }
@@ -463,12 +470,13 @@ public class FragmentFichas extends Fragment {
         menu.clear();
         inflater.inflate(R.menu.menu_vistas, menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_vistas_filter:
                 DialogFilterFichas dialogo = new DialogFilterFichas();
-                dialogo.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "DIALOGO_FICHAS");
+                dialogo.show(requireActivity().getSupportFragmentManager(), "DIALOGO_FICHAS");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -481,15 +489,15 @@ public class FragmentFichas extends Fragment {
     public void onResume() {
         super.onResume();
         MyReceiver r = new MyReceiver();
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).registerReceiver(r, new IntentFilter("TAG_REFRESH"));
+        LocalBroadcastManager.getInstance(requireActivity()).registerReceiver(r, new IntentFilter("TAG_REFRESH"));
     }
 
     private class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null && context != null){
+            if (intent != null && context != null) {
                 List<FichasCompletas> trabajo = (List<FichasCompletas>) intent.getSerializableExtra(DialogFilterFichas.LLAVE_ENVIO_OBJECTO);
-                if (trabajo != null ){
+                if (trabajo != null) {
                     spinner_toolbar.setTag(prefs.getInt(Utilidades.FILTRO_TEMPORADA, temporadaList.size() - 1));
                     spinner_toolbar.setSelection(prefs.getInt(Utilidades.FILTRO_TEMPORADA, temporadaList.size() - 1));
                     recargarYear();
@@ -501,16 +509,14 @@ public class FragmentFichas extends Fragment {
         }
     }
 
-    private void recargarYear(){
-        if (temporadaList.size() > 0){
-            spinner_toolbar.setSelection(prefs.getInt(Utilidades.FILTRO_TEMPORADA, (marca_especial_temporada.isEmpty()) ?  temporadaList.size() - 1 : id_temporadas.indexOf(marca_especial_temporada)));
+    private void recargarYear() {
+        if (temporadaList.size() > 0) {
+            spinner_toolbar.setSelection(prefs.getInt(Utilidades.FILTRO_TEMPORADA, (marca_especial_temporada.isEmpty()) ? temporadaList.size() - 1 : id_temporadas.indexOf(marca_especial_temporada)));
         }
     }
 
 
-
-
-    private void cargarLista(List<FichasCompletas> fichasCompletas){
+    private void cargarLista(List<FichasCompletas> fichasCompletas) {
 
         if (activity != null) {
             if (Utilidades.isLandscape(activity)) {
@@ -523,18 +529,16 @@ public class FragmentFichas extends Fragment {
         id_lista_fichas.setHasFixedSize(true);
 
 
-
-
         fichasAdapter = new FichasAdapter(fichasCompletas, fichas -> {
             activity.cambiarFragment(FragmentCreaFicha.getInstance(fichas), Utilidades.FRAGMENT_CREA_FICHA, R.anim.slide_in_left, R.anim.slide_out_left);
         }, fichas -> {
-            if (fichas.getFichas().getActiva() == 1){
+            if (fichas.getFichas().getActiva() == 1) {
                 avisoActivaFicha("Seleccione estado del prospecto", fichas);
-            }else{
-                Utilidades.avisoListo(activity,"Prospecto ya activado", "No se puede modificar en tableta, solo en web y por un administrador", "entiendo" );
+            } else {
+                Utilidades.avisoListo(activity, "Prospecto ya activado", "No se puede modificar en tableta, solo en web y por un administrador", "entiendo");
             }
 
-        },activity);
+        }, activity);
 
 
         id_lista_fichas.setAdapter(fichasAdapter);
@@ -542,15 +546,14 @@ public class FragmentFichas extends Fragment {
     }
 
 
-
     private void avisoCreaNuevaFicha(String title, String message) {
         View viewInfalted = LayoutInflater.from(getActivity()).inflate(R.layout.alert_empty, null);
 
-        final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+        final AlertDialog builder = new AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(getResources().getString(R.string.button_create), new DialogInterface.OnClickListener(){
+                .setPositiveButton(getResources().getString(R.string.button_create), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
@@ -570,7 +573,7 @@ public class FragmentFichas extends Fragment {
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (activity != null){
+                        if (activity != null) {
                             activity.cambiarFragment(new FragmentCreaFicha(), Utilidades.FRAGMENT_CREA_FICHA, R.anim.slide_in_left, R.anim.slide_out_left);
                         }
                         builder.dismiss();
@@ -590,7 +593,6 @@ public class FragmentFichas extends Fragment {
     }
 
 
-
     private void avisoActivaFicha(String title, final FichasCompletas completas) {
         final View viewInfalted = LayoutInflater.from(getActivity()).inflate(R.layout.alert_activa_ficha, null);
 
@@ -599,7 +601,7 @@ public class FragmentFichas extends Fragment {
         final RadioButton rb = viewInfalted.findViewById(R.id.radio_activa);
 
 
-        switch (completas.getFichas().getActiva()){
+        switch (completas.getFichas().getActiva()) {
             case 1:
                 ra.setChecked(true);
                 break;
@@ -610,10 +612,10 @@ public class FragmentFichas extends Fragment {
         }
 
 
-        final AlertDialog builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+        final AlertDialog builder = new AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle(title)
-                .setPositiveButton("Modificar", new DialogInterface.OnClickListener(){
+                .setPositiveButton("Modificar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
@@ -632,19 +634,18 @@ public class FragmentFichas extends Fragment {
                 Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
 
 
-
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Fichas fichas = completas.getFichas();
-                        if (fichas != null){
+                        if (fichas != null) {
 
                             if (rb.isChecked() && !TextUtils.isEmpty(fichas.getOferta_negocio()) && !TextUtils.isEmpty(fichas.getLocalidad()) && fichas.getHas_disponible() > 0.0
                                     && !TextUtils.isEmpty(fichas.getPredio_ficha()) && !TextUtils.isEmpty(fichas.getPotrero_ficha()) && !TextUtils.isEmpty(fichas.getMaleza())
                                     && !TextUtils.isEmpty(fichas.getEstado_general_ficha()) && !TextUtils.isEmpty(fichas.getFecha_limite_siembra_ficha()) && !TextUtils.isEmpty(fichas.getObservaciones())
                                     && !TextUtils.isEmpty(fichas.getObservacion_negocio_ficha()) && fichas.getNorting() != 0.0 && fichas.getEasting() != 0.0 && !TextUtils.isEmpty(fichas.getId_tipo_tenencia_maquinaria())
                                     && !TextUtils.isEmpty(fichas.getId_tipo_tenencia_terreno()) && !TextUtils.isEmpty(fichas.getExperiencia()) && !TextUtils.isEmpty(fichas.getId_tipo_riego())
-                                    && !TextUtils.isEmpty(fichas.getId_tipo_suelo()) && !TextUtils.isEmpty(fichas.getEspecie_ficha())){
+                                    && !TextUtils.isEmpty(fichas.getId_tipo_suelo()) && !TextUtils.isEmpty(fichas.getEspecie_ficha())) {
 
                                 int estado = (ra.isChecked()) ? 1 : (rb.isChecked()) ? 3 : 3;
                                 fichas.setActiva(estado);
@@ -652,10 +653,10 @@ public class FragmentFichas extends Fragment {
 
                                 Toasty.success(activity, "Prospecto activado con exito", Toast.LENGTH_LONG, true).show();
 
-                                if (fichasAdapter != null){
+                                if (fichasAdapter != null) {
                                     fichasAdapter.notifyDataSetChanged();
                                 }
-                            }else{
+                            } else {
                                 Utilidades.avisoListo(activity, "Falta Algo", "Para activar el prospecto debe completar todos los campos", "entiendo");
                             }
                         }
@@ -679,7 +680,7 @@ public class FragmentFichas extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (activity != null){
+        if (activity != null) {
             activity.updateView(getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_records));
         }
     }

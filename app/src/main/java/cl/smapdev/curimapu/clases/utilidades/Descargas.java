@@ -1,6 +1,5 @@
 package cl.smapdev.curimapu.clases.utilidades;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,7 +21,6 @@ import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
-import cl.smapdev.curimapu.clases.tablas.AnexoVilab;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
@@ -149,18 +146,27 @@ public class Descargas {
     }
 
 
-    public static boolean[] volqueoDatos(GsonDescargas gsonDescargas, Activity activity) throws RuntimeException {
+    public static boolean[] volqueoDatos(GsonDescargas gsonDescargas) throws RuntimeException {
 
         boolean[] problema = {false, false};
 
 
         MainActivity.myAppDB.DaoPrimeraPrioridad().limpiarPPs();
-        if(gsonDescargas.getArray_primera_prioridad() != null && !gsonDescargas.getArray_primera_prioridad().isEmpty()){
+        if (gsonDescargas.getArray_primera_prioridad() != null && !gsonDescargas.getArray_primera_prioridad().isEmpty()) {
             try {
                 MainActivity.myAppDB.DaoPrimeraPrioridad().insertarPPs(gsonDescargas.getArray_primera_prioridad());
             } catch (SQLiteException ignored) {
             }
         }
+
+        MainActivity.myAppDB.DaoSitiosNoVisitados().limpiarSNVs();
+        if (gsonDescargas.getArray_sitios_no_visitados() != null && !gsonDescargas.getArray_sitios_no_visitados().isEmpty()) {
+            try {
+                MainActivity.myAppDB.DaoSitiosNoVisitados().insertarSNVs(gsonDescargas.getArray_sitios_no_visitados());
+            } catch (SQLiteException ignored) {
+            }
+        }
+
 
         if (gsonDescargas.getAnexoVilabList() != null && !gsonDescargas.getAnexoVilabList().isEmpty()) {
             try {
@@ -439,7 +445,8 @@ public class Descargas {
             try {
                 MainActivity.myAppDB.myDao().insertCrop(gsonDescargas.getCropRotations());
 
-            } catch (SQLiteException ignored) {}
+            } catch (SQLiteException ignored) {
+            }
         }
 
         if (gsonDescargas.getEvaluaciones() != null && !gsonDescargas.getEvaluaciones().isEmpty()) {
@@ -468,7 +475,8 @@ public class Descargas {
         if (gsonDescargas.getDetalle_visita_props() != null && !gsonDescargas.getDetalle_visita_props().isEmpty()) {
             try {
                 MainActivity.myAppDB.myDao().insertDetalle(gsonDescargas.getDetalle_visita_props());
-            } catch (SQLiteException ignored) {}
+            } catch (SQLiteException ignored) {
+            }
         }
 
 
@@ -777,28 +785,32 @@ public class Descargas {
         if (gsonDescargas.getTipoTenenciaMaquinarias() != null && !gsonDescargas.getTipoTenenciaMaquinarias().isEmpty()) {
             try {
                 MainActivity.myAppDB.myDao().insertTipoTenenciaMaquinaria(gsonDescargas.getTipoTenenciaMaquinarias());
-            } catch (SQLiteException ignored) {}
+            } catch (SQLiteException ignored) {
+            }
         }
 
         MainActivity.myAppDB.myDao().deleteTipoTenenciaTerreno();
         if (gsonDescargas.getTipoTenenciaTerrenos() != null && !gsonDescargas.getTipoTenenciaTerrenos().isEmpty()) {
             try {
                 MainActivity.myAppDB.myDao().insertTipoTenenciaTerreno(gsonDescargas.getTipoTenenciaTerrenos());
-            } catch (SQLiteException ignored) {}
+            } catch (SQLiteException ignored) {
+            }
         }
 
         MainActivity.myAppDB.myDao().deleteFichaMaquinaria();
         if (gsonDescargas.getFichaMaquinarias() != null && !gsonDescargas.getFichaMaquinarias().isEmpty()) {
             try {
                 MainActivity.myAppDB.myDao().insertFichaMaquinaria(gsonDescargas.getFichaMaquinarias());
-            } catch (SQLiteException ignored) {}
+            } catch (SQLiteException ignored) {
+            }
         }
 
         MainActivity.myAppDB.myDao().deleteClientes();
         if (gsonDescargas.getClientes() != null && !gsonDescargas.getClientes().isEmpty()) {
             try {
                 MainActivity.myAppDB.myDao().insertClientes(gsonDescargas.getClientes());
-            } catch (SQLiteException ignored) {}
+            } catch (SQLiteException ignored) {
+            }
         }
 
 

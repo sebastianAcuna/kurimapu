@@ -322,7 +322,7 @@
     <string name="recomendacion_anterior">Recomendacion anterior</string>
     <string name="visita_anterior_text">Visita Anterior</string>
     <string name="title_warning_ranked">esta evaluacion se guardara al guardar la visita.</string>
-    <string name="dateicon">DateIcon</string>
+    <string name="dateicon" translatable="false">DateIcon</string>
     <string name="nuevo">nuevo</string>
     <string name="detalle">detalle</string>
     <string name="etapa">Etapa</string>
@@ -470,5 +470,5 @@
     <string name="fotos_raices">Fotos Raices</string>
     <string name="inicio_siembra">Inicio siembra hembra</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 </resources>

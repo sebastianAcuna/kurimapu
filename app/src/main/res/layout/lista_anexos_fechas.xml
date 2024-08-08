@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,8 +7,7 @@
     android:padding="@dimen/padding_small"
     android:layout_margin="@dimen/padding_small"
     android:background="@color/colorBackgroundList"
-    android:elevation="@dimen/padding"
-    >
+    android:elevation="@dimen/padding">
 
     <TextView
         android:id="@+id/num_anexo"
@@ -20,8 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/especie"
         tool:text="23-TR1337"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
     <TextView
         android:id="@+id/especie"
@@ -32,8 +29,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        tool:text="TREBOL ROSADO"
-        />
+        tool:text="TREBOL ROSADO" />
 
     <TextView
         android:id="@+id/lbl_agricultor"
@@ -45,8 +41,7 @@
         app:layout_constraintEnd_toStartOf="@id/especie"
         android:layout_marginTop="@dimen/padding_small"
         android:text="@string/agricultor"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-        />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
     <TextView
         android:id="@+id/agricultor"
@@ -57,8 +52,7 @@
         app:layout_constraintTop_toBottomOf="@id/lbl_agricultor"
         app:layout_constraintEnd_toEndOf="parent"
         tool:text="RICARDO BRUN FREY"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
     <TextView
         android:id="@+id/lbl_potrero"
@@ -70,8 +64,7 @@
         app:layout_constraintEnd_toStartOf="@id/lbl_comuna"
         android:text="@string/potrero"
         android:layout_marginTop="@dimen/padding_small"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-        />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
     <TextView
         android:id="@+id/potrero"
@@ -82,8 +75,7 @@
         app:layout_constraintTop_toBottomOf="@id/lbl_potrero"
         app:layout_constraintEnd_toStartOf="@id/lbl_comuna"
         tool:text="SANTA AMELIA"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-        />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
     <TextView
         android:id="@+id/lbl_comuna"
@@ -95,8 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/padding_small"
         android:text="@string/comuna_fecha"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-        />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
     <TextView
         android:id="@+id/comuna"
@@ -107,8 +98,7 @@
         app:layout_constraintTop_toBottomOf="@id/lbl_comuna"
         app:layout_constraintEnd_toEndOf="parent"
         tool:text="Yerbas Buenas"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-        />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
     <TextView
         android:id="@+id/lbl_condicion"
@@ -119,8 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/padding_small"
         android:text="@string/condicion"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-        />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
     <TextView
         android:id="@+id/condicion"
@@ -130,8 +119,7 @@
         app:layout_constraintTop_toBottomOf="@id/lbl_condicion"
         app:layout_constraintEnd_toEndOf="parent"
         tool:text="Convencional"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-        />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contenedor_resumen_correo"
@@ -140,8 +128,8 @@
         app:layout_constraintTop_toBottomOf="@id/condicion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:foregroundGravity="center"
-        >
+        android:foregroundGravity="center">
+
         <TextView
             android:id="@+id/lbl_titulo_correos"
             android:layout_width="wrap_content"
@@ -150,14 +138,15 @@
             app:layout_constraintStart_toStartOf="parent"
             android:text="@string/resumen"
             android:layout_marginTop="@dimen/padding_small"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
         <LinearLayout
             android:id="@+id/contenedor_resumen_icono_correo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            >
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/contenedor_alerta">
 
             <ImageView
                 android:id="@+id/corr_inicio_siembra"
@@ -183,6 +172,7 @@
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
+
             <ImageView
                 android:id="@+id/corr_inicio_corte_seda"
                 android:layout_width="wrap_content"
@@ -190,6 +180,7 @@
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
+
             <ImageView
                 android:id="@+id/corr_inicio_cosecha"
                 android:layout_width="wrap_content"
@@ -197,6 +188,7 @@
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
+
             <ImageView
                 android:id="@+id/corr_termino_cosecha"
                 android:layout_width="wrap_content"
@@ -204,6 +196,7 @@
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
+
             <ImageView
                 android:id="@+id/corr_termino_labores"
                 android:layout_width="wrap_content"
@@ -219,23 +212,20 @@
                 android:src="@drawable/ic_baseline_email_24_no"
 
                 />
+
             <ImageView
                 android:id="@+id/corr_destruccion_semillero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_email_24_no"
-                />
+                android:src="@drawable/ic_baseline_email_24_no" />
 
             <ImageView
                 android:id="@+id/corr_fin_destruccion_semillero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_email_24_no"
-                />
+                android:src="@drawable/ic_baseline_email_24_no" />
 
         </LinearLayout>
-
-
 
 
         <LinearLayout
@@ -272,8 +262,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="@dimen/padding_small"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
+
         <TextView
             android:id="@+id/lbl_titulo_detalle_correos"
             android:layout_width="wrap_content"
@@ -282,8 +272,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:text="@string/detalle"
             android:layout_marginTop="@dimen/padding_small"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
         <TextView
             android:id="@+id/lbl_inicio_siembra"
@@ -294,8 +283,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_inicio_siembra"
             android:text="@string/inicio_siembra"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_inicio_siembra"
@@ -306,8 +294,7 @@
             app:layout_constraintStart_toEndOf="@id/lbl_inicio_siembra"
             app:layout_constraintEnd_toStartOf="@id/iv_inicio_siembra"
             android:textAlignment="textEnd"
-            android:layout_marginTop="@dimen/padding_small"
-            />
+            android:layout_marginTop="@dimen/padding_small" />
 
         <ImageView
             android:id="@+id/iv_inicio_siembra"
@@ -317,8 +304,8 @@
             android:src="@drawable/ic_baseline_email_24_no"
             app:layout_constraintTop_toBottomOf="@id/lbl_titulo_detalle_correos"
             app:layout_constraintStart_toEndOf="@id/tv_inicio_siembra"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <TextView
             android:id="@+id/lbl_inicio_despano"
             android:layout_width="0dp"
@@ -328,8 +315,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_inicio_despano"
             android:text="@string/inicio_despano"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_inicio_despano"
@@ -340,8 +326,7 @@
             app:layout_constraintTop_toBottomOf="@id/lbl_inicio_siembra"
             app:layout_constraintStart_toEndOf="@id/lbl_inicio_despano"
             app:layout_constraintEnd_toStartOf="@id/iv_inicio_despano"
-            android:textAlignment="textEnd"
-            />
+            android:textAlignment="textEnd" />
 
         <ImageView
             android:id="@+id/iv_inicio_despano"
@@ -351,8 +336,7 @@
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/lbl_inicio_siembra"
             app:layout_constraintStart_toEndOf="@id/tv_inicio_despano"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/lbl_5_floracion"
@@ -363,8 +347,7 @@
             app:layout_constraintEnd_toStartOf="@id/tv_inicio_despano"
             android:layout_marginTop="@dimen/padding_small"
             android:text="@string/_5_floracion"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_5_floracion"
@@ -388,8 +371,7 @@
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_inicio_despano"
             app:layout_constraintStart_toEndOf="@id/tv_5_floracion"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/lbl_inicio_corte_seda"
@@ -400,8 +382,7 @@
             app:layout_constraintEnd_toStartOf="@id/tv_inicio_corte_seda"
             android:layout_marginTop="@dimen/padding_small"
             android:text="@string/inicio_corte_seda"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_inicio_corte_seda"
@@ -425,8 +406,7 @@
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_5_floracion"
             app:layout_constraintStart_toEndOf="@id/tv_inicio_corte_seda"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/lbl_inicio_cosecha"
@@ -437,8 +417,7 @@
             app:layout_constraintEnd_toStartOf="@id/tv_inicio_cosecha"
             android:layout_marginTop="@dimen/padding_small"
             android:text="@string/inicio_cosecha"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_inicio_cosecha"
@@ -462,8 +441,7 @@
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_inicio_corte_seda"
             app:layout_constraintStart_toEndOf="@id/tv_inicio_cosecha"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/lbl_termino_cosecha"
@@ -474,8 +452,7 @@
             app:layout_constraintEnd_toStartOf="@id/tv_inicio_cosecha"
             android:layout_marginTop="@dimen/padding_small"
             android:text="@string/termino_cosecha"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_termino_cosecha"
@@ -499,8 +476,7 @@
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_inicio_cosecha"
             app:layout_constraintStart_toEndOf="@id/tv_termino_cosecha"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/lbl_termino_labores"
@@ -511,8 +487,7 @@
             app:layout_constraintEnd_toStartOf="@id/tv_termino_labores"
             android:layout_marginTop="@dimen/padding_small"
             android:text="@string/termino_labores_post_cosecha"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_termino_labores"
@@ -523,8 +498,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_termino_cosecha"
             app:layout_constraintStart_toEndOf="@id/lbl_termino_labores"
             app:layout_constraintEnd_toStartOf="@id/iv_termino_labores"
-            android:textAlignment="textEnd"
-            />
+            android:textAlignment="textEnd" />
 
         <ImageView
             android:id="@+id/iv_termino_labores"
@@ -534,10 +508,7 @@
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_termino_cosecha"
             app:layout_constraintStart_toEndOf="@id/tv_termino_labores"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-
-
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
         <TextView
@@ -549,8 +520,7 @@
             app:layout_constraintEnd_toStartOf="@id/tv_inicio_cosecha"
             android:layout_marginTop="@dimen/padding_small"
             android:text="@string/detalle_labores"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_detalle_labores"
@@ -559,8 +529,7 @@
             tool:text="2022-07-01"
             app:layout_constraintTop_toBottomOf="@id/lbl_detalle_labores"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
         <TextView
@@ -572,8 +541,7 @@
             app:layout_constraintEnd_toStartOf="@id/tv_termino_labores"
             android:layout_marginTop="@dimen/padding_small"
             android:text="@string/siembra_temprana"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_siembra_temprana"
@@ -584,8 +552,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_detalle_labores"
             app:layout_constraintStart_toEndOf="@id/lbl_siembra_temprana"
             app:layout_constraintEnd_toStartOf="@id/iv_siembra_temprana"
-            android:textAlignment="textEnd"
-            />
+            android:textAlignment="textEnd" />
 
         <ImageView
             android:id="@+id/iv_siembra_temprana"
@@ -595,8 +562,7 @@
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/tv_detalle_labores"
             app:layout_constraintStart_toEndOf="@id/tv_siembra_temprana"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/lbl_destruccion_semillero"
@@ -607,8 +573,7 @@
             app:layout_constraintEnd_toStartOf="@id/tv_termino_labores"
             android:layout_marginTop="@dimen/padding_small"
             android:text="@string/destruccion_de_semillero"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_destruccion_semillero"
@@ -619,8 +584,7 @@
             app:layout_constraintTop_toBottomOf="@id/lbl_siembra_temprana"
             app:layout_constraintStart_toEndOf="@id/lbl_destruccion_semillero"
             app:layout_constraintEnd_toStartOf="@id/iv_destruccion_semillero"
-            android:textAlignment="textEnd"
-            />
+            android:textAlignment="textEnd" />
 
         <ImageView
             android:id="@+id/iv_destruccion_semillero"
@@ -630,8 +594,7 @@
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/lbl_siembra_temprana"
             app:layout_constraintStart_toEndOf="@id/tv_destruccion_semillero"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/lbl_fin_destruccion_semillero"
@@ -642,8 +605,7 @@
             app:layout_constraintEnd_toStartOf="@id/tv_termino_labores"
             android:layout_marginTop="@dimen/padding_small"
             android:text="Fin de destruccion de semillero"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <TextView
             android:id="@+id/tv_fin_destruccion_semillero"
@@ -654,8 +616,7 @@
             app:layout_constraintTop_toBottomOf="@id/lbl_destruccion_semillero"
             app:layout_constraintStart_toEndOf="@id/lbl_fin_destruccion_semillero"
             app:layout_constraintEnd_toStartOf="@id/iv_fin_destruccion_semillero"
-            android:textAlignment="textEnd"
-            />
+            android:textAlignment="textEnd" />
 
         <ImageView
             android:id="@+id/iv_fin_destruccion_semillero"
@@ -665,8 +626,7 @@
             android:layout_marginTop="@dimen/padding_small"
             app:layout_constraintTop_toBottomOf="@id/lbl_destruccion_semillero"
             app:layout_constraintStart_toEndOf="@id/tv_fin_destruccion_semillero"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -680,8 +640,7 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:textColor="@color/colorPrimary"
         android:text="@string/cambiar"
-        android:layout_marginTop="@dimen/padding_small"
-        />
+        android:layout_marginTop="@dimen/padding_small" />
 
     <ImageView
         android:id="@+id/ver_detalle"
@@ -691,7 +650,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_expand_down"
         app:tint="@color/colorOnBackground" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

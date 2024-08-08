@@ -14,6 +14,21 @@
     <string name="warning_incorrect_fields">Incorrect username and / or password</string>
     <!--    Usuario y/o Contraseña incorrectos-->
 
+    <string name="datos_predio">Datos predio</string>
+    <string name="rotacion">Rotación</string>
+    <string name="datos_informativos">Datos informativos</string>
+    <string name="tipo_de_suelo">Tipo de Suelo</string>
+    <string name="tipo_de_riego">Tipo de Riego</string>
+    <string name="experiencia">Experiencia</string>
+    <string name="maquinaria">Maquinaria</string>
+    <string name="tenencia">Tenencia</string>
+    <string name="representante_legal">Representante Legal</string>
+    <string name="telefono_rep_legal">Telefono Rep. Legal</string>
+    <string name="carga_de_malezas">Carga de Malezas</string>
+    <string name="fecha_limite_siembra">Fecha Limite Siembra</string>
+    <string name="observaciones_de_negocio">Observaciones de $ negocio o min garantizado (USD/HA)</string>
+
+    <string name="capturar">capturar</string>
 
     <!-- INICIO -->
     <string name="sync_all_ok">Nothing to upload, everything synchronized</string>
@@ -109,8 +124,6 @@
     <string name="espere">Espere por favor</string>
 
 
-
-
     <!--FORM CICLO VIDA -->
     <string name="format_date">dd/mm/yyyy</string>
 
@@ -171,7 +184,6 @@
     </string-array>
 
 
-
     <string name="subtitles_visit">Anexos</string>
     <string name="subtitles_start">Inicio</string>
     <string name="subtitles_records">Prospectos</string>
@@ -222,8 +234,6 @@
     </string-array>
 
 
-
-
     <!--    MENU -->
     <string name="open_drawer">Abrir cajón de navegación</string>
     <string name="close_drawer">Cerrar cajón de navegación</string>
@@ -257,8 +267,8 @@
     <string name="tema_desc">seleccione para cambiar al modo oscuro</string>
 
     <string-array name="idiomas">
-        <item >Ingles</item>
-        <item >Español</item>
+        <item>Ingles</item>
+        <item>Español</item>
     </string-array>
 
     <string-array name="id_idiomas">
@@ -271,7 +281,6 @@
     <string name="message_fav">Se ha marcado como favorita</string>
     <string name="message_fav_remove">Se ha eliminado de favoritos</string>
     <string name="message_dialog_fav">No puedes seleccionar como favorita más de 3 fotos</string>
-
 
 
     <string name="title_dialog_agron">Hey!</string>

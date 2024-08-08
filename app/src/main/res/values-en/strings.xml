@@ -16,6 +16,21 @@
     <string name="warning_incorrect_fields">Incorrect username and / or password</string>
     <!--    Usuario y/o Contraseña incorrectos-->
 
+    <string name="datos_predio">Datos predio</string>
+    <string name="rotacion">Rotación</string>
+    <string name="datos_informativos">Datos informativos</string>
+    <string name="tipo_de_suelo">Tipo de Suelo</string>
+    <string name="tipo_de_riego">Tipo de Riego</string>
+    <string name="experiencia">Experiencia</string>
+    <string name="maquinaria">Maquinaria</string>
+    <string name="tenencia">Tenencia</string>
+    <string name="representante_legal">Representante Legal</string>
+    <string name="telefono_rep_legal">Telefono Rep. Legal</string>
+    <string name="carga_de_malezas">Carga de Malezas</string>
+    <string name="fecha_limite_siembra">Fecha Limite Siembra</string>
+    <string name="observaciones_de_negocio">Observaciones de $ negocio o min garantizado (USD/HA)</string>
+
+    <string name="capturar">capturar</string>
 
     <!-- INICIO -->
     <string name="sync_all_ok">Nothing to upload, everything synchronized</string>
@@ -177,12 +192,6 @@ Depending on the state, it can be edited or not.</string>
     </string-array>
 
 
-
-
-
-
-
-
     <!--    TABS -->
     <string-array name="tabs">
         <item>@string/uno</item>
@@ -205,8 +214,6 @@ Depending on the state, it can be edited or not.</string>
     <string name="harvest">Harvest</string>
 
 
-
-
     <!--    TABLA -->
 
 
@@ -226,10 +233,6 @@ Depending on the state, it can be edited or not.</string>
         <item>@string/accion</item>
         <item>@string/anteriores</item>
     </string-array>
-
-
-
-
 
 
     <!--    MENU -->
@@ -266,8 +269,8 @@ Depending on the state, it can be edited or not.</string>
 
 
     <string-array name="idiomas">
-        <item >English</item>
-        <item >Spanish</item>
+        <item>English</item>
+        <item>Spanish</item>
     </string-array>
 
     <string-array name="id_idiomas">
@@ -280,7 +283,6 @@ Depending on the state, it can be edited or not.</string>
     <string name="message_fav">It has been marked as a favorite</string>
     <string name="message_fav_remove">It has been removed of favorites</string>
     <string name="message_dialog_fav">You cannot select as favorite more than 3 photos</string>
-
 
 
     <string name="title_dialog_agron">Hey!</string>

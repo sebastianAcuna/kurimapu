@@ -30,8 +30,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,7 +54,6 @@ import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.modelo.EstacionFloracionSync;
 import cl.smapdev.curimapu.clases.modelo.MuestraHumedadSync;
 import cl.smapdev.curimapu.clases.modelo.RecomendacionesSync;
-import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListLimpiezaCamionesCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
@@ -65,10 +64,7 @@ import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.MuestraHumedadRequest;
 import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
-import cl.smapdev.curimapu.clases.relaciones.SitiosNoVisitadosAnexos;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
-import cl.smapdev.curimapu.clases.relaciones.VisitaDetalle;
-import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
@@ -91,6 +87,7 @@ import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.FotosFichas;
 import cl.smapdev.curimapu.clases.tablas.MuestraHumedad;
 import cl.smapdev.curimapu.clases.tablas.PrimeraPrioridad;
+import cl.smapdev.curimapu.clases.tablas.SitiosNoVisitados;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
@@ -108,12 +105,8 @@ public class FragmentPrincipal extends Fragment {
 
     private MainActivity activity;
 
-    private RecyclerView card_list;
     private RecyclerView lista_sitios_no_visitados;
     private RecyclerView lista_primera_prioridad;
-
-    private SitiosNoVisitadosAdapter adapterNovis;
-    private PrimeraPrioridadAdapter adapterPrimera;
 
     private final ArrayList<String> id_temporadas = new ArrayList<>();
     private final ArrayList<String> desc_temporadas = new ArrayList<>();
@@ -121,21 +114,13 @@ public class FragmentPrincipal extends Fragment {
     private Handler handlerGrafico;
 
 
-    private Button btn_calcula_datos_primera_prio,
-            btn_calcula_datos_sitio_visita;
-
-
     private LinearLayout contenedor_botones;
 
     private LinearLayout contenedor_alerta_inicio;
 
-    private TextView lbl_muestra_subidas;
     private ImageView img_muestra_subidas;
 
     private ConstraintLayout contenedor_botonera_subida;
-    private Button btn_subir_check, btn_subir_recomendaciones, btn_subir_estaciones, btn_subir_muestras;
-
-    private ProgressDialog vilabProgressDialog;
 
 
     private Button btn_descargar;
@@ -157,27 +142,15 @@ public class FragmentPrincipal extends Fragment {
 
     private ProgressBar progressBar1, progressBar2;
 
-    int cantidadVisitasSubidas = 0;
-    int cantidadVisitasPorSubir = 0;
     int contadorVisita = 0;
-
-    private TextView titulo_sitios_no_visitados;
-    private TextView titulo_primera_prioridad;
-
 
     ArrayList<Integer> botonesSeleccionados = new ArrayList<>();
     ArrayList<Integer> idVisitasSeleccionadas = new ArrayList<>();
 
     private View view;
 
-    private Handler handler = new Handler();
-    private int retryDelay = 500;
-    private Runnable retryRunnable;
-
-    private int currentQueue = 1;
-    private int totalQueue;
-    private List<Integer> imagenesDescargadas = new ArrayList<>();
-    private List<String> graficosDescargados = new ArrayList<>();
+    public FragmentPrincipal() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -193,15 +166,13 @@ public class FragmentPrincipal extends Fragment {
         handlerGrafico = new Handler(Looper.getMainLooper());
 
 
-        vilabProgressDialog = new ProgressDialog(activity);
-
         temporadaList = MainActivity.myAppDB.myDao().getTemporada();
         setSpecialSeason(temporadaList);
 
     }
 
     public void setSpecialSeason(List<Temporada> temporadas) {
-        if (temporadas.size() > 0) {
+        if (!temporadas.isEmpty()) {
             for (Temporada t : temporadas) {
                 id_temporadas.add(t.getId_tempo_tempo());
                 desc_temporadas.add(t.getNombre_tempo());
@@ -213,7 +184,6 @@ public class FragmentPrincipal extends Fragment {
 
                 if (t.getEspecial_temporada() > 0) {
                     marca_especial_temporada = t.getId_tempo_tempo();
-
                 }
             }
         }
@@ -244,11 +214,9 @@ public class FragmentPrincipal extends Fragment {
         contenedor_botones = view.findViewById(R.id.contenedor_botones);
         contenedor_alerta_inicio = view.findViewById(R.id.contenedor_alerta_inicio);
 
-        btn_calcula_datos_primera_prio = view.findViewById(R.id.btn_calcula_datos_primera_prio);
-        btn_calcula_datos_sitio_visita = view.findViewById(R.id.btn_calcula_datos_sitio_visita);
+        Button btn_calcula_datos_primera_prio = view.findViewById(R.id.btn_calcula_datos_primera_prio);
+        Button btn_calcula_datos_sitio_visita = view.findViewById(R.id.btn_calcula_datos_sitio_visita);
 
-        titulo_sitios_no_visitados = view.findViewById(R.id.titulo_sitios_no_visitados);
-        titulo_primera_prioridad = view.findViewById(R.id.titulo_primera_prioridad);
 
         progressBar1 = view.findViewById(R.id.progressBar1);
         progressBar2 = view.findViewById(R.id.progressBar2);
@@ -256,13 +224,13 @@ public class FragmentPrincipal extends Fragment {
         lista_sitios_no_visitados = view.findViewById(R.id.lista_sitios_no_visitados);
         lista_primera_prioridad = view.findViewById(R.id.lista_primera_prioridad);
 
-        lbl_muestra_subidas = view.findViewById(R.id.lbl_muestra_subidas);
+        TextView lbl_muestra_subidas = view.findViewById(R.id.lbl_muestra_subidas);
         img_muestra_subidas = view.findViewById(R.id.img_muestra_subidas);
         contenedor_botonera_subida = view.findViewById(R.id.contenedor_botonera_subida);
-        btn_subir_check = view.findViewById(R.id.btn_subir_check);
-        btn_subir_estaciones = view.findViewById(R.id.btn_subir_estaciones);
-        btn_subir_muestras = view.findViewById(R.id.btn_subir_muestras);
-        btn_subir_recomendaciones = view.findViewById(R.id.btn_subir_recomendaciones);
+        Button btn_subir_check = view.findViewById(R.id.btn_subir_check);
+        Button btn_subir_estaciones = view.findViewById(R.id.btn_subir_estaciones);
+        Button btn_subir_muestras = view.findViewById(R.id.btn_subir_muestras);
+        Button btn_subir_recomendaciones = view.findViewById(R.id.btn_subir_recomendaciones);
 
 
         lbl_muestra_subidas.setOnClickListener(view1 -> ocultarBotoneraSubida());
@@ -291,12 +259,8 @@ public class FragmentPrincipal extends Fragment {
         });
 
 
-        btn_calcula_datos_primera_prio.setOnClickListener((view1) -> {
-            primeraPrioridad(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
-        });
-        btn_calcula_datos_sitio_visita.setOnClickListener((view2) -> {
-            sitiosNoVisitados(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
-        });
+        btn_calcula_datos_primera_prio.setOnClickListener((view1) -> primeraPrioridad(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()))));
+        btn_calcula_datos_sitio_visita.setOnClickListener((view2) -> sitiosNoVisitados(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()))));
 
 
         btn_descargar.setOnClickListener(view1 -> {
@@ -344,7 +308,7 @@ public class FragmentPrincipal extends Fragment {
 
 
         btn_sube_marcadas.setOnClickListener(view12 -> {
-            if (botonesSeleccionados.size() > 0) {
+            if (!botonesSeleccionados.isEmpty()) {
                 contadorVisita = 0;
                 prepararVisitaAgrupada(contadorVisita);
             }
@@ -373,7 +337,7 @@ public class FragmentPrincipal extends Fragment {
         try {
             List<AnexoContrato> anexos = anexosF.get();
 
-            contenedor_alerta_inicio.setVisibility((anexos.size() > 0) ? View.VISIBLE : View.GONE);
+            contenedor_alerta_inicio.setVisibility((!anexos.isEmpty()) ? View.VISIBLE : View.GONE);
             executorService.shutdown();
 
         } catch (ExecutionException | InterruptedException e) {
@@ -385,7 +349,7 @@ public class FragmentPrincipal extends Fragment {
 
     void ocultarBotoneraSubida() {
         contenedor_botonera_subida.setVisibility((contenedor_botonera_subida.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
-        img_muestra_subidas.setImageDrawable((contenedor_botonera_subida.getVisibility() == View.VISIBLE) ? getResources().getDrawable(R.drawable.ic_expand_down) : getResources().getDrawable(R.drawable.ic_expand_up));
+        img_muestra_subidas.setImageDrawable((contenedor_botonera_subida.getVisibility() == View.VISIBLE) ? ResourcesCompat.getDrawable(img_muestra_subidas.getResources(), R.drawable.ic_expand_down, activity.getTheme()) : ResourcesCompat.getDrawable(img_muestra_subidas.getResources(), R.drawable.ic_expand_up, activity.getTheme()));
     }
 
     void prepararVisitaAgrupada(int contadorVisitas) {
@@ -422,7 +386,7 @@ public class FragmentPrincipal extends Fragment {
         try {
             List<Evaluaciones> chk = chkF.get();
 
-            if (chk.size() <= 0) {
+            if (chk.isEmpty()) {
                 executorService.shutdown();
                 return;
             }
@@ -432,8 +396,7 @@ public class FragmentPrincipal extends Fragment {
             chkS.setEvaluacionesList(chk);
             prepararSubirRecomendaciones(chkS);
 
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (ExecutionException | InterruptedException ignored) {
         }
     }
 
@@ -499,7 +462,7 @@ public class FragmentPrincipal extends Fragment {
 
             List<MuestraHumedad> muestras = chkF.get();
 
-            if (muestras.size() == 0) {
+            if (muestras.isEmpty()) {
                 executorService.shutdown();
                 Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 return;
@@ -512,7 +475,6 @@ public class FragmentPrincipal extends Fragment {
             syncMuestras(muestraRequest);
 
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
             executorService.shutdown();
         }
     }
@@ -527,7 +489,7 @@ public class FragmentPrincipal extends Fragment {
 
             List<EstacionFloracion> estacionFloracions = chkF.get();
 
-            if (estacionFloracions.size() == 0) {
+            if (estacionFloracions.isEmpty()) {
                 executorService.shutdown();
                 Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 return;
@@ -568,7 +530,6 @@ public class FragmentPrincipal extends Fragment {
             prepararSubirEst(floracionRequest);
 
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
             executorService.shutdown();
         }
     }
@@ -614,7 +575,7 @@ public class FragmentPrincipal extends Fragment {
             List<CheckListLimpiezaCamiones> capLimpiezaCamionesCab
                     = checkLisLimpiezaCamionesFuture.get();
 
-            if (chk.size() <= 0 && chkC.size() <= 0 && capSiembraCab.size() <= 0 && capCosechaCab.size() <= 0 && capLimpiezaCamionesCab.size() <= 0) {
+            if (chk.isEmpty() && chkC.isEmpty() && capSiembraCab.isEmpty() && capCosechaCab.isEmpty() && capLimpiezaCamionesCab.isEmpty()) {
                 executorService.shutdown();
                 Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 return;
@@ -624,7 +585,7 @@ public class FragmentPrincipal extends Fragment {
             List<CheckListCapCompleto> chkList = new ArrayList<>();
             List<CheckListLimpiezaCamionesCompleto> chkListLimpiezaCamiones = new ArrayList<>();
 
-            if (capSiembraCab.size() > 0) {
+            if (!capSiembraCab.isEmpty()) {
 
                 for (CheckListCapacitacionSiembra clc : capSiembraCab) {
                     List<CheckListCapacitacionSiembraDetalle> detalle =
@@ -643,7 +604,7 @@ public class FragmentPrincipal extends Fragment {
                 chkS.setCheckListCapCompletos(chkList);
             }
 
-            if (capCosechaCab.size() > 0) {
+            if (!capCosechaCab.isEmpty()) {
 
                 for (CheckListCapacitacionSiembra clc : capCosechaCab) {
                     List<CheckListCapacitacionSiembraDetalle> detalle =
@@ -662,7 +623,7 @@ public class FragmentPrincipal extends Fragment {
                 chkS.setCheckListCapCompletos(chkList);
             }
 
-            if (capLimpiezaCamionesCab.size() > 0) {
+            if (!capLimpiezaCamionesCab.isEmpty()) {
 
                 for (CheckListLimpiezaCamiones clc : capLimpiezaCamionesCab) {
                     List<ChecklistLimpiezaCamionesDetalle> detalle =
@@ -680,17 +641,16 @@ public class FragmentPrincipal extends Fragment {
                 chkS.setCheckListLimpiezaCamionesCompletos(chkListLimpiezaCamiones);
             }
 
-            if (chkC.size() > 0) {
+            if (!chkC.isEmpty()) {
                 chkS.setCheckListCosechas(chkC);
             }
 
-            if (chk.size() > 0) {
+            if (!chk.isEmpty()) {
                 chkS.setCheckListSiembras(chk);
             }
             prepararSubir(chkS);
 
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
             executorService.shutdown();
         }
     }
@@ -777,7 +737,7 @@ public class FragmentPrincipal extends Fragment {
                     button.setTag("VISITASPENDIENTES_" + v.getId_visita());
 
                     if (v.getEstado_server_visitas() == 0) {
-                        button.setBackgroundTintList(requireActivity().getResources().getColorStateList(R.color.colorRedLight));
+                        button.setBackgroundTintList(ResourcesCompat.getColorStateList(button.getResources(), R.color.colorRedLight, activity.getTheme()));
                         button.setTextColor(requireActivity().getColor(R.color.colorSurface));
                     }
 
@@ -937,10 +897,10 @@ public class FragmentPrincipal extends Fragment {
 
 
             List<Fotos> fts = new ArrayList<>();
-            if (fotos.size() > 0) {
+            if (!fotos.isEmpty()) {
                 for (Fotos fs : fotos) {
                     String imageString = Utilidades.imageToString(fs.getRuta());
-                    if (imageString.length() > 0) {
+                    if (!imageString.isEmpty()) {
                         fs.setEncrypted_image(imageString);
                         fts.add(fs);
                     }
@@ -948,7 +908,7 @@ public class FragmentPrincipal extends Fragment {
             }
 
 
-            if (detalles.size() > 0) {
+            if (!detalles.isEmpty()) {
                 for (detalle_visita_prop v1 : detalles) {
                     cantidadSuma += v1.getId_det_vis_prop_detalle();
                 }
@@ -956,7 +916,7 @@ public class FragmentPrincipal extends Fragment {
             cantidadSuma += detalles.size();
 
 
-            if (fts.size() > 0) {
+            if (!fts.isEmpty()) {
                 for (Fotos v1 : fts) {
                     cantidadSuma += v1.getId_foto();
                 }
@@ -1056,81 +1016,76 @@ public class FragmentPrincipal extends Fragment {
         callResponse.enqueue(new Callback<Respuesta>() {
             @Override
             public void onResponse(@NonNull Call<Respuesta> callResponse, @NonNull Response<Respuesta> response) {
-                if (response.isSuccessful()) {
-                    switch (response.code()) {
-                        case 200:
-                            Respuesta re = response.body();
-                            if (re == null) {
-                                /* respuesta nula */
-                                if (progressDialogGeneral.isShowing())
-                                    progressDialogGeneral.dismiss();
-                                Toasty.error(activity, "Problema conectandonos al servidor, por favor vuelva a intentarlo ", Toast.LENGTH_SHORT, true).show();
-                                break;
-                            }
-                            switch (re.getCodigoRespuesta()) {
-                                case 0: //salio bien se sigue con el procedimiento
-
-                                    int visita = MainActivity.myAppDB.myDao().updateVisitasSubidasTomadas(re.getCabeceraRespuesta()); /* las actualizo y las dejo en tomadas = 0 */
-                                    if (visita <= 0) {
-                                        respuesta[0] = 2;
-                                        respuesta[1] = re.getCabeceraRespuesta();
-                                    }
-                                    int detalles = MainActivity.myAppDB.myDao().updateDetalleVisitaSubidasTomadas(re.getCabeceraRespuesta());
-                                    int fotos = MainActivity.myAppDB.myDao().updateFotosSubidasTomada(re.getCabeceraRespuesta());
-
-                                    if (respuesta[0] == 2) {
-
-                                        MainActivity.myAppDB.myDao().updateDetalleVisitaBack(re.getCabeceraRespuesta());
-                                        MainActivity.myAppDB.myDao().updateFotosBack(re.getCabeceraRespuesta());
-                                        MainActivity.myAppDB.myDao().updateVisitasBack(re.getCabeceraRespuesta());
-
-                                        Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + re.getCodigoRespuesta() + "\nMENSAJE: \n" + re.getMensajeRespuesta(), "ENTIENDO");
-
-                                        Toasty.success(activity, "Problema subiendo los datos , por favor, vuelva a intentarlo", Toast.LENGTH_SHORT, true).show();
-                                        if (progressDialogGeneral.isShowing())
-                                            progressDialogGeneral.dismiss();
-                                    } else {
-
-                                        Button button = view.findViewWithTag("VISITASPENDIENTES_" + id_visita);
-                                        if (button != null) {
-                                            button.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorGreenLight));
-                                            button.setEnabled(false);
-                                        }
-                                        contadorVisita++;
-                                        if (idVisitasSeleccionadas.size() > 0 && contadorVisita < 3) {
-                                            prepararVisitaAgrupada(contadorVisita);
-                                        } else {
-                                            btn_sube_marcadas.setVisibility(View.INVISIBLE);
-                                            if (progressDialogGeneral.isShowing())
-                                                progressDialogGeneral.dismiss();
-                                        }
-
-                                        preparaSubirRecomendaciones();
-                                        Toasty.success(activity, "Se subio La visita con exito", Toast.LENGTH_SHORT, true).show();
-                                    }
-                                    break;
-
-                                default:
-                                    if (progressDialogGeneral.isShowing())
-                                        progressDialogGeneral.dismiss();
-                                    Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + re.getCodigoRespuesta() + "\nMENSAJE: \n" + re.getMensajeRespuesta(), "ENTIENDO");
-                                    break;
-                            }
-                            break;
-                        default:
-                            if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                            Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS CON SERVIDOR \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + response.message(), "ENTIENDO");
-                            break;
-                    }
-                } else {
+                if (!response.isSuccessful()) {
                     if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
                     try {
+
+                        assert response.errorBody() != null;
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Utilidades.avisoListo(getActivity(), "ATENCION", "COMUNICACION FALLIDA EN COMPROBACION \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + jObjError.getJSONObject("error").getString("message"), "ENTIENDO");
 
                     } catch (Exception e) {
                         Utilidades.avisoListo(getActivity(), "ATENCION", "COMUNICACION FALLIDA EN COMPROBACION \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + e.getMessage(), "ENTIENDO");
                     }
+                    return;
+                }
+                if (response.code() != 200) {
+                    if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                    Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS CON SERVIDOR \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + response.message(), "ENTIENDO");
+                    return;
+                }
+                Respuesta re = response.body();
+                if (re == null) {
+                    /* respuesta nula */
+                    if (progressDialogGeneral.isShowing())
+                        progressDialogGeneral.dismiss();
+                    Toasty.error(activity, "Problema conectandonos al servidor, por favor vuelva a intentarlo ", Toast.LENGTH_SHORT, true).show();
+                    return;
+                }
+                if (re.getCodigoRespuesta() != 0) {
+                    if (progressDialogGeneral.isShowing()) {
+                        progressDialogGeneral.dismiss();
+                    }
+                    Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + re.getCodigoRespuesta() + "\nMENSAJE: \n" + re.getMensajeRespuesta(), "ENTIENDO");
+                    return;
+                }
+
+                int visita = MainActivity.myAppDB.myDao().updateVisitasSubidasTomadas(re.getCabeceraRespuesta()); /* las actualizo y las dejo en tomadas = 0 */
+                if (visita <= 0) {
+                    respuesta[0] = 2;
+                    respuesta[1] = re.getCabeceraRespuesta();
+                }
+                MainActivity.myAppDB.myDao().updateDetalleVisitaSubidasTomadas(re.getCabeceraRespuesta());
+                MainActivity.myAppDB.myDao().updateFotosSubidasTomada(re.getCabeceraRespuesta());
+
+                if (respuesta[0] == 2) {
+
+                    MainActivity.myAppDB.myDao().updateDetalleVisitaBack(re.getCabeceraRespuesta());
+                    MainActivity.myAppDB.myDao().updateFotosBack(re.getCabeceraRespuesta());
+                    MainActivity.myAppDB.myDao().updateVisitasBack(re.getCabeceraRespuesta());
+
+                    Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + re.getCodigoRespuesta() + "\nMENSAJE: \n" + re.getMensajeRespuesta(), "ENTIENDO");
+
+                    Toasty.success(activity, "Problema subiendo los datos , por favor, vuelva a intentarlo", Toast.LENGTH_SHORT, true).show();
+                    if (progressDialogGeneral.isShowing())
+                        progressDialogGeneral.dismiss();
+                } else {
+
+                    Button button = view.findViewWithTag("VISITASPENDIENTES_" + id_visita);
+                    if (button != null) {
+                        button.setBackgroundTintList(ResourcesCompat.getColorStateList(button.getResources(), R.color.colorGreenLight, activity.getTheme()));
+                        button.setEnabled(false);
+                    }
+                    contadorVisita++;
+                    if (!idVisitasSeleccionadas.isEmpty() && contadorVisita < 3) {
+                        prepararVisitaAgrupada(contadorVisita);
+                    } else {
+                        btn_sube_marcadas.setVisibility(View.INVISIBLE);
+                        if (progressDialogGeneral.isShowing())
+                            progressDialogGeneral.dismiss();
+                    }
+                    preparaSubirRecomendaciones();
+                    Toasty.success(activity, "Se subio La visita con exito", Toast.LENGTH_SHORT, true).show();
                 }
             }
 
@@ -1209,7 +1164,6 @@ public class FragmentPrincipal extends Fragment {
 
         ProgressDialog dialogFiles = new ProgressDialog(requireActivity());
         dialogFiles.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//        dialogFiles.setTitle("Falta poco...");
         dialogFiles.setMessage("descargando imagenes vilab...");
         dialogFiles.setMax(100);
 
@@ -1318,7 +1272,7 @@ public class FragmentPrincipal extends Fragment {
                 progressDialog.setMessage("guardando datos...");
                 ExecutorService ex = Executors.newSingleThreadExecutor();
                 ex.execute(() -> {
-                    boolean[] problema = volqueoDatos(gsonDescargas, getActivity());
+                    boolean[] problema = volqueoDatos(gsonDescargas);
                     Future<Config> futureConfig = ex.submit(() -> MainActivity.myAppDB.myDao().getConfig());
                     Future<List<Temporada>> futureTempo = ex.submit(() -> MainActivity.myAppDB.myDao().getTemporada());
 
@@ -1330,7 +1284,8 @@ public class FragmentPrincipal extends Fragment {
                             setSpecialSeason(temporadaList);
 
                             if (!problema[0] && !problema[1]) {
-                                cargarToolbar();
+
+
                                 revisarAnexosPendienteFecha();
                                 if (config != null) {
                                     activity.cambiarNombreUser(config.getId_usuario());
@@ -1392,9 +1347,7 @@ public class FragmentPrincipal extends Fragment {
 
         executorService.execute(() -> {
             List<PrimeraPrioridad> ppList = MainActivity.myAppDB.DaoPrimeraPrioridad().getPPByTemporada(tempo);
-            primerHandler.post(() -> {
-                mostrarTablaPrimera(ppList);
-            });
+            primerHandler.post(() -> mostrarTablaPrimera(ppList));
         });
         executorService.shutdown();
     }
@@ -1411,30 +1364,21 @@ public class FragmentPrincipal extends Fragment {
 
         progressBar1.setVisibility(View.GONE);
         lista_primera_prioridad.setVisibility(View.VISIBLE);
-
-        adapterPrimera = new PrimeraPrioridadAdapter(pplist, activity);
-
-//        if(Utilidades.isTablet(requireActivity())){
-//        lista_primera_prioridad.setLayoutManager(new GridLayoutManager(activity, 2));
-//        }else{
+        PrimeraPrioridadAdapter adapterPrimera = new PrimeraPrioridadAdapter(pplist, activity);
         lista_primera_prioridad.setLayoutManager(new LinearLayoutManager(activity));
-//        }
         lista_primera_prioridad.setHasFixedSize(true);
         lista_primera_prioridad.setAdapter(adapterPrimera);
 
     }
 
 
-    public void mostrarTablaNoVis(ArrayList<VisitasCompletas> visitasCompletas) {
+    public void mostrarTablaNoVis(List<SitiosNoVisitados> visitasCompletas) {
 
         progressBar2.setVisibility(View.GONE);
         lista_sitios_no_visitados.setVisibility(View.VISIBLE);
-
-        adapterNovis = new SitiosNoVisitadosAdapter(visitasCompletas);
-
-        lista_sitios_no_visitados.setLayoutManager(new GridLayoutManager(activity, 2));
+        SitiosNoVisitadosAdapter adapterNovis = new SitiosNoVisitadosAdapter(visitasCompletas);
+        lista_sitios_no_visitados.setLayoutManager(new LinearLayoutManager(activity));
         lista_sitios_no_visitados.setHasFixedSize(true);
-
         lista_sitios_no_visitados.setAdapter(adapterNovis);
 
     }
@@ -1451,60 +1395,8 @@ public class FragmentPrincipal extends Fragment {
         Handler sitiosHandler = new Handler(Looper.getMainLooper());
 
         executorService.execute(() -> {
-            ArrayList<VisitasCompletas> listas = new ArrayList<>();
-            List<SitiosNoVisitadosAnexos> listAnexos = MainActivity.myAppDB.myDao().getSitiosNoVisitados(tempo);
-            if (listAnexos.size() == 0) {
-                sitiosHandler.post(() -> mostrarTablaNoVis(listas));
-            }
-            ;
-
-            for (SitiosNoVisitadosAnexos si : listAnexos) {
-                boolean tieneFechaSiembra = false;
-                boolean tieneFechaCosecha = false;
-
-
-                int idAc = Integer.parseInt(si.getAnexoContrato().getId_anexo_contrato());
-                List<VisitaDetalle> getVisitaDetalle = MainActivity.myAppDB.myDao().getVisitaDetalle(idAc);
-
-                if (getVisitaDetalle.size() == 0) continue;
-
-                for (VisitaDetalle vd : getVisitaDetalle) {
-
-                    if (vd.getDetalle_visita_prop() == null) continue;
-                    if (vd.getDetalle_visita_prop().getValor_detalle().isEmpty()) continue;
-
-                    String identificador = vd.getPro_cli_mat().getIdentificador();
-
-
-                    if (identificador.equals(String.valueOf(Utilidades.IDENTIFICADOR_LC_FECHA_SIEMBRA)) || identificador.equals(String.valueOf(Utilidades.IDENTIFICADOR_LC_FECHA_LINEA_HEMBRA))) {
-                        tieneFechaSiembra = true;
-                    } else if (identificador.equals(String.valueOf(Utilidades.IDENTIFICADOR_LC_FECHA_COSECHA))) {
-                        tieneFechaCosecha = true;
-                    }
-
-                }
-                Visitas laVisita = MainActivity.myAppDB.myDao().traeVisitaPorAnexo(idAc);
-                if (laVisita == null) continue;
-
-                if (!tieneFechaSiembra || tieneFechaCosecha) continue;
-
-
-                long dias = Utilidades.compararFechas(laVisita.getFecha_visita());
-                if (dias < 7) continue;
-                VisitasCompletas vis1 = new VisitasCompletas();
-
-                AnexoCompleto ac = new AnexoCompleto();
-                ac.setAnexoContrato(si.getAnexoContrato());
-                ac.setEspecie(si.getEspecie());
-                ac.setLotes(si.getLotes());
-                vis1.setAnexoCompleto(ac);
-                Visitas v = new Visitas();
-                v.setFecha_visita(String.valueOf(dias));
-                vis1.setVisitas(v);
-                listas.add(vis1);
-
-            }
-            sitiosHandler.post(() -> mostrarTablaNoVis(listas));
+            List<SitiosNoVisitados> listAnexos = MainActivity.myAppDB.DaoSitiosNoVisitados().getSNVByTemporada(tempo);
+            sitiosHandler.post(() -> mostrarTablaNoVis(listAnexos));
         });
         executorService.shutdown();
     }
@@ -1524,7 +1416,6 @@ public class FragmentPrincipal extends Fragment {
 
         final TextView temporada_seleccionada = viewInfalted.findViewById(R.id.temporada_seleccionada);
         final RadioButton radio_todas_temp = viewInfalted.findViewById(R.id.radio_todas_temp);
-        final RadioButton radio_actual_temp = viewInfalted.findViewById(R.id.radio_actual_temp);
 
         temporada_seleccionada.setText(message);
 
@@ -1559,9 +1450,7 @@ public class FragmentPrincipal extends Fragment {
 
             executorService.execute(() -> {
                 Config config = MainActivity.myAppDB.myDao().getConfig();
-                main.post(() -> {
-                    activity.cambiarNombreUser(config.getId_usuario());
-                });
+                main.post(() -> activity.cambiarNombreUser(config.getId_usuario()));
             });
 
             executorService.shutdown();
