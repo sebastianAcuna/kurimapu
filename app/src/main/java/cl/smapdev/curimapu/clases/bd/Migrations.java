@@ -64,14 +64,14 @@ public class Migrations {
         }
     };
 
-    public static final Migration MIGRATION_4_TO_5 = new Migration(4,5) {
+    public static final Migration MIGRATION_4_TO_5 = new Migration(4, 5) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE ficha ADD COLUMN id_provincia_ficha TEXT ; ");
         }
     };
 
-    public static final Migration MIGRATION_5_TO_6 = new Migration(5,6) {
+    public static final Migration MIGRATION_5_TO_6 = new Migration(5, 6) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE materiales ADD condition TEXT ; ");
@@ -99,19 +99,17 @@ public class Migrations {
             database.execSQL("ALTER TABLE anexo_contrato ADD yield_kg_ha TEXT ; ");
 
 
-
-
         }
     };
 
-    public static final Migration MIGRATION_6_TO_7 = new Migration(6,7) {
+    public static final Migration MIGRATION_6_TO_7 = new Migration(6, 7) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE anexo_contrato ADD linea_incremento TEXT ; ");
         }
     };
 
-    public static final Migration MIGRATION_7_TO_8 = new Migration(7,8) {
+    public static final Migration MIGRATION_7_TO_8 = new Migration(7, 8) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
@@ -120,7 +118,7 @@ public class Migrations {
         }
     };
 
-    public static final Migration MIGRATION_8_TO_9 = new Migration(8,9) {
+    public static final Migration MIGRATION_8_TO_9 = new Migration(8, 9) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
@@ -200,8 +198,7 @@ public class Migrations {
     };
 
 
-
-    public static final Migration MIGRATION_11_TO_12 = new Migration(11,12) {
+    public static final Migration MIGRATION_11_TO_12 = new Migration(11, 12) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
@@ -211,7 +208,7 @@ public class Migrations {
     };
 
 
-    public static final Migration MIGRATION_12_TO_13 = new Migration(12,13) {
+    public static final Migration MIGRATION_12_TO_13 = new Migration(12, 13) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
@@ -222,10 +219,53 @@ public class Migrations {
         }
     };
 
-    public static final Migration MIGRATION_13_TO_14 = new Migration(13,14) {
+    public static final Migration MIGRATION_13_TO_14 = new Migration(13, 14) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE pro_cli_mat ADD COLUMN id_sub_propiedad_pcm INTEGER DEFAULT 0 ; ");
+        }
+    };
+
+    public static final Migration MIGRATION_14_TO_15 = new Migration(14, 15) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL(" CREATE TABLE primera_prioridad (" +
+                    "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ," +
+                    "id_ac INTEGER NOT NULL," +
+                    "numAnexo TEXT," +
+                    "nombreEspecie TEXT," +
+                    "nombreAgricultor TEXT," +
+                    "fechaUltimaVisita TEXT," +
+                    "colorCrecimiento TEXT," +
+                    "valorCrecimiento TEXT," +
+                    "colorFitosanitario TEXT," +
+                    "valorFitosanitario TEXT," +
+                    "colorGeneral TEXT," +
+                    "valorGeneral TEXT," +
+                    "colorNdvi TEXT," +
+                    "valorNdvi TEXT," +
+                    "colorMi TEXT," +
+                    "valorMi TEXT, " +
+                    "colormaleza TEXT," +
+                    "valormaleza TEXT," +
+                    "colorCosecha TEXT," +
+                    "valorCosecha TEXT " +
+                    "); ");
+
+            database.execSQL("ALTER TABLE primera_prioridad ADD COLUMN id_temporada INTEGER NOT NULL DEFAULT 0 ;");
+
+            database.execSQL(" CREATE TABLE sitios_no_visitados (" +
+                    "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ," +
+                    "id_ac INTEGER NOT NULL," +
+                    "id_temporada INTEGER NOT NULL," +
+                    "numAnexo TEXT," +
+                    "nombreEspecie TEXT," +
+                    "nombreAgricultor TEXT," +
+                    "fechaUltimaVisita TEXT," +
+                    "nombreUsuario TEXT," +
+                    "nombreLote TEXT," +
+                    "dias TEXT ); ");
         }
     };
 }

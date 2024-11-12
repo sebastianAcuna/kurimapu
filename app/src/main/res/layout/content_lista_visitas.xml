@@ -15,16 +15,15 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/weather_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/lbl_titulo_comuna"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <Button
@@ -35,8 +34,7 @@
         android:layout_marginTop="@dimen/padding_small"
         app:layout_constraintTop_toBottomOf="@id/weather_list"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_carpeta_virtual"
-        />
+        app:layout_constraintEnd_toStartOf="@id/btn_carpeta_virtual" />
 
     <Button
         android:id="@+id/btn_carpeta_virtual"
@@ -47,9 +45,7 @@
         app:layout_constraintTop_toBottomOf="@id/weather_list"
         app:layout_constraintStart_toEndOf="@id/btn_nueva_visita"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"
-        />
-
+        android:visibility="visible" />
 
 
     <TextView
@@ -63,7 +59,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/padding_small"
         app:layout_constraintEnd_toStartOf="@id/ic_collapse"
-        android:gravity="center"/>
+        android:gravity="center" />
 
 
     <ImageView
@@ -89,7 +85,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
 
         />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

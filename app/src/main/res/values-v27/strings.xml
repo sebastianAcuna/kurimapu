@@ -54,4 +54,27 @@
     <string name="realizadas">Realizadas</string>
     <string name="cerrar">cerrar</string>
     <string name="obs">Obs...</string>
+    <string name="curiweb">Curiweb</string>
+    <string name="fotografia_raices">fotografia raices</string>
+    <string name="nav_take_pick_roots">Tomar foto raices</string>
+    <string name="fotos_raices">fotos raices</string>
+
+    <string-array name="desplegable_checklist_1">
+        <item>@string/select</item>
+        <item>SI</item>
+        <item>NO</item>
+    </string-array>
+
+    <string-array name="desplegable_checklist_2">
+        <item>@string/select</item>
+        <item>Simple</item>
+        <item>Doble</item>
+    </string-array>
+
+    <string-array name="desplegable_checklist_3">
+        <item>@string/select</item>
+        <item>Bueno</item>
+        <item>Malo</item>
+        <item>Regular</item>
+    </string-array>
 </resources>

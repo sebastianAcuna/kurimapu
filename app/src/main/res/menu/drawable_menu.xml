@@ -40,6 +40,14 @@
             android:icon="@drawable/ic_settings"
             />
 
+
+        <item
+            android:id="@+id/nv_curiweb"
+            android:title="@string/curiweb"
+            android:checked="true"
+            android:icon="@drawable/curiweb"
+            />
+
         <item
             android:id="@+id/nv_salir"
             android:title="@string/subtitles_salir"

@@ -11,6 +11,7 @@ import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
+import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
@@ -18,13 +19,14 @@ import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
-import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
 import cl.smapdev.curimapu.clases.tablas.Lotes;
 import cl.smapdev.curimapu.clases.tablas.Maquinaria;
 import cl.smapdev.curimapu.clases.tablas.Predios;
+import cl.smapdev.curimapu.clases.tablas.PrimeraPrioridad;
 import cl.smapdev.curimapu.clases.tablas.Provincia;
 import cl.smapdev.curimapu.clases.tablas.Region;
+import cl.smapdev.curimapu.clases.tablas.SitiosNoVisitados;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.TipoRiego;
 import cl.smapdev.curimapu.clases.tablas.TipoSuelo;
@@ -50,15 +52,14 @@ public class GsonDescargas {
     private List<pro_cli_mat> pro_cli_matList;
 
 
-
     @SerializedName("array_check_list_siembra")
     @Embedded
     private List<CheckListSiembra> checkListSiembras;
 
-
-    @SerializedName("array_check_list_capacitacion_siembra")
+    @SerializedName("array_checklist_aplicacion_hormonas")
     @Embedded
-    private List<CheckListCapCompleto> checkListCapCompletos;
+    private List<CheckListAplicacionHormonas> checkListAplicacionHormonas;
+
 
     @SerializedName("array_temporada")
     @Embedded
@@ -181,17 +182,56 @@ public class GsonDescargas {
     private List<AgrPredTemp> pred_agr_temp;
 
 
+    @SerializedName("array_desplegables_app_hormonas")
+    @Embedded
+    private List<DesplegablesAplicacionHormonaCompleto> desplegablesAplicacionHormonaCompletos;
+
+
     @SerializedName("array_fechas_anexos")
     @Embedded
     private List<AnexoCorreoFechas> array_fechas_anexos;
 
 
-    public List<CheckListCapCompleto> getCheckListCapCompletos() {
-        return checkListCapCompletos;
+    @SerializedName("array_primera_prioridad")
+    @Embedded
+    private List<PrimeraPrioridad> array_primera_prioridad;
+
+    @SerializedName("array_sitios_no_visitados")
+    @Embedded
+    private List<SitiosNoVisitados> array_sitios_no_visitados;
+
+
+    public List<DesplegablesAplicacionHormonaCompleto> getDesplegablesAplicacionHormonaCompletos() {
+        return desplegablesAplicacionHormonaCompletos;
     }
 
-    public void setCheckListCapCompletos(List<CheckListCapCompleto> checkListCapCompletos) {
-        this.checkListCapCompletos = checkListCapCompletos;
+    public void setDesplegablesAplicacionHormonaCompletos(List<DesplegablesAplicacionHormonaCompleto> desplegablesAplicacionHormonaCompletos) {
+        this.desplegablesAplicacionHormonaCompletos = desplegablesAplicacionHormonaCompletos;
+    }
+
+    public List<SitiosNoVisitados> getArray_sitios_no_visitados() {
+        return array_sitios_no_visitados;
+    }
+
+    public void setArray_sitios_no_visitados(List<SitiosNoVisitados> array_sitios_no_visitados) {
+        this.array_sitios_no_visitados = array_sitios_no_visitados;
+    }
+
+    public List<PrimeraPrioridad> getArray_primera_prioridad() {
+        return array_primera_prioridad;
+    }
+
+    public void setArray_primera_prioridad(List<PrimeraPrioridad> array_primera_prioridad) {
+        this.array_primera_prioridad = array_primera_prioridad;
+    }
+
+
+    public List<CheckListAplicacionHormonas> getCheckListAplicacionHormonas() {
+        return checkListAplicacionHormonas;
+    }
+
+    public void setCheckListAplicacionHormonas(List<CheckListAplicacionHormonas> checkListAplicacionHormonas) {
+        this.checkListAplicacionHormonas = checkListAplicacionHormonas;
     }
 
     public List<CheckListSiembra> getCheckListSiembras() {
@@ -459,27 +499,57 @@ public class GsonDescargas {
     }
 
 
-    public static int[] sizeELements(GsonDescargas gs){
+    public static int[] sizeELements(GsonDescargas gs) {
 
-        int[] res = {0,0};
+        int[] res = {0, 0};
 
         if (gs != null) {
 
-            if (gs.getAgricultorList() != null && gs.getAgricultorList().size() > 0) res[0]+=gs.getAgricultorList().size(); res[1]++;
-            if (gs.getUsuarios() != null && gs.getUsuarios().size() > 0) res[0]+=gs.getUsuarios().size(); res[1]++;
-            if (gs.getPro_cli_matList() != null && gs.getPro_cli_matList().size() > 0) res[0]+=gs.getPro_cli_matList().size(); res[1]++;
-            if (gs.getUnidadMedidas() != null && gs.getUnidadMedidas().size() > 0) res[0]+=gs.getUnidadMedidas().size(); res[1]++;
-            if (gs.getFichasList() != null && gs.getFichasList().size() > 0) res[0]+=gs.getFichasList().size(); res[1]++;
-            if (gs.getVariedadList() != null && gs.getVariedadList().size() > 0) res[0]+=gs.getVariedadList().size(); res[1]++;
-            if (gs.getEspecieList() != null && gs.getEspecieList().size() > 0) res[0]+=gs.getEspecieList().size(); res[1]++;
-            if (gs.getAnexoContratoList() != null && gs.getAnexoContratoList().size() > 0) res[0]+=gs.getAnexoContratoList().size(); res[1]++;
-            if (gs.getComunaList() != null && gs.getComunaList().size() > 0) res[0]+=gs.getComunaList().size(); res[1]++;
-            if (gs.getProvinciaList() != null && gs.getProvinciaList().size() > 0) res[0]+=gs.getProvinciaList().size(); res[1]++;
-            if (gs.getRegionList() != null && gs.getRegionList().size() > 0) res[0]+=gs.getRegionList().size(); res[1]++;
-            if (gs.getVisitasList() != null && gs.getVisitasList().size() > 0) res[0]+=gs.getVisitasList().size(); res[1]++;
-            if (gs.getDetalle_visita_props() != null && gs.getDetalle_visita_props().size() > 0) res[0]+=gs.getDetalle_visita_props().size(); res[1]++;
-            if (gs.getCropRotations() != null && gs.getCropRotations().size() > 0) res[0]+=gs.getCropRotations().size(); res[1]++;
-            if (gs.getTemporadas() != null && gs.getTemporadas().size() > 0) res[0]+=gs.getTemporadas().size(); res[1]++;
+            if (gs.getAgricultorList() != null && gs.getAgricultorList().size() > 0)
+                res[0] += gs.getAgricultorList().size();
+            res[1]++;
+            if (gs.getUsuarios() != null && gs.getUsuarios().size() > 0)
+                res[0] += gs.getUsuarios().size();
+            res[1]++;
+            if (gs.getPro_cli_matList() != null && gs.getPro_cli_matList().size() > 0)
+                res[0] += gs.getPro_cli_matList().size();
+            res[1]++;
+            if (gs.getUnidadMedidas() != null && gs.getUnidadMedidas().size() > 0)
+                res[0] += gs.getUnidadMedidas().size();
+            res[1]++;
+            if (gs.getFichasList() != null && gs.getFichasList().size() > 0)
+                res[0] += gs.getFichasList().size();
+            res[1]++;
+            if (gs.getVariedadList() != null && gs.getVariedadList().size() > 0)
+                res[0] += gs.getVariedadList().size();
+            res[1]++;
+            if (gs.getEspecieList() != null && gs.getEspecieList().size() > 0)
+                res[0] += gs.getEspecieList().size();
+            res[1]++;
+            if (gs.getAnexoContratoList() != null && gs.getAnexoContratoList().size() > 0)
+                res[0] += gs.getAnexoContratoList().size();
+            res[1]++;
+            if (gs.getComunaList() != null && gs.getComunaList().size() > 0)
+                res[0] += gs.getComunaList().size();
+            res[1]++;
+            if (gs.getProvinciaList() != null && gs.getProvinciaList().size() > 0)
+                res[0] += gs.getProvinciaList().size();
+            res[1]++;
+            if (gs.getRegionList() != null && gs.getRegionList().size() > 0)
+                res[0] += gs.getRegionList().size();
+            res[1]++;
+            if (gs.getVisitasList() != null && gs.getVisitasList().size() > 0)
+                res[0] += gs.getVisitasList().size();
+            res[1]++;
+            if (gs.getDetalle_visita_props() != null && gs.getDetalle_visita_props().size() > 0)
+                res[0] += gs.getDetalle_visita_props().size();
+            res[1]++;
+            if (gs.getCropRotations() != null && gs.getCropRotations().size() > 0)
+                res[0] += gs.getCropRotations().size();
+            res[1]++;
+            if (gs.getTemporadas() != null && gs.getTemporadas().size() > 0)
+                res[0] += gs.getTemporadas().size();
+            res[1]++;
 
         }
         return res;

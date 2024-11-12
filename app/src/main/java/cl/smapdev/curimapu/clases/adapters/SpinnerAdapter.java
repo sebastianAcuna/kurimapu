@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
     private Context context;
 
     public SpinnerAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects) {
-        super(context, resource,  objects);
+        super(context, resource, objects);
 
         this.context = context;
         this.objects = objects;
@@ -30,21 +30,22 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position,convertView,parent,R.layout.spinner_template_view);
+        return getCustomView(position, convertView, parent, R.layout.spinner_template_view);
     }
 
     @Override
     public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position,convertView,parent, R.layout.spinner_template_drop_view);
+        return getCustomView(position, convertView, parent, R.layout.spinner_template_drop_view);
     }
 
 
-    private View getCustomView(int position, View convertView, ViewGroup parent, int resourceId){
+    private View getCustomView(int position, View convertView, ViewGroup parent, int resourceId) {
 
-        LayoutInflater inflater=(LayoutInflater) context.getSystemService(  Context.LAYOUT_INFLATER_SERVICE );
-        View row=inflater.inflate(resourceId, parent, false);
-        TextView titulo = (TextView) row.findViewById(R.id.titulo);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = inflater.inflate(resourceId, parent, false);
+        TextView titulo = row.findViewById(R.id.titulo);
 //        titulo.setTextSize(10);
+        Log.e("ACAAAAAA ", objects.get(position));
         titulo.setText(objects.get(position));
         return row;
     }

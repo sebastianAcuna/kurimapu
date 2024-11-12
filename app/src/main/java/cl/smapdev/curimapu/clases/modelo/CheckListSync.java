@@ -13,12 +13,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
-import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
-import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
@@ -37,7 +36,7 @@ public class CheckListSync {
     private Context context;
 
 
-    public CheckListSync(CheckListRequest checkListRequest, Context context, ResponseData IResponse ) {
+    public CheckListSync(CheckListRequest checkListRequest, Context context, ResponseData IResponse) {
         this.IResponse = IResponse;
         this.checkListRequest = checkListRequest;
         this.context = context;
@@ -56,94 +55,51 @@ public class CheckListSync {
         Future<Config> configFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getConfig());
 
 
-        if(checkListRequest.getCheckListCapCompletos() != null &&
-                checkListRequest.getCheckListCapCompletos().size() > 0){
+        if (checkListRequest.getCheckListAplicacionHormonas() != null &&
+                !checkListRequest.getCheckListAplicacionHormonas().isEmpty()) {
 
-            List<CheckListCapCompleto> clCapacitacionSiembraList = new ArrayList<>();
+            List<CheckListAplicacionHormonas> clHormonas = new ArrayList<>();
 
-            for (CheckListCapCompleto completo : checkListRequest.getCheckListCapCompletos()){
+            for (CheckListAplicacionHormonas completo : checkListRequest.getCheckListAplicacionHormonas()) {
 
-                for (CheckListCapacitacionSiembraDetalle detalle : completo.getDetalles()){
-                    if(detalle.getFirma_cl_cap_siembra_detalle() != null &&
-                            !detalle.getFirma_cl_cap_siembra_detalle().isEmpty()){
-                        String stringed =  Utilidades.imageToString(detalle.getFirma_cl_cap_siembra_detalle());
-                        detalle.setStringed_cl_cap_siembra_detalle( stringed.isEmpty() ? "" : stringed );
-                    }
+
+                if (completo.getFirma_responsable_ap_hormonas() != null &&
+                        !completo.getFirma_responsable_ap_hormonas().isEmpty()) {
+
+                    String stringed = Utilidades.imageToString(completo.getFirma_responsable_ap_hormonas());
+                    completo.setStringed_firma_responsable_ap_hormonas(stringed.isEmpty() ? "" : stringed);
                 }
-                clCapacitacionSiembraList.add(completo);
+
+                if (completo.getFirma_prestador_servicio_ap_hormonas() != null &&
+                        !completo.getFirma_prestador_servicio_ap_hormonas().isEmpty()) {
+
+                    String stringed = Utilidades.imageToString(completo.getFirma_prestador_servicio_ap_hormonas());
+                    completo.setStringer_firma_prestador_servicio_ap_hormonas(stringed.isEmpty() ? "" : stringed);
+                }
+
+
+                clHormonas.add(completo);
 
             }
 
-            checkListRequest.setCheckListCapCompletos(clCapacitacionSiembraList);
+            checkListRequest.setCheckListAplicacionHormonas(clHormonas);
 
         }
 
         if (checkListRequest.getCheckListSiembras() != null
-                && checkListRequest.getCheckListSiembras().size() > 0){
-            List<CheckListSiembra>  chkS = new ArrayList<>();
-            for (CheckListSiembra chk : checkListRequest.getCheckListSiembras()){
+                && !checkListRequest.getCheckListSiembras().isEmpty()) {
+            List<CheckListSiembra> chkS = new ArrayList<>();
+            for (CheckListSiembra chk : checkListRequest.getCheckListSiembras()) {
 
-                if(chk.getFirma_responsable_aso_pre_siembra() != null &&
-                        !chk.getFirma_responsable_aso_pre_siembra().isEmpty()){
 
-                    String stringed =  Utilidades.imageToString(chk.getFirma_responsable_aso_pre_siembra());
-                    chk.setStringed_responsable_aso_pre_siembra( stringed.isEmpty() ? "" : stringed );
+                if (chk.getRuta_foto_envase() != null && !chk.getRuta_foto_envase().isEmpty()) {
+                    String stringed = Utilidades.imageToString(chk.getRuta_foto_envase());
+                    chk.setStringed_foto_envase(stringed.isEmpty() ? "" : stringed);
                 }
 
-                if(chk.getFirma_revision_limpieza_pre_siembra() != null &&
-                        !chk.getFirma_revision_limpieza_pre_siembra().isEmpty()){
-
-                    String stringed =  Utilidades.imageToString(chk.getFirma_revision_limpieza_pre_siembra());
-                    chk.setStringed_revision_limpieza_pre_siembra( stringed.isEmpty() ? "" : stringed );
-
-                }
-
-                if(chk.getFirma_responsable_aseo_post_siembra() != null &&
-                        !chk.getFirma_responsable_aseo_post_siembra().isEmpty()){
-
-                    String stringed =  Utilidades.imageToString(chk.getFirma_responsable_aseo_post_siembra());
-                    chk.setStringed_responsable_aseo_post_siembra( stringed.isEmpty() ? "" : stringed );
-
-                }
-
-                if(chk.getFirma_revision_limpieza_post_siembra() != null &&
-                        !chk.getFirma_revision_limpieza_post_siembra().isEmpty()){
-
-                    String stringed =  Utilidades.imageToString(chk.getFirma_revision_limpieza_post_siembra());
-                    chk.setStringed_revision_limpieza_post_siembra( stringed.isEmpty() ? "" : stringed );
-
-                }
-
-                if(chk.getFirma_responsable_campo() != null &&
-                        !chk.getFirma_responsable_campo().isEmpty()){
-
-                    String stringed =  Utilidades.imageToString(chk.getFirma_responsable_campo());
-                    chk.setStringed_responsable_campo( stringed.isEmpty() ? "" : stringed );
-
-                }
-
-                if(chk.getFirma_operario_maquina() != null &&
-                        !chk.getFirma_operario_maquina().isEmpty()){
-
-                    String stringed =  Utilidades.imageToString(chk.getFirma_operario_maquina());
-                    chk.setStringed_operario_maquina( stringed.isEmpty() ? "" : stringed );
-
-                }
-
-                if(chk.getFirma_responsable_campo_termino() != null &&
-                        !chk.getFirma_responsable_campo_termino().isEmpty()){
-
-                    String stringed =  Utilidades.imageToString(chk.getFirma_responsable_campo_termino());
-                    chk.setStringed_responsable_campo_termino( stringed.isEmpty() ? "" : stringed );
-
-                }
-
-                if(chk.getFirma_operario_maquina_termino() != null &&
-                        !chk.getFirma_operario_maquina_termino().isEmpty()){
-
-                    String stringed =  Utilidades.imageToString(chk.getFirma_operario_maquina_termino());
-                    chk.setStringed_operario_maquina_termino( stringed.isEmpty() ? "" : stringed );
-
+                if (chk.getRuta_foto_semilla() != null && !chk.getRuta_foto_semilla().isEmpty()) {
+                    String stringed = Utilidades.imageToString(chk.getRuta_foto_semilla());
+                    chk.setStringed_foto_semilla(stringed.isEmpty() ? "" : stringed);
                 }
 
                 chkS.add(chk);
@@ -165,18 +121,18 @@ public class CheckListSync {
                 @Override
                 public void onResponse(@NonNull Call<Respuesta> call, @NonNull Response<Respuesta> response) {
 
-                    if (response.isSuccessful()){
+                    if (response.isSuccessful()) {
 
                         Respuesta res = response.body();
 
-                        if(res == null){
+                        if (res == null) {
                             IResponse.onResponseData(false, "Respuesta nula");
                             pd.dismiss();
                             executor.shutdown();
                             return;
                         }
 
-                        if(res.getCodigoRespuesta() != 0){
+                        if (res.getCodigoRespuesta() != 0) {
                             IResponse.onResponseData(false, res.getMensajeRespuesta());
                             pd.dismiss();
                             executor.shutdown();
@@ -184,26 +140,15 @@ public class CheckListSync {
                         }
 
 
-                        if(checkListRequest.getCheckListCapCompletos() != null
-                                && checkListRequest.getCheckListCapCompletos().size() > 0){
-                            for (CheckListCapCompleto chk : checkListRequest.getCheckListCapCompletos()) {
+                        if (checkListRequest.getCheckListAplicacionHormonas() != null
+                                && !checkListRequest.getCheckListAplicacionHormonas().isEmpty()) {
+                            for (CheckListAplicacionHormonas chk : checkListRequest.getCheckListAplicacionHormonas()) {
+                                chk.setEstado_sincronizacion(1);
+
                                 try {
-                                    //cabecera
-                                    chk.getCabecera().setEstado_sincronizacion(1);
-
                                     executor.submit(() -> MainActivity.myAppDB
-                                            .DaoCheckListCapSiembra()
-                                            .updateCapacitacionSiembra(chk.getCabecera())).get();
-
-                                    for (CheckListCapacitacionSiembraDetalle ck : chk.getDetalles() ){
-
-                                        ck.setEstado_sincronizacion_detalle(1);
-                                        executor.submit(() -> MainActivity.myAppDB
-                                                .DaoCheckListCapSiembra()
-                                                .updateDetalle(ck)).get();
-                                    }
-
-
+                                            .DaoCLAplicacionHormonas()
+                                            .updateCLApHormonas(chk)).get();
                                 } catch (ExecutionException | InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -211,8 +156,8 @@ public class CheckListSync {
                         }
 
 
-                        if(checkListRequest.getCheckListSiembras() != null
-                                && checkListRequest.getCheckListSiembras().size() > 0){
+                        if (checkListRequest.getCheckListSiembras() != null
+                                && !checkListRequest.getCheckListSiembras().isEmpty()) {
                             for (CheckListSiembra chk : checkListRequest.getCheckListSiembras()) {
 
                                 chk.setEstado_sincronizacion(1);

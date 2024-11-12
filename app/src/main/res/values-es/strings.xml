@@ -23,7 +23,6 @@
     <string name="sync_up_menu">Uploads</string>
 
 
-
     <!-- FICHAS-->
     <string name="region">Region : </string>
     <string name="comuna">Comuna : </string>
@@ -94,8 +93,6 @@
     <string name="estado_efectuado_no"> No Efectuado </string>
 
     <string name="espere">Espere por favor</string>
-
-
 
 
     <!--FORM CICLO VIDA -->
@@ -194,13 +191,29 @@
     <string name="off_type">Fuera de tipo</string>
 
 
-
-
-
     <string name="date">Fecha</string>
     <string name="f">F</string>
     <string name="seleccione_fecha">Seleccione fecha</string>
 
+
+    <string-array name="desplegable_checklist_1">
+        <item>@string/select</item>
+        <item>SI</item>
+        <item>NO</item>
+    </string-array>
+
+    <string-array name="desplegable_checklist_2">
+        <item>@string/select</item>
+        <item>Simple</item>
+        <item>Doble</item>
+    </string-array>
+
+    <string-array name="desplegable_checklist_3">
+        <item>@string/select</item>
+        <item>Bueno</item>
+        <item>Malo</item>
+        <item>Regular</item>
+    </string-array>
 
 
     <!-- FOTOS DE MUESTRA -->
@@ -211,7 +224,6 @@
         <item>f4.jpg</item>
         <item>f5.jpg</item>
     </string-array>
-
 
 
     <string-array name="anos_toolbar">
@@ -269,7 +281,6 @@
     </string-array>
 
 
-
     <string name="subtitles_visit">Anexos</string>
     <string name="subtitles_start">Inicio</string>
     <string name="subtitles_records">Prospectos</string>
@@ -322,8 +333,6 @@
     </string-array>
 
 
-
-
     <!--    MENU -->
     <string name="open_drawer">Abrir cajón de navegación</string>
     <string name="close_drawer">Cerrar cajón de navegación</string>
@@ -369,8 +378,8 @@
     <string name="tema_desc">seleccione para cambiar al modo oscuro</string>
 
     <string-array name="idiomas">
-        <item >Ingles</item>
-        <item >Español</item>
+        <item>Ingles</item>
+        <item>Español</item>
     </string-array>
 
     <string-array name="id_idiomas">
@@ -391,7 +400,6 @@
     <string name="message_fav">Se ha marcado como favorita</string>
     <string name="message_fav_remove">Se ha eliminado de favoritos</string>
     <string name="message_dialog_fav">No puedes seleccionar como favorita más de 3 fotos</string>
-
 
 
     <string name="title_dialog_agron">Hey!</string>
@@ -471,4 +479,8 @@
     <string name="realizadas">Realizadas</string>
     <string name="cerrar">cerrar</string>
     <string name="obs">Obs...</string>
+    <string name="curiweb">Curiweb</string>
+    <string name="fotografia_raices">fotografia raices</string>
+    <string name="nav_take_pick_roots">Tomar foto raices</string>
+    <string name="fotos_raices">fotos raices</string>
 </resources>

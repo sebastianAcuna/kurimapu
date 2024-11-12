@@ -15,11 +15,14 @@ public interface DaoFirmasTemp {
     void deleteFirmasByDoc(int tipo_documento);
 
     @Insert
-    long  insertFirma(TempFirmas tempFirmas);
+    long insertFirma(TempFirmas tempFirmas);
 
 
     @Query("SELECT * FROM temp_firmas WHERE tipo_documento = :tipo_documento")
     List<TempFirmas> getFirmasByDocum(int tipo_documento);
+
+    @Query("SELECT * FROM temp_firmas WHERE tipo_documento = :tipo_documento AND lugar_firma = :lugar")
+    TempFirmas getFirmaByDocumAndLugar(int tipo_documento, String lugar);
 
 
 }

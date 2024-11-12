@@ -1,104 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="5dp">
+    android:layout_margin="2dp"
+    android:background="@drawable/rounded_card"
+    android:padding="@dimen/padding_small">
 
     <TextView
         android:id="@+id/anexo_nov"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/especie_nov"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="AN-B0212"
         android:textSize="12sp"
-        />
+        app:layout_constraintEnd_toStartOf="@id/especie_nov"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="AN-B0212" />
 
     <TextView
         android:id="@+id/especie_nov"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/anexo_nov"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Pepino"
-        android:textSize="12sp"
         android:gravity="end"
-        />
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/anexo_nov"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Pepino" />
 
     <TextView
         android:id="@+id/lote_nov"
-        app:layout_constraintTop_toBottomOf="@id/anexo_nov"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="STA EUFEMIA ARRIENDO"
-        android:textSize="12sp"
         android:textColor="@android:color/black"
-        />
-
-    <ImageView
-        android:id="@+id/i_grow"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_grow"
-        app:layout_constraintTop_toBottomOf="@id/lote_nov"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="5dp"
-        app:layout_constraintEnd_toStartOf="@id/i_fito"
-        />
+        app:layout_constraintTop_toBottomOf="@id/anexo_nov"
+        tools:text="STA EUFEMIA ARRIENDO" />
 
-    <ImageView
-        android:id="@+id/i_fito"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_phyto"
+    <TextView
+        android:id="@+id/lbl_fecha_ultima_visita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/fecha_ultima_visita"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lote_nov"
-        app:layout_constraintStart_toEndOf="@id/i_grow"
-        app:layout_constraintEnd_toStartOf="@id/i_general"
-        android:layout_marginStart="5dp"
-        />
-    <ImageView
-        android:id="@+id/i_general"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_general"
-        app:layout_constraintTop_toBottomOf="@id/lote_nov"
-        app:layout_constraintStart_toEndOf="@id/i_fito"
-        app:layout_constraintEnd_toStartOf="@id/i_humidity"
-        android:layout_marginStart="5dp"
-        />
-    <ImageView
-        android:id="@+id/i_humidity"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_humidity"
-        app:layout_constraintTop_toBottomOf="@id/lote_nov"
-        app:layout_constraintStart_toEndOf="@id/i_general"
-        app:layout_constraintEnd_toStartOf="@id/i_weed"
-        android:layout_marginStart="5dp"
-        />
+        android:text="Fecha Ultima Visita: " />
 
-    <ImageView
-        android:id="@+id/i_weed"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_weed"
+    <TextView
+        android:id="@+id/fecha_ultima_visita"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/colorOnBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/lbl_fecha_ultima_visita"
         app:layout_constraintTop_toBottomOf="@id/lote_nov"
-        app:layout_constraintStart_toEndOf="@id/i_humidity"
-        android:layout_marginStart="5dp"
-        />
+        tools:text="24-04-2024" />
 
-    <View
-        android:id="@+id/divider11"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@id/i_weed"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/padding_small"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:baselineAligned="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_fecha_ultima_visita">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/circle_crecimiento"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle_bg"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/valor_crecimiento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOnBackground"
+                    tools:text="BU" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="crecim."
+                android:textColor="@color/colorOnBackground" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/circle_fito"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle_bg"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/valor_fito"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOnBackground"
+                    tools:text="RE" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="fito."
+                android:textColor="@color/colorOnBackground" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/circle_general"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle_bg"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/valor_general"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOnBackground"
+                    tools:text="RE" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="general."
+                android:textColor="@color/colorOnBackground" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/circle_ndvi"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle_bg"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/valor_ndvi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOnBackground"
+                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    tools:text="0,6912" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NDVI"
+                android:textColor="@color/colorOnBackground" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/circle_mi"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle_bg"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/valor_mi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOnBackground"
+                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    tools:text="BU" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MI"
+                android:textColor="@color/colorOnBackground" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/circle_maleza"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle_bg"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/valor_maleza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOnBackground"
+                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    tools:text="RE" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="maleza"
+                android:textColor="@color/colorOnBackground" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/circle_cosecha"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle_bg"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/valor_cosecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOnBackground"
+                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    tools:text="RE" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cosecha"
+                android:maxLines="1"
+                android:ellipsize="marquee"
+                android:textColor="@color/colorOnBackground" />
+        </LinearLayout>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

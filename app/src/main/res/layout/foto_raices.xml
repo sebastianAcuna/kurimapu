@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/padding_small">
+
+
+    <TextView
+        android:id="@+id/title_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fotografia_raices"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/contInput_profundidad_raices"
+        android:layout_width="match_parent"
+        app:layout_constraintHorizontal_weight="0.5"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="40"
+        app:endIconMode="clear_text"
+        android:layout_marginTop="@dimen/padding"
+        android:hint="Profundidad de raices"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_dialog"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_produndidad_raices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal|numberSigned"
+            android:maxLines="1"
+            android:maxLength="40"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/subTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="uso de regla"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/contInput_profundidad_raices"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/subTitle_regla"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No olvide que es obligatorio realizar la fotografia a la raiz acompañada de una regla"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintTop_toBottomOf="@id/subTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/pregunta_regla"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirme si esta consiente del uso de una regla en la fotografia."
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/padding"
+        app:layout_constraintTop_toBottomOf="@id/subTitle_regla"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <CheckBox
+        android:id="@+id/check_pretunta_regla"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Si, estoy consiente y utilizare una regla."
+        app:layout_constraintTop_toBottomOf="@id/pregunta_regla"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <Button
+        android:id="@+id/btn_tomar_foto_raiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:layout_marginTop="@dimen/padding"
+        android:text="guardar y tomar fotografias"
+        app:layout_constraintTop_toBottomOf="@id/check_pretunta_regla"
+
+        />
+
+    <Button
+        android:id="@+id/btn_cancelar_modal"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cerrar"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="@dimen/padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_tomar_foto_raiz" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

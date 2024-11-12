@@ -7,9 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,10 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,11 +42,10 @@ import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.WeatherApi;
 import cl.smapdev.curimapu.clases.tablas.WeatherApiStatus;
-import cl.smapdev.curimapu.clases.tablas.WeatherUnits;
-import cl.smapdev.curimapu.clases.tablas.WeatherWind;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentContratos;
+import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,12 +74,12 @@ public class FragmentListVisits extends Fragment {
 
         activity = (MainActivity) getActivity();
 
-        if (activity != null){
+        if (activity != null) {
             prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
         }
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<List<VisitasCompletas>>  futureVisitas = executor.submit(() ->
+        Future<List<VisitasCompletas>> futureVisitas = executor.submit(() ->
                 MainActivity
                         .myAppDB
                         .myDao()
@@ -162,12 +156,12 @@ public class FragmentListVisits extends Fragment {
         TextView txt_titulo_selected = view.findViewById(R.id.txt_titulo_selected);
 
         txt_titulo_selected.setText(R.string.visitas_anteriores);
-        txt_titulo_selected.setOnClickListener( view1 -> {
+        txt_titulo_selected.setOnClickListener(view1 -> {
             ic_collapse.setImageDrawable((lista_visitas.getVisibility() == View.VISIBLE)
                     ? getResources().getDrawable(R.drawable.ic_expand_down, activity.getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, activity.getTheme())
             );
-            lista_visitas.setVisibility( (lista_visitas.getVisibility() == View.VISIBLE)
+            lista_visitas.setVisibility((lista_visitas.getVisibility() == View.VISIBLE)
                     ? View.GONE
                     : View.VISIBLE);
         });
@@ -177,29 +171,28 @@ public class FragmentListVisits extends Fragment {
                     ? getResources().getDrawable(R.drawable.ic_expand_down, activity.getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, activity.getTheme())
             );
-            lista_visitas.setVisibility( (lista_visitas.getVisibility() == View.VISIBLE)
+            lista_visitas.setVisibility((lista_visitas.getVisibility() == View.VISIBLE)
                     ? View.GONE
                     : View.VISIBLE);
         });
 
 
-        if(anexoContrato != null){
+        if (anexoContrato != null) {
             btn_nueva_visita.setOnClickListener(view1 -> nuevaVisita(anexoContrato));
         }
 
 
         btn_carpeta_virtual.setOnClickListener(view1 -> {
 
-//            activity.cambiarFragment(
-//                    new FragmentCheckList(),
-//                    Utilidades.FRAGMENT_CHECKLIST,
-//                    R.anim.slide_in_left,R.anim.slide_out_left
-//            );
+            activity.cambiarFragment(
+                    new FragmentCheckList(),
+                    Utilidades.FRAGMENT_CHECKLIST, R.anim.slide_in_left, R.anim.slide_out_left
+            );
         });
 
         LinearLayoutManager lManagerVisitas = null;
-        if (activity != null){
-            lManagerVisitas  = new LinearLayoutManager(
+        if (activity != null) {
+            lManagerVisitas = new LinearLayoutManager(
                     activity,
                     LinearLayoutManager.HORIZONTAL,
                     false
@@ -209,14 +202,13 @@ public class FragmentListVisits extends Fragment {
         weather_list.setLayoutManager(lManagerVisitas);
 
 
-
     }
 
 
-    private void cargarListaGrande(){
+    private void cargarListaGrande() {
         LinearLayoutManager lManagerVisitas = null;
-        if (activity != null){
-            lManagerVisitas  = new LinearLayoutManager(
+        if (activity != null) {
+            lManagerVisitas = new LinearLayoutManager(
                     activity,
                     LinearLayoutManager.VERTICAL,
                     false
@@ -249,16 +241,15 @@ public class FragmentListVisits extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), (anexoContrato != null) ? " Resumen Anexo "+anexoContrato.getAnexo_contrato() : getResources().getString(R.string.subtitles_visit));
+        if (activity != null) {
+            activity.updateView(getResources().getString(R.string.app_name), (anexoContrato != null) ? " Resumen Anexo " + anexoContrato.getAnexo_contrato() : getResources().getString(R.string.subtitles_visit));
         }
-
 
 
     }
 
 
-    public void nuevaVisita (AnexoContrato anexo) {
+    public void nuevaVisita(AnexoContrato anexo) {
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
@@ -267,24 +258,24 @@ public class FragmentListVisits extends Fragment {
             MainActivity.myAppDB.myDao().deleteDetalleVacios();
 
             List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
-            if (fotos.size() > 0){
-                for (Fotos fts : fotos){
-                    try{
+            if (fotos.size() > 0) {
+                for (Fotos fts : fotos) {
+                    try {
                         File file = new File(fts.getRuta());
                         if (file.exists()) {
                             boolean eliminado = file.delete();
-                            if (eliminado){
+                            if (eliminado) {
                                 MainActivity.myAppDB.myDao().deleteFotos(fts);
                             }
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Log.e("ERROR DELETING", Objects.requireNonNull(e.getMessage()));
                     }
                 }
             }
         });
 
-        if (prefs != null){
+        if (prefs != null) {
             prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, anexo.getId_ficha_contrato()).apply();
             prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, anexo.getId_especie_anexo()).apply();
             prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, anexo.getId_anexo_contrato()).apply();
@@ -292,7 +283,7 @@ public class FragmentListVisits extends Fragment {
             prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
         }
 
-        activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left,R.anim.slide_out_left);
+        activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
 
     }
 
@@ -301,45 +292,45 @@ public class FragmentListVisits extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(anexoContrato != null){
+        if (anexoContrato != null) {
             ExecutorService executor = Executors.newSingleThreadExecutor();
 
             Future<AnexoCompleto> anexoCompletoFuture = executor.submit(() ->
                     MainActivity
                             .myAppDB
                             .myDao()
-                            .getAnexoCompletoById(anexoContrato.getId_anexo_contrato()) );
+                            .getAnexoCompletoById(anexoContrato.getId_anexo_contrato()));
 
 
             try {
                 AnexoCompleto anexoCompleto = anexoCompletoFuture.get();
-                if(anexoCompleto != null && anexoCompleto.getComuna() != null && anexoCompleto.getComuna().getId_api() != null ){
+                if (anexoCompleto != null && anexoCompleto.getComuna() != null && anexoCompleto.getComuna().getId_api() != null) {
 
                     lbl_titulo_comuna.setText(anexoCompleto.getComuna().getDesc_comuna());
 
                     WeatherApiRequest weatherApiRequest = new WeatherApiRequest(anexoCompleto.getComuna().getId_api());
-                    Call<WeatherApiStatus> call =  weatherApiRequest.obtenerData();
+                    Call<WeatherApiStatus> call = weatherApiRequest.obtenerData();
                     call.enqueue(new Callback<WeatherApiStatus>() {
                         @Override
                         public void onResponse(@NonNull Call<WeatherApiStatus> call, @NonNull Response<WeatherApiStatus> response) {
 
-                            if(response.errorBody() != null){
+                            if (response.errorBody() != null) {
                                 Toasty.error(requireActivity(),
                                         "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
                                 return;
                             }
 
-                            if(response.code() == 200 && response.isSuccessful()){
+                            if (response.code() == 200 && response.isSuccessful()) {
 
                                 WeatherApiStatus status = response.body();
 
-                                if(status == null ){
+                                if (status == null) {
                                     Toasty.error(requireActivity(),
                                             "Respuesta nula", Toast.LENGTH_LONG, true).show();
                                     return;
                                 }
 
-                                if(status.getStatus() != 0){
+                                if (status.getStatus() != 0) {
                                     Toasty.error(requireActivity(),
                                             "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
                                     return;
@@ -386,16 +377,18 @@ public class FragmentListVisits extends Fragment {
     }
 
 
-    private void showAlertForEdit(final VisitasCompletas visitasCompletas){
-        View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_empty,null);
+    private void showAlertForEdit(final VisitasCompletas visitasCompletas) {
+        View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_empty, null);
 
 
         final AlertDialog builder = new AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle(getResources().getString(R.string.atencion))
                 .setMessage(getResources().getString(R.string.mensaje_alerta_editar_visita))
-                .setPositiveButton(getResources().getString(R.string.entiendo), (dialogInterface, i) -> { })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .setPositiveButton(getResources().getString(R.string.entiendo), (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
                 .create();
 
 
@@ -442,17 +435,17 @@ public class FragmentListVisits extends Fragment {
 
 
                     List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
-                    if (fotos.size() > 0){
-                        for (Fotos fts : fotos){
-                            try{
+                    if (fotos.size() > 0) {
+                        for (Fotos fts : fotos) {
+                            try {
                                 File file = new File(fts.getRuta());
                                 if (file.exists()) {
                                     boolean eliminado = file.delete();
-                                    if (eliminado){
+                                    if (eliminado) {
                                         MainActivity.myAppDB.myDao().deleteFotos(fts);
                                     }
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.e("ERROR DELETING", Objects.requireNonNull(e.getMessage()));
                             }
                         }
@@ -460,17 +453,17 @@ public class FragmentListVisits extends Fragment {
 
                     activity.runOnUiThread(() -> {
 
-                        if (prefs != null){
+                        if (prefs != null) {
                             prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, visitasCompletas.getAnexoCompleto().getAnexoContrato().getId_ficha_contrato()).apply();
                             prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, visitasCompletas.getVisitas().getId_anexo_visita()).apply();
                             prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, visitasCompletas.getVisitas().getId_visita()).apply();
                         }
 
-                        activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left,R.anim.slide_out_left);
+                        activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
                         builder.dismiss();
                     });
 
-                }catch (SQLiteException e){
+                } catch (SQLiteException e) {
                     Log.e("BD PROBLEM", e.getMessage());
 
                 }

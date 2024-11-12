@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -90,6 +91,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
     private TempVisitas temp_visitas;
     private String currentPhotoPath;
+    private String medidaRaices;
 
     private final ArrayList<String> fenologico = new ArrayList<>();
     private final ArrayList<String> cosecha = new ArrayList<>();
@@ -100,7 +102,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private EditText et_obs, et_obs_growth, et_obs_weed, et_obs_fito, et_obs_harvest, et_obs_overall,et_obs_humedad,et_percent_humedad;
 
     /* IMAGENES */
-    private RecyclerView rwAgronomo, rwCliente;
+    private RecyclerView rwAgronomo, rwCliente, rwRaices;;
 
     private static final int COD_FOTO = 005;
 
@@ -110,11 +112,11 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     private EditText et_fecha_estimada;
     private EditText et_fecha_arranca;
 
-    private FloatingActionButton material_private, material_public;
+    private FloatingActionButton material_private, material_public, foto_raices;
 
     private FotosListAdapter adapterAgronomo;
     private FotosListAdapter adapterCliente;
-
+    private FotosListAdapter adapterRaices;
     private ProgressDialog progressBar;
 
     private final String[] forbiddenWords = new String[]{"á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú"};
@@ -290,18 +292,20 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
         cargarSpinners();
 
+
+
+        foto_raices.setOnClickListener(v -> {
+            preguntarFotoRaices();
+        });
+
         material_private.setOnClickListener(v -> {
 
             int cantidaAgr = MainActivity.myAppDB.myDao().getCantAgroByFieldViewAndFicha(0, 2, temp_visitas.getId_anexo_temp_visita(), temp_visitas.getId_temp_visita());
-            if (cantidaAgr > 2){
-                Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.message_dialog_agron),getResources().getString(R.string.message_dialog_btn_ok));
+            if (temp_visitas.getAction_temp_visita() == 2){
+                Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
             }else{
-                if (temp_visitas.getAction_temp_visita() == 2){
-                    Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
-                }else{
-                    Utilidades.hideKeyboard(activity);
-                    abrirCamara(2);
-                }
+                Utilidades.hideKeyboard(activity);
+                abrirCamara(2, "0");
             }
         });
         material_public.setOnClickListener(v -> {
@@ -311,7 +315,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
                     Utilidades.avisoListo(activity,getResources().getString(R.string.title_dialog_agron),getResources().getString(R.string.visitas_terminadas),getResources().getString(R.string.entiendo));
                 }else{
                     Utilidades.hideKeyboard(activity);
-                    abrirCamara(0);
+                    abrirCamara(0, "0");
                 }
 
             }else{
@@ -531,9 +535,11 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
         rwAgronomo = view.findViewById(R.id.fotos_agronomos);
         rwCliente = view.findViewById(R.id.fotos_clientes);
+        rwRaices = view.findViewById(R.id.fotos_raices);
 
         material_private = view.findViewById(R.id.material_private);
         material_public = view.findViewById(R.id.material_public);
+        foto_raices = view.findViewById(R.id.foto_raices);
     }
 
     @Override
@@ -727,7 +733,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
     }
 
 
-    private void abrirCamara(int vista){
+    private void abrirCamara(int vista, String medida){
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -750,6 +756,7 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
         }
 
         prefs.edit().remove(Utilidades.VISTA_FOTOS).putInt(Utilidades.VISTA_FOTOS, vista).apply();
+        medidaRaices = medida;
 
         Uri photoUri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID+".provider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
@@ -795,18 +802,22 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
             Log.e("RUTA 2", currentPhotoPath);
 
+            int vista = prefs.getInt(Utilidades.VISTA_FOTOS, 0);
+
             File file = new File(currentPhotoPath);
 
             fotos.setFieldbook((prefs.getInt(Utilidades.VISTA_FOTOS,0) == 2) ? 0 : Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
             fotos.setHora(Utilidades.hora());
             fotos.setNombre_foto(file.getName());
             fotos.setFavorita(false);
+            fotos.setMedida_raices(!medidaRaices.isEmpty() ? medidaRaices : "0" );
+            fotos.setAcepto_regla_raices((vista == 3) ? 1 : 0);
             fotos.setPlano(0);
 
             if(temp_visitas != null){
                 fotos.setId_ficha_fotos(temp_visitas.getId_anexo_temp_visita());
             }
-            fotos.setVista(prefs.getInt(Utilidades.VISTA_FOTOS, 0));
+            fotos.setVista(vista);
             fotos.setRuta(currentPhotoPath);
 
 
@@ -822,16 +833,8 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
 
             exec.getMainThread().execute(()->{
                 agregarImagenToAgronomos();
-//                if (adapterAgronomo != null){
-//
-//
-//                    adapterAgronomo.notifyDataSetChanged();
-//                }
-
                 agregarImagenToClientes();
-//                if (adapterCliente != null){
-//                    adapterCliente.notifyDataSetChanged();
-//                }
+                agregarImagenToRaices();
             });
 
         });
@@ -1077,6 +1080,84 @@ public class FragmentFormVisitas extends Fragment implements View.OnClickListene
             adapterCliente.notifyDataSetChanged();
         }
 
+    }
+
+
+    private void preguntarFotoRaices(){
+        View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.foto_raices,null);
+
+
+        final AlertDialog builder= new AlertDialog.Builder(activity)
+                .setView(viewInfalted)
+                .create();
+
+        final EditText et = viewInfalted.findViewById(R.id.et_produndidad_raices);
+        final CheckBox check = viewInfalted.findViewById(R.id.check_pretunta_regla);
+        final Button pic = viewInfalted.findViewById(R.id.btn_tomar_foto_raiz);
+        final Button cancelar = viewInfalted.findViewById(R.id.btn_cancelar_modal);
+
+
+        check.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            pic.setEnabled(isChecked);
+        });
+
+
+        pic.setOnClickListener( ev -> {
+
+            Utilidades.hideKeyboard(activity);
+
+            if(et.getText().toString().isEmpty() || !check.isChecked()){
+                medidaRaices = "";
+                Utilidades.hideKeyboard(activity);
+                Toasty.error(requireActivity(),
+                                "Necesitas ingresar la profundidad y afirmar el uso de regla",
+                                Toast.LENGTH_LONG, true)
+                        .show();
+                return;
+            }
+            abrirCamara(3, et.getText().toString());
+            builder.dismiss();
+        });
+
+        cancelar.setOnClickListener(ev -> builder.dismiss());
+
+        builder.setCancelable(true);
+        builder.show();
+    }
+
+    private void agregarImagenToRaices(){
+
+        if (temp_visitas != null && rwRaices != null) {
+
+            LinearLayoutManager lManager = null;
+            if (activity != null) {
+                lManager = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+
+            }
+
+            int idDispo = 0;
+            Config config = MainActivity.myAppDB.myDao().getConfig();
+            if (config != null){
+                idDispo = config.getId();
+            }
+
+            rwRaices.setHasFixedSize(true);
+            rwRaices.setLayoutManager(lManager);
+
+            int visitaServidor = 0;
+
+            Visitas visitas = MainActivity.myAppDB.myDao().getVisitas(temp_visitas.getId_temp_visita());
+            if(visitas != null){
+                visitaServidor = (visitas.getEstado_server_visitas() == 1) ? prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) : 0;
+            }
+
+            List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndView(3, temp_visitas.getId_anexo_temp_visita(),temp_visitas.getId_visita_local() , visitaServidor,idDispo );
+
+            adapterRaices = new FotosListAdapter(myImageList, activity, this::showAlertForUpdate, photo->{});
+
+
+            rwRaices.setAdapter(adapterRaices);
+        }
     }
 
     private void agregarImagenToClientes(){

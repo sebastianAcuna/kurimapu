@@ -25,13 +25,13 @@
     <color name="colorGrey">#DCD3D3D3</color>
 
 
-
     <!-- 32% opacity black -->
 
     <color name="colorGreenLight">#94ec5d</color>
     <color name="colorWarning">#e87400</color>
     <color name="colorGreen">#ff669900</color>
     <color name="colorGold">#e5c100</color>
+    <color name="backgroundCircle">#D9D9D9</color>
 
     <color name="transparentBlack">#80000000</color>
 
@@ -39,7 +39,6 @@
     <!--Color primary variant (light)-->
     <!--    <color name="colorAccent">#d50000</color> &lt;!&ndash;Color primary variant (dark)&ndash;&gt;
         <color name="colorAccentDark">#9b0000</color> &lt;!&ndash;Color primary variant (dark)&ndash;&gt;-->
-
 
 
     <!--    <color name="lightPrimaryColor">#BBDEFB</color>

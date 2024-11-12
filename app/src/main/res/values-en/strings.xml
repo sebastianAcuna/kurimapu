@@ -201,11 +201,9 @@ Depending on the state, it can be edited or not.</string>
     <string name="insecticide_app">Insecticide Application</string>
 
 
-
     <string name="date">Date</string>
     <string name="f">F</string>
     <string name="seleccione_fecha">Select date</string>
-
 
 
     <!-- FOTOS DE MUESTRA -->
@@ -218,7 +216,6 @@ Depending on the state, it can be edited or not.</string>
     </string-array>
 
 
-
     <string-array name="anos_toolbar">
         <item>2015</item>
         <item>2016</item>
@@ -229,6 +226,24 @@ Depending on the state, it can be edited or not.</string>
     </string-array>
 
 
+    <string-array name="desplegable_checklist_1">
+        <item>@string/select</item>
+        <item>SI</item>
+        <item>NO</item>
+    </string-array>
+
+    <string-array name="desplegable_checklist_2">
+        <item>@string/select</item>
+        <item>Simple</item>
+        <item>Doble</item>
+    </string-array>
+
+    <string-array name="desplegable_checklist_3">
+        <item>@string/select</item>
+        <item>Bueno</item>
+        <item>Malo</item>
+        <item>Regular</item>
+    </string-array>
 
 
     <!--    SPINNERS FORM  VISITA-->
@@ -275,12 +290,6 @@ Depending on the state, it can be edited or not.</string>
     </string-array>
 
 
-
-
-
-
-
-
     <!--    TABS -->
     <string-array name="tabs">
         <item>@string/uno</item>
@@ -303,8 +312,6 @@ Depending on the state, it can be edited or not.</string>
     <string name="harvest">Harvest</string>
 
 
-
-
     <!--    TABLA -->
 
 
@@ -325,10 +332,6 @@ Depending on the state, it can be edited or not.</string>
         <item>@string/accion</item>
         <item>@string/anteriores</item>
     </string-array>
-
-
-
-
 
 
     <!--    MENU -->
@@ -377,8 +380,8 @@ Depending on the state, it can be edited or not.</string>
 
 
     <string-array name="idiomas">
-        <item >English</item>
-        <item >Spanish</item>
+        <item>English</item>
+        <item>Spanish</item>
     </string-array>
 
     <string-array name="id_idiomas">
@@ -399,7 +402,6 @@ Depending on the state, it can be edited or not.</string>
     <string name="message_fav">It has been marked as a favorite</string>
     <string name="message_fav_remove">It has been removed of favorites</string>
     <string name="message_dialog_fav">You cannot select as favorite more than 3 photos</string>
-
 
 
     <string name="title_dialog_agron">Hey!</string>
@@ -480,4 +482,8 @@ Depending on the state, it can be edited or not.</string>
     <string name="realizadas">Realizadas</string>
     <string name="cerrar">cerrar</string>
     <string name="obs">Obs...</string>
+    <string name="curiweb">Curiweb</string>
+    <string name="fotografia_raices">fotografia raices</string>
+    <string name="nav_take_pick_roots">Tomar foto raices</string>
+    <string name="fotos_raices">fotos raices</string>
 </resources>

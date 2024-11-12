@@ -1,35 +1,41 @@
 package cl.smapdev.curimapu.clases.adapters;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
+import cl.smapdev.curimapu.clases.tablas.PrimeraPrioridad;
+import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class PrimeraPrioridadAdapter extends RecyclerView.Adapter<PrimeraPrioridadViewHolder> {
 
-    private ArrayList<VisitasCompletas> list;
-    private Context context;
-    public PrimeraPrioridadAdapter(ArrayList<VisitasCompletas> list, Context context) {
+    private final List<PrimeraPrioridad> list;
+    private final Context context;
+
+    public PrimeraPrioridadAdapter(List<PrimeraPrioridad> list, Context context) {
         this.list = list;
         this.context = context;
-
     }
 
     @NonNull
     @Override
     public PrimeraPrioridadViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view  = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_primera_prioridad, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_primera_prioridad, parent, false);
         return new PrimeraPrioridadViewHolder(view);
     }
 
@@ -45,12 +51,31 @@ public class PrimeraPrioridadAdapter extends RecyclerView.Adapter<PrimeraPriorid
 }
 
 
+class PrimeraPrioridadViewHolder extends RecyclerView.ViewHolder {
 
-class PrimeraPrioridadViewHolder extends RecyclerView.ViewHolder{
+    TextView anexo_nov, especie_nov, lote_nov, fecha_ultima_visita;
 
-    TextView anexo_nov, especie_nov, lote_nov;
 
-    ImageView i_grow,i_fito, i_general,i_humidity, i_weed;
+    LinearLayout circle_crecimiento, circle_fito, circle_general, circle_ndvi, circle_mi, circle_maleza, circle_cosecha;
+
+    TextView valor_crecimiento, valor_fito, valor_general, valor_ndvi, valor_mi, valor_maleza, valor_cosecha;
+
+
+    private final Map<String, Integer> circlesBackground = new HashMap<String, Integer>() {{
+        put("orange", R.color.colorWarning);
+        put("red", R.color.colorError);
+        put("green", R.color.colorGreen);
+        put("transparent", R.color.backgroundCircle);
+
+    }};
+
+    private final Map<String, Integer> circlesTextColor = new HashMap<String, Integer>() {{
+        put("orange", R.color.colorSurface);
+        put("red", R.color.colorSurface);
+        put("green", R.color.colorSurface);
+        put("transparent", R.color.colorOnBackground);
+    }};
+
 
     public PrimeraPrioridadViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -58,61 +83,112 @@ class PrimeraPrioridadViewHolder extends RecyclerView.ViewHolder{
         anexo_nov = itemView.findViewById(R.id.anexo_nov);
         especie_nov = itemView.findViewById(R.id.especie_nov);
         lote_nov = itemView.findViewById(R.id.lote_nov);
-        i_grow = itemView.findViewById(R.id.i_grow);
-        i_fito = itemView.findViewById(R.id.i_fito);
-        i_general = itemView.findViewById(R.id.i_general);
-        i_humidity = itemView.findViewById(R.id.i_humidity);
-        i_weed = itemView.findViewById(R.id.i_weed);
+        fecha_ultima_visita = itemView.findViewById(R.id.fecha_ultima_visita);
+
+        circle_crecimiento = itemView.findViewById(R.id.circle_crecimiento);
+        circle_fito = itemView.findViewById(R.id.circle_fito);
+        circle_general = itemView.findViewById(R.id.circle_general);
+        circle_ndvi = itemView.findViewById(R.id.circle_ndvi);
+        circle_mi = itemView.findViewById(R.id.circle_mi);
+        circle_maleza = itemView.findViewById(R.id.circle_maleza);
+        circle_cosecha = itemView.findViewById(R.id.circle_cosecha);
+
+        valor_crecimiento = itemView.findViewById(R.id.valor_crecimiento);
+        valor_fito = itemView.findViewById(R.id.valor_fito);
+        valor_general = itemView.findViewById(R.id.valor_general);
+        valor_ndvi = itemView.findViewById(R.id.valor_ndvi);
+        valor_mi = itemView.findViewById(R.id.valor_mi);
+        valor_maleza = itemView.findViewById(R.id.valor_maleza);
+        valor_cosecha = itemView.findViewById(R.id.valor_cosecha);
+
+    }
+
+
+    void bind(PrimeraPrioridad pp, Context context) {
+
+        anexo_nov.setText(pp.getNumAnexo());
+        especie_nov.setText(pp.getNombreEspecie());
+        lote_nov.setText(pp.getNombreAgricultor());
+        fecha_ultima_visita.setText((pp.getFechaUltimaVisita() != null) ? Utilidades.voltearFechaVista(pp.getFechaUltimaVisita()) : "Sin fecha.");
+
+
+        if (pp.getColorFitosanitario() != null) {
+            Drawable fitoDrawer = ResourcesCompat.getDrawable(circle_fito.getResources(), R.drawable.circle_bg, context.getTheme());
+            if (fitoDrawer != null && circlesBackground.get(pp.getColorFitosanitario()) != null) {
+                fitoDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorFitosanitario()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+                circle_fito.setBackground(fitoDrawer);
+                valor_fito.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorFitosanitario())));
+            }
+        }
+
+        if (pp.getColorCrecimiento() != null) {
+            Drawable crecDrawer = ResourcesCompat.getDrawable(circle_crecimiento.getResources(), R.drawable.circle_bg, context.getTheme());
+            if (crecDrawer != null && circlesBackground.get(pp.getColorCrecimiento()) != null) {
+                crecDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorCrecimiento()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+                circle_crecimiento.setBackground(crecDrawer);
+                valor_crecimiento.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorCrecimiento())));
+            }
+        }
+
+        if (pp.getColorGeneral() != null) {
+            Drawable genDrawer = ResourcesCompat.getDrawable(circle_general.getResources(), R.drawable.circle_bg, context.getTheme());
+            if (genDrawer != null && circlesBackground.get(pp.getColorGeneral()) != null) {
+                genDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorGeneral()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+                circle_general.setBackground(genDrawer);
+
+                valor_general.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorGeneral())));
+            }
+        }
+        if (pp.getColorNdvi() != null) {
+            Drawable ndviDrawer = ResourcesCompat.getDrawable(circle_ndvi.getResources(), R.drawable.circle_bg, context.getTheme());
+            if (ndviDrawer != null && circlesBackground.get(pp.getColorNdvi()) != null) {
+                ndviDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorNdvi()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+                circle_ndvi.setBackground(ndviDrawer);
+
+                valor_ndvi.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorNdvi())));
+            }
+        }
+
+        if (pp.getColorMi() != null) {
+            Drawable miDrawer = ResourcesCompat.getDrawable(circle_mi.getResources(), R.drawable.circle_bg, context.getTheme());
+            if (miDrawer != null && circlesBackground.get(pp.getColorMi()) != null) {
+                miDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorMi()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+                circle_mi.setBackground(miDrawer);
+
+                valor_mi.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorMi())));
+            }
+        }
+
+        if (pp.getColormaleza() != null) {
+            Drawable malezaDrawer = ResourcesCompat.getDrawable(circle_maleza.getResources(), R.drawable.circle_bg, context.getTheme());
+            if (malezaDrawer != null && circlesBackground.get(pp.getColormaleza()) != null) {
+                malezaDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColormaleza()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+                circle_maleza.setBackground(malezaDrawer);
+                valor_maleza.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColormaleza())));
+
+            }
+        }
+
+        if (pp.getColorCosecha() != null) {
+            Drawable cosechaDrawer = ResourcesCompat.getDrawable(circle_cosecha.getResources(), R.drawable.circle_bg, context.getTheme());
+            if (cosechaDrawer != null && circlesBackground.get(pp.getColorCosecha()) != null) {
+                cosechaDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorCosecha()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+                circle_cosecha.setBackground(cosechaDrawer);
+                valor_cosecha.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorCosecha())));
+            }
+        }
+
+
+        valor_crecimiento.setText(Utilidades.transformarValorPP(pp.getValorCrecimiento()));
+        valor_fito.setText(Utilidades.transformarValorPP(pp.getValorFitosanitario()));
+        valor_general.setText(Utilidades.transformarValorPP(pp.getValorGeneral()));
+        valor_ndvi.setText(pp.getValorNdvi());
+        valor_mi.setText(Utilidades.transformarValorPP(pp.getValorMi()));
+        valor_maleza.setText(Utilidades.transformarValorPP(pp.getValormaleza()));
+        valor_cosecha.setText(Utilidades.transformarValorPP(pp.getValorCosecha()));
+
+
     }
 
 
-    void bind(VisitasCompletas visitasCompletas, Context context){
-
-        anexo_nov.setText(visitasCompletas.getAnexoCompleto().getAnexoContrato().getAnexo_contrato());
-        especie_nov.setText(visitasCompletas.getAnexoCompleto().getEspecie().getDesc_especie());
-        lote_nov.setText(visitasCompletas.getAnexoCompleto().getAgricultor().getNombre_agricultor());
-
-        if (visitasCompletas.getVisitas().getGrowth_status_visita().equals("REGULAR")){
-            i_grow.setColorFilter(context.getResources().getColor(R.color.colorWarning));
-        }else if(visitasCompletas.getVisitas().getGrowth_status_visita().equals("MALA") || visitasCompletas.getVisitas().getGrowth_status_visita().equals("BAD") ){
-            i_grow.setColorFilter(context.getResources().getColor(R.color.colorError));
-        }else{
-            i_grow.setColorFilter(context.getResources().getColor(R.color.colorGreen));
-        }
-
-
-        if (visitasCompletas.getVisitas().getPhytosanitary_state_visita().equals("REGULAR")){
-            i_fito.setColorFilter(context.getResources().getColor(R.color.colorWarning));
-        }else if(visitasCompletas.getVisitas().getPhytosanitary_state_visita().equals("MALA") || visitasCompletas.getVisitas().getPhytosanitary_state_visita().equals("BAD") ){
-            i_fito.setColorFilter(context.getResources().getColor(R.color.colorError));
-        }else{
-            i_fito.setColorFilter(context.getResources().getColor(R.color.colorGreen));
-        }
-
-
-        if (visitasCompletas.getVisitas().getOverall_status_visita().equals("REGULAR")){
-            i_general.setColorFilter(context.getResources().getColor(R.color.colorWarning));
-        }else if(visitasCompletas.getVisitas().getOverall_status_visita().equals("MALA") || visitasCompletas.getVisitas().getOverall_status_visita().equals("BAD") ){
-            i_general.setColorFilter(context.getResources().getColor(R.color.colorError));
-        }else{
-            i_general.setColorFilter(context.getResources().getColor(R.color.colorGreen));
-        }
-
-        if (visitasCompletas.getVisitas().getHumidity_floor_visita().equals("REGULAR")){
-            i_humidity.setColorFilter(context.getResources().getColor(R.color.colorWarning));
-        }else if(visitasCompletas.getVisitas().getHumidity_floor_visita().equals("MALA") || visitasCompletas.getVisitas().getHumidity_floor_visita().equals("BAD") ){
-            i_humidity.setColorFilter(context.getResources().getColor(R.color.colorError));
-        }else{
-            i_humidity.setColorFilter(context.getResources().getColor(R.color.colorGreen));
-        }
-
-        if (visitasCompletas.getVisitas().getWeed_state_visita().equals("REGULAR")){
-            i_weed.setColorFilter(context.getResources().getColor(R.color.colorWarning));
-        }else if(visitasCompletas.getVisitas().getWeed_state_visita().equals("ALTA") || visitasCompletas.getVisitas().getWeed_state_visita().equals("HIGH") ){
-            i_weed.setColorFilter(context.getResources().getColor(R.color.colorError));
-        }else{
-            i_weed.setColorFilter(context.getResources().getColor(R.color.colorGreen));
-        }
-
-    }
 }

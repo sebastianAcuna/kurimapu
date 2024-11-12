@@ -19,22 +19,23 @@
 
         <Button
             android:id="@+id/btn_preparar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_descargar"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="preparar visitas \n para subir "
+            android:text="preparar visitas"
+            android:layout_margin="@dimen/padding_small"
             android:backgroundTint="@android:color/holo_green_dark"
-            android:drawableLeft="@drawable/ic_upload_white"
-            />
+            android:drawableLeft="@drawable/ic_upload_white" />
 
         <Button
             android:id="@+id/btn_descargar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="descargar datos"
+            android:text="descargar"
             app:layout_constraintStart_toEndOf="@id/btn_preparar"
             app:layout_constraintTop_toTopOf="@id/btn_preparar"
             app:layout_constraintBottom_toBottomOf="@id/btn_preparar"
@@ -43,12 +44,23 @@
 
             />
 
+        <Button
+            android:id="@+id/btn_subir_check"
+            android:layout_width="0dp"
+            android:layout_margin="@dimen/padding_small"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_descargar"
+            android:text="CheckList"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:drawableLeft="@drawable/ic_upload_white" />
+
 
         <TextView
             android:id="@+id/visitas_titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/btn_preparar"
+            app:layout_constraintTop_toBottomOf="@id/btn_subir_check"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:textSize="20sp"
@@ -67,8 +79,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:textSize="18sp"
             android:gravity="center"
-            android:visibility="invisible"
-            />
+            android:visibility="invisible" />
 
 
         <Button
@@ -80,8 +91,7 @@
             app:layout_constraintTop_toBottomOf="@id/visitas_marca"
             android:backgroundTint="@color/colorPrimary"
             android:drawableLeft="@drawable/ic_upload_white"
-            android:visibility="invisible"
-            />
+            android:visibility="invisible" />
 
 
         <LinearLayout
@@ -92,28 +102,47 @@
             app:layout_constraintTop_toBottomOf="@id/btn_sube_marcadas"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center_horizontal"
-            >
-        </LinearLayout>
+            android:gravity="center_horizontal"></LinearLayout>
 
 
-        <TextView
-            android:id="@+id/titulo_primera_prioridad"
+        <LinearLayout
+            android:id="@+id/contenedor_title_primera_prio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/contenedor_botones"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="10dp"
-            />
+            android:orientation="horizontal"
+            android:gravity="center_vertical|fill_horizontal"
+
+            >
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/titulo_primera_prioridad"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Primera Prioridad"
+                android:textSize="16sp"
+                android:textColor="@android:color/black" />
+
+
+            <Button
+
+                android:id="@+id/btn_calcula_datos_primera_prio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="calcular datos"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_primera_prioridad"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            app:layout_constraintTop_toBottomOf="@id/titulo_primera_prioridad"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_title_primera_prio"
 
             />
 
@@ -122,31 +151,47 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/titulo_primera_prioridad"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_title_primera_prio"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
-
-
-        <TextView
-            android:id="@+id/titulo_sitios_no_visitados"
+        <LinearLayout
+            android:id="@+id/contenedor_title_sitio_visitado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/lista_primera_prioridad"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="10dp"
-            />
+            android:orientation="horizontal"
+            android:gravity="center_vertical|fill_horizontal"
+
+            >
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/titulo_sitios_no_visitados"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Sitios no visitados por mas de 7 dias"
+                android:textSize="16sp"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/btn_calcula_datos_sitio_visita"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="calcular datos"
+                android:textSize="12sp" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_sitios_no_visitados"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/titulo_sitios_no_visitados"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_title_sitio_visitado"
 
             />
 
@@ -155,12 +200,10 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/titulo_sitios_no_visitados"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_title_sitio_visitado"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone"/>
-
-
+            android:visibility="gone" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
