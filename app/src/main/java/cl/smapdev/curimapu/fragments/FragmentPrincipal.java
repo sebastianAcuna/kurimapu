@@ -47,6 +47,7 @@ import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.modelo.RecomendacionesSync;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
@@ -55,6 +56,11 @@ import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguing;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalleFechas;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoCabecera;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
@@ -278,13 +284,16 @@ public class FragmentPrincipal extends Fragment {
         Future<List<CheckListAplicacionHormonas>> chkApHor = executorService.submit(() ->
                 MainActivity.myAppDB.DaoCLAplicacionHormonas().getClApHormonasToSync());
 
+        Future<List<CheckListRoguing>> chkRoguing = executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync());
+
         try {
 
             List<CheckListSiembra> chk = chkF.get();
             List<CheckListAplicacionHormonas> chkA = chkApHor.get();
+            List<CheckListRoguing> chkR = chkRoguing.get();
 
 
-            if (chk.isEmpty() && chkA.isEmpty()) {
+            if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty()) {
                 executorService.shutdown();
                 Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 return;
@@ -299,6 +308,35 @@ public class FragmentPrincipal extends Fragment {
             if (!chk.isEmpty()) {
                 chkS.setCheckListSiembras(chk);
             }
+
+            if (!chkR.isEmpty()) {
+                List<CheckListRoguingCompleto> clCompletoList = new ArrayList<>();
+                for (CheckListRoguing clr : chkR) {
+                    CheckListRoguingCompleto clCompleto = new CheckListRoguingCompleto();
+
+                    List<CheckListRoguingDetalle> clrd = executorService.submit(() ->
+                            MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
+
+                    List<CheckListRoguingFotoCabecera> clRc = executorService.submit(() ->
+                            MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
+
+                    List<CheckListRoguingFotoDetalle> clRd = executorService.submit(() ->
+                            MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
+
+                    List<CheckListRoguingDetalleFechas> clRF = executorService.submit(() ->
+                            MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica())).get();
+
+                    clCompleto.setCheckListRoguing(clr);
+                    clCompleto.setCheckListRoguingDetalle(clrd);
+                    clCompleto.setCheckListFotoCabecera(clRc);
+                    clCompleto.setCheckListFotoDetalle(clRd);
+                    clCompleto.setCheckListRoguingDetalleFechas(clRF);
+
+                    clCompletoList.add(clCompleto);
+                }
+                chkS.setCheckListRoguing(clCompletoList);
+            }
+
             prepararSubir(chkS);
 
         } catch (ExecutionException | InterruptedException e) {

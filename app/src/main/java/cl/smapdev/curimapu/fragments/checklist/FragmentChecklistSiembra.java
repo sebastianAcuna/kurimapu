@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -320,19 +321,28 @@ public class FragmentChecklistSiembra extends Fragment {
         sp_hilera = view.findViewById(R.id.sp_hilera);
 
 
+        et_fecha_siembra.setKeyListener(null);
+        et_fecha_siembra.setInputType(InputType.TYPE_NULL);
         et_fecha_siembra.setOnClickListener(view1 -> Utilidades.levantarFecha(et_fecha_siembra, requireContext()));
         et_fecha_siembra.setOnFocusChangeListener((view1, b) -> {
+            Utilidades.hideKeyboard(activity);
             if (b) Utilidades.levantarFecha(et_fecha_siembra, requireContext());
         });
 
+
+        et_hora_inicio.setKeyListener(null);
+        et_hora_inicio.setInputType(InputType.TYPE_NULL);
         et_hora_inicio.setOnClickListener(view1 -> Utilidades.levantarHora(et_hora_inicio, requireActivity()));
         et_hora_inicio.setOnFocusChangeListener((view1, b) -> {
+            Utilidades.hideKeyboard(activity);
             if (b) Utilidades.levantarHora(et_hora_inicio, requireActivity());
         });
 
-
+        et_hora_termino.setKeyListener(null);
+        et_hora_termino.setInputType(InputType.TYPE_NULL);
         et_hora_termino.setOnClickListener(view1 -> Utilidades.levantarHora(et_hora_termino, requireActivity()));
         et_hora_termino.setOnFocusChangeListener((view1, b) -> {
+            Utilidades.hideKeyboard(activity);
             if (b) Utilidades.levantarHora(et_hora_termino, requireActivity());
         });
 
@@ -386,6 +396,13 @@ public class FragmentChecklistSiembra extends Fragment {
             abrirCamara("SEMILLA");
         });
 
+        String alfaNumerico = getResources().getString(R.string.alfanumericos_con_signos);
+        et_observaciones.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                et_observaciones.setText(Utilidades.sanitizarString(et_observaciones.getText().toString(), alfaNumerico));
+            }
+        });
+
 
         btn_guardar_cl_siembra.setOnClickListener(view1 -> {
 
@@ -396,8 +413,8 @@ public class FragmentChecklistSiembra extends Fragment {
                 return;
             }
 
-
-            showAlertForConfirmarGuardar();
+            onSave(1, anexoCompleto.getAgricultor().getNombre_agricultor());
+//            showAlertForConfirmarGuardar();
 
 
         });
@@ -823,6 +840,10 @@ public class FragmentChecklistSiembra extends Fragment {
 //                ruta_foto_semilla
 //        stringed_foto_envase
 //                stringed_foto_semilla
+
+        String alfaNumerico = getResources().getString(R.string.alfanumericos_con_signos);
+
+        et_observaciones.setText(Utilidades.sanitizarString(et_observaciones.getText().toString(), alfaNumerico));
 
 
         ExecutorService executor = Executors.newSingleThreadExecutor();

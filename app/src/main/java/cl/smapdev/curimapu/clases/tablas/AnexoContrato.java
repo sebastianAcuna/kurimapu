@@ -3,7 +3,6 @@ package cl.smapdev.curimapu.clases.tablas;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -30,7 +29,7 @@ public class AnexoContrato {
     private String id_especie_anexo;
 
     @SerializedName("id_agric")
-    private String  id_agricultor_anexo;
+    private String id_agricultor_anexo;
 
     @SerializedName("nombre_potrero")
     private String protero;
@@ -108,7 +107,6 @@ public class AnexoContrato {
 
     @SerializedName("yield_kg_ha")
     private String yield_kg_ha;
-
 
 
     /* CAMBIOS 13-08 10:43 */
@@ -284,6 +282,76 @@ public class AnexoContrato {
     @SerializedName("base_agricultor")
     public String base_agricultor;
 
+    @SerializedName("ratio_f")
+    public int ratio_f;
+
+    @SerializedName("ratio_m")
+    public int ratio_m;
+
+    @SerializedName("poblacion_hembra")
+    public String poblacion_hembra;
+
+    @SerializedName("poblacion_macho_1")
+    public String poblacion_macho_1;
+
+    @SerializedName("poblacion_macho_2")
+    public String poblacion_macho_2;
+
+    @SerializedName("poblacion_macho_3")
+    public String poblacion_macho_3;
+
+
+    public int getRatio_f() {
+        return ratio_f;
+    }
+
+    public void setRatio_f(int ratio_f) {
+        this.ratio_f = ratio_f;
+    }
+
+    public int getRatio_m() {
+        return ratio_m;
+    }
+
+    public void setRatio_m(int ratio_m) {
+        this.ratio_m = ratio_m;
+    }
+
+    public void setBase_agricultor(String base_agricultor) {
+        this.base_agricultor = base_agricultor;
+    }
+
+    public String getPoblacion_hembra() {
+        return poblacion_hembra;
+    }
+
+    public void setPoblacion_hembra(String poblacion_hembra) {
+        this.poblacion_hembra = poblacion_hembra;
+    }
+
+    public String getPoblacion_macho_1() {
+        return poblacion_macho_1;
+    }
+
+    public void setPoblacion_macho_1(String poblacion_macho_1) {
+        this.poblacion_macho_1 = poblacion_macho_1;
+    }
+
+    public String getPoblacion_macho_2() {
+        return poblacion_macho_2;
+    }
+
+    public void setPoblacion_macho_2(String poblacion_macho_2) {
+        this.poblacion_macho_2 = poblacion_macho_2;
+    }
+
+    public String getPoblacion_macho_3() {
+        return poblacion_macho_3;
+    }
+
+    public void setPoblacion_macho_3(String poblacion_macho_3) {
+        this.poblacion_macho_3 = poblacion_macho_3;
+    }
 
     public String getSag_register_idase() {
         return sag_register_idase;

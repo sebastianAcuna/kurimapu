@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase;
 
 import cl.smapdev.curimapu.clases.bd.daos.DaoAnexosFechas;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListRoguing;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListSiembra;
 import cl.smapdev.curimapu.clases.bd.daos.DaoDesplegables;
 import cl.smapdev.curimapu.clases.bd.daos.DaoEvaluaciones;
@@ -19,6 +20,14 @@ import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutos;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguing;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalleFechas;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoCabecera;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
@@ -68,7 +77,9 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         cli_pcm.class, quotation.class, FotosFichas.class, AgrPredTemp.class, FichasNew.class,
         AnexoCorreoFechas.class, Evaluaciones.class, CheckListSiembra.class, TempFirmas.class,
         PrimeraPrioridad.class, SitiosNoVisitados.class, CheckListCosecha.class, CheckListAplicacionHormonas.class,
-        DesplegableNumeroAplicacionHormonas.class, DesplegableAplicacionHormonas.class
+        DesplegableNumeroAplicacionHormonas.class, DesplegableAplicacionHormonas.class,
+        CheckListRevisionFrutos.class, CheckListRevisionFrutosFotos.class, CheckListRevisionFrutosDetalle.class,
+        CheckListRoguing.class, CheckListRoguingDetalle.class, CheckListRoguingFotoCabecera.class, CheckListRoguingFotoDetalle.class, CheckListRoguingDetalleFechas.class
 }, version = 15)
 public abstract class MyAppBD extends RoomDatabase {
 
@@ -89,6 +100,8 @@ public abstract class MyAppBD extends RoomDatabase {
     public abstract DaoSitiosNoVisitados DaoSitiosNoVisitados();
 
     public abstract DaoCheckListAplicacionHormonas DaoCLAplicacionHormonas();
+
+    public abstract DaoCheckListRoguing DaoCLRoguing();
 
 
 }

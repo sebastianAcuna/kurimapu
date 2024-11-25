@@ -14,12 +14,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
 import cl.smapdev.curimapu.clases.relaciones.DesplegablesAplicacionHormonaCompleto;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguing;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalleFechas;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoCabecera;
+import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
@@ -147,7 +153,7 @@ public class Descargas {
             }
         }
 
-        if (gsonDescargas.getPro_cli_matList() != null && gsonDescargas.getPro_cli_matList().size() > 0) {
+        if (gsonDescargas.getPro_cli_matList() != null && !gsonDescargas.getPro_cli_matList().isEmpty()) {
             try {
                 MainActivity.myAppDB.myDao().deleteProCliMat();
                 List<Long> inserts = MainActivity.myAppDB.myDao().insertInterfaz(gsonDescargas.getPro_cli_matList());
@@ -157,6 +163,83 @@ public class Descargas {
         } else {
             MainActivity.myAppDB.myDao().deleteProCliMat();
         }
+
+
+        if (gsonDescargas.getCheckListRoguingCompletos() != null && !gsonDescargas.getCheckListRoguingCompletos().isEmpty()) {
+            ExecutorService ex = Executors.newSingleThreadExecutor();
+            try {
+                for (CheckListRoguingCompleto cp : gsonDescargas.getCheckListRoguingCompletos()) {
+
+                    for (CheckListRoguingDetalle cd : cp.getCheckListRoguingDetalle()) {
+                        CheckListRoguingDetalle cld = ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingDetallePorClaveUnidad(cd.getClave_unica_detalle())).get();
+
+                        if (cld != null) {
+                            cd.setEstado_sincronizacion(1);
+                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().updateDetalleRoguing(cd)).get();
+                        } else {
+                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().insertDetallesRoguing(cd)).get();
+                        }
+
+                    }
+
+                    for (CheckListRoguingDetalleFechas cf : cp.getCheckListRoguingDetalleFechas()) {
+
+                        CheckListRoguingDetalleFechas cld = ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingDetalleFechaPorClaveUnidad(cf.getClave_unica_detalle_fecha())).get();
+
+                        if (cld != null) {
+                            cf.setEstado_sincronizacion(1);
+                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().updateRoguingDetalleFecha(cf)).get();
+                        } else {
+                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().insertRoguingDetalleFecha(cf)).get();
+                        }
+
+                    }
+
+                    for (CheckListRoguingFotoCabecera cb : cp.getCheckListFotoCabecera()) {
+
+                        CheckListRoguingFotoCabecera cld = ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingFotoCabPorClaveUnidad(cb.getClave_unica())).get();
+
+                        if (cld != null) {
+                            cb.setEstado_sincronizacion(1);
+                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().updateFotosRoguing(cb)).get();
+                        } else {
+                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().insertFotosRoguing(cb)).get();
+                        }
+
+                    }
+
+                    for (CheckListRoguingFotoDetalle cd : cp.getCheckListFotoDetalle()) {
+
+                        CheckListRoguingFotoDetalle cld = ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingFotoDetPorClaveUnidad(cd.getClave_unica())).get();
+
+                        if (cld != null) {
+                            cd.setEstado_sincronizacion(1);
+                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().updateRoguingFotoDetalle(cd)).get();
+                        } else {
+                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().insertRoguingFotoDetalle(cd)).get();
+                        }
+
+                    }
+
+                    CheckListRoguing cr = ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getClroguingByClaveUnica(cp.getCheckListRoguing().getClave_unica())).get();
+
+                    if (cr != null) {
+                        cp.getCheckListRoguing().setEstado_sincronizacion(1);
+                        ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().updateclroguing(cp.getCheckListRoguing())).get();
+                    } else {
+                        ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().insertclroguing(cp.getCheckListRoguing())).get();
+                    }
+
+
+                }
+            } catch (ExecutionException | InterruptedException ignored) {
+            } finally {
+                ex.shutdown();
+            }
+
+
+        }
+
 
         if (gsonDescargas.getCheckListAplicacionHormonas() != null && !gsonDescargas.getCheckListAplicacionHormonas().isEmpty()) {
 

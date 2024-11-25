@@ -29,6 +29,10 @@ public class CheckListRequest {
     private List<CheckListAplicacionHormonas> checkListAplicacionHormonas;
 
 
+    @SerializedName("checkListRoguing")
+    private List<CheckListRoguingCompleto> checkListRoguing;
+
+
     public int getIdDispo() {
         return idDispo;
     }
@@ -59,6 +63,15 @@ public class CheckListRequest {
 
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
+    }
+
+
+    public List<CheckListRoguingCompleto> getCheckListRoguing() {
+        return checkListRoguing;
+    }
+
+    public void setCheckListRoguing(List<CheckListRoguingCompleto> checkListRoguing) {
+        this.checkListRoguing = checkListRoguing;
     }
 
     public List<CheckListSiembra> getCheckListSiembras() {

@@ -29,6 +29,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -39,7 +40,7 @@ import cl.smapdev.curimapu.R;
 
 public class Utilidades {
 
-    public static final String APPLICATION_VERSION = "4.0.0609";
+    public static final String APPLICATION_VERSION = "4.1.0609";
 
     public static final String FRAGMENT_INICIO = "fragment_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -59,17 +60,21 @@ public class Utilidades {
     public static final String FRAGMENT_CHECKLIST_SIEMBRA = "fragment_checklist_siembra";
     public static final String FRAGMENT_CHECKLIST_CAPACITACION_SIEMBRA = "fragment_checklist_capacitacion_siembra";
     public static final String FRAGMENT_CHECKLIST_APLICACION_HORMONAS = "fragment_checklist_aplicacion_hormonas";
+    public static final String FRAGMENT_CHECKLIST_ROGUING = "fragment_checklist_roguing";
+    public static final String FRAGMENT_CHECKLIST_REVISION_FRUTOS = "fragment_checklist_revision_frutos";
 
     public static final String affiliate_id = "vb7jbic553ts";
 
     public static final int TIPO_DOCUMENTO_CHECKLIST_SIEMBRA = 1;
     public static final int TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS = 2;
+    public static final int TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS = 3;
+    public static final int TIPO_DOCUMENTO_CHECKLIST_ROGUING = 4;
 
 
-    public static final String IP_PRODUCCION = "192.168.1.42";
-    // public static final String IP_PRODUCCION = "curivegetables.zcloud.cl";
-    //public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
-    public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu_vegetables";
+    //    public static final String IP_PRODUCCION = "192.168.1.42";
+    public static final String IP_PRODUCCION = "curivegetables.zcloud.cl";
+    public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
+//    public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu_vegetables";
 
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_PRUEBAS = "190.13.170.26";
@@ -109,6 +114,9 @@ public class Utilidades {
     public static final String DIALOG_TAG_FOTO_CHECKLIST_SIEMBRA_SEMILLA = "DIALOG_TAG_FOTO_CHECKLIST_SIEMBRA_SEMILLA";
     public static final String DIALOG_TAG_FIRMA_RESPONSABLE_AP_HORMONA = "CAPACITACION_FIRMA_RESPONSABLE_AP_HORMONA";
     public static final String DIALOG_TAG_FIRMA_PRESTADOR_SERVICIO_AP_HORMONA = "CAPACITACION_FIRMA_PRESTADOR_SERVICIO_AP_HORMONA";
+    public static final String DIALOG_TAG_FIRMA_AGRICULTOR_REVISION_FRUTOS = "DIALOG_TAG_FIRMA_AGRICULTOR_REVISION_FRUTOS";
+    public static final String DIALOG_TAG_ROGUING_DETALLE = "DIALOG_TAG_ROGUING_DETALLE";
+    public static final String DIALOG_TAG_ROGUING_DETALLE_FECHA = "DIALOG_TAG_ROGUING_DETALLE_FECHA";
     public static final String DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO = "REVISOR_LIMPIEZA_INGRESO";
     public static final String DIALOG_TAG_RESPONSABLE_ASEO_INGRESO = "RESPONSABLE_ASEO_INGRESO";
     public static final String DIALOG_TAG_RESPONSABLE_ASEO_SALIDA = "RESPONSABLE_ASEO_SALIDA";
@@ -367,6 +375,82 @@ public class Utilidades {
         }, Integer.parseInt(fechaRota[0]), (Integer.parseInt(fechaRota[1]) - 1), Integer.parseInt(fechaRota[2]));
         datePickerDialog.show();
 
+    }
+
+
+    public static String sanitizarString(String texto, String caracteresDisponibles) {
+
+        StringBuilder filteredText = new StringBuilder();
+        for (int i = 0; i < texto.length(); i++) {
+            char currentChar = texto.charAt(i);
+            if (caracteresDisponibles.contains(String.valueOf(currentChar)) || String.valueOf(currentChar).equals("\n")) {
+                filteredText.append(currentChar);
+            }
+        }
+        return filteredText.toString();
+    }
+
+    public static void validarDecimal(String number, String titulo) {
+        if (number.isEmpty()) return;
+        try {
+            Double.parseDouble(number);
+        } catch (NumberFormatException e) {
+            throw new Error(titulo + " invalido(a) ");
+        }
+    }
+
+    public static void validarDecimal(String number, String titulo, boolean allowNegatives) {
+        if (number.isEmpty()) return;
+        try {
+            double n = Double.parseDouble(number);
+            if (!allowNegatives && n < 0)
+                throw new Error(titulo + " invalido(a), no puede ser negativo ");
+        } catch (NumberFormatException e) {
+            throw new Error(titulo + " invalido(a) ");
+        }
+    }
+
+    public static void validarNumero(String number, String titulo, boolean allowNegatives) {
+        if (number.isEmpty()) return;
+        try {
+            int n = Integer.parseInt(number);
+            if (!allowNegatives && n < 0)
+                throw new Error(titulo + " invalido(a), no puede ser negativo ");
+        } catch (NumberFormatException e) {
+            throw new Error(titulo + " invalido(a) ");
+        }
+    }
+
+    public static void validarNumero(String number, String titulo) {
+        if (number.isEmpty()) return;
+        try {
+            Integer.parseInt(number);
+        } catch (NumberFormatException e) {
+            throw new Error(titulo + " invalido(a) ");
+        }
+    }
+
+    public static void validarHora(String hora, String titulo) {
+        if (hora.isEmpty()) return;
+        String fecha = Utilidades.fechaActualSinHora() + " " + hora;
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        try {
+            dtf.parse(fecha);
+        } catch (Exception e) {
+            throw new Error(titulo + " invalido(a) ");
+        }
+
+    }
+
+    public static void validarFecha(String d, String titulo) {
+        if (d.isEmpty()) return;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            dtf.parse(d);
+        } catch (Exception e) {
+            throw new Error(titulo + " invalido(a) ");
+        }
     }
 
 

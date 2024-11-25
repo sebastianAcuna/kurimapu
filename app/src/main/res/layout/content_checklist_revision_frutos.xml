@@ -11,8 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_small"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:padding="@dimen/padding_small">
 
 
         <LinearLayout
@@ -43,71 +42,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/container_prestador_servicio"
-            app:layout_constraintTop_toBottomOf="@id/container_responsable"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="Prestador de servicio"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prestador_servicio"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:digits="@string/alfanumericos_sin_signos"
-                android:maxLines="3"
-                android:maxLength="250"
-                android:layout_marginTop="@dimen/padding_small"
-                android:drawableEnd="@drawable/ic_person"
-                android:drawableTint="@color/colorSecondaryVariant" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_aplicacion"
-            app:layout_constraintTop_toBottomOf="@id/container_prestador_servicio"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="Aplicación"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <Spinner
-                android:id="@+id/sp_aplicacion"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-
-                android:gravity="center"
-                app:layout_constraintHorizontal_weight="0.3" />
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/container_variedad"
-            app:layout_constraintTop_toBottomOf="@id/container_aplicacion"
+            app:layout_constraintTop_toBottomOf="@id/container_responsable"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 
@@ -132,34 +68,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/container_anexo"
-            app:layout_constraintTop_toBottomOf="@id/container_variedad"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="Anexo"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <TextView
-                android:id="@+id/tv_anexo"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                tools:text="AC123123123" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/container_agricultor"
-            app:layout_constraintTop_toBottomOf="@id/container_anexo"
+            app:layout_constraintTop_toBottomOf="@id/container_variedad"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 
@@ -182,6 +92,7 @@
                 android:layout_height="wrap_content"
                 tools:text="AC123123123" />
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/container_potrero"
@@ -236,7 +147,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/container_n_hojas_verdaderas"
+            android:id="@+id/container_anexo"
             app:layout_constraintTop_toBottomOf="@id/container_ha"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -250,25 +161,20 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="N° de Hojas Verdaderas"
+                android:text="Anexo"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <EditText
-                android:id="@+id/et_n_hojas_verdaderas"
+            <TextView
+                android:id="@+id/tv_anexo"
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
                 android:layout_height="wrap_content"
-                android:digits="@string/numerico_entero"
-                android:inputType="number"
-                android:maxLength="125"
-                android:maxLines="1"
-                android:layout_marginTop="@dimen/padding_small"
-                android:drawableTint="@color/colorSecondaryVariant" />
+                tools:text="AC123123123" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/container_n_aplicacion"
-            app:layout_constraintTop_toBottomOf="@id/container_n_hojas_verdaderas"
+            android:id="@+id/container_estado_fenologico"
+            app:layout_constraintTop_toBottomOf="@id/container_anexo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 
@@ -282,20 +188,21 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="N° de Aplicación"
+                android:text="Estado fenologico"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <Spinner
-                android:id="@+id/sp_n_aplicacion"
+                android:id="@+id/sp_estado_fenologico"
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
                 android:gravity="center"
+                android:entries="@array/fenologico"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/container_fecha"
-            app:layout_constraintTop_toBottomOf="@id/container_n_aplicacion"
+            app:layout_constraintTop_toBottomOf="@id/container_estado_fenologico"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 
@@ -315,8 +222,8 @@
                 android:id="@+id/et_fecha"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+
                 android:layout_weight="1.1"
-                android:digits="@string/alfanumerico_fecha"
                 android:inputType="date"
                 android:maxLines="1"
                 android:drawableEnd="@drawable/ic_date_range"
@@ -324,8 +231,9 @@
                 android:autofillHints="" />
         </LinearLayout>
 
+
         <LinearLayout
-            android:id="@+id/container_hora_inicio"
+            android:id="@+id/container_termino_cosecha"
             app:layout_constraintTop_toBottomOf="@id/container_fecha"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -333,174 +241,176 @@
             android:layout_margin="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="Hora Inicio"
+                android:text="Termino cosecha"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <EditText
-                android:id="@+id/et_hora_inicio"
+            <Spinner
+                android:id="@+id/sp_termino_cosecha"
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="time"
-                android:digits="@string/alfanumerico_hora"
-                android:maxLines="1"
-                android:drawableEnd="@drawable/ic_time"
-                android:drawableTint="@color/colorSecondaryVariant"
-                android:autofillHints="" />
+                android:gravity="center"
+                android:entries="@array/desplegable_checklist_1"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_detalle_revision_frutos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHeight_max="500dp"
+            app:layout_constraintTop_toBottomOf="@id/container_termino_cosecha"
+            android:orientation="vertical" />
+
+
+        <TextView
+            android:id="@+id/titulo_totales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Totales"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorOnSurface"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/rv_detalle_revision_frutos" />
+
         <LinearLayout
-            android:id="@+id/container_hora_termino"
-            app:layout_constraintTop_toBottomOf="@id/container_hora_inicio"
+            android:id="@+id/container_totales_frutos_aptos"
+            app:layout_constraintTop_toBottomOf="@id/titulo_totales"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 
             android:layout_margin="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="Hora de Termino"
+                android:text="Frutos Aptos"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <EditText
-                android:id="@+id/et_hora_termino"
+            <TextView
+                android:id="@+id/tv_total_frutos_aptos"
                 android:layout_width="0dp"
-                android:layout_weight="1.1"
+                android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:inputType="time"
-                android:digits="@string/alfanumerico_hora"
-                android:maxLines="1"
-                android:drawableEnd="@drawable/ic_time"
-                android:drawableTint="@color/colorSecondaryVariant"
-                android:autofillHints="" />
+                android:gravity="end"
+                tools:text="953"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/container_ppm"
-            app:layout_constraintTop_toBottomOf="@id/container_hora_termino"
+            android:id="@+id/container_totales_frutos_no_aptos"
+            app:layout_constraintTop_toBottomOf="@id/container_totales_frutos_aptos"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 
             android:layout_margin="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="PPM"
+                android:text="Frutos no Aptos"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <EditText
-                android:id="@+id/et_ppm"
+            <TextView
+                android:id="@+id/tv_total_frutos_no_aptos"
                 android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:maxLength="125"
-                android:inputType="numberDecimal|number"
+                android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_small" />
+                android:gravity="end"
+                tools:text="953"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/container_mojamiento"
-            app:layout_constraintTop_toBottomOf="@id/container_ppm"
+            android:id="@+id/container_porcentaje_frutos_no_apto"
+            app:layout_constraintTop_toBottomOf="@id/container_totales_frutos_no_aptos"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 
             android:layout_margin="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:maxLength="125"
-                android:text="Mojamiento LT/HA"
+                android:text="% frutos no aptos"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <EditText
-                android:id="@+id/et_mojamiento"
+            <TextView
+                android:id="@+id/tv_porcentaje_frutos_no_aptos"
                 android:layout_width="0dp"
-                android:layout_weight="1.1"
+                android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal|number"
-                android:layout_marginTop="@dimen/padding_small" />
+                android:gravity="end"
+                tools:text="0.25%"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </LinearLayout>
 
+        <View
+            android:id="@+id/divider_totales"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+
+            android:layout_marginTop="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/container_porcentaje_frutos_no_apto"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <LinearLayout
-            android:id="@+id/container_lote_cvs"
-            app:layout_constraintTop_toBottomOf="@id/container_mojamiento"
+            android:id="@+id/container_finaliza_cosecha"
+            app:layout_constraintTop_toBottomOf="@id/divider_totales"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-
-            android:visibility="gone"
 
             android:layout_margin="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="Lote CVS"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:text="Autorizada la cosecha"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            <TextView
-                android:id="@+id/tv_lote_cvs"
+            <Spinner
+                android:id="@+id/sp_autorizada_cosecha"
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                tools:text="AC123123123" />
+                android:gravity="center"
+                android:entries="@array/desplegable_checklist_1"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/container_observacion"
-            app:layout_constraintTop_toBottomOf="@id/container_lote_cvs"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Observación"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_observacion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:maxLines="5"
-
-                android:minLines="2"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/container_firma_prestador_servicio"
-            app:layout_constraintTop_toBottomOf="@id/container_observacion"
+            android:id="@+id/container_firma_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/container_finaliza_cosecha"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="@dimen/padding_small"
@@ -512,18 +422,18 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
                 android:layout_height="wrap_content"
-                android:text="Firma Prestador de Servicio"
+                android:text="Firma Agricultor"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <Button
-                android:id="@+id/btn_firma_prestador_servicio"
+                android:id="@+id/btn_firma_agricultor"
                 android:layout_width="0dp"
                 android:layout_weight="0.3"
                 android:layout_height="wrap_content"
                 android:text="@string/firmar" />
 
             <ImageView
-                android:id="@+id/check_firma_prestador_servicio"
+                android:id="@+id/check_firma_agricultor"
                 android:layout_width="0dp"
                 android:layout_weight="0.1"
                 android:layout_height="wrap_content"
@@ -533,52 +443,18 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/container_firma_responsable"
-            app:layout_constraintTop_toBottomOf="@id/container_firma_prestador_servicio"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.6"
-                android:layout_height="wrap_content"
-                android:text="Firma Responsable"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <Button
-                android:id="@+id/btn_firma_responsable"
-                android:layout_width="0dp"
-                android:layout_weight="0.3"
-                android:layout_height="wrap_content"
-                android:text="@string/firmar" />
-
-            <ImageView
-                android:id="@+id/check_firma_responsable"
-                android:layout_width="0dp"
-                android:layout_weight="0.1"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_check_white_48dp"
-                app:tint="@color/colorGreen"
-                android:visibility="gone" />
-
-        </LinearLayout>
 
         <View
             android:id="@+id/divider_botonera"
             android:layout_width="409dp"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"
-            app:layout_constraintTop_toBottomOf="@id/container_firma_responsable"
+            app:layout_constraintTop_toBottomOf="@id/container_firma_agricultor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
-            android:id="@+id/btn_guardar_cl_ap_hormona"
+            android:id="@+id/btn_guardar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/divider_botonera"
@@ -587,13 +463,14 @@
             android:text="@string/guardar" />
 
         <Button
-            android:id="@+id/btn_cancelar_cl_ap_hormona"
+            android:id="@+id/btn_cancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/divider_botonera"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/padding"
             android:text="@string/nav_cancel" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

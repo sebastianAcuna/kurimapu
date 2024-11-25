@@ -60,6 +60,10 @@ public class GsonDescargas {
     @Embedded
     private List<CheckListAplicacionHormonas> checkListAplicacionHormonas;
 
+    @SerializedName("array_checklist_roguing")
+    @Embedded
+    private List<CheckListRoguingCompleto> checkListRoguingCompletos;
+
 
     @SerializedName("array_temporada")
     @Embedded
@@ -200,6 +204,14 @@ public class GsonDescargas {
     @Embedded
     private List<SitiosNoVisitados> array_sitios_no_visitados;
 
+
+    public List<CheckListRoguingCompleto> getCheckListRoguingCompletos() {
+        return checkListRoguingCompletos;
+    }
+
+    public void setCheckListRoguingCompletos(List<CheckListRoguingCompleto> checkListRoguingCompletos) {
+        this.checkListRoguingCompletos = checkListRoguingCompletos;
+    }
 
     public List<DesplegablesAplicacionHormonaCompleto> getDesplegablesAplicacionHormonaCompletos() {
         return desplegablesAplicacionHormonaCompletos;

@@ -4,6 +4,7 @@ package cl.smapdev.curimapu.fragments.checklist;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -157,7 +160,7 @@ public class FragmentChecklistAplicacionHormonas extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (activity != null) {
-            activity.updateView(getResources().getString(R.string.app_name), "CHECKLIST APLICACION HORMONAS");
+            activity.updateView(getResources().getString(R.string.app_name), "CHECKLIST APLICACIÓN HORMONAS");
         }
     }
 
@@ -195,21 +198,25 @@ public class FragmentChecklistAplicacionHormonas extends Fragment {
         check_firma_responsable = view.findViewById(R.id.check_firma_responsable);
 
 
-        sp_aplicacion.setAdapter(new SpinnerAdapter(requireActivity(), R.layout.spinner_template_view, chk_aplicacion));
-        sp_n_aplicacion.setAdapter(new SpinnerAdapter(requireActivity(), R.layout.spinner_template_view, chk_n_aplicacion));
+        sp_aplicacion.setAdapter(new SpinnerAdapter(requireActivity(), android.R.layout.simple_spinner_item, chk_aplicacion));
+        sp_n_aplicacion.setAdapter(new SpinnerAdapter(requireActivity(), android.R.layout.simple_spinner_item, chk_n_aplicacion));
 
-
+        et_fecha.setKeyListener(null);
+        et_fecha.setInputType(InputType.TYPE_NULL);
         et_fecha.setOnClickListener(view1 -> Utilidades.levantarFecha(et_fecha, requireContext()));
         et_fecha.setOnFocusChangeListener((view1, b) -> {
             if (b) Utilidades.levantarFecha(et_fecha, requireContext());
         });
 
+        et_hora_inicio.setKeyListener(null);
+        et_hora_inicio.setInputType(InputType.TYPE_NULL);
         et_hora_inicio.setOnClickListener(view1 -> Utilidades.levantarHora(et_hora_inicio, requireActivity()));
         et_hora_inicio.setOnFocusChangeListener((view1, b) -> {
             if (b) Utilidades.levantarHora(et_hora_inicio, requireActivity());
         });
 
-
+        et_hora_termino.setKeyListener(null);
+        et_hora_termino.setInputType(InputType.TYPE_NULL);
         et_hora_termino.setOnClickListener(view1 -> Utilidades.levantarHora(et_hora_termino, requireActivity()));
         et_hora_termino.setOnFocusChangeListener((view1, b) -> {
             if (b) Utilidades.levantarHora(et_hora_termino, requireActivity());
@@ -270,25 +277,134 @@ public class FragmentChecklistAplicacionHormonas extends Fragment {
         });
 
 
+        String alfaNumerico = getResources().getString(R.string.alfanumericos_con_signos);
+        et_observacion.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                et_observacion.setText(Utilidades.sanitizarString(et_observacion.getText().toString(), alfaNumerico));
+            }
+        });
+
+
+//        et_observacion.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                Log.e("ANTES DE ESCRIBIR", s.toString());
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                Log.e("ESCRIBIENDO", s.toString());
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//                Log.e("DESPUES DE ESCRIBIR", s.toString());
+////                String regex = "[" + alfaNumerico + "]";
+//
+//
+////                if (!s.toString().matches(regex)) {
+//                StringBuilder filteredText = new StringBuilder();
+//                for (int i = 0; i < s.length(); i++) {
+//                    char currentChar = s.charAt(i);
+//                    Log.e("INPUTTTT", String.valueOf(currentChar));
+//                    if (alfaNumerico.contains(String.valueOf(currentChar)) || String.valueOf(currentChar).equals("\n")) {
+//                        filteredText.append(currentChar);
+//                    }
+//                }
+//                et_observacion.removeTextChangedListener(this); // Evita el bucle infinito
+//                et_observacion.setText(filteredText.toString());
+//                et_observacion.setSelection(filteredText.length()); // Mueve el cursor al final del texto
+//                et_observacion.addTextChangedListener(this); // Reasigna el listener
+////                }
+//            }
+//        });
+
         btn_guardar_cl_ap_hormona.setOnClickListener(view1 -> {
 
 
             if (et_prestador_servicio.getText().toString().isEmpty()) {
-                Toasty.warning(requireActivity(), "Debes agregar quien es el prestador de servicios",
+                Toasty.error(requireActivity(), "Debes agregar quien es el prestador de servicios",
                         Toast.LENGTH_LONG, true).show();
                 return;
             }
 
             if (sp_aplicacion.getSelectedItem().toString().equals("SELECCIONE")) {
-                Toasty.warning(requireActivity(), "Debes seleccionar una aplicación",
+                Toasty.error(requireActivity(), "Debes seleccionar una aplicación",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
+            if (sp_n_aplicacion.getSelectedItem().toString().equals("SELECCIONE")) {
+                Toasty.error(requireActivity(), "Debes seleccionar un N° aplicación",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
+            if (et_n_hojas_verdaderas.getText().toString().isEmpty()) {
+                Toasty.error(requireActivity(), "Debes ingresar un N° de hojas verdaderas",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+            if (et_fecha.getText().toString().isEmpty()) {
+                Toasty.error(requireActivity(), "Debes ingresar una fecha",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+            if (et_hora_inicio.getText().toString().isEmpty()) {
+                Toasty.error(requireActivity(), "Debes ingresar una hora de inicio",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+            if (et_hora_termino.getText().toString().isEmpty()) {
+                Toasty.error(requireActivity(), "Debes ingresar una hora de termino",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+            if (et_ppm.getText().toString().isEmpty()) {
+                Toasty.error(requireActivity(), "Debes ingresar PPM",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+            if (et_mojamiento.getText().toString().isEmpty()) {
+                Toasty.error(requireActivity(), "Debes ingresar mojamiento LT/HA ",
                         Toast.LENGTH_LONG, true).show();
                 return;
             }
 
 
-            showAlertForConfirmarGuardar();
+            try {
+
+                Utilidades.validarNumero(et_n_hojas_verdaderas.getText().toString(), "N° de hojas verdaderas ", false);
+                Utilidades.validarDecimal(et_ppm.getText().toString(), "ppm", false);
+                Utilidades.validarDecimal(et_mojamiento.getText().toString(), "mojamiento", false);
+                Utilidades.validarHora(et_hora_inicio.getText().toString(), "hora inicio");
+                Utilidades.validarHora(et_hora_termino.getText().toString(), "hora termino");
+                Utilidades.validarFecha(Utilidades.voltearFechaBD(et_fecha.getText().toString()), "fecha");
+
+            } catch (Error e) {
+                Toasty.error(requireActivity(), e.getMessage(), Toast.LENGTH_LONG, true).show();
+                return;
+            }
 
 
+            String init = Utilidades.voltearFechaBD(et_fecha.getText().toString()) + " " + et_hora_inicio.getText().toString();
+            String end = Utilidades.voltearFechaBD(et_fecha.getText().toString()) + " " + et_hora_termino.getText().toString();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime d1 = LocalDateTime.parse(init, formatter);
+            LocalDateTime d2 = LocalDateTime.parse(end, formatter);
+
+            if (d2.isBefore(d1)) {
+                Toasty.error(requireActivity(), "La hora de termino no puede ser antes de la hora de inicio",
+                        Toast.LENGTH_LONG, true).show();
+                return;
+            }
+            String apellido = anexoCompleto.getAgricultor().getNombre_agricultor().toLowerCase() + "_" + sp_aplicacion.getSelectedItem().toString().toLowerCase() + "_" + sp_n_aplicacion.getSelectedItem().toString().toLowerCase();
+            onSave(1, apellido);
+//            showAlertForConfirmarGuardar();
         });
         btn_cancelar_cl_ap_hormona.setOnClickListener(view1 -> activity.onBackPressed());
 
@@ -297,7 +413,7 @@ public class FragmentChecklistAplicacionHormonas extends Fragment {
 
     private void cargarDatosPrevios() {
         if (anexoCompleto == null) {
-            Toasty.error(requireActivity(), "No se pudo obtener informacion del anexo", Toast.LENGTH_LONG, true).show();
+            Toasty.error(requireActivity(), "No se pudo obtener información del anexo", Toast.LENGTH_LONG, true).show();
         }
 
 
@@ -356,7 +472,7 @@ public class FragmentChecklistAplicacionHormonas extends Fragment {
 
                 if ((!rbtn_activo.isChecked() && !rbtn_pendiente.isChecked()) || et_apellido.getText().toString().isEmpty()) {
                     Toasty.error(requireActivity(),
-                            "Debes seleccionar un estado e ingresar una descripcion",
+                            "Debes seleccionar un estado e ingresar una descripción",
                             Toast.LENGTH_LONG, true).show();
                     return;
                 }
@@ -415,19 +531,24 @@ public class FragmentChecklistAplicacionHormonas extends Fragment {
             sp_n_aplicacion.setSelection(chk_n_aplicacion.indexOf(checklist.getN_de_aplicacion()));
         }
 
-        if (checklist.getFirma_responsable_ap_hormonas() != null && !checklist.getFirma_responsable_ap_hormonas().isEmpty()) {
-            btn_firma_responsable.setEnabled(false);
-            check_firma_responsable.setVisibility(View.VISIBLE);
+//        if (checklist.getFirma_responsable_ap_hormonas() != null && !checklist.getFirma_responsable_ap_hormonas().isEmpty()) {
+//            btn_firma_responsable.setEnabled(false);
+//            check_firma_responsable.setVisibility(View.VISIBLE);
+//
+//        }
 
-        }
-
-        if (checklist.getFirma_prestador_servicio_ap_hormonas() != null && !checklist.getFirma_prestador_servicio_ap_hormonas().isEmpty()) {
-            btn_firma_prestador_servicio.setEnabled(false);
-            check_firma_prestador_servicio.setVisibility(View.VISIBLE);
-        }
+//        if (checklist.getFirma_prestador_servicio_ap_hormonas() != null && !checklist.getFirma_prestador_servicio_ap_hormonas().isEmpty()) {
+//            btn_firma_prestador_servicio.setEnabled(false);
+//            check_firma_prestador_servicio.setVisibility(View.VISIBLE);
+//        }
     }
 
     private boolean onSave(int state, String apellido) {
+
+
+        String alfaNumerico = getResources().getString(R.string.alfanumericos_con_signos);
+
+        et_observacion.setText(Utilidades.sanitizarString(et_observacion.getText().toString(), alfaNumerico));
 
 
         ExecutorService executor = Executors.newSingleThreadExecutor();

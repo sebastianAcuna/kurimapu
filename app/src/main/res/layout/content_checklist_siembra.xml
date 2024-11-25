@@ -196,6 +196,7 @@
                 android:layout_weight="1.1"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small"
+                android:digits="@string/alfanumericos_sin_signos"
                 android:drawableStart="@drawable/ic_person"
                 android:drawableTint="@color/colorSecondaryVariant" />
         </LinearLayout>
@@ -250,6 +251,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
                 android:layout_height="wrap_content"
+                android:digits="@string/alfanumericos_sin_signos"
                 android:layout_marginTop="@dimen/padding_small" />
         </LinearLayout>
 
@@ -275,7 +277,6 @@
                 android:id="@+id/et_fecha_siembra"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
                 android:layout_weight="1.1"
                 android:inputType="date"
                 android:maxLines="1"
@@ -366,6 +367,8 @@
                 android:id="@+id/et_linea"
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
+                android:inputType="text"
+                android:digits="@string/alfanumericos_sin_signos"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small" />
         </LinearLayout>
@@ -505,6 +508,8 @@
                 android:id="@+id/et_registro_anpros"
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
+                android:inputType="text"
+                android:digits="@string/alfanumericos_sin_signos"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small" />
         </LinearLayout>
@@ -899,7 +904,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
+                android:inputType="text"
+                android:digits="@string/alfanumericos_sin_signos"
                 android:layout_marginTop="@dimen/padding_small" />
         </LinearLayout>
 
@@ -1894,6 +1900,7 @@
                 android:id="@+id/et_kg_mezcla"
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
+                android:inputType="numberDecimal"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small" />
         </LinearLayout>
@@ -2025,6 +2032,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
                 android:layout_height="wrap_content"
+                android:inputType="text"
+                android:digits="@string/alfanumericos_sin_signos"
                 android:layout_marginTop="@dimen/padding_small" />
         </LinearLayout>
 
@@ -2050,6 +2059,8 @@
                 android:id="@+id/et_sistema_fertilizacion"
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
+                android:inputType="text"
+                android:digits="@string/alfanumericos_sin_signos"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small" />
         </LinearLayout>

@@ -44,7 +44,6 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row = inflater.inflate(resourceId, parent, false);
         TextView titulo = row.findViewById(R.id.titulo);
-//        titulo.setTextSize(10);
         Log.e("ACAAAAAA ", objects.get(position));
         titulo.setText(objects.get(position));
         return row;
