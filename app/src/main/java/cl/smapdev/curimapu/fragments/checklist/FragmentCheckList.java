@@ -36,6 +36,7 @@ import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.tablas.CheckListDetails;
+import cl.smapdev.curimapu.clases.tablas.CheckListGuiaInterna;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguing;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalleFechas;
@@ -119,15 +120,18 @@ public class FragmentCheckList extends Fragment {
 
                 Future<List<CheckListRoguing>> chkRoguing = executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync());
 
+                Future<List<CheckListGuiaInterna>> chkGuiaInterna = executorService.submit(() -> MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaToSync());
+
 
                 try {
 
                     List<CheckListSiembra> chk = chkF.get();
                     List<CheckListAplicacionHormonas> chkA = chkApHor.get();
                     List<CheckListRoguing> chkR = chkRoguing.get();
+                    List<CheckListGuiaInterna> chkG = chkGuiaInterna.get();
 
 
-                    if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty()) {
+                    if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty() && chkG.isEmpty()) {
                         executorService.shutdown();
                         Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                         return true;
@@ -141,6 +145,10 @@ public class FragmentCheckList extends Fragment {
 
                     if (!chk.isEmpty()) {
                         chkS.setCheckListSiembras(chk);
+                    }
+
+                    if (!chkG.isEmpty()) {
+                        chkS.setCheckListGuiaInternas(chkG);
                     }
 
                     if (!chkR.isEmpty()) {
@@ -319,6 +327,50 @@ public class FragmentCheckList extends Fragment {
         return chkSiembra;
     }
 
+    private CheckLists getCheckListGuiaInterna(ExecutorService ex) {
+
+        CheckLists chkSiembra = new CheckLists();
+        chkSiembra.setDescCheckList("CHECK LIST GUIA INTERNA");
+        chkSiembra.setIdAnexo(Integer.parseInt(anexoCompleto
+                .getAnexoContrato().getId_anexo_contrato()));
+        chkSiembra.setExpanded(false);
+        chkSiembra.setTipoCheckList(Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA);
+
+        List<CheckListGuiaInterna> cl;
+        Future<List<CheckListGuiaInterna>> clFuture =
+                ex.submit(() -> MainActivity.myAppDB
+                        .DaoCLGuiaInterna().getAllClGuiaInternaByAc(chkSiembra.getIdAnexo()));
+
+        try {
+
+            cl = clFuture.get();
+            if (!cl.isEmpty()) {
+                List<CheckListDetails> nested = new ArrayList<>();
+                for (CheckListGuiaInterna cli : cl) {
+                    CheckListDetails tmp = new CheckListDetails();
+                    tmp.setDescription(cli.getApellido_checklist());
+                    tmp.setUploaded((cli.getEstado_sincronizacion() > 0));
+                    tmp.setId(cli.getId_cl_guia_interna());
+                    tmp.setIdAnexo(cli.getId_ac_cl_guia_interna());
+                    tmp.setEstado(cli.getEstado_documento());
+                    tmp.setClave_unica(cli.getClave_unica());
+                    tmp.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA);
+                    tmp.setDescEstado((cli.getEstado_documento() <= 0) ? "SIN ESTADO" : (cli.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA");
+                    nested.add(tmp);
+                }
+                chkSiembra.setDetails(nested);
+            } else {
+                chkSiembra.setDetails(Collections.emptyList());
+            }
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            chkSiembra.setDetails(Collections.emptyList());
+        }
+        return chkSiembra;
+
+    }
+
 
     private void cargarLista() {
 
@@ -330,6 +382,7 @@ public class FragmentCheckList extends Fragment {
         CheckLists clSiembra = getCheckListSiembra(ex);
         CheckLists clApHormonas = getCheckListAplicacionHormonas(ex);
         CheckLists clRoguing = getCheckListRoguing(ex);
+        CheckLists clGuiaInterna = getCheckListGuiaInterna(ex);
 
 
         ex.shutdown();
@@ -337,6 +390,7 @@ public class FragmentCheckList extends Fragment {
         checkLists.add(clSiembra);
         checkLists.add(clApHormonas);
         checkLists.add(clRoguing);
+        checkLists.add(clGuiaInterna);
 
         LinearLayoutManager lManager = null;
         if (activity != null) {
@@ -353,6 +407,23 @@ public class FragmentCheckList extends Fragment {
                     ExecutorService executorServiceCap = Executors.newSingleThreadExecutor();
 
                     switch (nuevoCheckList.getTipoCheckList()) {
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
+                            try {
+                                executorServiceCap.submit(()
+                                        -> MainActivity.myAppDB.DaoFirmas()
+                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA)
+                                ).get();
+                                executorServiceCap.shutdown();
+                                activity.cambiarFragment(
+                                        new FragmentChecklistGuiaInterna(),
+                                        Utilidades.FRAGMENT_CHECKLIST_GUIA_INTERNA,
+                                        R.anim.slide_in_left, R.anim.slide_out_left
+                                );
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                                executorServiceCap.shutdown();
+                            }
+                            break;
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
                             try {
                                 executorServiceCap.submit(()
@@ -410,6 +481,14 @@ public class FragmentCheckList extends Fragment {
                     Intent i = new Intent(Intent.ACTION_VIEW);
 
                     switch (checkListPDF.getTipoCheckList()) {
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
+                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistGuiaInterna.php?clave_unica=";
+                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                            break;
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
+                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistRevisionFrutos.php?clave_unica=";
+                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                            break;
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS:
                             URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistAplicaHormona.php?clave_unica=";
                             i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
@@ -457,6 +536,30 @@ public class FragmentCheckList extends Fragment {
                             }
 
                             break;
+
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
+                            try {
+                                executorServiceCap.submit(()
+                                        -> MainActivity.myAppDB.DaoFirmas()
+                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA)
+                                ).get();
+
+                                CheckListGuiaInterna cl = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaById(detailsEditar.getId())).get();
+
+                                executorServiceCap.shutdown();
+
+                                activity.cambiarFragment(
+                                        FragmentChecklistGuiaInterna.newInstance(cl),
+                                        Utilidades.FRAGMENT_CHECKLIST_GUIA_INTERNA,
+                                        R.anim.slide_in_left, R.anim.slide_out_left
+                                );
+
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                                executorServiceCap.shutdown();
+                            }
+                            break;
+
 
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
                             try {
@@ -553,6 +656,31 @@ public class FragmentCheckList extends Fragment {
                             }
 
                             break;
+
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
+                            try {
+                                CheckListGuiaInterna cl = executorServiceCap.submit(() ->
+                                        MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaById(detailsSubir.getId(), 0)).get();
+
+                                if (cl == null) {
+                                    executorServiceCap.shutdown();
+                                    Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                                    return;
+                                }
+
+                                CheckListRequest chk = new CheckListRequest();
+                                List<CheckListGuiaInterna> chkList = new ArrayList<>();
+
+                                chkList.add(cl);
+                                chk.setCheckListGuiaInternas(chkList);
+                                prepararSubir(chk);
+                                executorServiceCap.shutdown();
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                                executorServiceCap.shutdown();
+                            }
+                            break;
+
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
                             try {
                                 CheckListSiembra cl = executorServiceCap.submit(() ->

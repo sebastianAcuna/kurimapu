@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.tablas.CheckListGuiaInterna;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 
 public class CheckListRequest {
@@ -25,6 +26,10 @@ public class CheckListRequest {
     private List<CheckListSiembra> checkListSiembras;
 
 
+    @SerializedName("checkListGuiaInterna")
+    private List<CheckListGuiaInterna> checkListGuiaInternas;
+
+
     @SerializedName("checkListAplicacionHormonas")
     private List<CheckListAplicacionHormonas> checkListAplicacionHormonas;
 
@@ -32,6 +37,14 @@ public class CheckListRequest {
     @SerializedName("checkListRoguing")
     private List<CheckListRoguingCompleto> checkListRoguing;
 
+
+    public List<CheckListGuiaInterna> getCheckListGuiaInternas() {
+        return checkListGuiaInternas;
+    }
+
+    public void setCheckListGuiaInternas(List<CheckListGuiaInterna> checkListGuiaInternas) {
+        this.checkListGuiaInternas = checkListGuiaInternas;
+    }
 
     public int getIdDispo() {
         return idDispo;

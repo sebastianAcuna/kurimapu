@@ -2,7 +2,6 @@ package cl.smapdev.curimapu;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -375,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case Utilidades.FRAGMENT_CHECKLIST_ROGUING:
                     case Utilidades.FRAGMENT_CHECKLIST_APLICACION_HORMONAS:
                     case Utilidades.FRAGMENT_CHECKLIST_SIEMBRA:
+                    case Utilidades.FRAGMENT_CHECKLIST_GUIA_INTERNA:
                         cambiarFragment(new FragmentCheckList(), Utilidades.FRAGMENT_CHECKLIST, R.anim.slide_in_right, R.anim.slide_out_right);
                         break;
                     case Utilidades.FRAGMENT_CREA_FICHA:
@@ -405,39 +405,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setView(viewInfalted)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
+                .setPositiveButton("aceptar", (dialogInterface, i) -> {
                 })
-                .setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setNegativeButton("cancelar", (dialog, which) -> {
 
-                    }
                 })
                 .create();
 
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-                Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_right, R.anim.slide_out_right);
-                        cambiarNavigation(R.id.nv_visitas);
-                        builder.dismiss();
-                    }
-                });
-                c.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder.dismiss();
-                    }
-                });
-            }
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
+            b.setOnClickListener(v -> {
+                cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_right, R.anim.slide_out_right);
+                cambiarNavigation(R.id.nv_visitas);
+                builder.dismiss();
+            });
+            c.setOnClickListener(v -> builder.dismiss());
         });
         builder.setCancelable(false);
         builder.show();

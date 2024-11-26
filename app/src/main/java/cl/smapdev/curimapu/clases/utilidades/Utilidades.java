@@ -62,6 +62,7 @@ public class Utilidades {
     public static final String FRAGMENT_CHECKLIST_APLICACION_HORMONAS = "fragment_checklist_aplicacion_hormonas";
     public static final String FRAGMENT_CHECKLIST_ROGUING = "fragment_checklist_roguing";
     public static final String FRAGMENT_CHECKLIST_REVISION_FRUTOS = "fragment_checklist_revision_frutos";
+    public static final String FRAGMENT_CHECKLIST_GUIA_INTERNA = "fragment_checklist_guia_interna";
 
     public static final String affiliate_id = "vb7jbic553ts";
 
@@ -69,6 +70,7 @@ public class Utilidades {
     public static final int TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS = 2;
     public static final int TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS = 3;
     public static final int TIPO_DOCUMENTO_CHECKLIST_ROGUING = 4;
+    public static final int TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA = 5;
 
 
     //    public static final String IP_PRODUCCION = "192.168.1.42";
@@ -117,6 +119,8 @@ public class Utilidades {
     public static final String DIALOG_TAG_FIRMA_AGRICULTOR_REVISION_FRUTOS = "DIALOG_TAG_FIRMA_AGRICULTOR_REVISION_FRUTOS";
     public static final String DIALOG_TAG_ROGUING_DETALLE = "DIALOG_TAG_ROGUING_DETALLE";
     public static final String DIALOG_TAG_ROGUING_DETALLE_FECHA = "DIALOG_TAG_ROGUING_DETALLE_FECHA";
+    public static final String DIALOG_TAG_GUIA_INTERNA_TRANSPORTISTA = "DIALOG_TAG_GUIA_INTERNA_TRANSPORTISTA";
+    public static final String DIALOG_TAG_GUIA_INTERNA_SUPERVISOR = "DIALOG_TAG_GUIA_INTERNA_SUPERVISOR";
     public static final String DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO = "REVISOR_LIMPIEZA_INGRESO";
     public static final String DIALOG_TAG_RESPONSABLE_ASEO_INGRESO = "RESPONSABLE_ASEO_INGRESO";
     public static final String DIALOG_TAG_RESPONSABLE_ASEO_SALIDA = "RESPONSABLE_ASEO_SALIDA";

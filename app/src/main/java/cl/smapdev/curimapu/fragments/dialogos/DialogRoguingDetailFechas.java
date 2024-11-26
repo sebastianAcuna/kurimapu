@@ -327,6 +327,7 @@ public class DialogRoguingDetailFechas extends DialogFragment {
         et_fecha.setInputType(InputType.TYPE_NULL);
         et_fecha.setOnClickListener(view1 -> Utilidades.levantarFecha(et_fecha, requireContext()));
         et_fecha.setOnFocusChangeListener((view1, b) -> {
+            Utilidades.hideKeyboard(activity);
             if (b) Utilidades.levantarFecha(et_fecha, requireContext());
         });
 

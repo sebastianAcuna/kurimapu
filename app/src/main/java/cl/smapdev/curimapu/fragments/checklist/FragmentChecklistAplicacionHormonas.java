@@ -201,10 +201,12 @@ public class FragmentChecklistAplicacionHormonas extends Fragment {
         sp_aplicacion.setAdapter(new SpinnerAdapter(requireActivity(), android.R.layout.simple_spinner_item, chk_aplicacion));
         sp_n_aplicacion.setAdapter(new SpinnerAdapter(requireActivity(), android.R.layout.simple_spinner_item, chk_n_aplicacion));
 
+
         et_fecha.setKeyListener(null);
         et_fecha.setInputType(InputType.TYPE_NULL);
         et_fecha.setOnClickListener(view1 -> Utilidades.levantarFecha(et_fecha, requireContext()));
         et_fecha.setOnFocusChangeListener((view1, b) -> {
+            Utilidades.hideKeyboard(activity);
             if (b) Utilidades.levantarFecha(et_fecha, requireContext());
         });
 

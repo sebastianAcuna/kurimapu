@@ -12,6 +12,7 @@ import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.tablas.CheckListGuiaInterna;
 import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
 import cl.smapdev.curimapu.clases.tablas.Comuna;
@@ -63,6 +64,10 @@ public class GsonDescargas {
     @SerializedName("array_checklist_roguing")
     @Embedded
     private List<CheckListRoguingCompleto> checkListRoguingCompletos;
+
+    @SerializedName("array_checklist_guia_interna")
+    @Embedded
+    private List<CheckListGuiaInterna> checkListGuiaInterna;
 
 
     @SerializedName("array_temporada")
@@ -204,6 +209,14 @@ public class GsonDescargas {
     @Embedded
     private List<SitiosNoVisitados> array_sitios_no_visitados;
 
+
+    public List<CheckListGuiaInterna> getCheckListGuiaInterna() {
+        return checkListGuiaInterna;
+    }
+
+    public void setCheckListGuiaInterna(List<CheckListGuiaInterna> checkListGuiaInterna) {
+        this.checkListGuiaInterna = checkListGuiaInterna;
+    }
 
     public List<CheckListRoguingCompleto> getCheckListRoguingCompletos() {
         return checkListRoguingCompletos;

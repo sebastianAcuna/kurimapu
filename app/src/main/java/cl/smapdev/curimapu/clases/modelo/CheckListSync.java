@@ -19,6 +19,7 @@ import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.tablas.CheckListGuiaInterna;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoCabecera;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoDetalle;
@@ -112,6 +113,27 @@ public class CheckListSync {
             checkListRequest.setCheckListSiembras(chkS);
         }
 
+
+        if (checkListRequest.getCheckListGuiaInternas() != null && !checkListRequest.getCheckListGuiaInternas().isEmpty()) {
+            List<CheckListGuiaInterna> cl = new ArrayList<>();
+
+            for (CheckListGuiaInterna completo : checkListRequest.getCheckListGuiaInternas()) {
+                if (completo.getFirma_supervisor() != null &&
+                        !completo.getFirma_supervisor().isEmpty()) {
+                    String stringed = Utilidades.imageToString(completo.getFirma_supervisor());
+                    completo.setStringed_firma_supervisor(stringed.isEmpty() ? "" : stringed);
+                }
+
+                if (completo.getFirma_transportista() != null &&
+                        !completo.getFirma_transportista().isEmpty()) {
+                    String stringed = Utilidades.imageToString(completo.getFirma_transportista());
+                    completo.setStringed_firma_transportista(stringed.isEmpty() ? "" : stringed);
+                }
+                cl.add(completo);
+            }
+
+            checkListRequest.setCheckListGuiaInternas(cl);
+        }
 
         if (checkListRequest.getCheckListRoguing() != null && !checkListRequest.getCheckListRoguing().isEmpty()) {
             List<CheckListRoguingCompleto> ccpl = new ArrayList<>();
@@ -213,6 +235,20 @@ public class CheckListSync {
                             }
                         }
 
+
+                        if (checkListRequest.getCheckListGuiaInternas() != null && !checkListRequest.getCheckListGuiaInternas().isEmpty()) {
+                            for (CheckListGuiaInterna chk : checkListRequest.getCheckListGuiaInternas()) {
+                                chk.setEstado_sincronizacion(1);
+
+                                try {
+                                    executor.submit(() -> MainActivity.myAppDB
+                                            .DaoCLGuiaInterna()
+                                            .updateClGuiaInterna(chk)).get();
+                                } catch (ExecutionException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
 
                         if (checkListRequest.getCheckListAplicacionHormonas() != null
                                 && !checkListRequest.getCheckListAplicacionHormonas().isEmpty()) {

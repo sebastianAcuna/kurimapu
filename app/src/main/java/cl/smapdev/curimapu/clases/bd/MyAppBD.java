@@ -4,6 +4,7 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
 import cl.smapdev.curimapu.clases.bd.daos.DaoAnexosFechas;
+import cl.smapdev.curimapu.clases.bd.daos.DaoCheckGuiaInterna;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListRoguing;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListSiembra;
@@ -20,6 +21,7 @@ import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
+import cl.smapdev.curimapu.clases.tablas.CheckListGuiaInterna;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
@@ -79,7 +81,8 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         PrimeraPrioridad.class, SitiosNoVisitados.class, CheckListCosecha.class, CheckListAplicacionHormonas.class,
         DesplegableNumeroAplicacionHormonas.class, DesplegableAplicacionHormonas.class,
         CheckListRevisionFrutos.class, CheckListRevisionFrutosFotos.class, CheckListRevisionFrutosDetalle.class,
-        CheckListRoguing.class, CheckListRoguingDetalle.class, CheckListRoguingFotoCabecera.class, CheckListRoguingFotoDetalle.class, CheckListRoguingDetalleFechas.class
+        CheckListRoguing.class, CheckListRoguingDetalle.class, CheckListRoguingFotoCabecera.class, CheckListRoguingFotoDetalle.class, CheckListRoguingDetalleFechas.class,
+        CheckListGuiaInterna.class
 }, version = 15)
 public abstract class MyAppBD extends RoomDatabase {
 
@@ -102,6 +105,8 @@ public abstract class MyAppBD extends RoomDatabase {
     public abstract DaoCheckListAplicacionHormonas DaoCLAplicacionHormonas();
 
     public abstract DaoCheckListRoguing DaoCLRoguing();
+
+    public abstract DaoCheckGuiaInterna DaoCLGuiaInterna();
 
 
 }
