@@ -70,6 +70,11 @@ public class GsonDescargas {
     private List<CheckListGuiaInterna> checkListGuiaInterna;
 
 
+    @SerializedName("array_checklist_revision_frutos")
+    @Embedded
+    private List<CheckListRevisionFrutosCompleto> checkListRevisionFrutosCompletos;
+
+
     @SerializedName("array_temporada")
     @Embedded
     private List<Temporada> temporadas;
@@ -209,6 +214,14 @@ public class GsonDescargas {
     @Embedded
     private List<SitiosNoVisitados> array_sitios_no_visitados;
 
+
+    public List<CheckListRevisionFrutosCompleto> getCheckListRevisionFrutosCompletos() {
+        return checkListRevisionFrutosCompletos;
+    }
+
+    public void setCheckListRevisionFrutosCompletos(List<CheckListRevisionFrutosCompleto> checkListRevisionFrutosCompletos) {
+        this.checkListRevisionFrutosCompletos = checkListRevisionFrutosCompletos;
+    }
 
     public List<CheckListGuiaInterna> getCheckListGuiaInterna() {
         return checkListGuiaInterna;

@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRevisionFrutosCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
 import cl.smapdev.curimapu.clases.relaciones.DesplegablesAplicacionHormonaCompleto;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
@@ -21,6 +22,9 @@ import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutos;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguing;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalleFechas;
@@ -162,6 +166,55 @@ public class Descargas {
             }
         } else {
             MainActivity.myAppDB.myDao().deleteProCliMat();
+        }
+
+
+        if (gsonDescargas.getCheckListRevisionFrutosCompletos() != null && !gsonDescargas.getCheckListRevisionFrutosCompletos().isEmpty()) {
+            ExecutorService ex = Executors.newSingleThreadExecutor();
+            try {
+                for (CheckListRevisionFrutosCompleto cp : gsonDescargas.getCheckListRevisionFrutosCompletos()) {
+
+                    for (CheckListRevisionFrutosDetalle cd : cp.getCheckListRevisionFrutosDetalle()) {
+                        CheckListRevisionFrutosDetalle cld = ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnica(cd.getClave_unica_detalle())).get();
+
+                        if (cld != null) {
+                            cd.setEstado_sincronizacion(1);
+                            ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().updateclrevisionFrutosDetalle(cd)).get();
+                        } else {
+                            ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().insertDetallesRevFrutos(cd)).get();
+                        }
+
+                    }
+
+
+                    for (CheckListRevisionFrutosFotos cd : cp.getCheckListRevisionFrutosFotos()) {
+
+                        CheckListRevisionFrutosFotos cld = ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnica(cd.getClave_unica_foto())).get();
+
+                        if (cld != null) {
+                            cd.setEstado_sincronizacion(1);
+                            ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().updateclrevisionFrutosFotos(cd)).get();
+                        } else {
+                            ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().insertFotosRevFrutos(cd)).get();
+                        }
+
+                    }
+
+                    CheckListRevisionFrutos cr = ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosByClaveUnica(cp.getCheckListRevisionFrutos().getClave_unica())).get();
+
+                    if (cr != null) {
+                        cp.getCheckListRevisionFrutos().setEstado_sincronizacion(1);
+                        ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().updateclrevisionFrutos(cp.getCheckListRevisionFrutos())).get();
+                    } else {
+                        ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().insertclrevisionFrutos(cp.getCheckListRevisionFrutos())).get();
+                    }
+                }
+            } catch (ExecutionException | InterruptedException ignored) {
+            } finally {
+                ex.shutdown();
+            }
+
+
         }
 
 

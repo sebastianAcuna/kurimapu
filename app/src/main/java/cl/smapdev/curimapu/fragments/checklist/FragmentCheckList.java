@@ -33,10 +33,14 @@ import cl.smapdev.curimapu.clases.adapters.CheckListAdapter;
 import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRevisionFrutosCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.tablas.CheckListDetails;
 import cl.smapdev.curimapu.clases.tablas.CheckListGuiaInterna;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutos;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguing;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalleFechas;
@@ -123,15 +127,18 @@ public class FragmentCheckList extends Fragment {
                 Future<List<CheckListGuiaInterna>> chkGuiaInterna = executorService.submit(() -> MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaToSync());
 
 
+                Future<List<CheckListRevisionFrutos>> chkRevisionFrutos = executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosToSync());
+
                 try {
 
                     List<CheckListSiembra> chk = chkF.get();
                     List<CheckListAplicacionHormonas> chkA = chkApHor.get();
                     List<CheckListRoguing> chkR = chkRoguing.get();
                     List<CheckListGuiaInterna> chkG = chkGuiaInterna.get();
+                    List<CheckListRevisionFrutos> chRF = chkRevisionFrutos.get();
 
 
-                    if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty() && chkG.isEmpty()) {
+                    if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty() && chkG.isEmpty() && chRF.isEmpty()) {
                         executorService.shutdown();
                         Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                         return true;
@@ -177,6 +184,30 @@ public class FragmentCheckList extends Fragment {
                             clCompletoList.add(clCompleto);
                         }
                         chkS.setCheckListRoguing(clCompletoList);
+                    }
+
+
+                    if (!chRF.isEmpty()) {
+
+                        List<CheckListRevisionFrutosCompleto> chRFCompletoList = new ArrayList<>();
+
+                        for (CheckListRevisionFrutos rf : chRF) {
+                            CheckListRevisionFrutosCompleto rfCompleto = new CheckListRevisionFrutosCompleto();
+
+                            List<CheckListRevisionFrutosDetalle> clrd = executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnicaPadreToSynk(rf.getClave_unica())).get();
+                            List<CheckListRevisionFrutosFotos> clff = executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnicaPadreToSynk(rf.getClave_unica())).get();
+
+
+                            rfCompleto.setCheckListRevisionFrutos(rf);
+                            rfCompleto.setCheckListRevisionFrutosDetalle(clrd);
+                            rfCompleto.setCheckListRevisionFrutosFotos(clff);
+
+                            chRFCompletoList.add(rfCompleto);
+                        }
+
+
+                        chkS.setCheckListRevisionFrutos(chRFCompletoList);
+
                     }
 
 
@@ -238,6 +269,48 @@ public class FragmentCheckList extends Fragment {
         return chkAppHormonas;
     }
 
+    private CheckLists getChecklistRevisionFrutos(ExecutorService ex) {
+
+        CheckLists chkAppHormonas = new CheckLists();
+        chkAppHormonas.setDescCheckList("CHECK LIST REVISION FRUTOS");
+        chkAppHormonas.setIdAnexo(Integer.parseInt(anexoCompleto
+                .getAnexoContrato().getId_anexo_contrato()));
+        chkAppHormonas.setExpanded(false);
+        chkAppHormonas.setTipoCheckList(Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS);
+
+        List<CheckListRevisionFrutos> cl;
+        Future<List<CheckListRevisionFrutos>> clFuture =
+                ex.submit(() -> MainActivity.myAppDB
+                        .DaoCheckListRevisionFrutos().getAllClrevisionFrutosByAc(chkAppHormonas.getIdAnexo()));
+
+        try {
+
+            cl = clFuture.get();
+            if (!cl.isEmpty()) {
+                List<CheckListDetails> nested = new ArrayList<>();
+                for (CheckListRevisionFrutos clApHorm : cl) {
+                    CheckListDetails tmp = new CheckListDetails();
+                    tmp.setDescription(clApHorm.getApellido_checklist());
+                    tmp.setUploaded((clApHorm.getEstado_sincronizacion() > 0));
+                    tmp.setId(clApHorm.getId_cl_revision_frutos());
+                    tmp.setIdAnexo(clApHorm.getId_ac_cl_revision_frutos());
+                    tmp.setEstado(clApHorm.getEstado_documento());
+                    tmp.setClave_unica(clApHorm.getClave_unica());
+                    tmp.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS);
+                    tmp.setDescEstado((clApHorm.getEstado_documento() <= 0) ? "SIN ESTADO" : (clApHorm.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA");
+                    nested.add(tmp);
+                }
+                chkAppHormonas.setDetails(nested);
+            } else {
+                chkAppHormonas.setDetails(Collections.emptyList());
+            }
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            chkAppHormonas.setDetails(Collections.emptyList());
+        }
+        return chkAppHormonas;
+    }
 
     private CheckLists getCheckListRoguing(ExecutorService ex) {
         CheckLists chk = new CheckLists();
@@ -383,6 +456,7 @@ public class FragmentCheckList extends Fragment {
         CheckLists clApHormonas = getCheckListAplicacionHormonas(ex);
         CheckLists clRoguing = getCheckListRoguing(ex);
         CheckLists clGuiaInterna = getCheckListGuiaInterna(ex);
+        CheckLists clRevisionFrutos = getChecklistRevisionFrutos(ex);
 
 
         ex.shutdown();
@@ -391,6 +465,7 @@ public class FragmentCheckList extends Fragment {
         checkLists.add(clApHormonas);
         checkLists.add(clRoguing);
         checkLists.add(clGuiaInterna);
+        checkLists.add(clRevisionFrutos);
 
         LinearLayoutManager lManager = null;
         if (activity != null) {
@@ -407,6 +482,24 @@ public class FragmentCheckList extends Fragment {
                     ExecutorService executorServiceCap = Executors.newSingleThreadExecutor();
 
                     switch (nuevoCheckList.getTipoCheckList()) {
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
+                            try {
+                                executorServiceCap.submit(()
+                                        -> MainActivity.myAppDB.DaoFirmas()
+                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS)
+                                ).get();
+                                executorServiceCap.shutdown();
+                                activity.cambiarFragment(
+                                        new FragmentChecklistRevisionFrutos(),
+                                        Utilidades.FRAGMENT_CHECKLIST_REVISION_FRUTOS,
+                                        R.anim.slide_in_left, R.anim.slide_out_left
+                                );
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                                executorServiceCap.shutdown();
+                            }
+                            break;
+
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
                             try {
                                 executorServiceCap.submit(()
@@ -537,6 +630,29 @@ public class FragmentCheckList extends Fragment {
 
                             break;
 
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
+                            try {
+                                executorServiceCap.submit(()
+                                        -> MainActivity.myAppDB.DaoFirmas()
+                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS)
+                                ).get();
+
+                                CheckListRevisionFrutos cl = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().getclrevisionFrutosById(detailsEditar.getId())).get();
+
+                                executorServiceCap.shutdown();
+
+                                activity.cambiarFragment(
+                                        FragmentChecklistRevisionFrutos.newInstance(cl),
+                                        Utilidades.FRAGMENT_CHECKLIST_REVISION_FRUTOS,
+                                        R.anim.slide_in_left, R.anim.slide_out_left
+                                );
+
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                                executorServiceCap.shutdown();
+                            }
+                            break;
+
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
                             try {
                                 executorServiceCap.submit(()
@@ -611,6 +727,42 @@ public class FragmentCheckList extends Fragment {
                     ExecutorService executorServiceCap = Executors.newSingleThreadExecutor();
 
                     switch (checkListSubir.getTipoCheckList()) {
+
+                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
+
+                            try {
+                                CheckListRevisionFrutos cl = executorServiceCap.submit(() ->
+                                        MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosByIdAndEstado(detailsSubir.getId(), 0)).get();
+
+                                if (cl == null) {
+                                    executorServiceCap.shutdown();
+                                    Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                                    return;
+                                }
+
+                                List<CheckListRevisionFrutosCompleto> chRFCompletoList = new ArrayList<>();
+
+                                CheckListRevisionFrutosCompleto rfCompleto = new CheckListRevisionFrutosCompleto();
+
+                                List<CheckListRevisionFrutosDetalle> clrd = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnicaPadreToSynk(cl.getClave_unica())).get();
+                                List<CheckListRevisionFrutosFotos> clff = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnicaPadreToSynk(cl.getClave_unica())).get();
+
+
+                                rfCompleto.setCheckListRevisionFrutos(cl);
+                                rfCompleto.setCheckListRevisionFrutosDetalle(clrd);
+                                rfCompleto.setCheckListRevisionFrutosFotos(clff);
+
+                                chRFCompletoList.add(rfCompleto);
+
+                                CheckListRequest chk = new CheckListRequest();
+                                chk.setCheckListRevisionFrutos(chRFCompletoList);
+                                prepararSubir(chk);
+                            } catch (ExecutionException | InterruptedException e) {
+                                Toasty.error(activity, e.getMessage(), Toast.LENGTH_SHORT, true).show();
+                            } finally {
+                                executorServiceCap.shutdown();
+                            }
+                            break;
 
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
 

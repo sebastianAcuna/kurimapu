@@ -47,6 +47,7 @@ import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.modelo.RecomendacionesSync;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRevisionFrutosCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
 import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
@@ -56,6 +57,9 @@ import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutos;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguing;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalleFechas;
@@ -286,14 +290,16 @@ public class FragmentPrincipal extends Fragment {
 
         Future<List<CheckListRoguing>> chkRoguing = executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync());
 
+        Future<List<CheckListRevisionFrutos>> chkRevisionFrutos = executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosToSync());
+
         try {
 
             List<CheckListSiembra> chk = chkF.get();
             List<CheckListAplicacionHormonas> chkA = chkApHor.get();
             List<CheckListRoguing> chkR = chkRoguing.get();
+            List<CheckListRevisionFrutos> chRF = chkRevisionFrutos.get();
 
-
-            if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty()) {
+            if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty() && chRF.isEmpty()) {
                 executorService.shutdown();
                 Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 return;
@@ -335,6 +341,30 @@ public class FragmentPrincipal extends Fragment {
                     clCompletoList.add(clCompleto);
                 }
                 chkS.setCheckListRoguing(clCompletoList);
+            }
+
+
+            if (!chRF.isEmpty()) {
+
+                List<CheckListRevisionFrutosCompleto> chRFCompletoList = new ArrayList<>();
+
+                for (CheckListRevisionFrutos rf : chRF) {
+                    CheckListRevisionFrutosCompleto rfCompleto = new CheckListRevisionFrutosCompleto();
+
+                    List<CheckListRevisionFrutosDetalle> clrd = executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnicaPadreToSynk(rf.getClave_unica())).get();
+                    List<CheckListRevisionFrutosFotos> clff = executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnicaPadreToSynk(rf.getClave_unica())).get();
+
+
+                    rfCompleto.setCheckListRevisionFrutos(rf);
+                    rfCompleto.setCheckListRevisionFrutosDetalle(clrd);
+                    rfCompleto.setCheckListRevisionFrutosFotos(clff);
+
+                    chRFCompletoList.add(rfCompleto);
+                }
+
+
+                chkS.setCheckListRevisionFrutos(chRFCompletoList);
+
             }
 
             prepararSubir(chkS);

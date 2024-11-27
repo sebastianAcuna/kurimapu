@@ -27,6 +27,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -121,6 +124,8 @@ public class Utilidades {
     public static final String DIALOG_TAG_ROGUING_DETALLE_FECHA = "DIALOG_TAG_ROGUING_DETALLE_FECHA";
     public static final String DIALOG_TAG_GUIA_INTERNA_TRANSPORTISTA = "DIALOG_TAG_GUIA_INTERNA_TRANSPORTISTA";
     public static final String DIALOG_TAG_GUIA_INTERNA_SUPERVISOR = "DIALOG_TAG_GUIA_INTERNA_SUPERVISOR";
+    public static final String DIALOG_TAG_REVISION_FRUTO_AGRICULTOR = "DIALOG_TAG_REVISION_FRUTO_AGRICULTOR";
+    public static final String DIALOG_TAG_REVISION_FRUTO_DETALLE = "DIALOG_TAG_REVISION_FRUTO_DETALLE";
     public static final String DIALOG_TAG_REVISOR_LIMPIEZA_INGRESO = "REVISOR_LIMPIEZA_INGRESO";
     public static final String DIALOG_TAG_RESPONSABLE_ASEO_INGRESO = "RESPONSABLE_ASEO_INGRESO";
     public static final String DIALOG_TAG_RESPONSABLE_ASEO_SALIDA = "RESPONSABLE_ASEO_SALIDA";
@@ -614,6 +619,24 @@ public class Utilidades {
         }
 
         return valor.substring(0, 2);
+    }
+
+
+    public static String myDecimalFormat(Object obj) {
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+        simbolos.setDecimalSeparator(',');
+        simbolos.setGroupingSeparator('.');
+        DecimalFormat formatoDecimal = new DecimalFormat("#,##0.00", simbolos);
+        return formatoDecimal.format(obj);
+    }
+
+
+    public static String myNumberFormat(Object obj) {
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+        simbolos.setDecimalSeparator(',');
+        simbolos.setGroupingSeparator('.');
+        NumberFormat formatoEntero = new DecimalFormat("#,##0", simbolos);
+        return formatoEntero.format(obj);
     }
 
 }

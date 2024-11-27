@@ -14,12 +14,15 @@ import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRevisionFrutosCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.tablas.CheckListGuiaInterna;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoCabecera;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoDetalle;
@@ -178,6 +181,7 @@ public class CheckListSync {
 
         }
 
+
         try {
             Config config = configFuture.get();
             checkListRequest.setIdDispo(config.getId());
@@ -207,6 +211,41 @@ public class CheckListSync {
                             pd.dismiss();
                             executor.shutdown();
                             return;
+                        }
+
+                        if (checkListRequest.getCheckListRevisionFrutos() != null && !checkListRequest.getCheckListRevisionFrutos().isEmpty()) {
+
+                            for (CheckListRevisionFrutosCompleto chk : checkListRequest.getCheckListRevisionFrutos()) {
+                                chk.getCheckListRevisionFrutos().setEstado_sincronizacion(1);
+
+                                for (CheckListRevisionFrutosDetalle c : chk.getCheckListRevisionFrutosDetalle()) {
+                                    c.setEstado_sincronizacion(1);
+                                    try {
+                                        executor.submit(() -> MainActivity.myAppDB
+                                                .DaoCheckListRevisionFrutos()
+                                                .updateclrevisionFrutosDetalle(c)).get();
+                                    } catch (ExecutionException | InterruptedException e) {
+                                    }
+                                }
+
+                                for (CheckListRevisionFrutosFotos c : chk.getCheckListRevisionFrutosFotos()) {
+                                    c.setEstado_sincronizacion(1);
+                                    try {
+                                        executor.submit(() -> MainActivity.myAppDB
+                                                .DaoCheckListRevisionFrutos()
+                                                .updateclrevisionFrutosFotos(c)).get();
+                                    } catch (ExecutionException | InterruptedException e) {
+                                    }
+                                }
+
+                                try {
+                                    executor.submit(() -> MainActivity.myAppDB
+                                            .DaoCheckListRevisionFrutos()
+                                            .updateclrevisionFrutos(chk.getCheckListRevisionFrutos())).get();
+                                } catch (ExecutionException | InterruptedException e) {
+                                }
+
+                            }
                         }
 
 

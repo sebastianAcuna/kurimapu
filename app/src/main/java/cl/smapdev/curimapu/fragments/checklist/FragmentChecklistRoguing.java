@@ -35,8 +35,6 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -212,7 +210,6 @@ public class FragmentChecklistRoguing extends Fragment {
         rv_roguing_anteriores.setHasFixedSize(true);
         rv_roguing_anteriores.setLayoutManager(lManagerH);
 
-
         String clave = checklist.getClave_unica();
 
         List<CheckListRoguingDetalleFechas> myImageLis = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinal(clave);
@@ -277,13 +274,9 @@ public class FragmentChecklistRoguing extends Fragment {
         double porcentaje_m = (totalM) / ((macho1 + macho2 + macho3) * Double.parseDouble(anexoCompleto.getAnexoContrato().getHas_contrato()));
         double porcentaje_h = (totalM) / ((hembra) * Double.parseDouble(anexoCompleto.getAnexoContrato().getHas_contrato()));
 
-        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
-        simbolos.setDecimalSeparator(',');
-        simbolos.setGroupingSeparator('.');
-        DecimalFormat formato = new DecimalFormat("#,##0.00", simbolos);
 
-        tv_total_offtype_m_percent.setText(formato.format(porcentaje_m * 100));
-        tv_total_offtype_h_percent.setText(formato.format(porcentaje_h * 100));
+        tv_total_offtype_m_percent.setText(Utilidades.myDecimalFormat(porcentaje_m * 100));
+        tv_total_offtype_h_percent.setText(Utilidades.myDecimalFormat(porcentaje_h * 100));
 
 
         container_roguing_resumen.setVisibility(myImageLis.isEmpty() ? View.GONE : View.VISIBLE);

@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase;
 import cl.smapdev.curimapu.clases.bd.daos.DaoAnexosFechas;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckGuiaInterna;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListRevisionFrutos;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListRoguing;
 import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListSiembra;
 import cl.smapdev.curimapu.clases.bd.daos.DaoDesplegables;
@@ -107,6 +108,8 @@ public abstract class MyAppBD extends RoomDatabase {
     public abstract DaoCheckListRoguing DaoCLRoguing();
 
     public abstract DaoCheckGuiaInterna DaoCLGuiaInterna();
+
+    public abstract DaoCheckListRevisionFrutos DaoCheckListRevisionFrutos();
 
 
 }

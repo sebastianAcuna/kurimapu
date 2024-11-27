@@ -37,6 +37,17 @@ public class CheckListRequest {
     @SerializedName("checkListRoguing")
     private List<CheckListRoguingCompleto> checkListRoguing;
 
+    @SerializedName("checkListRevisionFrutos")
+    private List<CheckListRevisionFrutosCompleto> checkListRevisionFrutos;
+
+
+    public List<CheckListRevisionFrutosCompleto> getCheckListRevisionFrutos() {
+        return checkListRevisionFrutos;
+    }
+
+    public void setCheckListRevisionFrutos(List<CheckListRevisionFrutosCompleto> checkListRevisionFrutos) {
+        this.checkListRevisionFrutos = checkListRevisionFrutos;
+    }
 
     public List<CheckListGuiaInterna> getCheckListGuiaInternas() {
         return checkListGuiaInternas;

@@ -71,7 +71,14 @@ public class CheckListRoguingDetailFechaAdapter extends RecyclerView.Adapter<Che
         holder.rv_listado_detalle.setLayoutManager(lm);
         holder.rv_listado_detalle.setAdapter(nested);
 
+
+        holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
         holder.contenedor_adapter.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
+        holder.tv_fecha.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
+        holder.tv_est_feno.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
+        holder.rv_listado_detalle.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
+
+
         holder.itemView.setOnLongClickListener(v -> {
             itemLongClickListener.onItemLongClick(fechas.getFecha());
             return true;
