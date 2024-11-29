@@ -1144,8 +1144,8 @@ public class FragmentPrincipal extends Fragment {
             List<String> GraficosADescargar = new ArrayList<>();
             for (AnexoContrato anexo : anexList) {
                 if (anexo.getImagen_grafico() != null && !anexo.getImagen_grafico().isEmpty()) {
-                    String imgUrl = Utilidades.URL_SERVER_API + "/../curimapu_docum/imagen_graficos/" + anexo.getImagen_grafico();
-                    GraficosADescargar.add(imgUrl);
+//                    String imgUrl = Utilidades.URL_SERVER_API + "/../curimapu_docum/imagen_graficos/" + anexo.getImagen_grafico();
+                    GraficosADescargar.add(anexo.getImagen_grafico());
                 }
             }
             if (GraficosADescargar.isEmpty() && dialogFiles.isShowing()) {
@@ -1205,9 +1205,8 @@ public class FragmentPrincipal extends Fragment {
 
             List<String> GraficosADescargar = new ArrayList<>();
             for (AnexoVilab avilab : vilabList) {
-                if (avilab.getNombre_imagen() != null && !avilab.getNombre_imagen().isEmpty()) {
-                    String imgUrl = Utilidades.URL_SERVER_API + "/../curimapu_docum/image_geos/" + avilab.getNombre_imagen();
-                    GraficosADescargar.add(imgUrl);
+                if (avilab.getRuta_img_vilab() != null && !avilab.getRuta_img_vilab().isEmpty()) {
+                    GraficosADescargar.add(avilab.getRuta_img_vilab());
                 }
             }
 

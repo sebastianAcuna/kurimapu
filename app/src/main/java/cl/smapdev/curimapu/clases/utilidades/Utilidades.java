@@ -49,7 +49,7 @@ import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
 
 public class Utilidades {
 
-    public static final String APPLICATION_VERSION = "4.4.0005";
+    public static final String APPLICATION_VERSION = "5.4.0005";
 
     public static final String FRAGMENT_INICIO = "fragmental_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -94,7 +94,7 @@ public class Utilidades {
     public static final String KEY_EXPORT = "9aB4c5D7eF";
     //    public static final String IP_PRODUCCION = "192.168.1.42";
     public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
-    //    public static final String IP_PRODUCCION = "curiexport.pruebas-erp.cl";
+    //public static final String IP_PRODUCCION = "curiexport.pruebas-erp.cl";
     public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
 //    public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu";
 
@@ -632,7 +632,8 @@ public class Utilidades {
             return splitted[0].charAt(0) + splitted[1].substring(0, 1);
         }
 
-        return valor.substring(0, 2);
+        if (valor.length() > 1) return valor.substring(0, 2);
+        return valor.substring(0, 1);
     }
 
 

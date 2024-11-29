@@ -5,12 +5,8 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +20,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -55,13 +48,10 @@ import cl.smapdev.curimapu.clases.tablas.AnexoVilab;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.WeatherApi;
 import cl.smapdev.curimapu.clases.tablas.WeatherApiStatus;
-import cl.smapdev.curimapu.clases.tablas.WeatherUnits;
-import cl.smapdev.curimapu.clases.tablas.WeatherWind;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentContratos;
 import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
-import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
 import cl.smapdev.curimapu.fragments.estacion_floracion.FragmentListaEstacionFloracion;
 import cl.smapdev.curimapu.fragments.muestra_humedad.FragmentListaMuestraHumedad;
 import es.dmoral.toasty.Toasty;
@@ -69,7 +59,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FragmentListVisits extends Fragment  {
+public class FragmentListVisits extends Fragment {
 
     private SharedPreferences prefs;
     private MainActivity activity;
@@ -101,12 +91,12 @@ public class FragmentListVisits extends Fragment  {
 
         activity = (MainActivity) getActivity();
 
-        if (activity != null){
+        if (activity != null) {
             prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
         }
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<List<VisitasCompletas>>  futureVisitas = executor.submit(() ->
+        Future<List<VisitasCompletas>> futureVisitas = executor.submit(() ->
                 MainActivity
                         .myAppDB
                         .myDao()
@@ -194,16 +184,15 @@ public class FragmentListVisits extends Fragment  {
         cargarListaGrande();
 
 
-
         TextView txt_titulo_selected = view.findViewById(R.id.txt_titulo_selected);
 
         txt_titulo_selected.setText(R.string.visitas_anteriores);
-        txt_titulo_selected.setOnClickListener( view1 -> {
+        txt_titulo_selected.setOnClickListener(view1 -> {
             ic_collapse.setImageDrawable((lista_visitas.getVisibility() == View.VISIBLE)
                     ? getResources().getDrawable(R.drawable.ic_expand_down, activity.getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, activity.getTheme())
             );
-            lista_visitas.setVisibility( (lista_visitas.getVisibility() == View.VISIBLE)
+            lista_visitas.setVisibility((lista_visitas.getVisibility() == View.VISIBLE)
                     ? View.GONE
                     : View.VISIBLE);
         });
@@ -213,13 +202,13 @@ public class FragmentListVisits extends Fragment  {
                     ? getResources().getDrawable(R.drawable.ic_expand_down, activity.getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, activity.getTheme())
             );
-            lista_visitas.setVisibility( (lista_visitas.getVisibility() == View.VISIBLE)
+            lista_visitas.setVisibility((lista_visitas.getVisibility() == View.VISIBLE)
                     ? View.GONE
                     : View.VISIBLE);
         });
 
 
-        if(anexoContrato != null){
+        if (anexoContrato != null) {
             btn_nueva_visita.setOnClickListener(view1 -> nuevaVisita(anexoContrato));
         }
 
@@ -229,7 +218,7 @@ public class FragmentListVisits extends Fragment  {
             activity.cambiarFragment(
                     new FragmentCheckList(),
                     Utilidades.FRAGMENT_CHECKLIST,
-                    R.anim.slide_in_left,R.anim.slide_out_left
+                    R.anim.slide_in_left, R.anim.slide_out_left
             );
         });
 
@@ -238,7 +227,7 @@ public class FragmentListVisits extends Fragment  {
             activity.cambiarFragment(
                     new FragmentListaEstacionFloracion(),
                     Utilidades.FRAGMENT_ESTACION_FLORACION,
-                    R.anim.slide_in_left,R.anim.slide_out_left
+                    R.anim.slide_in_left, R.anim.slide_out_left
             );
         });
 
@@ -247,15 +236,14 @@ public class FragmentListVisits extends Fragment  {
             activity.cambiarFragment(
                     new FragmentListaMuestraHumedad(),
                     Utilidades.FRAGMENT_MUESTRA_HUMEDAD,
-                    R.anim.slide_in_left,R.anim.slide_out_left
+                    R.anim.slide_in_left, R.anim.slide_out_left
             );
         });
 
 
-
         LinearLayoutManager lManagerVisitas = null;
-        if (activity != null){
-            lManagerVisitas  = new LinearLayoutManager(
+        if (activity != null) {
+            lManagerVisitas = new LinearLayoutManager(
                     activity,
                     LinearLayoutManager.HORIZONTAL,
                     false
@@ -265,17 +253,16 @@ public class FragmentListVisits extends Fragment  {
         weather_list.setLayoutManager(lManagerVisitas);
 
 
-
     }
 
 
-    private void cargarListaGrande(){
+    private void cargarListaGrande() {
         LinearLayoutManager lManagerVisitas = null;
-        if (activity != null){
-            lManagerVisitas  = new LinearLayoutManager(
-                activity,
-                LinearLayoutManager.VERTICAL,
-                false
+        if (activity != null) {
+            lManagerVisitas = new LinearLayoutManager(
+                    activity,
+                    LinearLayoutManager.VERTICAL,
+                    false
             );
         }
         lista_visitas.setHasFixedSize(true);
@@ -285,17 +272,17 @@ public class FragmentListVisits extends Fragment  {
         VisitasListAdapter visitasListAdapter = new VisitasListAdapter(
                 visitasCompletas,
                 (view, fichas) ->
-                    showAlertForEdit(fichas), (view, fichas) ->
-                    avisoActivaFicha(
-                            "Esta a punto de eliminar esta visita para el anexo " +
-                                    fichas.getAnexoCompleto()
-                                            .getAnexoContrato()
-                                            .getAnexo_contrato(),
-                            "esta visita realizada el dia " +
-                                    fichas.getVisitas().getFecha_visita() +
-                                    " se eliminara completamente de la tableta, no se subira a servidor tampoco",
-                            fichas
-                    ),
+                        showAlertForEdit(fichas), (view, fichas) ->
+                avisoActivaFicha(
+                        "Esta a punto de eliminar esta visita para el anexo " +
+                                fichas.getAnexoCompleto()
+                                        .getAnexoContrato()
+                                        .getAnexo_contrato(),
+                        "esta visita realizada el dia " +
+                                fichas.getVisitas().getFecha_visita() +
+                                " se eliminara completamente de la tableta, no se subira a servidor tampoco",
+                        fichas
+                ),
                 activity
         );
         lista_visitas.setAdapter(visitasListAdapter);
@@ -305,13 +292,13 @@ public class FragmentListVisits extends Fragment  {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), (anexoContrato != null) ? " Resumen Anexo "+anexoContrato.getAnexo_contrato() : getResources().getString(R.string.subtitles_visit));
+        if (activity != null) {
+            activity.updateView(getResources().getString(R.string.app_name), (anexoContrato != null) ? " Resumen Anexo " + anexoContrato.getAnexo_contrato() : getResources().getString(R.string.subtitles_visit));
         }
     }
 
 
-    public void nuevaVisita (AnexoContrato anexo) {
+    public void nuevaVisita(AnexoContrato anexo) {
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
@@ -320,24 +307,24 @@ public class FragmentListVisits extends Fragment  {
             MainActivity.myAppDB.myDao().deleteDetalleVacios();
 
             List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
-            if (fotos.size() > 0){
-                for (Fotos fts : fotos){
-                    try{
+            if (fotos.size() > 0) {
+                for (Fotos fts : fotos) {
+                    try {
                         File file = new File(fts.getRuta());
                         if (file.exists()) {
                             boolean eliminado = file.delete();
-                            if (eliminado){
+                            if (eliminado) {
                                 MainActivity.myAppDB.myDao().deleteFotos(fts);
                             }
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Log.e("ERROR DELETING", Objects.requireNonNull(e.getMessage()));
                     }
                 }
             }
         });
 
-        if (prefs != null){
+        if (prefs != null) {
             prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, anexo.getId_ficha_contrato()).apply();
             prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, anexo.getId_especie_anexo()).apply();
             prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, anexo.getId_anexo_contrato()).apply();
@@ -345,7 +332,7 @@ public class FragmentListVisits extends Fragment  {
             prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
         }
 
-        activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left,R.anim.slide_out_left);
+        activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
 
     }
 
@@ -354,45 +341,45 @@ public class FragmentListVisits extends Fragment  {
     public void onResume() {
         super.onResume();
 
-        if(anexoContrato != null){
+        if (anexoContrato != null) {
             ExecutorService executor = Executors.newSingleThreadExecutor();
 
             Future<AnexoCompleto> anexoCompletoFuture = executor.submit(() ->
                     MainActivity
                             .myAppDB
                             .myDao()
-                            .getAnexoCompletoById(anexoContrato.getId_anexo_contrato()) );
+                            .getAnexoCompletoById(anexoContrato.getId_anexo_contrato()));
 
 
             try {
                 AnexoCompleto anexoCompleto = anexoCompletoFuture.get();
-                if(anexoCompleto != null && anexoCompleto.getComuna() != null && anexoCompleto.getComuna().getId_api() != null ){
+                if (anexoCompleto != null && anexoCompleto.getComuna() != null && anexoCompleto.getComuna().getId_api() != null) {
 
                     lbl_titulo_comuna.setText(anexoCompleto.getComuna().getDesc_comuna());
 
                     WeatherApiRequest weatherApiRequest = new WeatherApiRequest(anexoCompleto.getComuna().getId_api());
-                    Call<WeatherApiStatus> call =  weatherApiRequest.obtenerData();
+                    Call<WeatherApiStatus> call = weatherApiRequest.obtenerData();
                     call.enqueue(new Callback<WeatherApiStatus>() {
                         @Override
                         public void onResponse(@NonNull Call<WeatherApiStatus> call, @NonNull Response<WeatherApiStatus> response) {
 
-                            if(response.errorBody() != null){
+                            if (response.errorBody() != null) {
                                 Toasty.error(requireActivity(),
                                         "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
                                 return;
                             }
 
-                            if(response.code() == 200 && response.isSuccessful()){
+                            if (response.code() == 200 && response.isSuccessful()) {
 
                                 WeatherApiStatus status = response.body();
 
-                                if(status == null ){
+                                if (status == null) {
                                     Toasty.error(requireActivity(),
                                             "Respuesta nula", Toast.LENGTH_LONG, true).show();
                                     return;
                                 }
 
-                                if(status.getStatus() != 0){
+                                if (status.getStatus() != 0) {
                                     Toasty.error(requireActivity(),
                                             "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
                                     return;
@@ -424,24 +411,24 @@ public class FragmentListVisits extends Fragment  {
 
                 }
 
-                if(anexoCompleto != null){
-                    AnexoVilab vilab = executor.submit(()-> MainActivity.myAppDB.DaoVilab().getVilabByAc(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()))).get();
-                    if(vilab != null){
+                if (anexoCompleto != null) {
+                    AnexoVilab vilab = executor.submit(() -> MainActivity.myAppDB.DaoVilab().getVilabByAc(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()))).get();
+                    if (vilab != null) {
                         String ndvi = (vilab.promedio_vilab == null) ? "n/a" : vilab.promedio_vilab;
                         contenedor_vilab.setVisibility(View.VISIBLE);
-                        Picasso.get().load("file://"+requireActivity().getFilesDir()+"/imagenes_vilab/"+vilab.nombre_imagen).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_vilab);
-                        indicador_ndvi.setText("NDVI: "+ndvi);
-                        fecha_ndvi.setText("Fecha: "+vilab.fecha_imagen_ndvi);
+                        Picasso.get().load("file://" + requireActivity().getFilesDir() + "/imagenes_vilab/" + vilab.nombre_imagen).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_vilab);
+                        indicador_ndvi.setText("NDVI: " + ndvi);
+                        fecha_ndvi.setText("Fecha: " + vilab.fecha_imagen_ndvi);
                     }
 
-                    Picasso.get().load( "file://"+requireActivity().getFilesDir()+"/imagenes_grafico/"+anexoCompleto.getAnexoContrato().getImagen_grafico()).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_grafico);
+                    Picasso.get().load("file://" + requireActivity().getFilesDir() + "/imagenes_grafico/" + anexoCompleto.getAnexoContrato().getAnexo_contrato() + ".jpg").memoryPolicy(MemoryPolicy.NO_CACHE).into(img_grafico);
                 }
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
                 executor.shutdown();
             }
 
-            if(!executor.isShutdown()){
+            if (!executor.isShutdown()) {
                 executor.shutdown();
             }
 
@@ -455,16 +442,18 @@ public class FragmentListVisits extends Fragment  {
     }
 
 
-    private void showAlertForEdit(final VisitasCompletas visitasCompletas){
-        View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_empty,null);
+    private void showAlertForEdit(final VisitasCompletas visitasCompletas) {
+        View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_empty, null);
 
 
         final AlertDialog builder = new AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle(getResources().getString(R.string.atencion))
                 .setMessage(getResources().getString(R.string.mensaje_alerta_editar_visita))
-                .setPositiveButton(getResources().getString(R.string.entiendo), (dialogInterface, i) -> { })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .setPositiveButton(getResources().getString(R.string.entiendo), (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
                 .create();
 
 
@@ -515,17 +504,17 @@ public class FragmentListVisits extends Fragment  {
 
 
                     List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
-                    if (fotos.size() > 0){
-                        for (Fotos fts : fotos){
-                            try{
+                    if (fotos.size() > 0) {
+                        for (Fotos fts : fotos) {
+                            try {
                                 File file = new File(fts.getRuta());
                                 if (file.exists()) {
                                     boolean eliminado = file.delete();
-                                    if (eliminado){
+                                    if (eliminado) {
                                         MainActivity.myAppDB.myDao().deleteFotos(fts);
                                     }
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.e("ERROR DELETING", Objects.requireNonNull(e.getMessage()));
                             }
                         }
@@ -533,17 +522,17 @@ public class FragmentListVisits extends Fragment  {
 
                     activity.runOnUiThread(() -> {
 
-                        if (prefs != null){
+                        if (prefs != null) {
                             prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, visitasCompletas.getAnexoCompleto().getAnexoContrato().getId_ficha_contrato()).apply();
                             prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, visitasCompletas.getVisitas().getId_anexo_visita()).apply();
                             prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, visitasCompletas.getVisitas().getId_visita()).apply();
                         }
 
-                        activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left,R.anim.slide_out_left);
+                        activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
                         builder.dismiss();
                     });
 
-                }catch (SQLiteException e){
+                } catch (SQLiteException e) {
                     Log.e("BD PROBLEM", e.getMessage());
 
                 }
