@@ -276,7 +276,7 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
             FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
             Fragment prev = requireActivity()
                     .getSupportFragmentManager()
-                    .findFragmentByTag(Utilidades.DIALOG_TAG_REVISION_FRUTO_AGRICULTOR);
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_FIRMA_AGRICULTOR_REVISION_FRUTOS);
             if (prev != null) {
                 ft.remove(prev);
             }
@@ -286,7 +286,7 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
             DialogFirma dialogo = DialogFirma.newInstance(
                     Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS,
                     etRA,
-                    Utilidades.DIALOG_TAG_REVISION_FRUTO_AGRICULTOR,
+                    Utilidades.DIALOG_TAG_FIRMA_AGRICULTOR_REVISION_FRUTOS,
                     (isSaved, path) -> {
                         if (isSaved) {
                             check_firma_agricultor.setVisibility(View.VISIBLE);
@@ -294,7 +294,7 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
                     }
             );
 
-            dialogo.show(ft, Utilidades.DIALOG_TAG_FIRMA_RESPONSABLE_AP_HORMONA);
+            dialogo.show(ft, Utilidades.DIALOG_TAG_FIRMA_AGRICULTOR_REVISION_FRUTOS);
         });
 
 

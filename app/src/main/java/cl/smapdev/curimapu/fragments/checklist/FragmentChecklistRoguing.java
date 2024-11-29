@@ -272,7 +272,7 @@ public class FragmentChecklistRoguing extends Fragment {
 
 
         double porcentaje_m = (totalM) / ((macho1 + macho2 + macho3) * Double.parseDouble(anexoCompleto.getAnexoContrato().getHas_contrato()));
-        double porcentaje_h = (totalM) / ((hembra) * Double.parseDouble(anexoCompleto.getAnexoContrato().getHas_contrato()));
+        double porcentaje_h = (totalH) / ((hembra) * Double.parseDouble(anexoCompleto.getAnexoContrato().getHas_contrato()));
 
 
         tv_total_offtype_m_percent.setText(Utilidades.myDecimalFormat(porcentaje_m * 100));

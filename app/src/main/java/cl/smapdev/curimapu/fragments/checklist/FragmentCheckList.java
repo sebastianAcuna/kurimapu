@@ -587,11 +587,11 @@ public class FragmentCheckList extends Fragment {
                             i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
                             break;
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
-                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checkListSiembra.php?clave_unica=";
+                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistSiembra.php?clave_unica=";
                             i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
                             break;
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
-                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checkListRoguing.php?clave_unica=";
+                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistRoguing.php?clave_unica=";
                             i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
                             break;
 

@@ -21,6 +21,7 @@ import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.tablas.CheckListGuiaInterna;
+import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
@@ -182,6 +183,41 @@ public class CheckListSync {
         }
 
 
+        if (checkListRequest.getCheckListRevisionFrutos() != null && !checkListRequest.getCheckListRevisionFrutos().isEmpty()) {
+
+            List<CheckListRevisionFrutosCompleto> ccpl = new ArrayList<>();
+
+            for (CheckListRevisionFrutosCompleto c : checkListRequest.getCheckListRevisionFrutos()) {
+                CheckListRevisionFrutosCompleto ccp = new CheckListRevisionFrutosCompleto();
+
+                CheckListRevisionFrutos chk = c.getCheckListRevisionFrutos();
+                String stringedFirma = Utilidades.imageToString(chk.getFirma_agricultor());
+                chk.setStringed_firma_agricultor(stringedFirma.isEmpty() ? "" : stringedFirma);
+
+                ccp.setCheckListRevisionFrutos(chk);
+                ccp.setCheckListRevisionFrutosDetalle(c.getCheckListRevisionFrutosDetalle());
+
+                if (c.getCheckListRevisionFrutosFotos() != null && !c.getCheckListRevisionFrutosFotos().isEmpty()) {
+                    List<CheckListRevisionFrutosFotos> cab = new ArrayList<>();
+                    for (CheckListRevisionFrutosFotos fc : c.getCheckListRevisionFrutosFotos()) {
+                        if (fc.getRuta_foto() != null && !fc.getRuta_foto().isEmpty()) {
+                            {
+                                String stringed = Utilidades.imageToString(fc.getRuta_foto());
+                                fc.setStriged_foto(stringed.isEmpty() ? "" : stringed);
+                                cab.add(fc);
+                            }
+                        }
+                    }
+                    ccp.setCheckListRevisionFrutosFotos(cab);
+                }
+                ccpl.add(ccp);
+            }
+
+            checkListRequest.setCheckListRevisionFrutos(ccpl);
+
+        }
+
+
         try {
             Config config = configFuture.get();
             checkListRequest.setIdDispo(config.getId());
@@ -218,25 +254,31 @@ public class CheckListSync {
                             for (CheckListRevisionFrutosCompleto chk : checkListRequest.getCheckListRevisionFrutos()) {
                                 chk.getCheckListRevisionFrutos().setEstado_sincronizacion(1);
 
-                                for (CheckListRevisionFrutosDetalle c : chk.getCheckListRevisionFrutosDetalle()) {
-                                    c.setEstado_sincronizacion(1);
-                                    try {
-                                        executor.submit(() -> MainActivity.myAppDB
-                                                .DaoCheckListRevisionFrutos()
-                                                .updateclrevisionFrutosDetalle(c)).get();
-                                    } catch (ExecutionException | InterruptedException e) {
+                                if (chk.getCheckListRevisionFrutosDetalle() != null && !chk.getCheckListRevisionFrutosDetalle().isEmpty()) {
+                                    for (CheckListRevisionFrutosDetalle c : chk.getCheckListRevisionFrutosDetalle()) {
+                                        c.setEstado_sincronizacion(1);
+                                        try {
+                                            executor.submit(() -> MainActivity.myAppDB
+                                                    .DaoCheckListRevisionFrutos()
+                                                    .updateclrevisionFrutosDetalle(c)).get();
+                                        } catch (ExecutionException | InterruptedException e) {
+                                        }
                                     }
                                 }
 
-                                for (CheckListRevisionFrutosFotos c : chk.getCheckListRevisionFrutosFotos()) {
-                                    c.setEstado_sincronizacion(1);
-                                    try {
-                                        executor.submit(() -> MainActivity.myAppDB
-                                                .DaoCheckListRevisionFrutos()
-                                                .updateclrevisionFrutosFotos(c)).get();
-                                    } catch (ExecutionException | InterruptedException e) {
+
+                                if (chk.getCheckListRevisionFrutosFotos() != null && !chk.getCheckListRevisionFrutosFotos().isEmpty()) {
+                                    for (CheckListRevisionFrutosFotos c : chk.getCheckListRevisionFrutosFotos()) {
+                                        c.setEstado_sincronizacion(1);
+                                        try {
+                                            executor.submit(() -> MainActivity.myAppDB
+                                                    .DaoCheckListRevisionFrutos()
+                                                    .updateclrevisionFrutosFotos(c)).get();
+                                        } catch (ExecutionException | InterruptedException e) {
+                                        }
                                     }
                                 }
+
 
                                 try {
                                     executor.submit(() -> MainActivity.myAppDB
