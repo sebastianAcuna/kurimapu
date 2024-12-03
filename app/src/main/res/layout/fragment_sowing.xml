@@ -1,42 +1,50 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:baselineAligned="false"
-    android:id="@+id/container_papu"
-    >
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_weight="0.6"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/relative_constraint_sowing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<?xml version="1.0" encoding="utf-8"?><!--<LinearLayout tools:context=".MainActivity"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools">-->
+
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relative_constraint_sowing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 
-    </ScrollView>
-<!--    <LinearLayout-->
-<!--        android:id="@+id/container_linear_fotos"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_weight="0.4"-->
-<!--        android:orientation="vertical">-->
-<!--&lt;!&ndash;        <FrameLayout-->
-<!--            android:id="@+id/container_fotos_sowing"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            />&ndash;&gt;-->
+    <!--    <LinearLayout-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:padding="@dimen/padding_small"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:gravity="end">-->
 
-<!--    </LinearLayout>-->
+    <!--        <Button-->
+    <!--            android:id="@+id/btn_cancelar"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            style="@style/Widget.MaterialComponents.Button.TextButton"-->
+    <!--            android:text="Cancelar" />-->
 
-</LinearLayout>
+    <!--        <Button-->
+    <!--            android:id="@+id/btn_guardar"-->
+    <!--            android:layout_marginLeft="@dimen/padding_small"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+
+    <!--            android:text="Guardar" />-->
+
+    <!--    </LinearLayout>-->
+
+
+    <!--</LinearLayout>-->
+
 
 

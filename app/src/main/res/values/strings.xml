@@ -288,6 +288,9 @@
     </string-array>
 
 
+    <string name="alfanumericos_sin_signos">abcdefghijklmnñopqrstuvwxyzáéíóú ABCDEFGHIJKLMÑOPQRSTUVWXYZÁÉÍÓÚ 0123456789 </string>
+    <string name="alfanumericos_con_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMÑOPQRSTUVWXYZ 0123456789 +-*/= </string>
+
     <string name="title_dialog_fav">¡Atención!</string>
     <string name="message_fav">Se ha marcado como favorita</string>
     <string name="message_fav_remove">Se ha eliminado de favoritos</string>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,10 +8,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:background="@color/colorSurface">
-
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -21,43 +16,12 @@
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/toolbars"
             app:titleTextColor="@color/colorOnSurface"
-            app:subtitleTextColor="@color/colorOnSurface"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:subtitleTextColor="@color/colorOnSurface">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/toolbars"
-            app:tabGravity="fill"
-            android:layout_gravity="top"
-            app:tabMode="fixed"
-            app:tabTextColor="@color/colorOnSurface"
-            app:tabSelectedTextColor="@color/colorSecondaryVariant"
-            app:tabIndicatorColor="@color/colorSecondary"/>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        >
-
-        <cl.smapdev.curimapu.clases.utilidades.CustomViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-        />
-
-<!--        <androidx.viewpager.widget.ViewPager-->
-<!--            android:id="@+id/view_pager"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-
-<!--            />-->
-
-    </LinearLayout>
+    <include layout="@layout/fragment_form_visitas" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

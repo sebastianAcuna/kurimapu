@@ -1,47 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/scrolls"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/padding_small">
-
-
-    <Button
-        android:id="@+id/btn_evaluacion"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_small"
-        android:text="evaluacion"
-        android:textSize="12sp"
-        android:drawableRight="@drawable/ic_star_black_24dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_recomendaciones"
-        />
+        android:padding="@dimen/padding_small">
 
-    <Button
-        android:id="@+id/btn_recomendaciones"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="recomendaciones"
-        android:textSize="11sp"
-        android:layout_margin="@dimen/padding_small"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_evaluacion"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+
+        <Button
+            android:id="@+id/btn_evaluacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
+            android:text="evaluacion"
+            android:textSize="12sp"
+            android:drawableRight="@drawable/ic_star_black_24dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_recomendaciones" />
+
+        <Button
+            android:id="@+id/btn_recomendaciones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="recomendaciones"
+            android:textSize="11sp"
+            android:layout_margin="@dimen/padding_small"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_evaluacion"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-android:visibility="gone"
+            android:visibility="gone"
             android:id="@+id/cl_evaluacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -207,24 +204,24 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:visibility="visible"
-        android:id="@+id/cl_recomendacion"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_recomendaciones">
-
-        <TextView
-            android:id="@+id/tv_titulo_recomendaciones"
+            android:id="@+id/cl_recomendacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/recomendaciones"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/btn_recomendaciones">
+
+            <TextView
+                android:id="@+id/tv_titulo_recomendaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/recomendaciones"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cont_nueva_recom"
@@ -262,8 +259,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:inputType="date"
                 android:maxLength="10"
                 android:layout_marginHorizontal="@dimen/padding"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
 
             <Button
@@ -273,8 +269,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:text="@string/agregar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cont_nueva_recom"
-                app:layout_constraintStart_toEndOf="@id/fecha_plazo"
-                />
+                app:layout_constraintStart_toEndOf="@id/fecha_plazo" />
 
 
             <View
@@ -284,7 +279,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:background="?android:attr/listDivider"
                 app:layout_constraintTop_toBottomOf="@id/btn_add_recom"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent" />
 
 
             <TextView
@@ -298,7 +293,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="@dimen/padding_small"
                 app:layout_constraintEnd_toStartOf="@id/ic_collapse"
-                android:gravity="center"/>
+                android:gravity="center" />
 
 
             <ImageView
@@ -317,11 +312,12 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recom_pendientes"
                 android:layout_width="0dp"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHeight_min="50dp"
+                app:layout_constraintHeight_max="250dp"
                 app:layout_constraintTop_toBottomOf="@id/txt_titulo_pendientes"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/txt_titulo_rechazadas"
@@ -334,7 +330,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="@dimen/padding_small"
                 app:layout_constraintEnd_toStartOf="@id/ic_collapse_rechazo"
-                android:gravity="center"/>
+                android:gravity="center" />
 
 
             <ImageView
@@ -353,12 +349,13 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recom_rechazo"
                 android:layout_width="0dp"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHeight_min="50dp"
+                app:layout_constraintHeight_max="250dp"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/txt_titulo_rechazadas"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/txt_titulo_aprobadas"
@@ -371,7 +368,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="@dimen/padding_small"
                 app:layout_constraintEnd_toStartOf="@id/ic_collapse_aprobada"
-                android:gravity="center"/>
+                android:gravity="center" />
 
 
             <ImageView
@@ -391,30 +388,29 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recom_aprobadas"
                 android:layout_width="0dp"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHeight_min="50dp"
+                app:layout_constraintHeight_max="250dp"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/txt_titulo_aprobadas"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
-            android:id="@+id/btn_cerrar_recomendaciones"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/padding_small"
-            android:layout_marginTop="@dimen/padding_small"
-            android:text="@string/cerrar"
-            app:layout_constraintTop_toBottomOf="@id/rv_recom_aprobadas"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
+            <Button
+                android:id="@+id/btn_cerrar_recomendaciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:layout_marginTop="@dimen/padding_small"
+                android:text="@string/cerrar"
+                app:layout_constraintTop_toBottomOf="@id/rv_recom_aprobadas"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

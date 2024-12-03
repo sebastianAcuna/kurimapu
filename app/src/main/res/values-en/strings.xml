@@ -107,6 +107,10 @@
     </string-array>
 
 
+    <string name="alfanumericos_sin_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMÑOPQRSTUVWXYZ 0123456789 </string>
+    <string name="alfanumericos_con_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMÑOPQRSTUVWXYZ 0123456789 +-*/= </string>
+
+
     <string name="visitas_terminadas">Visit in finished state, you cannot add more photos.</string>
     <!--    Visita en estado terminado, no puedes agregar mas fotos. -->
 

@@ -40,6 +40,10 @@
     <string name="nav_take_pick_roots">Tomar foto raices</string>
 
 
+    <string name="alfanumericos_sin_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMÑOPQRSTUVWXYZ 0123456789 </string>
+    <string name="alfanumericos_con_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMÑOPQRSTUVWXYZ 0123456789 +-*/= </string>
+
+
     <string-array name="desplegable_checklist_1">
         <item>@string/select</item>
         <item>BUENO</item>

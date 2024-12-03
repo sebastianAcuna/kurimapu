@@ -3,19 +3,14 @@ package cl.smapdev.curimapu.fragments.dialogos;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.database.sqlite.SQLiteException;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -28,11 +23,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,22 +32,17 @@ import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.adapters.AnexosAdapter;
 import cl.smapdev.curimapu.clases.adapters.RecomendacionesAdapter;
-import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
-import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
-import cl.smapdev.curimapu.fragments.FragmentContratos;
 import es.dmoral.toasty.Toasty;
-import okhttp3.internal.Util;
 
-public class DialogObservationTodo  extends DialogFragment {
+public class DialogObservationTodo extends DialogFragment {
 
     private AnexoContrato anexoContrato;
     private TempVisitas tempVisitas = null;
@@ -76,12 +63,12 @@ public class DialogObservationTodo  extends DialogFragment {
     private EditText et_nueva_recom, fecha_plazo;
     private Button btn_cerrar_recomendaciones, btn_add_recom;
     private RecyclerView rv_recom_pendientes, rv_recom_rechazo, rv_recom_aprobadas;
-    private TextView   txt_titulo_pendientes, txt_titulo_rechazadas,txt_titulo_aprobadas;
-    private ImageView ic_collapse, ic_collapse_rechazo,ic_collapse_aprobada;
+    private TextView txt_titulo_pendientes, txt_titulo_rechazadas, txt_titulo_aprobadas;
+    private ImageView ic_collapse, ic_collapse_rechazo, ic_collapse_aprobada;
 
 
     public interface OnSaveRating {
-        void onFinishSaveRating( TempVisitas tempVisitas );
+        void onFinishSaveRating(TempVisitas tempVisitas);
     }
 
 
@@ -89,17 +76,17 @@ public class DialogObservationTodo  extends DialogFragment {
             AnexoContrato anexoContrato,
             TempVisitas tempVisitas,
             VisitasCompletas visitasCompletas,
-            OnSaveRating onSaveRating){
+            OnSaveRating onSaveRating) {
         DialogObservationTodo frag = new DialogObservationTodo();
 
         frag.setAnexoContrato(anexoContrato);
-        if(tempVisitas != null){
+        if (tempVisitas != null) {
             frag.setTempVisitas(tempVisitas);
         }
-        if(visitasCompletas != null){
+        if (visitasCompletas != null) {
             frag.setVisitasCompletas(visitasCompletas);
         }
-       frag.setOnSaveRating(onSaveRating);
+        frag.setOnSaveRating(onSaveRating);
         return frag;
     }
 
@@ -130,54 +117,54 @@ public class DialogObservationTodo  extends DialogFragment {
         bind(view);
 
 
-        if(this.visitasCompletas == null && this.tempVisitas == null){
+        if (this.visitasCompletas == null && this.tempVisitas == null) {
 
-            cl_evaluacion.setVisibility( View.GONE );
-            cl_recomendacion.setVisibility( View.VISIBLE );
-            btn_evaluacion.setEnabled( false );
+            cl_evaluacion.setVisibility(View.GONE);
+            cl_recomendacion.setVisibility(View.VISIBLE);
+            btn_evaluacion.setEnabled(false);
 
             btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        }else if(this.visitasCompletas == null){
+        } else if (this.visitasCompletas == null) {
             btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             ratingBar.setEnabled(false);
             et_comentario.setEnabled(false);
             btn_guardar_evaluacion.setEnabled(false);
-            cl_evaluacion.setVisibility( View.GONE );
-            cl_recomendacion.setVisibility( View.VISIBLE );
+            cl_evaluacion.setVisibility(View.GONE);
+            cl_recomendacion.setVisibility(View.VISIBLE);
             tv_fecha_rankear.setText("SIN VISITAS PREVIAS REGISTRADAS");
-        }else{
+        } else {
             btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            cl_evaluacion.setVisibility( View.VISIBLE );
-            cl_recomendacion.setVisibility( View.GONE );
+            cl_evaluacion.setVisibility(View.VISIBLE);
+            cl_recomendacion.setVisibility(View.GONE);
             String fecha_last = "Fecha: " + this.visitasCompletas.getVisitas().getFecha_visita() + " " + this.visitasCompletas.getVisitas().getHora_visita();
             tv_fecha_rankear.setText(fecha_last);
             tv_recom_rankear.setText(this.visitasCompletas.getVisitas().getRecomendation_visita());
-            ratingBar.setRating( this.tempVisitas.getEvaluacion());
-            et_comentario.setText( this.tempVisitas.getComentario_evaluacion() );
+            ratingBar.setRating(this.tempVisitas.getEvaluacion());
+            et_comentario.setText(this.tempVisitas.getComentario_evaluacion());
         }
 
 
         btn_recomendaciones.setOnClickListener(view1 -> {
             btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            cl_evaluacion.setVisibility( View.GONE );
-            cl_recomendacion.setVisibility( View.VISIBLE );
+            cl_evaluacion.setVisibility(View.GONE);
+            cl_recomendacion.setVisibility(View.VISIBLE);
         });
 
         btn_evaluacion.setOnClickListener(view1 -> {
             btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            cl_evaluacion.setVisibility( View.VISIBLE );
-            cl_recomendacion.setVisibility( View.GONE );
+            cl_evaluacion.setVisibility(View.VISIBLE);
+            cl_recomendacion.setVisibility(View.GONE);
         });
 
 
-
-
-        fecha_plazo.setOnFocusChangeListener((view1, b) -> {if(b)levantarFecha(fecha_plazo);});
+        fecha_plazo.setOnFocusChangeListener((view1, b) -> {
+            if (b) levantarFecha(fecha_plazo);
+        });
         bringRecoms();
 
         btn_add_recom.setOnClickListener(view1 -> addPendiente());
@@ -195,22 +182,22 @@ public class DialogObservationTodo  extends DialogFragment {
         float rating = ratingBar.getRating();
         String comentario = et_comentario.getText().toString().trim().toLowerCase(Locale.ROOT);
 
-        if(rating <= 0.0 || comentario.isEmpty()){
+        if (rating <= 0.0 || comentario.isEmpty()) {
             Toasty.error(requireActivity(), "Debe evaluar y comentar para guardar", Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        this.tempVisitas.setEvaluacion( rating );
-        this.tempVisitas.setId_evaluacion( this.visitasCompletas.getVisitas().getId_visita());
-        this.tempVisitas.setComentario_evaluacion( comentario );
+        this.tempVisitas.setEvaluacion(rating);
+        this.tempVisitas.setId_evaluacion(this.visitasCompletas.getVisitas().getId_visita());
+        this.tempVisitas.setComentario_evaluacion(comentario);
 
-        ExecutorService executor  = Executors.newSingleThreadExecutor();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
             executor.submit(() -> MainActivity.myAppDB.myDao().updateTempVisitas(this.tempVisitas)).get();
             Toasty.success(requireActivity(), "Evaluacion guardada temporalmente, no olvide guardar la visita para confirmar los cambios.", Toast.LENGTH_LONG, true).show();
             this.onSaveRating.onFinishSaveRating(this.tempVisitas);
             Dialog dialog = getDialog();
-            if (dialog != null){
+            if (dialog != null) {
                 getDialog().dismiss();
             }
         } catch (ExecutionException | InterruptedException e) {
@@ -220,67 +207,69 @@ public class DialogObservationTodo  extends DialogFragment {
     }
 
 
-    private void ocultarListas(){
-        txt_titulo_aprobadas.setOnClickListener( view1 -> {
+    private void ocultarListas() {
+        txt_titulo_aprobadas.setOnClickListener(view1 -> {
             ic_collapse_aprobada.setImageDrawable((rv_recom_aprobadas.getVisibility() == View.VISIBLE)
                     ? getResources().getDrawable(R.drawable.ic_expand_down, requireActivity().getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, requireActivity().getTheme())
             );
-            rv_recom_aprobadas.setVisibility( (rv_recom_aprobadas.getVisibility() == View.VISIBLE) ? View.GONE  : View.VISIBLE);
+            rv_recom_aprobadas.setVisibility((rv_recom_aprobadas.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
         });
 
-        txt_titulo_pendientes.setOnClickListener( view1 -> {
+        txt_titulo_pendientes.setOnClickListener(view1 -> {
             ic_collapse.setImageDrawable((rv_recom_pendientes.getVisibility() == View.VISIBLE)
                     ? getResources().getDrawable(R.drawable.ic_expand_down, requireActivity().getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, requireActivity().getTheme())
             );
-            rv_recom_pendientes.setVisibility( (rv_recom_pendientes.getVisibility() == View.VISIBLE) ? View.GONE  : View.VISIBLE);
+            rv_recom_pendientes.setVisibility((rv_recom_pendientes.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
         });
 
-        txt_titulo_rechazadas.setOnClickListener( view1 -> {
+        txt_titulo_rechazadas.setOnClickListener(view1 -> {
             ic_collapse_rechazo.setImageDrawable((rv_recom_rechazo.getVisibility() == View.VISIBLE)
                     ? getResources().getDrawable(R.drawable.ic_expand_down, requireActivity().getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, requireActivity().getTheme())
             );
-            rv_recom_rechazo.setVisibility( (rv_recom_rechazo.getVisibility() == View.VISIBLE) ? View.GONE  : View.VISIBLE);
+            rv_recom_rechazo.setVisibility((rv_recom_rechazo.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
         });
 
 
-        ic_collapse_aprobada.setOnClickListener( view1 -> {
+        ic_collapse_aprobada.setOnClickListener(view1 -> {
             ic_collapse_aprobada.setImageDrawable((rv_recom_aprobadas.getVisibility() == View.VISIBLE)
                     ? getResources().getDrawable(R.drawable.ic_expand_down, requireActivity().getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, requireActivity().getTheme())
             );
-            rv_recom_aprobadas.setVisibility( (rv_recom_aprobadas.getVisibility() == View.VISIBLE) ? View.GONE  : View.VISIBLE);
+            rv_recom_aprobadas.setVisibility((rv_recom_aprobadas.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
         });
 
-        ic_collapse.setOnClickListener( view1 -> {
+        ic_collapse.setOnClickListener(view1 -> {
             ic_collapse.setImageDrawable((rv_recom_pendientes.getVisibility() == View.VISIBLE)
                     ? getResources().getDrawable(R.drawable.ic_expand_down, requireActivity().getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, requireActivity().getTheme())
             );
-            rv_recom_pendientes.setVisibility( (rv_recom_pendientes.getVisibility() == View.VISIBLE) ? View.GONE  : View.VISIBLE);
+            rv_recom_pendientes.setVisibility((rv_recom_pendientes.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
         });
 
-        ic_collapse_rechazo.setOnClickListener( view1 -> {
+        ic_collapse_rechazo.setOnClickListener(view1 -> {
             ic_collapse_rechazo.setImageDrawable((rv_recom_rechazo.getVisibility() == View.VISIBLE)
                     ? getResources().getDrawable(R.drawable.ic_expand_down, requireActivity().getTheme())
                     : getResources().getDrawable(R.drawable.ic_expand_up, requireActivity().getTheme())
             );
-            rv_recom_rechazo.setVisibility( (rv_recom_rechazo.getVisibility() == View.VISIBLE) ? View.GONE  : View.VISIBLE);
+            rv_recom_rechazo.setVisibility((rv_recom_rechazo.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
         });
     }
 
-    private void showAlertForAddObsInEvaluacion(Evaluaciones evaluacion, String estado){
-        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_obs,null);
+    private void showAlertForAddObsInEvaluacion(Evaluaciones evaluacion, String estado) {
+        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_obs, null);
 
         EditText txt_obs_recom = viewInfalted.findViewById(R.id.txt_obs_recom);
 
         final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle(getResources().getString(R.string.atencion))
-                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> { })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
                 .create();
 
 
@@ -288,12 +277,12 @@ public class DialogObservationTodo  extends DialogFragment {
             Button b = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
             Button c = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE);
             b.setOnClickListener(view -> {
-                if(txt_obs_recom.getText().toString().trim().isEmpty()){
+                if (txt_obs_recom.getText().toString().trim().isEmpty()) {
                     Toasty.error(requireActivity(), "Debes ingresar una observacion", Toast.LENGTH_LONG, true).show();
                     return;
                 }
-                evaluacion.setObservacion_recom( txt_obs_recom.getText().toString().trim().toLowerCase(Locale.ROOT));
-                cambiarEstadoEvaluacion( evaluacion, estado);
+                evaluacion.setObservacion_recom(txt_obs_recom.getText().toString().trim().toLowerCase(Locale.ROOT));
+                cambiarEstadoEvaluacion(evaluacion, estado);
                 builder.dismiss();
             });
             c.setOnClickListener(view -> builder.dismiss());
@@ -328,9 +317,8 @@ public class DialogObservationTodo  extends DialogFragment {
     }
 
 
-
     private void addPendiente() {
-        if(et_nueva_recom.getText().toString().trim().isEmpty()){
+        if (et_nueva_recom.getText().toString().trim().isEmpty()) {
             Toasty.error(requireActivity(), "Debes ingresar alguna recomendacion", Toast.LENGTH_LONG, true).show();
             return;
         }
@@ -345,8 +333,8 @@ public class DialogObservationTodo  extends DialogFragment {
             usuario = usuarioFuture.get();
 
             claveUnica = config.getId()
-                    +""+config.getId_usuario()
-                    +""+Utilidades.fechaActualConHora()
+                    + "" + config.getId_usuario()
+                    + "" + Utilidades.fechaActualConHora()
                     .replaceAll(" ", "")
                     .replaceAll("-", "")
                     .replaceAll(":", "");
@@ -367,21 +355,20 @@ public class DialogObservationTodo  extends DialogFragment {
         executor.shutdown();
 
 
-
         Evaluaciones eva = new Evaluaciones();
 
 
         eva.setClave_unica_visita(tempVisitas.getClave_unica_visita());
 
-        eva.setObliga_visita( (this.tempVisitas == null) ? 0 : 1);
+        eva.setObliga_visita((this.tempVisitas == null) ? 0 : 1);
 
 
-        eva.setClave_unica_recomendacion( claveUnica );
+        eva.setClave_unica_recomendacion(claveUnica);
         eva.setEstado("P");
         eva.setDescripcion_recom(et_nueva_recom.getText().toString().toLowerCase(Locale.ROOT).trim());
         eva.setFecha_hora_tx(Utilidades.fechaActualConHora());
         eva.setUser_tx((usuario != null) ? usuario.getRut_usuario() : "18.804.066-7");
-        eva.setNombre_crea((usuario != null) ? usuario.getNombre() +" "+ usuario.getApellido_p() : "");
+        eva.setNombre_crea((usuario != null) ? usuario.getNombre() + " " + usuario.getApellido_p() : "");
         eva.setFecha_plazo(fecha_plazo.getText().toString());
         eva.setId_ac(Integer.parseInt(anexoContrato.getId_anexo_contrato()));
 
@@ -390,7 +377,7 @@ public class DialogObservationTodo  extends DialogFragment {
 
         try {
             long insertedId = insertedObs.get();
-            if(insertedId > 0){
+            if (insertedId > 0) {
                 execInsert.shutdown();
                 et_nueva_recom.setText("");
                 fecha_plazo.setText("");
@@ -406,11 +393,11 @@ public class DialogObservationTodo  extends DialogFragment {
     }
 
 
-    public void crearAdaptador( List<Evaluaciones>  evaluaciones, String estado) {
+    public void crearAdaptador(List<Evaluaciones> evaluaciones, String estado) {
 
-        if(estado.equals("R")) {
+        if (estado.equals("R")) {
             LinearLayoutManager lManager = null;
-            lManager  = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
+            lManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
 
             rv_recom_aprobadas.setHasFixedSize(true);
             rv_recom_aprobadas.setLayoutManager(lManager);
@@ -424,9 +411,9 @@ public class DialogObservationTodo  extends DialogFragment {
             rv_recom_aprobadas.setAdapter(recomendacionesAdapterR);
 
         }
-        if(estado.equals("N")) {
+        if (estado.equals("N")) {
             LinearLayoutManager lManager = null;
-            lManager  = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
+            lManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
 
             rv_recom_rechazo.setHasFixedSize(true);
             rv_recom_rechazo.setLayoutManager(lManager);
@@ -439,9 +426,9 @@ public class DialogObservationTodo  extends DialogFragment {
             );
             rv_recom_rechazo.setAdapter(recomendacionesAdapterN);
         }
-        if(estado.equals("P")) {
+        if (estado.equals("P")) {
             LinearLayoutManager lManager = null;
-            lManager  = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
+            lManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
 
             rv_recom_pendientes.setHasFixedSize(true);
             rv_recom_pendientes.setLayoutManager(lManager);
@@ -467,14 +454,14 @@ public class DialogObservationTodo  extends DialogFragment {
             evaluacion.setUser_mod(usuario.getRut_usuario());
 
             claveUnica = config.getId()
-                    +""+config.getId_usuario()
-                    +""+Utilidades.fechaActualConHora()
+                    + "" + config.getId_usuario()
+                    + "" + Utilidades.fechaActualConHora()
                     .replaceAll(" ", "")
                     .replaceAll("-", "")
                     .replaceAll(":", "");
 
 
-            evaluacion.setNombre_mod(usuario.getNombre() +" "+ usuario.getApellido_p());
+            evaluacion.setNombre_mod(usuario.getNombre() + " " + usuario.getApellido_p());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -489,8 +476,8 @@ public class DialogObservationTodo  extends DialogFragment {
         }
         executorUser.shutdown();
 
-        if(evaluacion.getClave_unica_recomendacion() == null ){
-            evaluacion.setClave_unica_recomendacion( claveUnica );
+        if (evaluacion.getClave_unica_recomendacion() == null) {
+            evaluacion.setClave_unica_recomendacion(claveUnica);
         }
         evaluacion.setEstado(nuevoEstado);
         evaluacion.setEstado_server(0);
@@ -500,7 +487,7 @@ public class DialogObservationTodo  extends DialogFragment {
         Future<Integer> affectedRows = executor.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().updateEvaluaciones(evaluacion));
 
         try {
-            if(affectedRows.get() > 0){
+            if (affectedRows.get() > 0) {
                 bringRecoms();
             }
         } catch (ExecutionException | InterruptedException e) {
@@ -514,32 +501,32 @@ public class DialogObservationTodo  extends DialogFragment {
         super.onStart();
 
         Dialog dialog = getDialog();
-        if( dialog != null ){
+        if (dialog != null) {
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
             dialog.getWindow().setLayout(width, height);
 
-            btn_cerrar_recomendaciones.setOnClickListener(view1 ->dialog.dismiss());
+            btn_cerrar_recomendaciones.setOnClickListener(view1 -> dialog.dismiss());
             btn_posponer_evaluacion.setOnClickListener(view -> dialog.dismiss());
         }
 
     }
 
 
-    private void levantarFecha(final EditText edit){
+    private void levantarFecha(final EditText edit) {
 
 
         String fecha = Utilidades.fechaActualSinHora();
         String[] fechaRota;
 
-        if (!TextUtils.isEmpty(edit.getText())){
-            try{
+        if (!TextUtils.isEmpty(edit.getText())) {
+            try {
                 fechaRota = Utilidades.voltearFechaBD(edit.getText().toString()).split("-");
-            }catch (Exception e){
+            } catch (Exception e) {
                 fechaRota = fecha.split("-");
             }
-        }else{
+        } else {
             fechaRota = fecha.split("-");
         }
         DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -570,7 +557,7 @@ public class DialogObservationTodo  extends DialogFragment {
     }
 
 
-    private void bind (View view){
+    private void bind(View view) {
         btn_guardar_evaluacion = view.findViewById(R.id.btn_guardar_evaluacion);
         btn_posponer_evaluacion = view.findViewById(R.id.btn_posponer_evaluacion);
         btn_evaluacion = view.findViewById(R.id.btn_evaluacion);
@@ -597,7 +584,6 @@ public class DialogObservationTodo  extends DialogFragment {
         cl_recomendacion = view.findViewById(R.id.cl_recomendacion);
         fecha_plazo = view.findViewById(R.id.fecha_plazo);
     }
-
 
 
 }

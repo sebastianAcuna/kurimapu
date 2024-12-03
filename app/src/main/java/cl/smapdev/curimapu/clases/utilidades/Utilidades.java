@@ -92,11 +92,10 @@ public class Utilidades {
 
 
     public static final String KEY_EXPORT = "9aB4c5D7eF";
-    //    public static final String IP_PRODUCCION = "192.168.1.42";
-    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
-    //public static final String IP_PRODUCCION = "curiexport.pruebas-erp.cl";
-    public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
-//    public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu";
+    public static final String IP_PRODUCCION = "192.168.1.42";
+    //    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
+//    public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
+    public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu";
 
 
     public static final String FILTRO_TEMPORADA = "filtro_temporada";
@@ -634,6 +633,21 @@ public class Utilidades {
 
         if (valor.length() > 1) return valor.substring(0, 2);
         return valor.substring(0, 1);
+    }
+
+
+    public static String sanitizarString(String texto, String caracteresDisponibles) {
+
+        if (texto.isEmpty()) return texto;
+
+        StringBuilder filteredText = new StringBuilder();
+        for (int i = 0; i < texto.length(); i++) {
+            char currentChar = texto.charAt(i);
+            if (caracteresDisponibles.contains(String.valueOf(currentChar)) || String.valueOf(currentChar).equals("\n")) {
+                filteredText.append(currentChar);
+            }
+        }
+        return filteredText.toString();
     }
 
 

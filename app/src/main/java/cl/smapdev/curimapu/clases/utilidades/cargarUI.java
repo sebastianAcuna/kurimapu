@@ -1,5 +1,7 @@
 package cl.smapdev.curimapu.clases.utilidades;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -24,41 +26,35 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.sqlite.db.SimpleSQLiteQuery;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
 import es.dmoral.toasty.Toasty;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class cargarUI {
 
     static final String COORDENADA = "COORDENADA";
 
-    public static ArrayList<ArrayList> cargarUI(View view, int idConstraint, Activity activity, String idMaterial, int idEtapa, int cliente, ArrayList<ArrayList> all, String temporada){
+    public static ArrayList<ArrayList> cargarUI(View view, int idConstraint, Activity activity, String idMaterial, int idEtapa, int cliente, ArrayList<ArrayList> all, String temporada) {
 
-        ArrayList<Integer> id_generica      = new ArrayList<>();
-        ArrayList<Integer> id_importante    = new ArrayList<>();
-        ArrayList<EditText> editTexts       = new ArrayList<>();
-        ArrayList<TextView> textViews       = new ArrayList<>();
-        ArrayList<RecyclerView> recyclers   = new ArrayList<>();
-        ArrayList<ImageView> images         = new ArrayList<>();
-        ArrayList<ArrayList> genn           = new ArrayList<>();
-        ArrayList<Spinner> spinners         = new ArrayList<>();
-        ArrayList<CheckBox> check           = new ArrayList<>();
+        ArrayList<Integer> id_generica = new ArrayList<>();
+        ArrayList<Integer> id_importante = new ArrayList<>();
+        ArrayList<EditText> editTexts = new ArrayList<>();
+        ArrayList<TextView> textViews = new ArrayList<>();
+        ArrayList<RecyclerView> recyclers = new ArrayList<>();
+        ArrayList<ImageView> images = new ArrayList<>();
+        ArrayList<ArrayList> genn = new ArrayList<>();
+        ArrayList<Spinner> spinners = new ArrayList<>();
+        ArrayList<CheckBox> check = new ArrayList<>();
 
 
         List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByMateriales(idMaterial, idEtapa, cliente, temporada);
 
-        if(list.size() <= 0){
+        if (list.isEmpty()) {
 
             genn.add(id_generica);
             genn.add(id_importante);
@@ -73,7 +69,6 @@ public class cargarUI {
         }
 
 
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
         String ss = prefs.getString("lang", "eng");
 
@@ -83,16 +78,16 @@ public class cargarUI {
         TextView prop = new TextView(new ContextThemeWrapper(activity, R.style.sub_titles_forms), null, 0);
         prop.setId(View.generateViewId());
 
-        if(view.findViewWithTag("PROPERTIES_" + idMaterial + "_" + idEtapa) != null && all.size() > 0){
+        if (view.findViewWithTag("PROPERTIES_" + idMaterial + "_" + idEtapa) != null && !all.isEmpty()) {
 
-            id_generica     = (ArrayList<Integer>) all.get(0);
-            id_importante   = (ArrayList<Integer>) all.get(1);
-            textViews       = (ArrayList<TextView>) all.get(2);
-            editTexts       = (ArrayList<EditText>) all.get(3);
-            recyclers       = (ArrayList<RecyclerView>) all.get(4);
-            images          = (ArrayList<ImageView>) all.get(5);
-            spinners        = (ArrayList<Spinner>) all.get(6);
-            check           = (ArrayList<CheckBox>) all.get(7);
+            id_generica = (ArrayList<Integer>) all.get(0);
+            id_importante = (ArrayList<Integer>) all.get(1);
+            textViews = (ArrayList<TextView>) all.get(2);
+            editTexts = (ArrayList<EditText>) all.get(3);
+            recyclers = (ArrayList<RecyclerView>) all.get(4);
+            images = (ArrayList<ImageView>) all.get(5);
+            spinners = (ArrayList<Spinner>) all.get(6);
+            check = (ArrayList<CheckBox>) all.get(7);
 
             genn.add(id_generica);
             genn.add(id_importante);
@@ -152,9 +147,9 @@ public class cargarUI {
 
 
         for (pro_cli_mat fs : list) {
-            boolean eslista  = false;
-            String nombre =  fs.getNombre_es() + "\n(" +fs.getNombre_en() + ")";
-            String nombreElemento = fs.getNombre_elemento_es()+"\n("+fs.getNombre_elemento_en()+")";
+            boolean eslista = false;
+            String nombre = fs.getNombre_es() + "\n(" + fs.getNombre_en() + ")";
+            String nombreElemento = fs.getNombre_elemento_es() + "\n(" + fs.getNombre_elemento_en() + ")";
 
             if (!titulosUsados.contains(nombre)) {
 
@@ -178,7 +173,7 @@ public class cargarUI {
                 ImageView img = null;
 
 
-                if(fs.getEs_lista() != null && fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")){
+                if (fs.getEs_lista() != null && fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
 
                     img = new ImageView(activity);
                     img.setId(View.generateViewId());
@@ -195,7 +190,7 @@ public class cargarUI {
 
                     img.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_playlist_add_black_24dp));
                     img.setColorFilter(activity.getResources().getColor(R.color.colorSecondary));
-                    img.setPadding(20,0,20,0);
+                    img.setPadding(20, 0, 20, 0);
 
                     constraintLayout.addView(img, cont);
                     cont++;
@@ -211,7 +206,7 @@ public class cargarUI {
                 constraintSet.connect(tvTitle.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
 
 
-                if(fs.getEs_lista() != null && fs.getEs_lista().equals("SI")) {
+                if (fs.getEs_lista() != null && fs.getEs_lista().equals("SI")) {
 
                     if (!fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
                         constraintSet.connect(img.getId(), ConstraintSet.START, tvTitle.getId(), ConstraintSet.END, 0);
@@ -221,29 +216,29 @@ public class cargarUI {
                 }
 
                 constraintSet.applyTo(constraintLayout);
-                if(fs.getEs_lista() != null && fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
+                if (fs.getEs_lista() != null && fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
                     images.add(img);
                 }
 
                 tvOld = tvTitle;
 
-            }else{
-                if(fs.getEs_lista() != null && fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
+            } else {
+                if (fs.getEs_lista() != null && fs.getEs_lista().equals("SI") && !fs.getTipo_cambio().equals("RECYCLER_UNO_TEXTVIEW")) {
                     eslista = true;
                 }
             }
 
 
-            if (eslista){
+            if (eslista) {
 
-                if (!titulosUsadosRecyclers.contains(nombre)){
+                if (!titulosUsadosRecyclers.contains(nombre)) {
                     titulosUsadosRecyclers.add(nombre);
 
                     List<pro_cli_mat> Popr = MainActivity.myAppDB.myDao().getProCliMatByIdProp(fs.getId_prop(), idMaterial, cliente, temporada);
-                    if (Popr.size() > 0){
+                    if (!Popr.isEmpty()) {
                         View tvO = null;
                         int el = 1;
-                        for (pro_cli_mat p : Popr){
+                        for (pro_cli_mat p : Popr) {
 
 
                             TextView textView = new TextView(activity/*new ContextThemeWrapper(activity, R.style.titles_forms), null, 0*/);
@@ -254,8 +249,7 @@ public class cargarUI {
                             textView.setTextColor(activity.getResources().getColor(R.color.colorOnSurface));
 
 
-
-                            textView.setTag("VISTAS_"+p.getId_prop());
+                            textView.setTag("VISTAS_" + p.getId_prop());
                             constraintLayout.addView(textView, cont);
                             cont++;
 
@@ -271,15 +265,15 @@ public class cargarUI {
                             constraintSet.connect(textView.getId(), ConstraintSet.TOP, tvOld.getId(), ConstraintSet.BOTTOM, 0);
 
 
-                            if (tvO != null){
+                            if (tvO != null) {
                                 constraintSet.connect(tvO.getId(), ConstraintSet.END, textView.getId(), ConstraintSet.START, 0);
                                 constraintSet.connect(textView.getId(), ConstraintSet.START, tvO.getId(), ConstraintSet.END, 0);
 
-                            }else{
+                            } else {
                                 constraintSet.connect(textView.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, 0);
                             }
 
-                            if (el == Popr.size()){
+                            if (el == Popr.size()) {
                                 constraintSet.connect(textView.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
                                 tvOld = textView;
                             }
@@ -294,7 +288,7 @@ public class cargarUI {
 
                     RecyclerView tv = new RecyclerView(activity);
                     tv.setId(View.generateViewId());
-                    tv.setTag("lista_"+fs.getId_prop());
+                    tv.setTag("lista_" + fs.getId_prop());
 
 
                     id_generica.add(tv.getId());
@@ -324,7 +318,7 @@ public class cargarUI {
                     eslista = false;
                     tvOld = tv;
                 }
-            }else {
+            } else {
 
                 if (fs.getEs_lista() != null && fs.getEs_lista().equals("NO")) {
 
@@ -371,7 +365,7 @@ public class cargarUI {
 
                     } else {
 
-                        if (fs.getTipo_cambio().equals("SPINNER")){
+                        if (fs.getTipo_cambio().equals("SPINNER")) {
 
                             Spinner sp = new Spinner(activity);
 
@@ -379,7 +373,6 @@ public class cargarUI {
                             sp.setId(id);
                             id_generica.add(sp.getId());
                             id_importante.add(fs.getId_prop_mat_cli());
-
 
 
                             constraintLayout.addView(sp, cont);
@@ -404,7 +397,7 @@ public class cargarUI {
                             spinners.add(sp);
 
 
-                        }else if(fs.getTipo_cambio().equals("TEXTVIEW")){
+                        } else if (fs.getTipo_cambio().equals("TEXTVIEW")) {
                             TextView et = new TextView(activity);
                             int id = View.generateViewId();
                             et.setId(id);
@@ -432,7 +425,7 @@ public class cargarUI {
                             textViews.add(et);
 
 
-                        }else if (fs.getTipo_cambio().equals("CHECK")){
+                        } else if (fs.getTipo_cambio().equals("CHECK")) {
                             CheckBox et = new CheckBox(activity);
                             int id = View.generateViewId();
                             et.setId(id);
@@ -458,7 +451,7 @@ public class cargarUI {
                             constraintSet.connect(et.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 0);
 
                             check.add(et);
-                        }else{
+                        } else {
                             EditText et = null;
                             switch (fs.getTipo_cambio()) {
                                 case "TEXT":
@@ -507,7 +500,7 @@ public class cargarUI {
 
 
                             EditText finalEt1 = et;
-                            if(fs.getValidacion() != null && fs.getValidacion().equals(COORDENADA)){
+                            if (fs.getValidacion() != null && fs.getValidacion().equals(COORDENADA)) {
                                 finalEt1.addTextChangedListener(new TextWatcher() {
                                     @Override
                                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -520,36 +513,37 @@ public class cargarUI {
                                     @Override
                                     public void afterTextChanged(Editable editable) {
 
-                                        if(editable.toString().isEmpty()) return;
-                                        if(editable.toString().equals("NO APLICA")) return;
-                                        if (finalEt1.getInputType() != (InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED) ) return;
+                                        if (editable.toString().isEmpty()) return;
+                                        if (editable.toString().equals("NO APLICA")) return;
+                                        if (finalEt1.getInputType() != (InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED))
+                                            return;
 
 
                                         String textoIngresado = finalEt1.getText().toString();
 
-                                        if(textoIngresado.charAt(0) != '-' && !Utilidades.isNumeric(String.valueOf(textoIngresado.charAt(0)))){
+                                        if (textoIngresado.charAt(0) != '-' && !Utilidades.isNumeric(String.valueOf(textoIngresado.charAt(0)))) {
                                             Toasty.error(view.getContext(), "Debes ingresar signo - o un numero como primer caracter", Toast.LENGTH_LONG, true).show();
                                             finalEt1.setText("");
                                             return;
                                         }
 
-                                        if(textoIngresado.indexOf(',') > 0){
+                                        if (textoIngresado.indexOf(',') > 0) {
                                             finalEt1.setText(textoIngresado.replaceAll(",", "."));
                                             return;
                                         }
 
-                                        if(textoIngresado.indexOf('.') > 0){
+                                        if (textoIngresado.indexOf('.') > 0) {
                                             String[] textoAntesDePunto = textoIngresado.split("\\.");
-                                            if(textoAntesDePunto[0].length() > 3){
+                                            if (textoAntesDePunto[0].length() > 3) {
 
-                                                Toasty.error(view.getContext(), "solo puede ingresar 3 caracteres antes del punto "+ textoAntesDePunto[0], Toast.LENGTH_LONG, true).show();
+                                                Toasty.error(view.getContext(), "solo puede ingresar 3 caracteres antes del punto " + textoAntesDePunto[0], Toast.LENGTH_LONG, true).show();
                                                 finalEt1.setText(textoIngresado.substring(0, 3));
                                                 return;
                                             }
 
-                                            if(textoAntesDePunto.length > 1 && textoAntesDePunto[1].length() > 6){
+                                            if (textoAntesDePunto.length > 1 && textoAntesDePunto[1].length() > 6) {
                                                 Toasty.error(view.getContext(), "solo puede ingresar 6 caracteres despues del punto", Toast.LENGTH_LONG, true).show();
-                                                String nuevoTexto = textoAntesDePunto[0]+"."+textoAntesDePunto[1].substring(0, 6);
+                                                String nuevoTexto = textoAntesDePunto[0] + "." + textoAntesDePunto[1].substring(0, 6);
                                                 finalEt1.setText(nuevoTexto);
                                             }
                                         }
@@ -561,7 +555,7 @@ public class cargarUI {
                             Button button = new Button(activity);
                             int idButton = View.generateViewId();
                             button.setId(idButton);
-                            button.setText("NO APLICA");
+                            button.setText("N/A");
                             EditText finalEt = et;
 
                             button.setOnClickListener(view1 -> {
