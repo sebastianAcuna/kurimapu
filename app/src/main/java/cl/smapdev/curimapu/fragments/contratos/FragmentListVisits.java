@@ -38,6 +38,7 @@ import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.VisitasListAdapter;
 import cl.smapdev.curimapu.clases.adapters.WeatherAdapter;
+import cl.smapdev.curimapu.clases.modelo.EvaluacionAnterior;
 import cl.smapdev.curimapu.clases.modelo.WeatherApiRequest;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
@@ -46,7 +47,6 @@ import cl.smapdev.curimapu.clases.tablas.AnexoVilab;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.WeatherApi;
 import cl.smapdev.curimapu.clases.tablas.WeatherApiStatus;
-import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
 import cl.smapdev.curimapu.fragments.estacion_floracion.FragmentListaEstacionFloracion;
@@ -242,10 +242,10 @@ public class FragmentListVisits extends Fragment {
         }
     }
 
-    //    todo: revisar con tema de temporales
     public void nuevaVisita(AnexoContrato anexo) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
+            AnexoCompleto acCompleto = executor.submit((() -> MainActivity.myAppDB.myDao().getAnexoCompletoById(anexo.getId_anexo_contrato()))).get();
             executor.submit(() -> MainActivity.myAppDB.myDao().deleteTempVisitas()).get();
             executor.submit(() -> MainActivity.myAppDB.myDao().deleteDetalleVacios()).get();
             List<Fotos> fotos = executor.submit(() -> MainActivity.myAppDB.myDao().getFotosByIdVisita(0)).get();
@@ -273,7 +273,13 @@ public class FragmentListVisits extends Fragment {
                 prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
             }
 
-            activity.cambiarFragment(new FragmentFormVisitas(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
+            activity.cambiarFragment(FragmentFormVisitas.newInstance(
+                    acCompleto,
+                    null,
+                    new EvaluacionAnterior(0, 0.0f, ""),
+                    anexo.getId_especie_anexo(),
+                    anexo.getTemporada_anexo()
+            ), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
         } catch (ExecutionException | InterruptedException e) {
             Toasty.error(activity, "Problemas cargando la visita " + e.getMessage(), Toast.LENGTH_LONG, true).show();
         } finally {
@@ -413,47 +419,10 @@ public class FragmentListVisits extends Fragment {
 
                 try {
                     MainActivity.myAppDB.myDao().deleteTempVisitas();
-
                     MainActivity.myAppDB.myDao().deleteDetalleVacios();
 
-                    TempVisitas tempVisitas = new TempVisitas();
-                    tempVisitas.setEtapa_temp_visitas(visitasCompletas.getVisitas().getEtapa_visitas());
-                    tempVisitas.setRecomendation_temp_visita(visitasCompletas.getVisitas().getRecomendation_visita());
-                    tempVisitas.setObservation_temp_visita(visitasCompletas.getVisitas().getObservation_visita());
-                    tempVisitas.setId_anexo_temp_visita(visitasCompletas.getVisitas().getId_anexo_visita());
-                    tempVisitas.setWeed_state_temp_visita(visitasCompletas.getVisitas().getWeed_state_visita());
-                    tempVisitas.setHumidity_floor_temp_visita(visitasCompletas.getVisitas().getHumidity_floor_visita());
-                    tempVisitas.setOverall_status_temp_visita(visitasCompletas.getVisitas().getOverall_status_visita());
-                    tempVisitas.setPhytosanitary_state_temp_visita(visitasCompletas.getVisitas().getPhytosanitary_state_visita());
-                    tempVisitas.setGrowth_status_temp_visita(visitasCompletas.getVisitas().getGrowth_status_visita());
-                    tempVisitas.setHarvest_temp_visita(visitasCompletas.getVisitas().getHarvest_visita());
-                    tempVisitas.setPhenological_state_temp_visita(visitasCompletas.getVisitas().getPhenological_state_visita());
-                    tempVisitas.setId_temp_visita(visitasCompletas.getVisitas().getId_visita());
-                    tempVisitas.setAction_temp_visita(visitasCompletas.getVisitas().getEstado_visita());
-
-                    tempVisitas.setPercent_humedad(visitasCompletas.getVisitas().getPercent_humedad());
-
-                    tempVisitas.setObs_cosecha(visitasCompletas.getVisitas().getObs_cosecha());
-                    tempVisitas.setObs_creci(visitasCompletas.getVisitas().getObs_creci());
-                    tempVisitas.setObs_fito(visitasCompletas.getVisitas().getObs_fito());
-                    tempVisitas.setObs_humedad(visitasCompletas.getVisitas().getObs_humedad());
-                    tempVisitas.setObs_maleza(visitasCompletas.getVisitas().getObs_maleza());
-                    tempVisitas.setObs_overall(visitasCompletas.getVisitas().getObs_overall());
-                    tempVisitas.setFecha_estimada_arranca(visitasCompletas.getVisitas().getFecha_estimada_arranca());
-                    tempVisitas.setFecha_estimada_cosecha(visitasCompletas.getVisitas().getFecha_estimada_cosecha());
-
-                    tempVisitas.setPlanta_voluntaria(visitasCompletas.getVisitas().getPlanta_voluntaria());
-                    tempVisitas.setTipo_visita(visitasCompletas.getVisitas().getTipo_visita());
-                    tempVisitas.setClave_unica_visita(visitasCompletas.getVisitas().getClave_unica_visita());
-
-                    tempVisitas.setId_visita_local(visitasCompletas.getVisitas().getId_visita_local());
-                    tempVisitas.setId_dispo(visitasCompletas.getVisitas().getId_dispo());
-
-                    MainActivity.myAppDB.myDao().setTempVisitas(tempVisitas);
-
-
                     List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
-                    if (fotos.size() > 0) {
+                    if (!fotos.isEmpty()) {
                         for (Fotos fts : fotos) {
                             try {
                                 File file = new File(fts.getRuta());
@@ -468,16 +437,20 @@ public class FragmentListVisits extends Fragment {
                             }
                         }
                     }
-
                     activity.runOnUiThread(() -> {
-
                         if (prefs != null) {
                             prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, visitasCompletas.getAnexoCompleto().getAnexoContrato().getId_ficha_contrato()).apply();
                             prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, visitasCompletas.getVisitas().getId_anexo_visita()).apply();
                             prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, visitasCompletas.getVisitas().getId_visita()).apply();
                         }
 
-                        activity.cambiarFragment(new FragmentFormVisitas(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
+                        activity.cambiarFragment(FragmentFormVisitas.newInstance(
+                                visitasCompletas.getAnexoCompleto(),
+                                visitasCompletas,
+                                new EvaluacionAnterior(0, 0.0f, ""),
+                                visitasCompletas.getAnexoCompleto().getAnexoContrato().getId_especie_anexo(),
+                                visitasCompletas.getAnexoCompleto().getAnexoContrato().getTemporada_anexo()
+                        ), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
                         builder.dismiss();
                     });
 

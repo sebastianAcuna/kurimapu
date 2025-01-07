@@ -38,6 +38,7 @@ import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.AnexosAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
+import cl.smapdev.curimapu.clases.modelo.EvaluacionAnterior;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
@@ -229,7 +230,6 @@ public class FragmentVisitas extends Fragment {
         lista_anexos.setAdapter(anexosAdapter);
     }
 
-    //    todo: revisar tema de temporales
     public void nuevaVisita(AnexoCompleto anexo) {
 
         ProgressDialog progressBar = new ProgressDialog(activity);
@@ -238,24 +238,19 @@ public class FragmentVisitas extends Fragment {
         progressBar.show();
         ApplicationExecutors exec = new ApplicationExecutors();
         exec.getBackground().execute(() -> {
-            MainActivity.myAppDB.myDao().deleteTempVisitas();
             MainActivity.myAppDB.myDao().deleteDetalleVacios();
 
-            List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
+            List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisitaAndAnexo(0, anexo.getAnexoContrato().getId_anexo_contrato());
             if (!fotos.isEmpty()) {
                 for (Fotos fts : fotos) {
                     try {
                         File file = new File(fts.getRuta());
-                        if (file.exists()) {
-                            boolean eliminado = file.delete();
-                            if (eliminado) {
-                                MainActivity.myAppDB.myDao().deleteFotos(fts);
-                            }
-                        }
+                        if (file.exists()) file.delete();
                     } catch (Exception e) {
                         Log.e("ERROR DELETING", Objects.requireNonNull(e.getMessage()));
                     }
                 }
+                MainActivity.myAppDB.myDao().deleteFotos(fotos);
             }
 
             if (prefs != null) {
@@ -267,7 +262,13 @@ public class FragmentVisitas extends Fragment {
             }
 
             exec.getMainThread().execute(() -> {
-                activity.cambiarFragment(new FragmentFormVisitas(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
+                activity.cambiarFragment(FragmentFormVisitas.newInstance(
+                        anexo,
+                        null,
+                        new EvaluacionAnterior(0, 0.0f, ""),
+                        anexo.getAnexoContrato().getId_especie_anexo(),
+                        anexo.getAnexoContrato().getTemporada_anexo()
+                ), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
                 if (progressBar.isShowing()) {
                     progressBar.setProgress(100);
                     progressBar.dismiss();

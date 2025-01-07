@@ -32,14 +32,18 @@ public interface DaoEvaluaciones {
     @Query("UPDATE anexo_recomendaciones SET obliga_visita = 0 WHERE id_ac = :id_ace AND estado_server = 0 ")
     int updateEvaluacionesObligadas(int id_ace);
 
+    @Query("UPDATE anexo_recomendaciones SET clave_unica_visita = :claveUnica, obliga_visita = 0  WHERE id_ac = :id_ace AND estado_server = 0 ")
+    int updateEvaluacionesGuardar(int id_ace, String claveUnica);
+
+
     @Query("SELECT * FROM anexo_recomendaciones WHERE id_ac = :id_ace ")
-    List<Evaluaciones> getEvaluacionesByAC( int id_ace );
+    List<Evaluaciones> getEvaluacionesByAC(int id_ace);
 
     @Query("SELECT * FROM anexo_recomendaciones WHERE clave_unica_recomendacion = :claveUnica ")
-    Evaluaciones getEvaluacionesByClaveUnica( String claveUnica );
+    Evaluaciones getEvaluacionesByClaveUnica(String claveUnica);
 
     @Query("SELECT * FROM anexo_recomendaciones WHERE id_ac = :id_ac AND estado = :estado ORDER BY anexo_recomendaciones.fecha_hora_tx DESC ")
-    List<Evaluaciones> getEvaluacionesByEstado( int id_ac, String estado );
+    List<Evaluaciones> getEvaluacionesByEstado(int id_ac, String estado);
 
     @Query("SELECT * FROM anexo_recomendaciones WHERE id_ac = :id_ace AND  obliga_visita = 1 ")
     List<Evaluaciones> getEvaluacionesByACObliga(int id_ace);

@@ -963,6 +963,7 @@ public class FragmentPrincipal extends Fragment {
                             }
                             switch (resSubidaDatos.getCodigoRespuesta()) {
                                 case 0:
+                                case 1:
                                     Toasty.info(activity, "pasando a segunda respuesta", Toast.LENGTH_SHORT, true).show();
                                     segundaRespuestaVisita(resSubidaDatos.getCabeceraRespuesta(), id_visita);
                                     break;
@@ -1292,6 +1293,7 @@ public class FragmentPrincipal extends Fragment {
                                 progressDialog.dismiss();
                                 Toasty.info(activity, "datos descargados con exito", Toast.LENGTH_SHORT, true).show();
                                 descargarGraficos();
+                                descargarVilab();
                                 sitiosNoVisitados(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
                                 primeraPrioridad(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
                                 ex.shutdown();

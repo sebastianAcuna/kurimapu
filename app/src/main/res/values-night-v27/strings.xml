@@ -151,8 +151,8 @@
     <string name="curiweb">Curiweb</string>
 
 
-    <string name="alfanumericos_sin_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMÑOPQRSTUVWXYZ 0123456789 </string>
-    <string name="alfanumericos_con_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMÑOPQRSTUVWXYZ 0123456789 +-*/= </string>
+    <string name="alfanumericos_sin_signos">abcdefghijklmnñopqrstuvwxyzáéíóú ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ 0123456789., </string>
+    <string name="alfanumericos_con_signos">abcdefghijklmnñopqrstuvwxyzáéíóú ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ 0123456789 +-*/=., </string>
 
     <string name="nav_take_pick_roots">Tomar foto raices</string>
     <string name="fotografia_raices">fotografia raices</string>

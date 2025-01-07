@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.fragments.dialogos;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,20 +35,21 @@ import java.util.concurrent.Future;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.RecomendacionesAdapter;
+import cl.smapdev.curimapu.clases.modelo.EvaluacionAnterior;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
-import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import es.dmoral.toasty.Toasty;
 
 public class DialogObservationTodo extends DialogFragment {
 
     private AnexoContrato anexoContrato;
-    private TempVisitas tempVisitas = null;
-    private VisitasCompletas visitasCompletas = null;
+    private EvaluacionAnterior evaluacionAnterior = null;
+    private VisitasCompletas visitaAnterior = null;
+    private VisitasCompletas visitaActual = null;
     private OnSaveRating onSaveRating;
 
     // evaluaciones
@@ -68,23 +71,28 @@ public class DialogObservationTodo extends DialogFragment {
 
 
     public interface OnSaveRating {
-        void onFinishSaveRating(TempVisitas tempVisitas);
+        void onFinishSaveRating(EvaluacionAnterior evaluacionAnterior);
     }
 
 
     public static DialogObservationTodo newInstance(
             AnexoContrato anexoContrato,
-            TempVisitas tempVisitas,
-            VisitasCompletas visitasCompletas,
+            EvaluacionAnterior evaluacionAnterior,
+            VisitasCompletas visitaAnterior,
+            VisitasCompletas visitaActual,
             OnSaveRating onSaveRating) {
         DialogObservationTodo frag = new DialogObservationTodo();
 
         frag.setAnexoContrato(anexoContrato);
-        if (tempVisitas != null) {
-            frag.setTempVisitas(tempVisitas);
+        if (evaluacionAnterior != null) {
+            frag.setEvaluacionAnterior(evaluacionAnterior);
         }
-        if (visitasCompletas != null) {
-            frag.setVisitasCompletas(visitasCompletas);
+
+        if (visitaAnterior != null) {
+            frag.setVisitasAnterior(visitaAnterior);
+        }
+        if (visitaActual != null) {
+            frag.setVisitaActual(visitaActual);
         }
         frag.setOnSaveRating(onSaveRating);
         return frag;
@@ -95,12 +103,16 @@ public class DialogObservationTodo extends DialogFragment {
         this.anexoContrato = anexoContrato;
     }
 
-    public void setVisitasCompletas(VisitasCompletas visitasCompletas) {
-        this.visitasCompletas = visitasCompletas;
+    public void setVisitasAnterior(VisitasCompletas visitaAnterior) {
+        this.visitaAnterior = visitaAnterior;
     }
 
-    public void setTempVisitas(TempVisitas tempVisitas) {
-        this.tempVisitas = tempVisitas;
+    public void setVisitaActual(VisitasCompletas visitaActual) {
+        this.visitaActual = visitaActual;
+    }
+
+    public void setEvaluacionAnterior(EvaluacionAnterior evaluacionAnterior) {
+        this.evaluacionAnterior = evaluacionAnterior;
     }
 
     public void setOnSaveRating(OnSaveRating onSaveRating) {
@@ -117,15 +129,20 @@ public class DialogObservationTodo extends DialogFragment {
         bind(view);
 
 
-        if (this.visitasCompletas == null && this.tempVisitas == null) {
+        if (visitaActual != null && evaluacionAnterior != null) {
 
-            cl_evaluacion.setVisibility(View.GONE);
-            cl_recomendacion.setVisibility(View.VISIBLE);
-            btn_evaluacion.setEnabled(false);
-
+//            cl_evaluacion.setVisibility(View.GONE);
+//            cl_recomendacion.setVisibility(View.VISIBLE);
+//            btn_evaluacion.setEnabled(false);
+            ratingBar.setRating(evaluacionAnterior.evaluacion);
+            et_comentario.setText(evaluacionAnterior.comentario);
+            et_comentario.setEnabled(false);
+            ratingBar.setEnabled(false);
+            btn_posponer_evaluacion.setEnabled(false);
+            btn_guardar_evaluacion.setEnabled(false);
             btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        } else if (this.visitasCompletas == null) {
+        } else if (this.visitaAnterior == null) {
             btn_evaluacion.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             ratingBar.setEnabled(false);
@@ -139,11 +156,11 @@ public class DialogObservationTodo extends DialogFragment {
             btn_recomendaciones.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             cl_evaluacion.setVisibility(View.VISIBLE);
             cl_recomendacion.setVisibility(View.GONE);
-            String fecha_last = "Fecha: " + this.visitasCompletas.getVisitas().getFecha_visita() + " " + this.visitasCompletas.getVisitas().getHora_visita();
+            String fecha_last = "Fecha: " + this.visitaAnterior.getVisitas().getFecha_visita() + " " + this.visitaAnterior.getVisitas().getHora_visita();
             tv_fecha_rankear.setText(fecha_last);
-            tv_recom_rankear.setText(this.visitasCompletas.getVisitas().getRecomendation_visita());
-            ratingBar.setRating(this.tempVisitas.getEvaluacion());
-            et_comentario.setText(this.tempVisitas.getComentario_evaluacion());
+            tv_recom_rankear.setText(this.visitaAnterior.getVisitas().getRecomendation_visita());
+            ratingBar.setRating(evaluacionAnterior.evaluacion);
+            et_comentario.setText(evaluacionAnterior.comentario);
         }
 
 
@@ -168,8 +185,7 @@ public class DialogObservationTodo extends DialogFragment {
         bringRecoms();
 
         btn_add_recom.setOnClickListener(view1 -> addPendiente());
-
-        btn_guardar_evaluacion.setOnClickListener(view1 -> guardarEvaluacion());
+        btn_guardar_evaluacion.setOnClickListener(view1 -> guardarEvaluacion(false));
 
 
         ocultarListas();
@@ -177,33 +193,29 @@ public class DialogObservationTodo extends DialogFragment {
         return builder.create();
     }
 
-    private void guardarEvaluacion() {
+    private void guardarEvaluacion(boolean posponse) {
 
         float rating = ratingBar.getRating();
         String comentario = et_comentario.getText().toString().trim().toLowerCase(Locale.ROOT);
 
-        if (rating <= 0.0 || comentario.isEmpty()) {
-            Toasty.error(requireActivity(), "Debe evaluar y comentar para guardar", Toast.LENGTH_LONG, true).show();
-            return;
-        }
-
-        this.tempVisitas.setEvaluacion(rating);
-        this.tempVisitas.setId_evaluacion(this.visitasCompletas.getVisitas().getId_visita());
-        this.tempVisitas.setComentario_evaluacion(comentario);
-
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        try {
-            executor.submit(() -> MainActivity.myAppDB.myDao().updateTempVisitas(this.tempVisitas)).get();
-            Toasty.success(requireActivity(), "Evaluacion guardada temporalmente, no olvide guardar la visita para confirmar los cambios.", Toast.LENGTH_LONG, true).show();
-            this.onSaveRating.onFinishSaveRating(this.tempVisitas);
-            Dialog dialog = getDialog();
-            if (dialog != null) {
-                getDialog().dismiss();
+        if (!posponse) {
+            if (rating <= 0.0 || comentario.isEmpty()) {
+                Toasty.error(requireActivity(), "Debe evaluar y comentar para guardar", Toast.LENGTH_LONG, true).show();
+                return;
             }
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
         }
 
+        evaluacionAnterior.evaluacion = rating;
+        evaluacionAnterior.comentario = comentario;
+
+        if (!posponse) {
+            Toasty.success(requireActivity(), "Evaluacion guardada temporalmente, no olvide guardar la visita para confirmar los cambios.", Toast.LENGTH_LONG, true).show();
+        }
+        this.onSaveRating.onFinishSaveRating(evaluacionAnterior);
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            getDialog().dismiss();
+        }
     }
 
 
@@ -325,71 +337,43 @@ public class DialogObservationTodo extends DialogFragment {
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<Config> configFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getConfig());
-        Usuario usuario = null;
-        String claveUnica = "";
+
         try {
+            String claveUnica = UUID.randomUUID().toString();
             Config config = configFuture.get();
-            Future<Usuario> usuarioFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getUsuarioById(config.getId_usuario()));
-            usuario = usuarioFuture.get();
+            Usuario usuario = executor.submit(() -> MainActivity.myAppDB.myDao().getUsuarioById(config.getId_usuario())).get();
 
-            claveUnica = config.getId()
-                    + "" + config.getId_usuario()
-                    + "" + Utilidades.fechaActualConHora()
-                    .replaceAll(" ", "")
-                    .replaceAll("-", "")
-                    .replaceAll(":", "");
+
+            Evaluaciones eva = new Evaluaciones();
+            eva.setObliga_visita((this.visitaActual != null) ? 0 : 1);
+
+            if (visitaActual != null) {
+                eva.setClave_unica_visita(visitaActual.getVisitas().getClave_unica_visita());
+            }
+
+            eva.setClave_unica_recomendacion(claveUnica);
+            eva.setEstado("P");
+            eva.setDescripcion_recom(et_nueva_recom.getText().toString().toLowerCase(Locale.ROOT).trim());
+            eva.setFecha_hora_tx(Utilidades.fechaActualConHora());
+            eva.setUser_tx((usuario != null) ? usuario.getRut_usuario() : "18.804.066-7");
+            eva.setNombre_crea((usuario != null) ? usuario.getNombre() + " " + usuario.getApellido_p() : "");
+            eva.setFecha_plazo(fecha_plazo.getText().toString());
+            eva.setId_ac(Integer.parseInt(anexoContrato.getId_anexo_contrato()));
+
+            ExecutorService execInsert = Executors.newSingleThreadExecutor();
+
+            execInsert.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().insertEvaluaciones(eva)).get();
+            et_nueva_recom.setText("");
+            fecha_plazo.setText("");
+            bringRecoms();
+            Toasty.success(requireActivity(), "Recomendacion agregada correctamente", Toast.LENGTH_LONG, true).show();
+
 
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-
-            String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            StringBuilder cadena = new StringBuilder();
-            for (int x = 0; x < 150; x++) {
-                int indiceAleatorio = (int) (banco.length() * Math.random());
-                char caracterAleatorio = banco.charAt(indiceAleatorio);
-                cadena.append(caracterAleatorio);
-            }
-            claveUnica = cadena.toString();
-
+            Toasty.error(requireActivity(), "No se pudo guardar la recomendacion " + e.getMessage(), Toast.LENGTH_LONG, true).show();
+        } finally {
+            executor.shutdown();
         }
-        executor.shutdown();
-
-
-        Evaluaciones eva = new Evaluaciones();
-
-
-        eva.setClave_unica_visita(tempVisitas.getClave_unica_visita());
-
-        eva.setObliga_visita((this.tempVisitas == null) ? 0 : 1);
-
-
-        eva.setClave_unica_recomendacion(claveUnica);
-        eva.setEstado("P");
-        eva.setDescripcion_recom(et_nueva_recom.getText().toString().toLowerCase(Locale.ROOT).trim());
-        eva.setFecha_hora_tx(Utilidades.fechaActualConHora());
-        eva.setUser_tx((usuario != null) ? usuario.getRut_usuario() : "18.804.066-7");
-        eva.setNombre_crea((usuario != null) ? usuario.getNombre() + " " + usuario.getApellido_p() : "");
-        eva.setFecha_plazo(fecha_plazo.getText().toString());
-        eva.setId_ac(Integer.parseInt(anexoContrato.getId_anexo_contrato()));
-
-        ExecutorService execInsert = Executors.newSingleThreadExecutor();
-        Future<Long> insertedObs = execInsert.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().insertEvaluaciones(eva));
-
-        try {
-            long insertedId = insertedObs.get();
-            if (insertedId > 0) {
-                execInsert.shutdown();
-                et_nueva_recom.setText("");
-                fecha_plazo.setText("");
-                bringRecoms();
-
-                Toasty.success(requireActivity(), "Recomendacion agregada correctamente", Toast.LENGTH_LONG, true).show();
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-            execInsert.shutdown();
-        }
-
     }
 
 
@@ -444,55 +428,29 @@ public class DialogObservationTodo extends DialogFragment {
     private void cambiarEstadoEvaluacion(Evaluaciones evaluacion, String nuevoEstado) {
 
         ExecutorService executorUser = Executors.newSingleThreadExecutor();
-        Future<Config> configFuture = executorUser.submit(() -> MainActivity.myAppDB.myDao().getConfig());
-        Usuario usuario = null;
-        String claveUnica = "";
         try {
-            Config config = configFuture.get();
-            Future<Usuario> usuarioFuture = executorUser.submit(() -> MainActivity.myAppDB.myDao().getUsuarioById(config.getId_usuario()));
-            usuario = usuarioFuture.get();
+            String claveUnica = (evaluacion.getClave_unica_recomendacion() == null) ? UUID.randomUUID().toString() : evaluacion.getClave_unica_recomendacion();
+            Config config = executorUser.submit(() -> MainActivity.myAppDB.myDao().getConfig()).get();
+            Usuario usuario = executorUser.submit(() -> MainActivity.myAppDB.myDao().getUsuarioById(config.getId_usuario())).get();
+
             evaluacion.setUser_mod(usuario.getRut_usuario());
-
-            claveUnica = config.getId()
-                    + "" + config.getId_usuario()
-                    + "" + Utilidades.fechaActualConHora()
-                    .replaceAll(" ", "")
-                    .replaceAll("-", "")
-                    .replaceAll(":", "");
-
-
-            evaluacion.setNombre_mod(usuario.getNombre() + " " + usuario.getApellido_p());
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-            String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            StringBuilder cadena = new StringBuilder();
-            for (int x = 0; x < 150; x++) {
-                int indiceAleatorio = (int) (banco.length() * Math.random());
-                char caracterAleatorio = banco.charAt(indiceAleatorio);
-                cadena.append(caracterAleatorio);
-            }
-            claveUnica = cadena.toString();
-
-        }
-        executorUser.shutdown();
-
-        if (evaluacion.getClave_unica_recomendacion() == null) {
             evaluacion.setClave_unica_recomendacion(claveUnica);
-        }
-        evaluacion.setEstado(nuevoEstado);
-        evaluacion.setEstado_server(0);
-        evaluacion.setFecha_hora_mod(Utilidades.fechaActualConHora());
+            evaluacion.setEstado(nuevoEstado);
+            evaluacion.setEstado_server(0);
+            evaluacion.setFecha_hora_mod(Utilidades.fechaActualConHora());
+            evaluacion.setNombre_mod(usuario.getNombre() + " " + usuario.getApellido_p());
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Integer> affectedRows = executor.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().updateEvaluaciones(evaluacion));
 
-        try {
-            if (affectedRows.get() > 0) {
-                bringRecoms();
-            }
+            executorUser.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().updateEvaluaciones(evaluacion)).get();
+            bringRecoms();
+
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            Toasty.error(requireActivity(), "No se pudo modificar la recomendacion " + e.getMessage(), Toast.LENGTH_LONG, true).show();
+        } finally {
+            executorUser.shutdown();
+
         }
+
 
     }
 
@@ -507,12 +465,18 @@ public class DialogObservationTodo extends DialogFragment {
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
             dialog.getWindow().setLayout(width, height);
 
-            btn_cerrar_recomendaciones.setOnClickListener(view1 -> dialog.dismiss());
-            btn_posponer_evaluacion.setOnClickListener(view -> dialog.dismiss());
+            btn_cerrar_recomendaciones.setOnClickListener(view1 -> guardarEvaluacion(true));
+            btn_posponer_evaluacion.setOnClickListener(view -> guardarEvaluacion(true));
         }
 
     }
 
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        guardarEvaluacion(true);
+    }
 
     private void levantarFecha(final EditText edit) {
 
