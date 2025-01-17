@@ -106,7 +106,7 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
             btn_cancelar;
 
 
-    private Spinner sp_estado_fenologico,
+    private Spinner
             sp_termino_cosecha,
             sp_autorizada_cosecha;
 
@@ -216,7 +216,6 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
         check_firma_agricultor = view.findViewById(R.id.check_firma_agricultor);
         rv_fotos_frutos = view.findViewById(R.id.rv_fotos_frutos);
 
-        sp_estado_fenologico = view.findViewById(R.id.sp_estado_fenologico);
         sp_termino_cosecha = view.findViewById(R.id.sp_termino_cosecha);
         sp_autorizada_cosecha = view.findViewById(R.id.sp_autorizada_cosecha);
 
@@ -495,6 +494,8 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
             rv_detalle_revision_frutos.setHasFixedSize(true);
             rv_detalle_revision_frutos.setLayoutManager(lManagerH);
 
+            btn_nuevo_conteo.setEnabled(det.size() < 10);
+
 
             detailAdapter = new CheckListRevisionFrutosDetailAdapter(det, activity, (d, c) -> {
 
@@ -585,7 +586,7 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
                 total_frutos_no_aptos += d.getFrutos_no_aptos();
             }
 
-            porcentaje_frutos_no_aptos = (double) total_frutos_no_aptos / total_frutos_aptos;
+            porcentaje_frutos_no_aptos = (double) total_frutos_no_aptos / (total_frutos_aptos + total_frutos_no_aptos) * 100;
 
             tv_total_frutos_aptos.setText(Utilidades.myNumberFormat(total_frutos_aptos));
             tv_total_frutos_no_aptos.setText(Utilidades.myNumberFormat(total_frutos_no_aptos));
@@ -622,7 +623,6 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
         }
 
         List<String> sino_option = Arrays.asList(getResources().getStringArray(R.array.desplegable_checklist_1));
-        List<String> est_feno = Arrays.asList(getResources().getStringArray(R.array.fenologico));
 
         if (checklist.getAutoriza_cosecha() != null && !checklist.getAutoriza_cosecha().isEmpty()) {
             sp_autorizada_cosecha.setSelection(sino_option.indexOf(checklist.getAutoriza_cosecha()));
@@ -630,38 +630,9 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
         if (checklist.getTermino_cosecha() != null && !checklist.getTermino_cosecha().isEmpty()) {
             sp_termino_cosecha.setSelection(sino_option.indexOf(checklist.getTermino_cosecha()));
         }
-        if (checklist.getEstado_fenologico() != null && !checklist.getEstado_fenologico().isEmpty()) {
-            sp_estado_fenologico.setSelection(est_feno.indexOf(checklist.getEstado_fenologico()));
-        }
-
-
-//                check_firma_agricultor
-//                rv_detalle_revision_frutos
-//                btn_firma_agricultor
-
-
     }
 
     private void onSave() {
-
-
-//        total_frutos_aptos
-//                total_frutos_no_aptos
-
-        if (sp_estado_fenologico.getSelectedItem().toString().equals("--Seleccione--")) {
-            Toasty.error(requireActivity(), "Debe seleccionar un estado fenologico", Toast.LENGTH_LONG, true).show();
-            return;
-        }
-
-        if (sp_autorizada_cosecha.getSelectedItem().toString().equals("--Seleccione--")) {
-            Toasty.error(requireActivity(), "Debe confirmar si la cosecha esta autorizada", Toast.LENGTH_LONG, true).show();
-            return;
-        }
-
-        if (sp_termino_cosecha.getSelectedItem().toString().equals("--Seleccione--")) {
-            Toasty.error(requireActivity(), "Debe confirmar si la cosecha esta terminada", Toast.LENGTH_LONG, true).show();
-            return;
-        }
 
         try {
             Utilidades.validarFecha(Utilidades.voltearFechaBD(et_fecha.getText().toString()), "fecha");
@@ -690,7 +661,7 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
 
             CheckListRevisionFrutos clActual = new CheckListRevisionFrutos();
             String claveUnica = (checklist == null) ? UUID.randomUUID().toString() : checklist.getClave_unica();
-            String apellido = anexoCompleto.getAgricultor().getNombre_agricultor() + " " + sp_estado_fenologico.getSelectedItem().toString();
+            String apellido = anexoCompleto.getAgricultor().getNombre_agricultor() + " " + Utilidades.fechaActualConHora();
 
             List<TempFirmas> firmas = firmasF.get();
             for (TempFirmas ff : firmas) {
@@ -704,7 +675,7 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
             clActual.setEstado_sincronizacion(0);
             clActual.setApellido_checklist(apellido);
             clActual.setId_ac_cl_revision_frutos(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-            clActual.setEstado_fenologico(sp_estado_fenologico.getSelectedItem().toString());
+            clActual.setEstado_fenologico("COSECHA");
             clActual.setFecha(Utilidades.voltearFechaBD(et_fecha.getText().toString()));
             clActual.setAutoriza_cosecha(sp_autorizada_cosecha.getSelectedItem().toString());
             clActual.setTermino_cosecha(sp_termino_cosecha.getSelectedItem().toString());

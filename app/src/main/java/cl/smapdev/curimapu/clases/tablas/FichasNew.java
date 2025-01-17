@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 @Entity(tableName = "ficha_new")
-public class FichasNew  implements Serializable {
+public class FichasNew implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id_ficha_new")
@@ -180,7 +180,6 @@ public class FichasNew  implements Serializable {
     private String estado_general_ficha;
 
 
-
     @SerializedName("fecha_limite_siembra_new")
     @ColumnInfo(name = "fecha_limite_siembra_new")
     @Expose
@@ -193,9 +192,34 @@ public class FichasNew  implements Serializable {
     private String observacion_negocio_ficha;
 
     @SerializedName("rut_fieldman_ass")
-    @ColumnInfo( name = "rut_fieldman_ass")
+    @ColumnInfo(name = "rut_fieldman_ass")
     @Expose
     private String rut_fieldman_ass;
+
+
+    @SerializedName("latitud_ficha")
+    @ColumnInfo(name = "latitud_ficha_new")
+    private String latitud_ficha;
+
+    @SerializedName("longitud_ficha")
+    @ColumnInfo(name = "longitud_ficha_new")
+    private String longitud_ficha;
+
+    public String getLatitud_ficha() {
+        return latitud_ficha;
+    }
+
+    public void setLatitud_ficha(String latitud_ficha) {
+        this.latitud_ficha = latitud_ficha;
+    }
+
+    public String getLongitud_ficha() {
+        return longitud_ficha;
+    }
+
+    public void setLongitud_ficha(String longitud_ficha) {
+        this.longitud_ficha = longitud_ficha;
+    }
 
     public String getRut_fieldman_ass() {
         return rut_fieldman_ass;
@@ -256,6 +280,7 @@ public class FichasNew  implements Serializable {
     public String getId_provincia_ficha() {
         return id_provincia_ficha;
     }
+
     public void setId_provincia_ficha(String id_provincia_ficha) {
         this.id_provincia_ficha = id_provincia_ficha;
     }
@@ -398,8 +423,6 @@ public class FichasNew  implements Serializable {
     public void setId_ficha(int id_ficha) {
         this.id_ficha = id_ficha;
     }
-
-
 
 
     public String getId_agricultor_ficha() {

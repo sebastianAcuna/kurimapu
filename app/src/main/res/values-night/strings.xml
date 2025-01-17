@@ -66,8 +66,8 @@
         <item>NO</item>
     </string-array>
 
-    <string name="alfanumericos_sin_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMÑOPQRSTUVWXYZ 0123456789</string>
-    <string name="alfanumericos_con_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMÑOPQRSTUVWXYZ 0123456789 +-*/=</string>
+    <string name="alfanumericos_sin_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ áéíóú ÁÉÍÓÚ 0123456789 </string>
+    <string name="alfanumericos_con_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ áéíóú ÁÉÍÓÚ 0123456789 +-*/=., </string>
     <string name="numerico_entero">0123456789</string>
     <string name="numerico_decimal">0123456789.</string>
     <string name="alfanumerico_fecha">0123456789 /</string>

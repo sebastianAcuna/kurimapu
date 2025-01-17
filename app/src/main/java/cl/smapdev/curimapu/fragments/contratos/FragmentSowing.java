@@ -72,7 +72,7 @@ public class FragmentSowing extends Fragment {
     private MainActivity activity = null;
     private static final String FIELDGENERIC = "fieldBGeneric";
 
-    public static FragmentSowing getInstance(int fieldbook){
+    public static FragmentSowing getInstance(int fieldbook) {
 
         FragmentSowing fragment = new FragmentSowing();
         Bundle bundle = new Bundle();
@@ -92,11 +92,11 @@ public class FragmentSowing extends Fragment {
     private ArrayList<Integer> id_importante = null;
     private ArrayList<Integer> id_generica = null;
     private ArrayList<TextView> textViews = null;
-    private ArrayList<EditText> editTexts  = null;
-    private ArrayList<RecyclerView> recyclerViews  = null;
-    private ArrayList<ImageView> imageViews  = null;
-    private ArrayList<Spinner> spinners  = null;
-    private ArrayList<CheckBox> check  = null;
+    private ArrayList<EditText> editTexts = null;
+    private ArrayList<RecyclerView> recyclerViews = null;
+    private ArrayList<ImageView> imageViews = null;
+    private ArrayList<Spinner> spinners = null;
+    private ArrayList<CheckBox> check = null;
 
 
     private ArrayList<String> um = null;
@@ -106,15 +106,12 @@ public class FragmentSowing extends Fragment {
     private final String[] forbiddenReplacement = new String[]{"a", "e", "i", "o", "u", "A", "E", "I", "O", "U"};
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         activity = (MainActivity) getActivity();
-
-
 
 
         prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
@@ -133,8 +130,8 @@ public class FragmentSowing extends Fragment {
         List<UnidadMedida> umli = MainActivity.myAppDB.myDao().getUM();
         um = new ArrayList<>();
         idUm = new ArrayList<>();
-        if (umli.size()  > 0){
-            for (UnidadMedida m : umli){
+        if (umli.size() > 0) {
+            for (UnidadMedida m : umli) {
                 um.add(m.getNombre_um());
                 idUm.add(m.getId_um());
             }
@@ -155,11 +152,11 @@ public class FragmentSowing extends Fragment {
 
         setHasOptionsMenu(true);
         Bundle bundle = getArguments();
-        if (bundle != null){
+        if (bundle != null) {
             this.fieldbook = bundle.getInt(FIELDGENERIC);
         }
 
-        if(getUserVisibleHint()) {
+        if (getUserVisibleHint()) {
             cargarInterfaz();
         }
 
@@ -170,13 +167,13 @@ public class FragmentSowing extends Fragment {
     public void onStart() {
         super.onStart();
         Bundle bundle = getArguments();
-        if (bundle != null){
+        if (bundle != null) {
             this.fieldbook = bundle.getInt(FIELDGENERIC);
         }
     }
 
 
-    public void cargarInterfaz(){
+    public void cargarInterfaz() {
         ApplicationExecutors exec = new ApplicationExecutors();
 
         ProgressDialog progressBar = new ProgressDialog(activity);
@@ -184,14 +181,14 @@ public class FragmentSowing extends Fragment {
         progressBar.show();
 
 
-        exec.getBackground().execute(()-> {
-            int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
-            exec.getMainThread().execute(()-> {
-                if (Globalview != null){
-                    global = cargarUI.cargarUI(Globalview, R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
+        exec.getBackground().execute(() -> {
+            int idClienteFinal = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
+            exec.getMainThread().execute(() -> {
+                if (Globalview != null) {
+                    global = cargarUI.cargarUI(Globalview, R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID, ""), fieldbook, idClienteFinal, global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
                 }
                 setearOnFocus();
-                if  (progressBar.isShowing()){
+                if (progressBar.isShowing()) {
                     progressBar.dismiss();
                 }
             });
@@ -203,7 +200,7 @@ public class FragmentSowing extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if (activity != null){
+            if (activity != null) {
 
                 cargarInterfaz();
 
@@ -211,10 +208,10 @@ public class FragmentSowing extends Fragment {
         }
     }
 
-    private void setearOnFocus(){
-        int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
-        if (global != null && global.size() > 0){
-            try{
+    private void setearOnFocus() {
+        int idClienteFinal = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
+        if (global != null && global.size() > 0) {
+            try {
                 id_generica = (ArrayList<Integer>) global.get(0);
                 id_importante = (ArrayList<Integer>) global.get(1);
                 textViews = (ArrayList<TextView>) global.get(2);
@@ -224,21 +221,21 @@ public class FragmentSowing extends Fragment {
                 spinners = (ArrayList<Spinner>) global.get(6);
                 check = (ArrayList<CheckBox>) global.get(7);
 
-                if (textViews != null && textViews.size() > 0){
-                    for (int i = 0; i < textViews.size(); i++){
+                if (textViews != null && textViews.size() > 0) {
+                    for (int i = 0; i < textViews.size(); i++) {
                         if (id_generica.contains(textViews.get(i).getId())) {
                             int index = id_generica.indexOf(textViews.get(i).getId());
                             int idImportante = id_importante.get(index);
 
                             pro_cli_mat fs = MainActivity.myAppDB.myDao().getProCliMatByIdProp(idImportante, idClienteFinal, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
-                            if (fs != null){
-                                if (fs.getForaneo().equals("SI")){
+                            if (fs != null) {
+                                if (fs.getForaneo().equals("SI")) {
 
                                     Object[] ob = new Object[]{};
                                     String nombreCampoTableta = "";
                                     String nombreTabla = "";
-                                    if (!fs.getTabla().equals("")){
-                                        switch (fs.getTabla()){
+                                    if (!fs.getTabla().equals("")) {
+                                        switch (fs.getTabla()) {
 
                                             case "condicion":
                                                 nombreCampoTableta = "condicion";
@@ -270,7 +267,7 @@ public class FragmentSowing extends Fragment {
                                                 nombreTabla = fs.getTabla();
                                                 break;
                                             case "visita":
-                                                switch (fs.getCampo()){
+                                                switch (fs.getCampo()) {
                                                     case "fecha_r":
                                                         nombreCampoTableta = "fecha_visita";
                                                         break;
@@ -317,114 +314,139 @@ public class FragmentSowing extends Fragment {
                                                 break;
 
                                             case "detalle_quotation":
-                                                nombreCampoTableta =  fs.getCampo();
+                                                nombreCampoTableta = fs.getCampo();
                                                 nombreTabla = "quotation";
                                                 break;
                                             case "ficha":
-                                                nombreCampoTableta =  fs.getCampo()+"_new";
+                                                nombreCampoTableta = fs.getCampo() + "_new";
                                                 nombreTabla = "ficha_new";
                                                 break;
                                             case "fieldman_asis":
                                                 nombreCampoTableta = " nombre || ' ' || apellido_p AS nombre ";
                                                 nombreTabla = " usuarios ";
                                                 break;
+                                            case "anexo_checklist_roguing_detalle_fechas":
+                                                nombreTabla = "checklist_roguing_detalle_fechas";
+                                                nombreCampoTableta = "checklist_roguing_detalle_fechas.fecha";
+                                                break;
                                             default:
                                                 nombreTabla = fs.getTabla();
                                                 nombreCampoTableta = fs.getCampo();
                                         }
 
-                                        String  consulta = "SELECT " + nombreCampoTableta + " " +
-                                                    " FROM " + nombreTabla + " ";
+                                        String consulta = "SELECT " + nombreCampoTableta + " " +
+                                                " FROM " + nombreTabla + " ";
 
-                                        switch (fs.getTabla()){
-                                            case "anexo_contrato" :
-                                            case "condicion" :
-                                                consulta += " WHERE id_anexo_contrato = ? ";
-                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                        //
+                                        switch (fs.getTabla()) {
+                                            case "anexo_checklist_roguing_detalle_fechas":
+                                                consulta += " WHERE checklist_roguing_detalle_fechas.clave_unica_roguing = ( SELECT e.clave_unica FROM checklist_roguing e WHERE e.id_ac_cl_roguing = ? ORDER BY e.id_cl_roguing DESC LIMIT 1  ) ";
+
+                                                switch (fs.getCampo()) {
+                                                    case "segunda":
+                                                        consulta += " LIMIT 1, 1 ";
+                                                        break;
+                                                    case "tercera":
+                                                        consulta += " LIMIT 2, 1 ";
+                                                        break;
+                                                    case "cuarta":
+                                                        consulta += " LIMIT 3, 1 ";
+                                                        break;
+                                                    default:
+                                                        consulta += " LIMIT 0, 1 ";
+                                                        break;
+                                                }
+
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 break;
-                                            case "anexo_checklist_siembra" :
+
+                                            case "anexo_contrato":
+                                            case "condicion":
+                                                consulta += " WHERE id_anexo_contrato = ? ";
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
+                                                break;
+                                            case "anexo_checklist_siembra":
                                                 consulta += " WHERE id_ac_cl_siembra = ? AND estado_documento = 1 ORDER BY id_cl_siembra DESC LIMIT 1 ";
-                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 break;
                                             case "anexo_correo_fechas":
                                                 consulta += "WHERE id_ac_corr_fech = ?";
-                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 break;
                                             case "cliente":
 
-                                                int idCliente  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                int idCliente = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 consulta += " WHERE id_clientes_tabla = ? ";
-                                                ob = Utilidades.appendValue(ob,idCliente);
+                                                ob = Utilidades.appendValue(ob, idCliente);
                                                 break;
 
                                             case "especie":
                                                 consulta += " WHERE id_especie = ? ";
-                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""));
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID, ""));
                                                 break;
 
                                             case "materiales":
-                                                String idVariedad  = MainActivity.myAppDB.myDao().getIdMaterialByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                String idVariedad = MainActivity.myAppDB.myDao().getIdMaterialByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 consulta += " WHERE id_variedad = ? ";
-                                                ob = Utilidades.appendValue(ob,idVariedad);
+                                                ob = Utilidades.appendValue(ob, idVariedad);
                                                 break;
                                             case "agricultor":
                                                 consulta += " INNER JOIN anexo_contrato AC ON AC.id_agricultor_anexo = agricultor.id_agricultor  WHERE id_anexo_contrato = ? ";
-                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 break;
                                             case "comuna":
                                                 consulta += " INNER JOIN ficha_new FN ON FN.id_comuna_new = comuna.id_comuna ";
                                                 consulta += " INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = FN.id_ficha_new WHERE AC.id_anexo_contrato = ? ";
-                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 break;
 //
                                             case "predio":
-                                                int idPredio  = MainActivity.myAppDB.myDao().getIdPredioByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                int idPredio = MainActivity.myAppDB.myDao().getIdPredioByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 consulta += " WHERE id_pred = ? ";
-                                                ob = Utilidades.appendValue(ob,idPredio);
+                                                ob = Utilidades.appendValue(ob, idPredio);
                                                 break;
                                             case "lote":
-                                                int idLote  = MainActivity.myAppDB.myDao().getIdLoteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                int idLote = MainActivity.myAppDB.myDao().getIdLoteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 consulta += " WHERE lote = ? ";
-                                                ob = Utilidades.appendValue(ob,idLote);
+                                                ob = Utilidades.appendValue(ob, idLote);
                                                 break;
                                             case "visita":
-                                                int idVisita  = MainActivity.myAppDB.myDao().getIdVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                int idVisita = MainActivity.myAppDB.myDao().getIdVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 consulta += " WHERE id_visita = ? ";
-                                                ob = Utilidades.appendValue(ob,idVisita);
+                                                ob = Utilidades.appendValue(ob, idVisita);
                                                 break;
                                             case "detalle_visita_prop":
-                                                int idVisitas  = MainActivity.myAppDB.myDao().getIdVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                int idVisitas = MainActivity.myAppDB.myDao().getIdVisitaByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 consulta += " WHERE id_det_vis_prop_detalle = ? AND id_visita_detalle = ?  ORDER BY id_det_vis_prop_detalle DESC LIMIT 1 ";
-                                                ob = Utilidades.appendValue(ob,fs.getId_prop_mat_cli());
-                                                ob = Utilidades.appendValue(ob,idVisitas);
+                                                ob = Utilidades.appendValue(ob, fs.getId_prop_mat_cli());
+                                                ob = Utilidades.appendValue(ob, idVisitas);
                                                 break;
                                             case "tipo_riego":
-                                                int idTipoRiego  = MainActivity.myAppDB.myDao().getIdTipoRiegoByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                int idTipoRiego = MainActivity.myAppDB.myDao().getIdTipoRiegoByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 consulta += " WHERE id_tipo_riego = ? ";
-                                                ob = Utilidades.appendValue(ob,idTipoRiego);
+                                                ob = Utilidades.appendValue(ob, idTipoRiego);
                                                 break;
                                             case "tipo_suelo":
-                                                int idTipoSuelo  = MainActivity.myAppDB.myDao().getIdTipoSueloByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                int idTipoSuelo = MainActivity.myAppDB.myDao().getIdTipoSueloByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 consulta += " WHERE id_tipo_suelo = ? ";
-                                                ob = Utilidades.appendValue(ob,idTipoSuelo);
+                                                ob = Utilidades.appendValue(ob, idTipoSuelo);
                                                 break;
                                             case "ficha":
                                                 consulta += " WHERE id_ficha_new = ? ";
-                                                ob = Utilidades.appendValue(ob,prefs.getInt(Utilidades.SHARED_VISIT_FICHA_ID,0));
+                                                ob = Utilidades.appendValue(ob, prefs.getInt(Utilidades.SHARED_VISIT_FICHA_ID, 0));
                                                 break;
                                             case "usuarios":
                                                 consulta += " LEFT JOIN ficha_new FN ON FN.id_usuario_new = usuarios.id_usuario ";
                                                 consulta += " INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = FN.id_ficha_new  WHERE AC.id_anexo_contrato = ? ";
-                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 break;
                                             case "fieldman_asis":
                                                 consulta += " LEFT JOIN ficha_new FN ON FN.rut_fieldman_ass = usuarios.rut_usuario ";
                                                 consulta += " INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = FN.id_ficha_new  WHERE AC.id_anexo_contrato = ? ";
-                                                ob = Utilidades.appendValue(ob,prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+                                                ob = Utilidades.appendValue(ob, prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                                                 break;
                                         }
                                         String value = MainActivity.myAppDB.myDao().getValueResume(new SimpleSQLiteQuery(consulta, ob));
-
                                         textViews.get(i).setText(value);
                                     }
                                 }
@@ -433,21 +455,21 @@ public class FragmentSowing extends Fragment {
                     }
                 }
 
-                if (imageViews != null && imageViews.size() > 0){
-                    for (int i = 0; i < imageViews.size(); i++){
+                if (imageViews != null && imageViews.size() > 0) {
+                    for (int i = 0; i < imageViews.size(); i++) {
                         if (id_generica.contains(imageViews.get(i).getId())) {
 
                             final int index = id_generica.indexOf(imageViews.get(i).getId());
                             final int finalI = i;
 
-                            if(prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0){
+                            if (prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0) {
                                 imageViews.get(i).setOnClickListener(v -> {
                                     imageViews.get(finalI).requestFocus();
                                     avisoActivaFicha(id_importante.get(index));
                                 });
 
                                 imageViews.get(i).setOnFocusChangeListener((v, hasFocus) -> {
-                                    if (hasFocus){
+                                    if (hasFocus) {
                                         avisoActivaFicha(id_importante.get(index));
                                     }
                                 });
@@ -456,17 +478,17 @@ public class FragmentSowing extends Fragment {
                     }
                 }
 
-                if (check != null && check.size() > 0){
-                    for (int i = 0; i < check.size(); i++){
+                if (check != null && check.size() > 0) {
+                    for (int i = 0; i < check.size(); i++) {
                         if (id_generica.contains(check.get(i).getId())) {
 
                             final int index = id_generica.indexOf(check.get(i).getId());
 
-                            check.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0  && fieldbook > 0));
+                            check.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0 && fieldbook > 0));
 
                             String datoDetalle = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
 
-                            if (datoDetalle != null && datoDetalle.length() > 0){
+                            if (datoDetalle != null && datoDetalle.length() > 0) {
                                 check.get(i).setChecked((datoDetalle.equals("1")));
                                 check.get(i).setEnabled(false);
                             }
@@ -477,13 +499,13 @@ public class FragmentSowing extends Fragment {
                                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                                     detalle_visita_prop temp = new detalle_visita_prop();
-                                    if (isChecked){
+                                    if (isChecked) {
                                         temp.setValor_detalle(String.valueOf(1));
                                         temp.setEstado_detalle(0);
                                         temp.setId_visita_detalle(0);
                                         temp.setId_prop_mat_cli_detalle(id_importante.get(index));
                                         MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
-                                    }else{
+                                    } else {
                                         int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
                                         temp.setId_det_vis_prop_detalle(idAEditar);
                                         temp.setValor_detalle(String.valueOf(0));
@@ -498,23 +520,23 @@ public class FragmentSowing extends Fragment {
                     }
                 }
 
-                if (editTexts != null && editTexts.size() > 0){
-                    for (int i = 0; i < editTexts.size(); i++){
+                if (editTexts != null && editTexts.size() > 0) {
+                    for (int i = 0; i < editTexts.size(); i++) {
 //                    for (final EditText et : editTexts){
                         if (id_generica.contains(editTexts.get(i).getId())) {
                             int index = id_generica.indexOf(editTexts.get(i).getId());
 
-                            editTexts.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0  && fieldbook > 0));
+                            editTexts.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0 && fieldbook > 0));
 
                             switch (editTexts.get(i).getInputType()) {
                                 case InputType.TYPE_CLASS_TEXT:
                                 case InputType.TYPE_CLASS_NUMBER:
                                 case InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED:
-                                    String datoDetalle="";
+                                    String datoDetalle = "";
                                     datoDetalle = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-                                    if ((datoDetalle == null) || (TextUtils.isEmpty(datoDetalle) && datoDetalle.equals(""))){
+                                    if ((datoDetalle == null) || (TextUtils.isEmpty(datoDetalle) && datoDetalle.equals(""))) {
                                         datoDetalle = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
-                                        if(!TextUtils.isEmpty(datoDetalle)){
+                                        if (!TextUtils.isEmpty(datoDetalle)) {
                                             editTexts.get(i).setEnabled(false);
                                         }
                                     }
@@ -525,11 +547,11 @@ public class FragmentSowing extends Fragment {
                                     break;
                                 case InputType.TYPE_CLASS_DATETIME:
 
-                                    String datoDetalleFecha="";
+                                    String datoDetalleFecha = "";
                                     datoDetalleFecha = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-                                    if ((datoDetalleFecha == null) || (TextUtils.isEmpty(datoDetalleFecha) && datoDetalleFecha.equals(""))){
+                                    if ((datoDetalleFecha == null) || (TextUtils.isEmpty(datoDetalleFecha) && datoDetalleFecha.equals(""))) {
                                         datoDetalleFecha = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
-                                        if(!TextUtils.isEmpty(datoDetalleFecha)){
+                                        if (!TextUtils.isEmpty(datoDetalleFecha)) {
                                             editTexts.get(i).setEnabled(false);
                                         }
                                     }
@@ -537,7 +559,7 @@ public class FragmentSowing extends Fragment {
                                     nuevaFecha = (nuevaFecha.equals("")) ? datoDetalleFecha : nuevaFecha;
                                     editTexts.get(i).setText(nuevaFecha);
                                     final int finalI1 = i;
-                                    if (editTexts.get(i).isEnabled()){
+                                    if (editTexts.get(i).isEnabled()) {
                                         editTexts.get(i).setOnClickListener(v -> levantarFechaSowing(editTexts.get(finalI1)));
                                     }
 
@@ -559,13 +581,13 @@ public class FragmentSowing extends Fragment {
                                     case InputType.TYPE_CLASS_NUMBER:
                                     case InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED:
                                         if (!b) {
-                                            if (TextUtils.isEmpty(tempText.getText().toString())){
+                                            if (TextUtils.isEmpty(tempText.getText().toString())) {
                                                 break;
                                             }
 
                                             String text = tempText.getText().toString().toUpperCase();
-                                            for (int i1 = 0; i1 < forbiddenWords.length; i1++){
-                                                text = text.replace(forbiddenWords[i1],forbiddenReplacement[i1]);
+                                            for (int i1 = 0; i1 < forbiddenWords.length; i1++) {
+                                                text = text.replace(forbiddenWords[i1], forbiddenReplacement[i1]);
                                             }
 
 
@@ -576,10 +598,10 @@ public class FragmentSowing extends Fragment {
                                             temp.setId_prop_mat_cli_detalle(id_importante.get(index1));
 
                                             int idAEditar = MainActivity.myAppDB.myDao().getIdDatoDetalle(id_importante.get(index1), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-                                            if (idAEditar > 0){
+                                            if (idAEditar > 0) {
                                                 temp.setId_det_vis_prop_detalle(idAEditar);
                                                 MainActivity.myAppDB.myDao().updateDatoDetalle(temp);
-                                            }else{
+                                            } else {
                                                 MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
                                             }
                                         }
@@ -617,75 +639,75 @@ public class FragmentSowing extends Fragment {
                     }
                 }
 
-                if (spinners != null && spinners.size() > 0){
-                    for (int i = 0 ; i < spinners.size(); i ++){
-                        if (id_generica.contains(spinners.get(i).getId())){
-                            int index  = id_generica.indexOf(spinners.get(i).getId());
+                if (spinners != null && spinners.size() > 0) {
+                    for (int i = 0; i < spinners.size(); i++) {
+                        if (id_generica.contains(spinners.get(i).getId())) {
+                            int index = id_generica.indexOf(spinners.get(i).getId());
 
-                            spinners.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0  && fieldbook > 0));
+                            spinners.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0 && fieldbook > 0));
                             spinners.get(i).setAdapter(new SpinnerAdapter(activity, R.layout.spinner_template_view, um));
 
                         }
                     }
                 }
 
-                if (recyclerViews != null && recyclerViews.size() > 0){
-                    for (int i = 0; i < recyclerViews.size(); i++){
-                        if (id_generica.contains(recyclerViews.get(i).getId())){
-                            int index  = id_generica.indexOf(recyclerViews.get(i).getId());
-                            List<pro_cli_mat> lista = MainActivity.myAppDB.myDao().getProCliMatByIdProp(id_importante.get(index),prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""),idClienteFinal, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
-                            if (lista.size() > 0){
+                if (recyclerViews != null && recyclerViews.size() > 0) {
+                    for (int i = 0; i < recyclerViews.size(); i++) {
+                        if (id_generica.contains(recyclerViews.get(i).getId())) {
+                            int index = id_generica.indexOf(recyclerViews.get(i).getId());
+                            List<pro_cli_mat> lista = MainActivity.myAppDB.myDao().getProCliMatByIdProp(id_importante.get(index), prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID, ""), idClienteFinal, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
+                            if (lista.size() > 0) {
                                 int idOld = 0;
-                                for (pro_cli_mat ls : lista){
-                                    if (ls.getEs_lista().equals("NO")){
+                                for (pro_cli_mat ls : lista) {
+                                    if (ls.getEs_lista().equals("NO")) {
                                         break;
-                                    }else{
+                                    } else {
                                         String[] tipos = ls.getTipo_cambio().split("_");
-                                        if(tipos[1].equals("UNO")){
+                                        if (tipos[1].equals("UNO")) {
                                             List<CropRotation> l = MainActivity.myAppDB.myDao().getCropRotation(prefs.getInt(Utilidades.SHARED_VISIT_FICHA_ID, 0));
-                                            if (l.size() > 0){
-                                                CropRotationAdapter cropRotationAdapter = new CropRotationAdapter(l,activity);
+                                            if (l.size() > 0) {
+                                                CropRotationAdapter cropRotationAdapter = new CropRotationAdapter(l, activity);
                                                 recyclerViews.get(i).setAdapter(cropRotationAdapter);
                                             }
-                                        }else if(tipos[1].equals("GENERICO")){
+                                        } else if (tipos[1].equals("GENERICO")) {
 
-                                            String idTag = "lista_"+id_importante.get(index);
-                                            if (idOld != id_importante.get(index) && recyclerViews.get(i).getTag().equals(idTag)){
+                                            String idTag = "lista_" + id_importante.get(index);
+                                            if (idOld != id_importante.get(index) && recyclerViews.get(i).getTag().equals(idTag)) {
                                                 ArrayList<String> det = (ArrayList<String>) MainActivity.myAppDB.myDao().getDetalleCampo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""), id_importante.get(index));
 
                                                 //int corte  = MainActivity.myAppDB.myDao().getCorteCabecera(id_importante.get(index));
-                                                if (det.size() > 0){
+                                                if (det.size() > 0) {
 
-                                                    for (int o = 0; o < textViews.size() ; o++){
-                                                        if(textViews.get(o).getTag() != null && textViews.get(o).getTag().equals("VISTAS_"+ls.getId_prop())){
+                                                    for (int o = 0; o < textViews.size(); o++) {
+                                                        if (textViews.get(o).getTag() != null && textViews.get(o).getTag().equals("VISTAS_" + ls.getId_prop())) {
                                                             textViews.get(o).setVisibility(View.VISIBLE);
                                                         }
                                                     }
-                                                    List<pro_cli_mat> Popr = MainActivity.myAppDB.myDao().getProCliMatByIdProp(ls.getId_prop(), prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""),idClienteFinal,prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
+                                                    List<pro_cli_mat> Popr = MainActivity.myAppDB.myDao().getProCliMatByIdProp(ls.getId_prop(), prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID, ""), idClienteFinal, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
                                                     ArrayList<String> strings = new ArrayList<>();
-                                                    for (String el : det){
-                                                        try{
-                                                            String[] columnas  = el.split("&&");
-                                                            if (columnas.length > 0){
+                                                    for (String el : det) {
+                                                        try {
+                                                            String[] columnas = el.split("&&");
+                                                            if (columnas.length > 0) {
                                                                 String valoresAndColumnas = "";
                                                                 int contadorColumnas = 1;
-                                                                for (int e = 0; e < columnas.length; e++){
+                                                                for (int e = 0; e < columnas.length; e++) {
 
 
                                                                     String[] valtemp = columnas[e].split("--");
                                                                     valoresAndColumnas += valtemp[0] + "--" + valtemp[1] + " &&";
 
-                                                                    if(contadorColumnas  == Popr.size()){
+                                                                    if (contadorColumnas == Popr.size()) {
                                                                         strings.add(valoresAndColumnas);
                                                                         valoresAndColumnas = "";
                                                                         contadorColumnas = 1;
-                                                                    }else{
+                                                                    } else {
                                                                         contadorColumnas++;
                                                                     }
                                                                 }
                                                             }
 
-                                                        }catch(Exception e){
+                                                        } catch (Exception e) {
                                                             Log.e("ERROR SPLIT", e.getMessage());
                                                         }
                                                     }
@@ -702,13 +724,13 @@ public class FragmentSowing extends Fragment {
                         }
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.e("ERROR ARRAY EDIT TEXT", e.getLocalizedMessage());
             }
         }
     }
 
-    private void levantarFechaSowing(final EditText edit){
+    private void levantarFechaSowing(final EditText edit) {
 
 
         String fecha = Utilidades.fechaActualSinHora();
@@ -716,19 +738,19 @@ public class FragmentSowing extends Fragment {
 
         String prevValue = edit.getText().toString();
 
-        if (!TextUtils.isEmpty(prevValue)){
-            try{
+        if (!TextUtils.isEmpty(prevValue)) {
+            try {
                 String[] canSplit = prevValue.split("-");
-                if( canSplit.length <= 1){
+                if (canSplit.length <= 1) {
                     edit.setText(prevValue);
                     return;
                 }
                 fechaRota = Utilidades.voltearFechaBD(prevValue).split("-");
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 fechaRota = fecha.split("-");
             }
-        }else{
+        } else {
             fechaRota = fecha.split("-");
         }
 
@@ -737,8 +759,11 @@ public class FragmentSowing extends Fragment {
             month = month + 1;
             String mes = "", dia;
 
-            if (month < 10) { mes = "0" + month; }
-            else {  mes = String.valueOf(month); }
+            if (month < 10) {
+                mes = "0" + month;
+            } else {
+                mes = String.valueOf(month);
+            }
 
             if (dayOfMonth < 10) dia = "0" + dayOfMonth;
             else dia = String.valueOf(dayOfMonth);
@@ -751,7 +776,7 @@ public class FragmentSowing extends Fragment {
     }
 
     private void avisoActivaFicha(final int id_importante) {
-        int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+        int idClienteFinal = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
         final View viewInfalted = LayoutInflater.from(getActivity()).inflate(R.layout.alert_empty, null);
 
         final ArrayList<Integer> id_g = new ArrayList<>();
@@ -760,7 +785,7 @@ public class FragmentSowing extends Fragment {
         final ArrayList<Spinner> spinners = new ArrayList<>();
 
 
-        final List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByIdProp(id_importante,prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""),idClienteFinal,prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
+        final List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByIdProp(id_importante, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID, ""), idClienteFinal, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
         ConstraintLayout constraintLayout = viewInfalted.findViewById(R.id.container_alert_empty);
         ConstraintSet constraintSet = new ConstraintSet();
 
@@ -856,14 +881,14 @@ public class FragmentSowing extends Fragment {
         if (editTextsView.size() > 0) {
             for (int i = 0; i < editTextsView.size(); i++) {
 
-                editTextsView.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0  && fieldbook > 0));
+                editTextsView.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0 && fieldbook > 0));
 
                 if (editTextsView.get(i).getInputType() == InputType.TYPE_CLASS_DATETIME) {
                     final int finalI = i;
                     editTextsView.get(i).setOnClickListener(v -> levantarFechaSowing(editTextsView.get(finalI)));
 
                     editTextsView.get(i).setOnFocusChangeListener((v, hasFocus) -> {
-                        if (hasFocus){
+                        if (hasFocus) {
                             levantarFechaSowing(editTextsView.get(finalI));
                         }
                     });
@@ -875,7 +900,7 @@ public class FragmentSowing extends Fragment {
             if (spinners.size() > 0) {
 
                 for (int i = 0; i < spinners.size(); i++) {
-                    spinners.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0  && fieldbook > 0));
+                    spinners.get(i).setEnabled((prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0) <= 0 && fieldbook > 0));
                     spinners.get(i).setAdapter(new SpinnerAdapter(activity, R.layout.spinner_template_view, um));
                 }
             }
@@ -900,7 +925,7 @@ public class FragmentSowing extends Fragment {
 
                 boolean vacio = false;
 
-                if (!vacio){
+                if (!vacio) {
                     if (editTextsView.size() > 0) {
                         for (int i = 0; i < editTextsView.size(); i++) {
 
@@ -917,7 +942,7 @@ public class FragmentSowing extends Fragment {
                             temp.setId_visita_detalle(0);
                             temp.setId_prop_mat_cli_detalle(id_i.get(index));
 
-                                MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
+                            MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
                         }
                     }
 
@@ -929,16 +954,16 @@ public class FragmentSowing extends Fragment {
                             temp.setEstado_detalle(0);
                             temp.setId_visita_detalle(0);
                             temp.setId_prop_mat_cli_detalle(id_i.get(index));
-                                MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
+                            MainActivity.myAppDB.myDao().insertDatoDetalle(temp);
                         }
                     }
 
 
                     setearOnFocus();
                     builder.dismiss();
-                }else{
-                    Snackbar.make(viewInfalted.getRootView(),"Debe completar todos los campos", Snackbar.LENGTH_LONG).show();
-                   }
+                } else {
+                    Snackbar.make(viewInfalted.getRootView(), "Debe completar todos los campos", Snackbar.LENGTH_LONG).show();
+                }
             });
             c.setOnClickListener(view -> builder.dismiss());
         });
@@ -948,18 +973,18 @@ public class FragmentSowing extends Fragment {
     }
 
 
-    private class LazyLoad extends AsyncTask<Void, Void, ArrayList<ArrayList>>{
+    private class LazyLoad extends AsyncTask<Void, Void, ArrayList<ArrayList>> {
 
         private ProgressDialog progressBar;
         private final boolean show;
 
         public LazyLoad(boolean show) {
-           this.show = show;
+            this.show = show;
         }
 
         @Override
         protected void onPreExecute() {
-            if (show){
+            if (show) {
                 progressBar = new ProgressDialog(activity);
                 progressBar.setTitle(getResources().getString(R.string.espere));
                 progressBar.setMessage("cargando interfaz...");
@@ -983,14 +1008,14 @@ public class FragmentSowing extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<ArrayList> aVoid) {
             super.onPostExecute(aVoid);
-            int idClienteFinal  = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID,""));
+            int idClienteFinal = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
 
 
-            if (Globalview != null){
-                global = cargarUI.cargarUI(Globalview, R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID,""), fieldbook,idClienteFinal,global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
+            if (Globalview != null) {
+                global = cargarUI.cargarUI(Globalview, R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID, ""), fieldbook, idClienteFinal, global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
                 setearOnFocus();
             }
-            if (show && progressBar != null && progressBar.isShowing()){
+            if (show && progressBar != null && progressBar.isShowing()) {
                 progressBar.dismiss();
             }
 
@@ -1012,7 +1037,7 @@ public class FragmentSowing extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_visitas_recom:
 
                 ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -1026,7 +1051,7 @@ public class FragmentSowing extends Fragment {
                     TempVisitas temp_visitas = temp_visitasF.get();
                     Future<VisitasCompletas> visitasCompletasFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita()));
 
-                    if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2 ) {
+                    if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2) {
                         tmp = temp_visitas;
                         visitasCompletas = visitasCompletasFuture.get();
                     }
@@ -1040,8 +1065,7 @@ public class FragmentSowing extends Fragment {
                         ft.remove(prev);
                     }
 
-                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, (TempVisitas tm)->{
-                        System.out.println();
+                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, (TempVisitas tm) -> {
                     });
                     dialogo.show(ft, "EVALUACION_RECOMENDACION");
                 } catch (ExecutionException | InterruptedException e) {
@@ -1058,13 +1082,13 @@ public class FragmentSowing extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(getUserVisibleHint()){
-            if (Globalview.findViewWithTag("FOTOS_"+fieldbook) == null){
-                if (Globalview.findViewById(R.id.container_linear_fotos) != null){
+        if (getUserVisibleHint()) {
+            if (Globalview.findViewWithTag("FOTOS_" + fieldbook) == null) {
+                if (Globalview.findViewById(R.id.container_linear_fotos) != null) {
                     LinearLayout ly = Globalview.findViewById(R.id.container_linear_fotos);
-                    if (ly != null){
-                        if(activity != null){
-                            try{
+                    if (ly != null) {
+                        if (activity != null) {
+                            try {
                                 FrameLayout fm = new FrameLayout(activity);
 //                            if (fm != null){
                                 fm.setId(View.generateViewId());
@@ -1072,11 +1096,11 @@ public class FragmentSowing extends Fragment {
                                 ly.addView(fm);
 
 
-                                if(ly.findViewWithTag("FOTOS_" + fieldbook) != null){
+                                if (ly.findViewWithTag("FOTOS_" + fieldbook) != null) {
                                     activity.getSupportFragmentManager().beginTransaction().replace(fm.getId(), FragmentFotos.getInstance(fieldbook), Utilidades.FRAGMENT_FOTOS).commit();
                                 }
 //                                }
-                            }catch (NullPointerException  e){
+                            } catch (NullPointerException e) {
                                 Toasty.warning(activity, "No se pudo cargar las fotos", Toast.LENGTH_SHORT, true).show();
                             }
                         }

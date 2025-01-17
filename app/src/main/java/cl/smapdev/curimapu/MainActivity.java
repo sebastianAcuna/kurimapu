@@ -361,10 +361,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         salirApp();
                         break;
                     case Utilidades.FRAGMENT_CONTRATOS:
-                    case Utilidades.FRAGMENT_LIST_VISITS:
-
                         preguntarSiQuiereVolver("ATENCION", "SI VUELVES NO GUARDARA LOS CAMBIOS, ESTAS SEGURO QUE DESEAS VOLVER ?");
 
+                        break;
+                    case Utilidades.FRAGMENT_LIST_VISITS:
+                        cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_right, R.anim.slide_out_right);
                         break;
 
                     case Utilidades.FRAGMENT_CHECKLIST:

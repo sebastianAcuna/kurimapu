@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -30,6 +31,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
@@ -140,6 +143,9 @@ public class FragmentChecklistSiembra extends Fragment {
             btn_guardar_cl_siembra,
             btn_cancelar_cl_siembra;
 
+    private ImageButton btn_expand_ts;
+
+    private ConstraintLayout container_ts;
 
     private Spinner sp_estado_cama_raices,
             sp_estado_cama_semilla,
@@ -321,6 +327,22 @@ public class FragmentChecklistSiembra extends Fragment {
         sp_hilera = view.findViewById(R.id.sp_hilera);
 
 
+        btn_expand_ts = view.findViewById(R.id.btn_expand_ts);
+        container_ts = view.findViewById(R.id.container_ts);
+
+
+        btn_expand_ts.setOnClickListener(v -> {
+            if (container_ts.getVisibility() == View.VISIBLE) {
+                btn_expand_ts.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_expand_down, null));
+
+                container_ts.setVisibility(View.GONE);
+            } else {
+                btn_expand_ts.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_expand_up, null));
+                container_ts.setVisibility(View.VISIBLE);
+            }
+        });
+
+
         et_fecha_siembra.setKeyListener(null);
         et_fecha_siembra.setInputType(InputType.TYPE_NULL);
         et_fecha_siembra.setOnClickListener(view1 -> Utilidades.levantarFecha(et_fecha_siembra, requireContext()));
@@ -405,18 +427,7 @@ public class FragmentChecklistSiembra extends Fragment {
 
 
         btn_guardar_cl_siembra.setOnClickListener(view1 -> {
-
-
-            if (et_prestador_servicio.getText().toString().isEmpty()) {
-                Toasty.warning(requireActivity(), "Debes agregar quien es el prestador de servicios",
-                        Toast.LENGTH_LONG, true).show();
-                return;
-            }
-
-            onSave(1, anexoCompleto.getAgricultor().getNombre_agricultor());
-//            showAlertForConfirmarGuardar();
-
-
+            onSave(1, anexoCompleto.getAgricultor().getNombre_agricultor() + " " + Utilidades.fechaActualConHora());
         });
         btn_cancelar_cl_siembra.setOnClickListener(view1 -> activity.onBackPressed());
 
@@ -543,69 +554,6 @@ public class FragmentChecklistSiembra extends Fragment {
 
         tv_encargado_siembra.setText(usuario.getNombre() + " " + usuario.getApellido_p());
         tv_lote.setText(anexoCompleto.getLotes().getNombre_lote());
-    }
-
-
-    private void showAlertForConfirmarGuardar() {
-        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_checklist, null);
-
-        RadioButton rbtn_activo = viewInfalted.findViewById(R.id.rbtn_activo);
-        RadioButton rbtn_pendiente = viewInfalted.findViewById(R.id.rbtn_pendiente);
-        EditText et_apellido = viewInfalted.findViewById(R.id.et_apellido);
-
-        rbtn_activo.setChecked(true);
-
-        rbtn_activo.setVisibility(View.GONE);
-        rbtn_pendiente.setVisibility(View.GONE);
-
-        if (checklist != null) {
-            et_apellido.setText(checklist.getApellido_checklist());
-        }
-
-
-//        if (checklist != null) {
-//
-//            et_apellido.setText(checklist.getApellido_checklist());
-//
-//            if (checklist.getEstado_documento() > 0) {
-//                rbtn_activo.setChecked(checklist.getEstado_documento() == 1);
-//                rbtn_pendiente.setChecked(checklist.getEstado_documento() == 2);
-//            }
-//
-//        }
-
-        final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
-                .setView(viewInfalted)
-                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> {
-                })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
-                })
-                .create();
-
-        builder.setOnShowListener(dialog -> {
-            Button b = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
-            Button c = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE);
-            b.setOnClickListener(view -> {
-
-                if ((!rbtn_activo.isChecked() && !rbtn_pendiente.isChecked()) || et_apellido.getText().toString().isEmpty()) {
-                    Toasty.error(requireActivity(),
-                            "Debes seleccionar un estado e ingresar una descripcion",
-                            Toast.LENGTH_LONG, true).show();
-                    return;
-                }
-                int state = (rbtn_activo.isChecked()) ? 1 : 2;
-                boolean isSaved = onSave(state, et_apellido.getText().toString());
-                if (isSaved) {
-                    builder.dismiss();
-                    activity.onBackPressed();
-                }
-
-
-            });
-            c.setOnClickListener(view -> builder.dismiss());
-        });
-        builder.setCancelable(false);
-        builder.show();
     }
 
     private void levantarDatos() {
@@ -835,12 +783,6 @@ public class FragmentChecklistSiembra extends Fragment {
 
     private boolean onSave(int state, String apellido) {
 
-
-//        ruta_foto_envase
-//                ruta_foto_semilla
-//        stringed_foto_envase
-//                stringed_foto_semilla
-
         String alfaNumerico = getResources().getString(R.string.alfanumericos_con_signos);
 
         et_observaciones.setText(Utilidades.sanitizarString(et_observaciones.getText().toString(), alfaNumerico));
@@ -889,6 +831,22 @@ public class FragmentChecklistSiembra extends Fragment {
 
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
+        }
+
+
+        if (!et_relacion_n.getText().toString().isEmpty()) {
+            int n = Integer.parseInt(et_relacion_n.getText().toString());
+            et_relacion_n.setText((n < 10) ? "0" + n : String.valueOf(n));
+        }
+
+        if (!et_relacion_p.getText().toString().isEmpty()) {
+            int n = Integer.parseInt(et_relacion_p.getText().toString());
+            et_relacion_p.setText((n < 10) ? "0" + n : String.valueOf(n));
+        }
+
+        if (!et_relacion_k.getText().toString().isEmpty()) {
+            int n = Integer.parseInt(et_relacion_k.getText().toString());
+            et_relacion_k.setText((n < 10) ? "0" + n : String.valueOf(n));
         }
 
         //ultimo cuadro
@@ -961,7 +919,7 @@ public class FragmentChecklistSiembra extends Fragment {
         clActual.setLinea(et_linea.getText().toString());
         clActual.setHora_termino(et_hora_termino.getText().toString());
         clActual.setHora_inicio(et_hora_inicio.getText().toString());
-        clActual.setFecha_siembra(et_fecha_siembra.getText().toString());
+        clActual.setFecha_siembra(Utilidades.voltearFechaBD(et_fecha_siembra.getText().toString()));
         clActual.setOperador(et_operador_maquina.getText().toString());
         clActual.setN_maquina(et_n_maquina.getText().toString());
         clActual.setPrestador_servicio(et_prestador_servicio.getText().toString());

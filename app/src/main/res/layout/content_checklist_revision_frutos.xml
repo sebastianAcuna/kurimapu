@@ -172,37 +172,10 @@
                 tools:text="AC123123123" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/container_estado_fenologico"
-            app:layout_constraintTop_toBottomOf="@id/container_anexo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="Estado fenologico"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <Spinner
-                android:id="@+id/sp_estado_fenologico"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:gravity="center"
-                android:entries="@array/fenologico"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/container_fecha"
-            app:layout_constraintTop_toBottomOf="@id/container_estado_fenologico"
+            app:layout_constraintTop_toBottomOf="@id/container_anexo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 

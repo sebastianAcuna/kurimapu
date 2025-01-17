@@ -1,7 +1,6 @@
 package cl.smapdev.curimapu.clases.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,6 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row = inflater.inflate(resourceId, parent, false);
         TextView titulo = row.findViewById(R.id.titulo);
-        Log.e("ACAAAAAA ", objects.get(position));
         titulo.setText(objects.get(position));
         return row;
     }

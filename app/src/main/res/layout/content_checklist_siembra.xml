@@ -225,7 +225,7 @@
                 android:layout_weight="1.1"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small"
-                android:inputType="numberDecimal" />
+                android:inputType="number" />
         </LinearLayout>
 
         <LinearLayout
@@ -508,8 +508,7 @@
                 android:id="@+id/et_registro_anpros"
                 android:layout_width="0dp"
                 android:layout_weight="1.1"
-                android:inputType="text"
-                android:digits="@string/alfanumericos_sin_signos"
+                android:inputType="number"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small" />
         </LinearLayout>
@@ -947,895 +946,923 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:id="@+id/titulo_regulacion_maquina"
-            android:layout_width="0dp"
-            android:layout_weight="0.9"
-            android:layout_height="wrap_content"
-            android:text="Regulación máquina"
 
-            android:layout_marginTop="@dimen/padding_small"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/colorOnSurface"
+        <LinearLayout
+            android:id="@+id/container_titulo_ts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/divider_regulacion_maquina"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/titulo_distancia_entre_hileras"
-            android:layout_width="0dp"
-            android:layout_weight="0.9"
-            android:layout_height="wrap_content"
-            android:text="Distancia Entre Hilera (CM)"
-
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/colorOnSurface"
-            app:layout_constraintTop_toBottomOf="@id/titulo_regulacion_maquina"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/container_distancia_hileras_t1"
-            app:layout_constraintTop_toBottomOf="@id/titulo_distancia_entre_hileras"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_distancia_hileras_t2"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_distancia_hileras_t1"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_distancia_hileras_t2"
-            app:layout_constraintTop_toBottomOf="@id/titulo_distancia_entre_hileras"
-            app:layout_constraintStart_toEndOf="@id/container_distancia_hileras_t1"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+            android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/titulo_regulacion_maquina"
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="T2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:text="Regulación máquina"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorOnSurface" />
 
-            <EditText
-                android:id="@+id/et_distancia_hileras_t2"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
+            <ImageButton
+                android:id="@+id/btn_expand_ts"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
+                android:src="@drawable/ic_expand_down"
+                android:backgroundTint="@color/colorOnSurface" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/container_distancia_hileras_t3"
-            app:layout_constraintTop_toBottomOf="@id/container_distancia_hileras_t2"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_ts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/container_titulo_ts"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_distancia_hileras_t4"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
+                android:id="@+id/titulo_distancia_entre_hileras"
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="T3"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:text="Distancia Entre Hilera (CM)"
 
-            <EditText
-                android:id="@+id/et_distancia_hileras_t3"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorOnSurface"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/container_distancia_hileras_t1"
+                app:layout_constraintTop_toBottomOf="@id/titulo_distancia_entre_hileras"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_distancia_hileras_t2"
+                android:layout_margin="@dimen/padding_small"
                 android:layout_width="0dp"
-                android:layout_weight="1.1"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="bottom">
 
-        <LinearLayout
-            android:id="@+id/container_distancia_hileras_t4"
-            app:layout_constraintTop_toBottomOf="@id/container_distancia_hileras_t2"
-            app:layout_constraintStart_toEndOf="@id/container_distancia_hileras_t3"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_distancia_hileras_t1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_distancia_hileras_t2"
+                app:layout_constraintTop_toBottomOf="@id/titulo_distancia_entre_hileras"
+                app:layout_constraintStart_toEndOf="@id/container_distancia_hileras_t1"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T2"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_distancia_hileras_t2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_distancia_hileras_t3"
+                app:layout_constraintTop_toBottomOf="@id/container_distancia_hileras_t2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_distancia_hileras_t4"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_distancia_hileras_t3"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_distancia_hileras_t4"
+                app:layout_constraintTop_toBottomOf="@id/container_distancia_hileras_t2"
+                app:layout_constraintStart_toEndOf="@id/container_distancia_hileras_t3"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T4"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_distancia_hileras_t4"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_distancia_hileras_t5"
+                app:layout_constraintTop_toBottomOf="@id/container_distancia_hileras_t4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_distancia_hileras_t6"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T5"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_distancia_hileras_t5"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_distancia_hileras_t6"
+                app:layout_constraintTop_toBottomOf="@id/container_distancia_hileras_t4"
+                app:layout_constraintStart_toEndOf="@id/container_distancia_hileras_t5"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T6"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_distancia_hileras_t6"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
 
             <TextView
+                android:id="@+id/titulo_n_semillas"
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="T4"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:text="N° semillas / mt"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorOnSurface"
+                app:layout_constraintTop_toBottomOf="@id/container_distancia_hileras_t6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <EditText
-                android:id="@+id/et_distancia_hileras_t4"
+            <LinearLayout
+                android:id="@+id/container_n_semillas_t1"
+                app:layout_constraintTop_toBottomOf="@id/titulo_n_semillas"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_n_semillas_t2"
+                android:layout_margin="@dimen/padding_small"
                 android:layout_width="0dp"
-                android:layout_weight="1.1"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="bottom">
 
-        <LinearLayout
-            android:id="@+id/container_distancia_hileras_t5"
-            app:layout_constraintTop_toBottomOf="@id/container_distancia_hileras_t4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_distancia_hileras_t6"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_n_semillas_t1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_n_semillas_t2"
+                app:layout_constraintTop_toBottomOf="@id/titulo_n_semillas"
+                app:layout_constraintStart_toEndOf="@id/container_n_semillas_t1"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T2"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_n_semillas_t2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_n_semillas_t3"
+                app:layout_constraintTop_toBottomOf="@id/container_n_semillas_t2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_n_semillas_t4"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_n_semillas_t3"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_n_semillas_t4"
+                app:layout_constraintTop_toBottomOf="@id/container_n_semillas_t2"
+                app:layout_constraintStart_toEndOf="@id/container_n_semillas_t3"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T4"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_n_semillas_t4"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_n_semillas_t5"
+                app:layout_constraintTop_toBottomOf="@id/container_n_semillas_t4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_n_semillas_t6"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T5"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_n_semillas_t5"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_n_semillas_t6"
+                app:layout_constraintTop_toBottomOf="@id/container_n_semillas_t4"
+                app:layout_constraintStart_toEndOf="@id/container_n_semillas_t5"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T6"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_n_semillas_t6"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
 
             <TextView
+                android:id="@+id/titulo_prof_siembra"
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="T5"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:text="Prof.Siembra (cm)"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorOnSurface"
+                app:layout_constraintTop_toBottomOf="@id/container_n_semillas_t6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <EditText
-                android:id="@+id/et_distancia_hileras_t5"
+            <LinearLayout
+                android:id="@+id/container_prof_siembra_t1"
+                app:layout_constraintTop_toBottomOf="@id/titulo_prof_siembra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_prof_siembra_t2"
+                android:layout_margin="@dimen/padding_small"
                 android:layout_width="0dp"
-                android:layout_weight="1.1"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="bottom">
 
-        <LinearLayout
-            android:id="@+id/container_distancia_hileras_t6"
-            app:layout_constraintTop_toBottomOf="@id/container_distancia_hileras_t4"
-            app:layout_constraintStart_toEndOf="@id/container_distancia_hileras_t5"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_siembra_t1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_prof_siembra_t2"
+                app:layout_constraintTop_toBottomOf="@id/titulo_prof_siembra"
+                app:layout_constraintStart_toEndOf="@id/container_prof_siembra_t1"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T2"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_siembra_t2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_prof_siembra_t3"
+                app:layout_constraintTop_toBottomOf="@id/container_prof_siembra_t2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_prof_siembra_t4"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_siembra_t3"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_prof_siembra_t4"
+                app:layout_constraintTop_toBottomOf="@id/container_prof_siembra_t2"
+                app:layout_constraintStart_toEndOf="@id/container_prof_siembra_t3"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T4"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_siembra_t4"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_prof_siembra_t5"
+                app:layout_constraintTop_toBottomOf="@id/container_prof_siembra_t4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_prof_siembra_t6"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T5"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_siembra_t5"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_prof_siembra_t6"
+                app:layout_constraintTop_toBottomOf="@id/container_prof_siembra_t4"
+                app:layout_constraintStart_toEndOf="@id/container_prof_siembra_t5"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T6"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_siembra_t6"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
 
             <TextView
+                android:id="@+id/titulo_prof_fert"
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="T6"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:text="Prof.fertilizante (cm)"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorOnSurface"
+                app:layout_constraintTop_toBottomOf="@id/container_prof_siembra_t6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <EditText
-                android:id="@+id/et_distancia_hileras_t6"
+            <LinearLayout
+                android:id="@+id/container_prof_fert_t1"
+                app:layout_constraintTop_toBottomOf="@id/titulo_prof_fert"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_prof_fert_t2"
+                android:layout_margin="@dimen/padding_small"
                 android:layout_width="0dp"
-                android:layout_weight="1.1"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="bottom">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-        <TextView
-            android:id="@+id/titulo_n_semillas"
-            android:layout_width="0dp"
-            android:layout_weight="0.9"
-            android:layout_height="wrap_content"
-            android:text="N° semillas / mt"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/colorOnSurface"
-            app:layout_constraintTop_toBottomOf="@id/container_distancia_hileras_t6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+                <EditText
+                    android:id="@+id/et_prof_fert_t1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/container_n_semillas_t1"
-            app:layout_constraintTop_toBottomOf="@id/titulo_n_semillas"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_n_semillas_t2"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+            <LinearLayout
+                android:id="@+id/container_prof_fert_t2"
+                app:layout_constraintTop_toBottomOf="@id/titulo_prof_fert"
+                app:layout_constraintStart_toEndOf="@id/container_prof_fert_t1"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T2"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_fert_t2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_prof_fert_t3"
+                app:layout_constraintTop_toBottomOf="@id/container_prof_fert_t2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_prof_fert_t4"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_fert_t3"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_prof_fert_t4"
+                app:layout_constraintTop_toBottomOf="@id/container_prof_fert_t2"
+                app:layout_constraintStart_toEndOf="@id/container_prof_fert_t3"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T4"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_fert_t4"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_prof_fert_t5"
+                app:layout_constraintTop_toBottomOf="@id/container_prof_fert_t4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_prof_fert_t6"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T5"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_fert_t5"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_prof_fert_t6"
+                app:layout_constraintTop_toBottomOf="@id/container_prof_fert_t4"
+                app:layout_constraintStart_toEndOf="@id/container_prof_fert_t5"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T6"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_prof_fert_t6"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
 
             <TextView
+                android:id="@+id/titulo_dist_fert_semilla"
                 android:layout_width="0dp"
                 android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="T1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:text="Dist. Fert. - semilla (cm)"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorOnSurface"
+                app:layout_constraintTop_toBottomOf="@id/container_prof_fert_t6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <EditText
-                android:id="@+id/et_n_semillas_t1"
+            <LinearLayout
+                android:id="@+id/container_dist_fert_semilla_t1"
+                app:layout_constraintTop_toBottomOf="@id/titulo_dist_fert_semilla"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_dist_fert_semilla_t2"
+                android:layout_margin="@dimen/padding_small"
                 android:layout_width="0dp"
-                android:layout_weight="1.1"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="bottom">
 
-        <LinearLayout
-            android:id="@+id/container_n_semillas_t2"
-            app:layout_constraintTop_toBottomOf="@id/titulo_n_semillas"
-            app:layout_constraintStart_toEndOf="@id/container_n_semillas_t1"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <TextView
+                <EditText
+                    android:id="@+id/et_dist_fert_semilla_t1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_dist_fert_semilla_t2"
+                app:layout_constraintTop_toBottomOf="@id/titulo_dist_fert_semilla"
+                app:layout_constraintStart_toEndOf="@id/container_dist_fert_semilla_t1"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
                 android:layout_width="0dp"
-                android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="T2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:orientation="horizontal"
+                android:gravity="bottom">
 
-            <EditText
-                android:id="@+id/et_n_semillas_t2"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T2"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_dist_fert_semilla_t2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_dist_fert_semilla_t3"
+                app:layout_constraintTop_toBottomOf="@id/container_dist_fert_semilla_t2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_dist_fert_semilla_t4"
+                android:layout_margin="@dimen/padding_small"
                 android:layout_width="0dp"
-                android:layout_weight="1.1"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="bottom">
 
-        <LinearLayout
-            android:id="@+id/container_n_semillas_t3"
-            app:layout_constraintTop_toBottomOf="@id/container_n_semillas_t2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_n_semillas_t4"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <TextView
+                <EditText
+                    android:id="@+id/et_dist_fert_semilla_t3"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_dist_fert_semilla_t4"
+                app:layout_constraintTop_toBottomOf="@id/container_dist_fert_semilla_t2"
+                app:layout_constraintStart_toEndOf="@id/container_dist_fert_semilla_t3"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
                 android:layout_width="0dp"
-                android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="T3"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:orientation="horizontal"
+                android:gravity="bottom">
 
-            <EditText
-                android:id="@+id/et_n_semillas_t3"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T4"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_dist_fert_semilla_t4"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_dist_fert_semilla_t5"
+                app:layout_constraintTop_toBottomOf="@id/container_dist_fert_semilla_t4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_dist_fert_semilla_t6"
+                android:layout_margin="@dimen/padding_small"
                 android:layout_width="0dp"
-                android:layout_weight="1.1"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="bottom">
 
-        <LinearLayout
-            android:id="@+id/container_n_semillas_t4"
-            app:layout_constraintTop_toBottomOf="@id/container_n_semillas_t2"
-            app:layout_constraintStart_toEndOf="@id/container_n_semillas_t3"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T5"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <TextView
+                <EditText
+                    android:id="@+id/et_dist_fert_semilla_t5"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_dist_fert_semilla_t6"
+                app:layout_constraintTop_toBottomOf="@id/container_dist_fert_semilla_t4"
+                app:layout_constraintStart_toEndOf="@id/container_dist_fert_semilla_t5"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/padding_small"
                 android:layout_width="0dp"
-                android:layout_weight="0.9"
                 android:layout_height="wrap_content"
-                android:text="T4"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.9"
+                    android:layout_height="wrap_content"
+                    android:text="T6"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <EditText
+                    android:id="@+id/et_dist_fert_semilla_t6"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="@dimen/padding_small" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <EditText
-                android:id="@+id/et_n_semillas_t4"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_n_semillas_t5"
-            app:layout_constraintTop_toBottomOf="@id/container_n_semillas_t4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_n_semillas_t6"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T5"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_n_semillas_t5"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_n_semillas_t6"
-            app:layout_constraintTop_toBottomOf="@id/container_n_semillas_t4"
-            app:layout_constraintStart_toEndOf="@id/container_n_semillas_t5"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T6"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_n_semillas_t6"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/titulo_prof_siembra"
-            android:layout_width="0dp"
-            android:layout_weight="0.9"
-            android:layout_height="wrap_content"
-            android:text="Prof.Siembra (cm)"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/colorOnSurface"
-            app:layout_constraintTop_toBottomOf="@id/container_n_semillas_t6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/container_prof_siembra_t1"
-            app:layout_constraintTop_toBottomOf="@id/titulo_prof_siembra"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_prof_siembra_t2"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_siembra_t1"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_prof_siembra_t2"
-            app:layout_constraintTop_toBottomOf="@id/titulo_prof_siembra"
-            app:layout_constraintStart_toEndOf="@id/container_prof_siembra_t1"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_siembra_t2"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_prof_siembra_t3"
-            app:layout_constraintTop_toBottomOf="@id/container_prof_siembra_t2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_prof_siembra_t4"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T3"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_siembra_t3"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_prof_siembra_t4"
-            app:layout_constraintTop_toBottomOf="@id/container_prof_siembra_t2"
-            app:layout_constraintStart_toEndOf="@id/container_prof_siembra_t3"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T4"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_siembra_t4"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_prof_siembra_t5"
-            app:layout_constraintTop_toBottomOf="@id/container_prof_siembra_t4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_prof_siembra_t6"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T5"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_siembra_t5"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_prof_siembra_t6"
-            app:layout_constraintTop_toBottomOf="@id/container_prof_siembra_t4"
-            app:layout_constraintStart_toEndOf="@id/container_prof_siembra_t5"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T6"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_siembra_t6"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/titulo_prof_fert"
-            android:layout_width="0dp"
-            android:layout_weight="0.9"
-            android:layout_height="wrap_content"
-            android:text="Prof.fertilizante (cm)"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/colorOnSurface"
-            app:layout_constraintTop_toBottomOf="@id/container_prof_siembra_t6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/container_prof_fert_t1"
-            app:layout_constraintTop_toBottomOf="@id/titulo_prof_fert"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_prof_fert_t2"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_fert_t1"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_prof_fert_t2"
-            app:layout_constraintTop_toBottomOf="@id/titulo_prof_fert"
-            app:layout_constraintStart_toEndOf="@id/container_prof_fert_t1"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_fert_t2"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_prof_fert_t3"
-            app:layout_constraintTop_toBottomOf="@id/container_prof_fert_t2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_prof_fert_t4"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T3"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_fert_t3"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_prof_fert_t4"
-            app:layout_constraintTop_toBottomOf="@id/container_prof_fert_t2"
-            app:layout_constraintStart_toEndOf="@id/container_prof_fert_t3"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T4"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_fert_t4"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_prof_fert_t5"
-            app:layout_constraintTop_toBottomOf="@id/container_prof_fert_t4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_prof_fert_t6"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T5"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_fert_t5"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_prof_fert_t6"
-            app:layout_constraintTop_toBottomOf="@id/container_prof_fert_t4"
-            app:layout_constraintStart_toEndOf="@id/container_prof_fert_t5"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T6"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_prof_fert_t6"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/titulo_dist_fert_semilla"
-            android:layout_width="0dp"
-            android:layout_weight="0.9"
-            android:layout_height="wrap_content"
-            android:text="Dist. Fert. - semilla (cm)"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/colorOnSurface"
-            app:layout_constraintTop_toBottomOf="@id/container_prof_fert_t6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/container_dist_fert_semilla_t1"
-            app:layout_constraintTop_toBottomOf="@id/titulo_dist_fert_semilla"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_dist_fert_semilla_t2"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_dist_fert_semilla_t1"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_dist_fert_semilla_t2"
-            app:layout_constraintTop_toBottomOf="@id/titulo_dist_fert_semilla"
-            app:layout_constraintStart_toEndOf="@id/container_dist_fert_semilla_t1"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_dist_fert_semilla_t2"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_dist_fert_semilla_t3"
-            app:layout_constraintTop_toBottomOf="@id/container_dist_fert_semilla_t2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_dist_fert_semilla_t4"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T3"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_dist_fert_semilla_t3"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_dist_fert_semilla_t4"
-            app:layout_constraintTop_toBottomOf="@id/container_dist_fert_semilla_t2"
-            app:layout_constraintStart_toEndOf="@id/container_dist_fert_semilla_t3"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T4"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_dist_fert_semilla_t4"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_dist_fert_semilla_t5"
-            app:layout_constraintTop_toBottomOf="@id/container_dist_fert_semilla_t4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_dist_fert_semilla_t6"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T5"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_dist_fert_semilla_t5"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_dist_fert_semilla_t6"
-            app:layout_constraintTop_toBottomOf="@id/container_dist_fert_semilla_t4"
-            app:layout_constraintStart_toEndOf="@id/container_dist_fert_semilla_t5"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:text="T6"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <EditText
-                android:id="@+id/et_dist_fert_semilla_t6"
-                android:layout_width="0dp"
-                android:layout_weight="1.1"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="@dimen/padding_small" />
-        </LinearLayout>
 
         <View
             android:id="@+id/divider_fin_regulacion"
@@ -1843,7 +1870,7 @@
             android:layout_height="1dp"
             android:layout_marginVertical="@dimen/padding_small"
             android:background="?android:attr/listDivider"
-            app:layout_constraintTop_toBottomOf="@id/container_dist_fert_semilla_t6"
+            app:layout_constraintTop_toBottomOf="@id/container_ts"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -1919,7 +1946,7 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="0.9"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:text="Relación N-P-K"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -1931,6 +1958,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small"
                 android:maxLength="2"
+                android:gravity="center"
                 android:inputType="number" />
 
             <TextView
@@ -1947,6 +1975,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:maxLength="2"
+
+                android:gravity="center"
                 android:layout_marginTop="@dimen/padding_small" />
 
             <TextView
@@ -1962,6 +1992,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:maxLength="2"
+
+                android:gravity="center"
                 android:layout_marginTop="@dimen/padding_small" />
         </LinearLayout>
 
@@ -1979,7 +2011,7 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="0.9"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:text="Relación M - H"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -1987,7 +2019,9 @@
             <EditText
                 android:id="@+id/et_relacion_m"
                 android:layout_width="0dp"
-                android:layout_weight="0.2"
+                android:layout_weight="0.3"
+                android:maxLength="2"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small"
                 android:inputType="number" />
@@ -1995,16 +2029,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:text=" : " />
 
             <EditText
                 android:id="@+id/et_relacion_h"
                 android:layout_width="0dp"
-                android:layout_weight="0.2"
+                android:layout_weight="0.3"
                 android:layout_height="wrap_content"
                 android:inputType="number"
+                android:maxLength="2"
+                android:gravity="center"
                 android:layout_marginTop="@dimen/padding_small" />
         </LinearLayout>
 

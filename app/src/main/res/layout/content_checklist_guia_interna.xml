@@ -146,8 +146,7 @@
                 android:layout_weight="1.1"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small"
-                android:inputType="text"
-                android:digits="@string/alfanumericos_sin_signos"
+                android:inputType="number"
                 android:autofillHints=""
                 android:labelFor="@id/et_of" />
         </LinearLayout>
@@ -381,9 +380,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.1"
-                android:inputType="textMultiLine"
-                android:lines="2"
-                android:maxLines="3"
+                android:inputType="number"
+                android:lines="1"
+                android:maxLines="1"
                 android:autofillHints="" />
         </LinearLayout>
 
@@ -764,8 +763,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.1"
-                android:inputType="text"
-                android:digits="@string/alfanumericos_sin_signos"
+                android:inputType="numberDecimal"
                 android:lines="1"
                 android:autofillHints="" />
         </LinearLayout>
@@ -793,8 +791,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.1"
-                android:inputType="text"
-                android:digits="@string/alfanumericos_sin_signos"
+                android:inputType="numberDecimal"
                 android:lines="1"
                 android:autofillHints="" />
         </LinearLayout>

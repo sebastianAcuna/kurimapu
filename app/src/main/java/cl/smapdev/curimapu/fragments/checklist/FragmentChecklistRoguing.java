@@ -212,8 +212,12 @@ public class FragmentChecklistRoguing extends Fragment {
 
         String clave = checklist.getClave_unica();
 
+
         List<CheckListRoguingDetalleFechas> myImageLis = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinal(clave);
 
+        if (myImageLis.size() >= 4) {
+            btn_nuevo_roguing.setEnabled(false);
+        }
 
         container_roguing_anteriores.setVisibility(myImageLis.isEmpty() ? View.GONE : View.VISIBLE);
 
@@ -296,10 +300,13 @@ public class FragmentChecklistRoguing extends Fragment {
         rv_roguing_actual.setHasFixedSize(true);
         rv_roguing_actual.setLayoutManager(lManagerH);
 
+        String clave = (checklist == null) ? "" : checklist.getClave_unica();
+
 
         List<CheckListRoguingDetalleFechas> myImageLis = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadre(null);
+        List<CheckListRoguingDetalleFechas> detallesAnteriores = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinal(clave);
 
-        if (myImageLis.isEmpty()) {
+        if (myImageLis.isEmpty() && detallesAnteriores.size() < 4) {
             btn_nuevo_roguing.setEnabled(true);
             return;
         }
@@ -330,7 +337,7 @@ public class FragmentChecklistRoguing extends Fragment {
                 listadoDetalles();
                 listadoDetallesAnteriores();
                 listadoDetallesResumen();
-            }, d, usuario, checklist);
+            }, d, usuario, checklist, anexoCompleto);
             dialogo.show(ft, Utilidades.DIALOG_TAG_ROGUING_DETALLE_FECHA);
         }, (d) -> {
             Log.e("LONG CLICK", d.getFecha());
@@ -566,7 +573,7 @@ public class FragmentChecklistRoguing extends Fragment {
                 listadoDetalles();
                 listadoDetallesAnteriores();
                 listadoDetallesResumen();
-            }, null, usuario, checklist);
+            }, null, usuario, checklist, anexoCompleto);
             dialogo.show(ft, Utilidades.DIALOG_TAG_ROGUING_DETALLE_FECHA);
         });
 

@@ -5,11 +5,10 @@ import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
-import cl.smapdev.curimapu.MainActivity;
-import cl.smapdev.curimapu.clases.tablas.Config;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class RetrofitClient {
 
@@ -18,18 +17,19 @@ public class RetrofitClient {
     private static OkHttpClient okHttpClient = new OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.MINUTES)
             .readTimeout(5, TimeUnit.MINUTES)
-            .writeTimeout(5,  TimeUnit.MINUTES)
+            .writeTimeout(5, TimeUnit.MINUTES)
             .build();
 
-    public static Retrofit getClient(String direccion){
+    public static Retrofit getClient(String direccion) {
 
         Gson gson = new GsonBuilder()
+//                .registerTypeAdapter(IntegerTypeAdapter.class, new IntegerTypeAdapter())
                 .setLenient()
                 .create();
 
-        if (retrofit ==null){
+        if (retrofit == null) {
             String urlFija = "/core/models/android/";
-            String url = direccion+urlFija;
+            String url = direccion + urlFija;
             retrofit = new Retrofit.Builder()
                     .baseUrl(url)
                     .client(okHttpClient)
@@ -39,7 +39,7 @@ public class RetrofitClient {
         return retrofit;
     }
 
-    public static Retrofit getWeather(){
+    public static Retrofit getWeather() {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();

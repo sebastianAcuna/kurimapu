@@ -167,8 +167,10 @@ public interface DaoCheckListRoguing {
 
     @Query(" SELECT * FROM checklist_roguing_detalle " +
             " LEFT JOIN checklist_roguing_detalle_fechas ON (checklist_roguing_detalle_fechas.clave_unica_detalle_fecha = checklist_roguing_detalle.clave_unica_detalle_fecha ) " +
-            " WHERE  (checklist_roguing_detalle.clave_unica_roguing = :claveUnica OR checklist_roguing_detalle.clave_unica_roguing IS NULL) ORDER BY checklist_roguing_detalle_fechas.fecha, genero, descripcion_fuera_tipo ASC ;")
-    List<CheckListRoguingDetalle> obtenerDetalleRoguingPorClaveUnicaPadreFechas(String claveUnica);
+            " LEFT JOIN checklist_roguing ON (checklist_roguing_detalle.clave_unica_roguing = checklist_roguing.clave_unica) " +
+            " LEFT JOIN anexo_contrato ON (anexo_contrato.id_anexo_contrato = checklist_roguing.id_ac_cl_roguing) " +
+            " WHERE  anexo_contrato.id_especie_anexo =  :especie ORDER BY checklist_roguing_detalle_fechas.fecha, genero, descripcion_fuera_tipo ASC ;")
+    List<CheckListRoguingDetalle> obtenerDetalleRoguingPorClaveUnicaPadreFechas(int especie);
 
 
     @Query(" SELECT checklist_roguing_detalle.id_cl_roguing_detalle, checklist_roguing_detalle.id_user_tx,  checklist_roguing_detalle.estado_sincronizacion, SUM(cantidad) AS cantidad, checklist_roguing_detalle.descripcion_fuera_tipo, checklist_roguing_detalle.genero FROM checklist_roguing_detalle " +

@@ -34,6 +34,7 @@ import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.CheckListRoguingDetailAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
+import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguing;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalleFechas;
@@ -52,7 +53,7 @@ public class DialogRoguingDetailFechas extends DialogFragment {
     private Button btn_nuevo_roguing, btn_guardar_anexo_fecha, btn_posponer_anexo_fecha;
     private RecyclerView listado_rouging;
 
-
+    private AnexoCompleto anexoCompleto;
     private Usuario usuario;
 
     private CheckListRoguingDetailAdapter detail_adapter;
@@ -64,6 +65,10 @@ public class DialogRoguingDetailFechas extends DialogFragment {
 
     public interface IOnSave {
         void onSave(boolean saved);
+    }
+
+    public void setAnexoCompleto(AnexoCompleto anexoCompleto) {
+        this.anexoCompleto = anexoCompleto;
     }
 
     public void setChk(CheckListRoguingDetalleFechas chk) {
@@ -87,12 +92,13 @@ public class DialogRoguingDetailFechas extends DialogFragment {
         this.usuario = usuario;
     }
 
-    public static DialogRoguingDetailFechas newInstance(IOnSave onSave, CheckListRoguingDetalleFechas chk, Usuario usuario, CheckListRoguing checklist) {
+    public static DialogRoguingDetailFechas newInstance(IOnSave onSave, CheckListRoguingDetalleFechas chk, Usuario usuario, CheckListRoguing checklist, AnexoCompleto anexoCompleto) {
         DialogRoguingDetailFechas dg = new DialogRoguingDetailFechas();
         dg.setIOnSave(onSave);
         dg.setUsuario(usuario);
         dg.setChk(chk);
         dg.setChecklist(checklist);
+        dg.setAnexoCompleto(anexoCompleto);
         return dg;
     }
 
@@ -125,8 +131,7 @@ public class DialogRoguingDetailFechas extends DialogFragment {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         try {
 
-            String clave = (checklist == null) ? "" : checklist.getClave_unica();
-            List<CheckListRoguingDetalle> asd = executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingPorClaveUnicaPadreFechas(clave)).get();
+            List<CheckListRoguingDetalle> asd = executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingPorClaveUnicaPadreFechas(Integer.parseInt(anexoCompleto.getEspecie().getId_especie()))).get();
 
 
             if (!asd.isEmpty()) {

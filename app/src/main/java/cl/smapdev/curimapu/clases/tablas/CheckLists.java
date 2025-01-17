@@ -7,9 +7,18 @@ public class CheckLists {
     private int tipoCheckList;
     private String descCheckList;
     private boolean isExpanded = false;
+    private boolean isNewDisabled = false;
     private int idAnexo;
     private List<CheckListDetails> details;
 
+
+    public boolean isNewDisabled() {
+        return isNewDisabled;
+    }
+
+    public void setNewDisabled(boolean newDisabled) {
+        isNewDisabled = newDisabled;
+    }
 
     public int getIdAnexo() {
         return idAnexo;

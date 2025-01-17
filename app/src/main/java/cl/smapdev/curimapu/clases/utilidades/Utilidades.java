@@ -43,7 +43,7 @@ import cl.smapdev.curimapu.R;
 
 public class Utilidades {
 
-    public static final String APPLICATION_VERSION = "4.1.0609";
+    public static final String APPLICATION_VERSION = "4.2.0609";
 
     public static final String FRAGMENT_INICIO = "fragment_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -299,7 +299,7 @@ public class Utilidades {
 
     public static String voltearFechaBD(String fecha) {
         try {
-            if (fecha != null && fecha.length() > 0) {
+            if (fecha != null && !fecha.isEmpty()) {
                 String[] date = fecha.split("-");
                 return date[2] + "-" + date[1] + "-" + date[0];
             } else {

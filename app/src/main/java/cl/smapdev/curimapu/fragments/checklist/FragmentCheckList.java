@@ -345,6 +345,7 @@ public class FragmentCheckList extends Fragment {
                     nested.add(tmp);
                 }
                 chk.setDetails(nested);
+                chk.setNewDisabled(true);
             } else {
                 chk.setDetails(Collections.emptyList());
             }

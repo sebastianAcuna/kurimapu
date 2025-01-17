@@ -23,8 +23,14 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> 
     private final OnClickListenerCallback onClickPDF;
     private final OnClickListenerCallback onClickSubir;
 
-    public interface OnClickListener{ void onItemClick( CheckLists checkList ); };
-    public interface OnClickListenerCallback{ void onItemClick(CheckLists checkList, CheckListDetails details); };
+    public interface OnClickListener {
+        void onItemClick(CheckLists checkList);
+    }
+
+
+    public interface OnClickListenerCallback {
+        void onItemClick(CheckLists checkList, CheckListDetails details);
+    }
 
 
     public CheckListAdapter(
@@ -43,15 +49,15 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> 
     @NonNull
     @Override
     public CheckListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view  = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_check_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_check_list, parent, false);
         return new CheckListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CheckListViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull CheckListViewHolder holder, int position) {
 
-        CheckLists checkList = checkLists.get( position );
-        holder.lbl_documento.setText( checkList.getDescCheckList() );
+        CheckLists checkList = checkLists.get(position);
+        holder.lbl_documento.setText(checkList.getDescCheckList());
 
 
         NestedCheckListAdapter nested = new NestedCheckListAdapter(
@@ -59,12 +65,13 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> 
                 checkListDetails -> onClickPDF.onItemClick(checkList, checkListDetails),
                 checkListDetails -> onClickEditar.onItemClick(checkList, checkListDetails),
                 checkListDetails -> onClickSubir.onItemClick(checkList, checkListDetails)
-                );
+        );
         LinearLayoutManager lm = new LinearLayoutManager(holder.itemView.getContext());
 
         holder.rv_lista_detalle.setLayoutManager(lm);
         holder.rv_lista_detalle.setAdapter(nested);
 
+        holder.btn_nuevo.setEnabled(!checkList.isNewDisabled());
         holder.btn_nuevo.setOnClickListener(view -> onClickNuevo.onItemClick(checkList));
 
         holder.btn_exand_rv.setOnClickListener(view -> {
