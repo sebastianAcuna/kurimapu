@@ -53,9 +53,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import cl.smapdev.curimapu.BuildConfig;
 import cl.smapdev.curimapu.MainActivity;
@@ -355,10 +352,9 @@ public class FragmentFormVisitas extends Fragment {
     }
 
     private void setOnSave() {
-        ExecutorService exec = Executors.newSingleThreadExecutor();
 
         try {
-            List<Evaluaciones> evs = exec.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByACObliga(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()))).get();
+            List<Evaluaciones> evs = MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByACObliga(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
             if (evs.isEmpty()) {
                 Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes agregar una recomendacion para esta visita. ( estrella de arriba a la derecha )", "entiendo");
                 return;
@@ -368,10 +364,8 @@ public class FragmentFormVisitas extends Fragment {
             } else {
                 saveVisitaNormal();
             }
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (Exception e) {
             Utilidades.avisoListo(activity, "Problema", "No se pudo obtener datos de la evaluacion, por favor, vuelva a abrir y nuevamente la evaluacion." + e.getMessage(), "entiendo");
-        } finally {
-            exec.shutdown();
         }
     }
 
@@ -670,19 +664,18 @@ public class FragmentFormVisitas extends Fragment {
         int idVisita = (visitasCompletas != null) ? visitasCompletas.getVisitas().getId_visita() : 0;
         int idVisitaLocal = (visitasCompletas != null) ? visitasCompletas.getVisitas().getId_visita_local() : 0;
 
-        ExecutorService ex = Executors.newSingleThreadExecutor();
+
         try {
 
-            Config config = ex.submit(() -> MainActivity.myAppDB.myDao().getConfig()).get();
+            Config config = MainActivity.myAppDB.myDao().getConfig();
             int idDispo = (config == null) ? 0 : config.getId();
 
-            List<Fotos> myImageList = ex.submit(() -> MainActivity.myAppDB.myDao().getFotosByFieldAndViewVisitas(
+            List<Fotos> myImageList = MainActivity.myAppDB.myDao().getFotosByFieldAndViewVisitas(
                     2,
                     anexoCompleto.getAnexoContrato().getId_anexo_contrato(),
                     idVisitaLocal,
                     idVisita,
-                    idDispo)
-            ).get();
+                    idDispo);
 
             adapterAgronomo = new FotosListAdapter(myImageList, activity, this::showAlertForUpdate, fotos -> {
 
@@ -694,10 +687,8 @@ public class FragmentFormVisitas extends Fragment {
             });
             rwAgronomo.setAdapter(adapterAgronomo);
 
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
-            ex.shutdown();
         }
 
     }
@@ -779,7 +770,6 @@ public class FragmentFormVisitas extends Fragment {
     }
 
     private void levantarDialogoObservationTodo() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
         FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
         Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
         if (prev != null) {
@@ -787,7 +777,7 @@ public class FragmentFormVisitas extends Fragment {
         }
 
         try {
-            VisitasCompletas ultimaVisita = executor.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(anexoCompleto.getAnexoContrato().getId_anexo_contrato())).get();
+            VisitasCompletas ultimaVisita = MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(anexoCompleto.getAnexoContrato().getId_anexo_contrato());
 
             if (ultimaVisita != null) {
                 evaluacionAnterior.id_evaluacion = ultimaVisita.getVisitas().getId_visita();
@@ -805,10 +795,8 @@ public class FragmentFormVisitas extends Fragment {
                     visitasCompletas,
                     (EvaluacionAnterior tp) -> evaluacionAnterior = tp);
             dialogo.show(ft, "EVALUACION_RECOMENDACION");
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (Exception e) {
             Toasty.error(activity, "Error levantando dialogo " + e.getMessage(), Toast.LENGTH_LONG, true).show();
-        } finally {
-            executor.shutdown();
         }
     }
 
@@ -1170,7 +1158,6 @@ public class FragmentFormVisitas extends Fragment {
         String etobs = et_obs.getText().toString().toUpperCase();
         visitas.setObservation_visita(etobs);
 
-        ExecutorService exec = Executors.newSingleThreadExecutor();
 
         try {
 
@@ -1200,7 +1187,7 @@ public class FragmentFormVisitas extends Fragment {
                 idVisita = visitasCompletas.getVisitas().getId_visita();
                 visitas.setId_visita((int) idVisita);
                 visitas.setId_visita_local(visitasCompletas.getVisitas().getId_visita_local());
-                exec.submit(() -> MainActivity.myAppDB.myDao().updateVisita(visitas)).get();
+                MainActivity.myAppDB.myDao().updateVisita(visitas);
             } else {
                 idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
             }
@@ -1208,27 +1195,24 @@ public class FragmentFormVisitas extends Fragment {
 
             long finalIdVisita = idVisita;
 
-            exec.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesObligadas(Integer.parseInt(an.getId_anexo_contrato()))).get();
-            exec.submit(() -> MainActivity.myAppDB.myDao().updateFotosWithVisita((int) finalIdVisita, anexoCompleto.getAnexoContrato().getId_anexo_contrato())).get();
-            Visitas visitas1 = exec.submit(() -> MainActivity.myAppDB.myDao().getVisitas((int) finalIdVisita)).get();
+            MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesObligadas(Integer.parseInt(an.getId_anexo_contrato()));
+            MainActivity.myAppDB.myDao().updateFotosWithVisita((int) finalIdVisita, anexoCompleto.getAnexoContrato().getId_anexo_contrato());
+            Visitas visitas1 = MainActivity.myAppDB.myDao().getVisitas((int) finalIdVisita);
             visitas1.setId_visita_local((int) idVisita);
             MainActivity.myAppDB.myDao().updateVisita(visitas1);
             evaluacionAnterior.clean();
             showAlertForSave("Genial", "Se guardo todo como corresponde");
 
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (Exception e) {
             Utilidades.avisoListo(activity, "Falta algo", "No se pudo guardar " + e.getMessage(), "entiendo");
-        } finally {
-            exec.shutdown();
         }
     }
-    
+
     private void saveVisitaNormal() {
 
-        ExecutorService exec = Executors.newSingleThreadExecutor();
 
         try {
-            VisitasCompletas cc = exec.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(anexoCompleto.getAnexoContrato().getId_anexo_contrato())).get();
+            VisitasCompletas cc = MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(anexoCompleto.getAnexoContrato().getId_anexo_contrato());
 
             if ((evaluacionAnterior.evaluacion == 0.0 || evaluacionAnterior.comentario.isEmpty()) && cc != null && cc.getVisitas() != null) {
                 Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes realizar la evaluacion de la visita anterior. ( estrella de arriba a la derecha )", "entiendo");
@@ -1238,8 +1222,8 @@ public class FragmentFormVisitas extends Fragment {
             String idAc = anexoCompleto.getAnexoContrato().getId_anexo_contrato();
             int idVisita = (visitasCompletas != null) ? visitasCompletas.getVisitas().getId_visita() : 0;
 
-            int fotosClientes = exec.submit(() -> MainActivity.myAppDB.myDao().getCantFotos(idAc, idVisita, 0)).get();
-            int fotosAgricultores = exec.submit(() -> MainActivity.myAppDB.myDao().getCantFotos(idAc, idVisita, 2)).get();
+            int fotosClientes = MainActivity.myAppDB.myDao().getCantFotos(idAc, idVisita, 0);
+            int fotosAgricultores = MainActivity.myAppDB.myDao().getCantFotos(idAc, idVisita, 2);
 
 
             if (fotosClientes <= 0 || fotosAgricultores <= 0) {
@@ -1248,8 +1232,8 @@ public class FragmentFormVisitas extends Fragment {
             }
 
 
-            int favsCliente = exec.submit(() -> MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(idAc, idVisita, 0)).get();
-            int favsAgricultores = exec.submit(() -> MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(idAc, idVisita, 2)).get();
+            int favsCliente = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(idAc, idVisita, 0);
+            int favsAgricultores = MainActivity.myAppDB.myDao().getCantFavoritasByFieldbookAndFicha(idAc, idVisita, 2);
 
             if (favsCliente <= 0 || favsAgricultores <= 0) {
                 Utilidades.avisoListo(activity, "Falta algo", "Debes seleccionar como favorita al menos una foto cliente y agricultor (manten presionada la foto para marcar)", "entiendo");
@@ -1360,28 +1344,26 @@ public class FragmentFormVisitas extends Fragment {
                 idVis = visitasCompletas.getVisitas().getId_user_visita();
                 visitas.setId_visita(visitasCompletas.getVisitas().getId_visita());
                 visitas.setId_visita_local(visitasCompletas.getVisitas().getId_visita());
-                exec.submit(() -> MainActivity.myAppDB.myDao().updateVisita(visitas)).get();
+                MainActivity.myAppDB.myDao().updateVisita(visitas);
 
             } else {
-                idVis = exec.submit(() -> MainActivity.myAppDB.myDao().setVisita(visitas)).get();
+                idVis = MainActivity.myAppDB.myDao().setVisita(visitas);
             }
 
             long finalIdVisita = idVis;
 
 
-            exec.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesGuardar(Integer.parseInt(an.getId_anexo_contrato()), claveUnica)).get();
-            exec.submit(() -> MainActivity.myAppDB.myDao().updateFotosWithVisita((int) finalIdVisita, anexoCompleto.getAnexoContrato().getId_anexo_contrato())).get();
-            exec.submit(() -> MainActivity.myAppDB.myDao().updateDetallesToVisits((int) finalIdVisita)).get();
-            Visitas visitas1 = exec.submit(() -> MainActivity.myAppDB.myDao().getVisitas((int) finalIdVisita)).get();
+            MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesGuardar(Integer.parseInt(an.getId_anexo_contrato()), claveUnica);
+            MainActivity.myAppDB.myDao().updateFotosWithVisita((int) finalIdVisita, anexoCompleto.getAnexoContrato().getId_anexo_contrato());
+            MainActivity.myAppDB.myDao().updateDetallesToVisits((int) finalIdVisita);
+            Visitas visitas1 = MainActivity.myAppDB.myDao().getVisitas((int) finalIdVisita);
             visitas1.setId_visita_local(idVisita);
-            exec.submit(() -> MainActivity.myAppDB.myDao().updateVisita(visitas1)).get();
+            MainActivity.myAppDB.myDao().updateVisita(visitas1);
 
             showAlertForSave("Genial", "Se guardo todo como corresponde");
 
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (Exception e) {
             Utilidades.avisoListo(activity, "Problemas", "No se pudo guardar la visita " + e.getMessage(), "entiendo");
-        } finally {
-            exec.shutdown();
         }
     }
 }

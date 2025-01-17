@@ -1,6 +1,5 @@
 package cl.smapdev.curimapu.fragments.checklist;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,13 +30,11 @@ import java.util.concurrent.Future;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.CheckListAdapter;
-import cl.smapdev.curimapu.clases.modelo.AnexoCorreoFechaSync;
 import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListLimpiezaCamionesCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
-import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
@@ -48,8 +44,6 @@ import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.CheckLists;
 import cl.smapdev.curimapu.clases.tablas.ChecklistDevolucionSemilla;
 import cl.smapdev.curimapu.clases.tablas.ChecklistLimpiezaCamionesDetalle;
-import cl.smapdev.curimapu.clases.temporales.TempVisitas;
-import cl.smapdev.curimapu.clases.utilidades.InternetStateClass;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import es.dmoral.toasty.Toasty;
 
@@ -67,7 +61,7 @@ public class FragmentCheckList extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MainActivity a = (MainActivity) getActivity();
-        if(a != null) activity = a;
+        if (a != null) activity = a;
         prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
     }
 
@@ -112,7 +106,7 @@ public class FragmentCheckList extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_upload_files:
 
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -126,19 +120,19 @@ public class FragmentCheckList extends Fragment {
                         .getClCosechaToSync());
 
                 Future<List<CheckListCapacitacionSiembra>> checkListCapacitacionSiembraFuture
-                    = executorService.submit(()
-                    -> MainActivity.myAppDB.DaoCheckListCapSiembra()
-                    .getClCapSiembraByEstado( 0, Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA));
+                        = executorService.submit(()
+                        -> MainActivity.myAppDB.DaoCheckListCapSiembra()
+                        .getClCapSiembraByEstado(0, Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA));
 
                 Future<List<CheckListCapacitacionSiembra>> checkListCapacitacionCosechaFuture
                         = executorService.submit(()
                         -> MainActivity.myAppDB.DaoCheckListCapSiembra()
-                        .getClCapSiembraByEstado( 0, Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA));
+                        .getClCapSiembraByEstado(0, Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA));
 
                 Future<List<CheckListLimpiezaCamiones>> checkLisLimpiezaCamionesFuture
                         = executorService.submit(()
                         -> MainActivity.myAppDB.DaoCheckListLimpiezaCamiones()
-                        .getClLimpiezaCamionesByEstado( 0));
+                        .getClLimpiezaCamionesByEstado(0));
 
                 Future<List<ChecklistDevolucionSemilla>> checkLisDevolucionSemillaFuture
                         = executorService.submit(()
@@ -161,7 +155,7 @@ public class FragmentCheckList extends Fragment {
                     List<CheckListLimpiezaCamiones> capLimpiezaCamionesCab
                             = checkLisLimpiezaCamionesFuture.get();
 
-                    if(chk.size() <= 0 && chkC.size() <= 0 && capSiembraCab.size() <= 0 && capCosechaCab.size() <=0 && capLimpiezaCamionesCab.size() <= 0 && chkDS.size() <= 0){
+                    if (chk.size() <= 0 && chkC.size() <= 0 && capSiembraCab.size() <= 0 && capCosechaCab.size() <= 0 && capLimpiezaCamionesCab.size() <= 0 && chkDS.size() <= 0) {
                         executorService.shutdown();
                         Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                         return true;
@@ -172,9 +166,7 @@ public class FragmentCheckList extends Fragment {
                     List<CheckListLimpiezaCamionesCompleto> chkListLimpiezaCamiones = new ArrayList<>();
 
 
-
-
-                    if(capSiembraCab.size() > 0){
+                    if (capSiembraCab.size() > 0) {
 
                         for (CheckListCapacitacionSiembra clc : capSiembraCab) {
                             List<CheckListCapacitacionSiembraDetalle> detalle =
@@ -190,10 +182,10 @@ public class FragmentCheckList extends Fragment {
                             chkList.add(completo);
                         }
 
-                        chkS.setCheckListCapCompletos( chkList );
+                        chkS.setCheckListCapCompletos(chkList);
                     }
 
-                    if(capCosechaCab.size() > 0){
+                    if (capCosechaCab.size() > 0) {
 
                         for (CheckListCapacitacionSiembra clc : capCosechaCab) {
                             List<CheckListCapacitacionSiembraDetalle> detalle =
@@ -209,10 +201,10 @@ public class FragmentCheckList extends Fragment {
                             chkList.add(completo);
                         }
 
-                        chkS.setCheckListCapCompletos( chkList );
+                        chkS.setCheckListCapCompletos(chkList);
                     }
 
-                    if(capLimpiezaCamionesCab.size() > 0){
+                    if (capLimpiezaCamionesCab.size() > 0) {
 
                         for (CheckListLimpiezaCamiones clc : capLimpiezaCamionesCab) {
                             List<ChecklistLimpiezaCamionesDetalle> detalle =
@@ -227,20 +219,20 @@ public class FragmentCheckList extends Fragment {
 
                             chkListLimpiezaCamiones.add(completo);
                         }
-                        chkS.setCheckListLimpiezaCamionesCompletos( chkListLimpiezaCamiones );
+                        chkS.setCheckListLimpiezaCamionesCompletos(chkListLimpiezaCamiones);
                     }
 
-                    if(chkC.size() > 0){
+                    if (chkC.size() > 0) {
                         chkS.setCheckListCosechas(chkC);
                     }
-                    if(chkDS.size() > 0){
+                    if (chkDS.size() > 0) {
                         chkS.setCheckListDevolucionSemilla(chkDS);
                     }
 
-                    if(chk.size() > 0){
-                        chkS.setCheckListSiembras( chk );
+                    if (chk.size() > 0) {
+                        chkS.setCheckListSiembras(chk);
                     }
-                    prepararSubir( chkS );
+                    prepararSubir(chkS);
 
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
@@ -254,7 +246,7 @@ public class FragmentCheckList extends Fragment {
 
     }
 
-    private CheckLists getCheckListLimpiezaCamiones(ExecutorService ex){
+    private CheckLists getCheckListLimpiezaCamiones(ExecutorService ex) {
         CheckLists limpiezaCamiones = new CheckLists();
 
         limpiezaCamiones.setDescCheckList("CHECK LIST LIMPIEZA CAMIONES");
@@ -272,9 +264,9 @@ public class FragmentCheckList extends Fragment {
         try {
 
             clLimpiezaCamiones = clCapSiembraFuture.get();
-            if(clLimpiezaCamiones.size() > 0){
+            if (clLimpiezaCamiones.size() > 0) {
                 List<CheckListDetails> nested = new ArrayList<>();
-                for (CheckListLimpiezaCamiones clLimpCamiones : clLimpiezaCamiones){
+                for (CheckListLimpiezaCamiones clLimpCamiones : clLimpiezaCamiones) {
                     CheckListDetails tmp = new CheckListDetails();
                     tmp.setDescription(clLimpCamiones.getApellido_checklist());
                     tmp.setUploaded((clLimpCamiones.getEstado_sincronizacion() > 0));
@@ -283,22 +275,22 @@ public class FragmentCheckList extends Fragment {
                     tmp.setEstado(clLimpCamiones.getEstado_documento());
                     tmp.setClave_unica(clLimpCamiones.getClave_unica());
                     tmp.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CHECKLIST_LIMPIEZA_CAMIONES);
-                    tmp.setDescEstado((clLimpCamiones.getEstado_documento() <= 0) ? "SIN ESTADO" : (clLimpCamiones.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA" );
+                    tmp.setDescEstado((clLimpCamiones.getEstado_documento() <= 0) ? "SIN ESTADO" : (clLimpCamiones.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA");
                     nested.add(tmp);
                 }
                 limpiezaCamiones.setDetails(nested);
-            }else{
+            } else {
                 limpiezaCamiones.setDetails(Collections.emptyList());
             }
 
-        }catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             limpiezaCamiones.setDetails(Collections.emptyList());
         }
         return limpiezaCamiones;
     }
 
-    private CheckLists getCheckListCapacitacionSiembra(ExecutorService ex){
+    private CheckLists getCheckListCapacitacionSiembra(ExecutorService ex) {
 
         CheckLists capacitacionSiembra = new CheckLists();
 
@@ -317,9 +309,9 @@ public class FragmentCheckList extends Fragment {
         try {
 
             clCapSiembras = clCapSiembraFuture.get();
-            if(clCapSiembras.size() > 0){
+            if (clCapSiembras.size() > 0) {
                 List<CheckListDetails> nested = new ArrayList<>();
-                for (CheckListCapacitacionSiembra clCapSiembra : clCapSiembras){
+                for (CheckListCapacitacionSiembra clCapSiembra : clCapSiembras) {
                     CheckListDetails tmp = new CheckListDetails();
                     tmp.setDescription(clCapSiembra.getApellido_checklist());
                     tmp.setUploaded((clCapSiembra.getEstado_sincronizacion() > 0));
@@ -328,22 +320,22 @@ public class FragmentCheckList extends Fragment {
                     tmp.setEstado(clCapSiembra.getEstado_documento());
                     tmp.setClave_unica(clCapSiembra.getClave_unica());
                     tmp.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA);
-                    tmp.setDescEstado((clCapSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clCapSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA" );
+                    tmp.setDescEstado((clCapSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clCapSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA");
                     nested.add(tmp);
                 }
                 capacitacionSiembra.setDetails(nested);
-            }else{
+            } else {
                 capacitacionSiembra.setDetails(Collections.emptyList());
             }
 
-        }catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             capacitacionSiembra.setDetails(Collections.emptyList());
         }
         return capacitacionSiembra;
     }
 
-    private CheckLists getCheckListCapacitacionCosecha(ExecutorService ex){
+    private CheckLists getCheckListCapacitacionCosecha(ExecutorService ex) {
 
         CheckLists capacitacionSiembra = new CheckLists();
 
@@ -362,9 +354,9 @@ public class FragmentCheckList extends Fragment {
         try {
 
             clCapSiembras = clCapSiembraFuture.get();
-            if(clCapSiembras.size() > 0){
+            if (clCapSiembras.size() > 0) {
                 List<CheckListDetails> nested = new ArrayList<>();
-                for (CheckListCapacitacionSiembra clCapSiembra : clCapSiembras){
+                for (CheckListCapacitacionSiembra clCapSiembra : clCapSiembras) {
                     CheckListDetails tmp = new CheckListDetails();
                     tmp.setDescription(clCapSiembra.getApellido_checklist());
                     tmp.setUploaded((clCapSiembra.getEstado_sincronizacion() > 0));
@@ -373,22 +365,22 @@ public class FragmentCheckList extends Fragment {
                     tmp.setEstado(clCapSiembra.getEstado_documento());
                     tmp.setClave_unica(clCapSiembra.getClave_unica());
                     tmp.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA);
-                    tmp.setDescEstado((clCapSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clCapSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA" );
+                    tmp.setDescEstado((clCapSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clCapSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA");
                     nested.add(tmp);
                 }
                 capacitacionSiembra.setDetails(nested);
-            }else{
+            } else {
                 capacitacionSiembra.setDetails(Collections.emptyList());
             }
 
-        }catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             capacitacionSiembra.setDetails(Collections.emptyList());
         }
         return capacitacionSiembra;
     }
 
-    private CheckLists getCheckListSiembra(ExecutorService ex){
+    private CheckLists getCheckListSiembra(ExecutorService ex) {
 
         CheckLists checkListSiembra = new CheckLists();
         checkListSiembra.setDescCheckList("CHECK LIST SIEMBRA");
@@ -401,9 +393,9 @@ public class FragmentCheckList extends Fragment {
 
         try {
             clSiembras = clSiembraFuture.get();
-            if(clSiembras.size() > 0){
+            if (clSiembras.size() > 0) {
                 List<CheckListDetails> nested = new ArrayList<>();
-                for (CheckListSiembra clSiembra : clSiembras){
+                for (CheckListSiembra clSiembra : clSiembras) {
                     CheckListDetails tmp = new CheckListDetails();
                     tmp.setDescription(clSiembra.getApellido_checklist());
                     tmp.setUploaded((clSiembra.getEstado_sincronizacion() > 0));
@@ -412,11 +404,11 @@ public class FragmentCheckList extends Fragment {
                     tmp.setEstado(clSiembra.getEstado_documento());
                     tmp.setClave_unica(clSiembra.getClave_unica());
                     tmp.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA);
-                    tmp.setDescEstado((clSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA" );
+                    tmp.setDescEstado((clSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA");
                     nested.add(tmp);
                 }
                 checkListSiembra.setDetails(nested);
-            }else{
+            } else {
                 checkListSiembra.setDetails(Collections.emptyList());
             }
 
@@ -427,7 +419,7 @@ public class FragmentCheckList extends Fragment {
         return checkListSiembra;
     }
 
-    private CheckLists getCheckListCosecha(ExecutorService ex){
+    private CheckLists getCheckListCosecha(ExecutorService ex) {
 
         CheckLists checkListCosecha = new CheckLists();
         checkListCosecha.setDescCheckList("CHECK LIST COSECHA");
@@ -440,9 +432,9 @@ public class FragmentCheckList extends Fragment {
 
         try {
             clSiembras = clSiembraFuture.get();
-            if(clSiembras.size() > 0){
+            if (clSiembras.size() > 0) {
                 List<CheckListDetails> nested = new ArrayList<>();
-                for (CheckListCosecha clSiembra : clSiembras){
+                for (CheckListCosecha clSiembra : clSiembras) {
                     CheckListDetails tmp = new CheckListDetails();
                     tmp.setDescription(clSiembra.getApellido_checklist());
                     tmp.setUploaded((clSiembra.getEstado_sincronizacion() > 0));
@@ -451,11 +443,11 @@ public class FragmentCheckList extends Fragment {
                     tmp.setEstado(clSiembra.getEstado_documento());
                     tmp.setClave_unica(clSiembra.getClave_unica());
                     tmp.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CHECKLIST_COSECHA);
-                    tmp.setDescEstado((clSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA" );
+                    tmp.setDescEstado((clSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA");
                     nested.add(tmp);
                 }
                 checkListCosecha.setDetails(nested);
-            }else{
+            } else {
                 checkListCosecha.setDetails(Collections.emptyList());
             }
 
@@ -466,7 +458,7 @@ public class FragmentCheckList extends Fragment {
         return checkListCosecha;
     }
 
-    private CheckLists getCheckListDevolucionSemilla(ExecutorService ex){
+    private CheckLists getCheckListDevolucionSemilla(ExecutorService ex) {
 
         CheckLists checkListDevolucionSemilla = new CheckLists();
         checkListDevolucionSemilla.setDescCheckList("CHECK LIST DEVOLUCION SEMILLA");
@@ -479,9 +471,9 @@ public class FragmentCheckList extends Fragment {
 
         try {
             clDevSemilla = clSiembraFuture.get();
-            if(clDevSemilla.size() > 0){
+            if (clDevSemilla.size() > 0) {
                 List<CheckListDetails> nested = new ArrayList<>();
-                for (ChecklistDevolucionSemilla clSiembra : clDevSemilla){
+                for (ChecklistDevolucionSemilla clSiembra : clDevSemilla) {
                     CheckListDetails tmp = new CheckListDetails();
                     tmp.setDescription(clSiembra.getApellido_checklist());
                     tmp.setUploaded((clSiembra.getEstado_sincronizacion() > 0));
@@ -490,11 +482,11 @@ public class FragmentCheckList extends Fragment {
                     tmp.setEstado(clSiembra.getEstado_documento());
                     tmp.setClave_unica(clSiembra.getClave_unica());
                     tmp.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CHECKLIST_DEVOLUCION_SEMILLA);
-                    tmp.setDescEstado((clSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA" );
+                    tmp.setDescEstado((clSiembra.getEstado_documento() <= 0) ? "SIN ESTADO" : (clSiembra.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA");
                     nested.add(tmp);
                 }
                 checkListDevolucionSemilla.setDetails(nested);
-            }else{
+            } else {
                 checkListDevolucionSemilla.setDetails(Collections.emptyList());
             }
 
@@ -506,7 +498,7 @@ public class FragmentCheckList extends Fragment {
     }
 
 
-    private void cargarLista(){
+    private void cargarLista() {
 
         ExecutorService ex = Executors.newSingleThreadExecutor();
 
@@ -533,8 +525,8 @@ public class FragmentCheckList extends Fragment {
         checkLists.add(checkListDevolucionSemilla);
 
         LinearLayoutManager lManager = null;
-        if (activity != null){
-            lManager  = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
+        if (activity != null) {
+            lManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
         }
         rv_checklist.setHasFixedSize(true);
         rv_checklist.setLayoutManager(lManager);
@@ -544,7 +536,7 @@ public class FragmentCheckList extends Fragment {
                 checkLists,
                 nuevoCheckList -> {
 
-                    switch (nuevoCheckList.getTipoCheckList()){
+                    switch (nuevoCheckList.getTipoCheckList()) {
                         case Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA:
 
                             ExecutorService executorServiceCap = Executors.newSingleThreadExecutor();
@@ -562,14 +554,14 @@ public class FragmentCheckList extends Fragment {
                                 activity.cambiarFragment(
                                         new FragmentCheckListCapacitacionSiembra(),
                                         Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_SIEMBRA,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
                             } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
                                 executorServiceCap.shutdown();
                             }
-                        break;
+                            break;
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_DEVOLUCION_SEMILLA:
 
                             ExecutorService executorServiceDS = Executors.newSingleThreadExecutor();
@@ -582,7 +574,7 @@ public class FragmentCheckList extends Fragment {
                                 activity.cambiarFragment(
                                         new FragmentCheckDevolucionSemilla(),
                                         Utilidades.FRAGMENT_CHECKLIST_DEVOLUCION_SEMILLA,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -603,7 +595,7 @@ public class FragmentCheckList extends Fragment {
                                 activity.cambiarFragment(
                                         new FragmentCheckListSiembra(),
                                         Utilidades.FRAGMENT_CHECKLIST_SIEMBRA,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -629,7 +621,7 @@ public class FragmentCheckList extends Fragment {
                                 activity.cambiarFragment(
                                         new FragmentCheckListCapacitacionCosecha(),
                                         Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_COSECHA,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -651,7 +643,7 @@ public class FragmentCheckList extends Fragment {
                                 activity.cambiarFragment(
                                         new FragmentCheckListCosecha(),
                                         Utilidades.FRAGMENT_CHECKLIST_COSECHA,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -677,7 +669,7 @@ public class FragmentCheckList extends Fragment {
                                 activity.cambiarFragment(
                                         new FragmentChecklistLimpiezaCamiones(),
                                         Utilidades.FRAGMENT_CHECKLIST_LIMPIEZA_CAMIONES,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -685,7 +677,8 @@ public class FragmentCheckList extends Fragment {
                                 executorLimpiezaCamiones.shutdown();
                             }
                             break;
-                        default:break;
+                        default:
+                            break;
                     }
 
                 },
@@ -694,36 +687,36 @@ public class FragmentCheckList extends Fragment {
                     String URLPDF = "";
                     Intent i = new Intent(Intent.ACTION_VIEW);
 
-                    switch (checkListPDF.getTipoCheckList()){
+                    switch (checkListPDF.getTipoCheckList()) {
 
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
 
-                             URLPDF = Utilidades.URL_SERVER_API+"/docs/pdf/checklistSiembra.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF+detailsPDF.getClave_unica()));
-                        break;
+                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistSiembra.php?clave_unica=";
+                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                            break;
                         case Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA:
-                            URLPDF = Utilidades.URL_SERVER_API+"/docs/pdf/checklistCapacitaSiembra.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF+detailsPDF.getClave_unica()));
-                        break;
+                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistCapacitaSiembra.php?clave_unica=";
+                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                            break;
 
-                         case Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA:
-                            URLPDF = Utilidades.URL_SERVER_API+"/docs/pdf/checklistCapacitaCosecha.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF+detailsPDF.getClave_unica()));
-                        break;
+                        case Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA:
+                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistCapacitaCosecha.php?clave_unica=";
+                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                            break;
 
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_DEVOLUCION_SEMILLA:
-                            URLPDF = Utilidades.URL_SERVER_API+"/docs/pdf/checklistDevolucionSemillas.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF+detailsPDF.getClave_unica()));
+                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistDevolucionSemillas.php?clave_unica=";
+                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
                             break;
 
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_COSECHA:
-                            URLPDF = Utilidades.URL_SERVER_API+"/docs/pdf/checklistCosecha.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF+detailsPDF.getClave_unica()));
-                        break;
+                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistCosecha.php?clave_unica=";
+                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                            break;
 
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_LIMPIEZA_CAMIONES:
-                            URLPDF = Utilidades.URL_SERVER_API+"/docs/pdf/checklistLimpiezaCamiones.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF+detailsPDF.getClave_unica()));
+                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistLimpiezaCamiones.php?clave_unica=";
+                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
                             break;
 
                     }
@@ -732,7 +725,7 @@ public class FragmentCheckList extends Fragment {
                 },
                 (checkListEditar, detailsEditar) -> {
 
-                    switch (checkListEditar.getTipoCheckList()){
+                    switch (checkListEditar.getTipoCheckList()) {
                         case Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA:
                             ExecutorService executorService2 = Executors.newSingleThreadExecutor();
                             executorService2.submit(()
@@ -748,18 +741,18 @@ public class FragmentCheckList extends Fragment {
 
                             try {
                                 CheckListCapacitacionSiembra cls = ck2.get();
-                                FragmentCheckListCapacitacionSiembra  fs = FragmentCheckListCapacitacionSiembra.newInstance(cls);
+                                FragmentCheckListCapacitacionSiembra fs = FragmentCheckListCapacitacionSiembra.newInstance(cls);
                                 activity.cambiarFragment(
                                         fs,
                                         Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_SIEMBRA,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
 
                             } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
                             }
-                        break;
+                            break;
 
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
                             ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -776,11 +769,11 @@ public class FragmentCheckList extends Fragment {
 
                             try {
                                 CheckListSiembra cls = ck.get();
-                                FragmentCheckListSiembra  fs = FragmentCheckListSiembra.newInstance(cls);
+                                FragmentCheckListSiembra fs = FragmentCheckListSiembra.newInstance(cls);
                                 activity.cambiarFragment(
                                         fs,
                                         Utilidades.FRAGMENT_CHECKLIST_SIEMBRA,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
 
@@ -805,11 +798,11 @@ public class FragmentCheckList extends Fragment {
 
                             try {
                                 ChecklistDevolucionSemilla cls = ckDS.get();
-                                FragmentCheckDevolucionSemilla  fs = FragmentCheckDevolucionSemilla.newInstance(cls);
+                                FragmentCheckDevolucionSemilla fs = FragmentCheckDevolucionSemilla.newInstance(cls);
                                 activity.cambiarFragment(
                                         fs,
                                         Utilidades.FRAGMENT_CHECKLIST_DEVOLUCION_SEMILLA,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
 
@@ -832,11 +825,11 @@ public class FragmentCheckList extends Fragment {
 
                             try {
                                 CheckListCapacitacionSiembra cls = ck3.get();
-                                FragmentCheckListCapacitacionCosecha  fs = FragmentCheckListCapacitacionCosecha.newInstance(cls);
+                                FragmentCheckListCapacitacionCosecha fs = FragmentCheckListCapacitacionCosecha.newInstance(cls);
                                 activity.cambiarFragment(
                                         fs,
                                         Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_COSECHA,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
 
@@ -859,11 +852,11 @@ public class FragmentCheckList extends Fragment {
 
                             try {
                                 CheckListCosecha cls = ckC.get();
-                                FragmentCheckListCosecha  fs = FragmentCheckListCosecha.newInstance(cls);
+                                FragmentCheckListCosecha fs = FragmentCheckListCosecha.newInstance(cls);
                                 activity.cambiarFragment(
                                         fs,
                                         Utilidades.FRAGMENT_CHECKLIST_COSECHA,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
                             } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
@@ -885,11 +878,11 @@ public class FragmentCheckList extends Fragment {
 
                             try {
                                 CheckListLimpiezaCamiones cls = ckLimpiezaCamiones.get();
-                                FragmentChecklistLimpiezaCamiones  fs = FragmentChecklistLimpiezaCamiones.newInstance(cls);
+                                FragmentChecklistLimpiezaCamiones fs = FragmentChecklistLimpiezaCamiones.newInstance(cls);
                                 activity.cambiarFragment(
                                         fs,
                                         Utilidades.FRAGMENT_CHECKLIST_LIMPIEZA_CAMIONES,
-                                        R.anim.slide_in_left,R.anim.slide_out_left
+                                        R.anim.slide_in_left, R.anim.slide_out_left
                                 );
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -906,7 +899,7 @@ public class FragmentCheckList extends Fragment {
                 (checkListSubir, detailsSubir) -> {
 
 
-                    switch (checkListSubir.getTipoCheckList()){
+                    switch (checkListSubir.getTipoCheckList()) {
 
                         case Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA:
 
@@ -920,7 +913,7 @@ public class FragmentCheckList extends Fragment {
                                 CheckListCapacitacionSiembra capSiembraCab
                                         = checkListCapacitacionSiembraFuture.get();
 
-                                if(capSiembraCab == null){
+                                if (capSiembraCab == null) {
                                     executorCapSiembra.shutdown();
                                     Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                                     return;
@@ -940,10 +933,10 @@ public class FragmentCheckList extends Fragment {
                                 completo.setDetalles(detalle);
 
                                 List<CheckListCapCompleto> chkList = new ArrayList<>();
-                                chkList.add( completo );
+                                chkList.add(completo);
 
-                                chk.setCheckListCapCompletos( chkList );
-                                prepararSubir( chk );
+                                chk.setCheckListCapCompletos(chkList);
+                                prepararSubir(chk);
 
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -951,7 +944,7 @@ public class FragmentCheckList extends Fragment {
                                 executorCapSiembra.shutdown();
                             }
 
-                        break;
+                            break;
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
 
                             ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -962,7 +955,7 @@ public class FragmentCheckList extends Fragment {
                             try {
                                 CheckListSiembra checkListSiembras = chkF.get();
 
-                                if(checkListSiembras == null){
+                                if (checkListSiembras == null) {
                                     executorService.shutdown();
                                     Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                                     return;
@@ -971,10 +964,10 @@ public class FragmentCheckList extends Fragment {
                                 CheckListRequest chk = new CheckListRequest();
 
                                 List<CheckListSiembra> chkList = new ArrayList<>();
-                                chkList.add( checkListSiembras );
+                                chkList.add(checkListSiembras);
 
-                                chk.setCheckListSiembras( chkList );
-                                prepararSubir( chk );
+                                chk.setCheckListSiembras(chkList);
+                                prepararSubir(chk);
 
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -994,7 +987,7 @@ public class FragmentCheckList extends Fragment {
                             try {
                                 ChecklistDevolucionSemilla checkListDS = chkFDS.get();
 
-                                if(checkListDS == null){
+                                if (checkListDS == null) {
                                     executorServiceDS.shutdown();
                                     Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                                     return;
@@ -1003,10 +996,10 @@ public class FragmentCheckList extends Fragment {
                                 CheckListRequest chk = new CheckListRequest();
 
                                 List<ChecklistDevolucionSemilla> chkList = new ArrayList<>();
-                                chkList.add( checkListDS );
+                                chkList.add(checkListDS);
 
-                                chk.setCheckListDevolucionSemilla( chkList );
-                                prepararSubir( chk );
+                                chk.setCheckListDevolucionSemilla(chkList);
+                                prepararSubir(chk);
 
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -1028,7 +1021,7 @@ public class FragmentCheckList extends Fragment {
                                 CheckListCapacitacionSiembra capSiembraCab
                                         = checkListCapacitacionCosechaFuture.get();
 
-                                if(capSiembraCab == null){
+                                if (capSiembraCab == null) {
                                     executorCapCosecha.shutdown();
                                     Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                                     return;
@@ -1048,10 +1041,10 @@ public class FragmentCheckList extends Fragment {
                                 completo.setDetalles(detalle);
 
                                 List<CheckListCapCompleto> chkList = new ArrayList<>();
-                                chkList.add( completo );
+                                chkList.add(completo);
 
-                                chk.setCheckListCapCompletos( chkList );
-                                prepararSubir( chk );
+                                chk.setCheckListCapCompletos(chkList);
+                                prepararSubir(chk);
 
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -1071,7 +1064,7 @@ public class FragmentCheckList extends Fragment {
                             try {
                                 CheckListCosecha checkLisCosecha = chkFC.get();
 
-                                if(checkLisCosecha == null){
+                                if (checkLisCosecha == null) {
                                     executorServiceC.shutdown();
                                     Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                                     return;
@@ -1080,10 +1073,10 @@ public class FragmentCheckList extends Fragment {
                                 CheckListRequest chk = new CheckListRequest();
 
                                 List<CheckListCosecha> chkList = new ArrayList<>();
-                                chkList.add( checkLisCosecha );
+                                chkList.add(checkLisCosecha);
 
-                                chk.setCheckListCosechas( chkList );
-                                prepararSubir( chk );
+                                chk.setCheckListCosechas(chkList);
+                                prepararSubir(chk);
 
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -1105,7 +1098,7 @@ public class FragmentCheckList extends Fragment {
                                 CheckListLimpiezaCamiones capSiembraCab
                                         = checkListLimpiezaCamionesFuture.get();
 
-                                if(capSiembraCab == null){
+                                if (capSiembraCab == null) {
                                     executorLimpiezaCamiones.shutdown();
                                     Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                                     return;
@@ -1125,10 +1118,10 @@ public class FragmentCheckList extends Fragment {
                                 completo.setDetalles(detalle);
 
                                 List<CheckListLimpiezaCamionesCompleto> chkList = new ArrayList<>();
-                                chkList.add( completo );
+                                chkList.add(completo);
 
-                                chk.setCheckListLimpiezaCamionesCompletos( chkList );
-                                prepararSubir( chk );
+                                chk.setCheckListLimpiezaCamionesCompletos(chkList);
+                                prepararSubir(chk);
 
 
                             } catch (ExecutionException | InterruptedException e) {
@@ -1148,35 +1141,34 @@ public class FragmentCheckList extends Fragment {
         rv_checklist.setAdapter(adapter);
     }
 
-    private void prepararSubir(CheckListRequest checkListRequest){
+    private void prepararSubir(CheckListRequest checkListRequest) {
 
-        new CheckListSync( checkListRequest, requireActivity(), (state, message) -> {
-            if(state){
+        new CheckListSync(checkListRequest, requireActivity(), (state, message) -> {
+            if (state) {
                 cargarLista();
                 Toasty.success(requireActivity(), message, Toast.LENGTH_LONG, true).show();
-            }else{
+            } else {
                 Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             }
         });
     }
 
 
-    private void bind (View view){
+    private void bind(View view) {
         rv_checklist = view.findViewById(R.id.rv_checklist);
     }
-
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (activity != null){
+        if (activity != null) {
             activity.updateView(
                     getResources().getString(R.string.app_name),
                     (anexoCompleto != null)
-                        ? " C. virtual Anexo "+anexoCompleto.getAnexoContrato().getAnexo_contrato()
-                        : getResources().getString(R.string.subtitles_visit));
+                            ? " C. virtual Anexo " + anexoCompleto.getAnexoContrato().getAnexo_contrato()
+                            : getResources().getString(R.string.subtitles_visit));
         }
     }
 }

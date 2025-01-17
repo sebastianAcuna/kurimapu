@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -26,11 +25,10 @@ import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.AnexoWithDates;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.Config;
-import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import es.dmoral.toasty.Toasty;
 
-public class DialogAnexoFecha  extends DialogFragment  {
+public class DialogAnexoFecha extends DialogFragment {
 
 
     private AnexoWithDates anexos;
@@ -70,23 +68,29 @@ public class DialogAnexoFecha  extends DialogFragment  {
 
 
     public interface IOnSave {
-        void onSave( boolean saved, String query );
+        void onSave(boolean saved, String query);
     }
 
 
-    public static DialogAnexoFecha newInstance(  AnexoWithDates anexos,
-                                                 IOnSave onSave,
-                                                 String query ){
+    public static DialogAnexoFecha newInstance(AnexoWithDates anexos,
+                                               IOnSave onSave,
+                                               String query) {
         DialogAnexoFecha dg = new DialogAnexoFecha();
-        dg.setAnexos( anexos );
-        dg.setQuery( query );
-        dg.setIOnSave( onSave );
+        dg.setAnexos(anexos);
+        dg.setQuery(query);
+        dg.setIOnSave(onSave);
         return dg;
     }
 
 
-    public void setQuery(String query) { this.query = query; }
-    public void setIOnSave(IOnSave onSave){ this.IOnSave = onSave; }
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    public void setIOnSave(IOnSave onSave) {
+        this.IOnSave = onSave;
+    }
+
     public void setAnexos(AnexoWithDates anexos) {
         this.anexos = anexos;
     }
@@ -111,8 +115,7 @@ public class DialogAnexoFecha  extends DialogFragment  {
 
         et_cantidad_ha_destruccion.setText(anexoCompleto.getAnexoContrato().getHas_gps());
 
-        if(anexoFechas != null){
-
+        if (anexoFechas != null) {
 
 
             boolean inicioSiembraEnabled = anexoFechas.getCorreo_inicio_siembra() > 0;
@@ -126,13 +129,13 @@ public class DialogAnexoFecha  extends DialogFragment  {
 
             String inicioSiembra = (
                     anexoFechas.getInicio_siembra() != null &&
-                    !anexoFechas.getInicio_siembra().equals("0000-00-00"))
+                            !anexoFechas.getInicio_siembra().equals("0000-00-00"))
                     ? Utilidades.voltearFechaVista(anexoFechas.getInicio_siembra())
                     : "";
 
             String inicioDespano = (
                     anexoFechas.getInicio_despano() != null &&
-                    !anexoFechas.getInicio_despano().equals("0000-00-00"))
+                            !anexoFechas.getInicio_despano().equals("0000-00-00"))
                     ? Utilidades.voltearFechaVista(anexoFechas.getInicio_despano())
                     : "";
 
@@ -189,7 +192,6 @@ public class DialogAnexoFecha  extends DialogFragment  {
             et_detalle_labores.setText(anexoFechas.getDetalle_labores());
 
 
-
             et_fecha_siembra_temprada.setText(Utilidades.voltearFechaVista(anexoFechas.getSiem_tempra_grami()));
             et_tipo_siembra_temprada.setText(anexoFechas.getTipo_graminea());
 
@@ -197,23 +199,18 @@ public class DialogAnexoFecha  extends DialogFragment  {
             et_hora_destruccion.setText(anexoFechas.getHora_destruccion_semillero());
 
 
-
             et_fecha_fin_destruccion.setText(Utilidades.voltearFechaVista(anexoFechas.getFecha_fin_destruccion_semillero()));
             et_hora_fin_destruccion.setText(anexoFechas.getHora_fin_destruccion_semillero());
 
 
-
-
-
-
-            if(anexoFechas.getCantidad_has_destruidas() != null){
+            if (anexoFechas.getCantidad_has_destruidas() != null) {
                 et_cantidad_ha_destruccion.setText(String.valueOf(anexoFechas.getCantidad_has_destruidas()));
             }
             et_motivo_destruccion.setText(anexoFechas.getMotivo_destruccion());
 
             boolean isDestructionComplete = (
                     anexoFechas.getDestruc_semill_ensayo() != null &&
-                    anexoFechas.getDestruc_semill_ensayo().equals("PARCIAL"));
+                            anexoFechas.getDestruc_semill_ensayo().equals("PARCIAL"));
 
             boolean isCompleteChecked = (anexoFechas.getDestruc_semill_ensayo() != null &&
                     anexoFechas.getDestruc_semill_ensayo().equals("COMPLETO"));
@@ -228,11 +225,10 @@ public class DialogAnexoFecha  extends DialogFragment  {
             rbtn_parcial.setEnabled(!isDestructionComplete);
             rbtn_completo.setEnabled(!isDestructionComplete);
 
-            cont_detalle_destruccion.setVisibility( (isDestructionComplete || isCompleteChecked) ? View.VISIBLE : View.GONE);
+            cont_detalle_destruccion.setVisibility((isDestructionComplete || isCompleteChecked) ? View.VISIBLE : View.GONE);
 
 
         }
-
 
 
         onFocus();
@@ -251,59 +247,75 @@ public class DialogAnexoFecha  extends DialogFragment  {
     }
 
 
-    private void onFocus () {
+    private void onFocus() {
 
 
         et_inicio_cosecha_hora.setOnFocusChangeListener((view1, b) -> {
-            if(b) Utilidades.levantarHora(et_inicio_cosecha_hora, getContext());
+            if (b) Utilidades.levantarHora(et_inicio_cosecha_hora, getContext());
         });
 
         et_hora_destruccion.setOnFocusChangeListener((view1, b) -> {
-            if(b) Utilidades.levantarHora(et_hora_destruccion, getContext());
+            if (b) Utilidades.levantarHora(et_hora_destruccion, getContext());
         });
 
 
         et_inicio_siembra.setOnFocusChangeListener((view, b) -> {
-            if(b) levantarFecha(et_inicio_siembra);
+            if (b) levantarFecha(et_inicio_siembra);
         });
 
         et_fecha_siembra_temprada.setOnFocusChangeListener((view, b) -> {
-            if(b) levantarFecha(et_fecha_siembra_temprada);
+            if (b) levantarFecha(et_fecha_siembra_temprada);
         });
 
         et_fecha_destruccion.setOnFocusChangeListener((view, b) -> {
-            if(b) levantarFecha(et_fecha_destruccion);
+            if (b) levantarFecha(et_fecha_destruccion);
         });
 
         et_inicio_despano.setOnFocusChangeListener((v1, b) -> {
-            if (b){ levantarFecha(et_inicio_despano);  }
+            if (b) {
+                levantarFecha(et_inicio_despano);
+            }
         });
 
         et_cinco_porc_floracion.setOnFocusChangeListener((v1, b) -> {
-            if (b){  levantarFecha(et_cinco_porc_floracion);  }
+            if (b) {
+                levantarFecha(et_cinco_porc_floracion);
+            }
         });
 
         et_termino_cosecha.setOnFocusChangeListener((v1, b) -> {
-            if (b){ levantarFecha(et_termino_cosecha); }
+            if (b) {
+                levantarFecha(et_termino_cosecha);
+            }
         });
 
         et_inicio_cosecha.setOnFocusChangeListener((v1, b) -> {
-            if (b){ levantarFecha(et_inicio_cosecha); }
+            if (b) {
+                levantarFecha(et_inicio_cosecha);
+            }
         });
 
         et_inicio_corte_seda.setOnFocusChangeListener((v1, b) -> {
-            if (b){ levantarFecha(et_inicio_corte_seda);  }
+            if (b) {
+                levantarFecha(et_inicio_corte_seda);
+            }
         });
 
         et_termino_labores_post_cosecha.setOnFocusChangeListener((v1, b) -> {
-            if (b){ levantarFecha(et_termino_labores_post_cosecha);  }
+            if (b) {
+                levantarFecha(et_termino_labores_post_cosecha);
+            }
         });
 
-        et_fecha_fin_destruccion.setOnFocusChangeListener((v1, b)-> {
-            if(b){ levantarFecha(et_fecha_fin_destruccion);}
+        et_fecha_fin_destruccion.setOnFocusChangeListener((v1, b) -> {
+            if (b) {
+                levantarFecha(et_fecha_fin_destruccion);
+            }
         });
-        et_hora_fin_destruccion.setOnFocusChangeListener((v1, b)-> {
-            if(b){ Utilidades.levantarHora(et_hora_fin_destruccion, getActivity());}
+        et_hora_fin_destruccion.setOnFocusChangeListener((v1, b) -> {
+            if (b) {
+                Utilidades.levantarHora(et_hora_fin_destruccion, getActivity());
+            }
         });
     }
 
@@ -312,7 +324,7 @@ public class DialogAnexoFecha  extends DialogFragment  {
         super.onStart();
 
         Dialog dialog = getDialog();
-        if( dialog != null ){
+        if (dialog != null) {
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -321,70 +333,68 @@ public class DialogAnexoFecha  extends DialogFragment  {
         }
     }
 
-    public void cerrar(){
+    public void cerrar() {
         Dialog dialog = getDialog();
-        if( dialog != null ){
+        if (dialog != null) {
             dialog.dismiss();
         }
     }
 
 
-    public void onSave(){
+    public void onSave() {
 
         Dialog dialog = getDialog();
 
-        if(!et_termino_labores_post_cosecha.getText().toString().isEmpty() && et_detalle_labores.getText().toString().isEmpty()){
+        if (!et_termino_labores_post_cosecha.getText().toString().isEmpty() && et_detalle_labores.getText().toString().isEmpty()) {
             String message = "Debes ingresar el detalle al ingresar el termino de labores ";
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        if(!et_fecha_destruccion.getText().toString().isEmpty() && et_hora_destruccion.getText().toString().isEmpty()){
+        if (!et_fecha_destruccion.getText().toString().isEmpty() && et_hora_destruccion.getText().toString().isEmpty()) {
             String message = "Al ingresar fecha de destruccion debes ingresar la hora de destruccion ";
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        if(et_fecha_destruccion.getText().toString().isEmpty() && !et_hora_destruccion.getText().toString().isEmpty()){
+        if (et_fecha_destruccion.getText().toString().isEmpty() && !et_hora_destruccion.getText().toString().isEmpty()) {
             String message = "Al ingresar hora de destruccion debes ingresar la fecha de destruccion ";
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        if((!et_fecha_fin_destruccion.getText().toString().isEmpty() || !et_hora_fin_destruccion.getText().toString().isEmpty()) && et_fecha_destruccion.getText().toString().isEmpty()){
+        if ((!et_fecha_fin_destruccion.getText().toString().isEmpty() || !et_hora_fin_destruccion.getText().toString().isEmpty()) && et_fecha_destruccion.getText().toString().isEmpty()) {
             String message = "Para ingresar la fecha fin de destruccion , debes ingresar la fecha de inicio (destruccion de semillero) ";
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             return;
         }
 
 
-
-        if(!et_fecha_fin_destruccion.getText().toString().isEmpty() && et_hora_fin_destruccion.getText().toString().isEmpty()){
+        if (!et_fecha_fin_destruccion.getText().toString().isEmpty() && et_hora_fin_destruccion.getText().toString().isEmpty()) {
             String message = "Al ingresar fecha fin de  destruccion debes ingresar la hora fin de  destruccion ";
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        if(et_fecha_fin_destruccion.getText().toString().isEmpty() && !et_hora_fin_destruccion.getText().toString().isEmpty()){
+        if (et_fecha_fin_destruccion.getText().toString().isEmpty() && !et_hora_fin_destruccion.getText().toString().isEmpty()) {
             String message = "Al ingresar hora fin de  destruccion debes ingresar la fecha fin de  destruccion ";
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             return;
         }
 
 
-
         boolean isDestructionComplete = rbtn_parcial.isChecked();
         boolean isCompleteChecked = rbtn_completo.isChecked();
 
-        if((!et_fecha_destruccion.getText().toString().isEmpty() || !et_hora_destruccion.getText().toString().isEmpty()) && (!isDestructionComplete && !isCompleteChecked)){
+        if ((!et_fecha_destruccion.getText().toString().isEmpty() || !et_hora_destruccion.getText().toString().isEmpty()) && (!isDestructionComplete && !isCompleteChecked)) {
             String message = "Al ingresar fecha u hora de destruccion debes seleccionar parcial o completo ";
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             return;
         }
 
 
-        if( (!et_inicio_cosecha.getText().toString().isEmpty() && et_inicio_cosecha_hora.getText().toString().isEmpty()) ||
-            (et_inicio_cosecha.getText().toString().isEmpty() && !et_inicio_cosecha_hora.getText().toString().isEmpty())){
+        if ((!et_inicio_cosecha.getText().toString().isEmpty() && et_inicio_cosecha_hora.getText().toString().isEmpty()) ||
+                (et_inicio_cosecha.getText().toString().isEmpty() && !et_inicio_cosecha_hora.getText().toString().isEmpty())) {
 
             String message = "Para inicio de cosecha se debe ingresar fecha y hora. ";
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
@@ -393,13 +403,13 @@ public class DialogAnexoFecha  extends DialogFragment  {
         }
 
 
-        if(
-           ( isDestructionComplete || isCompleteChecked) &&
-            (
-                et_cantidad_ha_destruccion.getText().toString().isEmpty() ||
-                et_motivo_destruccion.getText().toString().isEmpty()
-            )
-        ){
+        if (
+                (isDestructionComplete || isCompleteChecked) &&
+                        (
+                                et_cantidad_ha_destruccion.getText().toString().isEmpty() ||
+                                        et_motivo_destruccion.getText().toString().isEmpty()
+                        )
+        ) {
             String message = "Debe ingresar cantidad y motivo. ";
             Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
             return;
@@ -424,7 +434,7 @@ public class DialogAnexoFecha  extends DialogFragment  {
         fhc.setFecha_fin_destruccion_semillero(Utilidades.voltearFechaBD(et_fecha_fin_destruccion.getText().toString()));
         fhc.setHora_fin_destruccion_semillero(et_hora_fin_destruccion.getText().toString());
 
-        if(isDestructionComplete || isCompleteChecked){
+        if (isDestructionComplete || isCompleteChecked) {
             fhc.setCantidad_has_destruidas(Double.parseDouble(et_cantidad_ha_destruccion.getText().toString()));
             fhc.setMotivo_destruccion(et_motivo_destruccion.getText().toString());
         }
@@ -438,11 +448,11 @@ public class DialogAnexoFecha  extends DialogFragment  {
 
         fhc.setCorreo_inicio_siembra(anexoFechas == null ? 0 : anexoFechas.getCorreo_inicio_siembra());
         fhc.setCorreo_inicio_despano(anexoFechas == null ? 0 : anexoFechas.getCorreo_inicio_despano());
-        fhc.setCorreo_cinco_porciento_floracion(anexoFechas == null ? 0 :anexoFechas.getCorreo_cinco_porciento_floracion());
-        fhc.setCorreo_inicio_corte_seda(anexoFechas == null ? 0: anexoFechas.getCorreo_inicio_corte_seda());
-        fhc.setCorreo_inicio_cosecha(anexoFechas == null ? 0: anexoFechas.getCorreo_inicio_cosecha());
-        fhc.setCorreo_termino_cosecha(anexoFechas == null ? 0: anexoFechas.getCorreo_termino_cosecha());
-        fhc.setCorreo_termino_labores_post_cosechas(anexoFechas == null ? 0: anexoFechas.getCorreo_termino_labores_post_cosechas());
+        fhc.setCorreo_cinco_porciento_floracion(anexoFechas == null ? 0 : anexoFechas.getCorreo_cinco_porciento_floracion());
+        fhc.setCorreo_inicio_corte_seda(anexoFechas == null ? 0 : anexoFechas.getCorreo_inicio_corte_seda());
+        fhc.setCorreo_inicio_cosecha(anexoFechas == null ? 0 : anexoFechas.getCorreo_inicio_cosecha());
+        fhc.setCorreo_termino_cosecha(anexoFechas == null ? 0 : anexoFechas.getCorreo_termino_cosecha());
+        fhc.setCorreo_termino_labores_post_cosechas(anexoFechas == null ? 0 : anexoFechas.getCorreo_termino_labores_post_cosechas());
         fhc.setCorreo_fin_destruccion_semillero(anexoFechas == null ? 0 : anexoFechas.getCorreo_fin_destruccion_semillero());
 
         Config config = MainActivity.myAppDB.myDao().getConfig();
@@ -452,42 +462,49 @@ public class DialogAnexoFecha  extends DialogFragment  {
         fhc.setEstado_sincro_corr_fech(0);
 
 
-
-
-        if(anexoFechas != null){
+        if (anexoFechas != null) {
             fhc.setId_ac_cor_fech(anexoFechas.getId_ac_cor_fech());
             int id = MainActivity.myAppDB.DaoAnexosFechas().UpdateFechasAnexos(fhc);
-            if(id > 0){
+            if (id > 0) {
                 Toasty.success(requireActivity(), "Fechas guardada con exito", Toast.LENGTH_SHORT, true).show();
-            }else{
+            } else {
                 Toasty.error(requireActivity(), "No se pudo guardar la fecha", Toast.LENGTH_SHORT, true).show();
             }
-            this.IOnSave.onSave( (id > 0), this.query );
-            if( dialog != null ){ dialog.dismiss();}
+            this.IOnSave.onSave((id > 0), this.query);
+            if (dialog != null) {
+                dialog.dismiss();
+            }
             return;
         }
 
         long id = MainActivity.myAppDB.DaoAnexosFechas().insertFechasAnexos(fhc);
-        if(id > 0){
+        if (id > 0) {
             Toasty.success(requireActivity(), "Fechas guardada con exito", Toast.LENGTH_SHORT, true).show();
-        }else{
+        } else {
             Toasty.error(requireActivity(), "No se pudo guardar la fecha", Toast.LENGTH_SHORT, true).show();
         }
 
-        this.IOnSave.onSave( (id > 0), this.query );
-        if( dialog != null ){ dialog.dismiss();}
+        this.IOnSave.onSave((id > 0), this.query);
+        if (dialog != null) {
+            dialog.dismiss();
+        }
     }
 
-    private void levantarFecha(final EditText edit){
+    private void levantarFecha(final EditText edit) {
 
 
         String fecha = Utilidades.fechaActualSinHora();
         String[] fechaRota;
 
-        if (!TextUtils.isEmpty(edit.getText())){
-            try{ fechaRota = Utilidades.voltearFechaBD(edit.getText().toString()).split("-");  }
-            catch (Exception e){ fechaRota = fecha.split("-");  }
-        } else{  fechaRota = fecha.split("-");  }
+        if (!TextUtils.isEmpty(edit.getText())) {
+            try {
+                fechaRota = Utilidades.voltearFechaBD(edit.getText().toString()).split("-");
+            } catch (Exception e) {
+                fechaRota = fecha.split("-");
+            }
+        } else {
+            fechaRota = fecha.split("-");
+        }
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (datePicker, year, month, dayOfMonth) -> {
 
@@ -495,8 +512,11 @@ public class DialogAnexoFecha  extends DialogFragment  {
 
             String mes = "", dia;
 
-            if (month < 10) {  mes = "0" + month; }
-            else {  mes = String.valueOf(month); }
+            if (month < 10) {
+                mes = "0" + month;
+            } else {
+                mes = String.valueOf(month);
+            }
 
             if (dayOfMonth < 10) dia = "0" + dayOfMonth;
             else dia = String.valueOf(dayOfMonth);
@@ -508,10 +528,11 @@ public class DialogAnexoFecha  extends DialogFragment  {
 
     }
 
-    public void bind(View view){
+    public void bind(View view) {
 
         et_inicio_despano = view.findViewById(R.id.et_inicio_despano);
-        et_inicio_siembra = view.findViewById(R.id.et_inicio_siembra);        et_cinco_porc_floracion = view.findViewById(R.id.et_cinco_porc_floracion);
+        et_inicio_siembra = view.findViewById(R.id.et_inicio_siembra);
+        et_cinco_porc_floracion = view.findViewById(R.id.et_cinco_porc_floracion);
         et_inicio_corte_seda = view.findViewById(R.id.et_inicio_corte_seda);
         et_inicio_cosecha = view.findViewById(R.id.et_inicio_cosecha);
         et_inicio_cosecha_hora = view.findViewById(R.id.et_inicio_cosecha_hora);
