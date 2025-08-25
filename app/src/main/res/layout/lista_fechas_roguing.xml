@@ -55,6 +55,35 @@
             app:layout_constraintHeight_max="400dp"
             app:layout_constraintHeight_min="100dp" />
 
+        <LinearLayout
+            android:id="@+id/contenedor_botones_lista_fecha_siembra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/padding_small"
+
+            app:layout_constraintTop_toBottomOf="@id/rv_listado_detalle"
+
+            >
+
+            <Button
+                android:visibility="invisible"
+                android:id="@+id/btn_eliminar_detalle_fecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/eliminar" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btn_editar_detalle_fecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editar" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

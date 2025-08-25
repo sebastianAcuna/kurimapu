@@ -65,12 +65,21 @@
         <item>NO</item>
     </string-array>
 
+    <string-array name="dureza">
+        <item>@string/select</item>
+        <item>FIRME</item>
+        <item>MEDIO</item>
+        <item>BLANDO</item>
+        <item>SIN ESPECIFICAR</item>
+    </string-array>
+
     <string name="alfanumericos_sin_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ áéíóú ÁÉÍÓÚ 0123456789 </string>
     <string name="alfanumericos_con_signos">abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ áéíóú ÁÉÍÓÚ 0123456789 +-*/=., </string>
     <string name="numerico_entero">0123456789</string>
     <string name="numerico_decimal">0123456789.</string>
     <string name="alfanumerico_fecha">0123456789 -</string>
     <string name="alfanumerico_hora">0123456789 :</string>
+    <string name="almacigos">Almacigos</string>
 
     <string-array name="desplegable_checklist_m_h">
         <item>Hembra</item>

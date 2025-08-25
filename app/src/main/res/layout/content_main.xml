@@ -50,9 +50,24 @@
             android:layout_margin="@dimen/padding_small"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_subir_almacigos"
             app:layout_constraintTop_toBottomOf="@id/btn_descargar"
             android:text="CheckList"
             android:backgroundTint="@android:color/holo_blue_dark"
+            android:drawableLeft="@drawable/ic_upload_white" />
+
+        <Button
+            android:id="@+id/btn_subir_almacigos"
+            android:layout_width="0dp"
+            android:layout_margin="@dimen/padding_small"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_descargar"
+            app:layout_constraintStart_toEndOf="@id/btn_subir_check"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Visitas Almacigos"
+            android:backgroundTint="@color/colorGold"
+            android:drawableTint="@color/transparentBlack"
+            android:textColor="@color/transparentBlack"
             android:drawableLeft="@drawable/ic_upload_white" />
 
 

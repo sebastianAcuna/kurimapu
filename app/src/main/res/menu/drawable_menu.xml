@@ -34,6 +34,14 @@
             />
 
         <item
+            android:id="@+id/nv_almacigos"
+            android:title="@string/almacigos"
+            android:checked="true"
+            android:visible="false"
+            android:icon="@drawable/baseline_grass_24"
+            />
+
+        <item
             android:id="@+id/nv_configs"
             android:title="@string/subtitles_config"
             android:checked="true"

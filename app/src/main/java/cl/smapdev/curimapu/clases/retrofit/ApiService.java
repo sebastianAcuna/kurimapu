@@ -5,13 +5,13 @@ import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
+import cl.smapdev.curimapu.clases.relaciones.SubirAlmacigos;
 import cl.smapdev.curimapu.clases.relaciones.SubirFechasRetro;
 import cl.smapdev.curimapu.clases.relaciones.resFecha;
 import cl.smapdev.curimapu.clases.tablas.WeatherApiStatus;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -25,6 +25,9 @@ public interface ApiService {
 
     @POST("subida_de_datos.php")
     Call<Respuesta> enviarDatos(@Body SubidaDatos subidaDatos);
+
+    @POST("subida_de_almacigos.php")
+    Call<Respuesta> enviarAlmacigos(@Body SubirAlmacigos subidaDatos);
 
 
     //    @Multipart

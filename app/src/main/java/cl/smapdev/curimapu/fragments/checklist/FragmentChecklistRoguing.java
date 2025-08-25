@@ -219,12 +219,11 @@ public class FragmentChecklistRoguing extends Fragment {
             btn_nuevo_roguing.setEnabled(false);
         }
 
+        List<CheckListRoguingDetalleFechas> myImageActual = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadre(null);
+
+        boolean tieneActual = !myImageActual.isEmpty();
         container_roguing_anteriores.setVisibility(myImageLis.isEmpty() ? View.GONE : View.VISIBLE);
-
-
         List<CheckListRoguingFechaCompleto> lll = new ArrayList<>();
-
-
         for (CheckListRoguingDetalleFechas c : myImageLis) {
             CheckListRoguingFechaCompleto com = new CheckListRoguingFechaCompleto();
             com.setFecha(c);
@@ -232,8 +231,24 @@ public class FragmentChecklistRoguing extends Fragment {
             com.setDetalles(d);
             lll.add(com);
         }
-        fechasAdapter = new CheckListRoguingDetailFechaAdapter(lll, activity, (d) -> {
+        fechasAdapter = new CheckListRoguingDetailFechaAdapter(lll, tieneActual, activity, (d) -> {
+
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            Fragment prev = requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_ROGUING_DETALLE_FECHA);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+
+            DialogRoguingDetailFechas dialogo = DialogRoguingDetailFechas.newInstance(saved -> {
+                listadoDetalles();
+                listadoDetallesAnteriores();
+                listadoDetallesResumen();
+            }, d, usuario, checklist, anexoCompleto);
+            dialogo.show(ft, Utilidades.DIALOG_TAG_ROGUING_DETALLE_FECHA);
         }, (d) -> {
+            Log.e("LONG CLICK", d.getFecha());
         });
         rv_roguing_anteriores.setAdapter(fechasAdapter);
     }
@@ -323,8 +338,7 @@ public class FragmentChecklistRoguing extends Fragment {
 
             lll.add(com);
         }
-        fechasAdapter = new CheckListRoguingDetailFechaAdapter(lll, activity, (d) -> {
-            Log.e("CLICK", d.getFecha());
+        fechasAdapter = new CheckListRoguingDetailFechaAdapter(lll, false, activity, (d) -> {
             FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
             Fragment prev = requireActivity()
                     .getSupportFragmentManager()

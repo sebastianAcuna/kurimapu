@@ -235,6 +235,14 @@
         <item>SIN ESPECIFICAR</item>
     </string-array>
 
+    <string-array name="dureza">
+        <item>@string/select</item>
+        <item>FIRME</item>
+        <item>MEDIO</item>
+        <item>BLANDO</item>
+        <item>SIN ESPECIFICAR</item>
+    </string-array>
+
 
     <string-array name="crecimiento">
         <item>@string/select</item>
@@ -520,4 +528,5 @@
     <string name="nav_take_pick_roots">Tomar foto raices</string>
     <string name="fotos_raices">fotos raices</string>
     <string name="_1"><![CDATA[< 1]]></string>
+    <string name="almacigos">Almacigos</string>
 </resources>

@@ -1,5 +1,6 @@
 package cl.smapdev.curimapu.fragments.checklist;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -112,39 +113,32 @@ public class FragmentCheckList extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_upload_files:
-
-                ExecutorService executorService = Executors.newSingleThreadExecutor();
-                Future<List<CheckListSiembra>> chkF = executorService.submit(()
-                        -> MainActivity.myAppDB.DaoClSiembra()
-                        .getClSiembraToSync());
-
-                Future<List<CheckListAplicacionHormonas>> chkApHor = executorService.submit(() ->
-                        MainActivity.myAppDB.DaoCLAplicacionHormonas().getClApHormonasToSync());
-
-
-                Future<List<CheckListRoguing>> chkRoguing = executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync());
-
-                Future<List<CheckListGuiaInterna>> chkGuiaInterna = executorService.submit(() -> MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaToSync());
-
-
-                Future<List<CheckListRevisionFrutos>> chkRevisionFrutos = executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosToSync());
-
-                try {
-
-                    List<CheckListSiembra> chk = chkF.get();
-                    List<CheckListAplicacionHormonas> chkA = chkApHor.get();
-                    List<CheckListRoguing> chkR = chkRoguing.get();
-                    List<CheckListGuiaInterna> chkG = chkGuiaInterna.get();
-                    List<CheckListRevisionFrutos> chRF = chkRevisionFrutos.get();
-
-
-                    if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty() && chkG.isEmpty() && chRF.isEmpty()) {
-                        executorService.shutdown();
-                        Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
-                        return true;
-                    }
+                ProgressDialog pd = ProgressDialog.show(
+                        activity,
+                        null,
+                        "Preparando datos para subir...",
+                        true,
+                        false);
+                ExecutorService io = Executors.newSingleThreadExecutor();
+                io.execute(() -> {
 
                     CheckListRequest chkS = new CheckListRequest();
+
+                    List<CheckListSiembra> chk = MainActivity.myAppDB.DaoClSiembra()
+                            .getClSiembraToSync();
+
+                    List<CheckListAplicacionHormonas> chkA = MainActivity.myAppDB.DaoCLAplicacionHormonas().getClApHormonasToSync();
+                    List<CheckListRoguing> chkR = MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync();
+                    List<CheckListGuiaInterna> chkG = MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaToSync();
+                    List<CheckListRevisionFrutos> chRF = MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosToSync();
+
+                    if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty() && chkG.isEmpty() && chRF.isEmpty()) {
+                        activity.runOnUiThread(() -> {
+                            Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                            pd.dismiss();
+                        });
+                        return;
+                    }
 
                     if (!chkA.isEmpty()) {
                         chkS.setCheckListAplicacionHormonas(chkA);
@@ -163,17 +157,10 @@ public class FragmentCheckList extends Fragment {
                         for (CheckListRoguing clr : chkR) {
                             CheckListRoguingCompleto clCompleto = new CheckListRoguingCompleto();
 
-                            List<CheckListRoguingDetalle> clrd = executorService.submit(() ->
-                                    MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
-
-                            List<CheckListRoguingFotoCabecera> clRc = executorService.submit(() ->
-                                    MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
-
-                            List<CheckListRoguingFotoDetalle> clRd = executorService.submit(() ->
-                                    MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
-
-                            List<CheckListRoguingDetalleFechas> clRF = executorService.submit(() ->
-                                    MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica())).get();
+                            List<CheckListRoguingDetalle> clrd = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica());
+                            List<CheckListRoguingFotoCabecera> clRc = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica());
+                            List<CheckListRoguingFotoDetalle> clRd = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica());
+                            List<CheckListRoguingDetalleFechas> clRF = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica());
 
                             clCompleto.setCheckListRoguing(clr);
                             clCompleto.setCheckListRoguingDetalle(clrd);
@@ -185,38 +172,25 @@ public class FragmentCheckList extends Fragment {
                         }
                         chkS.setCheckListRoguing(clCompletoList);
                     }
-
-
                     if (!chRF.isEmpty()) {
-
                         List<CheckListRevisionFrutosCompleto> chRFCompletoList = new ArrayList<>();
 
                         for (CheckListRevisionFrutos rf : chRF) {
                             CheckListRevisionFrutosCompleto rfCompleto = new CheckListRevisionFrutosCompleto();
-
-                            List<CheckListRevisionFrutosDetalle> clrd = executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnicaPadreToSynk(rf.getClave_unica())).get();
-                            List<CheckListRevisionFrutosFotos> clff = executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnicaPadreToSynk(rf.getClave_unica())).get();
-
-
+                            List<CheckListRevisionFrutosDetalle> clrd = MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnicaPadreToSynk(rf.getClave_unica());
+                            List<CheckListRevisionFrutosFotos> clff = MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnicaPadreToSynk(rf.getClave_unica());
                             rfCompleto.setCheckListRevisionFrutos(rf);
                             rfCompleto.setCheckListRevisionFrutosDetalle(clrd);
                             rfCompleto.setCheckListRevisionFrutosFotos(clff);
-
                             chRFCompletoList.add(rfCompleto);
                         }
-
-
                         chkS.setCheckListRevisionFrutos(chRFCompletoList);
-
                     }
-
-
-                    prepararSubir(chkS);
-
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                    executorService.shutdown();
-                }
+                    activity.runOnUiThread(() -> {
+                        prepararSubir(chkS);
+                        pd.dismiss();
+                    });
+                });
 
                 return true;
             default:
@@ -560,12 +534,27 @@ public class FragmentCheckList extends Fragment {
                             break;
 
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
-                            activity.cambiarFragment(
-                                    new FragmentChecklistRoguing(),
-                                    Utilidades.FRAGMENT_CHECKLIST_ROGUING,
-                                    R.anim.slide_in_left,
-                                    R.anim.slide_out_left
-                            );
+
+                            ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+                            try {
+                                executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingSinPadres()).get();
+                                executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteRoguingDetalleSinPadreFinal()).get();
+                                executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingDetalleSinPadreFinal()).get();
+                                executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteDetalleFechaSinPadreFinal()).get();
+
+                                activity.cambiarFragment(
+                                        new FragmentChecklistRoguing(),
+                                        Utilidades.FRAGMENT_CHECKLIST_ROGUING,
+                                        R.anim.slide_in_left,
+                                        R.anim.slide_out_left
+                                );
+
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                            } finally {
+                                executorService.shutdown();
+                            }
                             break;
                     }
                 },
@@ -607,10 +596,10 @@ public class FragmentCheckList extends Fragment {
 
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
                             try {
-                                executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingSinPadre()).get();
-                                executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteRoguingDetalleSinPadre()).get();
-                                executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingDetalleSinPadre()).get();
-
+                                MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingSinPadre();
+                                MainActivity.myAppDB.DaoCLRoguing().deleteRoguingDetalleSinPadre();
+                                MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingDetalleSinPadre();
+                                MainActivity.myAppDB.DaoCLRoguing().deleteDetalleFechaSinPadreFinal();
 
                                 CheckListRoguing cl = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getclroguingById(detailsEditar.getId())).get();
 
@@ -767,46 +756,94 @@ public class FragmentCheckList extends Fragment {
 
                         case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
 
-                            try {
+                            ProgressDialog pd = ProgressDialog.show(
+                                    activity,
+                                    null,
+                                    "Preparando datos para subir...",
+                                    true,
+                                    false);
+                            ExecutorService io = Executors.newSingleThreadExecutor();
+                            io.execute(() -> {
                                 CheckListRequest chk = new CheckListRequest();
 
-                                Future<List<CheckListRoguing>> chkRoguing = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync());
-                                List<CheckListRoguing> chkR = chkRoguing.get();
+                                List<CheckListRoguing> chkR =
+                                        MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync();
 
                                 if (!chkR.isEmpty()) {
-                                    List<CheckListRoguingCompleto> clCompletoList = new ArrayList<>();
+                                    List<CheckListRoguingCompleto> lista = new ArrayList<>();
                                     for (CheckListRoguing clr : chkR) {
-                                        CheckListRoguingCompleto clCompleto = new CheckListRoguingCompleto();
-
-                                        List<CheckListRoguingDetalle> clrd = executorServiceCap.submit(() ->
-                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
-
-                                        List<CheckListRoguingFotoCabecera> clRc = executorServiceCap.submit(() ->
-                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
-
-                                        List<CheckListRoguingFotoDetalle> clRd = executorServiceCap.submit(() ->
-                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
-
-                                        List<CheckListRoguingDetalleFechas> clRF = executorServiceCap.submit(() ->
-                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica())).get();
-
-                                        clCompleto.setCheckListRoguing(clr);
-                                        clCompleto.setCheckListRoguingDetalle(clrd);
-                                        clCompleto.setCheckListFotoCabecera(clRc);
-                                        clCompleto.setCheckListFotoDetalle(clRd);
-                                        clCompleto.setCheckListRoguingDetalleFechas(clRF);
-
-                                        clCompletoList.add(clCompleto);
+                                        CheckListRoguingCompleto completo = new CheckListRoguingCompleto();
+                                        completo.setCheckListRoguing(clr);
+                                        completo.setCheckListRoguingDetalle(
+                                                MainActivity.myAppDB.DaoCLRoguing()
+                                                        .obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica()));
+                                        completo.setCheckListFotoCabecera(
+                                                MainActivity.myAppDB.DaoCLRoguing()
+                                                        .obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica()));
+                                        completo.setCheckListFotoDetalle(
+                                                MainActivity.myAppDB.DaoCLRoguing()
+                                                        .obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica()));
+                                        completo.setCheckListRoguingDetalleFechas(
+                                                MainActivity.myAppDB.DaoCLRoguing()
+                                                        .obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica()));
+                                        lista.add(completo);
                                     }
-                                    chk.setCheckListRoguing(clCompletoList);
+                                    chk.setCheckListRoguing(lista);
                                 }
 
-                                prepararSubir(chk);
-                                executorServiceCap.shutdown();
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
+                                // 3. De vuelta al hilo principal
+                                activity.runOnUiThread(() -> {
+                                    prepararSubir(chk);   // continúas tu flujo normal
+                                    pd.dismiss();         // cierra el diálogo
+                                });
+                            });
+//                            ProgressDialog pd = new ProgressDialog(activity);
+//                            pd.setTitle("Preparando datos para subir...");
+//                            pd.setCancelable(false);
+//                            pd.show();
+//
+//                            try {
+//                                CheckListRequest chk = new CheckListRequest();
+//
+//                                Future<List<CheckListRoguing>> chkRoguing = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync());
+//                                List<CheckListRoguing> chkR = chkRoguing.get();
+//
+//                                if (!chkR.isEmpty()) {
+//                                    List<CheckListRoguingCompleto> clCompletoList = new ArrayList<>();
+//                                    for (CheckListRoguing clr : chkR) {
+//                                        CheckListRoguingCompleto clCompleto = new CheckListRoguingCompleto();
+//
+//                                        List<CheckListRoguingDetalle> clrd = executorServiceCap.submit(() ->
+//                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
+//
+//                                        List<CheckListRoguingFotoCabecera> clRc = executorServiceCap.submit(() ->
+//                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
+//
+//                                        List<CheckListRoguingFotoDetalle> clRd = executorServiceCap.submit(() ->
+//                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
+//
+//                                        List<CheckListRoguingDetalleFechas> clRF = executorServiceCap.submit(() ->
+//                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica())).get();
+//
+//                                        clCompleto.setCheckListRoguing(clr);
+//                                        clCompleto.setCheckListRoguingDetalle(clrd);
+//                                        clCompleto.setCheckListFotoCabecera(clRc);
+//                                        clCompleto.setCheckListFotoDetalle(clRd);
+//                                        clCompleto.setCheckListRoguingDetalleFechas(clRF);
+//
+//                                        clCompletoList.add(clCompleto);
+//                                    }
+//                                    chk.setCheckListRoguing(clCompletoList);
+//                                }
+//
+//                                prepararSubir(chk);
+//                                executorServiceCap.shutdown();
+//                            } catch (ExecutionException | InterruptedException e) {
+//                                e.printStackTrace();
+//                                executorServiceCap.shutdown();
+//                            } finally {
+//                                pd.dismiss();
+//                            }
 
                             break;
 

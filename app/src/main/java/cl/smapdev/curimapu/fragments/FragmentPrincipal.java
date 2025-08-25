@@ -53,6 +53,7 @@ import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
+import cl.smapdev.curimapu.clases.relaciones.SubirAlmacigos;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
@@ -72,11 +73,14 @@ import cl.smapdev.curimapu.clases.tablas.Errores;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
+import cl.smapdev.curimapu.clases.tablas.FotosAlmacigos;
 import cl.smapdev.curimapu.clases.tablas.FotosFichas;
 import cl.smapdev.curimapu.clases.tablas.PrimeraPrioridad;
 import cl.smapdev.curimapu.clases.tablas.SitiosNoVisitados;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
+import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.tablas.VisitasAlmacigos;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.utilidades.InternetStateClass;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
@@ -105,6 +109,7 @@ public class FragmentPrincipal extends Fragment {
     private Button btn_descargar;
     private Button btn_preparar;
     private Button btn_sube_marcadas;
+    private Button btn_subir_almacigos;
 
     private TextView visitas_titulo, visitas_marca;
 
@@ -176,6 +181,7 @@ public class FragmentPrincipal extends Fragment {
         btn_descargar = (Button) view.findViewById(R.id.btn_descargar);
         btn_preparar = (Button) view.findViewById(R.id.btn_preparar);
         btn_sube_marcadas = (Button) view.findViewById(R.id.btn_sube_marcadas);
+        btn_subir_almacigos = (Button) view.findViewById(R.id.btn_subir_almacigos);
 
         visitas_titulo = (TextView) view.findViewById(R.id.visitas_titulo);
         visitas_marca = (TextView) view.findViewById(R.id.visitas_marca);
@@ -198,6 +204,16 @@ public class FragmentPrincipal extends Fragment {
 
 
         btn_subir_check.setOnClickListener(view1 -> preparaSubirChecklist());
+
+        Config config = MainActivity.myAppDB.myDao().getConfig();
+        Usuario usuarios = MainActivity.myAppDB.myDao().getUsuarioById(config.getId_usuario());
+
+        if (usuarios.getAccede_almacigos() == 1 || usuarios.getTipo_usuario() == 5) {
+            btn_subir_almacigos.setVisibility(View.VISIBLE);
+        } else {
+            btn_subir_almacigos.setVisibility(View.GONE);
+        }
+        btn_subir_almacigos.setOnClickListener(v -> prepararSubirVisitasAlmacigos());
 
 
         cargarToolbar();
@@ -236,8 +252,12 @@ public class FragmentPrincipal extends Fragment {
             List<Fichas> fichas = MainActivity.myAppDB.myDao().getFichasPorSubir();
             List<FotosFichas> fotosFichas = MainActivity.myAppDB.myDao().getFotosFichasPorSubir();
             List<CropRotation> crops = MainActivity.myAppDB.myDao().getCropsPorSubir();
+            List<VisitasAlmacigos> visitasAlmacigos = MainActivity.myAppDB.VisitasFotosAlmacigos().getVisitasAlmacigosPorSync();
+            List<FotosAlmacigos> fotosAlmacigos = MainActivity.myAppDB.VisitasFotosAlmacigos().getFotosAlmacigosPorSync();
 
-            if (visitas.isEmpty() && detalles.isEmpty() && fotos.isEmpty() && fichas.isEmpty() && fotosFichas.isEmpty() && crops.isEmpty()) {
+            if (visitas.isEmpty() && detalles.isEmpty() && fotos.isEmpty() && fichas.isEmpty()
+                    && fotosFichas.isEmpty() && crops.isEmpty() && visitasAlmacigos.isEmpty() &&
+                    fotosAlmacigos.isEmpty()) {
                 InternetStateClass mm = new InternetStateClass(activity, result -> {
                     if (result) {
                         btn_descargar.setEnabled(true);
@@ -256,6 +276,8 @@ public class FragmentPrincipal extends Fragment {
                         "\n-" + fichas.size() + " PROSPECTOS " +
                         "\n-" + fotosFichas.size() + " FOTOS EN PROSPECTOS " +
                         "\n-" + crops.size() + " ROTACIONES EN PROSPECTOS " +
+                        "\n-" + visitasAlmacigos.size() + " VISITAS DE ALMACIGO " +
+                        "\n-" + fotosAlmacigos.size() + " FOTOS DE VISITAS DE ALMACIGO " +
                         "\nPENDIENTES, POR FAVOR, PRIMERO SINCRONICE ", "ENTIENDO");
             }
 
@@ -276,6 +298,86 @@ public class FragmentPrincipal extends Fragment {
         });
 
 
+    }
+
+
+    public void prepararSubirVisitasAlmacigos() {
+
+        ExecutorService io = Executors.newSingleThreadExecutor();
+        io.execute(() -> {
+
+            List<VisitasAlmacigos> visitasPendientes = MainActivity.myAppDB.VisitasFotosAlmacigos().getVisitasAlmacigosPorSync();
+            List<FotosAlmacigos> fotosPendientes = MainActivity.myAppDB.VisitasFotosAlmacigos().getFotosAlmacigosPorSync();
+            Config config = MainActivity.myAppDB.myDao().getConfig();
+
+            if (fotosPendientes.isEmpty() && visitasPendientes.isEmpty()) {
+                activity.runOnUiThread(() -> {
+                    Utilidades.avisoListo(activity, "ATENCION", "NO HAY VISITAS PENDIENTES POR SINCRONIZAR", "ENTIENDO");
+                });
+                return;
+            }
+
+            ArrayList<FotosAlmacigos> fotosBase64 = new ArrayList<>();
+            for (FotosAlmacigos foto : fotosPendientes) {
+                String base = Utilidades.convertirAStringBase64(foto.getRuta_foto());
+                if (base == null) continue;
+                foto.setImagen_base64(base);
+                fotosBase64.add(foto);
+            }
+
+            SubirAlmacigos subirAlmacigos = new SubirAlmacigos();
+            subirAlmacigos.setFotos(fotosBase64);
+            subirAlmacigos.setVisitas(visitasPendientes);
+            subirAlmacigos.setId_usuario(config.getId_usuario());
+            subirAlmacigos.setVersion(Utilidades.APPLICATION_VERSION);
+            subirAlmacigos.setIdDispo(config.getId());
+
+
+            activity.runOnUiThread(() -> {
+                ProgressDialog pd = new ProgressDialog(activity);
+                pd.setMessage("Subiendo las visitas");
+                pd.show();
+
+
+                ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
+                Call<Respuesta> call = apiService.enviarAlmacigos(subirAlmacigos);
+
+                call.enqueue(new Callback<Respuesta>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Respuesta> call, @NonNull Response<Respuesta> response) {
+                        if (!response.isSuccessful()) {
+                            pd.dismiss();
+                            Utilidades.avisoListo(activity, "ATENCION", "No se pudieron subir los almacigos, vuelva a intentar", "Entiendo");
+                            return;
+                        }
+
+                        Respuesta resp = response.body();
+                        if (resp == null) {
+                            pd.dismiss();
+                            Utilidades.avisoListo(activity, "ATENCION", "Servidor no pudo responder de manera correcta, vuelva a intentar", "Entiendo");
+                            return;
+                        }
+
+                        if (resp.getCodigoRespuesta() != 1) {
+                            pd.dismiss();
+                            Utilidades.avisoListo(activity, "ATENCION", "Servidor tuvo problemas para guardar los datos, vuelva a intentar [ " + resp.getMensajeRespuesta() + " ]", "Entiendo");
+                            return;
+                        }
+                        pd.dismiss();
+                        MainActivity.myAppDB.VisitasFotosAlmacigos().marcarVisitasSincronizadadas();
+                        MainActivity.myAppDB.VisitasFotosAlmacigos().marcarFotosSincronizadadas();
+                        Utilidades.avisoListo(activity, "ATENCION", resp.getMensajeRespuesta(), "Entiendo");
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Respuesta> call, @NonNull Throwable t) {
+                        pd.dismiss();
+                        Utilidades.avisoListo(activity, "ATENCION", "No se pudo completar la comunicacion con el servidor [ " + t.getMessage() + " ]", "Entiendo");
+                    }
+                });
+            });
+
+        });
     }
 
 
@@ -417,7 +519,7 @@ public class FragmentPrincipal extends Fragment {
 
 
     private void recargarYear() {
-        if (temporadaList.size() > 0) {
+        if (!temporadaList.isEmpty()) {
             spinner_toolbar.setSelection((marca_especial_temporada.isEmpty()) ? prefs.getInt(Utilidades.SHARED_FILTER_FICHAS_YEAR, temporadaList.size() - 1) : id_temporadas.indexOf(marca_especial_temporada));
         }
     }
@@ -494,7 +596,7 @@ public class FragmentPrincipal extends Fragment {
             btn_preparar.setEnabled(true);
 
             List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir(); //2
-            if (visitas.size() > 0) {
+            if (!visitas.isEmpty()) {
 
                 Utilidades.exportDatabse(Utilidades.NOMBRE_DATABASE, activity.getPackageName());
 
@@ -996,6 +1098,7 @@ public class FragmentPrincipal extends Fragment {
                                 ex.shutdown();
                             }
                         } catch (ExecutionException | InterruptedException e) {
+                            Toasty.error(activity, "No se pudo descargar, entra a  [ExecutionException|InterruptedException]" + e.getMessage(), Toast.LENGTH_SHORT, true).show();
                             ex.shutdown();
                             progressDialog.dismiss();
                         }

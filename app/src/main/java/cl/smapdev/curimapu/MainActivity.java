@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
@@ -21,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +51,7 @@ import cl.smapdev.curimapu.fragments.FragmentFichas;
 import cl.smapdev.curimapu.fragments.FragmentLogin;
 import cl.smapdev.curimapu.fragments.FragmentPrincipal;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
+import cl.smapdev.curimapu.fragments.almacigos.FragmentListadoVisitasAlmacigos;
 import cl.smapdev.curimapu.fragments.checklist.FragmentCheckList;
 import cl.smapdev.curimapu.fragments.contratos.FragmentListVisits;
 import cl.smapdev.curimapu.fragments.servidorFragment;
@@ -163,22 +164,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void cambiarNombreUser(int usuario) {
         TextView textView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.id_usuarios);
-        if (textView != null) {
+        Usuario usuarios = MainActivity.myAppDB.myDao().getUsuarioById(usuario);
+        if (usuarios != null) {
 
-            Usuario usuarios = MainActivity.myAppDB.myDao().getUsuarioById(usuario);
-            if (usuarios != null) {
+            if (textView != null) {
                 textView.setText(usuarios.getUser());
             }
-
-
             TextView version = (TextView) findViewById(R.id.version_app);
             if (version != null) {
-
                 Config config = MainActivity.myAppDB.myDao().getConfig();
                 String data = "ID: " + config.getId() + " VERSION: " + Utilidades.APPLICATION_VERSION;
                 version.setText(data);
-
             }
+            Menu menu = navigationView.getMenu();
+            MenuItem item = menu.findItem(R.id.nv_almacigos);
+            item.setVisible(usuarios.getAccede_almacigos() == 1 || usuarios.getTipo_usuario() == 5);
 
 
         }
@@ -245,7 +245,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commit();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -265,6 +264,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nv_anexo_fecha:
 //                cambiarFragment(new FragmentAnexoFechas(), Utilidades.FRAGMENT_ANEXO_FICHA, R.anim.slide_in_left, R.anim.slide_out_left);
+                break;
+
+            case R.id.nv_almacigos:
+                cambiarFragment(FragmentListadoVisitasAlmacigos.newInstance(this), Utilidades.FRAGMENT_LISTA_ALMACIGOS, R.anim.slide_in_left, R.anim.slide_out_left);
                 break;
 
             case R.id.nv_curiweb:
@@ -383,9 +386,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_right, R.anim.slide_out_right);
                         cambiarNavigation(R.id.nv_fichas);
                         break;
+                    case Utilidades.FRAGMENT_VISITA_ALMACIGOS:
+                        cambiarFragment(FragmentListadoVisitasAlmacigos.newInstance(this), Utilidades.FRAGMENT_LISTA_ALMACIGOS, R.anim.slide_in_right, R.anim.slide_out_right);
+                        cambiarNavigation(R.id.nv_fichas);
+                        break;
                     case Utilidades.FRAGMENT_CONFIG:
                     case Utilidades.FRAGMENT_FICHAS:
                     case Utilidades.FRAGMENT_VISITAS:
+                    case Utilidades.FRAGMENT_LISTA_ALMACIGOS:
                         cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_right, R.anim.slide_out_right);
                         cambiarNavigation(R.id.nv_inicio);
                         break;

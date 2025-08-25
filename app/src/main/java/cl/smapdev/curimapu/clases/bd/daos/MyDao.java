@@ -8,29 +8,38 @@ import androidx.room.RawQuery;
 import androidx.room.Update;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import cl.smapdev.curimapu.clases.relaciones.AgricultorCompleto;
+import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.AnexoWithDates;
 import cl.smapdev.curimapu.clases.relaciones.CantidadVisitas;
 import cl.smapdev.curimapu.clases.relaciones.DetalleCampo;
+import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.relaciones.SitiosNoVisitadosAnexos;
 import cl.smapdev.curimapu.clases.relaciones.VisitaDetalle;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.AgrPredTemp;
+import cl.smapdev.curimapu.clases.tablas.Agricultor;
+import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.AnexoCorreoFechas;
 import cl.smapdev.curimapu.clases.tablas.CardViewsResumen;
 import cl.smapdev.curimapu.clases.tablas.Clientes;
+import cl.smapdev.curimapu.clases.tablas.Comuna;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
+import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
+import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
+import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.FotosFichas;
 import cl.smapdev.curimapu.clases.tablas.Lotes;
 import cl.smapdev.curimapu.clases.tablas.Maquinaria;
 import cl.smapdev.curimapu.clases.tablas.Predios;
 import cl.smapdev.curimapu.clases.tablas.Provincia;
+import cl.smapdev.curimapu.clases.tablas.Region;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.TipoRiego;
 import cl.smapdev.curimapu.clases.tablas.TipoSuelo;
@@ -39,16 +48,6 @@ import cl.smapdev.curimapu.clases.tablas.TipoTenenciaTerreno;
 import cl.smapdev.curimapu.clases.tablas.UnidadMedida;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
-import cl.smapdev.curimapu.clases.tablas.Agricultor;
-import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
-import cl.smapdev.curimapu.clases.tablas.Comuna;
-import cl.smapdev.curimapu.clases.tablas.Especie;
-import cl.smapdev.curimapu.clases.tablas.Fichas;
-import cl.smapdev.curimapu.clases.tablas.Fotos;
-import cl.smapdev.curimapu.clases.tablas.Region;
-import cl.smapdev.curimapu.clases.relaciones.AgricultorCompleto;
-import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
-import cl.smapdev.curimapu.clases.relaciones.FichasCompletas;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.cli_pcm;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
@@ -78,7 +77,7 @@ public interface MyDao {
             " INNER JOIN temporada T ON ( F.id_tempo_new = T.id_tempo_tempo) " +
             " WHERE T.id_tempo_tempo = :id_tempo AND AC.destruido = '0' " +
             " ORDER BY E.desc_especie ASC, AC.num_anexo ASC ; ")
-    List<SitiosNoVisitadosAnexos>  getSitiosNoVisitados(int id_tempo) ;
+    List<SitiosNoVisitadosAnexos> getSitiosNoVisitados(int id_tempo);
 
 
     @Query("SELECT * FROM visita V " +
@@ -104,8 +103,6 @@ public interface MyDao {
     List<VisitasCompletas> getPrimeraPrioridad(int id_tempo);
 
 
-
-
     @Query("SELECT  * FROM fotos WHERE estado_fotos = 0 AND id_visita_foto > 0")
     List<Fotos> getFotos();
 
@@ -127,7 +124,7 @@ public interface MyDao {
     @Query("SELECT  * FROM fotos " +
             "WHERE vista = :view AND id_ficha_fotos = :idFichaFoto AND id_visita_foto = :idVisita " +
             "AND id_visita_servidor_foto = :idVisitaServidor AND id_dispo_foto = :idDispo")
-    List<Fotos> getFotosByFieldAndViewVisitas(int view, String idFichaFoto,  int idVisita, int idVisitaServidor, int idDispo);
+    List<Fotos> getFotosByFieldAndViewVisitas(int view, String idFichaFoto, int idVisita, int idVisitaServidor, int idDispo);
 
     @Query("SELECT  * FROM fotos WHERE vista = :view AND id_ficha_fotos = :ficha AND id_visita_foto = :idVisita AND id_visita_servidor_foto = :idVisitaServidor AND id_dispo_foto = :idDispo")
     List<Fotos> getFotosByFieldAndView(int view, String ficha, int idVisita, int idVisitaServidor, int idDispo);
@@ -167,7 +164,7 @@ public interface MyDao {
 
 
     @Query("SELECT COUNT(favorita) FROM fotos WHERE id_ficha_fotos = :idFicha AND favorita = 1 AND id_visita_foto = :idVisita AND vista = :vista")
-    int getCantFavoritasByFieldbookAndFicha( String idFicha, int idVisita, int vista);
+    int getCantFavoritasByFieldbookAndFicha(String idFicha, int idVisita, int vista);
 
 
     @Query("SELECT COUNT(favorita) FROM fotos WHERE fieldbook = :fieldbook AND id_ficha_fotos = :idFicha AND vista = :view AND favorita = 1 AND id_visita_foto = :idVisita ")
@@ -182,8 +179,6 @@ public interface MyDao {
 
     @Delete
     void deleteFotos(Fotos fotos);
-
-
 
 
     @Query("SELECT " +
@@ -228,7 +223,6 @@ public interface MyDao {
             " LEFT JOIN visita V ON (V.id_anexo_visita = AC.id_anexo_contrato) " +
             " WHERE FN.id_tempo_new = :tempo " +
             " GROUP BY AC.id_anexo_contrato ")
-
     List<AnexoWithDates> getFechasSag(String tempo);
 
 
@@ -236,14 +230,13 @@ public interface MyDao {
     AnexoCorreoFechas getAnexoCorreoFechasByAnexo(int id_anexo);
 
 
-
     @Query("SELECT * FROM anexo_correo_fechas WHERE " +
-              "(correo_inicio_despano <= 0 AND (inicio_despano IS NOT NULL AND inicio_despano != '0000-00-00')) OR  " +
-              "(correo_cinco_porciento_floracion <= 0 AND( cinco_porciento_floracion IS NOT NULL AND cinco_porciento_floracion != '0000-00-00')) OR " +
-              "(correo_inicio_corte_seda <= 0 AND (inicio_corte_seda IS NOT NULL AND inicio_corte_seda != '0000-00-00')) OR " +
-              "(correo_inicio_cosecha <= 0 AND (inicio_cosecha IS NOT NULL AND inicio_cosecha != '0000-00-00')) OR " +
-              "(correo_termino_cosecha <= 0 AND (termino_cosecha IS NOT NULL AND termino_cosecha != '0000-00-00')) OR " +
-              "(correo_termino_labores_post_cosechas <= 0 AND (termino_labores_post_cosechas IS NOT NULL AND termino_labores_post_cosechas != '0000-00-00'))")
+            "(correo_inicio_despano <= 0 AND (inicio_despano IS NOT NULL AND inicio_despano != '0000-00-00')) OR  " +
+            "(correo_cinco_porciento_floracion <= 0 AND( cinco_porciento_floracion IS NOT NULL AND cinco_porciento_floracion != '0000-00-00')) OR " +
+            "(correo_inicio_corte_seda <= 0 AND (inicio_corte_seda IS NOT NULL AND inicio_corte_seda != '0000-00-00')) OR " +
+            "(correo_inicio_cosecha <= 0 AND (inicio_cosecha IS NOT NULL AND inicio_cosecha != '0000-00-00')) OR " +
+            "(correo_termino_cosecha <= 0 AND (termino_cosecha IS NOT NULL AND termino_cosecha != '0000-00-00')) OR " +
+            "(correo_termino_labores_post_cosechas <= 0 AND (termino_labores_post_cosechas IS NOT NULL AND termino_labores_post_cosechas != '0000-00-00'))")
     List<AnexoCorreoFechas> getAnexoCorreoFechas();
 
     @Update
@@ -296,7 +289,6 @@ public interface MyDao {
 
 
     /* FICHAS */
-
 
     @Insert
     long insertFicha(Fichas fichas);
@@ -363,7 +355,6 @@ public interface MyDao {
     List<Visitas> getVisitasPorSubirTomadas();
 
 
-
     @Query("UPDATE visita SET tomadas = 1 WHERE estado_server_visitas = 0 AND id_visita = :id_visita ")
     void marcarVisitas(int id_visita);
 
@@ -388,6 +379,7 @@ public interface MyDao {
 
     @Insert
     void insertDatoDetalle(detalle_visita_prop detalle_visita_prop);
+
     @Update
     void updateDatoDetalle(detalle_visita_prop detalle_visita_prop);
 
@@ -438,7 +430,7 @@ public interface MyDao {
             "INNER JOIN anexo_contrato AC ON (AC.id_potrero = L.lote) " +
             "INNER JOIN agri_pred_temp ATT ON (ATT.id_pred = P.id_pred AND ATT.id_agric = AC.id_agricultor_anexo)  " +
             "LEFT JOIN visita V ON (V.id_anexo_visita = AC.id_anexo_contrato) " +
-        "WHERE ATT.id_tempo = :temp AND V.fecha_visita <= :fecha GROUP BY p.id_pred")
+            "WHERE ATT.id_tempo = :temp AND V.fecha_visita <= :fecha GROUP BY p.id_pred")
     List<CardViewsResumen> getCantidadPrediosNoVisitados(String temp, String fecha);
 
 
@@ -449,7 +441,7 @@ public interface MyDao {
     @Query("UPDATE visita SET estado_server_visitas = 0 WHERE id_user_visita = 2 ")
     void updateVisitaTest();
 
-@Query("UPDATE fotos SET estado_fotos = 1;")
+    @Query("UPDATE fotos SET estado_fotos = 1;")
     void updateFotoTest();
 
 
@@ -632,7 +624,6 @@ public interface MyDao {
     /* =====================================================================*/
 
 
-
     /* DETALLE*/
     @Query("DELETE FROM detalle_visita_prop WHERE estado_detalle = 1")
     void deleteDetalle();
@@ -659,6 +650,7 @@ public interface MyDao {
 
     @Query("SELECT * FROM detalle_visita_prop WHERE estado_detalle = 0 AND tomada_detalle = 1 ")
     List<detalle_visita_prop> getDetallesPorSubirTomadas();
+
     @Insert
     List<Long> insertDetalle(List<detalle_visita_prop> detalle_visita_props);
 
@@ -748,40 +740,39 @@ public interface MyDao {
     pro_cli_mat getProCliMatByIdProp(int idProp, int idCli, String idTempo);
 
 
-
     @Query("SELECT id_clientes_tabla FROM cliente C " +
             "INNER JOIN quotation Q ON Q.cliente = C.id_clientes_tabla " +
             "INNER JOIN materiales M ON Q.id_materiales = M.id_variedad " +
             "INNER JOIN anexo_contrato  AC ON AC.id_variedad_anexo = M.id_variedad " +
-            "WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
+            "WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1")
     int getIdClienteByAnexo(String idAnexo);
 
     @Query("SELECT AC.id_variedad_anexo FROM anexo_contrato AC " +
-            "INNER JOIN materiales M ON AC.id_variedad_anexo = M.id_variedad WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
+            "INNER JOIN materiales M ON AC.id_variedad_anexo = M.id_variedad WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1")
     String getIdMaterialByAnexo(String idAnexo);
 
     @Query("SELECT F.id_pred_new FROM ficha_new F " +
-            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idPredio LIMIT 1" )
+            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idPredio LIMIT 1")
     int getIdPredioByAnexo(String idPredio);
 
     @Query("SELECT F.id_lote_new FROM ficha_new F " +
-            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idLote LIMIT 1" )
+            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idLote LIMIT 1")
     int getIdLoteByAnexo(String idLote);
 
     @Query("SELECT v.id_visita FROM visita V " +
-            "INNER JOIN anexo_contrato AC ON AC.id_anexo_contrato = V.id_anexo_visita WHERE AC.id_anexo_contrato = :idLote ORDER BY id_visita DESC LIMIT 1" )
+            "INNER JOIN anexo_contrato AC ON AC.id_anexo_contrato = V.id_anexo_visita WHERE AC.id_anexo_contrato = :idLote ORDER BY id_visita DESC LIMIT 1")
     int getIdVisitaByAnexo(String idLote);
 
     @Query("SELECT F.id_tipo_suelo_new FROM ficha_new F " +
-            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
+            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1")
     int getIdTipoSueloByAnexo(String idAnexo);
 
     @Query("SELECT F.id_tipo_riego_new FROM ficha_new F " +
-            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
+            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1")
     int getIdTipoRiegoByAnexo(String idAnexo);
 
     @Query("SELECT F.id_usuario_new FROM ficha_new F " +
-            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1" )
+            "INNER JOIN anexo_contrato AC ON AC.id_ficha_contrato = F.id_ficha_new WHERE AC.id_anexo_contrato = :idAnexo LIMIT 1")
     int getIdusuarioByAnexo(String idAnexo);
     /* ===================================================================================*/
 
@@ -797,6 +788,7 @@ public interface MyDao {
 
     @Insert
     List<Long> insertPCM(List<cli_pcm> cli_pcms);
+
     @Query("SELECT  * FROM cli_pcm ")
     List<cli_pcm> getCliPCM();
 
@@ -858,7 +850,6 @@ public interface MyDao {
     List<AnexoCompleto> getAnexosByYear(String year);
 
 
-
     @Query("SELECT * " +
             "FROM anexo_contrato " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
@@ -894,13 +885,14 @@ public interface MyDao {
 
     @Insert
     void insertEspecie(Especie especie);
+
     @Insert
     List<Long> insertEspecie(List<Especie> especie);
 
     @Query("DELETE FROM especie")
     void deleteEspecie();
 
-     /* ================================================================== */
+    /* ================================================================== */
 
 
     /*VARIEDAD*/
@@ -912,6 +904,7 @@ public interface MyDao {
 
     @Insert
     void insertVariedad(Variedad materiales);
+
     @Insert
     List<Long> insertVariedad(List<Variedad> materiales);
 
@@ -928,6 +921,7 @@ public interface MyDao {
 
     @Insert
     void insertClientes(Clientes clientes);
+
     @Insert
     List<Long> insertClientes(List<Clientes> clientes);
 
@@ -993,7 +987,6 @@ public interface MyDao {
     @Query("DELETE FROM provincia")
     void deleteProvincia();
     /* ===================================================================================*/
-
 
 
     /* COMUNAS */
@@ -1077,8 +1070,6 @@ public interface MyDao {
     /* ===================================================================================*/
 
 
-
-
     /* TIPO RIEGO */
     @Insert
     List<Long> insertTipoRiego(List<TipoRiego> tipoRiegos);
@@ -1127,12 +1118,6 @@ public interface MyDao {
     void deleteTipoTenenciaTerreno();
 
     /* ===================================================================================*/
-
-
-
-
-
-
 
 
 }

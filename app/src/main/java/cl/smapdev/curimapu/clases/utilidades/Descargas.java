@@ -140,6 +140,22 @@ public class Descargas {
     public static boolean[] volqueoDatos(GsonDescargas gsonDescargas) throws RuntimeException {
 
         boolean[] problema = {false, false};
+        
+        MainActivity.myAppDB.VisitasFotosAlmacigos().limpiarVisitasSubidas();
+        if (gsonDescargas.getArray_visitas_almacigos() != null && !gsonDescargas.getArray_visitas_almacigos().isEmpty()) {
+            try {
+                MainActivity.myAppDB.VisitasFotosAlmacigos().insertarVisitasAlmacigos(gsonDescargas.getArray_visitas_almacigos());
+            } catch (SQLiteException ignored) {
+            }
+        }
+
+        MainActivity.myAppDB.DaoOPAlmacigos().limpiarOPAlmacigo();
+        if (gsonDescargas.getArray_op_almacigos() != null && !gsonDescargas.getArray_op_almacigos().isEmpty()) {
+            try {
+                MainActivity.myAppDB.DaoOPAlmacigos().insertarOpAlmacigos(gsonDescargas.getArray_op_almacigos());
+            } catch (SQLiteException ignored) {
+            }
+        }
 
         MainActivity.myAppDB.DaoPrimeraPrioridad().limpiarPPs();
         if (gsonDescargas.getArray_primera_prioridad() != null && !gsonDescargas.getArray_primera_prioridad().isEmpty()) {
@@ -291,6 +307,27 @@ public class Descargas {
             }
 
 
+        }
+
+
+        MainActivity.myAppDB.DaoFueraTipo().limpiarCategorias();
+        if (gsonDescargas.getArray_categoria_fuera_tipo() != null && !gsonDescargas.getArray_categoria_fuera_tipo().isEmpty()) {
+            ExecutorService ex = Executors.newSingleThreadExecutor();
+            try {
+                ex.submit(() -> MainActivity.myAppDB.DaoFueraTipo().insertarCategorias(gsonDescargas.getArray_categoria_fuera_tipo())).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+
+        MainActivity.myAppDB.DaoFueraTipo().limpiarSubCategorias();
+        if (gsonDescargas.getArray_sub_categoria_fuera_tipo() != null && !gsonDescargas.getArray_sub_categoria_fuera_tipo().isEmpty()) {
+            ExecutorService ex = Executors.newSingleThreadExecutor();
+            try {
+                ex.submit(() -> MainActivity.myAppDB.DaoFueraTipo().insertarSubCategorias(gsonDescargas.getArray_sub_categoria_fuera_tipo())).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         }
 
 

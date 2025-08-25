@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_small">
+
+        <TextView
+            android:id="@+id/lbl_parental"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre parental"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/nombre_parental"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:textSize="22sp"
+            app:layout_constraintTop_toBottomOf="@id/lbl_parental"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/especie"
+            tools:text="13058561 - MALE 1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+        <TextView
+            android:id="@+id/lbl_cliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CLIENTE"
+            app:layout_constraintTop_toBottomOf="@id/nombre_parental"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textSize="14sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+        <TextView
+            android:id="@+id/cliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="MONSANTO"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/lbl_cliente"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textAlignment="textStart" />
+
+        <TextView
+            android:id="@+id/lbl_especie"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cliente"
+            app:layout_constraintEnd_toStartOf="@id/lbl_variedad"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/especie"
+            android:textSize="14sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+        <TextView
+            android:id="@+id/lbl_variedad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            app:layout_constraintStart_toEndOf="@id/lbl_especie"
+            app:layout_constraintTop_toBottomOf="@id/cliente"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="@string/variedad"
+            android:textSize="14sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+        <TextView
+            android:id="@+id/especie"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/lbl_especie"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/variedad"
+
+            android:textSize="20sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            tools:text="TREBOL ROSADO" />
+
+        <TextView
+            android:id="@+id/variedad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@id/especie"
+            app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="RGT-JAVVA"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+        <TextView
+            android:id="@+id/lbl_fecha_siembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/variedad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/lbl_fecha_estimada_despacho"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="fecha siembra"
+
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+        <TextView
+            android:id="@+id/lbl_fecha_estimada_despacho"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+
+            app:layout_constraintTop_toBottomOf="@id/variedad"
+            app:layout_constraintStart_toEndOf="@id/lbl_fecha_siembra"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textSize="12sp"
+            android:text="fecha estimada despacho"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+        <TextView
+            android:id="@+id/fecha_siembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/lbl_fecha_siembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/fecha_estimada_despacho"
+            tools:text="06-08-2025"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+        <TextView
+            android:id="@+id/fecha_estimada_despacho"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            app:layout_constraintTop_toBottomOf="@id/lbl_fecha_estimada_despacho"
+            app:layout_constraintStart_toEndOf="@id/fecha_siembra"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="06-08-2025"
+            android:textSize="20sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+        <TextView
+            android:id="@+id/lbl_op"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            app:layout_constraintTop_toBottomOf="@id/fecha_estimada_despacho"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/lbl_variedad"
+            android:text="OP"
+            android:textSize="14sp"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+        <TextView
+            android:id="@+id/op"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_op"
+            app:layout_constraintEnd_toStartOf="@id/tipo_lc"
+            tools:text="9453687"
+            android:textSize="20sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+        <TextView
+            android:id="@+id/lbl_tipo_lc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            app:layout_constraintTop_toBottomOf="@id/fecha_estimada_despacho"
+            app:layout_constraintStart_toEndOf="@id/lbl_op"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="TIPO DE RAIZ"
+            android:textSize="14sp"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+        <TextView
+            android:id="@+id/tipo_lc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            app:layout_constraintStart_toEndOf="@id/op"
+            app:layout_constraintTop_toBottomOf="@id/lbl_tipo_lc"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20sp"
+            tools:text="RAIZ DESNUDA"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+        <TextView
+            android:id="@+id/lbl_nom_fantasia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/tipo_lc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/lbl_variedad"
+            android:text="Nombre de fantasia"
+            android:textSize="14sp"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+        <TextView
+            android:id="@+id/nom_fantasia"
+            android:visibility="invisible"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_nom_fantasia"
+            app:layout_constraintEnd_toStartOf="@id/tipo_lc"
+            tools:text="HUEMUL-15"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+
+        <TextView
+            android:id="@+id/lbl_dias_cultivo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            app:layout_constraintTop_toBottomOf="@id/tipo_lc"
+            app:layout_constraintStart_toEndOf="@id/lbl_nom_fantasia"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="14sp"
+            android:text="Dias de cultivo a visita"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+        <TextView
+            android:id="@+id/dias_cultivo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            app:layout_constraintStart_toEndOf="@id/nom_fantasia"
+            app:layout_constraintTop_toBottomOf="@id/lbl_dias_cultivo"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="24sp"
+            tools:text="15"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+
+        <View
+            android:id="@+id/divider_cabecera"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/dias_cultivo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding"
+
+            />
+
+        <TextView
+            android:id="@+id/lbl_crecimiento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/estado_de_crecimiento"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/divider_cabecera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/sp_crecimiento" />
+
+        <Spinner
+            android:id="@+id/sp_crecimiento"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:entries="@array/crecimiento"
+            app:layout_constraintTop_toBottomOf="@id/lbl_crecimiento"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/obs_growth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/sp_crecimiento"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/sp_crecimiento"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_obs_growth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:hint="@string/observations" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/lbl_malezas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/estado_de_malezas"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/obs_growth"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Spinner
+            android:id="@+id/sp_malezas"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:entries="@array/maleza"
+            app:layout_constraintTop_toBottomOf="@id/lbl_malezas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/obs_maleza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/sp_malezas"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/sp_malezas"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_obs_maleza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:hint="@string/observations" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lbl_fitosanitario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/estado_fitosanitario"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/obs_maleza"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Spinner
+            android:id="@+id/sp_fito"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:entries="@array/crecimiento"
+            app:layout_constraintTop_toBottomOf="@id/lbl_fitosanitario"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/obs_fito"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/sp_fito"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/sp_fito"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_obs_fito"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:hint="@string/observations" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lbl_humedad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Humedad de Suelo / substrato"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/obs_fito"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Spinner
+            android:id="@+id/sp_humedad_suelo"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:entries="@array/crecimiento"
+            app:layout_constraintTop_toBottomOf="@id/lbl_humedad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/obs_humedad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/sp_humedad_suelo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/sp_humedad_suelo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_obs_humedad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:hint="@string/observations" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lbl_et_n_hojas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="N° Hojas"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/obs_humedad"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/et_n_hojas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/lbl_et_n_hojas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/lbl_altura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Altura"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/et_n_hojas"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/et_altura"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_altura"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/lbl_cobertura_raices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="% cobertura raices"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/et_altura"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/et_cobertura_raices"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_cobertura_raices"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/lbl_dureza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dureza"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/et_cobertura_raices"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Spinner
+            android:id="@+id/sp_dureza"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:entries="@array/dureza"
+            app:layout_constraintTop_toBottomOf="@id/lbl_dureza"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/obs_dureza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/sp_dureza"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/sp_dureza"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_obs_dureza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:hint="@string/observations" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/lbl_diametro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Diametro"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/obs_dureza"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/et_diametro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_diametro"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/lbl_uniformidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Uniformidad"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/et_diametro"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/et_uniformidad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/lbl_uniformidad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/lbl_estado_general"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/estado_general"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/et_uniformidad"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Spinner
+            android:id="@+id/sp_estado_general"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:entries="@array/crecimiento"
+            app:layout_constraintTop_toBottomOf="@id/lbl_estado_general"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/obs_estado_general"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/sp_estado_general"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/sp_estado_general"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_obs_estado_general"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:hint="@string/observations" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/lbl_emergencia_preliminar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Emergencia Preliminar"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/obs_estado_general"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/et_emergencia_preliminar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/lbl_emergencia_preliminar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/obs_general"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/et_emergencia_preliminar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/et_emergencia_preliminar"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_obs_general"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:hint="@string/comentario" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/lbl_fotos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Fotos"
+            android:textSize="18sp"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/obs_general"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_tomar_foto" />
+
+        <Button
+            android:id="@+id/btn_tomar_foto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tomar foto"
+            android:drawableStart="@drawable/ic_arrow_back"
+            android:layout_toEndOf="@id/btn_guardar"
+            android:padding="@dimen/padding"
+            android:layout_margin="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/obs_general"
+            app:layout_constraintStart_toEndOf="@id/lbl_fotos"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_listado_fotos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_tomar_foto"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <Button
+            android:id="@+id/btn_volver"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_back"
+            android:theme="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_toEndOf="@id/btn_guardar"
+            android:padding="@dimen/padding"
+            android:layout_margin="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/rv_listado_fotos"
+            app:layout_constraintEnd_toStartOf="@id/btn_guardar"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_guardar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/nav_save"
+            android:drawableStart="@drawable/ic_save"
+            android:layout_margin="@dimen/padding"
+            android:padding="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/rv_listado_fotos"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_volver" />
+
+        <View
+            android:id="@+id/divider_primero"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/btn_volver"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding"
+
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

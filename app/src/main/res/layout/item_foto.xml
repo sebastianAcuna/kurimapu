@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="fill_horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/img_foto"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center" />
+
+    <ImageButton
+        android:id="@+id/btn_favorito"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:scaleType="centerInside"
+        android:background="@drawable/bg_boton_con_borde"
+        android:contentDescription="marca favorita"
+        android:padding="4dp"
+        android:src="@drawable/ic_start_border" />
+</LinearLayout>

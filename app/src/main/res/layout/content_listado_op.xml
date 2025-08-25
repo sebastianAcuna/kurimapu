@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:padding="@dimen/padding_small">
+
+    <EditText
+        android:id="@+id/etBuscarOP"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Buscar por OP o parental"
+        android:inputType="text"
+        android:padding="8dp"
+        android:background="@android:drawable/edit_text"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnScanQR"
+        app:layout_constraintHorizontal_weight="1" />
+
+    <!-- Botón para escanear QR -->
+    <ImageButton
+        android:id="@+id/btnScanQR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Escanear QR"
+        android:src="@android:drawable/ic_menu_camera"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toTopOf="@id/etBuscarOP"
+        app:layout_constraintBottom_toBottomOf="@id/etBuscarOP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/etBuscarOP" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_listado_op"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/etBuscarOP"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <FrameLayout
+        android:id="@+id/fragment_container_qr"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/etBuscarOP"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

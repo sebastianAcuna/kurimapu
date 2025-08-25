@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:padding="@dimen/padding_small"
+    android:layout_margin="@dimen/padding_small"
+    android:background="@color/colorBackgroundList"
+    android:elevation="@dimen/padding">
+
+
+    <TextView
+        android:id="@+id/nombre_parental"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="13058561 - MALE 1"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+
+    <TextView
+        android:id="@+id/lbl_fecha_visita"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/nombre_parental"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lbl_est_crecimiento"
+        android:text="Fecha de visita"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/fecha_visita"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/est_crecimiento"
+        app:layout_constraintTop_toBottomOf="@id/lbl_fecha_visita"
+        tool:text="15-08-2025"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+
+    <TextView
+        android:id="@+id/lbl_est_crecimiento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/nombre_parental"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/lbl_fecha_visita"
+        android:text="Est. Crecimiento"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/est_crecimiento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/fecha_visita"
+        app:layout_constraintTop_toBottomOf="@id/lbl_est_crecimiento"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="EXCELENTE"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+
+    <TextView
+        android:id="@+id/lbl_est_maleza"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/fecha_visita"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lbl_est_fito"
+        android:text="Est. maleza"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/est_maleza"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/est_fito"
+        app:layout_constraintTop_toBottomOf="@id/lbl_est_maleza"
+        tool:text="15-08-2025"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+
+    <TextView
+        android:id="@+id/lbl_est_fito"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/est_crecimiento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/lbl_est_maleza"
+        android:text="Est. Fitosanitario"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/est_fito"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/est_maleza"
+        app:layout_constraintTop_toBottomOf="@id/lbl_est_fito"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="EXCELENTE"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+
+    <TextView
+        android:id="@+id/lbl_hum_suelo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/est_maleza"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lbl_dureza"
+        android:text="Est. suelo/substrato"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/hum_suelo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/est_dureza"
+        app:layout_constraintTop_toBottomOf="@id/lbl_hum_suelo"
+        tool:text="15-08-2025"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+
+    <TextView
+        android:id="@+id/lbl_dureza"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/est_fito"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/lbl_hum_suelo"
+        android:text="Dureza"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/est_dureza"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/hum_suelo"
+        app:layout_constraintTop_toBottomOf="@id/lbl_dureza"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="EXCELENTE"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+
+    <TextView
+        android:id="@+id/lbl_est_general"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/hum_suelo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lbl_dias_cultivo"
+        android:text="Est. general"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/est_general"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/dias_cultivo"
+        app:layout_constraintTop_toBottomOf="@id/lbl_est_general"
+        tool:text="15-08-2025"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+
+    <TextView
+        android:id="@+id/lbl_dias_cultivo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/est_dureza"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/lbl_est_general"
+        android:text="Dias de cultivo a visita"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/dias_cultivo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/est_general"
+        app:layout_constraintTop_toBottomOf="@id/lbl_dias_cultivo"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="15"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+
+    <TextView
+        android:id="@+id/lbl_cliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CLIENTE"
+        app:layout_constraintTop_toBottomOf="@id/dias_cultivo"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/cliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tool:text="MONSANTO"
+        app:layout_constraintTop_toBottomOf="@id/lbl_cliente"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textAlignment="textStart" />
+
+    <TextView
+        android:id="@+id/lbl_especie"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cliente"
+        app:layout_constraintEnd_toStartOf="@id/lbl_variedad"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="@string/especie"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/lbl_variedad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/lbl_especie"
+        app:layout_constraintTop_toBottomOf="@id/cliente"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="@string/variedad"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/especie"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_especie"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/variedad"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        tool:text="TREBOL ROSADO" />
+
+    <TextView
+        android:id="@+id/variedad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/especie"
+        app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="RGT-JAVVA"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+    <TextView
+        android:id="@+id/lbl_fecha_siembra"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/variedad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lbl_fecha_estimada_despacho"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="fecha siembra"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/lbl_fecha_estimada_despacho"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/variedad"
+        app:layout_constraintStart_toEndOf="@id/lbl_fecha_siembra"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="fecha estimada despacho"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/fecha_siembra"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/lbl_fecha_siembra"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fecha_estimada_despacho"
+        tool:text="06-08-2025"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    <TextView
+        android:id="@+id/fecha_estimada_despacho"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/lbl_fecha_estimada_despacho"
+        app:layout_constraintStart_toEndOf="@id/fecha_siembra"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="06-08-2025"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+
+    <Button
+        android:id="@+id/btn_menu_visita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Colored"
+        app:layout_constraintTop_toBottomOf="@id/fecha_estimada_despacho"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="VER"
+        android:layout_marginTop="@dimen/padding_small" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

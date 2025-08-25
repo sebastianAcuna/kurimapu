@@ -14,6 +14,13 @@
     <string name="warning_incorrect_fields">Incorrect username and / or password</string>
     <!--    Usuario y/o Contraseña incorrectos-->
 
+    <string-array name="dureza">
+        <item>@string/select</item>
+        <item>FIRME</item>
+        <item>MEDIO</item>
+        <item>BLANDO</item>
+        <item>SIN ESPECIFICAR</item>
+    </string-array>
 
     <!-- INICIO -->
     <string name="sync_all_ok">Nothing to upload, everything synchronized</string>
@@ -496,4 +503,5 @@
     <string name="fotografia_raices">fotografia raices</string>
     <string name="nav_take_pick_roots">Tomar foto raices</string>
     <string name="fotos_raices">fotos raices</string>
+    <string name="almacigos">Almacigos</string>
 </resources>

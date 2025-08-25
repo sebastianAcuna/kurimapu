@@ -17,7 +17,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-
+            android:padding="@dimen/padding_small"
             android:layout_margin="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             app:layout_constraintTop_toBottomOf="@id/container_fecha"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-
+            android:padding="@dimen/padding_small"
             android:layout_margin="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
             app:layout_constraintTop_toBottomOf="@id/container_estado_fenologico"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-
+            android:padding="@dimen/padding_small"
             android:layout_margin="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,23 +86,89 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Listado fuera de tipo registrados"
+                android:text="Categoria fuera de tipo"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <Spinner
-                android:id="@+id/sp_fuera_tipo"
+                android:id="@+id/sp_categoria"
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-
         <LinearLayout
-            android:id="@+id/container_nuevo_roguing"
+            android:id="@+id/container_sc_fuera_tipos"
             app:layout_constraintTop_toBottomOf="@id/container_fuera_tipos"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/padding_small"
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sub categoria fuera de tipo"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <Spinner
+                android:id="@+id/sp_sub_categoria"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contenedor_estado_fechas"
+            app:layout_constraintTop_toBottomOf="@id/container_sc_fuera_tipos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_small"
+            android:layout_margin="@dimen/padding_small">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Estado de fecha Roguing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_confeccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Confección" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:id="@+id/radio_terminado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Terminada" />
+            </RadioGroup>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/container_nuevo_roguing"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_estado_fechas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/padding_small"
             android:layout_margin="@dimen/padding_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -12,9 +12,12 @@ import cl.smapdev.curimapu.clases.bd.daos.DaoCheckListSiembra;
 import cl.smapdev.curimapu.clases.bd.daos.DaoDesplegables;
 import cl.smapdev.curimapu.clases.bd.daos.DaoEvaluaciones;
 import cl.smapdev.curimapu.clases.bd.daos.DaoFirmasTemp;
+import cl.smapdev.curimapu.clases.bd.daos.DaoFueraTipo;
+import cl.smapdev.curimapu.clases.bd.daos.DaoOPAlmacigos;
 import cl.smapdev.curimapu.clases.bd.daos.DaoPrimeraPrioridad;
 import cl.smapdev.curimapu.clases.bd.daos.DaoSitiosNoVisitados;
 import cl.smapdev.curimapu.clases.bd.daos.MyDao;
+import cl.smapdev.curimapu.clases.bd.daos.VisitasFotosAlmacigos;
 import cl.smapdev.curimapu.clases.tablas.AgrPredTemp;
 import cl.smapdev.curimapu.clases.tablas.Agricultor;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
@@ -45,9 +48,13 @@ import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
+import cl.smapdev.curimapu.clases.tablas.FotosAlmacigos;
 import cl.smapdev.curimapu.clases.tablas.FotosFichas;
+import cl.smapdev.curimapu.clases.tablas.FueraTipoCategoria;
+import cl.smapdev.curimapu.clases.tablas.FueraTipoSubCategoria;
 import cl.smapdev.curimapu.clases.tablas.Lotes;
 import cl.smapdev.curimapu.clases.tablas.Maquinaria;
+import cl.smapdev.curimapu.clases.tablas.OpAlmacigos;
 import cl.smapdev.curimapu.clases.tablas.Predios;
 import cl.smapdev.curimapu.clases.tablas.PrimeraPrioridad;
 import cl.smapdev.curimapu.clases.tablas.Provincia;
@@ -62,6 +69,7 @@ import cl.smapdev.curimapu.clases.tablas.UnidadMedida;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.tablas.VisitasAlmacigos;
 import cl.smapdev.curimapu.clases.tablas.cli_pcm;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
@@ -83,7 +91,7 @@ import cl.smapdev.curimapu.clases.temporales.TempVisitas;
         DesplegableNumeroAplicacionHormonas.class, DesplegableAplicacionHormonas.class,
         CheckListRevisionFrutos.class, CheckListRevisionFrutosFotos.class, CheckListRevisionFrutosDetalle.class,
         CheckListRoguing.class, CheckListRoguingDetalle.class, CheckListRoguingFotoCabecera.class, CheckListRoguingFotoDetalle.class, CheckListRoguingDetalleFechas.class,
-        CheckListGuiaInterna.class
+        CheckListGuiaInterna.class, FueraTipoCategoria.class, FueraTipoSubCategoria.class, OpAlmacigos.class, VisitasAlmacigos.class, FotosAlmacigos.class
 }, version = 15)
 public abstract class MyAppBD extends RoomDatabase {
 
@@ -110,6 +118,12 @@ public abstract class MyAppBD extends RoomDatabase {
     public abstract DaoCheckGuiaInterna DaoCLGuiaInterna();
 
     public abstract DaoCheckListRevisionFrutos DaoCheckListRevisionFrutos();
+
+    public abstract DaoFueraTipo DaoFueraTipo();
+
+    public abstract DaoOPAlmacigos DaoOPAlmacigos();
+
+    public abstract VisitasFotosAlmacigos VisitasFotosAlmacigos();
 
 
 }

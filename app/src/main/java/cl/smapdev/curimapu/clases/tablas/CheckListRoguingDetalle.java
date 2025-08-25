@@ -13,6 +13,9 @@ public class CheckListRoguingDetalle {
     private String clave_unica_detalle_fecha;
 
     private String genero; //H y M
+
+    private int id_fuera_tipo_categoria;
+    private int id_fuera_tipo_sub_categoria;
     private String descripcion_fuera_tipo;
 
 
@@ -24,6 +27,22 @@ public class CheckListRoguingDetalle {
 
     private int cantidad;
 
+
+    public int getId_fuera_tipo_categoria() {
+        return id_fuera_tipo_categoria;
+    }
+
+    public void setId_fuera_tipo_categoria(int id_fuera_tipo_categoria) {
+        this.id_fuera_tipo_categoria = id_fuera_tipo_categoria;
+    }
+
+    public int getId_fuera_tipo_sub_categoria() {
+        return id_fuera_tipo_sub_categoria;
+    }
+
+    public void setId_fuera_tipo_sub_categoria(int id_fuera_tipo_sub_categoria) {
+        this.id_fuera_tipo_sub_categoria = id_fuera_tipo_sub_categoria;
+    }
 
     public String getFecha_tx() {
         return fecha_tx;

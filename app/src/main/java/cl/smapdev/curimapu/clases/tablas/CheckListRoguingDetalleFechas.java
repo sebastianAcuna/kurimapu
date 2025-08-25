@@ -17,7 +17,19 @@ public class CheckListRoguingDetalleFechas {
     private String fecha;
     private String estado_fenologico;
 
+    @SerializedName("estado_fecha")
+    private int estadoFecha;
+
     private int estado_sincronizacion;
+
+
+    public int getEstadoFecha() {
+        return estadoFecha;
+    }
+
+    public void setEstadoFecha(int estadoFecha) {
+        this.estadoFecha = estadoFecha;
+    }
 
     public int getEstado_sincronizacion() {
         return estado_sincronizacion;

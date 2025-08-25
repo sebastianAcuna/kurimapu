@@ -24,7 +24,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.exifinterface.media.ExifInterface;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -32,7 +34,9 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -43,7 +47,7 @@ import cl.smapdev.curimapu.R;
 
 public class Utilidades {
 
-    public static final String APPLICATION_VERSION = "4.2.0609";
+    public static final String APPLICATION_VERSION = "4.3.0609";
 
     public static final String FRAGMENT_INICIO = "fragment_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -58,6 +62,9 @@ public class Utilidades {
     public static final String FRAGMENT_TAKE_PHOTO = "fragment_take_photo";
     public static final String FRAGMENT_SERVIDOR = "fragment_servidor";
     public static final String FRAGMENT_ANEXO_FICHA = "fragment_anexo_ficha";
+    public static final String FRAGMENT_LISTA_ALMACIGOS = "fragment_lista_almacigos";
+    public static final String FRAGMENT_VISITA_ALMACIGOS = "fragment_visita_almacigos";
+
 
     public static final String FRAGMENT_CHECKLIST = "fragment_checklist";
     public static final String FRAGMENT_CHECKLIST_SIEMBRA = "fragment_checklist_siembra";
@@ -76,8 +83,13 @@ public class Utilidades {
     public static final int TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA = 5;
 
 
+    public static final int RAIZ_CUBIERTA = 1;
+    public static final int RAIZ_DESNUDA = 2;
+
+
     //    public static final String IP_PRODUCCION = "192.168.1.42";
-    public static final String IP_PRODUCCION = "curivegetables.zcloud.cl";
+    //    public static final String IP_PRODUCCION = "curivegetables.zcloud.cl";
+    public static final String IP_PRODUCCION = "curivegetables.zpruebas.cl";
     public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
 //    public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu_vegetables";
 
@@ -526,6 +538,45 @@ public class Utilidades {
         return 0;
     }
 
+
+    public static long diferenciaDiasEntreFechas(String fechaDesde, String fechaHasta) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fechaObjetivo = LocalDate.parse(fechaDesde, formatter);
+        LocalDate fechaActual = LocalDate.parse(fechaHasta, formatter);
+        return ChronoUnit.DAYS.between(fechaActual, fechaObjetivo);
+    }
+
+
+    public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight) {
+        // Primero lee solo dimensiones
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        // Calcula el factor de escala
+        options.inSampleSize = Utilidades.calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decodifica con el factor
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(path, options);
+    }
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        int height = options.outHeight;
+        int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            int halfHeight = height / 2;
+            int halfWidth = width / 2;
+
+            while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
+
     public static void avisoListo(Activity activity, String title, String message, String textButton) {
         View viewInfalted = LayoutInflater.from(activity).inflate(R.layout.alert_empty, null);
 
@@ -592,6 +643,17 @@ public class Utilidades {
             Log.e("MD5", "md5() NoSuchAlgorithmException: " + e.getMessage());
         }
         return "";
+    }
+
+    public static String convertirAStringBase64(String rutaArchivo) {
+        try {
+            File file = new File(rutaArchivo); // construye el File a partir de la ruta
+            byte[] bytes = Files.readAllBytes(file.toPath());
+            return Base64.encodeToString(bytes, Base64.NO_WRAP);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static String imageToString(String ruta) {

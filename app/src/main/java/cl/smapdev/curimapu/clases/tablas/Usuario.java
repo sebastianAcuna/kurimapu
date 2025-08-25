@@ -77,6 +77,19 @@ public class Usuario {
     @Expose
     private int tipo_usuario;
 
+    @SerializedName("accede_almacigos")
+    @Expose
+    private int accede_almacigos;
+
+
+    public int getAccede_almacigos() {
+        return accede_almacigos;
+    }
+
+    public void setAccede_almacigos(int accede_almacigos) {
+        this.accede_almacigos = accede_almacigos;
+    }
+
     public int getTipo_usuario() {
         return tipo_usuario;
     }

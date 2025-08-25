@@ -21,8 +21,11 @@ import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
+import cl.smapdev.curimapu.clases.tablas.FueraTipoCategoria;
+import cl.smapdev.curimapu.clases.tablas.FueraTipoSubCategoria;
 import cl.smapdev.curimapu.clases.tablas.Lotes;
 import cl.smapdev.curimapu.clases.tablas.Maquinaria;
+import cl.smapdev.curimapu.clases.tablas.OpAlmacigos;
 import cl.smapdev.curimapu.clases.tablas.Predios;
 import cl.smapdev.curimapu.clases.tablas.PrimeraPrioridad;
 import cl.smapdev.curimapu.clases.tablas.Provincia;
@@ -37,6 +40,7 @@ import cl.smapdev.curimapu.clases.tablas.UnidadMedida;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.tablas.Variedad;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.tablas.VisitasAlmacigos;
 import cl.smapdev.curimapu.clases.tablas.cli_pcm;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
@@ -214,6 +218,56 @@ public class GsonDescargas {
     @Embedded
     private List<SitiosNoVisitados> array_sitios_no_visitados;
 
+    @SerializedName("array_categoria_fuera_tipo")
+    @Embedded
+    private List<FueraTipoCategoria> array_categoria_fuera_tipo;
+
+
+    @SerializedName("array_sub_categoria_fuera_tipo")
+    @Embedded
+    private List<FueraTipoSubCategoria> array_sub_categoria_fuera_tipo;
+
+
+    @SerializedName("array_op_almacigos")
+    @Embedded
+    private List<OpAlmacigos> array_op_almacigos;
+
+    @SerializedName("array_visitas_almacigos")
+    @Embedded
+    private List<VisitasAlmacigos> array_visitas_almacigos;
+
+
+    public List<VisitasAlmacigos> getArray_visitas_almacigos() {
+        return array_visitas_almacigos;
+    }
+
+    public void setArray_visitas_almacigos(List<VisitasAlmacigos> array_visitas_almacigos) {
+        this.array_visitas_almacigos = array_visitas_almacigos;
+    }
+
+    public List<OpAlmacigos> getArray_op_almacigos() {
+        return array_op_almacigos;
+    }
+
+    public void setArray_op_almacigos(List<OpAlmacigos> array_op_almacigos) {
+        this.array_op_almacigos = array_op_almacigos;
+    }
+
+    public List<FueraTipoCategoria> getArray_categoria_fuera_tipo() {
+        return array_categoria_fuera_tipo;
+    }
+
+    public void setArray_categoria_fuera_tipo(List<FueraTipoCategoria> array_categoria_fuera_tipo) {
+        this.array_categoria_fuera_tipo = array_categoria_fuera_tipo;
+    }
+
+    public List<FueraTipoSubCategoria> getArray_sub_categoria_fuera_tipo() {
+        return array_sub_categoria_fuera_tipo;
+    }
+
+    public void setArray_sub_categoria_fuera_tipo(List<FueraTipoSubCategoria> array_sub_categoria_fuera_tipo) {
+        this.array_sub_categoria_fuera_tipo = array_sub_categoria_fuera_tipo;
+    }
 
     public List<CheckListRevisionFrutosCompleto> getCheckListRevisionFrutosCompletos() {
         return checkListRevisionFrutosCompletos;

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:padding="@dimen/padding_small"
+    android:layout_margin="@dimen/padding_small"
+    android:background="@color/colorBackgroundList"
+    android:elevation="@dimen/padding">
+
+    <TextView
+        android:id="@+id/nombre_parental"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/especie"
+        tool:text="13058561 - MALE 1"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+    <TextView
+        android:id="@+id/lbl_cliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CLIENTE"
+        app:layout_constraintTop_toBottomOf="@id/nombre_parental"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/cliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tool:text="MONSANTO"
+        app:layout_constraintTop_toBottomOf="@id/lbl_cliente"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textAlignment="textStart" />
+
+    <TextView
+        android:id="@+id/lbl_especie"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cliente"
+        app:layout_constraintEnd_toStartOf="@id/lbl_variedad"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="@string/especie"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/lbl_variedad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/lbl_especie"
+        app:layout_constraintTop_toBottomOf="@id/cliente"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="@string/variedad"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/especie"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lbl_especie"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/variedad"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        tool:text="TREBOL ROSADO" />
+
+    <TextView
+        android:id="@+id/variedad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/especie"
+        app:layout_constraintTop_toBottomOf="@id/lbl_variedad"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="RGT-JAVVA"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+    <TextView
+        android:id="@+id/lbl_fecha_siembra"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/variedad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lbl_fecha_estimada_despacho"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="fecha siembra"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/lbl_fecha_estimada_despacho"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/variedad"
+        app:layout_constraintStart_toEndOf="@id/lbl_fecha_siembra"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/padding_small"
+        android:text="fecha estimada despacho"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/fecha_siembra"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/lbl_fecha_siembra"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fecha_estimada_despacho"
+        tool:text="06-08-2025"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    <TextView
+        android:id="@+id/fecha_estimada_despacho"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/lbl_fecha_estimada_despacho"
+        app:layout_constraintStart_toEndOf="@id/fecha_siembra"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="06-08-2025"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    <TextView
+        android:id="@+id/lbl_op"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@id/fecha_estimada_despacho"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lbl_variedad"
+        android:text="OP"
+        android:layout_marginTop="@dimen/padding_small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/op"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_op"
+        app:layout_constraintEnd_toStartOf="@id/tipo_lc"
+        tool:text="9453687"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+    <TextView
+        android:id="@+id/lbl_tipo_lc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/fecha_estimada_despacho"
+        app:layout_constraintStart_toEndOf="@id/lbl_op"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="TIPO DE LIBRO DE CAMPO"
+        android:layout_marginTop="@dimen/padding_small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/tipo_lc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/op"
+        app:layout_constraintTop_toBottomOf="@id/lbl_op"
+        app:layout_constraintEnd_toEndOf="parent"
+        tool:text="RAIZ DESNUDA"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+    <TextView
+        android:id="@+id/lbl_nom_fantasia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/tipo_lc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lbl_variedad"
+        android:text="Nombre de fantasia"
+        android:layout_marginTop="@dimen/padding_small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+
+    <TextView
+        android:id="@+id/nom_fantasia"
+        android:visibility="invisible"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_nom_fantasia"
+        app:layout_constraintEnd_toStartOf="@id/tipo_lc"
+        tool:text="HUEMUL-15"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+
+    <Button
+        android:id="@+id/btn_add_visita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/nom_fantasia"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:textColor="@color/colorPrimary"
+        android:text="nueva Visita"
+        android:layout_marginTop="@dimen/padding_small" />
+
+    <Button
+        android:id="@+id/btn_menu_visita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Colored"
+        app:layout_constraintTop_toBottomOf="@id/nom_fantasia"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Historial"
+        android:layout_marginTop="@dimen/padding_small" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

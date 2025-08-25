@@ -46,6 +46,7 @@ import cl.smapdev.curimapu.BuildConfig;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.FotosCheckListRoguingFotoDetalleAdapter;
+import cl.smapdev.curimapu.clases.adapters.SpinnerItem;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRoguingFotoDetalle;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
@@ -60,11 +61,13 @@ public class DialogRoguingDetail extends DialogFragment {
     private Spinner sp_genero;
     private Button btn_nuevo_roguing, btn_guardar_anexo_fecha, btn_posponer_anexo_fecha;
     private RecyclerView listado_fotos;
+    private SpinnerItem categoria, subcategoria;
+
+    private String descripcionFueraTipo;
 
 
     private MainActivity activity;
     private CheckListRoguingDetalle clDetalle;
-    private String fueraTipo;
 
     private FotosCheckListRoguingFotoDetalleAdapter adapter_fotos;
 
@@ -80,13 +83,22 @@ public class DialogRoguingDetail extends DialogFragment {
         void onSave(boolean saved);
     }
 
+    public void setDescripcionFueraTipo(String descripcionFueraTipo) {
+        this.descripcionFueraTipo = descripcionFueraTipo;
+    }
+
+    public void setSubcategoria(SpinnerItem subcategoria) {
+        this.subcategoria = subcategoria;
+    }
+
+    public void setCategoria(SpinnerItem categoria) {
+        this.categoria = categoria;
+    }
+
     public void setClDetalle(CheckListRoguingDetalle clDetalle) {
         this.clDetalle = clDetalle;
     }
 
-    public void setFueraTipo(String fueraTipo) {
-        this.fueraTipo = fueraTipo;
-    }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -97,12 +109,14 @@ public class DialogRoguingDetail extends DialogFragment {
     }
 
 
-    public static DialogRoguingDetail newInstance(IOnSave onSave, CheckListRoguingDetalle clDetalle, String fueraTipo, Usuario usuario) {
+    public static DialogRoguingDetail newInstance(IOnSave onSave, CheckListRoguingDetalle clDetalle, SpinnerItem categoria, SpinnerItem subcategoria, String descripcionFueraTipo, Usuario usuario) {
         DialogRoguingDetail dg = new DialogRoguingDetail();
         dg.setIOnSave(onSave);
         dg.setClDetalle(clDetalle);
-        dg.setFueraTipo(fueraTipo);
+        dg.setCategoria(categoria);
+        dg.setSubcategoria(subcategoria);
         dg.setUsuario(usuario);
+        dg.setDescripcionFueraTipo(descripcionFueraTipo);
         return dg;
     }
 
@@ -323,6 +337,8 @@ public class DialogRoguingDetail extends DialogFragment {
             cl.setCantidad(Integer.parseInt(et_cantidad.getText().toString()));
             cl.setGenero(sp_genero.getSelectedItem().toString());
             cl.setDescripcion_fuera_tipo(et_off_type.getText().toString().toUpperCase());
+            cl.setId_fuera_tipo_categoria(categoria.getId());
+            cl.setId_fuera_tipo_sub_categoria(subcategoria.getId());
             cl.setEstado_sincronizacion(0);
 
             if (clDetalle != null) {
@@ -331,7 +347,6 @@ public class DialogRoguingDetail extends DialogFragment {
                 cl.setClave_unica_roguing(clDetalle.getClave_unica_roguing());
                 cl.setId_cl_roguing_detalle(clDetalle.getId_cl_roguing_detalle());
                 cl.setFecha_tx(clDetalle.getFecha_tx());
-
                 MainActivity.myAppDB.DaoCLRoguing().updateDetalleRoguing(cl);
             } else {
                 cl.setFecha_tx(Utilidades.fechaActualConHora());
@@ -375,9 +390,11 @@ public class DialogRoguingDetail extends DialogFragment {
         listado_fotos = view.findViewById(R.id.listado_fotos);
 
 
-        if (!fueraTipo.isEmpty() && !fueraTipo.equals("NUEVO")) {
-            et_off_type.setText(fueraTipo);
+        if (subcategoria != null && subcategoria.getId() != 0) {
+            et_off_type.setText(subcategoria.getDescripcion());
             et_off_type.setEnabled(false);
+        } else {
+            et_off_type.setText(descripcionFueraTipo);
         }
 
         List<String> mh_option = Arrays.asList(getResources().getStringArray(R.array.desplegable_checklist_m_h));

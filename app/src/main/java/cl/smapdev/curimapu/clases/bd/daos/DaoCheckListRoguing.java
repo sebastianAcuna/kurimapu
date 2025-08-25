@@ -173,9 +173,18 @@ public interface DaoCheckListRoguing {
     List<CheckListRoguingDetalle> obtenerDetalleRoguingPorClaveUnicaPadreFechas(int especie);
 
 
-    @Query(" SELECT checklist_roguing_detalle.id_cl_roguing_detalle, checklist_roguing_detalle.id_user_tx,  checklist_roguing_detalle.estado_sincronizacion, SUM(cantidad) AS cantidad, checklist_roguing_detalle.descripcion_fuera_tipo, checklist_roguing_detalle.genero FROM checklist_roguing_detalle " +
+    @Query(" SELECT " +
+            "checklist_roguing_detalle.id_cl_roguing_detalle, " +
+            "checklist_roguing_detalle.id_user_tx,  " +
+            "checklist_roguing_detalle.estado_sincronizacion, " +
+            "SUM(cantidad) AS cantidad, " +
+            "checklist_roguing_detalle.descripcion_fuera_tipo, " +
+            "checklist_roguing_detalle.id_fuera_tipo_categoria, " +
+            "checklist_roguing_detalle.id_fuera_tipo_sub_categoria, " +
+            "checklist_roguing_detalle.genero " +
+            "FROM checklist_roguing_detalle " +
             " WHERE  (checklist_roguing_detalle.clave_unica_roguing = :claveUnica OR checklist_roguing_detalle.clave_unica_roguing IS NULL) " +
-            " GROUP BY descripcion_fuera_tipo, genero  ORDER BY genero, descripcion_fuera_tipo ASC ;")
+            " GROUP BY  descripcion_fuera_tipo,  genero  ORDER BY genero, descripcion_fuera_tipo ASC ;")
     List<CheckListRoguingDetalle> obtenerResumenFueraTipo(String claveUnica);
 
 
@@ -186,6 +195,9 @@ public interface DaoCheckListRoguing {
 
     @Query("SELECT * FROM checklist_roguing_foto_detalle WHERE clave_unica_roguing = :claveUnica;")
     List<CheckListRoguingFotoDetalle> obtenerDetalleRoguingFotoDetPorClaveUnicaPadre(String claveUnica);
+
+    @Query("SELECT * FROM checklist_roguing_foto_detalle WHERE clave_unica_detalle = :claveUnica;")
+    List<CheckListRoguingFotoDetalle> obtenerDetalleRoguingFotoDetPorDetalle(String claveUnica);
 
     @Query("SELECT * FROM checklist_roguing_foto_detalle WHERE clave_unica_roguing = :claveUnica AND estado_sincronizacion = 0;")
     List<CheckListRoguingFotoDetalle> obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(String claveUnica);

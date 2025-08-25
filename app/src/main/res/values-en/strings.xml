@@ -25,6 +25,14 @@
     <string name="sync_up_menu">Uploads</string>
 
 
+    <string-array name="dureza">
+        <item>@string/select</item>
+        <item>FIRME</item>
+        <item>MEDIO</item>
+        <item>BLANDO</item>
+        <item>SIN ESPECIFICAR</item>
+    </string-array>
+
     <!-- MENU LATERAL -->
     <string name="subtitles_visit">Annexes</string>
     <string name="subtitles_start">Start</string>
@@ -280,11 +288,11 @@ Depending on the state, it can be edited or not.</string>
 
     <string-array name="crecimiento">
         <item>@string/select</item>
-        <item>EXCELLENT</item>
-        <item>GOOD</item>
+        <item>EXCELENTE</item>
+        <item>BUENA</item>
         <item>REGULAR</item>
-        <item>BAD</item>
-        <item>UNSPECIFIED</item>
+        <item>MALA</item>
+        <item>SIN ESPECIFICAR</item>
     </string-array>
 
     <string-array name="cosecha">
@@ -296,10 +304,10 @@ Depending on the state, it can be edited or not.</string>
 
     <string-array name="maleza">
         <item>@string/select</item>
-        <item>LOW</item>
+        <item>BAJA</item>
         <item>REGULAR</item>
-        <item>HIGH</item>
-        <item>UNSPECIFIED</item>
+        <item>ALTA</item>
+        <item>SIN ESPECIFICAR</item>
     </string-array>
 
 
@@ -499,4 +507,5 @@ Depending on the state, it can be edited or not.</string>
     <string name="fotografia_raices">fotografia raices</string>
     <string name="nav_take_pick_roots">Tomar foto raices</string>
     <string name="fotos_raices">fotos raices</string>
+    <string name="almacigos">Almacigos</string>
 </resources>

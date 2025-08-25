@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,16 +22,18 @@ import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class CheckListRoguingDetailFechaAdapter extends RecyclerView.Adapter<CheckListRoguingDetailFechaAdapter.FechasViewHolder> {
 
+    private final boolean hasActualDates;
     private final List<CheckListRoguingFechaCompleto> lista;
     private final Context context;
     private final OnItemClickListener itemClickListener;
     private final OnItemLongClickListener itemLongClickListener;
 
-    public CheckListRoguingDetailFechaAdapter(List<CheckListRoguingFechaCompleto> lista, Context context, OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener) {
+    public CheckListRoguingDetailFechaAdapter(List<CheckListRoguingFechaCompleto> lista, boolean hasActualDates, Context context, OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener) {
         this.lista = lista;
         this.context = context;
         this.itemClickListener = itemClickListener;
         this.itemLongClickListener = itemLongClickListener;
+        this.hasActualDates = hasActualDates;
     }
 
     public interface OnItemClickListener {
@@ -71,18 +74,16 @@ public class CheckListRoguingDetailFechaAdapter extends RecyclerView.Adapter<Che
         holder.rv_listado_detalle.setLayoutManager(lm);
         holder.rv_listado_detalle.setAdapter(nested);
 
-
-        holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
-        holder.contenedor_adapter.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
-        holder.tv_fecha.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
-        holder.tv_est_feno.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
-        holder.rv_listado_detalle.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
-
-
-        holder.itemView.setOnLongClickListener(v -> {
-            itemLongClickListener.onItemLongClick(fechas.getFecha());
-            return true;
-        });
+        if (hasActualDates) {
+            holder.btn_editar_detalle_fecha.setEnabled(false);
+            holder.btn_eliminar_detalle_fecha.setEnabled(false);
+        } else {
+            holder.btn_editar_detalle_fecha.setOnClickListener(v -> itemClickListener.onItemClick(fechas.getFecha()));
+            holder.btn_eliminar_detalle_fecha.setOnLongClickListener(v -> {
+                itemLongClickListener.onItemLongClick(fechas.getFecha());
+                return true;
+            });
+        }
     }
 
 
@@ -99,6 +100,8 @@ public class CheckListRoguingDetailFechaAdapter extends RecyclerView.Adapter<Che
 
         TextView tv_fecha, tv_est_feno;
 
+        Button btn_eliminar_detalle_fecha, btn_editar_detalle_fecha;
+
         RecyclerView rv_listado_detalle;
         ConstraintLayout contenedor_adapter;
 
@@ -108,6 +111,9 @@ public class CheckListRoguingDetailFechaAdapter extends RecyclerView.Adapter<Che
             tv_fecha = itemView.findViewById(R.id.tv_fecha);
             tv_est_feno = itemView.findViewById(R.id.tv_est_feno);
             rv_listado_detalle = itemView.findViewById(R.id.rv_listado_detalle);
+            btn_eliminar_detalle_fecha = itemView.findViewById(R.id.btn_eliminar_detalle_fecha);
+            btn_editar_detalle_fecha = itemView.findViewById(R.id.btn_editar_detalle_fecha);
+
         }
     }
 }
