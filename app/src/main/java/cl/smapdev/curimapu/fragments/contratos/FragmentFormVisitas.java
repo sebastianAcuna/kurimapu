@@ -93,7 +93,7 @@ public class FragmentFormVisitas extends Fragment {
     private ConstraintLayout contenedor_estados, contenedor_monitoreo;
     private TextInputLayout obs_growth, obs_weed, obs_fito, obs_harvest, obs_overall, obs_humedad;
     private EditText et_obs, et_obs_growth, et_obs_weed, et_obs_fito, et_obs_harvest,
-            et_obs_overall, et_obs_humedad, et_percent_humedad, et_fecha_estimada, et_fecha_arranca;
+            et_obs_overall, et_obs_humedad, et_percent_humedad, et_fecha_estimada, et_fecha_arranca, et_fecha_estimada_postura_abejas;
     private RecyclerView rwAgronomo, rwCliente, rwRaices;
     private FloatingActionButton material_private, material_public, foto_raices;
     private FotosListAdapter adapterAgronomo, adapterCliente, adapterRaices;
@@ -939,7 +939,7 @@ public class FragmentFormVisitas extends Fragment {
         et_obs_growth.setText(visitas.getObs_creci());
         et_percent_humedad.setText(String.valueOf(visitas.getPercent_humedad()));
 
-
+        et_fecha_estimada_postura_abejas.setText(Utilidades.voltearFechaVista(visitas.getFecha_estimada_postura_abejas()));
         et_fecha_arranca.setText(Utilidades.voltearFechaVista(visitas.getFecha_estimada_arranca()));
         et_fecha_estimada.setText(Utilidades.voltearFechaVista(visitas.getFecha_estimada_cosecha()));
 
@@ -970,6 +970,7 @@ public class FragmentFormVisitas extends Fragment {
 
         et_fecha_estimada.setEnabled(false);
         et_fecha_arranca.setEnabled(false);
+        et_fecha_estimada_postura_abejas.setEnabled(false);
 
         et_obs_fito.setEnabled(false);
         et_obs_overall.setEnabled(false);
@@ -1015,6 +1016,7 @@ public class FragmentFormVisitas extends Fragment {
 
         et_fecha_estimada = view.findViewById(R.id.et_fecha_estimada);
         et_fecha_arranca = view.findViewById(R.id.et_fecha_arranca);
+        et_fecha_estimada_postura_abejas = view.findViewById(R.id.et_fecha_estimada_postura_abejas);
 
         btn_volver = view.findViewById(R.id.btn_volver);
 
@@ -1115,6 +1117,14 @@ public class FragmentFormVisitas extends Fragment {
             }
         });
 
+        et_fecha_estimada_postura_abejas.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                et_fecha_estimada_postura_abejas.setKeyListener(null);
+                et_fecha_estimada_postura_abejas.setInputType(InputType.TYPE_NULL);
+                Utilidades.levantarFecha(et_fecha_estimada_postura_abejas, view.getContext());
+            }
+        });
+
 
         btn_volver.setOnClickListener(v -> preguntarSiQuiereVolver("ATENCION", "SI VUELVES NO GUARDARA LOS CAMBIOS, ESTAS SEGURO QUE DESEAS VOLVER ?"));
         btn_guardar.setOnClickListener(v -> {
@@ -1195,7 +1205,7 @@ public class FragmentFormVisitas extends Fragment {
 
             long finalIdVisita = idVisita;
 
-            MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesObligadas(Integer.parseInt(an.getId_anexo_contrato()));
+            MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesObligadas(Integer.parseInt(an.getId_anexo_contrato()), claveUnica);
             MainActivity.myAppDB.myDao().updateFotosWithVisita((int) finalIdVisita, anexoCompleto.getAnexoContrato().getId_anexo_contrato());
             Visitas visitas1 = MainActivity.myAppDB.myDao().getVisitas((int) finalIdVisita);
             visitas1.setId_visita_local((int) idVisita);
@@ -1276,6 +1286,7 @@ public class FragmentFormVisitas extends Fragment {
             visitas.setTipo_visita("NORMAL");
             visitas.setFecha_estimada_arranca(Utilidades.voltearFechaBD(et_fecha_arranca.getText().toString()));
             visitas.setFecha_estimada_cosecha(Utilidades.voltearFechaBD(et_fecha_estimada.getText().toString()));
+            visitas.setFecha_estimada_postura_abejas(Utilidades.voltearFechaBD(et_fecha_estimada_postura_abejas.getText().toString()));
             visitas.setWeed_state_visita(sp_malezas.getSelectedItem().toString());
             visitas.setPhytosanitary_state_visita(sp_fito.getSelectedItem().toString());
             visitas.setPhenological_state_visita(sp_fenologico.getSelectedItem().toString());

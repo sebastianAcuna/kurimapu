@@ -29,8 +29,8 @@ public interface DaoEvaluaciones {
     @Update
     int updateEvaluaciones(Evaluaciones evaluaciones);
 
-    @Query("UPDATE anexo_recomendaciones SET obliga_visita = 0 WHERE id_ac = :id_ace AND estado_server = 0 ")
-    int updateEvaluacionesObligadas(int id_ace);
+    @Query("UPDATE anexo_recomendaciones SET obliga_visita = 0, clave_unica_visita = :claveUnica WHERE id_ac = :id_ace AND estado_server = 0 ")
+    int updateEvaluacionesObligadas(int id_ace, String claveUnica);
 
     @Query("UPDATE anexo_recomendaciones SET clave_unica_visita = :claveUnica, obliga_visita = 0  WHERE id_ac = :id_ace AND estado_server = 0 ")
     int updateEvaluacionesGuardar(int id_ace, String claveUnica);

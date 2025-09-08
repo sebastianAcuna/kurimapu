@@ -9,8 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "visita")
 public class Visitas {
-/* AGREGAR ID LOCAL E ID DISPOSITIVO */
-
+    /* AGREGAR ID LOCAL E ID DISPOSITIVO */
 
 
     @PrimaryKey(autoGenerate = true)
@@ -131,8 +130,6 @@ public class Visitas {
     private int tomadas;
 
 
-
-
     @SerializedName("evaluacion")
     @Expose
     private float evaluacion;
@@ -145,7 +142,7 @@ public class Visitas {
 
     @SerializedName("id_evaluacion")
     @Expose
-    private  int id_evaluacion;
+    private int id_evaluacion;
 
 
     @SerializedName("fecha_estimada_cosecha")
@@ -157,9 +154,22 @@ public class Visitas {
     private String fecha_estimada_arranca;
 
 
+    @SerializedName("fecha_estimada_postura_abejas")
+    @Expose
+    private String fecha_estimada_postura_abejas;
+
+
     //    SI o NO
     private String planta_voluntaria;
 
+
+    public String getFecha_estimada_postura_abejas() {
+        return fecha_estimada_postura_abejas;
+    }
+
+    public void setFecha_estimada_postura_abejas(String fecha_estimada_postura_abejas) {
+        this.fecha_estimada_postura_abejas = fecha_estimada_postura_abejas;
+    }
 
     public String getTipo_visita() {
         return tipo_visita;
