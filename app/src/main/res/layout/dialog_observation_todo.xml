@@ -214,14 +214,28 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
 
             <TextView
                 android:id="@+id/tv_titulo_recomendaciones"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="0.5"
                 android:gravity="center"
                 android:text="@string/recomendaciones"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toStartOf="@id/btn_buscar_obs"
+                app:layout_constraintTop_toTopOf="@id/btn_buscar_obs"
+                app:layout_constraintBottom_toBottomOf="@id/btn_buscar_obs" />
+
+            <Button
+                android:id="@+id/btn_buscar_obs"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="0.5"
+                android:text="Buscar Recom."
+                android:backgroundTint="@color/colorGreen"
+                app:layout_constraintStart_toEndOf="@id/tv_titulo_recomendaciones"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:drawableStart="@drawable/ic_search_solid" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cont_nueva_recom"
@@ -235,7 +249,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 app:helperText="@string/comentario_evaluacion"
                 app:layout_constraintEnd_toStartOf="@id/btn_add_recom"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_titulo_recomendaciones">
+                app:layout_constraintTop_toBottomOf="@id/btn_buscar_obs">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_nueva_recom"
@@ -251,25 +265,37 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:hint="@string/fecha_plazo"
                 app:layout_constraintTop_toBottomOf="@id/cont_nueva_recom"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_add_recom"
+                app:layout_constraintEnd_toStartOf="@id/btn_no_aplica"
                 android:drawableStart="@drawable/ic_date_range"
                 android:drawableTint="?colorSecondaryVariant"
                 android:windowSoftInputMode="stateHidden"
                 android:layout_width="0dp"
                 android:inputType="date"
+                android:layout_marginTop="@dimen/padding"
                 android:maxLength="10"
                 android:layout_marginHorizontal="@dimen/padding"
                 android:layout_height="wrap_content" />
 
 
             <Button
-                android:id="@+id/btn_add_recom"
+                android:id="@+id/btn_no_aplica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/agregar"
+                android:text="N/A"
+                android:layout_marginTop="@dimen/padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cont_nueva_recom"
                 app:layout_constraintStart_toEndOf="@id/fecha_plazo" />
+
+            <Button
+                android:id="@+id/btn_add_recom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/agregar"
+                android:layout_marginTop="@dimen/padding_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_no_aplica"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
             <View
@@ -277,6 +303,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
+                android:layout_marginTop="@dimen/padding"
                 app:layout_constraintTop_toBottomOf="@id/btn_add_recom"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -291,7 +318,7 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 app:layout_constraintTop_toBottomOf="@id/divider12"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="@dimen/padding_small"
+                android:layout_marginTop="@dimen/padding"
                 app:layout_constraintEnd_toStartOf="@id/ic_collapse"
                 android:gravity="center" />
 
@@ -302,10 +329,11 @@ REALIZAR APLICACION DENTRO DE ESTA SEMANA O CUANDO EXISTEA LA PRIMERA VENTANA CL
                 android:layout_height="wrap_content"
                 app:layout_constraintHorizontal_weight="0.1"
                 android:src="@drawable/ic_expand_up"
+
                 app:layout_constraintTop_toBottomOf="@id/divider12"
                 app:layout_constraintStart_toEndOf="@id/txt_titulo_pendientes"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="@dimen/padding_small"
+                android:layout_marginTop="@dimen/padding"
                 app:tint="@color/colorPrimary" />
 
 

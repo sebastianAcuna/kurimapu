@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.clases.bd.daos;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Update;
@@ -28,6 +29,7 @@ import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
 import cl.smapdev.curimapu.clases.tablas.Especie;
+import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.FichaMaquinaria;
 import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
@@ -223,10 +225,10 @@ public interface MyDao {
     long insertFicha(Fichas fichas);
 
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertFicha(List<FichasNew> fichas);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertProsectos(List<Fichas> prospectos);
 
     @Update
@@ -261,6 +263,12 @@ public interface MyDao {
 
     @RawQuery
     List<FichasCompletas> getFichasFilter(SupportSQLiteQuery query);
+
+    @RawQuery
+    List<Visitas> getVisitasFilter(SupportSQLiteQuery query);
+
+    @RawQuery
+    List<Evaluaciones> getEvaluacionesFilter(SupportSQLiteQuery query);
 
     @RawQuery
     String getValueResume(SupportSQLiteQuery query);
@@ -321,6 +329,9 @@ public interface MyDao {
 
     @Query("UPDATE detalle_visita_prop SET  id_visita_detalle =  :idVisita WHERE id_visita_detalle = 0 ")
     void updateDetallesToVisits(int idVisita);
+
+    @Query("SELECT * FROM detalle_visita_prop WHERE id_visita_detalle = :idVisita AND estado_detalle = 0 ")
+    List<detalle_visita_prop> detallesToClon(int idVisita);
 
     @Query("DELETE FROM detalle_visita_prop WHERE id_visita_detalle = 0")
     void deleteDetalleVacios();
@@ -386,7 +397,7 @@ public interface MyDao {
     @Insert
     long setVisita(Visitas visitas);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> setVisita(List<Visitas> visitas);
 
     @Query("SELECT *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna FROM visita V " +
@@ -564,7 +575,7 @@ public interface MyDao {
     @Update
     void updateCrop(CropRotation cropRotation);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertCrop(List<CropRotation> cropRotation);
 
     /*=====================================================================*/
@@ -623,7 +634,7 @@ public interface MyDao {
     @Query("SELECT * FROM detalle_visita_prop WHERE estado_detalle = 0 AND tomada_detalle = 1 ")
     List<detalle_visita_prop> getDetallesPorSubirTomadas();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertDetalle(List<detalle_visita_prop> detalle_visita_props);
 
 
@@ -656,7 +667,7 @@ public interface MyDao {
     @Query("DELETE FROM usuarios ")
     void deleteUsuario();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> setUsuarios(List<Usuario> usuarios);
 
     @Query("SELECT  * FROM usuarios U WHERE U.user = :user AND U.pass = :pass")
@@ -693,7 +704,7 @@ public interface MyDao {
 
 
     /* pro_cli_mat  */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertInterfaz(List<pro_cli_mat> pro_cli_mats);
 
     @Query("DELETE FROM pro_cli_mat")
@@ -751,7 +762,7 @@ public interface MyDao {
     /* ===================================================================================*/
 
     /* temporadas */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertTemporada(List<Temporada> temporadas);
 
     @Query("SELECT  * FROM temporada ")
@@ -760,7 +771,7 @@ public interface MyDao {
     @Query("DELETE FROM temporada ")
     void deleteTemporadas();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertPCM(List<cli_pcm> cli_pcms);
 
     @Query("SELECT  * FROM cli_pcm ")
@@ -779,7 +790,7 @@ public interface MyDao {
     @Query("DELETE FROM unidad_medida")
     void deleteUM();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertUM(List<UnidadMedida> unidadMedidas);
 
     /* QUOTATIONS */
@@ -789,7 +800,7 @@ public interface MyDao {
     @Query("DELETE FROM quotation")
     void deleteQuotation();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertQuotation(List<quotation> quotations);
 
     /*============================================================================*/
@@ -812,6 +823,28 @@ public interface MyDao {
     @Query("SELECT * FROM anexo_contrato WHERE imagen_grafico IS NOT NULL OR imagen_grafico != '' ")
     List<AnexoContrato> getAnexosConGraficos();
 
+
+    @Query("SELECT *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna  FROM anexo_contrato " +
+            " INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
+            " INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
+            " INNER JOIN materiales ON (materiales.id_variedad = anexo_contrato.id_variedad_anexo) " +
+            " LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
+            " INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_new ) " +
+            " LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
+            " LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
+            " WHERE anexo_contrato.id_agricultor_anexo = :id_agric AND anexo_contrato.id_especie_anexo = :id_esp AND anexo_contrato.id_variedad_anexo = :id_material AND anexo_contrato.temporada_anexo = :id_tempo AND anexo_contrato.id_anexo_contrato != :id_ac_actual ")
+    List<AnexoCompleto> getAnexoParaDuplicarVisita(String id_agric, String id_esp, String id_material, String id_tempo, String id_ac_actual);
+
+    @Query("SELECT *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna  FROM anexo_contrato " +
+            " INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
+            " INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
+            " INNER JOIN materiales ON (materiales.id_variedad = anexo_contrato.id_variedad_anexo) " +
+            " LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
+            " INNER JOIN comuna C ON (C.id_comuna = F.id_comuna_new ) " +
+            " LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
+            " LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
+            " WHERE anexo_contrato.id_agricultor_anexo = :id_agric AND anexo_contrato.id_especie_anexo = :id_esp AND anexo_contrato.temporada_anexo = :id_tempo AND anexo_contrato.id_anexo_contrato != :id_ac_actual ")
+    List<AnexoCompleto> getAnexoParaDuplicarVisita(String id_agric, String id_esp, String id_tempo, String id_ac_actual);
 
     @Query("SELECT * FROM anexo_contrato WHERE id_anexo_contrato = :idAnexo ORDER BY anexo_contrato.num_anexo ASC ")
     AnexoContrato getAnexos(String idAnexo);
@@ -844,7 +877,7 @@ public interface MyDao {
     @Insert
     void insertAnexo(AnexoContrato anexoContrato);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertAnexo(List<AnexoContrato> anexoContrato);
 
     @RawQuery
@@ -866,7 +899,7 @@ public interface MyDao {
     @Insert
     void insertEspecie(Especie especie);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertEspecie(List<Especie> especie);
 
     @Query("DELETE FROM especie")
@@ -885,7 +918,7 @@ public interface MyDao {
     @Insert
     void insertVariedad(Variedad materiales);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertVariedad(List<Variedad> materiales);
 
     @Query("DELETE FROM materiales")
@@ -902,7 +935,7 @@ public interface MyDao {
     @Insert
     void insertClientes(Clientes clientes);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertClientes(List<Clientes> clientes);
 
     @Query("DELETE FROM cliente")
@@ -916,7 +949,7 @@ public interface MyDao {
     @Insert
     void insertAgricultor(Agricultor agricultor);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertAgricultor(List<Agricultor> agricultor);
 
     @Query("SELECT  * FROM agricultor")
@@ -935,7 +968,7 @@ public interface MyDao {
 
 
     /* REGIONES  */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertRegiones(List<Region> regiones);
 
     @Insert
@@ -951,7 +984,7 @@ public interface MyDao {
 
 
     /* PROVINCIAS */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertProvincias(List<Provincia> provincias);
 
     @Insert
@@ -970,7 +1003,7 @@ public interface MyDao {
 
 
     /* COMUNAS */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertComunas(List<Comuna> comunas);
 
     @Insert
@@ -989,7 +1022,7 @@ public interface MyDao {
     /* ===================================================================================*/
 
     /* FICHAS MAQUINARIAS */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertFichaMaquinaria(List<FichaMaquinaria> fichaMaquinarias);
 
     @Query("SELECT * FROM ficha_maquinaria")
@@ -1001,7 +1034,7 @@ public interface MyDao {
     /* ===================================================================================*/
 
     /* LOTES */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertLotes(List<Lotes> lotes);
 
     @Query("SELECT * FROM lote ")
@@ -1013,7 +1046,7 @@ public interface MyDao {
     /* ===================================================================================*/
 
     /* MAQUINARIA */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertMaquinara(List<Maquinaria> maquinarias);
 
     @Query("SELECT * FROM maquinaria ")
@@ -1025,7 +1058,7 @@ public interface MyDao {
     /* ===================================================================================*/
 
     /* PREDIOS */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertPredios(List<Predios> predios);
 
     @Query("SELECT * FROM predio ")
@@ -1038,7 +1071,7 @@ public interface MyDao {
 
 
     /* agri pred temp */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertAgriPredTemp(List<AgrPredTemp> agris);
 
     @Query("SELECT * FROM agri_pred_temp ")
@@ -1051,7 +1084,7 @@ public interface MyDao {
 
 
     /* TIPO RIEGO */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertTipoRiego(List<TipoRiego> tipoRiegos);
 
     @Query("SELECT * FROM tipo_riego ")
@@ -1070,7 +1103,7 @@ public interface MyDao {
 
 
     /* TIPO SUELO */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertTipoSuelo(List<TipoSuelo> tipoSuelos);
 
     @Query("SELECT * FROM tipo_suelo ")
@@ -1082,7 +1115,7 @@ public interface MyDao {
     /* ===================================================================================*/
 
     /* TIPO TENENCIA MAQUINARIA */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertTipoTenenciaMaquinaria(List<TipoTenenciaMaquinaria> tenenciaMaquinarias);
 
     @Query("SELECT * FROM tipo_tenencia_maquinaria ")
@@ -1094,7 +1127,7 @@ public interface MyDao {
     /* ===================================================================================*/
 
     /* TIPO TENENCIA TERRENO */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertTipoTenenciaTerreno(List<TipoTenenciaTerreno> tenenciaTerrenos);
 
     @Query("SELECT * FROM tipo_tenencia_terreno ")

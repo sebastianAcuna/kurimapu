@@ -29,6 +29,9 @@ public interface DaoEvaluaciones {
     @Update
     int updateEvaluaciones(Evaluaciones evaluaciones);
 
+    @Query("SELECT * FROM anexo_recomendaciones WHERE clave_unica_visita = :claveUnica AND estado = 'P' ")
+    List<Evaluaciones> getEvaluacionesClon(String claveUnica);
+
     @Query("UPDATE anexo_recomendaciones SET obliga_visita = 0, clave_unica_visita = :claveUnica WHERE id_ac = :id_ace AND estado_server = 0 ")
     int updateEvaluacionesObligadas(int id_ace, String claveUnica);
 

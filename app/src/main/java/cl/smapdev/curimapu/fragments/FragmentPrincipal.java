@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,9 +43,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
+import cl.smapdev.curimapu.clases.adapters.MultipleSelectSpinner;
 import cl.smapdev.curimapu.clases.adapters.PrimeraPrioridadAdapter;
 import cl.smapdev.curimapu.clases.adapters.SitiosNoVisitadosAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
@@ -64,6 +65,7 @@ import cl.smapdev.curimapu.clases.relaciones.GsonDescargas;
 import cl.smapdev.curimapu.clases.relaciones.MuestraHumedadRequest;
 import cl.smapdev.curimapu.clases.relaciones.RecomendacionesRequest;
 import cl.smapdev.curimapu.clases.relaciones.Respuesta;
+import cl.smapdev.curimapu.clases.relaciones.SpinnerItem;
 import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
@@ -78,6 +80,7 @@ import cl.smapdev.curimapu.clases.tablas.ChecklistLimpiezaCamionesDetalle;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.Errores;
+import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.tablas.EstacionFloracion;
 import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
 import cl.smapdev.curimapu.clases.tablas.EstacionFloracionEstaciones;
@@ -121,6 +124,8 @@ public class FragmentPrincipal extends Fragment {
     private ImageView img_muestra_subidas;
 
     private ConstraintLayout contenedor_botonera_subida;
+
+    MultipleSelectSpinner spinnerMulti;
 
 
     private Button btn_descargar;
@@ -173,20 +178,28 @@ public class FragmentPrincipal extends Fragment {
 
     public void setSpecialSeason(List<Temporada> temporadas) {
         if (!temporadas.isEmpty()) {
+
+            int idx = 0;
+            int idxMarca = 0;
             for (Temporada t : temporadas) {
                 id_temporadas.add(t.getId_tempo_tempo());
                 desc_temporadas.add(t.getNombre_tempo());
 
                 if (t.getDefault_season() > 0) {
                     default_season = t.getId_tempo_tempo();
+                    idxMarca = idx;
                 }
 
 
                 if (t.getEspecial_temporada() > 0) {
                     marca_especial_temporada = t.getId_tempo_tempo();
                 }
+                idx++;
             }
+
+
         }
+
 
     }
 
@@ -290,17 +303,10 @@ public class FragmentPrincipal extends Fragment {
             }
             InternetStateClass mm = new InternetStateClass(activity, result -> {
                 if (result) {
-
-                    Config config = MainActivity.myAppDB.myDao().getConfig();
-
                     btn_descargar.setEnabled(true);
                     btn_preparar.setEnabled(true);
 
-                    if (config.getMulti_temporada() == 1) {
-                        showAlertMultiplesTemporadas(desc_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
-                    } else {
-                        descargando(true);
-                    }
+                    showAlertMultiplesTemporadas(desc_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
                 }
             }, 1);
             mm.execute();
@@ -1219,7 +1225,7 @@ public class FragmentPrincipal extends Fragment {
 
     }
 
-    void descargando(boolean conTemporada) {
+    void descargando(List<SpinnerItem> temporadas, List<SpinnerItem> especies) {
 
         final ProgressDialog progressDialog = new ProgressDialog(activity);
         if (getView() != null) {
@@ -1229,13 +1235,20 @@ public class FragmentPrincipal extends Fragment {
             progressDialog.show();
         }
 
-
-        final String temporada = (conTemporada) ? id_temporadas.get(spinner_toolbar.getSelectedItemPosition()) : "";
-
         Config cnf = MainActivity.myAppDB.myDao().getConfig();
         String vv = Utilidades.APPLICATION_VERSION;
         ApiService apiService = RetrofitClient.getClient(cnf.getServidorSeleccionado()).create(ApiService.class);
-        Call<GsonDescargas> call = apiService.descargarDatos(cnf.getId(), cnf.getId_usuario_suplandato(), vv, temporada);
+
+        List<Integer> tempIds = temporadas.stream().map(SpinnerItem::getId).collect(Collectors.toList());
+        List<Integer> espIds = especies.stream().map(SpinnerItem::getId).collect(Collectors.toList());
+
+        Call<GsonDescargas> call = apiService.descargarDatos(
+                cnf.getId(),
+                cnf.getId_usuario_suplandato(),
+                vv,
+                tempIds, espIds
+
+        );
         call.enqueue(new Callback<GsonDescargas>() {
             @Override
             public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
@@ -1415,10 +1428,26 @@ public class FragmentPrincipal extends Fragment {
                 })
                 .create();
 
-        final TextView temporada_seleccionada = viewInfalted.findViewById(R.id.temporada_seleccionada);
-        final RadioButton radio_todas_temp = viewInfalted.findViewById(R.id.radio_todas_temp);
 
-        temporada_seleccionada.setText(message);
+        MultipleSelectSpinner spinnerMulti = viewInfalted.findViewById(R.id.spinner_multi);
+        MultipleSelectSpinner spinner_multi_esp = viewInfalted.findViewById(R.id.spinner_multi_esp);
+
+        SpinnerItem defaultItem = new SpinnerItem(0, "Todas");
+
+        List<SpinnerItem> spinnerItems = temporadaList.stream().map((Temporada temp) -> new SpinnerItem(Integer.parseInt(temp.getId_tempo_tempo()), temp.getNombre_tempo())).collect(Collectors.toList());
+        if (!spinnerItems.isEmpty()) {
+            spinnerMulti.setItems(spinnerItems);
+            spinnerMulti.setDefaultText(defaultItem);
+            spinnerMulti.setSelection(0);
+        }
+
+        List<Especie> especieList = MainActivity.myAppDB.myDao().getEspecies();
+        List<SpinnerItem> especieSpinner = especieList.stream().map((Especie esp) -> new SpinnerItem(Integer.parseInt(esp.getId_especie()), esp.getDesc_especie())).collect(Collectors.toList());
+        if (!especieSpinner.isEmpty()) {
+            spinner_multi_esp.setItems(especieSpinner);
+            spinner_multi_esp.setDefaultText(defaultItem);
+            spinner_multi_esp.setSelection(0);
+        }
 
 
         builder.setOnShowListener(dialog -> {
@@ -1426,7 +1455,7 @@ public class FragmentPrincipal extends Fragment {
             Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
             b.setOnClickListener(v -> {
                 if (activity != null) {
-                    descargando(!radio_todas_temp.isChecked());
+                    descargando(spinnerMulti.getSelectedItems(), spinner_multi_esp.getSelectedItems());
                 }
                 builder.dismiss();
             });

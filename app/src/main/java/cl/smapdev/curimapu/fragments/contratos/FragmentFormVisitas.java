@@ -53,23 +53,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import cl.smapdev.curimapu.BuildConfig;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.FotosListAdapter;
+import cl.smapdev.curimapu.clases.adapters.MultipleSelectSpinner;
 import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
 import cl.smapdev.curimapu.clases.modelo.EvaluacionAnterior;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
+import cl.smapdev.curimapu.clases.relaciones.SpinnerItem;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
+import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.utilidades.CameraUtils;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.FragmentVisitas;
+import cl.smapdev.curimapu.fragments.dialogos.DialogBuscaObsRecAnterior;
 import cl.smapdev.curimapu.fragments.dialogos.DialogLibroCampo;
 import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
 import cl.smapdev.curimapu.infraestructure.utils.coroutines.ApplicationExecutors;
@@ -89,7 +96,7 @@ public class FragmentFormVisitas extends Fragment {
     private Spinner sp_fenologico, sp_cosecha, sp_crecimiento, sp_fito,
             sp_general_cultivo, sp_humedad, sp_malezas, sp_planta_voluntaria;
     private TextView titulo_raices;
-    private Button btn_guardar, btn_volver;
+    private Button btn_guardar, btn_volver, btn_buscar_obs;
     private ConstraintLayout contenedor_estados, contenedor_monitoreo;
     private TextInputLayout obs_growth, obs_weed, obs_fito, obs_harvest, obs_overall, obs_humedad;
     private EditText et_obs, et_obs_growth, et_obs_weed, et_obs_fito, et_obs_harvest,
@@ -104,6 +111,8 @@ public class FragmentFormVisitas extends Fragment {
     private final ArrayList<String> fenologico = new ArrayList<>(),
             planta_voluntaria = new ArrayList<>(), cosecha = new ArrayList<>(),
             crecimiento = new ArrayList<>(), maleza = new ArrayList<>();
+
+    private ExecutorService executors = Executors.newSingleThreadExecutor();
 
     /* IMAGENES */
     private static final int COD_FOTO = 005;
@@ -281,11 +290,9 @@ public class FragmentFormVisitas extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode != COD_FOTO || resultCode != RESULT_OK) return;
 
-
         try {
             Bitmap originalBtm = BitmapFactory.decodeFile(currentPhotoPath);
             Bitmap nuevaFoto = CameraUtils.escribirFechaImg(originalBtm, activity);
-
 
             currentPhotoPath = currentPhotoPath.replaceAll("Pictures/", "");
             File file = new File(currentPhotoPath);
@@ -296,8 +303,6 @@ public class FragmentFormVisitas extends Fragment {
         } catch (Exception e) {
             Toasty.error(requireActivity(), "Error al sacar foto " + e.getMessage(), Toast.LENGTH_LONG, true).show();
         }
-
-
     }
 
     private void guardarBD() {
@@ -353,20 +358,105 @@ public class FragmentFormVisitas extends Fragment {
 
     private void setOnSave() {
 
-        try {
-            List<Evaluaciones> evs = MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByACObliga(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-            if (evs.isEmpty()) {
-                Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes agregar una recomendacion para esta visita. ( estrella de arriba a la derecha )", "entiendo");
-                return;
+        executors.execute(() -> {
+            try {
+                List<Evaluaciones> evs = MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesByACObliga(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+                if (evs.isEmpty()) {
+                    requireActivity().runOnUiThread(() -> {
+                        Utilidades.avisoListo(activity, "Falta algo", "Antes de guardar debes agregar una recomendacion para esta visita. ( estrella de arriba a la derecha )", "entiendo");
+                    });
+                    return;
+                }
+                List<AnexoCompleto> anexosSimilares = new ArrayList<>();
+                if (sp_fenologico.getSelectedItem().toString().equals("MONITOREO")) {
+                    anexosSimilares.addAll(MainActivity.myAppDB.myDao().getAnexoParaDuplicarVisita(
+                            anexoCompleto.getAgricultor().getId_agricultor(),
+                            anexoCompleto.getEspecie().getId_especie(),
+                            anexoCompleto.getVariedad().getId_variedad(),
+                            anexoCompleto.getAnexoContrato().getTemporada_anexo(),
+                            anexoCompleto.getAnexoContrato().getId_anexo_contrato()
+                    ));
+
+
+                } else if (anexoCompleto.getEspecie().getId_especie().equals("13") || anexoCompleto.getEspecie().getId_especie().equals("14")) {
+                    anexosSimilares.addAll(MainActivity.myAppDB.myDao().getAnexoParaDuplicarVisita(
+                            anexoCompleto.getAgricultor().getId_agricultor(),
+                            anexoCompleto.getEspecie().getId_especie(),
+                            anexoCompleto.getAnexoContrato().getTemporada_anexo(),
+                            anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+                }
+
+
+                if (anexosSimilares.isEmpty()) {
+                    requireActivity().runOnUiThread(() -> {
+                        if (sp_fenologico.getSelectedItem().toString().equals("MONITOREO")) {
+                            saveVisitaMonitoreo(new ArrayList<String>());
+                        } else {
+                            saveVisitaNormal(new ArrayList<String>());
+                        }
+                    });
+                } else {
+                    requireActivity().runOnUiThread(() -> {
+                        showAlertSeleccionAnexos(anexosSimilares, anexoCompleto);
+                    });
+                }
+            } catch (Exception e) {
+                requireActivity().runOnUiThread(() -> {
+                    Utilidades.avisoListo(activity, "Problema", "No se pudo obtener datos de la evaluacion, por favor, vuelva a abrir y nuevamente la evaluacion." + e.getMessage(), "entiendo");
+                });
             }
-            if (sp_fenologico.getSelectedItem().toString().equals("MONITOREO")) {
-                saveVisitaMonitoreo();
-            } else {
-                saveVisitaNormal();
-            }
-        } catch (Exception e) {
-            Utilidades.avisoListo(activity, "Problema", "No se pudo obtener datos de la evaluacion, por favor, vuelva a abrir y nuevamente la evaluacion." + e.getMessage(), "entiendo");
+        });
+
+    }
+
+
+    private void showAlertSeleccionAnexos(List<AnexoCompleto> anexos, AnexoCompleto anexoActual) {
+        View viewInfalted = LayoutInflater.from(getActivity()).inflate(R.layout.alerta_seleccion_anexos, null);
+
+        final AlertDialog builder = new AlertDialog.Builder(requireActivity())
+                .setView(viewInfalted)
+                .setTitle("SELECCIONA")
+                .setPositiveButton("Continuar", (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
+                .create();
+
+
+        TextView texto_descripcion = viewInfalted.findViewById(R.id.texto_descripcion);
+        MultipleSelectSpinner spinner_anexos = viewInfalted.findViewById(R.id.spinner_anexos);
+
+        SpinnerItem defaultItem = new SpinnerItem(0, "Ninguno");
+
+        List<SpinnerItem> spinnerItems = anexos.stream().map((AnexoCompleto temp) -> new SpinnerItem(Integer.parseInt(temp.getAnexoContrato().getId_anexo_contrato()), temp.getAnexoContrato().getAnexo_contrato() + " (L:" + temp.getLotes().getNombre_lote() + ");(HA GPS:" + temp.getAnexoContrato().getHas_gps() + ");")).collect(Collectors.toList());
+        if (!spinnerItems.isEmpty()) {
+            spinner_anexos.setItems(spinnerItems);
+            spinner_anexos.setDefaultText(defaultItem);
+            spinner_anexos.setSelection(0);
         }
+        texto_descripcion.setText("Para el agricultor \n(" + anexoActual.getAgricultor().getNombre_agricultor()
+                + ")\nSe encontraron (" + anexos.size() + ") anexos aparte del anexo " + anexoActual.getAnexoContrato().getAnexo_contrato() + "\nLote:" + anexoActual.getLotes().getNombre_lote() + "\nHAS GPS: " + anexoActual.getAnexoContrato().getHas_gps() + ".\nseleccione los anexos que replicarán la visita.");
+
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
+            b.setOnClickListener(v -> {
+                if (activity != null) {
+                    List<String> anexosSeleccionados = spinner_anexos.getSelectedIds().stream().map(String::valueOf).collect(Collectors.toList());
+                    if (sp_fenologico.getSelectedItem().toString().equals("MONITOREO")) {
+                        saveVisitaMonitoreo(anexosSeleccionados);
+                    } else {
+                        saveVisitaNormal(anexosSeleccionados);
+                    }
+//                    descargando(spinnerMulti.getSelectedItems(), spinner_multi_esp.getSelectedItems());
+                }
+                builder.dismiss();
+            });
+            c.setOnClickListener(view -> builder.dismiss());
+        });
+
+        builder.setCancelable(false);
+        builder.show();
     }
 
     private void cambiarFavorita(Fotos fotos) {
@@ -392,7 +482,6 @@ public class FragmentFormVisitas extends Fragment {
     }
 
     void cambiarSubtitulo() {
-
         if (activity != null && anexoCompleto != null) {
             activity.updateView(getResources().getString(R.string.app_name), "Anexo " + anexoCompleto.getAnexoContrato().getAnexo_contrato());
         }
@@ -793,6 +882,7 @@ public class FragmentFormVisitas extends Fragment {
                     evaluacionAnterior,
                     ultimaVisita,
                     visitasCompletas,
+                    (sp_fenologico.getSelectedItem() != null) ? sp_fenologico.getSelectedItem().toString() : "",
                     (EvaluacionAnterior tp) -> evaluacionAnterior = tp);
             dialogo.show(ft, "EVALUACION_RECOMENDACION");
         } catch (Exception e) {
@@ -996,6 +1086,7 @@ public class FragmentFormVisitas extends Fragment {
         sp_humedad = view.findViewById(R.id.sp_humedad);
         sp_malezas = view.findViewById(R.id.sp_malezas);
         btn_guardar = view.findViewById(R.id.btn_guardar);
+        btn_buscar_obs = view.findViewById(R.id.btn_buscar_obs);
 
         et_obs = view.findViewById(R.id.et_obs);
         et_obs_fito = view.findViewById(R.id.et_obs_fito);
@@ -1019,6 +1110,23 @@ public class FragmentFormVisitas extends Fragment {
         et_fecha_estimada_postura_abejas = view.findViewById(R.id.et_fecha_estimada_postura_abejas);
 
         btn_volver = view.findViewById(R.id.btn_volver);
+
+
+        btn_buscar_obs.setOnClickListener(v -> {
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+
+            Fragment obsDialog = requireActivity().getSupportFragmentManager().findFragmentByTag("DIALOG_OBS_RECOM");
+            if (obsDialog != null) {
+                ft.remove(obsDialog);
+            }
+            DialogBuscaObsRecAnterior dialogHarvest = DialogBuscaObsRecAnterior.newInstance(sp_fenologico.getSelectedItem().toString(), "OBSERVACION", (boolean saved, String contenido) -> {
+                if (saved) {
+                    et_obs.setText(contenido);
+                }
+            });
+            dialogHarvest.show(ft, "DIALOG_OBS_RECOM");
+
+        });
 
         sp_fenologico.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1151,76 +1259,224 @@ public class FragmentFormVisitas extends Fragment {
     }
 
 
-    private void saveVisitaMonitoreo() {
+    private void replicarVisita(Visitas visitas, List<String> idAcList) {
+        String claveUnicaOriginal = visitas.getClave_unica_visita();
+        int idVisitaOriginal = visitas.getId_visita();
+        for (String idAc : idAcList) {
+
+            String claveUnicaClon = UUID.randomUUID().toString();
+
+            Visitas visitaNueva = new Visitas();
+
+            visitaNueva.setClave_unica_visita(claveUnicaClon);
+            visitaNueva.setEstado_server_visitas(0);
+            visitaNueva.setId_anexo_visita(idAc);
+            visitaNueva.setFecha_estimada_postura_abejas(visitas.getFecha_estimada_postura_abejas());
+            visitaNueva.setTipo_visita(visitas.getTipo_visita());
+            visitaNueva.setPlanta_voluntaria(visitas.getPlanta_voluntaria());
+            visitaNueva.setFecha_estimada_cosecha(visitas.getFecha_estimada_cosecha());
+            visitaNueva.setFecha_estimada_arranca(visitas.getFecha_estimada_arranca());
+            visitaNueva.setId_evaluacion(visitas.getId_evaluacion());
+            visitaNueva.setEvaluacion(visitas.getEvaluacion());
+            visitaNueva.setComentario_evaluacion(visitas.getComentario_evaluacion());
+            visitaNueva.setTomadas(visitas.getTomadas());
+            visitaNueva.setId_dispo(visitas.getId_dispo());
+            visitaNueva.setPercent_humedad(visitas.getPercent_humedad());
+            visitaNueva.setId_user_visita(visitas.getId_user_visita());
+            visitaNueva.setCabecera_visita(visitas.getCabecera_visita());
+            visitaNueva.setObs_fito(visitas.getObs_fito());
+            visitaNueva.setObs_creci(visitas.getObs_creci());
+            visitaNueva.setObs_maleza(visitas.getObs_maleza());
+            visitaNueva.setObs_cosecha(visitas.getObs_cosecha());
+            visitaNueva.setObs_overall(visitas.getObs_overall());
+            visitaNueva.setObs_humedad(visitas.getObs_humedad());
+            visitaNueva.setTemporada(visitas.getTemporada());
+            visitaNueva.setFecha_visita(visitas.getFecha_visita());
+            visitaNueva.setHora_visita(visitas.getHora_visita());
+            visitaNueva.setEtapa_visitas(visitas.getEtapa_visitas());
+            visitaNueva.setEstado_visita(visitas.getEstado_visita());
+            visitaNueva.setPhenological_state_visita(visitas.getPhenological_state_visita());
+            visitaNueva.setGrowth_status_visita(visitas.getGrowth_status_visita());
+            visitaNueva.setWeed_state_visita(visitas.getWeed_state_visita());
+            visitaNueva.setPhytosanitary_state_visita(visitas.getPhytosanitary_state_visita());
+            visitaNueva.setHarvest_visita(visitas.getHarvest_visita());
+            visitaNueva.setOverall_status_visita(visitas.getOverall_status_visita());
+            visitaNueva.setHumidity_floor_visita(visitas.getHumidity_floor_visita());
+            visitaNueva.setObservation_visita(visitas.getObservation_visita());
+            visitaNueva.setRecomendation_visita(visitas.getRecomendation_visita());
+
+            long idVisitaNueva = MainActivity.myAppDB.myDao().setVisita(visitaNueva);
+
+            visitaNueva.setId_visita((int) idVisitaNueva);
+            visitaNueva.setId_visita_local((int) idVisitaNueva);
+            MainActivity.myAppDB.myDao().updateVisita(visitaNueva);
+
+//            fotos
+            List<Fotos> fts = MainActivity.myAppDB.myDao().getFotosByIdVisita(idVisitaOriginal);
+            for (Fotos ft : fts) {
+                if (ft.getRuta() != null && !ft.getRuta().isEmpty()) {
+                    File originalFile = new File(ft.getRuta());
+                    if (originalFile.exists()) {
+                        String nuevoNombre = UUID.randomUUID().toString() + ".jpg";
+                        File destino = new File(originalFile.getParent(), nuevoNombre);
+                        try {
+                            java.nio.file.Files.copy(originalFile.toPath(), destino.toPath());
+                            Fotos fotoClonada = new Fotos();
+
+//                            setId_foto
+                            fotoClonada.setId_visita_foto(visitaNueva.getId_visita());
+                            fotoClonada.setId_ficha_fotos(idAc);
+                            fotoClonada.setEstado_fotos(0);
+                            fotoClonada.setNombre_foto(nuevoNombre);
+                            fotoClonada.setRuta(destino.getAbsolutePath());
+                            fotoClonada.setAcepto_regla_raices(ft.getAcepto_regla_raices());
+                            fotoClonada.setMedida_raices(ft.getMedida_raices());
+                            fotoClonada.setTomada_foto(ft.getTomada_foto());
+                            fotoClonada.setId_dispo_foto(ft.getId_dispo_foto());
+                            fotoClonada.setCabecera_fotos(ft.getCabecera_fotos());
+                            fotoClonada.setFieldbook(ft.getFieldbook());
+                            fotoClonada.setVista(ft.getVista());
+                            fotoClonada.setPlano(ft.getPlano());
+                            fotoClonada.setFecha(ft.getFecha());
+                            fotoClonada.setHora(ft.getHora());
+                            fotoClonada.setFavorita(ft.isFavorita());
+                            MainActivity.myAppDB.myDao().insertFotos(fotoClonada);
+                        } catch (IOException ignore) {
+                        }
+                    }
+                }
+            }
+
+//          recomendaciones
+            List<Evaluaciones> evs = MainActivity.myAppDB.DaoEvaluaciones().getEvaluacionesClon(claveUnicaOriginal);
+            for (Evaluaciones ev : evs) {
+                Evaluaciones evNueva = new Evaluaciones();
+//                evNueva.setCabecera_server
+//                evNueva.setId_ac_recom();
+                evNueva.setClave_unica_visita(claveUnicaClon);
+                evNueva.setClave_unica_recomendacion(UUID.randomUUID().toString());
+                evNueva.setEstado_server(0);
+                evNueva.setId_ac(Integer.parseInt(idAc));
+                evNueva.setObliga_visita(ev.getObliga_visita());
+                evNueva.setMarca_evaluacion_server(ev.getMarca_evaluacion_server());
+                evNueva.setNombre_crea(ev.getNombre_crea());
+                evNueva.setNombre_mod(ev.getNombre_mod());
+                evNueva.setDescripcion_recom(ev.getDescripcion_recom());
+                evNueva.setEstado(ev.getEstado());
+                evNueva.setObservacion_recom(ev.getObservacion_recom());
+                evNueva.setFecha_plazo(ev.getFecha_plazo());
+                evNueva.setUser_tx(ev.getUser_tx());
+                evNueva.setFecha_hora_tx(ev.getFecha_hora_tx());
+                evNueva.setUser_mod(ev.getUser_mod());
+                evNueva.setFecha_hora_mod(ev.getFecha_hora_mod());
+                MainActivity.myAppDB.DaoEvaluaciones().insertEvaluaciones(evNueva);
+            }
+
+//            libro de campo
+            List<detalle_visita_prop> dts = MainActivity.myAppDB.myDao().detallesToClon(idVisitaOriginal);
+            for (detalle_visita_prop dt : dts) {
+                detalle_visita_prop dtNueva = new detalle_visita_prop();
+
+//                dtNueva.setCabecera_detalle(dt.getCabecera_detalle());
+//                dtNueva.setId_det_vis_prop_detalle(dt.getId_det_vis_prop_detalle());
+                dtNueva.setTomada_detalle(dt.getTomada_detalle());
+                dtNueva.setEstado_detalle(0);
+                dtNueva.setId_visita_detalle(visitaNueva.getId_visita());
+                dtNueva.setId_prop_mat_cli_detalle(dt.getId_prop_mat_cli_detalle());
+                dtNueva.setValor_detalle(dt.getValor_detalle());
+                MainActivity.myAppDB.myDao().insertDatoDetalle(dtNueva);
+            }
+        }
+
+    }
+
+
+    private void saveVisitaMonitoreo(List<String> idAcs) {
 
         if (sp_fenologico.getSelectedItemPosition() <= 0 || sp_planta_voluntaria.getSelectedItemPosition() <= 0) {
             Utilidades.avisoListo(activity, "Hey", "no puede dejar elementos en '--seleccione--'.", "entiendo");
             return;
         }
-
-        Visitas visitas = new Visitas();
-
-        visitas.setPhenological_state_visita(sp_fenologico.getSelectedItem().toString());
-        visitas.setPlanta_voluntaria(sp_planta_voluntaria.getSelectedItem().toString());
-
         String alfaNumerico = getResources().getString(R.string.alfanumericos_con_signos);
+        String phenoStateVisita = sp_fenologico.getSelectedItem().toString();
+        String plantaVoluntaria = sp_planta_voluntaria.getSelectedItem().toString();
         et_obs.setText(Utilidades.sanitizarString(et_obs.getText().toString(), alfaNumerico));
         String etobs = et_obs.getText().toString().toUpperCase();
-        visitas.setObservation_visita(etobs);
+
+        executors.execute(() -> {
+            Visitas visitas = new Visitas();
+
+            visitas.setPhenological_state_visita(phenoStateVisita);
+            visitas.setPlanta_voluntaria(plantaVoluntaria);
+
+            visitas.setObservation_visita(etobs);
+
+            try {
+
+                String claveUnica = (visitasCompletas != null) ? visitasCompletas.getVisitas().getClave_unica_visita() : UUID.randomUUID().toString();
+                AnexoContrato an = anexoCompleto.getAnexoContrato();
+                visitas.setTemporada(an.getTemporada_anexo());
+
+                String fecha = Utilidades.fechaActualConHora();
+                String[] fechaHora = fecha.split(" ");
+
+                visitas.setId_anexo_visita(an.getId_anexo_contrato());
+                visitas.setHora_visita(fechaHora[1]);
+                visitas.setFecha_visita(fechaHora[0]);
+                visitas.setEtapa_visitas(Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
+                visitas.setEvaluacion(evaluacionAnterior.evaluacion);
+                visitas.setComentario_evaluacion(evaluacionAnterior.comentario);
+                visitas.setId_evaluacion(evaluacionAnterior.id_evaluacion);
+
+                visitas.setEstado_server_visitas(0);
+                visitas.setEstado_visita(2);
+                visitas.setClave_unica_visita(claveUnica);
+
+                visitas.setTipo_visita("MONITOREO");
+
+                long idVisita;
+                if (visitasCompletas != null) {
+                    idVisita = visitasCompletas.getVisitas().getId_visita();
+                    visitas.setId_visita((int) idVisita);
+                    visitas.setId_visita_local(visitasCompletas.getVisitas().getId_visita_local());
+                    MainActivity.myAppDB.myDao().updateVisita(visitas);
+                } else {
+                    idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
+                }
 
 
-        try {
+                long finalIdVisita = idVisita;
 
-            String claveUnica = (visitasCompletas != null) ? visitasCompletas.getVisitas().getClave_unica_visita() : UUID.randomUUID().toString();
-            AnexoContrato an = anexoCompleto.getAnexoContrato();
-            visitas.setTemporada(an.getTemporada_anexo());
+                MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesObligadas(Integer.parseInt(an.getId_anexo_contrato()), claveUnica);
+                MainActivity.myAppDB.myDao().updateFotosWithVisita((int) finalIdVisita, anexoCompleto.getAnexoContrato().getId_anexo_contrato());
+                MainActivity.myAppDB.myDao().updateDetallesToVisits((int) finalIdVisita);
+                Visitas visitas1 = MainActivity.myAppDB.myDao().getVisitas((int) finalIdVisita);
+                visitas1.setId_visita_local((int) idVisita);
+                MainActivity.myAppDB.myDao().updateVisita(visitas1);
+                evaluacionAnterior.clean();
 
-            String fecha = Utilidades.fechaActualConHora();
-            String[] fechaHora = fecha.split(" ");
 
-            visitas.setId_anexo_visita(an.getId_anexo_contrato());
-            visitas.setHora_visita(fechaHora[1]);
-            visitas.setFecha_visita(fechaHora[0]);
-            visitas.setEtapa_visitas(Utilidades.getPhenoState(sp_fenologico.getSelectedItemPosition()));
-            visitas.setEvaluacion(evaluacionAnterior.evaluacion);
-            visitas.setComentario_evaluacion(evaluacionAnterior.comentario);
-            visitas.setId_evaluacion(evaluacionAnterior.id_evaluacion);
+                if (!idAcs.isEmpty()) {
+                    replicarVisita(visitas1, idAcs);
+                }
 
-            visitas.setEstado_server_visitas(0);
-            visitas.setEstado_visita(2);
-            visitas.setClave_unica_visita(claveUnica);
+                requireActivity().runOnUiThread(() -> {
+                    showAlertForSave("Genial", "Se guardo todo como corresponde");
+                });
+                return;
+            } catch (Exception e) {
+                requireActivity().runOnUiThread(() -> {
+                    Utilidades.avisoListo(activity, "Falta algo", "No se pudo guardar " + e.getMessage(), "entiendo");
+                });
+                return;
 
-            visitas.setTipo_visita("MONITOREO");
-
-            long idVisita;
-            if (visitasCompletas != null) {
-                idVisita = visitasCompletas.getVisitas().getId_visita();
-                visitas.setId_visita((int) idVisita);
-                visitas.setId_visita_local(visitasCompletas.getVisitas().getId_visita_local());
-                MainActivity.myAppDB.myDao().updateVisita(visitas);
-            } else {
-                idVisita = MainActivity.myAppDB.myDao().setVisita(visitas);
             }
+        });
 
 
-            long finalIdVisita = idVisita;
-
-            MainActivity.myAppDB.DaoEvaluaciones().updateEvaluacionesObligadas(Integer.parseInt(an.getId_anexo_contrato()), claveUnica);
-            MainActivity.myAppDB.myDao().updateFotosWithVisita((int) finalIdVisita, anexoCompleto.getAnexoContrato().getId_anexo_contrato());
-            Visitas visitas1 = MainActivity.myAppDB.myDao().getVisitas((int) finalIdVisita);
-            visitas1.setId_visita_local((int) idVisita);
-            MainActivity.myAppDB.myDao().updateVisita(visitas1);
-            evaluacionAnterior.clean();
-            showAlertForSave("Genial", "Se guardo todo como corresponde");
-
-        } catch (Exception e) {
-            Utilidades.avisoListo(activity, "Falta algo", "No se pudo guardar " + e.getMessage(), "entiendo");
-        }
     }
 
-    private void saveVisitaNormal() {
-
-
+    private void saveVisitaNormal(List<String> idAcs) {
         try {
             VisitasCompletas cc = MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(anexoCompleto.getAnexoContrato().getId_anexo_contrato());
 
@@ -1352,7 +1608,7 @@ public class FragmentFormVisitas extends Fragment {
             long idVis;
 
             if (visitasCompletas != null) {
-                idVis = visitasCompletas.getVisitas().getId_user_visita();
+                idVis = visitasCompletas.getVisitas().getId_visita();
                 visitas.setId_visita(visitasCompletas.getVisitas().getId_visita());
                 visitas.setId_visita_local(visitasCompletas.getVisitas().getId_visita());
                 MainActivity.myAppDB.myDao().updateVisita(visitas);
@@ -1370,6 +1626,10 @@ public class FragmentFormVisitas extends Fragment {
             Visitas visitas1 = MainActivity.myAppDB.myDao().getVisitas((int) finalIdVisita);
             visitas1.setId_visita_local(idVisita);
             MainActivity.myAppDB.myDao().updateVisita(visitas1);
+
+            if (!idAcs.isEmpty()) {
+                replicarVisita(visitas1, idAcs);
+            }
 
             showAlertForSave("Genial", "Se guardo todo como corresponde");
 

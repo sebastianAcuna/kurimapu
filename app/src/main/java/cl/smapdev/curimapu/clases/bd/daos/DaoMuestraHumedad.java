@@ -1,8 +1,8 @@
 package cl.smapdev.curimapu.clases.bd.daos;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -36,7 +36,7 @@ public interface DaoMuestraHumedad {
     @Insert
     void insertMuestraHumedad(MuestraHumedad muestraHumedad);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMuestraHumedad(List<MuestraHumedad> muestraHumedads);
 
 

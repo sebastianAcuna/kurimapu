@@ -21,7 +21,9 @@ public class EstacionFloracionAdapter extends RecyclerView.Adapter<EstacionFlora
     private final OnItemClickListener itemClickListenerEditar;
     private final Context context;
 
-    public interface OnItemClickListener{ void onItemClick(View view, EstacionFloracionCompleto estaciones); }
+    public interface OnItemClickListener {
+        void onItemClick(View view, EstacionFloracionCompleto estaciones);
+    }
 
 
     public EstacionFloracionAdapter(List<EstacionFloracionCompleto> estacionFloracionCompletoList,
@@ -37,7 +39,7 @@ public class EstacionFloracionAdapter extends RecyclerView.Adapter<EstacionFlora
     @NonNull
     @Override
     public EstacionFloracionListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_estacion_floracion,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_estacion_floracion, parent, false);
         return new EstacionFloracionListViewHolder(view);
     }
 
@@ -51,4 +53,5 @@ public class EstacionFloracionAdapter extends RecyclerView.Adapter<EstacionFlora
     public int getItemCount() {
         return estacionFloracionCompletoList.size();
     }
+
 }

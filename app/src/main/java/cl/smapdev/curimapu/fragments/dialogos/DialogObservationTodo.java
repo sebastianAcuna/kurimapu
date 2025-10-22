@@ -21,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,24 +66,34 @@ public class DialogObservationTodo extends DialogFragment {
 
     // recomendaciones
     private EditText et_nueva_recom, fecha_plazo;
-    private Button btn_cerrar_recomendaciones, btn_add_recom;
+    private Button btn_cerrar_recomendaciones, btn_add_recom, btn_no_aplica;
     private RecyclerView rv_recom_pendientes, rv_recom_rechazo, rv_recom_aprobadas;
     private TextView txt_titulo_pendientes, txt_titulo_rechazadas, txt_titulo_aprobadas;
     private ImageView ic_collapse, ic_collapse_rechazo, ic_collapse_aprobada;
+    private Button btn_buscar_obs;
 
 
     public interface OnSaveRating {
         void onFinishSaveRating(EvaluacionAnterior evaluacionAnterior);
     }
 
+    private String estadoFenologico;
+
+    public void setEstadoFenologico(String estadoFenologico) {
+        this.estadoFenologico = estadoFenologico;
+    }
 
     public static DialogObservationTodo newInstance(
             AnexoContrato anexoContrato,
             EvaluacionAnterior evaluacionAnterior,
             VisitasCompletas visitaAnterior,
             VisitasCompletas visitaActual,
+            String estadoFenologico,
             OnSaveRating onSaveRating) {
         DialogObservationTodo frag = new DialogObservationTodo();
+
+
+        frag.setEstadoFenologico(estadoFenologico);
 
         frag.setAnexoContrato(anexoContrato);
         if (evaluacionAnterior != null) {
@@ -185,6 +197,18 @@ public class DialogObservationTodo extends DialogFragment {
         bringRecoms();
 
         btn_add_recom.setOnClickListener(view1 -> addPendiente());
+
+        btn_no_aplica.setOnClickListener(view1 -> {
+            if (fecha_plazo.getText().toString().equals("NO APLICA")) {
+                fecha_plazo.setText("");
+                fecha_plazo.setEnabled(true);
+                btn_no_aplica.setText("N/A");
+            } else {
+                fecha_plazo.setText("NO APLICA");
+                fecha_plazo.setEnabled(false);
+                btn_no_aplica.setText("APLICA");
+            }
+        });
         btn_guardar_evaluacion.setOnClickListener(view1 -> guardarEvaluacion(false));
 
 
@@ -335,6 +359,11 @@ public class DialogObservationTodo extends DialogFragment {
             return;
         }
 
+        if (fecha_plazo.getText().toString().trim().isEmpty()) {
+            Toasty.error(requireActivity(), "Debes ingresar una fecha de plazo o un  'NO APLICA' ", Toast.LENGTH_LONG, true).show();
+            return;
+        }
+
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<Config> configFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getConfig());
 
@@ -363,6 +392,10 @@ public class DialogObservationTodo extends DialogFragment {
             ExecutorService execInsert = Executors.newSingleThreadExecutor();
 
             execInsert.submit(() -> MainActivity.myAppDB.DaoEvaluaciones().insertEvaluaciones(eva)).get();
+
+
+            fecha_plazo.setEnabled(true);
+            btn_no_aplica.setText("N/A");
             et_nueva_recom.setText("");
             fecha_plazo.setText("");
             bringRecoms();
@@ -535,6 +568,7 @@ public class DialogObservationTodo extends DialogFragment {
 
         et_nueva_recom = view.findViewById(R.id.et_nueva_recom);
         btn_add_recom = view.findViewById(R.id.btn_add_recom);
+        btn_no_aplica = view.findViewById(R.id.btn_no_aplica);
         btn_cerrar_recomendaciones = view.findViewById(R.id.btn_cerrar_recomendaciones);
         rv_recom_pendientes = view.findViewById(R.id.rv_recom_pendientes);
         rv_recom_rechazo = view.findViewById(R.id.rv_recom_rechazo);
@@ -547,6 +581,24 @@ public class DialogObservationTodo extends DialogFragment {
         ic_collapse_aprobada = view.findViewById(R.id.ic_collapse_aprobada);
         cl_recomendacion = view.findViewById(R.id.cl_recomendacion);
         fecha_plazo = view.findViewById(R.id.fecha_plazo);
+
+        btn_buscar_obs = view.findViewById(R.id.btn_buscar_obs);
+
+
+        btn_buscar_obs.setOnClickListener(v -> {
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+
+            Fragment obsDialog = requireActivity().getSupportFragmentManager().findFragmentByTag("DIALOG_OBS_RECOM");
+            if (obsDialog != null) {
+                ft.remove(obsDialog);
+            }
+            DialogBuscaObsRecAnterior dialogHarvest = DialogBuscaObsRecAnterior.newInstance(estadoFenologico, "RECOMENDACION", (boolean saved, String contenido) -> {
+                if (saved) {
+                    et_nueva_recom.setText(contenido);
+                }
+            });
+            dialogHarvest.show(ft, "DIALOG_OBS_RECOM");
+        });
     }
 
 

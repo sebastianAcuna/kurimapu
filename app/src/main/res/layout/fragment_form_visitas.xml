@@ -430,15 +430,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small">
 
+                <LinearLayout
+                    android:id="@+id/contenedor_buscador_obs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_buscar_obs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Buscar Obs anteriores"
+                        android:drawableStart="@drawable/ic_search_solid"
+                        android:layout_margin="@dimen/padding" />
+
+
+                </LinearLayout>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInp_obs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/contenedor_buscador_obs"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_margin="@dimen/padding">
+                    android:layout_margin="@dimen/padding_small">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_obs"

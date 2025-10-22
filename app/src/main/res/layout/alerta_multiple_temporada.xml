@@ -12,62 +12,40 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:textSize="18sp"
         android:padding="@dimen/padding_small"
-        android:text="Como usuario puede seleccionar entre descargar todas las temporadas juntas o solo la seleccionada "
-        />
+        android:text="Seleccione temporadas a descargar" />
 
-    <TextView
-        android:id="@+id/lbl_tempo_temporada"
-        android:layout_width="wrap_content"
+
+    <cl.smapdev.curimapu.clases.adapters.MultipleSelectSpinner
+        android:id="@+id/spinner_multi"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/texto_temporada"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Temp. seleccionada: "
-        android:textSize="18sp"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <TextView
-        android:id="@+id/temporada_seleccionada"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/texto_temporada"
-        app:layout_constraintStart_toEndOf="@+id/lbl_tempo_temporada"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="end"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:text="2023-2024 "
-
-        />
-
-
-    <RadioGroup
-        android:id="@+id/rd_grupo_seleccion"
+        android:id="@+id/texto_especie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/temporada_seleccionada"
-        android:gravity="start"
-        android:orientation="vertical"
-        >
-
-        <RadioButton
-            android:id="@+id/radio_todas_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding"
-            android:checked="false"
-            android:text="Todas las temporadas" />
-
-        <RadioButton
-            android:id="@+id/radio_actual_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding"
-            android:checked="true"
-            android:text="temporada seleccionada" />
+        app:layout_constraintTop_toBottomOf="@id/spinner_multi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        android:padding="@dimen/padding_small"
+        android:text="Seleccione especies a descargar" />
 
 
-    </RadioGroup>
+    <cl.smapdev.curimapu.clases.adapters.MultipleSelectSpinner
+        android:id="@+id/spinner_multi_esp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/texto_especie"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

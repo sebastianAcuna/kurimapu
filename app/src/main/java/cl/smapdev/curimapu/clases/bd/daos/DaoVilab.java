@@ -3,6 +3,7 @@ package cl.smapdev.curimapu.clases.bd.daos;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -27,6 +28,6 @@ public interface DaoVilab {
     @Insert
     void insertVilab(AnexoVilab vilab);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertVilab(List<AnexoVilab> vilabs);
 }
