@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,13 +20,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.lifecycle.Lifecycle;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -34,21 +34,12 @@ import java.util.regex.Pattern;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.adapters.EstacionFloracionEstacionesAdapter;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
-import cl.smapdev.curimapu.clases.relaciones.EstacionFloracionCompleto;
-import cl.smapdev.curimapu.clases.relaciones.EstacionesCompletas;
 import cl.smapdev.curimapu.clases.tablas.Config;
-import cl.smapdev.curimapu.clases.tablas.EstacionFloracion;
-import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
-import cl.smapdev.curimapu.clases.tablas.EstacionFloracionEstaciones;
 import cl.smapdev.curimapu.clases.tablas.MuestraHumedad;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
-import cl.smapdev.curimapu.fragments.dialogos.DialogEstaciones;
-import cl.smapdev.curimapu.fragments.estacion_floracion.FragmentListaEstacionFloracion;
 import es.dmoral.toasty.Toasty;
-import kotlin.text.Regex;
 
 public class FragmentNuevaMuestraHumedad extends Fragment {
 
@@ -75,19 +66,27 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
         this.muestraHumedad = muestraHumedad;
     }
 
-    public static FragmentNuevaMuestraHumedad newInstance(MuestraHumedad muestraHumedad ){
+    public static FragmentNuevaMuestraHumedad newInstance(MuestraHumedad muestraHumedad) {
         FragmentNuevaMuestraHumedad fs = new FragmentNuevaMuestraHumedad();
-        fs.setMuestraHumedad( muestraHumedad );
+        fs.setMuestraHumedad(muestraHumedad);
         return fs;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context.toString() + " must be MainActivity");
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity a = (MainActivity) getActivity();
-        if(a != null) activity = a;
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+
     }
 
     @Nullable
@@ -117,7 +116,6 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
                 MainActivity.myAppDB.myDao().getConfig());
 
 
-
         try {
             anexoCompleto = futureVisitas.get();
             config = futureConfig.get();
@@ -131,6 +129,19 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
         }
         executor.shutdown();
 
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
+
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "Muestra Humedad");
     }
 
 
@@ -140,9 +151,9 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
         cargarDatosPrevios();
     }
 
-    private void cargarDatosPrevios(){
+    private void cargarDatosPrevios() {
 
-        if(anexoCompleto == null){
+        if (anexoCompleto == null) {
             Toasty.error(requireActivity(), "No se pudo obtener informacion del anexo", Toast.LENGTH_LONG, true).show();
             return;
         }
@@ -152,11 +163,11 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
 
         et_fecha.setText(Utilidades.fechaActualInvSinHora());
 
-        if(muestraHumedad != null){
+        if (muestraHumedad != null) {
             et_fecha.setText(Utilidades.voltearFechaVista(muestraHumedad.getFecha_muestra()));
             et_muestra_humedad.setText(muestraHumedad.getMuestra());
 
-            if(muestraHumedad.getEstado_documento_muestra() == 1){
+            if (muestraHumedad.getEstado_documento_muestra() == 1) {
                 et_fecha.setEnabled(false);
                 et_muestra_humedad.setEnabled(false);
                 btn_guardar_muestra.setEnabled(false);
@@ -166,20 +177,21 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
     }
 
     private void bind(View view) {
-    et_fecha = view.findViewById(R.id.et_fecha);
-    et_muestra_humedad= view.findViewById(R.id.et_cantidad_machos);
-    tv_numero_anexo= view.findViewById(R.id.tv_numero_anexo);
-    tv_variedad= view.findViewById(R.id.tv_variedad);
-    btn_guardar_muestra= view.findViewById(R.id.btn_guardar_estacion);
-    btn_cancelar_muestra= view.findViewById(R.id.btn_cancelar_estacion);
+        et_fecha = view.findViewById(R.id.et_fecha);
+        et_muestra_humedad = view.findViewById(R.id.et_cantidad_machos);
+        tv_numero_anexo = view.findViewById(R.id.tv_numero_anexo);
+        tv_variedad = view.findViewById(R.id.tv_variedad);
+        btn_guardar_muestra = view.findViewById(R.id.btn_guardar_estacion);
+        btn_cancelar_muestra = view.findViewById(R.id.btn_cancelar_estacion);
 
 
-    et_fecha.setOnFocusChangeListener((v, hasFocus) -> { if(hasFocus) Utilidades.levantarFecha(et_fecha, requireActivity()); });
-    et_fecha.setOnClickListener(v -> Utilidades.levantarFecha(et_fecha, requireActivity()));
+        et_fecha.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) Utilidades.levantarFecha(et_fecha, requireActivity());
+        });
+        et_fecha.setOnClickListener(v -> Utilidades.levantarFecha(et_fecha, requireActivity()));
 
-    btn_guardar_muestra.setOnClickListener(view1 -> showAlertForConfirmarGuardar());
-    btn_cancelar_muestra.setOnClickListener(view1 -> activity.onBackPressed());
-
+        btn_guardar_muestra.setOnClickListener(view1 -> showAlertForConfirmarGuardar());
+        btn_cancelar_muestra.setOnClickListener(view1 -> activity.onBackPressed());
 
 
         et_muestra_humedad.addTextChangedListener(new TextWatcher() {
@@ -198,7 +210,7 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
 
                 Matcher match = pt.matcher(s.toString());
 
-                if(!match.matches()){
+                if (!match.matches()) {
                     et_muestra_humedad.setError("Debe ingresar un numero valido con maximo 2 decimales");
                 }
             }
@@ -207,19 +219,19 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
 
     private void onSave(int estado) {
 
-        if(et_fecha.getText().toString().isEmpty() || et_muestra_humedad.getText().toString().isEmpty()){
+        if (et_fecha.getText().toString().isEmpty() || et_muestra_humedad.getText().toString().isEmpty()) {
             Toasty.error(requireActivity(), "Debe completar todos los campos antes de guardar", Toast.LENGTH_LONG, true).show();
             return;
         }
 
         Matcher match = pt.matcher(et_muestra_humedad.getText().toString());
 
-        if(!match.matches()){
+        if (!match.matches()) {
             Toasty.error(requireActivity(), "Debe ingresar un numero valido con maximo 2 decimales", Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        if(Double.parseDouble(et_muestra_humedad.getText().toString())>999999999.99){
+        if (Double.parseDouble(et_muestra_humedad.getText().toString()) > 999999999.99) {
             Toasty.error(requireActivity(), "No puede ser mayor al numero 999999999.99", Toast.LENGTH_LONG, true).show();
             return;
         }
@@ -227,13 +239,13 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
 
-            MuestraHumedad muestraHumedadInsert  = new MuestraHumedad();
+            MuestraHumedad muestraHumedadInsert = new MuestraHumedad();
             muestraHumedadInsert.setMuestra(et_muestra_humedad.getText().toString());
             muestraHumedadInsert.setFecha_muestra(Utilidades.voltearFechaBD(et_fecha.getText().toString()));
             muestraHumedadInsert.setEstado_sincronizacion_muestrao(0);
             muestraHumedadInsert.setEstado_documento_muestra(estado);
 
-            if(muestraHumedad != null){
+            if (muestraHumedad != null) {
                 muestraHumedadInsert.setFecha_crea(muestraHumedad.getFecha_crea());
                 muestraHumedadInsert.setId_user_crea(muestraHumedad.getId_user_crea());
                 muestraHumedadInsert.setId_muestra_humedad(muestraHumedad.getId_muestra_humedad());
@@ -248,7 +260,7 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
                                 .DaoMuestraHumedad()
                                 .updateMuestraHumedad(muestraHumedadInsert)).get();
 
-            }else{
+            } else {
                 muestraHumedadInsert.setFecha_crea(Utilidades.fechaActualConHora());
                 muestraHumedadInsert.setId_user_crea(usuario.getId_usuario());
                 muestraHumedadInsert.setId_ac_muestra_humedad(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
@@ -269,9 +281,8 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
             activity.cambiarFragment(
                     new FragmentListaMuestraHumedad(),
                     Utilidades.FRAGMENT_MUESTRA_HUMEDAD,
-                    R.anim.slide_in_left,R.anim.slide_out_left
+                    R.anim.slide_in_left, R.anim.slide_out_left
             );
-
 
 
         } catch (ExecutionException | InterruptedException e) {
@@ -283,23 +294,25 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
     }
 
 
-    private void showAlertForConfirmarGuardar(){
-        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_estacion,null);
+    private void showAlertForConfirmarGuardar() {
+        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_estacion, null);
 
         RadioGroup grupo_radios_estado = viewInfalted.findViewById(R.id.grupo_radios_estado);
         RadioButton rbtn_guardar = viewInfalted.findViewById(R.id.rbtn_guardar);
         RadioButton rbtn_finalizar = viewInfalted.findViewById(R.id.rbtn_finalizar);
 
 
-        if(muestraHumedad != null){
+        if (muestraHumedad != null) {
             rbtn_guardar.setChecked(muestraHumedad.getEstado_documento_muestra() == 0);
             rbtn_finalizar.setChecked(muestraHumedad.getEstado_documento_muestra() == 1);
         }
 
         final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
-                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> { })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
                 .create();
 
         builder.setOnShowListener(dialog -> {
@@ -307,7 +320,7 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
             Button c = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE);
             b.setOnClickListener(view -> {
 
-                if(!rbtn_guardar.isChecked() && !rbtn_finalizar.isChecked()){
+                if (!rbtn_guardar.isChecked() && !rbtn_finalizar.isChecked()) {
                     Toasty.error(requireActivity(),
                             "Debes seleccionar un estado antes de guardar.",
                             Toast.LENGTH_LONG, true).show();
@@ -322,15 +335,6 @@ public class FragmentNuevaMuestraHumedad extends Fragment {
         });
         builder.setCancelable(false);
         builder.show();
-    }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), "Muestra Humedad");
-        }
     }
 
     @Override

@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,8 +19,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,17 +75,41 @@ public class FragmentAnexoFechas extends Fragment {
 
     private SearchView search_anexo_fecha;
 
+    private ExecutorService executor;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context.toString() + " must be MainActivity");
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        activity = (MainActivity) getActivity();
-        if (activity != null) {
-            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
-        }
+        executor = Executors.newSingleThreadExecutor();
     }
 
+
+    private void ejecutarSeguro(Runnable r) {
+        if (executor == null || executor.isShutdown() || executor.isTerminated()) {
+            executor = Executors.newSingleThreadExecutor();
+        }
+        executor.execute(r);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdown();
+        }
+    }
 
     @Nullable
     @Override
@@ -177,24 +205,26 @@ public class FragmentAnexoFechas extends Fragment {
                 return false;
             }
         });
-    }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_sube_fechas, menu);
-    }
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.menu_sube_fechas, menu);
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_upload_files:
-                prepararSubirFechas();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menu_upload_files) {
+                    prepararSubirFechas();
+                }
+
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
+
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "Anexos Fechas");
+
 
     }
 
@@ -248,7 +278,7 @@ public class FragmentAnexoFechas extends Fragment {
 
     private void prepararSubirFechas() {
 
-        InternetStateClass mm = new InternetStateClass(activity, result -> {
+        new InternetStateClass(activity, (result) -> {
             if (!result) {
                 Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
                 return;
@@ -280,9 +310,7 @@ public class FragmentAnexoFechas extends Fragment {
                     Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
                 }
             });
-
-        }, 1);
-        mm.execute();
+        }, executor, handler).execute();
     }
 
 
@@ -374,12 +402,4 @@ public class FragmentAnexoFechas extends Fragment {
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null) {
-            activity.updateView(getResources().getString(R.string.app_name), "Anexos Fechas");
-        }
-    }
 }

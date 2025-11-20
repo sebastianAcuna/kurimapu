@@ -1,11 +1,12 @@
 package cl.smapdev.curimapu.fragments.checklist;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,13 +18,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -32,18 +34,13 @@ import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.adapters.AsistentesCapacitacionAdapter;
 import cl.smapdev.curimapu.clases.adapters.CamionesLimpiosAdapter;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
-import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
-import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
-import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
 import cl.smapdev.curimapu.clases.tablas.CheckListLimpiezaCamiones;
 import cl.smapdev.curimapu.clases.tablas.ChecklistLimpiezaCamionesDetalle;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
-import cl.smapdev.curimapu.fragments.dialogos.DialogAsistentes;
 import cl.smapdev.curimapu.fragments.dialogos.DialogFirma;
 import cl.smapdev.curimapu.fragments.dialogos.DialogLimpiadorCamion;
 import es.dmoral.toasty.Toasty;
@@ -73,21 +70,29 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
         this.checkListLimpiezaCamiones = checkListLimpiezaCamiones;
     }
 
-    public static FragmentChecklistLimpiezaCamiones newInstance(CheckListLimpiezaCamiones checkListLimpiezaCamiones ){
+    public static FragmentChecklistLimpiezaCamiones newInstance(CheckListLimpiezaCamiones checkListLimpiezaCamiones) {
 
         FragmentChecklistLimpiezaCamiones fs = new FragmentChecklistLimpiezaCamiones();
 
-        fs.setCheckListLimpiezaCamiones( checkListLimpiezaCamiones );
+        fs.setCheckListLimpiezaCamiones(checkListLimpiezaCamiones);
 
         return fs;
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context.toString() + " must be MainActivity");
+        }
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity a = (MainActivity) getActivity();
-        if(a != null) activity = a;
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
     }
 
 
@@ -118,7 +123,6 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
                 MainActivity.myAppDB.myDao().getConfig());
 
 
-
         try {
             anexoCompleto = futureVisitas.get();
             config = futureConfig.get();
@@ -133,6 +137,21 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
         executor.shutdown();
 
         cargarListaAsistentes();
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
+
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "CHECKLIST LIMPIEZA CAMIONES");
+
     }
 
 
@@ -142,9 +161,9 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
         cargarDatosPrevios();
     }
 
-    private void cargarDatosPrevios(){
+    private void cargarDatosPrevios() {
 
-        if(anexoCompleto == null){
+        if (anexoCompleto == null) {
             Toasty.error(requireActivity(), "No se pudo obtener informacion del anexo", Toast.LENGTH_LONG, true).show();
             return;
         }
@@ -155,9 +174,9 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
 
     }
 
-    public void cargarListaAsistentes(){
+    public void cargarListaAsistentes() {
 
-        String claveUnica = (this.checkListLimpiezaCamiones != null ) ? this.checkListLimpiezaCamiones.getClave_unica() : "0";
+        String claveUnica = (this.checkListLimpiezaCamiones != null) ? this.checkListLimpiezaCamiones.getClave_unica() : "0";
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -172,7 +191,7 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
             List<ChecklistLimpiezaCamionesDetalle> details = futureDetails.get();
 
 
-            if(details.size() >= 12){
+            if (details.size() >= 12) {
                 btn_agregar_usuario.setEnabled(false);
             }
             // eliminar asistente
@@ -186,14 +205,14 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
                             ft.remove(prev);
                         }
                         //levantar firma
-                        String etRA = UUID.randomUUID().toString() +".png";
+                        String etRA = UUID.randomUUID().toString() + ".png";
 
                         DialogFirma dialogo = DialogFirma.newInstance(
                                 Utilidades.TIPO_DOCUMENTO_CHECKLIST_LIMPIEZA_CAMIONES,
                                 etRA,
                                 Utilidades.DIALOG_TAG_FIRMA_LIMPIEZA_CAMIONES,
                                 (isSaved, savePath) -> {
-                                    if(isSaved){
+                                    if (isSaved) {
                                         checkList.setFirma_cl_limpieza_camiones_detalle(savePath);
                                         checkList.setEstado_sincronizacion_detalle(0);
                                         ExecutorService executor2 = Executors.newSingleThreadExecutor();
@@ -230,14 +249,16 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
     }
 
 
-    private void showAlertForConfirmarEliminar(ChecklistLimpiezaCamionesDetalle detalle){
-        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_empty,null);
+    private void showAlertForConfirmarEliminar(ChecklistLimpiezaCamionesDetalle detalle) {
+        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_empty, null);
         final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle("Esta seguro?")
-                .setMessage("Esta a punto de eliminar  a "+detalle.getPatente_camion_limpieza_camiones()+ "de la lista de limpieza")
-                .setPositiveButton(getResources().getString(R.string.eliminar), (dialogInterface, i) -> { })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .setMessage("Esta a punto de eliminar  a " + detalle.getPatente_camion_limpieza_camiones() + "de la lista de limpieza")
+                .setPositiveButton(getResources().getString(R.string.eliminar), (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
                 .create();
 
         builder.setOnShowListener(dialog -> {
@@ -263,7 +284,6 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
                 }
 
 
-
             });
             c.setOnClickListener(view -> builder.dismiss());
         });
@@ -271,7 +291,7 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
         builder.show();
     }
 
-    public void bind(View view){
+    public void bind(View view) {
         tv_numero_anexo = view.findViewById(R.id.tv_numero_anexo);
         tv_variedad = view.findViewById(R.id.tv_variedad);
         btn_agregar_usuario = view.findViewById(R.id.btn_agregar_usuario);
@@ -296,7 +316,7 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
 
 
         btn_guardar_cl_siembra.setOnClickListener(view1 -> {
-            String claveUnica = (this.checkListLimpiezaCamiones != null ) ? this.checkListLimpiezaCamiones.getClave_unica() : "0";
+            String claveUnica = (this.checkListLimpiezaCamiones != null) ? this.checkListLimpiezaCamiones.getClave_unica() : "0";
 
             ExecutorService executor = Executors.newSingleThreadExecutor();
             Future<List<ChecklistLimpiezaCamionesDetalle>> futureDetails = executor.submit(() ->
@@ -307,7 +327,7 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
             List<ChecklistLimpiezaCamionesDetalle> details = null;
             try {
                 details = futureDetails.get();
-                if(details.size() <= 0){
+                if (details.size() <= 0) {
                     executor.shutdown();
                     Toasty.warning(requireActivity(), "Debes agregar a lo menos un detalle",
                             Toast.LENGTH_LONG, true).show();
@@ -325,8 +345,8 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
     }
 
 
-    private void showAlertForConfirmarGuardar(){
-        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_checklist,null);
+    private void showAlertForConfirmarGuardar() {
+        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_checklist, null);
 
         RadioGroup grupo_radios_estado = viewInfalted.findViewById(R.id.grupo_radios_estado);
         RadioButton rbtn_activo = viewInfalted.findViewById(R.id.rbtn_activo);
@@ -334,11 +354,11 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
         EditText et_apellido = viewInfalted.findViewById(R.id.et_apellido);
 
 
-        if(checkListLimpiezaCamiones != null){
+        if (checkListLimpiezaCamiones != null) {
 
             et_apellido.setText(checkListLimpiezaCamiones.getApellido_checklist());
 
-            if(checkListLimpiezaCamiones.getEstado_documento() > 0){
+            if (checkListLimpiezaCamiones.getEstado_documento() > 0) {
                 rbtn_activo.setChecked(checkListLimpiezaCamiones.getEstado_documento() == 1);
                 rbtn_pendiente.setChecked(checkListLimpiezaCamiones.getEstado_documento() == 2);
             }
@@ -347,8 +367,10 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
 
         final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
-                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> { })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
                 .create();
 
         builder.setOnShowListener(dialog -> {
@@ -356,7 +378,7 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
             Button c = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE);
             b.setOnClickListener(view -> {
 
-                if((!rbtn_activo.isChecked() && !rbtn_pendiente.isChecked()) || et_apellido.getText().toString().isEmpty() ){
+                if ((!rbtn_activo.isChecked() && !rbtn_pendiente.isChecked()) || et_apellido.getText().toString().isEmpty()) {
                     Toasty.error(requireActivity(),
                             "Debes seleccionar un estado e ingresar una descripcion",
                             Toast.LENGTH_LONG, true).show();
@@ -364,7 +386,7 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
                 }
                 int state = (rbtn_activo.isChecked()) ? 1 : 2;
                 boolean isSaved = onSave(state, et_apellido.getText().toString());
-                if(isSaved) {
+                if (isSaved) {
                     builder.dismiss();
                     activity.onBackPressed();
                 }
@@ -380,7 +402,7 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
 
     private boolean onSave(int state, String apellido) {
 
-        String claveUnica = (this.checkListLimpiezaCamiones != null ) ? this.checkListLimpiezaCamiones.getClave_unica() : "0";
+        String claveUnica = (this.checkListLimpiezaCamiones != null) ? this.checkListLimpiezaCamiones.getClave_unica() : "0";
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -395,7 +417,7 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
             List<ChecklistLimpiezaCamionesDetalle> details = futureDetails.get();
 
 
-            if(details.size() <= 0){
+            if (details.size() <= 0) {
                 executor.shutdown();
                 Toasty.warning(requireActivity(), "Debes agregar a lo menos un detalle",
                         Toast.LENGTH_LONG, true).show();
@@ -414,10 +436,10 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
             cabecera.setId_usuario(usuario.getId_usuario());
 
 
-            if( checkListLimpiezaCamiones == null){
+            if (checkListLimpiezaCamiones == null) {
                 String claveUnicaI = UUID.randomUUID().toString();
 
-                cabecera.setClave_unica( claveUnicaI );
+                cabecera.setClave_unica(claveUnicaI);
                 cabecera.setId_usuario(usuario.getId_usuario());
 
 
@@ -426,8 +448,8 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
                                 .insertLimpiezaCamiones(cabecera)
                 ).get();
 
-            }else{
-                cabecera.setClave_unica( checkListLimpiezaCamiones.getClave_unica() );
+            } else {
+                cabecera.setClave_unica(checkListLimpiezaCamiones.getClave_unica());
                 cabecera.setFecha_hora_mod(Utilidades.fechaActualConHora());
 
                 cabecera.setId_usuario_mod(usuario.getId_usuario());
@@ -457,14 +479,6 @@ public class FragmentChecklistLimpiezaCamiones extends Fragment {
         }
 
 
-
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), "CHECKLIST LIMPIEZA CAMIONES");
-        }
-    }
 }

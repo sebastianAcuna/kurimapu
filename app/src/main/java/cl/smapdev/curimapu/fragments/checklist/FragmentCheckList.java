@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +17,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,12 +61,40 @@ public class FragmentCheckList extends Fragment {
 
     private CheckListAdapter adapter;
 
+    private ExecutorService executors;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context.toString() + " must be MainActivity");
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (executors != null && !executors.isShutdown()) {
+            executors.shutdown();
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity a = (MainActivity) getActivity();
-        if (a != null) activity = a;
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        executors = Executors.newSingleThreadExecutor();
+    }
+
+    private void ejecutarSeguro(Runnable r) {
+        if (executors == null || executors.isShutdown() || executors.isTerminated()) {
+            executors = Executors.newSingleThreadExecutor();
+        }
+        executors.execute(r);
     }
 
     @Nullable
@@ -95,156 +127,128 @@ public class FragmentCheckList extends Fragment {
         bind(view);
 
         cargarLista();
-    }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_sube_fechas, menu);
-    }
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.menu_sube_fechas, menu);
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_upload_files:
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menu_upload_files) {
 
-                ExecutorService executorService = Executors.newSingleThreadExecutor();
-                Future<List<CheckListSiembra>> chkF = executorService.submit(()
-                        -> MainActivity.myAppDB.DaoClSiembra()
-                        .getClSiembraToSync());
+                    ejecutarSeguro(() -> {
+
+                        List<CheckListSiembra> chk = MainActivity.myAppDB.DaoClSiembra()
+                                .getClSiembraToSync();
 
 
-                Future<List<CheckListCosecha>> chkFC = executorService.submit(()
-                        -> MainActivity.myAppDB.DaoCheckListCosecha()
-                        .getClCosechaToSync());
+                        List<CheckListCosecha> chkC = MainActivity.myAppDB.DaoCheckListCosecha()
+                                .getClCosechaToSync();
 
-                Future<List<CheckListCapacitacionSiembra>> checkListCapacitacionSiembraFuture
-                        = executorService.submit(()
-                        -> MainActivity.myAppDB.DaoCheckListCapSiembra()
-                        .getClCapSiembraByEstado(0, Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA));
+                        List<CheckListCapacitacionSiembra> capSiembraCab
+                                = MainActivity.myAppDB.DaoCheckListCapSiembra()
+                                .getClCapSiembraByEstado(0, Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA);
 
-                Future<List<CheckListCapacitacionSiembra>> checkListCapacitacionCosechaFuture
-                        = executorService.submit(()
-                        -> MainActivity.myAppDB.DaoCheckListCapSiembra()
-                        .getClCapSiembraByEstado(0, Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA));
+                        List<CheckListCapacitacionSiembra> capCosechaCab
+                                = MainActivity.myAppDB.DaoCheckListCapSiembra()
+                                .getClCapSiembraByEstado(0, Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA);
 
-                Future<List<CheckListLimpiezaCamiones>> checkLisLimpiezaCamionesFuture
-                        = executorService.submit(()
-                        -> MainActivity.myAppDB.DaoCheckListLimpiezaCamiones()
-                        .getClLimpiezaCamionesByEstado(0));
+                        List<CheckListLimpiezaCamiones> capLimpiezaCamionesCab
+                                = MainActivity.myAppDB.DaoCheckListLimpiezaCamiones()
+                                .getClLimpiezaCamionesByEstado(0);
 
-                Future<List<ChecklistDevolucionSemilla>> checkLisDevolucionSemillaFuture
-                        = executorService.submit(()
-                        -> MainActivity.myAppDB.DaoCheckListDevolucionSemilla()
-                        .getClDevolucionSemillaToSync());
+                        List<ChecklistDevolucionSemilla> chkDS
+                                = MainActivity.myAppDB.DaoCheckListDevolucionSemilla()
+                                .getClDevolucionSemillaToSync();
 
-                try {
+                        if (chk.isEmpty() && chkC.isEmpty() && capSiembraCab.isEmpty() && capCosechaCab.isEmpty() && capLimpiezaCamionesCab.isEmpty() && chkDS.isEmpty()) {
+                            handler.post(() -> {
+                                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                            });
 
-                    List<CheckListSiembra> chk = chkF.get();
+                            return;
+                        }
+                        CheckListRequest chkS = new CheckListRequest();
+                        List<CheckListCapCompleto> chkList = new ArrayList<>();
+                        List<CheckListLimpiezaCamionesCompleto> chkListLimpiezaCamiones = new ArrayList<>();
 
-                    List<CheckListCosecha> chkC = chkFC.get();
-                    List<ChecklistDevolucionSemilla> chkDS = checkLisDevolucionSemillaFuture.get();
+                        if (!capSiembraCab.isEmpty()) {
 
-                    List<CheckListCapacitacionSiembra> capSiembraCab
-                            = checkListCapacitacionSiembraFuture.get();
+                            for (CheckListCapacitacionSiembra clc : capSiembraCab) {
+                                List<CheckListCapacitacionSiembraDetalle> detalle = MainActivity.myAppDB
+                                        .DaoCheckListCapSiembra()
+                                        .getCapSiembraDetallesByPadre(clc.getClave_unica(), Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA);
 
-                    List<CheckListCapacitacionSiembra> capCosechaCab
-                            = checkListCapacitacionCosechaFuture.get();
+                                CheckListCapCompleto completo = new CheckListCapCompleto();
+                                completo.setCabecera(clc);
+                                completo.setDetalles(detalle);
 
-                    List<CheckListLimpiezaCamiones> capLimpiezaCamionesCab
-                            = checkLisLimpiezaCamionesFuture.get();
+                                chkList.add(completo);
+                            }
 
-                    if (chk.size() <= 0 && chkC.size() <= 0 && capSiembraCab.size() <= 0 && capCosechaCab.size() <= 0 && capLimpiezaCamionesCab.size() <= 0 && chkDS.size() <= 0) {
-                        executorService.shutdown();
-                        Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
-                        return true;
-                    }
-
-                    CheckListRequest chkS = new CheckListRequest();
-                    List<CheckListCapCompleto> chkList = new ArrayList<>();
-                    List<CheckListLimpiezaCamionesCompleto> chkListLimpiezaCamiones = new ArrayList<>();
-
-
-                    if (capSiembraCab.size() > 0) {
-
-                        for (CheckListCapacitacionSiembra clc : capSiembraCab) {
-                            List<CheckListCapacitacionSiembraDetalle> detalle =
-                                    executorService.submit(() -> MainActivity.myAppDB
-                                            .DaoCheckListCapSiembra()
-                                            .getCapSiembraDetallesByPadre(clc.getClave_unica(), Utilidades.TIPO_DOCUMENTO_CAPACITACION_SIEMBRA)
-                                    ).get();
-
-                            CheckListCapCompleto completo = new CheckListCapCompleto();
-                            completo.setCabecera(clc);
-                            completo.setDetalles(detalle);
-
-                            chkList.add(completo);
+                            chkS.setCheckListCapCompletos(chkList);
                         }
 
-                        chkS.setCheckListCapCompletos(chkList);
-                    }
+                        if (!capCosechaCab.isEmpty()) {
 
-                    if (capCosechaCab.size() > 0) {
+                            for (CheckListCapacitacionSiembra clc : capCosechaCab) {
+                                List<CheckListCapacitacionSiembraDetalle> detalle = MainActivity.myAppDB
+                                        .DaoCheckListCapSiembra()
+                                        .getCapSiembraDetallesByPadre(clc.getClave_unica(), Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA);
 
-                        for (CheckListCapacitacionSiembra clc : capCosechaCab) {
-                            List<CheckListCapacitacionSiembraDetalle> detalle =
-                                    executorService.submit(() -> MainActivity.myAppDB
-                                            .DaoCheckListCapSiembra()
-                                            .getCapSiembraDetallesByPadre(clc.getClave_unica(), Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA)
-                                    ).get();
+                                CheckListCapCompleto completo = new CheckListCapCompleto();
+                                completo.setCabecera(clc);
+                                completo.setDetalles(detalle);
 
-                            CheckListCapCompleto completo = new CheckListCapCompleto();
-                            completo.setCabecera(clc);
-                            completo.setDetalles(detalle);
+                                chkList.add(completo);
+                            }
 
-                            chkList.add(completo);
+                            chkS.setCheckListCapCompletos(chkList);
                         }
 
-                        chkS.setCheckListCapCompletos(chkList);
-                    }
+                        if (!capLimpiezaCamionesCab.isEmpty()) {
 
-                    if (capLimpiezaCamionesCab.size() > 0) {
+                            for (CheckListLimpiezaCamiones clc : capLimpiezaCamionesCab) {
+                                List<ChecklistLimpiezaCamionesDetalle> detalle = MainActivity.myAppDB
+                                        .DaoCheckListLimpiezaCamiones()
+                                        .getLimpiezaCamionesDetallesByPadre(clc.getClave_unica());
 
-                        for (CheckListLimpiezaCamiones clc : capLimpiezaCamionesCab) {
-                            List<ChecklistLimpiezaCamionesDetalle> detalle =
-                                    executorService.submit(() -> MainActivity.myAppDB
-                                            .DaoCheckListLimpiezaCamiones()
-                                            .getLimpiezaCamionesDetallesByPadre(clc.getClave_unica())
-                                    ).get();
+                                CheckListLimpiezaCamionesCompleto completo = new CheckListLimpiezaCamionesCompleto();
+                                completo.setCabecera(clc);
+                                completo.setDetalles(detalle);
 
-                            CheckListLimpiezaCamionesCompleto completo = new CheckListLimpiezaCamionesCompleto();
-                            completo.setCabecera(clc);
-                            completo.setDetalles(detalle);
-
-                            chkListLimpiezaCamiones.add(completo);
+                                chkListLimpiezaCamiones.add(completo);
+                            }
+                            chkS.setCheckListLimpiezaCamionesCompletos(chkListLimpiezaCamiones);
                         }
-                        chkS.setCheckListLimpiezaCamionesCompletos(chkListLimpiezaCamiones);
-                    }
 
-                    if (chkC.size() > 0) {
-                        chkS.setCheckListCosechas(chkC);
-                    }
-                    if (chkDS.size() > 0) {
-                        chkS.setCheckListDevolucionSemilla(chkDS);
-                    }
+                        if (!chkC.isEmpty()) {
+                            chkS.setCheckListCosechas(chkC);
+                        }
+                        if (!chkDS.isEmpty()) {
+                            chkS.setCheckListDevolucionSemilla(chkDS);
+                        }
 
-                    if (chk.size() > 0) {
-                        chkS.setCheckListSiembras(chk);
-                    }
-                    prepararSubir(chkS);
+                        if (!chk.isEmpty()) {
+                            chkS.setCheckListSiembras(chk);
+                        }
 
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                    executorService.shutdown();
+                        handler.post(() -> prepararSubir(chkS));
+                    });
                 }
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), (anexoCompleto != null)
+                ? " C. virtual Anexo " + anexoCompleto.getAnexoContrato().getAnexo_contrato()
+                : getResources().getString(R.string.subtitles_visit));
 
     }
+
 
     private CheckLists getCheckListLimpiezaCamiones(ExecutorService ex) {
         CheckLists limpiezaCamiones = new CheckLists();
@@ -264,7 +268,7 @@ public class FragmentCheckList extends Fragment {
         try {
 
             clLimpiezaCamiones = clCapSiembraFuture.get();
-            if (clLimpiezaCamiones.size() > 0) {
+            if (!clLimpiezaCamiones.isEmpty()) {
                 List<CheckListDetails> nested = new ArrayList<>();
                 for (CheckListLimpiezaCamiones clLimpCamiones : clLimpiezaCamiones) {
                     CheckListDetails tmp = new CheckListDetails();
@@ -1156,19 +1160,5 @@ public class FragmentCheckList extends Fragment {
 
     private void bind(View view) {
         rv_checklist = view.findViewById(R.id.rv_checklist);
-    }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (activity != null) {
-            activity.updateView(
-                    getResources().getString(R.string.app_name),
-                    (anexoCompleto != null)
-                            ? " C. virtual Anexo " + anexoCompleto.getAnexoContrato().getAnexo_contrato()
-                            : getResources().getString(R.string.subtitles_visit));
-        }
     }
 }

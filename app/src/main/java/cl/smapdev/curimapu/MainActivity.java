@@ -1,29 +1,24 @@
 package cl.smapdev.curimapu;
 
-import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -55,7 +50,7 @@ import cl.smapdev.curimapu.fragments.servidorFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActionBarDrawerToggle toogle;
-    private DrawerLayout drawerLayout;
+    public DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private SharedPreferences shared;
 
@@ -63,11 +58,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale localeToSwitchTo = new Locale("es");
+        Configuration config = newBase.getResources().getConfiguration();
+        config.setLocale(localeToSwitchTo);
+        android.content.Context updatedContext = newBase.createConfigurationContext(config);
+        super.attachBaseContext(updatedContext);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         // Create the dummy account
         myAppDB = Room.databaseBuilder(getApplicationContext(), MyAppBD.class, Utilidades.NOMBRE_DATABASE).allowMainThreadQueries()
-                .addMigrations(Migrations.MIGRATION_1_TO_2).addMigrations(Migrations.MIGRATION_2_TO_3)
+                .addMigrations(Migrations.MIGRATION_1_TO_2)
+                .addMigrations(Migrations.MIGRATION_2_TO_3)
                 .addMigrations(Migrations.MIGRATION_3_TO_4)
                 .addMigrations(Migrations.MIGRATION_4_TO_5)
                 .addMigrations(Migrations.MIGRATION_5_TO_6)
@@ -87,31 +92,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
-            if (!checkPermission()) {
-                requestPermission();
+            if (!Utilidades.checkPermission(this)) {
+                Utilidades.requestPermission(this);
             }
         }
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String ss = prefs.getString("lang", "eng");
-        String languageToLoad;
-        String languageToLoad2 = "";
-        if (ss.equals("eng")) {
-            languageToLoad = "en_US";
-        } else {
-            languageToLoad = "es";
-            languageToLoad2 = "ES";
-        }
-
-        Locale locale = new Locale(languageToLoad, languageToLoad2);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-
-        boolean aa = prefs.getBoolean("tema", false);
-
-        getDelegate().setLocalNightMode((!aa) ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setTheme(R.style.MyTheme_DayNight);
 
         Config config1 = MainActivity.myAppDB.myDao().getConfig();
@@ -153,6 +139,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    Fragment fragment = getVisibleFragment();
+                    if (fragment != null && fragment.getTag() != null) {
+                        switch (fragment.getTag()) {
+                            case Utilidades.FRAGMENT_INICIO:
+                            case Utilidades.FRAGMENT_LOGIN:
+                                salirApp();
+                                break;
+                            case Utilidades.FRAGMENT_CONTRATOS:
+                            case Utilidades.FRAGMENT_LIST_VISITS:
+
+                                preguntarSiQuiereVolver("ATENCION", "SI VUELVES NO GUARDARA LOS CAMBIOS, ESTAS SEGURO QUE DESEAS VOLVER ?");
+
+                                break;
+
+                            case Utilidades.FRAGMENT_CREA_FICHA:
+                                cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_right, R.anim.slide_out_right);
+                                cambiarNavigation(R.id.nv_fichas);
+                                break;
+                            case Utilidades.FRAGMENT_CONFIG:
+                            case Utilidades.FRAGMENT_FICHAS:
+                            case Utilidades.FRAGMENT_VISITAS:
+                            case Utilidades.FRAGMENT_ANEXO_FICHA:
+                                cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_right, R.anim.slide_out_right);
+                                cambiarNavigation(R.id.nv_inicio);
+                                break;
+
+                            case Utilidades.FRAGMENT_CHECKLIST:
+                            case Utilidades.FRAGMENT_ESTACION_FLORACION:
+                            case Utilidades.FRAGMENT_MUESTRA_HUMEDAD:
+                                cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_right, R.anim.slide_out_right);
+                                break;
+                            case Utilidades.FRAGMENT_NUEVA_MUESTRA:
+                                cambiarFragment(new FragmentListaMuestraHumedad(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_right, R.anim.slide_out_right);
+                                break;
+                            case Utilidades.FRAGMENT_CHECKLIST_SIEMBRA:
+                            case Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_SIEMBRA:
+                            case Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_COSECHA:
+                            case Utilidades.FRAGMENT_CHECKLIST_LIMPIEZA_CAMIONES:
+                            case Utilidades.FRAGMENT_CHECKLIST_COSECHA:
+                            case Utilidades.FRAGMENT_CHECKLIST_DEVOLUCION_SEMILLA:
+                                cambiarFragment(new FragmentCheckList(), Utilidades.FRAGMENT_CHECKLIST, R.anim.slide_in_right, R.anim.slide_out_right);
+                                break;
+                            case Utilidades.FRAGMENT_NUEVA_ESTACION:
+                                cambiarFragment(new FragmentListaEstacionFloracion(), Utilidades.FRAGMENT_ESTACION_FLORACION, R.anim.slide_in_right, R.anim.slide_out_right);
+                                break;
+                            default:
+                                setEnabled(false);
+                                getOnBackPressedDispatcher().onBackPressed();
+                                break;
+
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public void cambiarNombreUser(int usuario) {
@@ -192,34 +240,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return null;
     }
 
-
-    private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        int result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        int result3 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED && result3 == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermission() {
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Toast.makeText(this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
-        } else {
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     public void cambiarFragment(Fragment fragment, String tag, int animIn, int animOut) {
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(animIn, animOut)
-
                 .replace(R.id.container, fragment, tag)
                 .commit();
     }
@@ -229,36 +257,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int id = item.getItemId();
 
-        switch (id) {
-            case R.id.nv_inicio:
-                cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
-                break;
-
-            case R.id.nv_fichas:
-                cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_left, R.anim.slide_out_left);
-                break;
-            case R.id.nv_visitas:
-                cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_left, R.anim.slide_out_left);
-                break;
-
-            case R.id.nv_anexo_fecha:
-                cambiarFragment(new FragmentAnexoFechas(), Utilidades.FRAGMENT_ANEXO_FICHA, R.anim.slide_in_left, R.anim.slide_out_left);
-                break;
-
-            case R.id.nv_curiweb:
-                Config conf = MainActivity.myAppDB.myDao().getConfig();
-                Uri uri = Uri.parse("https://curiweb.zproduccion.cl/#/acceso-app?apiKey=" + Utilidades.KEY_EXPORT + "&userId=" + conf.getId_usuario());
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-                break;
-
-            case R.id.nv_salir:
-                if (shared != null) {
-                    shared.edit().remove(Utilidades.SHARED_USER).apply();
-                    cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_LOGIN, R.anim.slide_in_right, R.anim.slide_out_right);
-                }
-
-                break;
+        if (id == R.id.nv_inicio) {
+            cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
+        } else if (id == R.id.nv_fichas) {
+            cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_left, R.anim.slide_out_left);
+        } else if (id == R.id.nv_visitas) {
+            cambiarFragment(new FragmentVisitas(), Utilidades.FRAGMENT_VISITAS, R.anim.slide_in_left, R.anim.slide_out_left);
+        } else if (id == R.id.nv_anexo_fecha) {
+            cambiarFragment(new FragmentAnexoFechas(), Utilidades.FRAGMENT_ANEXO_FICHA, R.anim.slide_in_left, R.anim.slide_out_left);
+        } else if (id == R.id.nv_curiweb) {
+            Config conf = MainActivity.myAppDB.myDao().getConfig();
+            Uri uri = Uri.parse("https://curiweb.zproduccion.cl/#/acceso-app?apiKey=" + Utilidades.KEY_EXPORT + "&userId=" + conf.getId_usuario());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        } else if (id == R.id.nv_salir) {
+            if (shared != null) {
+                shared.edit().remove(Utilidades.SHARED_USER).apply();
+                cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_LOGIN, R.anim.slide_in_right, R.anim.slide_out_right);
+            }
         }
 
         navigationView.setCheckedItem(id);
@@ -283,78 +299,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void restart() {
         recreate();
-    }
-
-    public void setLocale(Locale locale) {
-
-        Resources resources = getResources();
-        Configuration conf = resources.getConfiguration();
-        conf.locale = locale;
-        resources.updateConfiguration(conf, resources.getDisplayMetrics());
-
-        if (!locale.equals(Locale.getDefault())) {
-            restart();
-        }
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            Fragment fragment = getVisibleFragment();
-            if (fragment != null && fragment.getTag() != null) {
-                switch (fragment.getTag()) {
-                    case Utilidades.FRAGMENT_INICIO:
-                    case Utilidades.FRAGMENT_LOGIN:
-                        salirApp();
-                        break;
-                    case Utilidades.FRAGMENT_CONTRATOS:
-                    case Utilidades.FRAGMENT_LIST_VISITS:
-
-                        preguntarSiQuiereVolver("ATENCION", "SI VUELVES NO GUARDARA LOS CAMBIOS, ESTAS SEGURO QUE DESEAS VOLVER ?");
-
-                        break;
-
-                    case Utilidades.FRAGMENT_CREA_FICHA:
-                        cambiarFragment(new FragmentFichas(), Utilidades.FRAGMENT_FICHAS, R.anim.slide_in_right, R.anim.slide_out_right);
-                        cambiarNavigation(R.id.nv_fichas);
-                        break;
-                    case Utilidades.FRAGMENT_CONFIG:
-                    case Utilidades.FRAGMENT_FICHAS:
-                    case Utilidades.FRAGMENT_VISITAS:
-                    case Utilidades.FRAGMENT_ANEXO_FICHA:
-                        cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_right, R.anim.slide_out_right);
-                        cambiarNavigation(R.id.nv_inicio);
-                        break;
-
-                    case Utilidades.FRAGMENT_CHECKLIST:
-                    case Utilidades.FRAGMENT_ESTACION_FLORACION:
-                    case Utilidades.FRAGMENT_MUESTRA_HUMEDAD:
-                        cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_right, R.anim.slide_out_right);
-                        break;
-                    case Utilidades.FRAGMENT_NUEVA_MUESTRA:
-                        cambiarFragment(new FragmentListaMuestraHumedad(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_right, R.anim.slide_out_right);
-                        break;
-                    case Utilidades.FRAGMENT_CHECKLIST_SIEMBRA:
-                    case Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_SIEMBRA:
-                    case Utilidades.FRAGMENT_CHECKLIST_CAPACITACION_COSECHA:
-                    case Utilidades.FRAGMENT_CHECKLIST_LIMPIEZA_CAMIONES:
-                    case Utilidades.FRAGMENT_CHECKLIST_COSECHA:
-                    case Utilidades.FRAGMENT_CHECKLIST_DEVOLUCION_SEMILLA:
-                        cambiarFragment(new FragmentCheckList(), Utilidades.FRAGMENT_CHECKLIST, R.anim.slide_in_right, R.anim.slide_out_right);
-                        break;
-                    case Utilidades.FRAGMENT_NUEVA_ESTACION:
-                        cambiarFragment(new FragmentListaEstacionFloracion(), Utilidades.FRAGMENT_ESTACION_FLORACION, R.anim.slide_in_right, R.anim.slide_out_right);
-                        break;
-                    default:
-                        super.onBackPressed();
-                        break;
-
-                }
-            }
-        }
     }
 
     public void preguntarSiQuiereVolver(String title, String message) {

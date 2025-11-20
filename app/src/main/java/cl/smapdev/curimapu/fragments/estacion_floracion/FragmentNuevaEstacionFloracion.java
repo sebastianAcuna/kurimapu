@@ -3,7 +3,12 @@ package cl.smapdev.curimapu.fragments.estacion_floracion;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,8 +20,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +50,7 @@ import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.fragments.dialogos.DialogEstaciones;
 import es.dmoral.toasty.Toasty;
 
-public class FragmentNuevaEstacionFloracion  extends Fragment {
+public class FragmentNuevaEstacionFloracion extends Fragment {
 
 
     private EstacionFloracionCompleto estacionFloracionCompleto;
@@ -67,24 +74,59 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
     private TextView tv_variedad;
     private TextView tv_resumen;
 
+    ExecutorService executors = Executors.newSingleThreadExecutor();
+    Handler handler = new Handler(Looper.getMainLooper());
+
     public void setEstacionFloracionCompleto(EstacionFloracionCompleto estacionFloracionCompleto) {
         this.estacionFloracionCompleto = estacionFloracionCompleto;
     }
 
-    public static FragmentNuevaEstacionFloracion newInstance(EstacionFloracionCompleto estacionFloracionCompleto ){
+    public static FragmentNuevaEstacionFloracion newInstance(EstacionFloracionCompleto estacionFloracionCompleto) {
         FragmentNuevaEstacionFloracion fs = new FragmentNuevaEstacionFloracion();
-        fs.setEstacionFloracionCompleto( estacionFloracionCompleto );
+        fs.setEstacionFloracionCompleto(estacionFloracionCompleto);
         return fs;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context + " must be MainActivity");
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity a = (MainActivity) getActivity();
-        if(a != null) activity = a;
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+
+        executors.execute(() -> {
+            anexoCompleto = MainActivity
+                    .myAppDB
+                    .myDao()
+                    .getAnexoCompletoById(
+                            prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")
+                    );
+
+            config = MainActivity.myAppDB.myDao().getConfig();
+            usuario = MainActivity.myAppDB.myDao().getUsuarioById(config.getId_usuario());
+
+            handler.post(this::cargarListaEstaciones);
+
+        });
+
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (executors != null && !executors.isShutdown()) {
+            executors.shutdown();
+        }
+    }
+
 
     @Nullable
     @Override
@@ -97,42 +139,25 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         bind(view);
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
 
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<AnexoCompleto> futureVisitas = executor.submit(() ->
-                MainActivity
-                        .myAppDB
-                        .myDao()
-                        .getAnexoCompletoById(
-                                prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")
-                        )
-        );
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "Estacion Floracion");
 
-        Future<Config> futureConfig = executor.submit(() ->
-                MainActivity.myAppDB.myDao().getConfig());
-
-
-
-        try {
-            anexoCompleto = futureVisitas.get();
-            config = futureConfig.get();
-
-            Future<Usuario> usuarioFuture = executor.submit(() ->
-                    MainActivity.myAppDB.myDao().getUsuarioById(config.getId_usuario()));
-
-            usuario = usuarioFuture.get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        executor.shutdown();
-
-        cargarListaEstaciones();
     }
 
-    public void cargarListaEstaciones(){
+    public void cargarListaEstaciones() {
 
-        String claveUnica = (estacionFloracionCompleto != null ) ? estacionFloracionCompleto.getEstacionFloracion().clave_unica_floracion : "0";
+        String claveUnica = (estacionFloracionCompleto != null) ? estacionFloracionCompleto.getEstacionFloracion().clave_unica_floracion : "0";
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
         Future<List<EstacionFloracionEstaciones>> futureDetails = executor.submit(() ->
@@ -148,7 +173,7 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
 
             List<EstacionesCompletas> estacionesCompletas = new ArrayList<>();
 
-            for (EstacionFloracionEstaciones est : details){
+            for (EstacionFloracionEstaciones est : details) {
                 EstacionesCompletas estCompletas = new EstacionesCompletas();
                 estCompletas.setEstaciones(est);
 
@@ -166,14 +191,14 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
                     estacionesCompletas,
                     this::showAlertForConfirmarEliminar,
                     (v, update) -> {
-                        if(et_cantidad_machos.getText().toString().isEmpty()){
+                        if (et_cantidad_machos.getText().toString().isEmpty()) {
                             Toasty.error(requireContext(), "Debes ingresar la cantidad de machos antes de agregar las muestras", Toast.LENGTH_LONG, true).show();
                             return;
                         }
                         int cantidadMachos = 0;
-                        try{
+                        try {
                             cantidadMachos = Integer.parseInt(et_cantidad_machos.getText().toString());
-                        }catch (NumberFormatException e){
+                        } catch (NumberFormatException e) {
                             cantidadMachos = 0;
                         }
 
@@ -185,7 +210,7 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
                             ft.remove(prev);
                         }
 
-                        DialogEstaciones dialogo = DialogEstaciones.newInstance( ((estacionFloracionCompleto != null) ? estacionFloracionCompleto.getEstacionFloracion() : null),update,cantidadMachos,  saved -> cargarListaEstaciones());
+                        DialogEstaciones dialogo = DialogEstaciones.newInstance(((estacionFloracionCompleto != null) ? estacionFloracionCompleto.getEstacionFloracion() : null), update, cantidadMachos, saved -> cargarListaEstaciones());
                         dialogo.show(ft, Utilidades.DIALOG_TAG_ESTACIONES);
                     },
                     requireActivity(),
@@ -206,7 +231,6 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -214,9 +238,9 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
         actualizarResumen();
     }
 
-    private void cargarDatosPrevios(){
+    private void cargarDatosPrevios() {
 
-        if(anexoCompleto == null){
+        if (anexoCompleto == null) {
             Toasty.error(requireActivity(), "No se pudo obtener informacion del anexo", Toast.LENGTH_LONG, true).show();
             return;
         }
@@ -226,11 +250,11 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
 
         et_fecha.setText(Utilidades.fechaActualInvSinHora());
 
-        if(estacionFloracionCompleto != null){
+        if (estacionFloracionCompleto != null) {
             et_fecha.setText(Utilidades.voltearFechaVista(estacionFloracionCompleto.getEstacionFloracion().getFecha()));
             et_cantidad_machos.setText(String.valueOf(estacionFloracionCompleto.getEstacionFloracion().getCantidad_machos()));
 
-            if(estacionFloracionCompleto.getEstacionFloracion().getEstado_documento() == 1){
+            if (estacionFloracionCompleto.getEstacionFloracion().getEstado_documento() == 1) {
                 et_fecha.setEnabled(false);
                 et_cantidad_machos.setEnabled(false);
                 btn_agregar_muestra.setEnabled(false);
@@ -244,56 +268,58 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
 
     private void bind(View view) {
 
-    lista_muestra_estaciones = view.findViewById(R.id.lista_muestra_estaciones);
-    et_fecha = view.findViewById(R.id.et_fecha);
-    et_cantidad_machos= view.findViewById(R.id.et_cantidad_machos);
-    tv_numero_anexo= view.findViewById(R.id.tv_numero_anexo);
-    tv_variedad= view.findViewById(R.id.tv_variedad);
-        tv_resumen= view.findViewById(R.id.tv_resumen);
-    btn_agregar_muestra= view.findViewById(R.id.btn_agregar_muestra);
-    btn_guardar_estacion= view.findViewById(R.id.btn_guardar_estacion);
-    btn_cancelar_estacion= view.findViewById(R.id.btn_cancelar_estacion);
+        lista_muestra_estaciones = view.findViewById(R.id.lista_muestra_estaciones);
+        et_fecha = view.findViewById(R.id.et_fecha);
+        et_cantidad_machos = view.findViewById(R.id.et_cantidad_machos);
+        tv_numero_anexo = view.findViewById(R.id.tv_numero_anexo);
+        tv_variedad = view.findViewById(R.id.tv_variedad);
+        tv_resumen = view.findViewById(R.id.tv_resumen);
+        btn_agregar_muestra = view.findViewById(R.id.btn_agregar_muestra);
+        btn_guardar_estacion = view.findViewById(R.id.btn_guardar_estacion);
+        btn_cancelar_estacion = view.findViewById(R.id.btn_cancelar_estacion);
 
 
-    et_fecha.setOnFocusChangeListener((v, hasFocus) -> { if(hasFocus) Utilidades.levantarFecha(et_fecha, requireActivity()); });
-    et_fecha.setOnClickListener(v -> Utilidades.levantarFecha(et_fecha, requireActivity()));
+        et_fecha.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) Utilidades.levantarFecha(et_fecha, requireActivity());
+        });
+        et_fecha.setOnClickListener(v -> Utilidades.levantarFecha(et_fecha, requireActivity()));
 
-    btn_agregar_muestra.setOnClickListener(view1 -> {
+        btn_agregar_muestra.setOnClickListener(view1 -> {
 
-        if(et_cantidad_machos.getText().toString().isEmpty()){
-            Toasty.error(requireContext(), "Debes ingresar la cantidad de machos antes de agregar las muestras", Toast.LENGTH_LONG, true).show();
-            return;
-        }
+            if (et_cantidad_machos.getText().toString().isEmpty()) {
+                Toasty.error(requireContext(), "Debes ingresar la cantidad de machos antes de agregar las muestras", Toast.LENGTH_LONG, true).show();
+                return;
+            }
 
-        int cantidadMachos = getCantidadMachos();
+            int cantidadMachos = getCantidadMachos();
 
-        if(cantidadMachos == 0){
-            Toasty.error(requireContext(), "La cantidad de machos no puede ser 0", Toast.LENGTH_LONG, true).show();
-            return;
-        }
+            if (cantidadMachos == 0) {
+                Toasty.error(requireContext(), "La cantidad de machos no puede ser 0", Toast.LENGTH_LONG, true).show();
+                return;
+            }
 
-        MainActivity.myAppDB.DaoEstacionFloracion().deleteDetalleSuelto();
+            MainActivity.myAppDB.DaoEstacionFloracion().deleteDetalleSuelto();
 
-        FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-        Fragment prev = requireActivity()
-                .getSupportFragmentManager()
-                .findFragmentByTag(Utilidades.DIALOG_TAG_ESTACIONES);
-        if (prev != null) {
-            ft.remove(prev);
-        }
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            Fragment prev = requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(Utilidades.DIALOG_TAG_ESTACIONES);
+            if (prev != null) {
+                ft.remove(prev);
+            }
 
-        DialogEstaciones dialogo = DialogEstaciones.newInstance( ((estacionFloracionCompleto != null) ? estacionFloracionCompleto.getEstacionFloracion() : null),null,cantidadMachos,  saved -> cargarListaEstaciones());
-        dialogo.show(ft, Utilidades.DIALOG_TAG_ESTACIONES);
-    });
+            DialogEstaciones dialogo = DialogEstaciones.newInstance(((estacionFloracionCompleto != null) ? estacionFloracionCompleto.getEstacionFloracion() : null), null, cantidadMachos, saved -> cargarListaEstaciones());
+            dialogo.show(ft, Utilidades.DIALOG_TAG_ESTACIONES);
+        });
 
 
-    btn_guardar_estacion.setOnClickListener(view1 -> showAlertForConfirmarGuardar());
-    btn_cancelar_estacion.setOnClickListener(view1 -> activity.onBackPressed());
+        btn_guardar_estacion.setOnClickListener(view1 -> showAlertForConfirmarGuardar());
+        btn_cancelar_estacion.setOnClickListener(view1 -> activity.onBackPressed());
     }
 
     private void onSave(int estado) {
 
-        if(et_fecha.getText().toString().isEmpty() || et_cantidad_machos.getText().toString().isEmpty()){
+        if (et_fecha.getText().toString().isEmpty() || et_cantidad_machos.getText().toString().isEmpty()) {
             Toasty.error(requireActivity(), "Debe completar todos los campos antes de guardar", Toast.LENGTH_LONG, true).show();
             return;
         }
@@ -301,12 +327,12 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
 
         int cantidadMachos = getCantidadMachos();
 
-        if(cantidadMachos == 0) {
+        if (cantidadMachos == 0) {
             Toasty.error(requireActivity(), "La cantidad de machos no puede ser 0", Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        String claveUnica = (estacionFloracionCompleto != null ) ? estacionFloracionCompleto.getEstacionFloracion().clave_unica_floracion : "0";
+        String claveUnica = (estacionFloracionCompleto != null) ? estacionFloracionCompleto.getEstacionFloracion().clave_unica_floracion : "0";
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
         Future<List<EstacionFloracionEstaciones>> futureDetails = executor.submit(() ->
@@ -318,15 +344,13 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
         try {
             List<EstacionFloracionEstaciones> details = futureDetails.get();
 
-            if(details.size() == 0){
+            if (details.size() == 0) {
                 Toasty.error(requireActivity(), "Debe tener al menos una estacion antes de guardar", Toast.LENGTH_LONG, true).show();
                 return;
             }
 
 
-
-
-            EstacionFloracion estacionFloracionInsert  = new EstacionFloracion();
+            EstacionFloracion estacionFloracionInsert = new EstacionFloracion();
             estacionFloracionInsert.setCantidad_machos(cantidadMachos);
             estacionFloracionInsert.setFecha(Utilidades.voltearFechaBD(et_fecha.getText().toString()));
             estacionFloracionInsert.setEstado_sincronizacion(0);
@@ -334,7 +358,7 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
             estacionFloracionInsert.setEstado_documento(estado);
 
 
-            if(estacionFloracionCompleto != null){
+            if (estacionFloracionCompleto != null) {
                 estacionFloracionInsert.setFecha_crea(estacionFloracionCompleto.getEstacionFloracion().getFecha_crea());
                 estacionFloracionInsert.setId_user_crea(estacionFloracionCompleto.getEstacionFloracion().getId_user_crea());
 
@@ -351,8 +375,7 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
                                 .updateEstacionCabecera(estacionFloracionInsert)).get();
 
 
-
-            }else{
+            } else {
                 estacionFloracionInsert.setFecha_crea(Utilidades.fechaActualConHora());
                 estacionFloracionInsert.setId_user_crea(usuario.getId_usuario());
                 estacionFloracionInsert.setId_ac_floracion(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
@@ -365,7 +388,6 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
                                 .insertEstacionCabecera(estacionFloracionInsert)).get();
 
             }
-
 
 
             executor.submit(() ->
@@ -387,9 +409,8 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
             activity.cambiarFragment(
                     new FragmentListaEstacionFloracion(),
                     Utilidades.FRAGMENT_ESTACION_FLORACION,
-                    R.anim.slide_in_left,R.anim.slide_out_left
+                    R.anim.slide_in_left, R.anim.slide_out_left
             );
-
 
 
         } catch (ExecutionException | InterruptedException e) {
@@ -401,14 +422,16 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
     }
 
 
-    private void showAlertForConfirmarEliminar(View views,  EstacionesCompletas detalle){
-        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_empty,null);
+    private void showAlertForConfirmarEliminar(View views, EstacionesCompletas detalle) {
+        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_empty, null);
         final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle("Esta seguro?")
                 .setMessage("Esta a punto de eliminar  esta estacion.")
-                .setPositiveButton(getResources().getString(R.string.eliminar), (dialogInterface, i) -> { })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .setPositiveButton(getResources().getString(R.string.eliminar), (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
                 .create();
 
         builder.setOnShowListener(dialog -> {
@@ -416,25 +439,17 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
             Button c = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE);
             b.setOnClickListener(view -> {
 
-                ExecutorService executorsDelete = Executors.newSingleThreadExecutor();
+                executors.execute(() -> {
+                    MainActivity.myAppDB.DaoEstacionFloracion().deleteDetalles(detalle.getDetalles());
+                    MainActivity.myAppDB.DaoEstacionFloracion().deleteEstacion(detalle.getEstaciones());
+                    
+                    handler.post(() -> {
+                        Toasty.success(requireActivity(), "Eliminado con exito",
+                                Toast.LENGTH_LONG, true).show();
+                        cargarListaEstaciones();
+                    });
 
-                try {
-                    executorsDelete.submit(() -> MainActivity.myAppDB.DaoEstacionFloracion().deleteDetalles(detalle.getDetalles())).get();
-                    executorsDelete.submit(() -> MainActivity.myAppDB.DaoEstacionFloracion().deleteEstacion(detalle.getEstaciones())).get();
-                    executorsDelete.shutdown();
-                    Toasty.success(requireActivity(), "Eliminado con exito",
-                            Toast.LENGTH_LONG, true).show();
-                    cargarListaEstaciones();
-                    builder.dismiss();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                    executorsDelete.shutdown();
-                    Toasty.warning(requireActivity(), "Error al eliminar",
-                            Toast.LENGTH_LONG, true).show();
-                }
-
-
-
+                });
             });
             c.setOnClickListener(view -> builder.dismiss());
         });
@@ -443,60 +458,46 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
     }
 
 
-    private void actualizarResumen(){
+    private void actualizarResumen() {
 
-        if(et_cantidad_machos.getText().toString().isEmpty()) return;
+        if (et_cantidad_machos.getText().toString().isEmpty()) return;
 
-        String claveUnica = (estacionFloracionCompleto != null ) ? estacionFloracionCompleto.getEstacionFloracion().clave_unica_floracion : "0";
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        String claveUnica = (estacionFloracionCompleto != null) ? estacionFloracionCompleto.getEstacionFloracion().clave_unica_floracion : "0";
 
-        List<EstacionesCompletas> estacionesCompletasList = new ArrayList<>();
+        executors.execute(() -> {
+            List<EstacionesCompletas> estacionesCompletasList = new ArrayList<>();
 
-        Future<List<EstacionFloracionEstaciones>> futureDetails = executor.submit(() ->
-                MainActivity
-                        .myAppDB
-                        .DaoEstacionFloracion()
-                        .getEstacionesByPadre(claveUnica));
+            List<EstacionFloracionEstaciones> details = MainActivity
+                    .myAppDB
+                    .DaoEstacionFloracion()
+                    .getEstacionesByPadre(claveUnica);
 
-        try {
-            List<EstacionFloracionEstaciones> details = futureDetails.get();
-
-            for (EstacionFloracionEstaciones estaciones : details){
+            for (EstacionFloracionEstaciones estaciones : details) {
 
                 EstacionesCompletas estacionesCompleta = new EstacionesCompletas();
-
-
-                List<EstacionFloracionDetalle> detalles = executor.submit(() ->
-                        MainActivity
-                                .myAppDB
-                                .DaoEstacionFloracion()
-                                .getDetalleByClaveEstacion(estaciones.getClave_unica_floracion_estaciones())).get();
+                List<EstacionFloracionDetalle> detalles = MainActivity
+                        .myAppDB
+                        .DaoEstacionFloracion()
+                        .getDetalleByClaveEstacion(estaciones.getClave_unica_floracion_estaciones());
 
                 estacionesCompleta.setEstaciones(estaciones);
                 estacionesCompleta.setDetalles(detalles);
-
                 estacionesCompletasList.add(estacionesCompleta);
             }
-
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-        int cantidadMachosInput = getCantidadMachos();
-
-        String resultado = Utilidades.calculaPromediosEstacionFloracion(estacionesCompletasList, cantidadMachosInput, "\n");
-        tv_resumen.setText(resultado);
-
+            int cantidadMachosInput = getCantidadMachos();
+            String resultado = Utilidades.calculaPromediosEstacionFloracion(estacionesCompletasList, cantidadMachosInput, "\n");
+            handler.post(() -> {
+                tv_resumen.setText(resultado);
+            });
+        });
     }
 
-    private int getCantidadMachos(){
+    private int getCantidadMachos() {
 
         int cantidadMachosInput = 0;
         try {
             cantidadMachosInput = Integer.parseInt(et_cantidad_machos.getText().toString());
-        }catch (NumberFormatException e){
-            cantidadMachosInput = 0;
+        } catch (NumberFormatException ignored) {
         }
 
         return cantidadMachosInput;
@@ -504,23 +505,25 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
     }
 
 
-    private void showAlertForConfirmarGuardar(){
-        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_estacion,null);
+    private void showAlertForConfirmarGuardar() {
+        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_estacion, null);
 
         RadioGroup grupo_radios_estado = viewInfalted.findViewById(R.id.grupo_radios_estado);
         RadioButton rbtn_guardar = viewInfalted.findViewById(R.id.rbtn_guardar);
         RadioButton rbtn_finalizar = viewInfalted.findViewById(R.id.rbtn_finalizar);
 
 
-        if(estacionFloracionCompleto != null){
+        if (estacionFloracionCompleto != null) {
             rbtn_guardar.setChecked(estacionFloracionCompleto.getEstacionFloracion().getEstado_documento() == 0);
             rbtn_finalizar.setChecked(estacionFloracionCompleto.getEstacionFloracion().getEstado_documento() == 1);
         }
 
         final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
-                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> { })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
                 .create();
 
         builder.setOnShowListener(dialog -> {
@@ -528,7 +531,7 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
             Button c = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE);
             b.setOnClickListener(view -> {
 
-                if(!rbtn_guardar.isChecked() && !rbtn_finalizar.isChecked()){
+                if (!rbtn_guardar.isChecked() && !rbtn_finalizar.isChecked()) {
                     Toasty.error(requireActivity(),
                             "Debes seleccionar un estado antes de guardar.",
                             Toast.LENGTH_LONG, true).show();
@@ -542,15 +545,6 @@ public class FragmentNuevaEstacionFloracion  extends Fragment {
         });
         builder.setCancelable(false);
         builder.show();
-    }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), "Estacion Floracion");
-        }
     }
 
     @Override

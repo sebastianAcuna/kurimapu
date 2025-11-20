@@ -1,15 +1,18 @@
 package cl.smapdev.curimapu.clases.utilidades;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -23,7 +26,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.exifinterface.media.ExifInterface;
 
 import java.io.ByteArrayOutputStream;
@@ -43,13 +50,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.relaciones.EstacionesCompletas;
 import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
 
 public class Utilidades {
 
-    public static final String APPLICATION_VERSION = "5.4.0006";
+    public static final String APPLICATION_VERSION = "6.0.18112025";
 
     public static final String FRAGMENT_INICIO = "fragmental_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -93,7 +101,8 @@ public class Utilidades {
 
     public static final String KEY_EXPORT = "9aB4c5D7eF";
     public static final String IP_PRODUCCION = "192.168.1.42";
-    //    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
+    //    public static final String IP_PRODUCCION = "curiexport.zpruebas.cl";
+//    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
 //    public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
     public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu";
 
@@ -635,6 +644,54 @@ public class Utilidades {
         return valor.substring(0, 1);
     }
 
+    public static boolean checkPermission(Context context) {
+        // Permisos comunes para todas las versiones
+        int cameraPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA);
+        int fineLocationPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
+        int coarseLocationPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        boolean commonPermissionsGranted = cameraPermission == PackageManager.PERMISSION_GRANTED &&
+                fineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                coarseLocationPermission == PackageManager.PERMISSION_GRANTED;
+
+        // A partir de Android 13 (TIRAMISU), se usan los permisos de medios granulares
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            int readImagesPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES);
+            return commonPermissionsGranted && readImagesPermission == PackageManager.PERMISSION_GRANTED;
+        }
+        // Para versiones anteriores a Android 10, WRITE_EXTERNAL_STORAGE sigue siendo relevante
+        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            int storagePermission = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            return commonPermissionsGranted && storagePermission == PackageManager.PERMISSION_GRANTED;
+        }
+
+        // Entre Android 10 y 12, las apps no necesitan permisos para escribir en su propio directorio,
+        // por lo que solo verificamos los permisos comunes.
+        return commonPermissionsGranted;
+    }
+
+    public static void requestPermission(Activity activity) {
+        List<String> permissionsToRequest = new ArrayList<>();
+
+        // Permisos comunes que siempre se solicitan
+        permissionsToRequest.add(Manifest.permission.CAMERA);
+        permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        permissionsToRequest.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        // Lógica de permisos de almacenamiento basada en la versión de Android
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Para Android 13 y superior, solicitar READ_MEDIA_IMAGES si es necesario
+            permissionsToRequest.add(Manifest.permission.READ_MEDIA_IMAGES);
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            // Para versiones anteriores a Android 10, solicitar el permiso de escritura antiguo
+            permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        // No se añade ningún permiso de almacenamiento para Android 10, 11 y 12,
+        // ya que el Scoped Storage permite a la app escribir en su directorio específico sin permisos.
+
+        ActivityCompat.requestPermissions(activity, permissionsToRequest.toArray(new String[0]), 100);
+    }
+
 
     public static String sanitizarString(String texto, String caracteresDisponibles) {
 
@@ -648,6 +705,37 @@ public class Utilidades {
             }
         }
         return filteredText.toString();
+    }
+
+    public static void setToolbar(MainActivity activity, View view, String title, String subTitle) {
+
+        androidx.appcompat.widget.Toolbar toolbar = view.findViewById(R.id.toolbar);
+        activity.setSupportActionBar(toolbar);
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            // 4. Muestra el botón de "hacia atrás" o el ícono de hamburguesa.
+            //    Esto le indica al usuario que puede navegar hacia arriba/atrás.
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+
+            // 5. Establece el título que desees para esta pantalla.
+            actionBar.setTitle(title);
+            if (!subTitle.isEmpty()) {
+                actionBar.setSubtitle(subTitle);
+            }
+
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    activity,
+                    activity.drawerLayout, // Accede al drawerLayout de MainActivity
+                    toolbar,
+                    R.string.open_drawer,
+                    R.string.close_drawer
+            );
+
+            activity.drawerLayout.addDrawerListener(toggle);
+            toggle.syncState();
+        }
+
     }
 
 

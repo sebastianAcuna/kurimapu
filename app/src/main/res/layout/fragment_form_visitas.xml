@@ -323,76 +323,105 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
 
-                <TextView
-                    android:id="@+id/lbl_fecha_estimada"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/contenedor_fecha_estimada"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="Fecha Estimada Cosecha"
-                    android:layout_marginTop="@dimen/padding_small"
-                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ti_percent_humedad" />
-
-                <EditText
-                    android:id="@+id/et_fecha_estimada"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:drawableEnd="@drawable/ic_date_range"
-                    android:drawableTint="@color/colorSecondaryVariant"
-                    app:layout_constraintTop_toBottomOf="@id/lbl_fecha_estimada"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <TextView
-                    android:id="@+id/lbl_fecha_arranca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="Fecha Estimada Arranca"
+                    app:layout_constraintTop_toBottomOf="@id/ti_percent_humedad"
                     android:layout_marginTop="@dimen/padding_small"
-                    android:textSize="18sp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lbl_fecha_estimada"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="Fecha Estimada Cosecha"
+                        android:layout_marginTop="@dimen/padding_small"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/et_fecha_estimada"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:drawableEnd="@drawable/ic_date_range"
+                        android:drawableTint="@color/colorSecondaryVariant"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_fecha_estimada"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/contenedor_fecha_arranca"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     app:layout_goneMarginTop="@dimen/padding_small"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/et_fecha_estimada" />
+                    app:layout_constraintTop_toBottomOf="@id/contenedor_fecha_estimada">
 
-                <EditText
-                    android:id="@+id/et_fecha_arranca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:drawableEnd="@drawable/ic_date_range"
-                    android:drawableTint="@color/colorSecondaryVariant"
-                    app:layout_constraintTop_toBottomOf="@id/lbl_fecha_arranca"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    <TextView
+                        android:id="@+id/lbl_fecha_arranca"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="Fecha Estimada Arranca"
+                        android:layout_marginTop="@dimen/padding_small"
+                        android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/lb_fecha_estimada_postura_abejas"
-                    android:layout_width="match_parent"
+                    <EditText
+                        android:id="@+id/et_fecha_arranca"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:drawableEnd="@drawable/ic_date_range"
+                        android:drawableTint="@color/colorSecondaryVariant"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_fecha_arranca"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/contenedor_fecha_postura_abejas"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="Fecha Estimada postura de abejas"
-                    android:layout_marginTop="@dimen/padding_small"
-                    android:textSize="18sp"
                     app:layout_goneMarginTop="@dimen/padding_small"
+                    android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/et_fecha_arranca" />
+                    app:layout_constraintTop_toBottomOf="@id/contenedor_fecha_arranca">
 
-                <EditText
-                    android:id="@+id/et_fecha_estimada_postura_abejas"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:drawableEnd="@drawable/ic_date_range"
-                    android:drawableTint="@color/colorSecondaryVariant"
-                    app:layout_constraintTop_toBottomOf="@id/lb_fecha_estimada_postura_abejas"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    <TextView
+                        android:id="@+id/lb_fecha_estimada_postura_abejas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="Fecha Estimada postura de abejas"
+                        android:layout_marginTop="@dimen/padding_small"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/et_fecha_estimada_postura_abejas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:drawableEnd="@drawable/ic_date_range"
+                        android:drawableTint="@color/colorSecondaryVariant"
+                        app:layout_constraintTop_toBottomOf="@id/lb_fecha_estimada_postura_abejas"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </LinearLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

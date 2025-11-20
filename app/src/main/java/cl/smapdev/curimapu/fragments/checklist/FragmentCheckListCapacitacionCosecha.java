@@ -1,11 +1,12 @@
 package cl.smapdev.curimapu.fragments.checklist;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,8 +21,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,7 +60,7 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
     private Usuario usuario;
 
 
-//    cabecera
+    //    cabecera
     private TextView tv_numero_anexo;
     private TextView tv_variedad;
 
@@ -65,7 +68,7 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
 
     private ConstraintLayout contenedor_vista;
     private TextView tv_agricultor, tv_potrero, tv_rch, tv_sag_ogm, tv_sag_idase;
-    private TextView tv_condicion_semilla,tv_supervisor_curimapu;
+    private TextView tv_condicion_semilla, tv_supervisor_curimapu;
 
     private Button btn_charla_cinco;
     private Button btn_guardar_cl_siembra;
@@ -83,19 +86,26 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
         this.capSiembra = capSiembra;
     }
 
-    public static FragmentCheckListCapacitacionCosecha newInstance(CheckListCapacitacionSiembra capSiembra ){
+    public static FragmentCheckListCapacitacionCosecha newInstance(CheckListCapacitacionSiembra capSiembra) {
         FragmentCheckListCapacitacionCosecha fs = new FragmentCheckListCapacitacionCosecha();
-        fs.setCapSiembra( capSiembra );
+        fs.setCapSiembra(capSiembra);
         return fs;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context.toString() + " must be MainActivity");
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity a = (MainActivity) getActivity();
-        if(a != null) activity = a;
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
     }
 
     @Nullable
@@ -125,7 +135,6 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
                 MainActivity.myAppDB.myDao().getConfig());
 
 
-
         try {
             anexoCompleto = futureVisitas.get();
             config = futureConfig.get();
@@ -140,12 +149,27 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
         executor.shutdown();
 
         cargarListaAsistentes();
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
+
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "CHECKLIST CAPACITACION COSECHA");
+
     }
 
 
-    public void cargarListaAsistentes(){
+    public void cargarListaAsistentes() {
 
-        String claveUnica = (this.capSiembra != null ) ? this.capSiembra.getClave_unica() : "0";
+        String claveUnica = (this.capSiembra != null) ? this.capSiembra.getClave_unica() : "0";
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -180,18 +204,18 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
                                 .replaceAll("í", "i")
                                 .replaceAll("ó", "o")
                                 .replaceAll("ú", "u")
-                                +"_"+
+                                + "_" +
                                 Utilidades.fechaActualConHora()
-                                        .replaceAll(" " ,"")
-                                        .replaceAll("-" ,"")
-                                        .replaceAll(":", "_")+".png";
+                                        .replaceAll(" ", "")
+                                        .replaceAll("-", "")
+                                        .replaceAll(":", "_") + ".png";
 
                         DialogFirma dialogo = DialogFirma.newInstance(
                                 Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA,
                                 etRA,
                                 Utilidades.DIALOG_TAG_FIRMA_CAPACITACION_COSECHA,
                                 (isSaved, savePath) -> {
-                                    if(isSaved){
+                                    if (isSaved) {
 
                                         checkList.setFirma_cl_cap_siembra_detalle(savePath);
                                         checkList.setEstado_sincronizacion_detalle(0);
@@ -235,9 +259,9 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
         cargarDatosPrevios();
     }
 
-    private void cargarDatosPrevios(){
+    private void cargarDatosPrevios() {
 
-        if(anexoCompleto == null){
+        if (anexoCompleto == null) {
             Toasty.error(requireActivity(), "No se pudo obtener informacion del anexo", Toast.LENGTH_LONG, true).show();
             return;
         }
@@ -252,10 +276,10 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
         tv_sag_ogm.setText(anexoCompleto.getAnexoContrato().getSag_register_number());
         tv_sag_idase.setText(anexoCompleto.getAnexoContrato().getSag_register_idase());
         tv_condicion_semilla.setText(anexoCompleto.getAnexoContrato().getCondicion());
-        tv_supervisor_curimapu.setText(usuario.getNombre()+ " " +usuario.getApellido_p());
+        tv_supervisor_curimapu.setText(usuario.getNombre() + " " + usuario.getApellido_p());
 
 
-        if(capSiembra != null){
+        if (capSiembra != null) {
             et_impartidor.setText(capSiembra.getImpartidor());
         }
 
@@ -284,12 +308,9 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
         contenedor_charla = view.findViewById(R.id.contenedor_charla);
 
 
-
-
-
         btn_charla_cinco.setOnClickListener(view1 -> {
-            contenedor_charla.setVisibility(contenedor_charla.getVisibility()==View.VISIBLE ? View.GONE : View.VISIBLE);
-            btn_charla_cinco.setText(contenedor_charla.getVisibility()==View.VISIBLE ? "OCULTAR CHARLA 5 MIN." : "LEER CHARLA 5 MIN.");
+            contenedor_charla.setVisibility(contenedor_charla.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            btn_charla_cinco.setText(contenedor_charla.getVisibility() == View.VISIBLE ? "OCULTAR CHARLA 5 MIN." : "LEER CHARLA 5 MIN.");
         });
 
         btn_oculta_cabecera.setOnClickListener(view1 -> {
@@ -315,7 +336,7 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
 
 
         btn_guardar_cl_siembra.setOnClickListener(view1 -> {
-            String claveUnica = (this.capSiembra != null ) ? this.capSiembra.getClave_unica() : "0";
+            String claveUnica = (this.capSiembra != null) ? this.capSiembra.getClave_unica() : "0";
 
             ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -330,14 +351,14 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
             try {
                 details = futureDetails.get();
 
-                if(details.size() <= 0){
+                if (details.size() <= 0) {
                     executor.shutdown();
                     Toasty.warning(requireActivity(), "Debes agregar a lo menos un asistente",
                             Toast.LENGTH_LONG, true).show();
                     return;
                 }
 
-                if(et_impartidor.getText().toString().isEmpty()){
+                if (et_impartidor.getText().toString().isEmpty()) {
                     executor.shutdown();
                     Toasty.warning(requireActivity(), "Debes agregar quien " +
                                     "impartio la capacitacion",
@@ -359,7 +380,7 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
 
     private boolean onSave(int state, String apellido) {
 
-        String claveUnica = (this.capSiembra != null ) ? this.capSiembra.getClave_unica() : "0";
+        String claveUnica = (this.capSiembra != null) ? this.capSiembra.getClave_unica() : "0";
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -374,14 +395,14 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
             List<CheckListCapacitacionSiembraDetalle> details = futureDetails.get();
 
 
-            if(details.size() <= 0){
+            if (details.size() <= 0) {
                 executor.shutdown();
                 Toasty.warning(requireActivity(), "Debes agregar a lo menos un asistente",
                         Toast.LENGTH_LONG, true).show();
                 return false;
             }
 
-            if(et_impartidor.getText().toString().isEmpty()){
+            if (et_impartidor.getText().toString().isEmpty()) {
                 executor.shutdown();
                 Toasty.warning(requireActivity(), "Debes agregar quien " +
                                 "impartio la capacitacion",
@@ -403,15 +424,15 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
 
             cabecera.setImpartidor(et_impartidor.getText().toString());
 
-            if( capSiembra == null){
+            if (capSiembra == null) {
                 String claveUnicaI = config.getId()
-                        +""+config.getId_usuario()
-                        +""+Utilidades.fechaActualConHora()
+                        + "" + config.getId_usuario()
+                        + "" + Utilidades.fechaActualConHora()
                         .replaceAll(" ", "")
                         .replaceAll("-", "")
                         .replaceAll(":", "");
 
-                cabecera.setClave_unica( claveUnicaI );
+                cabecera.setClave_unica(claveUnicaI);
                 cabecera.setId_usuario(usuario.getId_usuario());
 
 
@@ -420,8 +441,8 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
                                 .insertCapacitacionSiembra(cabecera)
                 ).get();
 
-            }else{
-                cabecera.setClave_unica( capSiembra.getClave_unica() );
+            } else {
+                cabecera.setClave_unica(capSiembra.getClave_unica());
                 cabecera.setFecha_hora_mod(Utilidades.fechaActualConHora());
 
                 cabecera.setId_usuario_mod(usuario.getId_usuario());
@@ -434,7 +455,7 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
 
 
             executor.submit(() -> MainActivity.myAppDB.DaoCheckListCapSiembra()
-                    .updateCapacitacionSiembraDetalleConCero(cabecera.getClave_unica(), Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA))
+                            .updateCapacitacionSiembraDetalleConCero(cabecera.getClave_unica(), Utilidades.TIPO_DOCUMENTO_CAPACITACION_COSECHA))
                     .get();
 
 
@@ -451,18 +472,19 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
         }
 
 
-
     }
 
 
-    private void showAlertForConfirmarEliminar(CheckListCapacitacionSiembraDetalle detalle){
-        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_empty,null);
+    private void showAlertForConfirmarEliminar(CheckListCapacitacionSiembraDetalle detalle) {
+        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_empty, null);
         final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
                 .setTitle("Esta seguro?")
-                .setMessage("Esta a punto de eliminar  a "+detalle.getNombre_cl_cap_siembra_detalle()+ "de la lista de asistentes")
-                .setPositiveButton(getResources().getString(R.string.eliminar), (dialogInterface, i) -> { })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .setMessage("Esta a punto de eliminar  a " + detalle.getNombre_cl_cap_siembra_detalle() + "de la lista de asistentes")
+                .setPositiveButton(getResources().getString(R.string.eliminar), (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
                 .create();
 
         builder.setOnShowListener(dialog -> {
@@ -470,7 +492,7 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
             Button c = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE);
             b.setOnClickListener(view -> {
 
-                    ExecutorService executorsDelete = Executors.newSingleThreadExecutor();
+                ExecutorService executorsDelete = Executors.newSingleThreadExecutor();
 
                 try {
                     executorsDelete.submit(() -> MainActivity.myAppDB.DaoCheckListCapSiembra()
@@ -488,7 +510,6 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
                 }
 
 
-
             });
             c.setOnClickListener(view -> builder.dismiss());
         });
@@ -497,8 +518,8 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
     }
 
 
-    private void showAlertForConfirmarGuardar(){
-        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_checklist,null);
+    private void showAlertForConfirmarGuardar() {
+        View viewInfalted = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_guardar_checklist, null);
 
         RadioGroup grupo_radios_estado = viewInfalted.findViewById(R.id.grupo_radios_estado);
         RadioButton rbtn_activo = viewInfalted.findViewById(R.id.rbtn_activo);
@@ -506,11 +527,11 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
         EditText et_apellido = viewInfalted.findViewById(R.id.et_apellido);
 
 
-        if(capSiembra != null){
+        if (capSiembra != null) {
 
             et_apellido.setText(capSiembra.getApellido_checklist());
 
-            if(capSiembra.getEstado_documento() > 0){
+            if (capSiembra.getEstado_documento() > 0) {
                 rbtn_activo.setChecked(capSiembra.getEstado_documento() == 1);
                 rbtn_pendiente.setChecked(capSiembra.getEstado_documento() == 2);
             }
@@ -519,8 +540,10 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
 
         final androidx.appcompat.app.AlertDialog builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity())
                 .setView(viewInfalted)
-                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> { })
-                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> { })
+                .setPositiveButton(getResources().getString(R.string.guardar), (dialogInterface, i) -> {
+                })
+                .setNegativeButton(getResources().getString(R.string.nav_cancel), (dialogInterface, i) -> {
+                })
                 .create();
 
         builder.setOnShowListener(dialog -> {
@@ -528,7 +551,7 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
             Button c = builder.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE);
             b.setOnClickListener(view -> {
 
-                if((!rbtn_activo.isChecked() && !rbtn_pendiente.isChecked()) || et_apellido.getText().toString().isEmpty() ){
+                if ((!rbtn_activo.isChecked() && !rbtn_pendiente.isChecked()) || et_apellido.getText().toString().isEmpty()) {
                     Toasty.error(requireActivity(),
                             "Debes seleccionar un estado e ingresar una descripcion",
                             Toast.LENGTH_LONG, true).show();
@@ -536,7 +559,7 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
                 }
                 int state = (rbtn_activo.isChecked()) ? 1 : 2;
                 boolean isSaved = onSave(state, et_apellido.getText().toString());
-                if(isSaved) {
+                if (isSaved) {
                     builder.dismiss();
                     activity.onBackPressed();
                 }
@@ -548,14 +571,7 @@ public class FragmentCheckListCapacitacionCosecha extends Fragment {
         builder.setCancelable(false);
         builder.show();
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), "CHECKLIST CAPACITACION COSECHA");
-        }
-    }
+    
 
     @Override
     public void onResume() {

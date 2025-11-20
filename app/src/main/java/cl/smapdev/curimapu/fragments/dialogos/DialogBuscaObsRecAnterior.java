@@ -61,7 +61,7 @@ public class DialogBuscaObsRecAnterior extends DialogFragment {
 
     private final ArrayList<String> fenologico = new ArrayList<>();
 
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private ExecutorService executor;
 
     public void setEstadoFenologico(String estadoFenologico) {
         this.estadoFenologico = estadoFenologico;
@@ -97,10 +97,20 @@ public class DialogBuscaObsRecAnterior extends DialogFragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdown();
+        }
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        executor = Executors.newSingleThreadExecutor();
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
@@ -114,6 +124,13 @@ public class DialogBuscaObsRecAnterior extends DialogFragment {
         obtenerElementos();
 
         return builder.create();
+    }
+
+    private void ejecutarSeguro(Runnable r) {
+        if (executor == null || executor.isShutdown() || executor.isTerminated()) {
+            executor = Executors.newSingleThreadExecutor();
+        }
+        executor.execute(r);
     }
 
     @Override

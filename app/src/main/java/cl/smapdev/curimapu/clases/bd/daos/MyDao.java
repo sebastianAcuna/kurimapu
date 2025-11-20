@@ -397,6 +397,9 @@ public interface MyDao {
     @Insert
     long setVisita(Visitas visitas);
 
+    @Query("SELECT * FROM visita WHERE clave_unica_visita = :clave LIMIT 1; ")
+    Visitas getVisitasByClaveUnica(String clave);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> setVisita(List<Visitas> visitas);
 
@@ -426,7 +429,7 @@ public interface MyDao {
             "INNER JOIN cliente ON (cliente.id_clientes_tabla = Q.cliente) " +
             "LEFT JOIN fotos Fo ON (Fo.id_visita_foto = V.id_visita_local AND Fo.id_dispo_foto  = V.id_dispo  AND Fo.favorita = 1)" +
             "WHERE id_anexo_visita = :idAnexo " +
-            "GROUP BY V.id_visita " +
+            "GROUP BY V.clave_unica_visita " +
             "ORDER BY V.fecha_visita DESC, V.hora_visita DESC, V.id_visita DESC")
     List<VisitasCompletas> getVisitasCompletasWithFotos(String idAnexo);
 

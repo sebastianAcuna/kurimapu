@@ -12,8 +12,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,11 +36,13 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import cl.smapdev.curimapu.MainActivity;
@@ -79,7 +79,6 @@ import cl.smapdev.curimapu.clases.tablas.CheckListSiembra;
 import cl.smapdev.curimapu.clases.tablas.ChecklistLimpiezaCamionesDetalle;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
-import cl.smapdev.curimapu.clases.tablas.Errores;
 import cl.smapdev.curimapu.clases.tablas.Especie;
 import cl.smapdev.curimapu.clases.tablas.EstacionFloracion;
 import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
@@ -105,47 +104,32 @@ import retrofit2.Response;
 
 public class FragmentPrincipal extends Fragment {
 
-
     private MainActivity activity;
-
     private RecyclerView lista_sitios_no_visitados;
     private RecyclerView lista_primera_prioridad;
-
     private final ArrayList<String> id_temporadas = new ArrayList<>();
     private final ArrayList<String> desc_temporadas = new ArrayList<>();
-
     private Handler handlerGrafico;
-
-
     private LinearLayout contenedor_botones;
-
     private LinearLayout contenedor_alerta_inicio;
-
     private ImageView img_muestra_subidas;
-
     private ConstraintLayout contenedor_botonera_subida;
-
-    MultipleSelectSpinner spinnerMulti;
-
-
     private Button btn_descargar;
     private Button btn_preparar;
     private Button btn_sube_marcadas;
-
     private TextView visitas_titulo, visitas_marca;
-
-
-    private List<Temporada> temporadaList;
-
+    private List<Temporada> temporadaList = new ArrayList<>();
     private SharedPreferences prefs;
-
     private Spinner spinner_toolbar;
-
     private String marca_especial_temporada;
     private String default_season;
-    private ProgressDialog progressDialogGeneral;
-
     private ProgressBar progressBar1, progressBar2;
+
+    private LinearLayout contenedorProgreso;
+    private TextView textoProgreso;
+
+    private ExecutorService executor;
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     int contadorVisita = 0;
 
@@ -154,53 +138,62 @@ public class FragmentPrincipal extends Fragment {
 
     private View view;
 
-    public FragmentPrincipal() {
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context.toString() + " must be MainActivity");
+        }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (MainActivity) getActivity();
-
-
-        if (activity != null) {
-            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
-            progressDialogGeneral = new ProgressDialog(activity);
-        }
-
         handlerGrafico = new Handler(Looper.getMainLooper());
+        executor = Executors.newSingleThreadExecutor();
+
+        cargarTemporadas();
+    }
+
+    private void ejecutarSeguro(Runnable r) {
+        if (executor == null || executor.isShutdown() || executor.isTerminated()) {
+            executor = Executors.newSingleThreadExecutor();
+        }
+        executor.execute(r);
+    }
 
 
-        temporadaList = MainActivity.myAppDB.myDao().getTemporada();
-        setSpecialSeason(temporadaList);
-
+    private void cargarTemporadas() {
+        ejecutarSeguro(() -> {
+            List<Temporada> temporadas = MainActivity.myAppDB.myDao().getTemporada();
+            handler.post(() -> {
+                temporadaList.addAll(temporadas);
+                setSpecialSeason(temporadaList);
+                cargarToolbar();
+                recargarYear();
+                revisarAnexosPendienteFecha();
+            });
+        });
     }
 
     public void setSpecialSeason(List<Temporada> temporadas) {
-        if (!temporadas.isEmpty()) {
+        if (temporadas.isEmpty()) return;
 
-            int idx = 0;
-            int idxMarca = 0;
-            for (Temporada t : temporadas) {
-                id_temporadas.add(t.getId_tempo_tempo());
-                desc_temporadas.add(t.getNombre_tempo());
-
-                if (t.getDefault_season() > 0) {
-                    default_season = t.getId_tempo_tempo();
-                    idxMarca = idx;
-                }
-
-
-                if (t.getEspecial_temporada() > 0) {
-                    marca_especial_temporada = t.getId_tempo_tempo();
-                }
-                idx++;
+        for (Temporada t : temporadas) {
+            id_temporadas.add(t.getId_tempo_tempo());
+            desc_temporadas.add(t.getNombre_tempo());
+            if (t.getDefault_season() > 0) {
+                default_season = t.getId_tempo_tempo();
             }
-
-
+            if (t.getEspecial_temporada() > 0) {
+                marca_especial_temporada = t.getId_tempo_tempo();
+            }
         }
-
-
     }
 
     @Nullable
@@ -213,50 +206,41 @@ public class FragmentPrincipal extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
-
-        spinner_toolbar = view.findViewById(R.id.spinner_toolbar);
-
-        btn_descargar = view.findViewById(R.id.btn_descargar);
-        btn_preparar = view.findViewById(R.id.btn_preparar);
-        btn_sube_marcadas = view.findViewById(R.id.btn_sube_marcadas);
-
-        visitas_titulo = view.findViewById(R.id.visitas_titulo);
-        visitas_marca = view.findViewById(R.id.visitas_marca);
-
-        contenedor_botones = view.findViewById(R.id.contenedor_botones);
-        contenedor_alerta_inicio = view.findViewById(R.id.contenedor_alerta_inicio);
 
         Button btn_calcula_datos_primera_prio = view.findViewById(R.id.btn_calcula_datos_primera_prio);
         Button btn_calcula_datos_sitio_visita = view.findViewById(R.id.btn_calcula_datos_sitio_visita);
-
-
-        progressBar1 = view.findViewById(R.id.progressBar1);
-        progressBar2 = view.findViewById(R.id.progressBar2);
-
-        lista_sitios_no_visitados = view.findViewById(R.id.lista_sitios_no_visitados);
-        lista_primera_prioridad = view.findViewById(R.id.lista_primera_prioridad);
-
         TextView lbl_muestra_subidas = view.findViewById(R.id.lbl_muestra_subidas);
-        img_muestra_subidas = view.findViewById(R.id.img_muestra_subidas);
-        contenedor_botonera_subida = view.findViewById(R.id.contenedor_botonera_subida);
         Button btn_subir_check = view.findViewById(R.id.btn_subir_check);
         Button btn_subir_estaciones = view.findViewById(R.id.btn_subir_estaciones);
         Button btn_subir_muestras = view.findViewById(R.id.btn_subir_muestras);
         Button btn_subir_recomendaciones = view.findViewById(R.id.btn_subir_recomendaciones);
+        contenedorProgreso = view.findViewById(R.id.contenedor_progreso);
+        textoProgreso = view.findViewById(R.id.texto_progreso);
+        spinner_toolbar = view.findViewById(R.id.spinner_toolbar);
+        btn_descargar = view.findViewById(R.id.btn_descargar);
+        btn_preparar = view.findViewById(R.id.btn_preparar);
+        btn_sube_marcadas = view.findViewById(R.id.btn_sube_marcadas);
+        visitas_titulo = view.findViewById(R.id.visitas_titulo);
+        visitas_marca = view.findViewById(R.id.visitas_marca);
+        contenedor_botones = view.findViewById(R.id.contenedor_botones);
+        contenedor_alerta_inicio = view.findViewById(R.id.contenedor_alerta_inicio);
+        progressBar1 = view.findViewById(R.id.progressBar1);
+        progressBar2 = view.findViewById(R.id.progressBar2);
+        lista_sitios_no_visitados = view.findViewById(R.id.lista_sitios_no_visitados);
+        lista_primera_prioridad = view.findViewById(R.id.lista_primera_prioridad);
+        img_muestra_subidas = view.findViewById(R.id.img_muestra_subidas);
+        contenedor_botonera_subida = view.findViewById(R.id.contenedor_botonera_subida);
 
+        Utilidades.setToolbar(activity, view, "Curimapu", "Bienvenido");
 
         lbl_muestra_subidas.setOnClickListener(view1 -> ocultarBotoneraSubida());
         img_muestra_subidas.setOnClickListener(view1 -> ocultarBotoneraSubida());
-
-
         btn_subir_recomendaciones.setOnClickListener(view1 -> preparaSubirRecomendaciones());
         btn_subir_check.setOnClickListener(view1 -> preparaSubirChecklist());
         btn_subir_estaciones.setOnClickListener(view1 -> preparaSubirEstaciones());
         btn_subir_muestras.setOnClickListener(view1 -> preparaSubirMuestrasHumedad());
 
-        cargarToolbar();
-        recargarYear();
+
         spinner_toolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -271,47 +255,9 @@ public class FragmentPrincipal extends Fragment {
             }
         });
 
-
         btn_calcula_datos_primera_prio.setOnClickListener((view1) -> primeraPrioridad(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()))));
         btn_calcula_datos_sitio_visita.setOnClickListener((view2) -> sitiosNoVisitados(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()))));
-
-
-        btn_descargar.setOnClickListener(view1 -> {
-
-            btn_descargar.setEnabled(false);
-            btn_preparar.setEnabled(false);
-            List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir();
-            List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubir();
-            List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotos();
-            List<Fichas> fichas = MainActivity.myAppDB.myDao().getFichasPorSubir();
-            List<FotosFichas> fotosFichas = MainActivity.myAppDB.myDao().getFotosFichasPorSubir();
-            List<CropRotation> crops = MainActivity.myAppDB.myDao().getCropsPorSubir();
-
-
-            if (!visitas.isEmpty() || !detalles.isEmpty() || !fotos.isEmpty() || !fichas.isEmpty() || !fotosFichas.isEmpty() || !crops.isEmpty()) {
-                btn_descargar.setEnabled(true);
-                btn_preparar.setEnabled(true);
-                Utilidades.avisoListo(getActivity(), "ATENCION", "TIENE " +
-                        "\n-" + visitas.size() + " VISITAS " +
-                        "\n-" + fotos.size() + " FOTOS " +
-                        "\n-" + detalles.size() + " DETALLE VISITA (LIBRO DE CAMPO) " +
-                        "\n-" + fichas.size() + " PROSPECTOS " +
-                        "\n-" + fotosFichas.size() + " FOTOS EN PROSPECTOS " +
-                        "\n-" + crops.size() + " ROTACIONES EN PROSPECTOS " +
-                        "\nPENDIENTES, POR FAVOR, PRIMERO SINCRONICE ", "ENTIENDO");
-                return;
-            }
-            InternetStateClass mm = new InternetStateClass(activity, result -> {
-                if (result) {
-                    btn_descargar.setEnabled(true);
-                    btn_preparar.setEnabled(true);
-
-                    showAlertMultiplesTemporadas(desc_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
-                }
-            }, 1);
-            mm.execute();
-        });
-
+        btn_descargar.setOnClickListener(view1 -> prepararDescarga());
 
         btn_sube_marcadas.setOnClickListener(view12 -> {
             if (!botonesSeleccionados.isEmpty()) {
@@ -326,9 +272,103 @@ public class FragmentPrincipal extends Fragment {
             prepararVisitas();
         });
 
-        revisarAnexosPendienteFecha();
+//        requireActivity().addMenuProvider(new MenuProvider() {
+//            @Override
+//            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+//                menu.clear();
+//                menuInflater.inflate(R.menu.menu_inicio, menu);
+//            }
+//
+//            @Override
+//            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+//                return false;
+//            }
+//        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
     }
 
+    private void prepararDescarga() {
+        btn_descargar.setEnabled(false);
+        btn_preparar.setEnabled(false);
+        mostrarProgreso("Verificando conexion a internet");
+
+        new InternetStateClass(requireActivity(), (hasInternet) -> {
+
+            if (!hasInternet) {
+                ocultarProgreso();
+                Toast.makeText(requireActivity(), "No tiene conexión a internet", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            mostrarProgreso("Verificando datos pendientes...");
+            ejecutarSeguro(() -> {
+                List<Visitas> visitas = MainActivity.myAppDB.myDao().getVisitasPorSubir();
+                List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubir();
+                List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotos();
+                List<Fichas> fichas = MainActivity.myAppDB.myDao().getFichasPorSubir();
+                List<FotosFichas> fotosFichas = MainActivity.myAppDB.myDao().getFotosFichasPorSubir();
+                List<CropRotation> crops = MainActivity.myAppDB.myDao().getCropsPorSubir();
+
+                handler.post(() -> {
+                    ocultarProgreso();
+                    if (!visitas.isEmpty() || !detalles.isEmpty() || !fotos.isEmpty() || !fichas.isEmpty() || !fotosFichas.isEmpty() || !crops.isEmpty()) {
+                        btn_descargar.setEnabled(true);
+                        btn_preparar.setEnabled(true);
+                        Utilidades.avisoListo(getActivity(), "ATENCION", "TIENE " +
+                                "\n-" + visitas.size() + " VISITAS " +
+                                "\n-" + fotos.size() + " FOTOS " +
+                                "\n-" + detalles.size() + " DETALLE VISITA (LIBRO DE CAMPO) " +
+                                "\n-" + fichas.size() + " PROSPECTOS " +
+                                "\n-" + fotosFichas.size() + " FOTOS EN PROSPECTOS " +
+                                "\n-" + crops.size() + " ROTACIONES EN PROSPECTOS " +
+                                "\nPENDIENTES, POR FAVOR, PRIMERO SINCRONICE ", "ENTIENDO");
+                        return;
+                    }
+                    btn_descargar.setEnabled(true);
+                    btn_preparar.setEnabled(true);
+                    showAlertMultiplesTemporadas(desc_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
+                });
+            });
+
+        }, executor, handler).execute();
+    }
+
+    private void mostrarProgresoSitiosNoVisitados() {
+        if (progressBar2 != null) {
+            progressBar2.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void ocultarProgresoSitiosNoVisitados() {
+        if (progressBar2 != null) {
+            progressBar2.setVisibility(View.GONE);
+        }
+    }
+
+    private void mostrarProgresoPP() {
+        if (progressBar1 != null) {
+            progressBar1.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void ocultarProgresoPP() {
+        if (progressBar1 != null) {
+            progressBar1.setVisibility(View.GONE);
+        }
+    }
+
+    private void mostrarProgreso(String mensaje) {
+        if (contenedorProgreso != null && textoProgreso != null) {
+            textoProgreso.setText(mensaje);
+            contenedorProgreso.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void ocultarProgreso() {
+        if (contenedorProgreso != null) {
+            contenedorProgreso.setVisibility(View.GONE);
+        }
+    }
 
     void revisarAnexosPendienteFecha() {
 
@@ -336,21 +376,12 @@ public class FragmentPrincipal extends Fragment {
             contenedor_alerta_inicio.setVisibility(View.GONE);
             return;
         }
-
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Future<List<AnexoContrato>> anexosF = executorService.submit(() -> MainActivity.myAppDB.myDao().getAnexosSinFechaSiembra(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
-
-        try {
-            List<AnexoContrato> anexos = anexosF.get();
-
-            contenedor_alerta_inicio.setVisibility((!anexos.isEmpty()) ? View.VISIBLE : View.GONE);
-            executorService.shutdown();
-
-        } catch (ExecutionException | InterruptedException e) {
-            executorService.shutdown();
-            Log.e("ERROR_ALERTA", "ERROR" + e.getMessage());
-        }
-
+        ejecutarSeguro(() -> {
+            List<AnexoContrato> anexos = MainActivity.myAppDB.myDao().getAnexosSinFechaSiembra(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
+            handler.post(() -> {
+                contenedor_alerta_inicio.setVisibility((!anexos.isEmpty()) ? View.VISIBLE : View.GONE);
+            });
+        });
     }
 
     void ocultarBotoneraSubida() {
@@ -364,24 +395,18 @@ public class FragmentPrincipal extends Fragment {
     }
 
     void cargarToolbar() {
-        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity, R.layout.spinner_template_toolbar_view, temporadaList));
-        recargarYear();
+        if (temporadaList != null && !temporadaList.isEmpty()) {
+            spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity, R.layout.spinner_template_toolbar_view, temporadaList));
+            recargarYear();
+        }
+
     }
 
-
     private void recargarYear() {
-        if (!temporadaList.isEmpty() && spinner_toolbar != null && spinner_toolbar.getAdapter() != null) {
+        if (temporadaList != null && !temporadaList.isEmpty() && spinner_toolbar != null && spinner_toolbar.getAdapter() != null) {
             spinner_toolbar.setSelection(prefs.getInt(Utilidades.FILTRO_TEMPORADA, (marca_especial_temporada.isEmpty()) ? temporadaList.size() - 1 : id_temporadas.indexOf(marca_especial_temporada)));
         }
     }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_inicio, menu);
-    }
-
 
     public void preparaSubirRecomendaciones() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -408,20 +433,12 @@ public class FragmentPrincipal extends Fragment {
 
 
     private void prepararSubirRecomendaciones(RecomendacionesRequest recomendacionesRequest) {
-        InternetStateClass mm = new InternetStateClass(activity, result -> {
-            if (!result) {
+        mostrarProgreso("Verificando conexión a internet...");
+        new InternetStateClass(requireActivity(), (hasInternet) -> {
+            ocultarProgreso();
+            if (!hasInternet) {
                 Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
                 return;
-            }
-
-
-            ProgressDialog pd = new ProgressDialog(activity);
-            pd.setMessage("conectandose a internet, espere por favor");
-            pd.show();
-
-
-            if (pd.isShowing()) {
-                pd.dismiss();
             }
 
             new RecomendacionesSync(recomendacionesRequest, requireActivity(), (state, message) -> {
@@ -432,8 +449,7 @@ public class FragmentPrincipal extends Fragment {
                 }
             });
 
-        }, 1);
-        mm.execute();
+        }, executor, handler).execute();
     }
 
     private void prepararSubirEst(EstacionFloracionRequest checkListRequest) {
@@ -663,20 +679,12 @@ public class FragmentPrincipal extends Fragment {
 
     private void prepararSubir(CheckListRequest checkListRequest) {
 
-        InternetStateClass mm = new InternetStateClass(activity, result -> {
-            if (!result) {
+        mostrarProgreso("Verificando conexión a internet");
+        new InternetStateClass(requireActivity(), (hasInternet) -> {
+            ocultarProgreso();
+            if (!hasInternet) {
                 Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
                 return;
-            }
-
-
-            ProgressDialog pd = new ProgressDialog(activity);
-            pd.setMessage("conectandose a internet, espere por favor");
-            pd.show();
-
-
-            if (pd.isShowing()) {
-                pd.dismiss();
             }
 
             new CheckListSync(checkListRequest, requireActivity(), (state, message) -> {
@@ -687,8 +695,7 @@ public class FragmentPrincipal extends Fragment {
                 }
             });
 
-        }, 1);
-        mm.execute();
+        }, executor, handler).execute();
     }
 
     void prepararVisitas() {
@@ -863,92 +870,85 @@ public class FragmentPrincipal extends Fragment {
     }
 
     void subirVisita(final Visitas v, final Button button) {
-        if (progressDialogGeneral != null && !progressDialogGeneral.isShowing()) {
-            progressDialogGeneral.setTitle("Preparando visitas para subir...");
-            progressDialogGeneral.setCancelable(false);
-            progressDialogGeneral.show();
-        }
+        mostrarProgreso("verificando conexion a internet...");
 
-
-        InternetStateClass mm = new InternetStateClass(activity, result -> {
-
-            if (!result) {
+        new InternetStateClass(requireActivity(), isConnected -> {
+            ocultarProgreso();
+            if (!isConnected) {
                 if (button != null) button.setEnabled(true);
-                if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
                 Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
                 return;
             }
 
             if (button != null) button.setEnabled(true);
-            MainActivity.myAppDB.myDao().updateVisitasSubidasTomadasBack();
-            MainActivity.myAppDB.myDao().updateDetalleSubidasTomadasBack();
-            MainActivity.myAppDB.myDao().updateFotosSubidasTomadasBack();
+            mostrarProgreso("preparando datos para sincronizar");
 
+            ejecutarSeguro(() -> {
+                int cantidadSuma = 0;
+                ArrayList<Visitas> visitas = new ArrayList<>();
+                List<Fotos> fts = new ArrayList<>();
 
-            int cantidadSuma = 0;
-            ArrayList<Visitas> visitas = new ArrayList<>();
+                MainActivity.myAppDB.myDao().updateVisitasSubidasTomadasBack();
+                MainActivity.myAppDB.myDao().updateDetalleSubidasTomadasBack();
+                MainActivity.myAppDB.myDao().updateFotosSubidasTomadasBack();
 
-            List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubirLimit(v.getId_visita());
-            List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosLimit(v.getId_visita());
+                List<detalle_visita_prop> detalles = MainActivity.myAppDB.myDao().getDetallesPorSubirLimit(v.getId_visita());
+                List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosLimit(v.getId_visita());
 
+                visitas.add(v);
 
-            visitas.add(v);
-            MainActivity.myAppDB.myDao().marcarVisitas(v.getId_visita());
-            MainActivity.myAppDB.myDao().marcarDetalle(v.getId_visita());
-            MainActivity.myAppDB.myDao().marcarFotos(v.getId_visita());
-            MainActivity.myAppDB.DaoEvaluaciones().marcarEvaluaciones(Integer.parseInt(v.getId_anexo_visita()));
+                MainActivity.myAppDB.myDao().marcarVisitas(v.getId_visita());
+                MainActivity.myAppDB.myDao().marcarDetalle(v.getId_visita());
+                MainActivity.myAppDB.myDao().marcarFotos(v.getId_visita());
+                MainActivity.myAppDB.DaoEvaluaciones().marcarEvaluaciones(Integer.parseInt(v.getId_anexo_visita()));
+                cantidadSuma += v.getId_visita();
+                cantidadSuma += 1;
 
-            cantidadSuma += v.getId_visita();
-            cantidadSuma += 1;
-
-
-            List<Fotos> fts = new ArrayList<>();
-            if (!fotos.isEmpty()) {
-                for (Fotos fs : fotos) {
-                    String imageString = Utilidades.imageToString(fs.getRuta());
-                    if (!imageString.isEmpty()) {
-                        fs.setEncrypted_image(imageString);
-                        fts.add(fs);
+                if (!fotos.isEmpty()) {
+                    for (Fotos fs : fotos) {
+                        String imageString = Utilidades.imageToString(fs.getRuta());
+                        if (!imageString.isEmpty()) {
+                            fs.setEncrypted_image(imageString);
+                            fts.add(fs);
+                        }
                     }
                 }
-            }
 
-
-            if (!detalles.isEmpty()) {
-                for (detalle_visita_prop v1 : detalles) {
-                    cantidadSuma += v1.getId_det_vis_prop_detalle();
+                if (!detalles.isEmpty()) {
+                    for (detalle_visita_prop v1 : detalles) {
+                        cantidadSuma += v1.getId_det_vis_prop_detalle();
+                    }
                 }
-            }
-            cantidadSuma += detalles.size();
-
-
-            if (!fts.isEmpty()) {
-                for (Fotos v1 : fts) {
-                    cantidadSuma += v1.getId_foto();
+                cantidadSuma += detalles.size();
+                if (!fts.isEmpty()) {
+                    for (Fotos v1 : fts) {
+                        cantidadSuma += v1.getId_foto();
+                    }
                 }
-            }
-            cantidadSuma = cantidadSuma + fts.size();
+                cantidadSuma = cantidadSuma + fts.size();
 
+                Config config = MainActivity.myAppDB.myDao().getConfig();
+                SubidaDatos list = new SubidaDatos();
 
-            Config config = MainActivity.myAppDB.myDao().getConfig();
-            SubidaDatos list = new SubidaDatos();
+                list.setVisitasList(visitas);
+                list.setDetalle_visita_props(detalles);
+                list.setFotosList(fts);
+                list.setId_dispo(config.getId());
+                list.setId_usuario(config.getId_usuario());
+                list.setCantidadSuma(cantidadSuma);
+                list.setVersion(Utilidades.APPLICATION_VERSION);
 
-            list.setVisitasList(visitas);
-            list.setDetalle_visita_props(detalles);
-            list.setFotosList(fts);
-            list.setId_dispo(config.getId());
-            list.setId_usuario(config.getId_usuario());
-            list.setCantidadSuma(cantidadSuma);
-            list.setVersion(Utilidades.APPLICATION_VERSION);
+                handler.post(() -> {
+                    subidaDatosVisita(list, v.getId_visita());
+                });
+            });
 
-            subidaDatosVisita(list, v.getId_visita());
+        }, executor, handler).execute();
 
-        }, 1);
-        mm.execute();
     }
 
     public void subidaDatosVisita(SubidaDatos subidaDatos, final int id_visita) {
-        if (progressDialogGeneral.isShowing()) progressDialogGeneral.setTitle("subiendo visita");
+        mostrarProgreso("subiendo visita");
 
         Config config = MainActivity.myAppDB.myDao().getConfig();
         ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
@@ -958,40 +958,35 @@ public class FragmentPrincipal extends Fragment {
             @Override
             public void onResponse(@NonNull Call<Respuesta> call, @NonNull Response<Respuesta> response) {
                 if (response.isSuccessful()) {
-                    switch (response.code()) {
-                        case 200:
-                            Respuesta resSubidaDatos = response.body();
-                            if (resSubidaDatos == null) {
-                                if (progressDialogGeneral.isShowing())
-                                    progressDialogGeneral.dismiss();
-                                Utilidades.avisoListo(getActivity(), "ATENCION", "CUERPO DE RESPUESTA VACIO \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + response.message(), "ENTIENDO");
+                    if (response.code() == 200) {
+                        Respuesta resSubidaDatos = response.body();
+                        if (resSubidaDatos == null) {
+                            ocultarProgreso();
+                            Utilidades.avisoListo(getActivity(), "ATENCION", "CUERPO DE RESPUESTA VACIO \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + response.message(), "ENTIENDO");
+                            return;
+                        }
+                        switch (resSubidaDatos.getCodigoRespuesta()) {
+                            case 0:
+                            case 1:
+                                Toasty.info(activity, "pasando a segunda respuesta", Toast.LENGTH_SHORT, true).show();
+                                segundaRespuestaVisita(resSubidaDatos.getCabeceraRespuesta(), id_visita);
                                 break;
-                            }
-                            switch (resSubidaDatos.getCodigoRespuesta()) {
-                                case 0:
-                                case 1:
-                                    Toasty.info(activity, "pasando a segunda respuesta", Toast.LENGTH_SHORT, true).show();
-                                    segundaRespuestaVisita(resSubidaDatos.getCabeceraRespuesta(), id_visita);
-                                    break;
-                                case 5:
-                                    Utilidades.avisoListo(activity, "ATENCION", "NO POSEES LA ULTIMA VERSION DE LA APLICACION ", "entiendo");
-                                    if (progressDialogGeneral.isShowing())
-                                        progressDialogGeneral.dismiss();
-                                    break;
-                                default:
-                                    if (progressDialogGeneral.isShowing())
-                                        progressDialogGeneral.dismiss();
-                                    Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + resSubidaDatos.getCodigoRespuesta() + "\nMENSAJE: \n" + resSubidaDatos.getMensajeRespuesta(), "ENTIENDO");
-                                    break;
-                            }
-                            break;
-                        default:
-                            if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
-                            Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS CON SERVIDOR \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + response.message(), "ENTIENDO");
-                            break;
+                            case 5:
+                                Utilidades.avisoListo(activity, "ATENCION", "NO POSEES LA ULTIMA VERSION DE LA APLICACION ", "entiendo");
+                                ocultarProgreso();
+                                break;
+                            default:
+                                ocultarProgreso();
+                                Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + resSubidaDatos.getCodigoRespuesta() + "\nMENSAJE: \n" + resSubidaDatos.getMensajeRespuesta(), "ENTIENDO");
+                                break;
+                        }
+                    } else {
+                        ocultarProgreso();
+                        Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS CON SERVIDOR \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + response.message(), "ENTIENDO");
                     }
+
                 } else {
-                    if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                    ocultarProgreso();
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Utilidades.avisoListo(getActivity(), "ATENCION", "COMUNICACION FALLIDA \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + jObjError.getJSONObject("error").getString("message"), "ENTIENDO");
@@ -1004,7 +999,7 @@ public class FragmentPrincipal extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<Respuesta> call, @NonNull Throwable t) {
-                if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                ocultarProgreso();
                 Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMA EN LA COMUNICACION \nMENSAJE: \n" + t.getMessage(), "ENTIENDO");
             }
         });
@@ -1012,9 +1007,7 @@ public class FragmentPrincipal extends Fragment {
     }
 
     private void segundaRespuestaVisita(int cab, final int id_visita) {
-        if (progressDialogGeneral.isShowing()) {
-            progressDialogGeneral.setTitle("esperando confirmacion de la visita ...");
-        }
+        mostrarProgreso("esperando confirmacion de la visita...");
 
         final int[] respuesta = {0, 0};
         Config config = MainActivity.myAppDB.myDao().getConfig();
@@ -1024,7 +1017,7 @@ public class FragmentPrincipal extends Fragment {
             @Override
             public void onResponse(@NonNull Call<Respuesta> callResponse, @NonNull Response<Respuesta> response) {
                 if (!response.isSuccessful()) {
-                    if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                    ocultarProgreso();
                     try {
 
                         assert response.errorBody() != null;
@@ -1037,22 +1030,19 @@ public class FragmentPrincipal extends Fragment {
                     return;
                 }
                 if (response.code() != 200) {
-                    if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                    ocultarProgreso();
                     Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS CON SERVIDOR \nCODIGO:  " + response.code() + "\nMENSAJE: \n" + response.message(), "ENTIENDO");
                     return;
                 }
                 Respuesta re = response.body();
                 if (re == null) {
                     /* respuesta nula */
-                    if (progressDialogGeneral.isShowing())
-                        progressDialogGeneral.dismiss();
+                    ocultarProgreso();
                     Toasty.error(activity, "Problema conectandonos al servidor, por favor vuelva a intentarlo ", Toast.LENGTH_SHORT, true).show();
                     return;
                 }
                 if (re.getCodigoRespuesta() != 0) {
-                    if (progressDialogGeneral.isShowing()) {
-                        progressDialogGeneral.dismiss();
-                    }
+                    ocultarProgreso();
                     Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + re.getCodigoRespuesta() + "\nMENSAJE: \n" + re.getMensajeRespuesta(), "ENTIENDO");
                     return;
                 }
@@ -1074,8 +1064,7 @@ public class FragmentPrincipal extends Fragment {
                     Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMAS SUBIENDO DATOS \nCODIGO:  " + re.getCodigoRespuesta() + "\nMENSAJE: \n" + re.getMensajeRespuesta(), "ENTIENDO");
 
                     Toasty.success(activity, "Problema subiendo los datos , por favor, vuelva a intentarlo", Toast.LENGTH_SHORT, true).show();
-                    if (progressDialogGeneral.isShowing())
-                        progressDialogGeneral.dismiss();
+                    ocultarProgreso();
                 } else {
 
                     Button button = view.findViewWithTag("VISITASPENDIENTES_" + id_visita);
@@ -1088,8 +1077,7 @@ public class FragmentPrincipal extends Fragment {
                         prepararVisitaAgrupada(contadorVisita);
                     } else {
                         btn_sube_marcadas.setVisibility(View.INVISIBLE);
-                        if (progressDialogGeneral.isShowing())
-                            progressDialogGeneral.dismiss();
+                        ocultarProgreso();
                     }
                     preparaSubirRecomendaciones();
                     Toasty.success(activity, "Se subio La visita con exito", Toast.LENGTH_SHORT, true).show();
@@ -1098,7 +1086,7 @@ public class FragmentPrincipal extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<Respuesta> call, @NonNull Throwable t) {
-                if (progressDialogGeneral.isShowing()) progressDialogGeneral.dismiss();
+                ocultarProgreso();
                 Utilidades.avisoListo(getActivity(), "ATENCION", "PROBLEMA EN LA COMUNICACION \nMENSAJE: \n" + t.getMessage(), "ENTIENDO");
             }
         });
@@ -1106,6 +1094,13 @@ public class FragmentPrincipal extends Fragment {
 
     /* FIN SUBIR PROSPECTOS */
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdown();
+        }
+    }
 
     void descargarGraficos() {
         ExecutorService ex = Executors.newSingleThreadExecutor();
@@ -1225,122 +1220,209 @@ public class FragmentPrincipal extends Fragment {
 
     }
 
+
     void descargando(List<SpinnerItem> temporadas, List<SpinnerItem> especies) {
+        mostrarProgreso("Descargando datos...");
 
-        final ProgressDialog progressDialog = new ProgressDialog(activity);
-        if (getView() != null) {
-            progressDialog.setTitle("Espere un momento...");
-            progressDialog.setMessage("descargando datos...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
+        List<Especie> especieList = MainActivity.myAppDB.myDao().getEspecies();
         Config cnf = MainActivity.myAppDB.myDao().getConfig();
-        String vv = Utilidades.APPLICATION_VERSION;
         ApiService apiService = RetrofitClient.getClient(cnf.getServidorSeleccionado()).create(ApiService.class);
+        final String version = Utilidades.APPLICATION_VERSION;
 
-        List<Integer> tempIds = temporadas.stream().map(SpinnerItem::getId).collect(Collectors.toList());
-        List<Integer> espIds = especies.stream().map(SpinnerItem::getId).collect(Collectors.toList());
+        final List<SpinnerItem> tempsFinal = (temporadas.isEmpty()) ?
+                temporadaList.stream().map(t -> new SpinnerItem(Integer.parseInt(t.getId_tempo_tempo()), t.getNombre_tempo())).collect(Collectors.toList()) :
+                temporadas;
 
-        Call<GsonDescargas> call = apiService.descargarDatos(
-                cnf.getId(),
-                cnf.getId_usuario_suplandato(),
-                vv,
-                tempIds, espIds
+        final List<SpinnerItem> espFinal = (especies.isEmpty())
+                ? especieList.stream().map((t) -> new SpinnerItem(Integer.parseInt(t.getId_especie()), t.getDesc_especie())).collect(Collectors.toList())
+                : especies;
 
-        );
-        call.enqueue(new Callback<GsonDescargas>() {
-            @Override
-            public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
-                GsonDescargas gsonDescargas = response.body();
+        List<Integer> tempIds = tempsFinal.stream().map(SpinnerItem::getId).collect(Collectors.toList());
+        List<Integer> espIds = espFinal.stream().map(SpinnerItem::getId).collect(Collectors.toList());
+        final int totalTemporadas = tempIds.size();
+        final AtomicInteger index = new AtomicInteger(0);
+        final Runnable[] descargarSiguiente = new Runnable[1];
 
-                if (gsonDescargas == null) {
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                    }
-                    Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", "respuesta nula", "aceptar");
-                    return;
-                }
+        descargarSiguiente[0] = () -> {
+            int i = index.getAndIncrement();
+            if (i >= totalTemporadas) {
 
-                if (gsonDescargas.getRespuestas() != null && !gsonDescargas.getRespuestas().isEmpty()) {
-                    for (Respuesta rsp : gsonDescargas.getRespuestas()) {
-                        switch (rsp.getCodigoRespuesta()) {
-                            case 5:
-                                if (progressDialog.isShowing()) {
-                                    progressDialog.dismiss();
-                                }
-                                activity.cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
-                                return;
-                            case 2:
-                                if (progressDialog.isShowing()) {
-                                    progressDialog.dismiss();
-                                }
-                                Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", rsp.getMensajeRespuesta()
-                                        + " por favor vuelva a intentarlo, si el problema persiste contacte con un administrador", "aceptar");
-                                return;
-                        }
-                    }
-                }
-
-                progressDialog.setMessage("guardando datos...");
-                ExecutorService ex = Executors.newSingleThreadExecutor();
-                ex.execute(() -> {
-                    boolean[] problema = volqueoDatos(gsonDescargas);
-                    Future<Config> futureConfig = ex.submit(() -> MainActivity.myAppDB.myDao().getConfig());
-                    Future<List<Temporada>> futureTempo = ex.submit(() -> MainActivity.myAppDB.myDao().getTemporada());
-
-                    handlerGrafico.post(() -> {
-                        try {
-
-                            Config config = futureConfig.get();
-                            temporadaList = futureTempo.get();
+                handlerGrafico.post(() -> {
+                            ocultarProgreso();
+                            Toasty.success(activity, "Datos descargados con éxito", Toast.LENGTH_LONG, true).show();
                             setSpecialSeason(temporadaList);
-
-                            if (!problema[0] && !problema[1]) {
-
-
-                                revisarAnexosPendienteFecha();
-                                if (config != null) {
-                                    activity.cambiarNombreUser(config.getId_usuario());
-                                }
-                                progressDialog.dismiss();
-                                Toasty.info(activity, "datos descargados con exito", Toast.LENGTH_SHORT, true).show();
-                                descargarGraficos();
-                                descargarVilab();
-                                sitiosNoVisitados(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
-                                primeraPrioridad(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
-                                ex.shutdown();
-                            } else {
-                                Errores errores = new Errores();
-                                errores.setCodigo_error(66);
-                                errores.setMensaje_error("positivo en true al descargar home");
-                                MainActivity.myAppDB.myDao().setErrores(errores);
-                                progressDialog.dismiss();
-                                Toasty.error(activity, "No se pudo descargar todo " + response.errorBody(), Toast.LENGTH_SHORT, true).show();
-                                ex.shutdown();
-                            }
-                        } catch (ExecutionException | InterruptedException e) {
-                            ex.shutdown();
-                            progressDialog.dismiss();
+                            revisarAnexosPendienteFecha();
+                            activity.cambiarNombreUser(cnf.getId_usuario());
+                            descargarGraficos();
+                            descargarVilab();
+                            sitiosNoVisitados(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
+                            primeraPrioridad(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
                         }
+
+                );
+
+                return;
+
+            }
+            int temporadaActual = tempIds.get(i);
+            String descTempActual = tempsFinal.get(i).getNombre();
+
+            handlerGrafico.post(() ->
+                    mostrarProgreso("Descargando temporada " + descTempActual + "  (" + (i + 1) + "/" + totalTemporadas + ")")
+            );
+
+            Call<GsonDescargas> call = apiService.descargarDatos(
+                    cnf.getId(),
+                    cnf.getId_usuario_suplandato(),
+                    version,
+                    Collections.singletonList(temporadaActual),
+                    espIds
+            );
+
+            call.enqueue(new Callback<GsonDescargas>() {
+                @Override
+                public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
+                    GsonDescargas data = response.body();
+
+                    if (data == null) {
+                        handlerGrafico.post(() ->
+                                Toasty.error(activity, "Error: respuesta nula en temporada " + descTempActual + "(" + temporadaActual + ")", Toast.LENGTH_LONG, true).show()
+                        );
+                        descargarSiguiente[0].run();
+                        return;
+                    }
+
+                    executor.execute(() -> {
+                        handlerGrafico.post(() ->
+                                mostrarProgreso("guardando datos de temporada " + descTempActual + "  (" + (i + 1) + "/" + totalTemporadas + ")")
+                        );
+                        boolean[] problema = volqueoDatos(data);
+
+
+                        handlerGrafico.post(() -> {
+                            if (problema[0] || problema[1]) {
+                                Toasty.error(activity, "Error guardando datos de temporada " + temporadaActual, Toast.LENGTH_LONG, true).show();
+                                return;
+                            }
+                            descargarSiguiente[0].run();  // Descargar la siguiente temporada
+                        });
                     });
-                });
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
-                Errores errores = new Errores();
-                errores.setCodigo_error(66);
-                errores.setMensaje_error(t.toString());
-                MainActivity.myAppDB.myDao().setErrores(errores);
-
-                Toasty.error(activity, "No se pudo descargar todo front " + t.getLocalizedMessage(), Toast.LENGTH_SHORT, true).show();
-                if (getView() != null) {
-                    progressDialog.dismiss();
                 }
-            }
-        });
+
+                @Override
+                public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
+                    handlerGrafico.post(() ->
+                            Toasty.error(activity, "Error conectando en temporada " + temporadaActual + ": " + t.getMessage(), Toast.LENGTH_LONG, true).show()
+                    );
+//                    descargarSiguiente[0].run();
+                }
+            });
+        };
+
+        // Iniciar proceso
+        ejecutarSeguro(descargarSiguiente[0]);
     }
+
+//    void descargando(List<SpinnerItem> temporadas, List<SpinnerItem> especies) {
+//
+//        mostrarProgreso("descargando  datos temporada ...");
+//        Config cnf = MainActivity.myAppDB.myDao().getConfig();
+//        String vv = Utilidades.APPLICATION_VERSION;
+//        ApiService apiService = RetrofitClient.getClient(cnf.getServidorSeleccionado()).create(ApiService.class);
+//
+//        List<Integer> tempIds = temporadas.stream().map(SpinnerItem::getId).collect(Collectors.toList());
+//        List<Integer> espIds = especies.stream().map(SpinnerItem::getId).collect(Collectors.toList());
+//
+//        Call<GsonDescargas> call = apiService.descargarDatos(
+//                cnf.getId(),
+//                cnf.getId_usuario_suplandato(),
+//                vv,
+//                tempIds, espIds
+//
+//        );
+//        call.enqueue(new Callback<GsonDescargas>() {
+//            @Override
+//            public void onResponse(@NonNull Call<GsonDescargas> call, @NonNull Response<GsonDescargas> response) {
+//                GsonDescargas gsonDescargas = response.body();
+//
+//                if (gsonDescargas == null) {
+//                    ocultarProgreso();
+//                    Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", "respuesta nula", "aceptar");
+//                    return;
+//                }
+//
+//                if (gsonDescargas.getRespuestas() != null && !gsonDescargas.getRespuestas().isEmpty()) {
+//                    for (Respuesta rsp : gsonDescargas.getRespuestas()) {
+//                        switch (rsp.getCodigoRespuesta()) {
+//                            case 5:
+//                                ocultarProgreso();
+//                                activity.cambiarFragment(new FragmentLogin(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
+//                                return;
+//                            case 2:
+//                                ocultarProgreso();
+//                                Utilidades.avisoListo(activity, "ERROR SINCRONIZACION", rsp.getMensajeRespuesta()
+//                                        + " por favor vuelva a intentarlo, si el problema persiste contacte con un administrador", "aceptar");
+//                                return;
+//                        }
+//                    }
+//                }
+//                mostrarProgreso("guardando datos...");
+//                ExecutorService ex = Executors.newSingleThreadExecutor();
+//                ex.execute(() -> {
+//                    boolean[] problema = volqueoDatos(gsonDescargas);
+//
+//                    handlerGrafico.post(() -> {
+//                        try {
+//
+//                            Future<Config> futureConfig = ex.submit(() -> MainActivity.myAppDB.myDao().getConfig());
+//                            Future<List<Temporada>> futureTempo = ex.submit(() -> MainActivity.myAppDB.myDao().getTemporada());
+//                            Config config = futureConfig.get();
+//                            temporadaList = futureTempo.get();
+//                            setSpecialSeason(temporadaList);
+//
+//                            if (!problema[0] && !problema[1]) {
+//                                revisarAnexosPendienteFecha();
+//                                if (config != null) {
+//                                    activity.cambiarNombreUser(config.getId_usuario());
+//                                }
+//                                Toasty.info(activity, "datos descargados con exito", Toast.LENGTH_SHORT, true).show();
+//                                descargarGraficos();
+//                                descargarVilab();
+//                                sitiosNoVisitados(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
+//                                primeraPrioridad(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
+//
+//                                ex.shutdown();
+//                            } else {
+//                                Errores errores = new Errores();
+//                                errores.setCodigo_error(66);
+//                                errores.setMensaje_error("positivo en true al descargar home");
+//                                MainActivity.myAppDB.myDao().setErrores(errores);
+//                                ocultarProgreso();
+//                                Toasty.error(activity, "No se pudo descargar todo " + response.errorBody(), Toast.LENGTH_SHORT, true).show();
+//                                ex.shutdown();
+//                            }
+//                        } catch (ExecutionException | InterruptedException e) {
+//                            ex.shutdown();
+//                            ocultarProgreso();
+//                        }
+//                    });
+//                });
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
+//                Errores errores = new Errores();
+//                errores.setCodigo_error(66);
+//                errores.setMensaje_error(t.toString());
+//                MainActivity.myAppDB.myDao().setErrores(errores);
+//
+//                Toasty.error(activity, "No se pudo descargar todo front " + t.getLocalizedMessage(), Toast.LENGTH_SHORT, true).show();
+//                if (getView() != null) {
+//                    ocultarProgreso();
+//                }
+//            }
+//        });
+//    }
 
 
     @Override
@@ -1353,66 +1435,47 @@ public class FragmentPrincipal extends Fragment {
         super.onResume();
     }
 
-
-    public void procesarInfoPrimera(int tempo) {
-
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Handler primerHandler = new Handler(Looper.getMainLooper());
-
-        executorService.execute(() -> {
-            List<PrimeraPrioridad> ppList = MainActivity.myAppDB.DaoPrimeraPrioridad().getPPByTemporada(tempo);
-            primerHandler.post(() -> mostrarTablaPrimera(ppList));
-        });
-        executorService.shutdown();
-    }
-
-
     void primeraPrioridad(int tempo) {
-        progressBar1.setVisibility(View.VISIBLE);
+        mostrarProgresoPP();
         lista_primera_prioridad.setVisibility(View.GONE);
-        procesarInfoPrimera(tempo);
-    }
-
-
-    public void mostrarTablaPrimera(List<PrimeraPrioridad> pplist) {
-
-        progressBar1.setVisibility(View.GONE);
-        lista_primera_prioridad.setVisibility(View.VISIBLE);
-        PrimeraPrioridadAdapter adapterPrimera = new PrimeraPrioridadAdapter(pplist, activity);
-        lista_primera_prioridad.setLayoutManager(new LinearLayoutManager(activity));
-        lista_primera_prioridad.setHasFixedSize(true);
-        lista_primera_prioridad.setAdapter(adapterPrimera);
-
-    }
-
-
-    public void mostrarTablaNoVis(List<SitiosNoVisitados> visitasCompletas) {
-
-        progressBar2.setVisibility(View.GONE);
-        lista_sitios_no_visitados.setVisibility(View.VISIBLE);
-        SitiosNoVisitadosAdapter adapterNovis = new SitiosNoVisitadosAdapter(visitasCompletas);
-        lista_sitios_no_visitados.setLayoutManager(new LinearLayoutManager(activity));
-        lista_sitios_no_visitados.setHasFixedSize(true);
-        lista_sitios_no_visitados.setAdapter(adapterNovis);
-
+        ejecutarSeguro(() -> {
+            List<PrimeraPrioridad> prioridades = MainActivity.myAppDB.DaoPrimeraPrioridad().getPPByTemporada(tempo);
+            handler.post(() -> {
+                ocultarProgresoPP();
+                if (prioridades != null && !prioridades.isEmpty()) {
+                    lista_primera_prioridad.setVisibility(View.VISIBLE);
+                    PrimeraPrioridadAdapter adapterPrimera = new PrimeraPrioridadAdapter(prioridades, activity);
+                    lista_primera_prioridad.setAdapter(adapterPrimera);
+                    lista_primera_prioridad.setLayoutManager(new LinearLayoutManager(activity));
+                    lista_primera_prioridad.setHasFixedSize(true);
+                } else {
+                    lista_primera_prioridad.setVisibility(View.GONE);
+                    Toast.makeText(activity, "No se encontraron datos de primera prioridad", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
 
     void sitiosNoVisitados(int tempo) {
-        progressBar2.setVisibility(View.VISIBLE);
+        mostrarProgresoSitiosNoVisitados();
         lista_sitios_no_visitados.setVisibility(View.GONE);
-        procesarInfoNoVisitados(tempo);
-    }
-
-    public void procesarInfoNoVisitados(int tempo) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Handler sitiosHandler = new Handler(Looper.getMainLooper());
-
-        executorService.execute(() -> {
-            List<SitiosNoVisitados> listAnexos = MainActivity.myAppDB.DaoSitiosNoVisitados().getSNVByTemporada(tempo);
-            sitiosHandler.post(() -> mostrarTablaNoVis(listAnexos));
+        ejecutarSeguro(() -> {
+            List<SitiosNoVisitados> sitiosNoVisitados = MainActivity.myAppDB.DaoSitiosNoVisitados().getSNVByTemporada(tempo);
+            handler.post(() -> {
+                ocultarProgresoSitiosNoVisitados();
+                if (sitiosNoVisitados != null && !sitiosNoVisitados.isEmpty()) {
+                    lista_sitios_no_visitados.setVisibility(View.VISIBLE);
+                    SitiosNoVisitadosAdapter adapterNovis = new SitiosNoVisitadosAdapter(sitiosNoVisitados);
+                    lista_sitios_no_visitados.setAdapter(adapterNovis);
+                    lista_sitios_no_visitados.setLayoutManager(new LinearLayoutManager(activity));
+                    lista_sitios_no_visitados.setHasFixedSize(true);
+                } else {
+                    lista_primera_prioridad.setVisibility(View.GONE);
+                    Toast.makeText(activity, "No se encontraron sitios no visitados", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
-        executorService.shutdown();
     }
 
 
@@ -1439,6 +1502,7 @@ public class FragmentPrincipal extends Fragment {
             spinnerMulti.setItems(spinnerItems);
             spinnerMulti.setDefaultText(defaultItem);
             spinnerMulti.setSelection(0);
+
         }
 
         List<Especie> especieList = MainActivity.myAppDB.myDao().getEspecies();

@@ -20,7 +20,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -91,10 +93,11 @@ public class FragmentVisitas extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         lista_anexos = view.findViewById(R.id.lista_anexos);
-
         LinearLayoutManager lManager = null;
         if (activity != null) {
             lManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
+
+            Utilidades.setToolbar(activity, view, "Anexos", "Listado de anexos");
         }
         lista_anexos.setHasFixedSize(true);
         lista_anexos.setLayoutManager(lManager);
@@ -152,29 +155,35 @@ public class FragmentVisitas extends Fragment {
         if (!temporadaList.isEmpty()) {
             cargarLista(prefs.getString(Utilidades.SELECTED_ANO, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo()));
         }
+
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.menu_vistas, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menu_vistas_filter) {
+                    DialogFilterTables dialogo = new DialogFilterTables();
+                    dialogo.show(requireActivity().getSupportFragmentManager(), "DIALOGO");
+                    return true;
+                }
+
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
+
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_visit));
+
     }
 
     private void recargarYear() {
         if (!temporadaList.isEmpty()) {
             spinner_toolbar.setSelection(prefs.getInt(Utilidades.FILTRO_TEMPORADA, (marca_especial_temporada.isEmpty()) ? temporadaList.size() - 1 : id_temporadas.indexOf(marca_especial_temporada)));
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_vistas, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_vistas_filter) {
-            DialogFilterTables dialogo = new DialogFilterTables();
-            dialogo.show(requireActivity().getSupportFragmentManager(), "DIALOGO");
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 
@@ -289,13 +298,5 @@ public class FragmentVisitas extends Fragment {
 
         activity.cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_left, R.anim.slide_out_left);
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null) {
-            activity.updateView(getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_visit));
-        }
-    }
+    
 }
