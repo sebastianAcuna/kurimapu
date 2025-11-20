@@ -3,7 +3,6 @@ package cl.smapdev.curimapu.clases.tablas;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -30,7 +29,7 @@ public class AnexoContrato {
     private String id_especie_anexo;
 
     @SerializedName("id_agric")
-    private String  id_agricultor_anexo;
+    private String id_agricultor_anexo;
 
     @SerializedName("nombre_potrero")
     private String protero;
@@ -108,7 +107,6 @@ public class AnexoContrato {
 
     @SerializedName("yield_kg_ha")
     private String yield_kg_ha;
-
 
 
     /* CAMBIOS 13-08 10:43 */
@@ -287,6 +285,198 @@ public class AnexoContrato {
     @SerializedName("imagen_grafico")
     public String imagen_grafico;
 
+
+    @SerializedName("entra_primera_prioridad")
+    public String entra_primera_prioridad;
+    @SerializedName("colorCrecimientoPP")
+    public String colorCrecimientoPP;
+    @SerializedName("valorCrecimientoPP")
+    public String valorCrecimientoPP;
+    @SerializedName("colorFitosanitarioPP")
+    public String colorFitosanitarioPP;
+    @SerializedName("valorFitosanitarioPP")
+    public String valorFitosanitarioPP;
+    @SerializedName("colorGeneralPP")
+    public String colorGeneralPP;
+    @SerializedName("valorGeneralPP")
+    public String valorGeneralPP;
+    @SerializedName("colorNdviPP")
+    public String colorNdviPP;
+    @SerializedName("valorNdviPP")
+    public String valorNdviPP;
+    @SerializedName("colorMiPP")
+    public String colorMiPP;
+    @SerializedName("valorMiPP")
+    public String valorMiPP;
+    @SerializedName("colormalezaPP")
+    public String colormalezaPP;
+    @SerializedName("valormalezaPP")
+    public String valormalezaPP;
+    @SerializedName("colorCosechaPP")
+    public String colorCosechaPP;
+    @SerializedName("valorCosechaPP")
+    public String valorCosechaPP;
+    @SerializedName("diasNoVisitado")
+    public String diasNoVisitado;
+    @SerializedName("fechaUltimaVisitaNoVisitado")
+    public String fechaUltimaVisitaNoVisitado;
+    @SerializedName("nombreUsuarioNoVisitado")
+    public String nombreUsuarioNoVisitado;
+    @SerializedName("entra_sitio_no_visitado")
+    public String entra_sitio_no_visitado;
+
+
+    public String getEntra_primera_prioridad() {
+        return entra_primera_prioridad;
+    }
+
+    public void setEntra_primera_prioridad(String entra_primera_prioridad) {
+        this.entra_primera_prioridad = entra_primera_prioridad;
+    }
+
+    public String getColorCrecimientoPP() {
+        return colorCrecimientoPP;
+    }
+
+    public void setColorCrecimientoPP(String colorCrecimientoPP) {
+        this.colorCrecimientoPP = colorCrecimientoPP;
+    }
+
+    public String getValorCrecimientoPP() {
+        return valorCrecimientoPP;
+    }
+
+    public void setValorCrecimientoPP(String valorCrecimientoPP) {
+        this.valorCrecimientoPP = valorCrecimientoPP;
+    }
+
+    public String getColorFitosanitarioPP() {
+        return colorFitosanitarioPP;
+    }
+
+    public void setColorFitosanitarioPP(String colorFitosanitarioPP) {
+        this.colorFitosanitarioPP = colorFitosanitarioPP;
+    }
+
+    public String getValorFitosanitarioPP() {
+        return valorFitosanitarioPP;
+    }
+
+    public void setValorFitosanitarioPP(String valorFitosanitarioPP) {
+        this.valorFitosanitarioPP = valorFitosanitarioPP;
+    }
+
+    public String getColorGeneralPP() {
+        return colorGeneralPP;
+    }
+
+    public void setColorGeneralPP(String colorGeneralPP) {
+        this.colorGeneralPP = colorGeneralPP;
+    }
+
+    public String getValorGeneralPP() {
+        return valorGeneralPP;
+    }
+
+    public void setValorGeneralPP(String valorGeneralPP) {
+        this.valorGeneralPP = valorGeneralPP;
+    }
+
+    public String getColorNdviPP() {
+        return colorNdviPP;
+    }
+
+    public void setColorNdviPP(String colorNdviPP) {
+        this.colorNdviPP = colorNdviPP;
+    }
+
+    public String getValorNdviPP() {
+        return valorNdviPP;
+    }
+
+    public void setValorNdviPP(String valorNdviPP) {
+        this.valorNdviPP = valorNdviPP;
+    }
+
+    public String getColorMiPP() {
+        return colorMiPP;
+    }
+
+    public void setColorMiPP(String colorMiPP) {
+        this.colorMiPP = colorMiPP;
+    }
+
+    public String getValorMiPP() {
+        return valorMiPP;
+    }
+
+    public void setValorMiPP(String valorMiPP) {
+        this.valorMiPP = valorMiPP;
+    }
+
+    public String getColormalezaPP() {
+        return colormalezaPP;
+    }
+
+    public void setColormalezaPP(String colormalezaPP) {
+        this.colormalezaPP = colormalezaPP;
+    }
+
+    public String getValormalezaPP() {
+        return valormalezaPP;
+    }
+
+    public void setValormalezaPP(String valormalezaPP) {
+        this.valormalezaPP = valormalezaPP;
+    }
+
+    public String getColorCosechaPP() {
+        return colorCosechaPP;
+    }
+
+    public void setColorCosechaPP(String colorCosechaPP) {
+        this.colorCosechaPP = colorCosechaPP;
+    }
+
+    public String getValorCosechaPP() {
+        return valorCosechaPP;
+    }
+
+    public void setValorCosechaPP(String valorCosechaPP) {
+        this.valorCosechaPP = valorCosechaPP;
+    }
+
+    public String getDiasNoVisitado() {
+        return diasNoVisitado;
+    }
+
+    public void setDiasNoVisitado(String diasNoVisitado) {
+        this.diasNoVisitado = diasNoVisitado;
+    }
+
+    public String getFechaUltimaVisitaNoVisitado() {
+        return fechaUltimaVisitaNoVisitado;
+    }
+
+    public void setFechaUltimaVisitaNoVisitado(String fechaUltimaVisitaNoVisitado) {
+        this.fechaUltimaVisitaNoVisitado = fechaUltimaVisitaNoVisitado;
+    }
+
+    public String getNombreUsuarioNoVisitado() {
+        return nombreUsuarioNoVisitado;
+    }
+
+    public void setNombreUsuarioNoVisitado(String nombreUsuarioNoVisitado) {
+        this.nombreUsuarioNoVisitado = nombreUsuarioNoVisitado;
+    }
+
+    public String getEntra_sitio_no_visitado() {
+        return entra_sitio_no_visitado;
+    }
+
+    public void setEntra_sitio_no_visitado(String entra_sitio_no_visitado) {
+        this.entra_sitio_no_visitado = entra_sitio_no_visitado;
+    }
 
     public void setBase_agricultor(String base_agricultor) {
         this.base_agricultor = base_agricultor;
