@@ -110,7 +110,7 @@ public class Utilidades {
 
     public static final String DIRECTORIO_IMAGEN = "curimapu_vegetable_imagenes";
     public static final String DIRECTORIO_RESPALDO = "curimapu_vegetable_respaldo_bd";
-    public static final String NOMBRE_DATABASE = "curimapu_vegetable.db";
+    public static final String NOMBRE_DATABASE = "curimapu_vegetable_v4_4_0611.db";
 
     public static final String SHARED_NAME = "preference_app";
     public static final String SHARED_USER = "user_name";
