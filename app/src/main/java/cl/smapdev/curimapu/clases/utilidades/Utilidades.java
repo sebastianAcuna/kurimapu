@@ -58,6 +58,7 @@ import cl.smapdev.curimapu.clases.tablas.EstacionFloracionDetalle;
 public class Utilidades {
 
     public static final String APPLICATION_VERSION = "6.0.21112025";
+    public static final String NOMBRE_DATABASE = "curimapu_v6_0_21112025.db";
 
     public static final String FRAGMENT_INICIO = "fragmental_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -114,7 +115,7 @@ public class Utilidades {
 
     public static final String DIRECTORIO_IMAGEN = "curimapu_imagenes";
     public static final String DIRECTORIO_RESPALDO = "curimapu_respaldo_bd";
-    public static final String NOMBRE_DATABASE = "curimapu.db";
+
 
     public static final String SHARED_NAME = "preference_app";
     public static final String SHARED_USER = "user_name";
