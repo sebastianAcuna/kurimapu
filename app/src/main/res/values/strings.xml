@@ -308,6 +308,33 @@
         <item>Regular</item>
     </string-array>
 
+
+    <string-array name="desplegable_linea_checklist_plantin">
+        <item>MA I</item>
+        <item>MA II</item>
+        <item>MA III</item>
+        <item>MA IV</item>
+        <item>FE</item>
+        <item>OTRO</item>
+    </string-array>
+
+    <string-array name="desplegable_bandeja_etiquetada_checklist_plantin">
+        <item>SI</item>
+        <item>NO</item>
+        <item>PARCIAL</item>
+    </string-array>
+
+    <string-array name="desplegable_acopio_adecuado_checklist_plantin">
+        <item>SI</item>
+        <item>NO</item>
+    </string-array>
+
+    <string-array name="desplegable_separacion_lineas_checklist_plantin">
+        <item>SI</item>
+        <item>NO</item>
+        <item>NO CORRESPONDE</item>
+    </string-array>
+
     <!--    TABS -->
     <string-array name="tabs">
         <item>@string/uno</item>

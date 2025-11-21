@@ -1,10 +1,8 @@
 package cl.smapdev.curimapu;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -19,7 +17,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -27,8 +24,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -46,7 +41,6 @@ import cl.smapdev.curimapu.clases.bd.MyAppBD;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
-import cl.smapdev.curimapu.fragments.FragmentConfigs;
 import cl.smapdev.curimapu.fragments.FragmentFichas;
 import cl.smapdev.curimapu.fragments.FragmentLogin;
 import cl.smapdev.curimapu.fragments.FragmentPrincipal;
@@ -60,7 +54,7 @@ import cl.smapdev.curimapu.fragments.servidorFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActionBarDrawerToggle toogle;
-    private DrawerLayout drawerLayout;
+    public DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private SharedPreferences shared;
 
@@ -90,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
-            if (!checkPermission()) {
-                requestPermission();
+            if (!Utilidades.checkPermission(this)) {
+                Utilidades.requestPermission(this);
             }
         }
 
@@ -204,25 +198,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        int result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        int result3 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED && result3 == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermission() {
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Toast.makeText(this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-            }
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -276,9 +251,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
 
-            case R.id.nv_configs:
-                cambiarFragment(new FragmentConfigs(), Utilidades.FRAGMENT_CONFIG, R.anim.slide_in_left, R.anim.slide_out_left);
-                break;
+//            case R.id.nv_configs:
+//                cambiarFragment(new FragmentConfigs(), Utilidades.FRAGMENT_CONFIG, R.anim.slide_in_left, R.anim.slide_out_left);
+//                break;
 
 
             case R.id.nv_salir:
@@ -380,6 +355,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case Utilidades.FRAGMENT_CHECKLIST_SIEMBRA:
                     case Utilidades.FRAGMENT_CHECKLIST_GUIA_INTERNA:
                     case Utilidades.FRAGMENT_CHECKLIST_REVISION_FRUTOS:
+                    case Utilidades.FRAGMENT_CHECKLIST_RECEPCION_PLANTINERA:
                         cambiarFragment(new FragmentCheckList(), Utilidades.FRAGMENT_CHECKLIST, R.anim.slide_in_right, R.anim.slide_out_right);
                         break;
                     case Utilidades.FRAGMENT_CREA_FICHA:

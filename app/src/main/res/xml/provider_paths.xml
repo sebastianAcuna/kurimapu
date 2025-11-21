@@ -8,4 +8,7 @@
         name="pictures"
         path="Pictures/" />
 
+    <cache-path
+        name="images"
+        path="." />
 </paths>

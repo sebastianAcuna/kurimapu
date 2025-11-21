@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRecepcionPlantineraCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRevisionFrutosCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
 import cl.smapdev.curimapu.clases.relaciones.DesplegablesAplicacionHormonaCompleto;
@@ -22,6 +23,8 @@ import cl.smapdev.curimapu.clases.relaciones.Respuesta;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.tablas.CheckListRecepcionPlantineraDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListRecepcionPlantineraDetalleFotos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
@@ -140,7 +143,8 @@ public class Descargas {
     public static boolean[] volqueoDatos(GsonDescargas gsonDescargas) throws RuntimeException {
 
         boolean[] problema = {false, false};
-        
+
+
         MainActivity.myAppDB.VisitasFotosAlmacigos().limpiarVisitasSubidas();
         if (gsonDescargas.getArray_visitas_almacigos() != null && !gsonDescargas.getArray_visitas_almacigos().isEmpty()) {
             try {
@@ -185,19 +189,49 @@ public class Descargas {
         }
 
 
+        if (gsonDescargas.getArray_checklist_recepcion_plantines() != null && !gsonDescargas.getArray_checklist_recepcion_plantines().isEmpty()) {
+            for (CheckListRecepcionPlantineraCompleto cp : gsonDescargas.getArray_checklist_recepcion_plantines()) {
+                if (cp.getClDetalle() != null && !cp.getClDetalle().isEmpty()) {
+                    for (CheckListRecepcionPlantineraDetalle cd : cp.getClDetalle()) {
+                        CheckListRecepcionPlantineraDetalle d = MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().obtenerRPDetallePorClaveUnica(cd.getClave_unica_rp_detalle());
+                        if (d != null) {
+                            cd.setEstado_sincronizacion(1);
+                            MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().updateDetalle(cd);
+                        } else {
+                            MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().insertDetalle(cd);
+                        }
+                    }
+                }
+
+                if (cp.getClDetalleFoto() != null && !cp.getClDetalleFoto().isEmpty()) {
+                    for (CheckListRecepcionPlantineraDetalleFotos cd : cp.getClDetalleFoto()) {
+                        CheckListRecepcionPlantineraDetalleFotos d = MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().obtenerRPDetalleFotoPorClaveUnica(cd.getClave_unica_foto());
+                        if (d != null) {
+                            cd.setEstado_sincronizacion(1);
+                            MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().updateFoto(cd);
+                        } else {
+                            MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().insertFoto(cd);
+                        }
+                    }
+                }
+
+            }
+        }
+
+
         if (gsonDescargas.getCheckListRevisionFrutosCompletos() != null && !gsonDescargas.getCheckListRevisionFrutosCompletos().isEmpty()) {
-            ExecutorService ex = Executors.newSingleThreadExecutor();
+
             try {
                 for (CheckListRevisionFrutosCompleto cp : gsonDescargas.getCheckListRevisionFrutosCompletos()) {
 
                     for (CheckListRevisionFrutosDetalle cd : cp.getCheckListRevisionFrutosDetalle()) {
-                        CheckListRevisionFrutosDetalle cld = ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnica(cd.getClave_unica_detalle())).get();
+                        CheckListRevisionFrutosDetalle cld = MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnica(cd.getClave_unica_detalle());
 
                         if (cld != null) {
                             cd.setEstado_sincronizacion(1);
-                            ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().updateclrevisionFrutosDetalle(cd)).get();
+                            MainActivity.myAppDB.DaoCheckListRevisionFrutos().updateclrevisionFrutosDetalle(cd);
                         } else {
-                            ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().insertDetallesRevFrutos(cd)).get();
+                            MainActivity.myAppDB.DaoCheckListRevisionFrutos().insertDetallesRevFrutos(cd);
                         }
 
                     }
@@ -205,29 +239,27 @@ public class Descargas {
 
                     for (CheckListRevisionFrutosFotos cd : cp.getCheckListRevisionFrutosFotos()) {
 
-                        CheckListRevisionFrutosFotos cld = ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnica(cd.getClave_unica_foto())).get();
+                        CheckListRevisionFrutosFotos cld = MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnica(cd.getClave_unica_foto());
 
                         if (cld != null) {
                             cd.setEstado_sincronizacion(1);
-                            ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().updateclrevisionFrutosFotos(cd)).get();
+                            MainActivity.myAppDB.DaoCheckListRevisionFrutos().updateclrevisionFrutosFotos(cd);
                         } else {
-                            ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().insertFotosRevFrutos(cd)).get();
+                            MainActivity.myAppDB.DaoCheckListRevisionFrutos().insertFotosRevFrutos(cd);
                         }
 
                     }
 
-                    CheckListRevisionFrutos cr = ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosByClaveUnica(cp.getCheckListRevisionFrutos().getClave_unica())).get();
+                    CheckListRevisionFrutos cr = MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosByClaveUnica(cp.getCheckListRevisionFrutos().getClave_unica());
 
                     if (cr != null) {
                         cp.getCheckListRevisionFrutos().setEstado_sincronizacion(1);
-                        ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().updateclrevisionFrutos(cp.getCheckListRevisionFrutos())).get();
+                        MainActivity.myAppDB.DaoCheckListRevisionFrutos().updateclrevisionFrutos(cp.getCheckListRevisionFrutos());
                     } else {
-                        ex.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().insertclrevisionFrutos(cp.getCheckListRevisionFrutos())).get();
+                        MainActivity.myAppDB.DaoCheckListRevisionFrutos().insertclrevisionFrutos(cp.getCheckListRevisionFrutos());
                     }
                 }
-            } catch (ExecutionException | InterruptedException ignored) {
-            } finally {
-                ex.shutdown();
+            } catch (SQLiteException ignored) {
             }
 
 
@@ -235,75 +267,73 @@ public class Descargas {
 
 
         if (gsonDescargas.getCheckListRoguingCompletos() != null && !gsonDescargas.getCheckListRoguingCompletos().isEmpty()) {
-            ExecutorService ex = Executors.newSingleThreadExecutor();
+
             try {
                 for (CheckListRoguingCompleto cp : gsonDescargas.getCheckListRoguingCompletos()) {
 
                     for (CheckListRoguingDetalle cd : cp.getCheckListRoguingDetalle()) {
-                        CheckListRoguingDetalle cld = ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingDetallePorClaveUnidad(cd.getClave_unica_detalle())).get();
+                        CheckListRoguingDetalle cld = MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingDetallePorClaveUnidad(cd.getClave_unica_detalle());
 
                         if (cld != null) {
                             cd.setEstado_sincronizacion(1);
-                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().updateDetalleRoguing(cd)).get();
+                            MainActivity.myAppDB.DaoCLRoguing().updateDetalleRoguing(cd);
                         } else {
-                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().insertDetallesRoguing(cd)).get();
+                            MainActivity.myAppDB.DaoCLRoguing().insertDetallesRoguing(cd);
                         }
 
                     }
 
                     for (CheckListRoguingDetalleFechas cf : cp.getCheckListRoguingDetalleFechas()) {
 
-                        CheckListRoguingDetalleFechas cld = ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingDetalleFechaPorClaveUnidad(cf.getClave_unica_detalle_fecha())).get();
+                        CheckListRoguingDetalleFechas cld = MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingDetalleFechaPorClaveUnidad(cf.getClave_unica_detalle_fecha());
 
                         if (cld != null) {
                             cf.setEstado_sincronizacion(1);
-                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().updateRoguingDetalleFecha(cf)).get();
+                            MainActivity.myAppDB.DaoCLRoguing().updateRoguingDetalleFecha(cf);
                         } else {
-                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().insertRoguingDetalleFecha(cf)).get();
+                            MainActivity.myAppDB.DaoCLRoguing().insertRoguingDetalleFecha(cf);
                         }
 
                     }
 
                     for (CheckListRoguingFotoCabecera cb : cp.getCheckListFotoCabecera()) {
 
-                        CheckListRoguingFotoCabecera cld = ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingFotoCabPorClaveUnidad(cb.getClave_unica())).get();
+                        CheckListRoguingFotoCabecera cld = MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingFotoCabPorClaveUnidad(cb.getClave_unica());
 
                         if (cld != null) {
                             cb.setEstado_sincronizacion(1);
-                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().updateFotosRoguing(cb)).get();
+                            MainActivity.myAppDB.DaoCLRoguing().updateFotosRoguing(cb);
                         } else {
-                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().insertFotosRoguing(cb)).get();
+                            MainActivity.myAppDB.DaoCLRoguing().insertFotosRoguing(cb);
                         }
 
                     }
 
                     for (CheckListRoguingFotoDetalle cd : cp.getCheckListFotoDetalle()) {
 
-                        CheckListRoguingFotoDetalle cld = ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingFotoDetPorClaveUnidad(cd.getClave_unica())).get();
+                        CheckListRoguingFotoDetalle cld = MainActivity.myAppDB.DaoCLRoguing().obtenerRoguingFotoDetPorClaveUnidad(cd.getClave_unica());
 
                         if (cld != null) {
                             cd.setEstado_sincronizacion(1);
-                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().updateRoguingFotoDetalle(cd)).get();
+                            MainActivity.myAppDB.DaoCLRoguing().updateRoguingFotoDetalle(cd);
                         } else {
-                            ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().insertRoguingFotoDetalle(cd)).get();
+                            MainActivity.myAppDB.DaoCLRoguing().insertRoguingFotoDetalle(cd);
                         }
 
                     }
 
-                    CheckListRoguing cr = ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getClroguingByClaveUnica(cp.getCheckListRoguing().getClave_unica())).get();
+                    CheckListRoguing cr = MainActivity.myAppDB.DaoCLRoguing().getClroguingByClaveUnica(cp.getCheckListRoguing().getClave_unica());
 
                     if (cr != null) {
                         cp.getCheckListRoguing().setEstado_sincronizacion(1);
-                        ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().updateclroguing(cp.getCheckListRoguing())).get();
+                        MainActivity.myAppDB.DaoCLRoguing().updateclroguing(cp.getCheckListRoguing());
                     } else {
-                        ex.submit(() -> MainActivity.myAppDB.DaoCLRoguing().insertclroguing(cp.getCheckListRoguing())).get();
+                        MainActivity.myAppDB.DaoCLRoguing().insertclroguing(cp.getCheckListRoguing());
                     }
 
 
                 }
-            } catch (ExecutionException | InterruptedException ignored) {
-            } finally {
-                ex.shutdown();
+            } catch (SQLiteException ignored) {
             }
 
 

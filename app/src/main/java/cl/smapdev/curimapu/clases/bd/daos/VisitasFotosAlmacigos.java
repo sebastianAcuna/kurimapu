@@ -26,6 +26,12 @@ public interface VisitasFotosAlmacigos {
     @Query("SELECT * FROM almacigos_visita WHERE estado_sincronizacion = 0 ")
     List<VisitasAlmacigos> getVisitasAlmacigosPorSync();
 
+    @Query("SELECT* FROM almacigos_visita  ")
+    List<VisitasAlmacigos> getVisitas();
+
+    @Query("SELECT* FROM almacigos_visita  WHERE uid_visita = :uidVisita ")
+    VisitasAlmacigos getVisitaByUid(String uidVisita);
+
     @Query("SELECT * FROM almacigos_visita INNER JOIN op_almacigos ON (op_almacigos.id_v_post_siembra = almacigos_visita.id_valor_post_siembra) WHERE id_valor_post_siembra = :id_op ")
     List<VisitaAlmacigoCompleto> getVisitasAlmacigosPoridOP(int id_op);
 

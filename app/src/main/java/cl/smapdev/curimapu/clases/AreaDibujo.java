@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,8 +26,8 @@ public class AreaDibujo extends View {
     private final List<Paint> paints;
     private FileOutputStream fopt = null;
 
-    public AreaDibujo(Context context, @Nullable AttributeSet attrs){
-        super(context ,attrs);
+    public AreaDibujo(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
         paths = new ArrayList<>();
         paints = new ArrayList<>();
     }
@@ -40,12 +39,12 @@ public class AreaDibujo extends View {
 
         canvas.drawARGB(255, 240, 240, 240);
         int i = 0;
-        for (Path trazo: this.paths){
+        for (Path trazo : this.paths) {
             canvas.drawPath(trazo, this.paints.get(i++));
         }
     }
 
-    private void saveCanvas (){
+    private void saveCanvas() {
 
         Bitmap toDisk = Bitmap.createBitmap(
                 900,
@@ -55,10 +54,10 @@ public class AreaDibujo extends View {
         Canvas canvasSave = new Canvas(toDisk);
         canvasSave.drawARGB(255, 255, 255, 255);
         int i = 0;
-        for (Path trazo: this.paths){
+        for (Path trazo : this.paths) {
             canvasSave.drawPath(trazo, this.paints.get(i++));
         }
-        toDisk.compress(Bitmap.CompressFormat.WEBP, 90,fopt);
+        toDisk.compress(Bitmap.CompressFormat.WEBP, 90, fopt);
     }
 
 
@@ -67,8 +66,8 @@ public class AreaDibujo extends View {
         float posx = event.getX();
         float posy = event.getY();
 
-        switch (event.getAction()){
-            case  MotionEvent.ACTION_DOWN:
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
                 Paint paint = new Paint();
                 paint.setStrokeWidth(5);
                 paint.setARGB(255, 0, 0, 0);
@@ -84,7 +83,7 @@ public class AreaDibujo extends View {
             case MotionEvent.ACTION_UP:
 
                 int puntosHistoricos = event.getHistorySize();
-                for (int i = 0; i < puntosHistoricos; i++){
+                for (int i = 0; i < puntosHistoricos; i++) {
                     path.lineTo(event.getHistoricalX(i), event.getHistoricalY(i));
                 }
                 break;
@@ -94,26 +93,26 @@ public class AreaDibujo extends View {
         return true;
     }
 
-    public void reset(){
+    public void reset() {
         paths.clear();
         paints.clear();
         invalidate();
     }
 
 
-    public String saveAsImage(String name){
+    public String saveAsImage(String name) {
 
-        if (paths.size() <= 0 || paints.size() <= 0){
+        if (paths.size() <= 0 || paints.size() <= 0) {
             return "";
         }
-        File miFile = new File(Environment.getExternalStoragePublicDirectory("DCIM"), Utilidades.DIRECTORIO_IMAGEN);
+        File miFile = new File(getContext().getExternalFilesDir("DCIM"), Utilidades.DIRECTORIO_IMAGEN);
         boolean isCreada = miFile.exists();
 
-        if (!isCreada){
-            isCreada=miFile.mkdirs();
+        if (!isCreada) {
+            isCreada = miFile.mkdirs();
         }
 
-        String signPath = Environment.getExternalStoragePublicDirectory("DCIM")
+        String signPath = getContext().getExternalFilesDir("DCIM")
                 + File.separator + Utilidades.DIRECTORIO_IMAGEN
                 + File.separator + name;
         File file = new File(signPath);

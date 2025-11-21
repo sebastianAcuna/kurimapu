@@ -2,11 +2,13 @@ package cl.smapdev.curimapu.fragments.almacigos;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -14,7 +16,9 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +36,6 @@ import cl.smapdev.curimapu.fragments.dialogos.FragmentQRScanner;
 public class FragmentListadoVisitasAlmacigos extends Fragment {
 
     private MainActivity activity;
-    private SharedPreferences prefs;
 
     private RecyclerView rv_listado_op;
     private EditText etBuscarOP;
@@ -40,6 +43,8 @@ public class FragmentListadoVisitasAlmacigos extends Fragment {
 
 
     private OPAlmacigoAdapter almacigoAdapter;
+
+    private final ExecutorService io = Executors.newSingleThreadExecutor();
 
 
     public void setActivity(MainActivity activity) {
@@ -54,9 +59,26 @@ public class FragmentListadoVisitasAlmacigos extends Fragment {
 
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+        } else {
+            throw new RuntimeException(context + " must be MainActivity");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (io != null && !io.isShutdown()) {
+            io.shutdown();
+        }
+    }
+
+    @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
     }
 
     @Nullable
@@ -64,6 +86,7 @@ public class FragmentListadoVisitasAlmacigos extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_listado_visita_almacigo, container, false);
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -102,7 +125,8 @@ public class FragmentListadoVisitasAlmacigos extends Fragment {
             FragmentQRScanner scannerFragment = new FragmentQRScanner();
             scannerFragment.setOnScanResultListener(code -> {
                 if (almacigoAdapter != null) {
-                    etBuscarOP.setText(code); // actualiza el campo para que dispare el filtro
+                    String sanitized = code == null ? "" : code.trim().replaceAll("[^A-Za-z0-9._,:\\-áéíóúÁÉÍÓÚüÜñÑ]", "");
+                    etBuscarOP.setText(sanitized); // limpia espacios y caracteres especiales
                 }
             });
 
@@ -114,6 +138,19 @@ public class FragmentListadoVisitasAlmacigos extends Fragment {
         });
 
 
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        Utilidades.setToolbar(activity, view, "Almacigos", "listado de op");
+
     }
 
 
@@ -123,7 +160,7 @@ public class FragmentListadoVisitasAlmacigos extends Fragment {
         rv_listado_op.setHasFixedSize(true);
         rv_listado_op.setLayoutManager(lManager);
 
-        ExecutorService io = Executors.newSingleThreadExecutor();
+
         io.execute(() -> {
             List<OpAlmacigos> almacigosList = MainActivity.myAppDB.DaoOPAlmacigos().getOpAlmacigos();
 
@@ -151,14 +188,5 @@ public class FragmentListadoVisitasAlmacigos extends Fragment {
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (activity != null) {
-            activity.updateView(
-                    "Almacigos", "listado de op");
-        }
-    }
 
 }

@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,12 +35,14 @@ import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.CheckListAdapter;
 import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRecepcionPlantineraCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRevisionFrutosCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.tablas.CheckListDetails;
 import cl.smapdev.curimapu.clases.tablas.CheckListGuiaInterna;
+import cl.smapdev.curimapu.clases.tablas.CheckListRecepcionPlantinera;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
@@ -61,6 +65,8 @@ public class FragmentCheckList extends Fragment {
     private AnexoCompleto anexoCompleto = null;
 
     private CheckListAdapter adapter;
+
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,107 +106,165 @@ public class FragmentCheckList extends Fragment {
         bind(view);
 
         cargarLista();
-    }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_sube_fechas, menu);
-    }
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.menu_sube_fechas, menu);
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_upload_files:
-                ProgressDialog pd = ProgressDialog.show(
-                        activity,
-                        null,
-                        "Preparando datos para subir...",
-                        true,
-                        false);
-                ExecutorService io = Executors.newSingleThreadExecutor();
-                io.execute(() -> {
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menu_upload_files) {
+                    ProgressDialog pd = ProgressDialog.show(
+                            activity,
+                            null,
+                            "Preparando datos para subir...",
+                            true,
+                            false);
+                    ExecutorService io = Executors.newSingleThreadExecutor();
+                    io.execute(() -> {
 
-                    CheckListRequest chkS = new CheckListRequest();
+                        CheckListRequest chkS = new CheckListRequest();
 
-                    List<CheckListSiembra> chk = MainActivity.myAppDB.DaoClSiembra()
-                            .getClSiembraToSync();
+                        List<CheckListSiembra> chk = MainActivity.myAppDB.DaoClSiembra()
+                                .getClSiembraToSync();
 
-                    List<CheckListAplicacionHormonas> chkA = MainActivity.myAppDB.DaoCLAplicacionHormonas().getClApHormonasToSync();
-                    List<CheckListRoguing> chkR = MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync();
-                    List<CheckListGuiaInterna> chkG = MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaToSync();
-                    List<CheckListRevisionFrutos> chRF = MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosToSync();
+                        List<CheckListRecepcionPlantinera> RP =
+                                MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().getClRPToSync();
 
-                    if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty() && chkG.isEmpty() && chRF.isEmpty()) {
+
+                        List<CheckListAplicacionHormonas> chkA = MainActivity.myAppDB.DaoCLAplicacionHormonas().getClApHormonasToSync();
+                        List<CheckListRoguing> chkR = MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync();
+                        List<CheckListGuiaInterna> chkG = MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaToSync();
+                        List<CheckListRevisionFrutos> chRF = MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosToSync();
+
+                        if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty() && chkG.isEmpty() && chRF.isEmpty() && RP.isEmpty()) {
+                            activity.runOnUiThread(() -> {
+                                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                                pd.dismiss();
+                            });
+                            return;
+                        }
+
+                        if (!RP.isEmpty()) {
+                            List<CheckListRecepcionPlantineraCompleto> lista = new ArrayList<>();
+                            for (CheckListRecepcionPlantinera cl : RP) {
+                                CheckListRecepcionPlantineraCompleto completo = new CheckListRecepcionPlantineraCompleto();
+
+                                completo.setClCabecera(cl);
+                                completo.setClDetalle(MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().obtenerRPDetallePorClaveCabeceraToSynk(cl.getClave_unica()));
+                                completo.setClDetalleFoto(MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().obtenerRPDetalleFotoPorClaveCabeceraToSynk(cl.getClave_unica()));
+                                lista.add(completo);
+                            }
+
+                            chkS.setCheckListRecepcionPlantineraCompletos(lista);
+
+                        }
+
+                        if (!chkA.isEmpty()) {
+                            chkS.setCheckListAplicacionHormonas(chkA);
+                        }
+
+                        if (!chk.isEmpty()) {
+                            chkS.setCheckListSiembras(chk);
+                        }
+
+                        if (!chkG.isEmpty()) {
+                            chkS.setCheckListGuiaInternas(chkG);
+                        }
+
+                        if (!chkR.isEmpty()) {
+                            List<CheckListRoguingCompleto> clCompletoList = new ArrayList<>();
+                            for (CheckListRoguing clr : chkR) {
+                                CheckListRoguingCompleto clCompleto = new CheckListRoguingCompleto();
+
+                                List<CheckListRoguingDetalle> clrd = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica());
+                                List<CheckListRoguingFotoCabecera> clRc = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica());
+                                List<CheckListRoguingFotoDetalle> clRd = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica());
+                                List<CheckListRoguingDetalleFechas> clRF = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica());
+
+                                clCompleto.setCheckListRoguing(clr);
+                                clCompleto.setCheckListRoguingDetalle(clrd);
+                                clCompleto.setCheckListFotoCabecera(clRc);
+                                clCompleto.setCheckListFotoDetalle(clRd);
+                                clCompleto.setCheckListRoguingDetalleFechas(clRF);
+
+                                clCompletoList.add(clCompleto);
+                            }
+                            chkS.setCheckListRoguing(clCompletoList);
+                        }
+                        if (!chRF.isEmpty()) {
+                            List<CheckListRevisionFrutosCompleto> chRFCompletoList = new ArrayList<>();
+
+                            for (CheckListRevisionFrutos rf : chRF) {
+                                CheckListRevisionFrutosCompleto rfCompleto = new CheckListRevisionFrutosCompleto();
+                                List<CheckListRevisionFrutosDetalle> clrd = MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnicaPadreToSynk(rf.getClave_unica());
+                                List<CheckListRevisionFrutosFotos> clff = MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnicaPadreToSynk(rf.getClave_unica());
+                                rfCompleto.setCheckListRevisionFrutos(rf);
+                                rfCompleto.setCheckListRevisionFrutosDetalle(clrd);
+                                rfCompleto.setCheckListRevisionFrutosFotos(clff);
+                                chRFCompletoList.add(rfCompleto);
+                            }
+                            chkS.setCheckListRevisionFrutos(chRFCompletoList);
+                        }
                         activity.runOnUiThread(() -> {
-                            Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                            prepararSubir(chkS);
                             pd.dismiss();
                         });
-                        return;
-                    }
-
-                    if (!chkA.isEmpty()) {
-                        chkS.setCheckListAplicacionHormonas(chkA);
-                    }
-
-                    if (!chk.isEmpty()) {
-                        chkS.setCheckListSiembras(chk);
-                    }
-
-                    if (!chkG.isEmpty()) {
-                        chkS.setCheckListGuiaInternas(chkG);
-                    }
-
-                    if (!chkR.isEmpty()) {
-                        List<CheckListRoguingCompleto> clCompletoList = new ArrayList<>();
-                        for (CheckListRoguing clr : chkR) {
-                            CheckListRoguingCompleto clCompleto = new CheckListRoguingCompleto();
-
-                            List<CheckListRoguingDetalle> clrd = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica());
-                            List<CheckListRoguingFotoCabecera> clRc = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica());
-                            List<CheckListRoguingFotoDetalle> clRd = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica());
-                            List<CheckListRoguingDetalleFechas> clRF = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica());
-
-                            clCompleto.setCheckListRoguing(clr);
-                            clCompleto.setCheckListRoguingDetalle(clrd);
-                            clCompleto.setCheckListFotoCabecera(clRc);
-                            clCompleto.setCheckListFotoDetalle(clRd);
-                            clCompleto.setCheckListRoguingDetalleFechas(clRF);
-
-                            clCompletoList.add(clCompleto);
-                        }
-                        chkS.setCheckListRoguing(clCompletoList);
-                    }
-                    if (!chRF.isEmpty()) {
-                        List<CheckListRevisionFrutosCompleto> chRFCompletoList = new ArrayList<>();
-
-                        for (CheckListRevisionFrutos rf : chRF) {
-                            CheckListRevisionFrutosCompleto rfCompleto = new CheckListRevisionFrutosCompleto();
-                            List<CheckListRevisionFrutosDetalle> clrd = MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnicaPadreToSynk(rf.getClave_unica());
-                            List<CheckListRevisionFrutosFotos> clff = MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnicaPadreToSynk(rf.getClave_unica());
-                            rfCompleto.setCheckListRevisionFrutos(rf);
-                            rfCompleto.setCheckListRevisionFrutosDetalle(clrd);
-                            rfCompleto.setCheckListRevisionFrutosFotos(clff);
-                            chRFCompletoList.add(rfCompleto);
-                        }
-                        chkS.setCheckListRevisionFrutos(chRFCompletoList);
-                    }
-                    activity.runOnUiThread(() -> {
-                        prepararSubir(chkS);
-                        pd.dismiss();
                     });
-                });
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+                    return true;
 
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        
+        String subt = (anexoCompleto != null)
+                ? " C. virtual Anexo " + anexoCompleto.getAnexoContrato().getAnexo_contrato()
+                : getResources().getString(R.string.subtitles_visit);
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), subt);
     }
 
 
-    private CheckLists getCheckListAplicacionHormonas(ExecutorService ex) {
+    private CheckLists getChecklistRecepcionPlantinera() {
+        CheckLists chkRecepcionPlantineras = new CheckLists();
+        chkRecepcionPlantineras.setDescCheckList("CHECK LIST RECEPCION PLANTINERA");
+        chkRecepcionPlantineras.setIdAnexo(Integer.parseInt(anexoCompleto
+                .getAnexoContrato().getId_anexo_contrato()));
+        chkRecepcionPlantineras.setExpanded(false);
+        chkRecepcionPlantineras.setTipoCheckList(Utilidades.TIPO_DOCUMENTO_CHECKLIST_RECEPCION_PLANTINERA);
+
+        List<CheckListDetails> nested = new ArrayList<>();
+
+        try {
+
+            List<CheckListRecepcionPlantinera> RP = MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().getAllClRPByAc(chkRecepcionPlantineras.getIdAnexo());
+            if (!RP.isEmpty()) {
+                for (CheckListRecepcionPlantinera pl : RP) {
+                    CheckListDetails tmp = new CheckListDetails();
+                    tmp.setDescription(pl.getApellido_checklist());
+                    tmp.setUploaded((pl.getEstado_sincronizacion() > 0));
+                    tmp.setId(pl.getId_cl_recepcion_plantinera());
+                    tmp.setIdAnexo(pl.getId_ac_recepcion_plantinera());
+                    tmp.setEstado(pl.getEstado_documento());
+                    tmp.setClave_unica(pl.getClave_unica());
+                    tmp.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CHECKLIST_RECEPCION_PLANTINERA);
+                    tmp.setDescEstado((pl.getEstado_documento() <= 0) ? "SIN ESTADO" : (pl.getEstado_documento() > 1) ? "PENDIENTE" : "ACTIVA");
+                    nested.add(tmp);
+                }
+            }
+        } finally {
+            chkRecepcionPlantineras.setDetails(nested);
+        }
+
+
+        return chkRecepcionPlantineras;
+    }
+
+    private CheckLists getCheckListAplicacionHormonas() {
 
         CheckLists chkAppHormonas = new CheckLists();
         chkAppHormonas.setDescCheckList("CHECK LIST APLICACION HORMONAS");
@@ -209,14 +273,10 @@ public class FragmentCheckList extends Fragment {
         chkAppHormonas.setExpanded(false);
         chkAppHormonas.setTipoCheckList(Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS);
 
-        List<CheckListAplicacionHormonas> clAppHormonas;
-        Future<List<CheckListAplicacionHormonas>> clCapSiembraFuture =
-                ex.submit(() -> MainActivity.myAppDB
-                        .DaoCLAplicacionHormonas().getAllClApHormonasByAc(chkAppHormonas.getIdAnexo()));
 
         try {
-
-            clAppHormonas = clCapSiembraFuture.get();
+            List<CheckListAplicacionHormonas> clAppHormonas = MainActivity.myAppDB
+                    .DaoCLAplicacionHormonas().getAllClApHormonasByAc(chkAppHormonas.getIdAnexo());
             if (!clAppHormonas.isEmpty()) {
                 List<CheckListDetails> nested = new ArrayList<>();
                 for (CheckListAplicacionHormonas clApHorm : clAppHormonas) {
@@ -236,14 +296,13 @@ public class FragmentCheckList extends Fragment {
                 chkAppHormonas.setDetails(Collections.emptyList());
             }
 
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             chkAppHormonas.setDetails(Collections.emptyList());
         }
         return chkAppHormonas;
     }
 
-    private CheckLists getChecklistRevisionFrutos(ExecutorService ex) {
+    private CheckLists getChecklistRevisionFrutos() {
 
         CheckLists chkAppHormonas = new CheckLists();
         chkAppHormonas.setDescCheckList("CHECK LIST REVISION FRUTOS");
@@ -252,14 +311,9 @@ public class FragmentCheckList extends Fragment {
         chkAppHormonas.setExpanded(false);
         chkAppHormonas.setTipoCheckList(Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS);
 
-        List<CheckListRevisionFrutos> cl;
-        Future<List<CheckListRevisionFrutos>> clFuture =
-                ex.submit(() -> MainActivity.myAppDB
-                        .DaoCheckListRevisionFrutos().getAllClrevisionFrutosByAc(chkAppHormonas.getIdAnexo()));
-
         try {
-
-            cl = clFuture.get();
+            List<CheckListRevisionFrutos> cl = MainActivity.myAppDB
+                    .DaoCheckListRevisionFrutos().getAllClrevisionFrutosByAc(chkAppHormonas.getIdAnexo());
             if (!cl.isEmpty()) {
                 List<CheckListDetails> nested = new ArrayList<>();
                 for (CheckListRevisionFrutos clApHorm : cl) {
@@ -279,14 +333,13 @@ public class FragmentCheckList extends Fragment {
                 chkAppHormonas.setDetails(Collections.emptyList());
             }
 
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             chkAppHormonas.setDetails(Collections.emptyList());
         }
         return chkAppHormonas;
     }
 
-    private CheckLists getCheckListRoguing(ExecutorService ex) {
+    private CheckLists getCheckListRoguing() {
         CheckLists chk = new CheckLists();
         chk.setDescCheckList("CHECK LIST ROGUING");
         chk.setIdAnexo(Integer.parseInt(anexoCompleto
@@ -294,16 +347,10 @@ public class FragmentCheckList extends Fragment {
         chk.setExpanded(false);
         chk.setTipoCheckList(Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING);
 
-
-        List<CheckListRoguing> cl;
-        Future<List<CheckListRoguing>> clFuture =
-                ex.submit(() -> MainActivity.myAppDB
-                        .DaoCLRoguing().getAllClroguingByAc(chk.getIdAnexo()));
-
-
         try {
 
-            cl = clFuture.get();
+            List<CheckListRoguing> cl = MainActivity.myAppDB
+                    .DaoCLRoguing().getAllClroguingByAc(chk.getIdAnexo());
             if (!cl.isEmpty()) {
                 List<CheckListDetails> nested = new ArrayList<>();
                 for (CheckListRoguing cli : cl) {
@@ -324,15 +371,14 @@ public class FragmentCheckList extends Fragment {
                 chk.setDetails(Collections.emptyList());
             }
 
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             chk.setDetails(Collections.emptyList());
         }
 
         return chk;
     }
 
-    private CheckLists getCheckListSiembra(ExecutorService ex) {
+    private CheckLists getCheckListSiembra() {
 
         CheckLists chkSiembra = new CheckLists();
         chkSiembra.setDescCheckList("CHECK LIST SIEMBRA");
@@ -341,14 +387,10 @@ public class FragmentCheckList extends Fragment {
         chkSiembra.setExpanded(false);
         chkSiembra.setTipoCheckList(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA);
 
-        List<CheckListSiembra> clSiembras;
-        Future<List<CheckListSiembra>> clCapSiembraFuture =
-                ex.submit(() -> MainActivity.myAppDB
-                        .DaoClSiembra().getAllClSiembraByAc(chkSiembra.getIdAnexo()));
-
+        List<CheckListSiembra> clSiembras = MainActivity.myAppDB
+                .DaoClSiembra().getAllClSiembraByAc(chkSiembra.getIdAnexo());
         try {
 
-            clSiembras = clCapSiembraFuture.get();
             if (!clSiembras.isEmpty()) {
                 List<CheckListDetails> nested = new ArrayList<>();
                 for (CheckListSiembra clCapSiembra : clSiembras) {
@@ -368,14 +410,13 @@ public class FragmentCheckList extends Fragment {
                 chkSiembra.setDetails(Collections.emptyList());
             }
 
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             chkSiembra.setDetails(Collections.emptyList());
         }
         return chkSiembra;
     }
 
-    private CheckLists getCheckListGuiaInterna(ExecutorService ex) {
+    private CheckLists getCheckListGuiaInterna() {
 
         CheckLists chkSiembra = new CheckLists();
         chkSiembra.setDescCheckList("CHECK LIST GUIA INTERNA");
@@ -384,14 +425,9 @@ public class FragmentCheckList extends Fragment {
         chkSiembra.setExpanded(false);
         chkSiembra.setTipoCheckList(Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA);
 
-        List<CheckListGuiaInterna> cl;
-        Future<List<CheckListGuiaInterna>> clFuture =
-                ex.submit(() -> MainActivity.myAppDB
-                        .DaoCLGuiaInterna().getAllClGuiaInternaByAc(chkSiembra.getIdAnexo()));
-
         try {
-
-            cl = clFuture.get();
+            List<CheckListGuiaInterna> cl = MainActivity.myAppDB
+                    .DaoCLGuiaInterna().getAllClGuiaInternaByAc(chkSiembra.getIdAnexo());
             if (!cl.isEmpty()) {
                 List<CheckListDetails> nested = new ArrayList<>();
                 for (CheckListGuiaInterna cli : cl) {
@@ -411,8 +447,7 @@ public class FragmentCheckList extends Fragment {
                 chkSiembra.setDetails(Collections.emptyList());
             }
 
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             chkSiembra.setDetails(Collections.emptyList());
         }
         return chkSiembra;
@@ -422,25 +457,6 @@ public class FragmentCheckList extends Fragment {
 
     private void cargarLista() {
 
-        ExecutorService ex = Executors.newSingleThreadExecutor();
-
-        List<CheckLists> checkLists = new ArrayList<>();
-
-
-        CheckLists clSiembra = getCheckListSiembra(ex);
-        CheckLists clApHormonas = getCheckListAplicacionHormonas(ex);
-        CheckLists clRoguing = getCheckListRoguing(ex);
-        CheckLists clGuiaInterna = getCheckListGuiaInterna(ex);
-        CheckLists clRevisionFrutos = getChecklistRevisionFrutos(ex);
-
-
-        ex.shutdown();
-
-        checkLists.add(clSiembra);
-        checkLists.add(clApHormonas);
-        checkLists.add(clRoguing);
-        checkLists.add(clGuiaInterna);
-        checkLists.add(clRevisionFrutos);
 
         LinearLayoutManager lManager = null;
         if (activity != null) {
@@ -449,479 +465,520 @@ public class FragmentCheckList extends Fragment {
         rv_checklist.setHasFixedSize(true);
         rv_checklist.setLayoutManager(lManager);
 
+        List<CheckLists> checkLists = new ArrayList<>();
 
-        adapter = new CheckListAdapter(
-                checkLists,
-                nuevoCheckList -> {
+        executorService.execute(() -> {
 
-                    ExecutorService executorServiceCap = Executors.newSingleThreadExecutor();
+            checkLists.add(getCheckListSiembra());
+            checkLists.add(getCheckListAplicacionHormonas());
+            checkLists.add(getCheckListRoguing());
+            checkLists.add(getCheckListGuiaInterna());
+            checkLists.add(getChecklistRevisionFrutos());
+            checkLists.add(getChecklistRecepcionPlantinera());
 
-                    switch (nuevoCheckList.getTipoCheckList()) {
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
-                            try {
-                                executorServiceCap.submit(()
-                                        -> MainActivity.myAppDB.DaoFirmas()
-                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS)
-                                ).get();
-                                executorServiceCap.shutdown();
-                                activity.cambiarFragment(
-                                        new FragmentChecklistRevisionFrutos(),
-                                        Utilidades.FRAGMENT_CHECKLIST_REVISION_FRUTOS,
-                                        R.anim.slide_in_left, R.anim.slide_out_left
-                                );
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
+            requireActivity().runOnUiThread(() -> {
+                adapter = new CheckListAdapter(
+                        checkLists,
+                        this::nuevoChecklist,
+                        this::levantarPDFChecklist,
+                        this::editarChecklist,
+                        this::sincronizarCheckListIndividual
+                );
 
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
-                            try {
-                                executorServiceCap.submit(()
-                                        -> MainActivity.myAppDB.DaoFirmas()
-                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA)
-                                ).get();
-                                executorServiceCap.shutdown();
-                                activity.cambiarFragment(
-                                        new FragmentChecklistGuiaInterna(),
-                                        Utilidades.FRAGMENT_CHECKLIST_GUIA_INTERNA,
-                                        R.anim.slide_in_left, R.anim.slide_out_left
-                                );
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
-                            try {
-                                executorServiceCap.submit(()
-                                        -> MainActivity.myAppDB.DaoFirmas()
-                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA)
-                                ).get();
+                rv_checklist.setAdapter(adapter);
+            });
+        });
 
-                                executorServiceCap.shutdown();
-
-                                activity.cambiarFragment(
-                                        new FragmentChecklistSiembra(),
-                                        Utilidades.FRAGMENT_CHECKLIST_SIEMBRA,
-                                        R.anim.slide_in_left, R.anim.slide_out_left
-                                );
-
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS:
-                            try {
-                                executorServiceCap.submit(()
-                                        -> MainActivity.myAppDB.DaoFirmas()
-                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS)
-                                ).get();
-
-                                executorServiceCap.shutdown();
-
-                                activity.cambiarFragment(
-                                        new FragmentChecklistAplicacionHormonas(),
-                                        Utilidades.FRAGMENT_CHECKLIST_APLICACION_HORMONAS,
-                                        R.anim.slide_in_left, R.anim.slide_out_left
-                                );
-
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
-
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
-
-                            ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-                            try {
-                                executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingSinPadres()).get();
-                                executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteRoguingDetalleSinPadreFinal()).get();
-                                executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingDetalleSinPadreFinal()).get();
-                                executorService.submit(() -> MainActivity.myAppDB.DaoCLRoguing().deleteDetalleFechaSinPadreFinal()).get();
-
-                                activity.cambiarFragment(
-                                        new FragmentChecklistRoguing(),
-                                        Utilidades.FRAGMENT_CHECKLIST_ROGUING,
-                                        R.anim.slide_in_left,
-                                        R.anim.slide_out_left
-                                );
-
-                            } catch (InterruptedException | ExecutionException e) {
-                                e.printStackTrace();
-                            } finally {
-                                executorService.shutdown();
-                            }
-                            break;
-                    }
-                },
-                (checkListPDF, detailsPDF) -> {
-
-                    String URLPDF = "";
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-
-                    switch (checkListPDF.getTipoCheckList()) {
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
-                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistGuiaInterna.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
-                            break;
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
-                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistRevisionFrutos.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
-                            break;
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS:
-                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistAplicaHormona.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
-                            break;
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
-                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistSiembra.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
-                            break;
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
-                            URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistRoguing.php?clave_unica=";
-                            i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
-                            break;
-
-                    }
-                    startActivity(i);
-
-                },
-                (checkListEditar, detailsEditar) -> {
-                    ExecutorService executorServiceCap = Executors.newSingleThreadExecutor();
-
-                    switch (checkListEditar.getTipoCheckList()) {
-
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
-                            try {
-                                MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingSinPadre();
-                                MainActivity.myAppDB.DaoCLRoguing().deleteRoguingDetalleSinPadre();
-                                MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingDetalleSinPadre();
-                                MainActivity.myAppDB.DaoCLRoguing().deleteDetalleFechaSinPadreFinal();
-
-                                CheckListRoguing cl = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getclroguingById(detailsEditar.getId())).get();
-
-                                executorServiceCap.shutdown();
-
-                                activity.cambiarFragment(
-                                        FragmentChecklistRoguing.newInstance(cl),
-                                        Utilidades.FRAGMENT_CHECKLIST_ROGUING,
-                                        R.anim.slide_in_left,
-                                        R.anim.slide_out_left
-                                );
+    }
 
 
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-
-                            break;
-
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
-                            try {
-                                executorServiceCap.submit(()
-                                        -> MainActivity.myAppDB.DaoFirmas()
-                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS)
-                                ).get();
-
-                                CheckListRevisionFrutos cl = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().getclrevisionFrutosById(detailsEditar.getId())).get();
-
-                                executorServiceCap.shutdown();
-
-                                activity.cambiarFragment(
-                                        FragmentChecklistRevisionFrutos.newInstance(cl),
-                                        Utilidades.FRAGMENT_CHECKLIST_REVISION_FRUTOS,
-                                        R.anim.slide_in_left, R.anim.slide_out_left
-                                );
-
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
-
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
-                            try {
-                                executorServiceCap.submit(()
-                                        -> MainActivity.myAppDB.DaoFirmas()
-                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA)
-                                ).get();
-
-                                CheckListGuiaInterna cl = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaById(detailsEditar.getId())).get();
-
-                                executorServiceCap.shutdown();
-
-                                activity.cambiarFragment(
-                                        FragmentChecklistGuiaInterna.newInstance(cl),
-                                        Utilidades.FRAGMENT_CHECKLIST_GUIA_INTERNA,
-                                        R.anim.slide_in_left, R.anim.slide_out_left
-                                );
-
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
+    private void editarChecklist(CheckLists checkListEditar, CheckListDetails detailsEditar) {
 
 
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
-                            try {
-                                executorServiceCap.submit(()
-                                        -> MainActivity.myAppDB.DaoFirmas()
-                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA)
-                                ).get();
+        switch (checkListEditar.getTipoCheckList()) {
 
-                                CheckListSiembra cl = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoClSiembra().getClSiembraById(detailsEditar.getId())).get();
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_RECEPCION_PLANTINERA:
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().eliminarFotosSinClaveUnica();
+                    MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().eliminarDetalleSinClaveUnica();
+                    MainActivity.myAppDB.DaoFirmas()
+                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_RECEPCION_PLANTINERA);
 
-                                executorServiceCap.shutdown();
+                    AnexoCompleto anexo = MainActivity.myAppDB.myDao().getAnexoCompletoById(String.valueOf(detailsEditar.getIdAnexo()));
 
-                                activity.cambiarFragment(
-                                        FragmentChecklistSiembra.newInstance(cl),
-                                        Utilidades.FRAGMENT_CHECKLIST_SIEMBRA,
-                                        R.anim.slide_in_left, R.anim.slide_out_left
-                                );
+                    CheckListRecepcionPlantinera cl = MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().getclRPgById(detailsEditar.getId());
 
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS:
-                            try {
-                                executorServiceCap.submit(()
-                                        -> MainActivity.myAppDB.DaoFirmas()
-                                        .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS)
-                                ).get();
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                FragmentChecklistRecepcionPlantinera.newInstance(anexo, cl),
+                                Utilidades.FRAGMENT_CHECKLIST_RECEPCION_PLANTINERA,
+                                R.anim.slide_in_left,
+                                R.anim.slide_out_left
+                        );
+                    });
 
-                                CheckListAplicacionHormonas cl = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLAplicacionHormonas().getAllClApHormonasById(detailsEditar.getId())).get();
+                });
 
-                                executorServiceCap.shutdown();
+                break;
 
-                                activity.cambiarFragment(
-                                        FragmentChecklistAplicacionHormonas.newInstance(cl),
-                                        Utilidades.FRAGMENT_CHECKLIST_APLICACION_HORMONAS,
-                                        R.anim.slide_in_left, R.anim.slide_out_left
-                                );
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingSinPadre();
+                    MainActivity.myAppDB.DaoCLRoguing().deleteRoguingDetalleSinPadre();
+                    MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingDetalleSinPadre();
+                    MainActivity.myAppDB.DaoCLRoguing().deleteDetalleFechaSinPadreFinal();
 
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
-                    }
-                },
-                (checkListSubir, detailsSubir) -> {
-                    ExecutorService executorServiceCap = Executors.newSingleThreadExecutor();
+                    CheckListRoguing cl = MainActivity.myAppDB.DaoCLRoguing().getclroguingById(detailsEditar.getId());
 
-                    switch (checkListSubir.getTipoCheckList()) {
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                FragmentChecklistRoguing.newInstance(cl),
+                                Utilidades.FRAGMENT_CHECKLIST_ROGUING,
+                                R.anim.slide_in_left,
+                                R.anim.slide_out_left
+                        );
+                    });
+                });
+                break;
 
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
 
-                            try {
-                                CheckListRevisionFrutos cl = executorServiceCap.submit(() ->
-                                        MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosByIdAndEstado(detailsSubir.getId(), 0)).get();
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoFirmas()
+                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS);
+                    CheckListRevisionFrutos cl = MainActivity.myAppDB.DaoCheckListRevisionFrutos().getclrevisionFrutosById(detailsEditar.getId());
 
-                                if (cl == null) {
-                                    executorServiceCap.shutdown();
-                                    Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
-                                    return;
-                                }
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                FragmentChecklistRevisionFrutos.newInstance(cl),
+                                Utilidades.FRAGMENT_CHECKLIST_REVISION_FRUTOS,
+                                R.anim.slide_in_left, R.anim.slide_out_left
+                        );
+                    });
 
-                                List<CheckListRevisionFrutosCompleto> chRFCompletoList = new ArrayList<>();
+                });
+                break;
 
-                                CheckListRevisionFrutosCompleto rfCompleto = new CheckListRevisionFrutosCompleto();
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoFirmas()
+                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA);
+                    CheckListGuiaInterna cl = MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaById(detailsEditar.getId());
 
-                                List<CheckListRevisionFrutosDetalle> clrd = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnicaPadreToSynk(cl.getClave_unica())).get();
-                                List<CheckListRevisionFrutosFotos> clff = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnicaPadreToSynk(cl.getClave_unica())).get();
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                FragmentChecklistGuiaInterna.newInstance(cl),
+                                Utilidades.FRAGMENT_CHECKLIST_GUIA_INTERNA,
+                                R.anim.slide_in_left, R.anim.slide_out_left
+                        );
+                    });
+                });
+
+                break;
 
 
-                                rfCompleto.setCheckListRevisionFrutos(cl);
-                                rfCompleto.setCheckListRevisionFrutosDetalle(clrd);
-                                rfCompleto.setCheckListRevisionFrutosFotos(clff);
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
 
-                                chRFCompletoList.add(rfCompleto);
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoFirmas()
+                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA);
+                    CheckListSiembra cl = MainActivity.myAppDB.DaoClSiembra().getClSiembraById(detailsEditar.getId());
 
-                                CheckListRequest chk = new CheckListRequest();
-                                chk.setCheckListRevisionFrutos(chRFCompletoList);
-                                prepararSubir(chk);
-                            } catch (ExecutionException | InterruptedException e) {
-                                Toasty.error(activity, e.getMessage(), Toast.LENGTH_SHORT, true).show();
-                            } finally {
-                                executorServiceCap.shutdown();
-                            }
-                            break;
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                FragmentChecklistSiembra.newInstance(cl),
+                                Utilidades.FRAGMENT_CHECKLIST_SIEMBRA,
+                                R.anim.slide_in_left, R.anim.slide_out_left
+                        );
+                    });
+                });
 
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
+                break;
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS:
 
-                            ProgressDialog pd = ProgressDialog.show(
-                                    activity,
-                                    null,
-                                    "Preparando datos para subir...",
-                                    true,
-                                    false);
-                            ExecutorService io = Executors.newSingleThreadExecutor();
-                            io.execute(() -> {
-                                CheckListRequest chk = new CheckListRequest();
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoFirmas()
+                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS);
+                    CheckListAplicacionHormonas cl = MainActivity.myAppDB.DaoCLAplicacionHormonas().getAllClApHormonasById(detailsEditar.getId());
 
-                                List<CheckListRoguing> chkR =
-                                        MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync();
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                FragmentChecklistAplicacionHormonas.newInstance(cl),
+                                Utilidades.FRAGMENT_CHECKLIST_APLICACION_HORMONAS,
+                                R.anim.slide_in_left, R.anim.slide_out_left
+                        );
+                    });
+                });
 
-                                if (!chkR.isEmpty()) {
-                                    List<CheckListRoguingCompleto> lista = new ArrayList<>();
-                                    for (CheckListRoguing clr : chkR) {
-                                        CheckListRoguingCompleto completo = new CheckListRoguingCompleto();
-                                        completo.setCheckListRoguing(clr);
-                                        completo.setCheckListRoguingDetalle(
-                                                MainActivity.myAppDB.DaoCLRoguing()
-                                                        .obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica()));
-                                        completo.setCheckListFotoCabecera(
-                                                MainActivity.myAppDB.DaoCLRoguing()
-                                                        .obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica()));
-                                        completo.setCheckListFotoDetalle(
-                                                MainActivity.myAppDB.DaoCLRoguing()
-                                                        .obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica()));
-                                        completo.setCheckListRoguingDetalleFechas(
-                                                MainActivity.myAppDB.DaoCLRoguing()
-                                                        .obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica()));
-                                        lista.add(completo);
-                                    }
-                                    chk.setCheckListRoguing(lista);
-                                }
+                break;
+        }
+    }
 
-                                // 3. De vuelta al hilo principal
-                                activity.runOnUiThread(() -> {
-                                    prepararSubir(chk);   // continúas tu flujo normal
-                                    pd.dismiss();         // cierra el diálogo
-                                });
+    private void nuevoChecklist(CheckLists nuevoCheckList) {
+
+        switch (nuevoCheckList.getTipoCheckList()) {
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoFirmas()
+                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS);
+
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                new FragmentChecklistRevisionFrutos(),
+                                Utilidades.FRAGMENT_CHECKLIST_REVISION_FRUTOS,
+                                R.anim.slide_in_left, R.anim.slide_out_left
+                        );
+                    });
+                });
+                break;
+
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoFirmas()
+                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA);
+
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                new FragmentChecklistGuiaInterna(),
+                                Utilidades.FRAGMENT_CHECKLIST_GUIA_INTERNA,
+                                R.anim.slide_in_left, R.anim.slide_out_left
+                        );
+                    });
+                });
+                break;
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
+
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoFirmas()
+                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA);
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                new FragmentChecklistSiembra(),
+                                Utilidades.FRAGMENT_CHECKLIST_SIEMBRA,
+                                R.anim.slide_in_left, R.anim.slide_out_left
+                        );
+                    });
+                });
+
+                break;
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS:
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoFirmas()
+                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS);
+
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                new FragmentChecklistAplicacionHormonas(),
+                                Utilidades.FRAGMENT_CHECKLIST_APLICACION_HORMONAS,
+                                R.anim.slide_in_left, R.anim.slide_out_left
+                        );
+                    });
+                });
+
+                break;
+
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingSinPadres();
+                    MainActivity.myAppDB.DaoCLRoguing().deleteRoguingDetalleSinPadreFinal();
+                    MainActivity.myAppDB.DaoCLRoguing().deleteFotosRoguingDetalleSinPadreFinal();
+                    MainActivity.myAppDB.DaoCLRoguing().deleteDetalleFechaSinPadreFinal();
+
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                new FragmentChecklistRoguing(),
+                                Utilidades.FRAGMENT_CHECKLIST_ROGUING,
+                                R.anim.slide_in_left,
+                                R.anim.slide_out_left
+                        );
+                    });
+                });
+                break;
+
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_RECEPCION_PLANTINERA:
+
+                executorService.execute(() -> {
+                    MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().eliminarDetalleSinClaveUnica();
+                    MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().eliminarFotosSinClaveUnica();
+                    MainActivity.myAppDB.DaoFirmas()
+                            .deleteFirmasByDoc(Utilidades.TIPO_DOCUMENTO_CHECKLIST_RECEPCION_PLANTINERA);
+
+                    AnexoCompleto anexoCompleto = MainActivity.myAppDB.myDao().getAnexoCompletoById(String.valueOf(nuevoCheckList.getIdAnexo()));
+
+                    activity.runOnUiThread(() -> {
+                        activity.cambiarFragment(
+                                FragmentChecklistRecepcionPlantinera.newInstance(anexoCompleto, null),
+                                Utilidades.FRAGMENT_CHECKLIST_RECEPCION_PLANTINERA,
+                                R.anim.slide_in_left,
+                                R.anim.slide_out_left
+                        );
+                    });
+                });
+
+
+                break;
+        }
+    }
+
+    private void levantarPDFChecklist(CheckLists checkListPDF, CheckListDetails detailsPDF) {
+        String URLPDF = "";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+
+        switch (checkListPDF.getTipoCheckList()) {
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
+                URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistGuiaInterna.php?clave_unica=";
+                i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                break;
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
+                URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistRevisionFrutos.php?clave_unica=";
+                i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                break;
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS:
+                URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistAplicaHormona.php?clave_unica=";
+                i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                break;
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
+                URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistSiembra.php?clave_unica=";
+                i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                break;
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
+                URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistRoguing.php?clave_unica=";
+                i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                break;
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_RECEPCION_PLANTINERA:
+                URLPDF = Utilidades.URL_SERVER_API + "/docs/pdf/checklistRecepcionPlantines.php?clave_unica=";
+                i.setData(Uri.parse(URLPDF + detailsPDF.getClave_unica()));
+                break;
+
+        }
+        startActivity(i);
+    }
+
+    private void sincronizarCheckListIndividual(CheckLists checkListSubir, CheckListDetails detailsSubir) {
+
+        ProgressDialog pd = ProgressDialog.show(
+                activity,
+                null,
+                "Preparando datos para subir...",
+                true,
+                false);
+
+        switch (checkListSubir.getTipoCheckList()) {
+
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS:
+                executorService.execute(() -> {
+
+                    try {
+                        CheckListRevisionFrutos cl =
+                                MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosByIdAndEstado(detailsSubir.getId(), 0);
+                        if (cl == null) {
+                            activity.runOnUiThread(() -> {
+                                if (pd.isShowing()) pd.dismiss();
+                                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                             });
-//                            ProgressDialog pd = new ProgressDialog(activity);
-//                            pd.setTitle("Preparando datos para subir...");
-//                            pd.setCancelable(false);
-//                            pd.show();
-//
-//                            try {
-//                                CheckListRequest chk = new CheckListRequest();
-//
-//                                Future<List<CheckListRoguing>> chkRoguing = executorServiceCap.submit(() -> MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync());
-//                                List<CheckListRoguing> chkR = chkRoguing.get();
-//
-//                                if (!chkR.isEmpty()) {
-//                                    List<CheckListRoguingCompleto> clCompletoList = new ArrayList<>();
-//                                    for (CheckListRoguing clr : chkR) {
-//                                        CheckListRoguingCompleto clCompleto = new CheckListRoguingCompleto();
-//
-//                                        List<CheckListRoguingDetalle> clrd = executorServiceCap.submit(() ->
-//                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
-//
-//                                        List<CheckListRoguingFotoCabecera> clRc = executorServiceCap.submit(() ->
-//                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
-//
-//                                        List<CheckListRoguingFotoDetalle> clRd = executorServiceCap.submit(() ->
-//                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica())).get();
-//
-//                                        List<CheckListRoguingDetalleFechas> clRF = executorServiceCap.submit(() ->
-//                                                MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica())).get();
-//
-//                                        clCompleto.setCheckListRoguing(clr);
-//                                        clCompleto.setCheckListRoguingDetalle(clrd);
-//                                        clCompleto.setCheckListFotoCabecera(clRc);
-//                                        clCompleto.setCheckListFotoDetalle(clRd);
-//                                        clCompleto.setCheckListRoguingDetalleFechas(clRF);
-//
-//                                        clCompletoList.add(clCompleto);
-//                                    }
-//                                    chk.setCheckListRoguing(clCompletoList);
-//                                }
-//
-//                                prepararSubir(chk);
-//                                executorServiceCap.shutdown();
-//                            } catch (ExecutionException | InterruptedException e) {
-//                                e.printStackTrace();
-//                                executorServiceCap.shutdown();
-//                            } finally {
-//                                pd.dismiss();
-//                            }
+                            return;
+                        }
 
-                            break;
+                        List<CheckListRevisionFrutosCompleto> chRFCompletoList = new ArrayList<>();
+                        CheckListRevisionFrutosCompleto rfCompleto = new CheckListRevisionFrutosCompleto();
 
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
-                            try {
-                                CheckListGuiaInterna cl = executorServiceCap.submit(() ->
-                                        MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaById(detailsSubir.getId(), 0)).get();
+                        List<CheckListRevisionFrutosDetalle> clrd = MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerDetallesPorClaveUnicaPadreToSynk(cl.getClave_unica());
+                        List<CheckListRevisionFrutosFotos> clff = MainActivity.myAppDB.DaoCheckListRevisionFrutos().obtenerFotosPorClaveUnicaPadreToSynk(cl.getClave_unica());
 
-                                if (cl == null) {
-                                    executorServiceCap.shutdown();
-                                    Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
-                                    return;
-                                }
+                        rfCompleto.setCheckListRevisionFrutos(cl);
+                        rfCompleto.setCheckListRevisionFrutosDetalle(clrd);
+                        rfCompleto.setCheckListRevisionFrutosFotos(clff);
 
-                                CheckListRequest chk = new CheckListRequest();
-                                List<CheckListGuiaInterna> chkList = new ArrayList<>();
+                        chRFCompletoList.add(rfCompleto);
+                        CheckListRequest chk = new CheckListRequest();
+                        chk.setCheckListRevisionFrutos(chRFCompletoList);
 
-                                chkList.add(cl);
-                                chk.setCheckListGuiaInternas(chkList);
-                                prepararSubir(chk);
-                                executorServiceCap.shutdown();
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
+                        activity.runOnUiThread(() -> {
+                            prepararSubir(chk);
+                            if (pd.isShowing()) pd.dismiss();
+                        });
 
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
-                            try {
-                                CheckListSiembra cl = executorServiceCap.submit(() ->
-                                        MainActivity.myAppDB.DaoClSiembra().getClSiembraById(detailsSubir.getId(), 0)).get();
-
-                                if (cl == null) {
-                                    executorServiceCap.shutdown();
-                                    Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
-                                    return;
-                                }
-
-                                CheckListRequest chk = new CheckListRequest();
-                                List<CheckListSiembra> chkList = new ArrayList<>();
-
-                                chkList.add(cl);
-                                chk.setCheckListSiembras(chkList);
-                                prepararSubir(chk);
-                                executorServiceCap.shutdown();
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
-                        case Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS:
-                            try {
-                                CheckListAplicacionHormonas cl = executorServiceCap.submit(() ->
-                                        MainActivity.myAppDB.DaoCLAplicacionHormonas().getAllClApHormonasByIdAndEstado(detailsSubir.getId(), 0)).get();
-
-                                if (cl == null) {
-                                    executorServiceCap.shutdown();
-                                    Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
-                                    return;
-                                }
-
-                                CheckListRequest chk = new CheckListRequest();
-                                List<CheckListAplicacionHormonas> chkList = new ArrayList<>();
-
-                                chkList.add(cl);
-                                chk.setCheckListAplicacionHormonas(chkList);
-                                prepararSubir(chk);
-                                executorServiceCap.shutdown();
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                                executorServiceCap.shutdown();
-                            }
-                            break;
+                    } finally {
+                        activity.runOnUiThread(() -> {
+                            if (pd.isShowing()) pd.dismiss();
+                        });
                     }
-                }
-        );
 
-        rv_checklist.setAdapter(adapter);
+                });
+                break;
+
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_RECEPCION_PLANTINERA:
+                executorService.execute(() -> {
+                    try {
+                        CheckListRequest chk = new CheckListRequest();
+                        List<CheckListRecepcionPlantinera> RP =
+                                MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().getClRPToSync();
+                        if (RP.isEmpty()) {
+
+                            activity.runOnUiThread(() -> {
+                                if (pd.isShowing()) pd.dismiss();
+                                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                            });
+                            return;
+                        }
+
+                        List<CheckListRecepcionPlantineraCompleto> lista = new ArrayList<>();
+                        for (CheckListRecepcionPlantinera cl : RP) {
+                            CheckListRecepcionPlantineraCompleto completo = new CheckListRecepcionPlantineraCompleto();
+
+                            completo.setClCabecera(cl);
+                            completo.setClDetalle(MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().obtenerRPDetallePorClaveCabeceraToSynk(cl.getClave_unica()));
+                            completo.setClDetalleFoto(MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().obtenerRPDetalleFotoPorClaveCabeceraToSynk(cl.getClave_unica()));
+                            lista.add(completo);
+                        }
+
+                        activity.runOnUiThread(() -> {
+                            chk.setCheckListRecepcionPlantineraCompletos(lista);
+                            prepararSubir(chk);
+                            if (pd.isShowing()) pd.dismiss();
+                        });
+                    } finally {
+                        activity.runOnUiThread(() -> {
+                            if (pd.isShowing()) pd.dismiss();
+                        });
+                    }
+                });
+                break;
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_ROGUING:
+
+                executorService.execute(() -> {
+                    try {
+                        CheckListRequest chk = new CheckListRequest();
+
+                        List<CheckListRoguing> chkR =
+                                MainActivity.myAppDB.DaoCLRoguing().getClroguingToSync();
+
+                        if (!chkR.isEmpty()) {
+                            List<CheckListRoguingCompleto> lista = new ArrayList<>();
+                            for (CheckListRoguing clr : chkR) {
+                                CheckListRoguingCompleto completo = new CheckListRoguingCompleto();
+                                completo.setCheckListRoguing(clr);
+                                completo.setCheckListRoguingDetalle(
+                                        MainActivity.myAppDB.DaoCLRoguing()
+                                                .obtenerDetalleRoguingPorClaveUnicaPadreToSynk(clr.getClave_unica()));
+                                completo.setCheckListFotoCabecera(
+                                        MainActivity.myAppDB.DaoCLRoguing()
+                                                .obtenerDetalleRoguingFotoCabPorClaveUnicaPadreToSynk(clr.getClave_unica()));
+                                completo.setCheckListFotoDetalle(
+                                        MainActivity.myAppDB.DaoCLRoguing()
+                                                .obtenerDetalleRoguingFotoDetPorClaveUnicaPadreToSynk(clr.getClave_unica()));
+                                completo.setCheckListRoguingDetalleFechas(
+                                        MainActivity.myAppDB.DaoCLRoguing()
+                                                .obtenerDetalleFechaRoguingPorClaveUnicaPadreFinalToSynk(clr.getClave_unica()));
+                                lista.add(completo);
+                            }
+                            chk.setCheckListRoguing(lista);
+                        }
+                        activity.runOnUiThread(() -> {
+                            prepararSubir(chk);   // continúas tu flujo normal
+                            if (pd.isShowing()) pd.dismiss();    // cierra el diálogo
+                        });
+                    } finally {
+                        activity.runOnUiThread(() -> {
+                            if (pd.isShowing()) pd.dismiss();
+                        });
+                    }
+                });
+                break;
+
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA:
+
+                executorService.execute(() -> {
+                    try {
+                        CheckListGuiaInterna cl =
+                                MainActivity.myAppDB.DaoCLGuiaInterna().getClGuiaInternaById(detailsSubir.getId(), 0);
+                        if (cl == null) {
+
+                            activity.runOnUiThread(() -> {
+                                if (pd.isShowing()) pd.dismiss();
+                                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                            });
+                            return;
+                        }
+                        CheckListRequest chk = new CheckListRequest();
+                        List<CheckListGuiaInterna> chkList = new ArrayList<>();
+
+                        chkList.add(cl);
+                        chk.setCheckListGuiaInternas(chkList);
+
+
+                        activity.runOnUiThread(() -> {
+                            prepararSubir(chk);
+                            if (pd.isShowing()) pd.dismiss();
+                        });
+                    } finally {
+                        activity.runOnUiThread(() -> {
+                            if (pd.isShowing()) pd.dismiss();
+                        });
+                    }
+                });
+                break;
+
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA:
+                executorService.execute(() -> {
+                    try {
+                        CheckListSiembra cl = MainActivity.myAppDB.DaoClSiembra().getClSiembraById(detailsSubir.getId(), 0);
+
+                        if (cl == null) {
+                            activity.runOnUiThread(() -> {
+                                if (pd.isShowing()) pd.dismiss();
+                                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                            });
+                            return;
+                        }
+
+                        CheckListRequest chk = new CheckListRequest();
+                        List<CheckListSiembra> chkList = new ArrayList<>();
+
+                        chkList.add(cl);
+                        chk.setCheckListSiembras(chkList);
+                        activity.runOnUiThread(() -> {
+                            prepararSubir(chk);
+                            if (pd.isShowing()) pd.dismiss();
+                        });
+                    } finally {
+                        activity.runOnUiThread(() -> {
+                            if (pd.isShowing()) pd.dismiss();
+                        });
+                    }
+                });
+                break;
+            case Utilidades.TIPO_DOCUMENTO_CHECKLIST_APLICACION_HORMONAS:
+                executorService.execute(() -> {
+                    try {
+                        CheckListAplicacionHormonas cl = MainActivity.myAppDB.DaoCLAplicacionHormonas().getAllClApHormonasByIdAndEstado(detailsSubir.getId(), 0);
+
+                        if (cl == null) {
+                            activity.runOnUiThread(() -> {
+                                if (pd.isShowing()) pd.dismiss();
+                                Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
+                            });
+                            return;
+                        }
+
+                        CheckListRequest chk = new CheckListRequest();
+                        List<CheckListAplicacionHormonas> chkList = new ArrayList<>();
+
+                        chkList.add(cl);
+                        chk.setCheckListAplicacionHormonas(chkList);
+
+                        activity.runOnUiThread(() -> {
+                            prepararSubir(chk);
+                            if (pd.isShowing()) pd.dismiss();
+                        });
+                    } finally {
+                        activity.runOnUiThread(() -> {
+                            if (pd.isShowing()) pd.dismiss();
+                        });
+                    }
+                });
+                break;
+        }
     }
 
     private void prepararSubir(CheckListRequest checkListRequest) {
@@ -941,17 +998,4 @@ public class FragmentCheckList extends Fragment {
         rv_checklist = view.findViewById(R.id.rv_checklist);
     }
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (activity != null) {
-            activity.updateView(
-                    getResources().getString(R.string.app_name),
-                    (anexoCompleto != null)
-                            ? " C. virtual Anexo " + anexoCompleto.getAnexoContrato().getAnexo_contrato()
-                            : getResources().getString(R.string.subtitles_visit));
-        }
-    }
 }

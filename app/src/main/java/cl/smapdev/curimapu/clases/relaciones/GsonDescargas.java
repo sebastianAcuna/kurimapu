@@ -236,6 +236,18 @@ public class GsonDescargas {
     @Embedded
     private List<VisitasAlmacigos> array_visitas_almacigos;
 
+    @SerializedName("array_checklist_recepcion_plantines")
+    @Embedded
+    private List<CheckListRecepcionPlantineraCompleto> array_checklist_recepcion_plantines;
+
+
+    public List<CheckListRecepcionPlantineraCompleto> getArray_checklist_recepcion_plantines() {
+        return array_checklist_recepcion_plantines;
+    }
+
+    public void setArray_checklist_recepcion_plantines(List<CheckListRecepcionPlantineraCompleto> array_checklist_recepcion_plantines) {
+        this.array_checklist_recepcion_plantines = array_checklist_recepcion_plantines;
+    }
 
     public List<VisitasAlmacigos> getArray_visitas_almacigos() {
         return array_visitas_almacigos;

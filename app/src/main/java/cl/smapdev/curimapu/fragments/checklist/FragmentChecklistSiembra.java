@@ -1,22 +1,19 @@
 package cl.smapdev.curimapu.fragments.checklist;
 
 
-import static android.app.Activity.RESULT_OK;
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
-import android.provider.MediaStore;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,16 +25,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,6 +50,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import cl.smapdev.curimapu.BuildConfig;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
@@ -162,6 +164,15 @@ public class FragmentChecklistSiembra extends Fragment {
     private static final int COD_FOTO_ENVASE = 006;
     private static final int COD_FOTO_SEMILLA = 007;
 
+    private String currentPhotoPath;
+    private int tipoFoto;
+    private Uri currentPhotoUri;
+    private ActivityResultLauncher<Uri> cameraLauncher;
+
+    // Executor reutilizable para operaciones DB rápidas (evita crear/shutdown por click)
+    private final ExecutorService singleDbExecutor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
 
     public void setChecklist(CheckListSiembra checklist) {
         this.checklist = checklist;
@@ -174,11 +185,36 @@ public class FragmentChecklistSiembra extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context + " must be MainActivity");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (singleDbExecutor != null && !singleDbExecutor.isShutdown()) {
+            singleDbExecutor.shutdown();
+        }
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity a = (MainActivity) getActivity();
-        if (a != null) activity = a;
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(),
+                (Boolean success) -> {
+                    if (success) {
+                        procesarFotoTomada();
+                    } else {
+                        Toasty.info(activity, "Captura de foto cancelada", Toast.LENGTH_LONG, true).show();
+                    }
+                });
     }
 
     @Nullable
@@ -224,15 +260,21 @@ public class FragmentChecklistSiembra extends Fragment {
         if (checklist != null) {
             levantarDatos();
         }
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "CHECKLIST SIEMBRA");
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (activity != null) {
-            activity.updateView(getResources().getString(R.string.app_name), "CHECKLIST SIEMBRA");
-        }
-    }
 
     @Override
     public void onStart() {
@@ -436,85 +478,66 @@ public class FragmentChecklistSiembra extends Fragment {
 
     private void abrirCamara(String tipo) {
 
-        File miFile = new File(Environment.getExternalStoragePublicDirectory("DCIM"), Utilidades.DIRECTORIO_IMAGEN);
-        boolean isCreada = miFile.exists();
+        File photoFile = null;
+        String uid = UUID.randomUUID().toString();
+        tipoFoto = (tipo.equals("ENVASE")) ? COD_FOTO_ENVASE : COD_FOTO_SEMILLA;
+        String nombre = uid + "_" + tipo;
 
-        if (!isCreada) {
-            isCreada = miFile.mkdirs();
+        try {
+            photoFile = Utilidades.createImageFile(requireActivity(), nombre);
+            currentPhotoPath = photoFile.getAbsolutePath();
+        } catch (IOException e) {
+            Toasty.error(requireActivity(), "No se pudo crear la imagen " + e.getMessage(), Toast.LENGTH_LONG, true).show();
         }
 
-        if (isCreada) {
-
-
-            String uid = UUID.randomUUID().toString();
-            int codigo = (tipo.equals("ENVASE")) ? COD_FOTO_ENVASE : COD_FOTO_SEMILLA;
-            String nombre = uid + "_" + tipo + ".jpg";
-            String path = Environment.getExternalStoragePublicDirectory("DCIM") + File.separator + Utilidades.DIRECTORIO_IMAGEN + File.separator + nombre;
-            fileImagen = new File(path);
-
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fileImagen));
-            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder.build());
-
-            startActivityForResult(intent, codigo);
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK || fileImagen == null || (requestCode != COD_FOTO_ENVASE && requestCode != COD_FOTO_SEMILLA)) {
+        if (photoFile == null) {
+            Toasty.error(requireActivity(), "No se pudo crear la imagen (nula)", Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        Bitmap bm = BitmapFactory.decodeFile(fileImagen.getAbsolutePath());
-        Integer[] inte = Utilidades.neededRotation(Uri.fromFile(fileImagen));
-        int rotation = inte[1];
-        int rotationInDegrees = inte[0];
+        currentPhotoUri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID + ".provider", photoFile);
+        cameraLauncher.launch(currentPhotoUri);
+    }
 
-        Matrix m = new Matrix();
-        if (rotation != 0) {
-            m.preRotate(rotationInDegrees);
-        }
-
-        if (bm != null) {
-            Bitmap src = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), m, true);
-
-            ByteArrayOutputStream bos = null;
-            try {
-                bos = new ByteArrayOutputStream();
-                CameraUtils.escribirFechaImg(src, activity).compress(Bitmap.CompressFormat.JPEG, 100, bos);
-                byte[] bitmapdata = bos.toByteArray();
-
-                FileOutputStream fos = new FileOutputStream(fileImagen.getAbsoluteFile());
-                fos.write(bitmapdata);
-                fos.flush();
-                fos.close();
-
-            } catch (IOException e) {
-                Log.e("ERROR -- FOTOS", e.getLocalizedMessage());
+    public void procesarFotoTomada() {
+        try {
+            Bitmap originalBtm = BitmapFactory.decodeFile(currentPhotoPath);
+            if (originalBtm == null) {
+                Toasty.error(requireActivity(), "No se pudo decodificar la imagen.", Toast.LENGTH_LONG, true).show();
+                return;
             }
+
+            Bitmap nuevaFoto = CameraUtils.escribirFechaImg(originalBtm, activity);
+
+            File file = new File(currentPhotoPath);
+            FileOutputStream fos = new FileOutputStream(file);
+
+            nuevaFoto.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+
+
+            singleDbExecutor.execute(() -> {
+                String lugar = (tipoFoto == COD_FOTO_ENVASE) ? Utilidades.DIALOG_TAG_FOTO_CHECKLIST_SIEMBRA_ENVASE : Utilidades.DIALOG_TAG_FOTO_CHECKLIST_SIEMBRA_SEMILLA;
+                TempFirmas tempFirmas = new TempFirmas();
+                tempFirmas.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA);
+                tempFirmas.setPath(currentPhotoPath);
+                tempFirmas.setLugar_firma(lugar);
+
+                MainActivity.myAppDB.DaoFirmas().insertFirma(tempFirmas);
+                handler.post(() -> {
+                    if (tipoFoto == COD_FOTO_ENVASE) {
+                        btn_ver_foto_envase.setEnabled(true);
+                    } else {
+                        btn_ver_foto_semilla.setEnabled(true);
+                    }
+                });
+
+            });
+
+        } catch (Exception e) {
+            Toasty.error(requireActivity(), "Error al procesar la foto: " + e.getMessage(), Toast.LENGTH_LONG, true).show();
         }
-
-
-        ExecutorService exe = Executors.newSingleThreadExecutor();
-
-
-        String lugar = (requestCode == COD_FOTO_ENVASE) ? Utilidades.DIALOG_TAG_FOTO_CHECKLIST_SIEMBRA_ENVASE : Utilidades.DIALOG_TAG_FOTO_CHECKLIST_SIEMBRA_SEMILLA;
-
-        TempFirmas tempFirmas = new TempFirmas();
-        tempFirmas.setTipo_documento(Utilidades.TIPO_DOCUMENTO_CHECKLIST_SIEMBRA);
-        tempFirmas.setPath(fileImagen.getPath());
-        tempFirmas.setLugar_firma(lugar);
-        exe.submit(() -> MainActivity.myAppDB.DaoFirmas().insertFirma(tempFirmas));
-
-        if (requestCode == COD_FOTO_ENVASE) {
-            btn_ver_foto_envase.setEnabled(true);
-        } else {
-            btn_ver_foto_semilla.setEnabled(true);
-        }
-
-
     }
 
 

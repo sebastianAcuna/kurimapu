@@ -3,8 +3,13 @@ package cl.smapdev.curimapu.fragments.checklist;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,8 +20,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 
 import java.util.List;
 import java.util.UUID;
@@ -89,6 +96,9 @@ public class FragmentChecklistGuiaInterna extends Fragment {
             tv_correlativo,
             tv_fecha;
 
+    // Executor reutilizable para operaciones DB rápidas (evita crear/shutdown por click)
+    private final ExecutorService singleDbExecutor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     public void setChecklist(CheckListGuiaInterna checklist) {
         this.checklist = checklist;
@@ -100,12 +110,29 @@ public class FragmentChecklistGuiaInterna extends Fragment {
         return fragment;
     }
 
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context + " must be MainActivity");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (singleDbExecutor != null && !singleDbExecutor.isShutdown()) {
+            singleDbExecutor.shutdown();
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity a = (MainActivity) getActivity();
-        if (a != null) activity = a;
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
     }
 
 
@@ -153,14 +180,19 @@ public class FragmentChecklistGuiaInterna extends Fragment {
         } else {
             tv_fecha.setText(Utilidades.voltearFechaVista(Utilidades.fechaActualSinHora()));
         }
-    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (activity != null) {
-            activity.updateView(getResources().getString(R.string.app_name), "CHECKLIST GUIA INTERNA");
-        }
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "CHECKLIST GUIA INTERNA");
     }
 
 

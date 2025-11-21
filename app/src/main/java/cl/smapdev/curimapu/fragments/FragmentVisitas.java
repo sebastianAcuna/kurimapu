@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,22 +15,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TableLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -77,7 +73,7 @@ public class FragmentVisitas extends Fragment {
 
 
         activity = (MainActivity) getActivity();
-        if (activity != null){
+        if (activity != null) {
             prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
         }
     }
@@ -85,9 +81,10 @@ public class FragmentVisitas extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view  =  inflater.inflate(R.layout.fragment_visitas, container, false);
+        view = inflater.inflate(R.layout.fragment_visitas, container, false);
         return view;
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -95,8 +92,8 @@ public class FragmentVisitas extends Fragment {
         lista_anexos = view.findViewById(R.id.lista_anexos);
 
         LinearLayoutManager lManager = null;
-        if (activity != null){
-            lManager  = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
+        if (activity != null) {
+            lManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
         }
         lista_anexos.setHasFixedSize(true);
         lista_anexos.setLayoutManager(lManager);
@@ -105,13 +102,13 @@ public class FragmentVisitas extends Fragment {
         spinner_toolbar = view.findViewById(R.id.spinner_toolbar);
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<List<Temporada>> futuretemporadas = executor.submit( () -> MainActivity.myAppDB.myDao().getTemporada());
+        Future<List<Temporada>> futuretemporadas = executor.submit(() -> MainActivity.myAppDB.myDao().getTemporada());
         try {
             temporadaList = futuretemporadas.get();
-            for (Temporada t : temporadaList){
+            for (Temporada t : temporadaList) {
                 id_temporadas.add(t.getId_tempo_tempo());
                 desc_temporadas.add(t.getNombre_tempo());
-                if(t.getEspecial_temporada() > 0){
+                if (t.getEspecial_temporada() > 0) {
                     marca_especial_temporada = t.getId_tempo_tempo();
                 }
             }
@@ -125,21 +122,21 @@ public class FragmentVisitas extends Fragment {
 
         setHasOptionsMenu(true);
 
-        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity,R.layout.spinner_template_toolbar_view, temporadaList));
+        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity, R.layout.spinner_template_toolbar_view, temporadaList));
 
         recargarYear();
         spinner_toolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (spinner_toolbar.getTag() != null ){
-                    if (Integer.parseInt(spinner_toolbar.getTag().toString()) != i){
-                        prefs.edit().putString(Utilidades.SELECTED_ANO,id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
+                if (spinner_toolbar.getTag() != null) {
+                    if (Integer.parseInt(spinner_toolbar.getTag().toString()) != i) {
+                        prefs.edit().putString(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                         prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
                         cargarLista(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
-                    }else{
+                    } else {
                         spinner_toolbar.setTag(null);
                     }
-                }else{
+                } else {
                     prefs.edit().putString(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                     prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
                     cargarLista(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()));
@@ -152,38 +149,37 @@ public class FragmentVisitas extends Fragment {
             }
         });
 
-        if (temporadaList.size() > 0){
-            cargarLista( prefs.getString(Utilidades.SELECTED_ANO, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo()));
+        if (temporadaList.size() > 0) {
+            cargarLista(prefs.getString(Utilidades.SELECTED_ANO, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo()));
         }
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.menu_vistas, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menu_vistas_filter) {
+                    DialogFilterTables dialogo = new DialogFilterTables();
+                    dialogo.show(requireActivity().getSupportFragmentManager(), "DIALOGO");
+                    return true;
+                }
+
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
+
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_visit));
     }
 
-    private void recargarYear(){
-        if (temporadaList.size() > 0){
+    private void recargarYear() {
+        if (temporadaList.size() > 0) {
             spinner_toolbar.setSelection((marca_especial_temporada.isEmpty()) ? prefs.getInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, temporadaList.size() - 1) : id_temporadas.indexOf(marca_especial_temporada));
         }
     }
-
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_vistas, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_vistas_filter:
-                DialogFilterTables dialogo = new DialogFilterTables();
-                dialogo.show(requireActivity().getSupportFragmentManager(), "DIALOGO");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 
     @Override
     public void onResume() {
@@ -195,13 +191,13 @@ public class FragmentVisitas extends Fragment {
     private class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null && context != null){
+            if (intent != null && context != null) {
                 ApplicationExecutors exec = new ApplicationExecutors();
 
-                exec.getBackground().execute(()->{
+                exec.getBackground().execute(() -> {
                     List<AnexoCompleto> trabajo = (List<AnexoCompleto>) intent.getSerializableExtra(DialogFilterTables.LLAVE_FILTER_TABLAS);
 
-                    exec.getMainThread().execute(()-> crearAdaptador(trabajo));
+                    exec.getMainThread().execute(() -> crearAdaptador(trabajo));
                 });
 
                 exec.shutDownBackground();
@@ -210,22 +206,22 @@ public class FragmentVisitas extends Fragment {
     }
 
 
-    public void cargarLista( String fecha ){
+    public void cargarLista(String fecha) {
 
         ApplicationExecutors exec = new ApplicationExecutors();
 
-        exec.getBackground().execute(()->{
-            List<AnexoCompleto> anexoCompleto = MainActivity.myAppDB.myDao().getAnexosByYear( fecha );
+        exec.getBackground().execute(() -> {
+            List<AnexoCompleto> anexoCompleto = MainActivity.myAppDB.myDao().getAnexosByYear(fecha);
 
-            exec.getMainThread().execute(()-> crearAdaptador(anexoCompleto));
+            exec.getMainThread().execute(() -> crearAdaptador(anexoCompleto));
         });
 
         exec.shutDownBackground();
 
     }
 
-    public void crearAdaptador( List<AnexoCompleto> anexo ) {
-        anexosAdapter =  new AnexosAdapter( anexo,
+    public void crearAdaptador(List<AnexoCompleto> anexo) {
+        anexosAdapter = new AnexosAdapter(anexo,
                 (view1, anexos) -> nuevaVisita(anexos),
                 (view1, anexos) -> mostrarMenu(anexos),
                 getContext()
@@ -234,35 +230,35 @@ public class FragmentVisitas extends Fragment {
         lista_anexos.setAdapter(anexosAdapter);
     }
 
-    public void nuevaVisita (AnexoCompleto anexo) {
+    public void nuevaVisita(AnexoCompleto anexo) {
 
-        ProgressDialog  progressBar = new ProgressDialog(activity);
+        ProgressDialog progressBar = new ProgressDialog(activity);
         progressBar.setProgress(0);
         progressBar.setTitle("preparando nueva visita");
         progressBar.show();
         ApplicationExecutors exec = new ApplicationExecutors();
-        exec.getBackground().execute(()->{
+        exec.getBackground().execute(() -> {
             MainActivity.myAppDB.myDao().deleteTempVisitas();
             MainActivity.myAppDB.myDao().deleteDetalleVacios();
 
             List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
-            if (fotos.size() > 0){
-                for (Fotos fts : fotos){
-                    try{
+            if (fotos.size() > 0) {
+                for (Fotos fts : fotos) {
+                    try {
                         File file = new File(fts.getRuta());
                         if (file.exists()) {
                             boolean eliminado = file.delete();
-                            if (eliminado){
+                            if (eliminado) {
                                 MainActivity.myAppDB.myDao().deleteFotos(fts);
                             }
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Log.e("ERROR DELETING", Objects.requireNonNull(e.getMessage()));
                     }
                 }
             }
 
-            if (prefs != null){
+            if (prefs != null) {
                 prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, anexo.getAnexoContrato().getId_ficha_contrato()).apply();
                 prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, anexo.getAnexoContrato().getId_especie_anexo()).apply();
                 prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, anexo.getAnexoContrato().getId_anexo_contrato()).apply();
@@ -270,9 +266,9 @@ public class FragmentVisitas extends Fragment {
                 prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
             }
 
-            exec.getMainThread().execute(()-> {
+            exec.getMainThread().execute(() -> {
                 activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
-                if(progressBar.isShowing()){
+                if (progressBar.isShowing()) {
                     progressBar.setProgress(100);
                     progressBar.dismiss();
                 }
@@ -281,7 +277,7 @@ public class FragmentVisitas extends Fragment {
         exec.shutDownBackground();
     }
 
-    public void mostrarMenu (AnexoCompleto anexo) {
+    public void mostrarMenu(AnexoCompleto anexo) {
         if (prefs != null) {
             prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, anexo.getAnexoContrato().getId_ficha_contrato()).apply();
             prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, anexo.getAnexoContrato().getId_anexo_contrato()).apply();
@@ -293,12 +289,4 @@ public class FragmentVisitas extends Fragment {
         activity.cambiarFragment(new FragmentListVisits(), Utilidades.FRAGMENT_LIST_VISITS, R.anim.slide_in_left, R.anim.slide_out_left);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_visit));
-        }
-    }
 }

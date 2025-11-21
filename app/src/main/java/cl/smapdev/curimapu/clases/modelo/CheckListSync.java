@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRecepcionPlantineraCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRevisionFrutosCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
@@ -21,6 +22,9 @@ import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
 import cl.smapdev.curimapu.clases.tablas.CheckListGuiaInterna;
+import cl.smapdev.curimapu.clases.tablas.CheckListRecepcionPlantinera;
+import cl.smapdev.curimapu.clases.tablas.CheckListRecepcionPlantineraDetalle;
+import cl.smapdev.curimapu.clases.tablas.CheckListRecepcionPlantineraDetalleFotos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
@@ -94,6 +98,44 @@ public class CheckListSync {
             checkListRequest.setCheckListAplicacionHormonas(clHormonas);
 
         }
+
+        if (checkListRequest.getCheckListRecepcionPlantineraCompletos() != null && !checkListRequest.getCheckListRecepcionPlantineraCompletos().isEmpty()) {
+
+            List<CheckListRecepcionPlantineraCompleto> ccpl = new ArrayList<>();
+            for (CheckListRecepcionPlantineraCompleto completo : checkListRequest.getCheckListRecepcionPlantineraCompletos()) {
+                CheckListRecepcionPlantineraCompleto cpTemp = new CheckListRecepcionPlantineraCompleto();
+
+                CheckListRecepcionPlantinera cab = completo.getClCabecera();
+
+                if (cab.getRuta_firma_agricultor() != null && !cab.getRuta_firma_agricultor().isEmpty()) {
+                    String stringed = Utilidades.imageToString(cab.getRuta_firma_agricultor());
+                    cab.setRuta_firma_agricultor(stringed.isEmpty() ? "" : stringed);
+                }
+                if (cab.getRuta_firma_responsable() != null && !cab.getRuta_firma_responsable().isEmpty()) {
+                    String stringed = Utilidades.imageToString(cab.getRuta_firma_responsable());
+                    cab.setRuta_firma_responsable(stringed.isEmpty() ? "" : stringed);
+                }
+
+
+                List<CheckListRecepcionPlantineraDetalleFotos> ccfoto = new ArrayList<>();
+
+                for (CheckListRecepcionPlantineraDetalleFotos cf : completo.getClDetalleFoto()) {
+                    if (cf.getRuta_foto() != null && !cf.getRuta_foto().isEmpty()) {
+                        String stringed = Utilidades.imageToString(cf.getRuta_foto());
+                        cf.setRuta_foto(stringed.isEmpty() ? "" : stringed);
+                    }
+                    ccfoto.add(cf);
+                }
+
+                cpTemp.setClCabecera(cab);
+                cpTemp.setClDetalle(completo.getClDetalle());
+                cpTemp.setClDetalleFoto(ccfoto);
+                ccpl.add(cpTemp);
+            }
+
+            checkListRequest.setCheckListRecepcionPlantineraCompletos(ccpl);
+        }
+
 
         if (checkListRequest.getCheckListSiembras() != null
                 && !checkListRequest.getCheckListSiembras().isEmpty()) {
@@ -290,6 +332,45 @@ public class CheckListSync {
                             }
                         }
 
+                        if (checkListRequest.getCheckListRecepcionPlantineraCompletos() != null && !checkListRequest.getCheckListRecepcionPlantineraCompletos().isEmpty()) {
+
+                            for (CheckListRecepcionPlantineraCompleto chk : checkListRequest.getCheckListRecepcionPlantineraCompletos()) {
+                                chk.getClCabecera().setEstado_sincronizacion(1);
+
+                                if (chk.getClDetalleFoto() != null && !chk.getClDetalleFoto().isEmpty()) {
+                                    for (CheckListRecepcionPlantineraDetalleFotos c : chk.getClDetalleFoto()) {
+                                        c.setEstado_sincronizacion(1);
+                                        try {
+                                            executor.submit(() -> MainActivity.myAppDB
+                                                    .DaoCheckListRecepcionPlantineras()
+                                                    .updateFoto(c)).get();
+                                        } catch (ExecutionException | InterruptedException e) {
+                                        }
+                                    }
+                                }
+
+                                if (chk.getClDetalle() != null && !chk.getClDetalle().isEmpty()) {
+                                    for (CheckListRecepcionPlantineraDetalle c : chk.getClDetalle()) {
+                                        c.setEstado_sincronizacion(1);
+                                        try {
+                                            executor.submit(() -> MainActivity.myAppDB
+                                                    .DaoCheckListRecepcionPlantineras()
+                                                    .updateDetalle(c)).get();
+                                        } catch (ExecutionException | InterruptedException e) {
+                                        }
+                                    }
+                                }
+
+
+                                try {
+                                    executor.submit(() -> MainActivity.myAppDB
+                                            .DaoCheckListRecepcionPlantineras()
+                                            .updateclRP(chk.getClCabecera())).get();
+                                } catch (ExecutionException | InterruptedException e) {
+                                }
+
+                            }
+                        }
 
                         if (checkListRequest.getCheckListRoguing() != null && !checkListRequest.getCheckListRoguing().isEmpty()) {
 

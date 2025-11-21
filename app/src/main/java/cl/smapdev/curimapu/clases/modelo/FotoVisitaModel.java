@@ -6,6 +6,12 @@ public class FotoVisitaModel {
     private File archivo;
     private boolean favorita;
 
+
+    public FotoVisitaModel(File archivo, boolean favorita) {
+        this.archivo = archivo;
+        this.favorita = favorita;
+    }
+
     public FotoVisitaModel(File archivo) {
         this.archivo = archivo;
         this.favorita = false;

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/titulo_campo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Información de campo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingHorizontal="@dimen/padding_small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <LinearLayout
+            android:id="@+id/container_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/titulo_campo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Agricultor"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/tv_agricultor"
+                android:layout_width="0dp"
+                android:layout_weight="1.1"
+                android:layout_height="wrap_content"
+                tools:text="AC123123123" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_especie"
+            app:layout_constraintTop_toBottomOf="@id/container_agricultor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Especie"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/tv_especie"
+                android:layout_width="0dp"
+                android:layout_weight="1.1"
+                android:layout_height="wrap_content"
+                tools:text="AC123123123" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_anexo"
+            app:layout_constraintTop_toBottomOf="@id/container_especie"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Anexo"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/tv_anexo"
+                android:layout_width="0dp"
+                android:layout_weight="1.1"
+                android:layout_height="wrap_content"
+                tools:text="AC123123123" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_variedad"
+            app:layout_constraintTop_toBottomOf="@id/container_anexo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Variedad"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/tv_variedad"
+                android:layout_width="0dp"
+                android:layout_weight="1.1"
+                android:layout_height="wrap_content"
+                tools:text="AC123123123" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@id/container_variedad"
+            android:id="@+id/contenedor_titulo_plantines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center_vertical"
+            android:paddingHorizontal="@dimen/padding_small"
+            android:layout_marginTop="@dimen/padding_small">
+
+            <TextView
+                android:id="@+id/titulo_plantineras"
+                android:layout_width="wrap_content"
+                android:layout_weight="0.1"
+                android:layout_height="wrap_content"
+                android:text="Información de plantines"
+                app:layout_constraintTop_toBottomOf="@id/container_variedad"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <Button
+                android:id="@+id/btn_nuevo_plantin"
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="wrap_content"
+                android:text="Nuevo Plantin" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_plantineras"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:maxHeight="200dp"
+            android:layout_marginTop="@dimen/padding_small"
+            android:padding="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_titulo_plantines"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <TextView
+            android:id="@+id/titulo_firma_agricultor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Firma Agricultor"
+            app:layout_constraintTop_toBottomOf="@id/rv_plantineras"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:paddingHorizontal="@dimen/padding_small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <LinearLayout
+            android:id="@+id/contenedor_firma_agricultor"
+            app:layout_constraintTop_toBottomOf="@id/titulo_firma_agricultor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center_vertical"
+            android:paddingHorizontal="@dimen/padding_small">
+
+
+            <TextView
+                android:id="@+id/tv_agricultor_firma"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="Agricultor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:padding="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <Button
+                android:id="@+id/btn_firma_agricultor"
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar" />
+
+            <ImageView
+                android:id="@+id/check_firma_agricultor"
+                android:layout_width="0dp"
+                android:layout_weight="0.1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/titulo_firma_encargado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Firma Encargado"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_firma_agricultor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_small"
+            android:paddingHorizontal="@dimen/padding_small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <LinearLayout
+            android:id="@+id/contenedor_encargado"
+            app:layout_constraintTop_toBottomOf="@id/titulo_firma_encargado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center_vertical"
+            android:paddingHorizontal="@dimen/padding_small">
+
+
+            <TextView
+                android:id="@+id/tv_encargado_firma"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="Encargado"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:padding="@dimen/padding_small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <Button
+                android:id="@+id/btn_firma_encargado"
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="wrap_content"
+                android:text="@string/firmar" />
+
+            <ImageView
+                android:id="@+id/check_firma_encargado"
+                android:layout_width="0dp"
+                android:layout_weight="0.1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_48dp"
+                app:tint="@color/colorGreen"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_botonera"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_encargado"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btn_guardar_plantin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/guardar"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/divider_botonera"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_cancelar_plantin"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btn_cancelar_plantin"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_small"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/nav_cancel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_botonera"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_guardar_plantin" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

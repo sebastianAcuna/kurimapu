@@ -6,28 +6,23 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +30,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
@@ -43,28 +37,21 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.CropRotationAdapter;
 import cl.smapdev.curimapu.clases.adapters.GenericAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerAdapter;
-import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
-import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.CropRotation;
 import cl.smapdev.curimapu.clases.tablas.UnidadMedida;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
 import cl.smapdev.curimapu.clases.tablas.pro_cli_mat;
-import cl.smapdev.curimapu.clases.temporales.TempVisitas;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import cl.smapdev.curimapu.clases.utilidades.cargarUI;
 import cl.smapdev.curimapu.coroutines.ApplicationExecutors;
-import cl.smapdev.curimapu.fragments.dialogos.DialogObservationTodo;
-import es.dmoral.toasty.Toasty;
 
 public class FragmentSowing extends Fragment {
 
@@ -106,6 +93,10 @@ public class FragmentSowing extends Fragment {
     private final String[] forbiddenReplacement = new String[]{"a", "e", "i", "o", "u", "A", "E", "I", "O", "U"};
 
 
+    private final ExecutorService executors = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +129,14 @@ public class FragmentSowing extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        if (executors != null && !executors.isShutdown()) {
+            executors.shutdown();
+        }
+        super.onDestroy();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -159,6 +158,57 @@ public class FragmentSowing extends Fragment {
         if (getUserVisibleHint()) {
             cargarInterfaz();
         }
+
+
+//        requireActivity().addMenuProvider(new MenuProvider() {
+//            @Override
+//            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+//                menu.clear();
+//                menuInflater.inflate(R.menu.menu_visitas, menu);
+//            }
+//
+//            @Override
+//            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+//
+//                if (menuItem.getItemId() == R.id.menu_visitas_recom) {
+//
+//
+//                    executors.execute(() -> {
+//
+//                        VisitasCompletas visitasCompletas;
+//
+//                        TempVisitas temp_visitas = MainActivity.myAppDB.myDao().getTempFichas();
+//                        if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2) {
+//                            visitasCompletas = MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita());
+//                        } else {
+//                            visitasCompletas = null;
+//                        }
+//
+//                        AnexoContrato ac = MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
+//
+//
+//                        handler.post(() -> {
+//                            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+//                            Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
+//                            if (prev != null) {
+//                                ft.remove(prev);
+//                            }
+//
+//                            DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, temp_visitas, visitasCompletas, (TempVisitas tm) -> {
+//                            });
+//                            dialogo.show(ft, "EVALUACION_RECOMENDACION");
+//                        });
+//
+//                    });
+//                    return true;
+//                }
+//                return false;
+//            }
+//
+//        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
+//
+//        Utilidades.setToolbar(activity, view, getResources().getString(R.string.subtitles_records), "visitas");
+
 
     }
 
@@ -533,9 +583,12 @@ public class FragmentSowing extends Fragment {
                                 case InputType.TYPE_CLASS_NUMBER:
                                 case InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED:
                                     String datoDetalle = "";
-                                    datoDetalle = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0));
-                                    if ((datoDetalle == null) || (TextUtils.isEmpty(datoDetalle) && datoDetalle.equals(""))) {
-                                        datoDetalle = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
+                                    int idVisita = prefs.getInt(Utilidades.SHARED_VISIT_VISITA_ID, 0);
+                                    datoDetalle = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), idVisita);
+                                    if ((datoDetalle == null) || (TextUtils.isEmpty(datoDetalle) && datoDetalle.isEmpty())) {
+                                        String idAnexoxx = prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "");
+                                        int idProp = id_importante.get(index);
+                                        datoDetalle = MainActivity.myAppDB.myDao().getDatoDetalle(idProp, idAnexoxx);
                                         if (!TextUtils.isEmpty(datoDetalle)) {
                                             editTexts.get(i).setEnabled(false);
                                         }
@@ -973,142 +1026,9 @@ public class FragmentSowing extends Fragment {
     }
 
 
-    private class LazyLoad extends AsyncTask<Void, Void, ArrayList<ArrayList>> {
-
-        private ProgressDialog progressBar;
-        private final boolean show;
-
-        public LazyLoad(boolean show) {
-            this.show = show;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if (show) {
-                progressBar = new ProgressDialog(activity);
-                progressBar.setTitle(getResources().getString(R.string.espere));
-                progressBar.setMessage("cargando interfaz...");
-                progressBar.setCancelable(false);
-                progressBar.show();
-            }
-
-            super.onPreExecute();
-        }
-
-        @Override
-        protected ArrayList<ArrayList> doInBackground(Void... voids) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<ArrayList> aVoid) {
-            super.onPostExecute(aVoid);
-            int idClienteFinal = MainActivity.myAppDB.myDao().getIdClienteByAnexo(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
-
-
-            if (Globalview != null) {
-                global = cargarUI.cargarUI(Globalview, R.id.relative_constraint_sowing, activity, prefs.getString(Utilidades.SHARED_VISIT_MATERIAL_ID, ""), fieldbook, idClienteFinal, global, prefs.getString(Utilidades.SHARED_VISIT_TEMPORADA, "1"));
-                setearOnFocus();
-            }
-            if (show && progressBar != null && progressBar.isShowing()) {
-                progressBar.dismiss();
-            }
-
-        }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_visitas, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_visitas_recom:
-
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-
-                TempVisitas tmp = null;
-                VisitasCompletas visitasCompletas = null;
-                AnexoContrato ac = null;
-                try {
-                    Future<TempVisitas> temp_visitasF = executor.submit(() -> MainActivity.myAppDB.myDao().getTempFichas());
-
-                    TempVisitas temp_visitas = temp_visitasF.get();
-                    Future<VisitasCompletas> visitasCompletasFuture = executor.submit(() -> MainActivity.myAppDB.myDao().getUltimaVisitaByAnexo(temp_visitas.getId_anexo_temp_visita()));
-
-                    if (temp_visitas != null && temp_visitas.getAction_temp_visita() != 2) {
-                        tmp = temp_visitas;
-                        visitasCompletas = visitasCompletasFuture.get();
-                    }
-
-                    Future<AnexoContrato> anexo = executor.submit(() -> MainActivity.myAppDB.myDao().getAnexos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, "")));
-                    ac = anexo.get();
-
-                    FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-                    Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
-                    if (prev != null) {
-                        ft.remove(prev);
-                    }
-
-                    DialogObservationTodo dialogo = DialogObservationTodo.newInstance(ac, tmp, visitasCompletas, (TempVisitas tm) -> {
-                    });
-                    dialogo.show(ft, "EVALUACION_RECOMENDACION");
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                executor.shutdown();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-
-        if (getUserVisibleHint()) {
-            if (Globalview.findViewWithTag("FOTOS_" + fieldbook) == null) {
-                if (Globalview.findViewById(R.id.container_linear_fotos) != null) {
-                    LinearLayout ly = Globalview.findViewById(R.id.container_linear_fotos);
-                    if (ly != null) {
-                        if (activity != null) {
-                            try {
-                                FrameLayout fm = new FrameLayout(activity);
-//                            if (fm != null){
-                                fm.setId(View.generateViewId());
-                                fm.setTag("FOTOS_" + fieldbook);
-                                ly.addView(fm);
-
-
-                                if (ly.findViewWithTag("FOTOS_" + fieldbook) != null) {
-                                    activity.getSupportFragmentManager().beginTransaction().replace(fm.getId(), FragmentFotos.getInstance(fieldbook), Utilidades.FRAGMENT_FOTOS).commit();
-                                }
-//                                }
-                            } catch (NullPointerException e) {
-                                Toasty.warning(activity, "No se pudo cargar las fotos", Toast.LENGTH_SHORT, true).show();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
     }
 
     @Override

@@ -1,20 +1,20 @@
 package cl.smapdev.curimapu.fragments.checklist;
 
 
-import static android.app.Activity.RESULT_OK;
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,12 +24,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -113,9 +117,17 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
     private RecyclerView rv_detalle_revision_frutos, rv_fotos_frutos;
 
 
-    private String currentPhotoPath;
     private File fileImagen;
     private static final int COD_FOTO = 006;
+
+    private String currentPhotoPath;
+    private int tipoFoto;
+    private Uri currentPhotoUri;
+    private ActivityResultLauncher<Uri> cameraLauncher;
+
+    // Executor reutilizable para operaciones DB rápidas (evita crear/shutdown por click)
+    private final ExecutorService singleDbExecutor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
 
     public void setChecklist(CheckListRevisionFrutos checklist) {
@@ -129,11 +141,36 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context + " must be MainActivity");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (singleDbExecutor != null && !singleDbExecutor.isShutdown()) {
+            singleDbExecutor.shutdown();
+        }
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity a = (MainActivity) getActivity();
-        if (a != null) activity = a;
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(),
+                (Boolean success) -> {
+                    if (success) {
+                        procesarFotoTomada();
+                    } else {
+                        Toasty.info(activity, "Captura de foto cancelada", Toast.LENGTH_LONG, true).show();
+                    }
+                });
     }
 
     @Nullable
@@ -182,15 +219,21 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
         if (checklist != null) {
             levantarDatos();
         }
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "CHECKLIST REVISION FRUTOS");
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (activity != null) {
-            activity.updateView(getResources().getString(R.string.app_name), "CHECKLIST REVISION FRUTOS");
-        }
-    }
 
     @Override
     public void onStart() {
@@ -305,23 +348,24 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
 
     private void abrirCamara() {
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
+        String uid = UUID.randomUUID().toString();
+        String nombre = uid + "_";
+
         try {
-            photoFile = createImageFile();
+            photoFile = Utilidades.createImageFile(requireActivity(), nombre);
+            currentPhotoPath = photoFile.getAbsolutePath();
         } catch (IOException e) {
-            Log.e("ERROR IMAGEN", e.getLocalizedMessage());
-            Toasty.error(requireActivity(), "No se pudo crear la imagen 2", Toast.LENGTH_LONG, true).show();
+            Toasty.error(requireActivity(), "No se pudo crear la imagen " + e.getMessage(), Toast.LENGTH_LONG, true).show();
         }
 
         if (photoFile == null) {
-            Toasty.error(requireActivity(), "No se pudo crear la imagen 3", Toast.LENGTH_LONG, true).show();
+            Toasty.error(requireActivity(), "No se pudo crear la imagen (nula)", Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        Uri photoUri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID + ".provider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-        startActivityForResult(intent, COD_FOTO);
+        currentPhotoUri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID + ".provider", photoFile);
+        cameraLauncher.launch(currentPhotoUri);
     }
 
 
@@ -343,29 +387,29 @@ public class FragmentChecklistRevisionFrutos extends Fragment {
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode != RESULT_OK || requestCode != COD_FOTO) return;
-
-
+    public void procesarFotoTomada() {
         try {
             Bitmap originalBtm = BitmapFactory.decodeFile(currentPhotoPath);
+            if (originalBtm == null) {
+                Toasty.error(requireActivity(), "No se pudo decodificar la imagen.", Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
             Bitmap nuevaFoto = CameraUtils.escribirFechaImg(originalBtm, activity);
 
-            currentPhotoPath = currentPhotoPath.replaceAll("Pictures/", "");
-
             File file = new File(currentPhotoPath);
-
             FileOutputStream fos = new FileOutputStream(file);
+
             nuevaFoto.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+
 
             guardarFotoBd();
-        } catch (Exception e) {
-            Log.e("FOTOS", e.getLocalizedMessage());
-            System.out.println(e);
-        }
 
+        } catch (Exception e) {
+            Toasty.error(requireActivity(), "Error al procesar la foto: " + e.getMessage(), Toast.LENGTH_LONG, true).show();
+        }
     }
 
 

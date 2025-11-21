@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_small"
+        android:padding="@dimen/padding_small">
+
+
+        <LinearLayout
+            android:id="@+id/container_variedad"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="Variedad"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+
+            <EditText
+                android:id="@+id/et_variedad"
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="250"
+                android:maxLines="1" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/container_n_orden"
+            app:layout_constraintTop_toBottomOf="@id/container_variedad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="N° Orden"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+
+            <EditText
+                android:id="@+id/et_n_orden"
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/container_fecha_recepcion"
+            app:layout_constraintTop_toBottomOf="@id/container_n_orden"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Fecha Recepción"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <EditText
+                android:id="@+id/et_fecha_recepcion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.1"
+                android:inputType="date"
+                android:maxLines="1"
+                android:drawableEnd="@drawable/ic_date_range"
+                android:drawableTint="@color/colorSecondaryVariant"
+                android:autofillHints="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_fecha_actual"
+            app:layout_constraintTop_toBottomOf="@id/container_fecha_recepcion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Fecha Actual"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <EditText
+                android:id="@+id/et_fecha_actual"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.1"
+                android:inputType="date"
+                android:enabled="false"
+                android:maxLines="1"
+                android:drawableEnd="@drawable/ic_date_range"
+                android:drawableTint="@color/colorSecondaryVariant"
+                android:autofillHints="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_linea"
+            app:layout_constraintTop_toBottomOf="@id/container_fecha_actual"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:textAlignment="textStart"
+                android:text="Linea"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <Spinner
+                android:id="@+id/sp_linea"
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:gravity="center"
+                android:entries="@array/desplegable_linea_checklist_plantin"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contenedor_otro_linea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/container_linea"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/et_linea_otro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="125"
+                android:maxLines="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_cantidad_bandejas"
+            app:layout_constraintTop_toBottomOf="@id/contenedor_otro_linea"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:padding="@dimen/padding_small"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Cantidad de bandejas/cajas/mallas"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <EditText
+                android:id="@+id/et_cantidad"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_condicion_planta"
+            app:layout_constraintTop_toBottomOf="@id/container_cantidad_bandejas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:padding="@dimen/padding_small"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Condicion de las plantas (nota)"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <EditText
+                android:id="@+id/et_condicion_planta"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:inputType="number|numberDecimal"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_bandejas_etiquetadas"
+            app:layout_constraintTop_toBottomOf="@id/container_condicion_planta"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Bandejas o mallas etiquetadas"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <Spinner
+                android:id="@+id/sp_bandeja_etiquetada"
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:gravity="center"
+                android:entries="@array/desplegable_bandeja_etiquetada_checklist_plantin"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_acopio_adecuado"
+            app:layout_constraintTop_toBottomOf="@id/container_bandejas_etiquetadas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Lugar de acopio adecuado"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <Spinner
+                android:id="@+id/sp_acopio_adecuado"
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:gravity="center"
+                android:entries="@array/desplegable_acopio_adecuado_checklist_plantin"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_separacion_entre_lineas"
+            app:layout_constraintTop_toBottomOf="@id/container_acopio_adecuado"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text="Separación fisica entre lineas"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <Spinner
+                android:id="@+id/sp_separacion_entre_lineas"
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:gravity="center"
+                android:entries="@array/desplegable_separacion_lineas_checklist_plantin"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/lb_observacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Observaciones"
+            android:layout_marginTop="@dimen/padding_small"
+            android:paddingHorizontal="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/container_separacion_entre_lineas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <EditText
+            android:id="@+id/et_observacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:padding="@dimen/padding_small"
+            app:layout_constraintTop_toBottomOf="@id/lb_observacion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:maxLines="5" />
+
+
+        <LinearLayout
+            android:id="@+id/container_fotos_detalles"
+            app:layout_constraintTop_toBottomOf="@id/et_observacion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_margin="@dimen/padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <Button
+                android:id="@+id/btn_foto_detalle"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:layout_height="wrap_content"
+                android:text="tomar fotos" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listado_fotos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/container_fotos_detalles"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_min="50dp" />
+
+
+        <View
+            android:id="@+id/divider_botonera"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/listado_fotos"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btn_guardar_plantin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/guardar"
+            android:layout_marginTop="@dimen/padding"
+            app:layout_constraintTop_toBottomOf="@id/divider_botonera"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btn_cancelar_plantin"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_small"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/nav_cancel"
+            app:layout_constraintTop_toBottomOf="@id/divider_botonera"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_guardar_plantin" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

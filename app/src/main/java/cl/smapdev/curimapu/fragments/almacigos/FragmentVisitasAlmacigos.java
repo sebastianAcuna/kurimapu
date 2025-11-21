@@ -1,18 +1,19 @@
 package cl.smapdev.curimapu.fragments.almacigos;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,12 +22,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,6 +50,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import cl.smapdev.curimapu.BuildConfig;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.FotosAlmacigosAdapter;
@@ -53,6 +59,7 @@ import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.FotosAlmacigos;
 import cl.smapdev.curimapu.clases.tablas.OpAlmacigos;
 import cl.smapdev.curimapu.clases.tablas.VisitasAlmacigos;
+import cl.smapdev.curimapu.clases.utilidades.CameraUtils;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import es.dmoral.toasty.Toasty;
 
@@ -64,18 +71,8 @@ public class FragmentVisitasAlmacigos extends Fragment {
     private MainActivity activity;
     private OpAlmacigos almacigo;
     private VisitasAlmacigos visitasAlmacigos;
-    private SharedPreferences prefs;
 
 
-    //    general
-    private TextView nombre_parental;
-    private TextView cliente;
-    private TextView especie;
-    private TextView variedad;
-    private TextView fecha_siembra;
-    private TextView fecha_estimada_despacho;
-    private TextView tipo_lc;
-    private TextView dias_cultivo;
     private Spinner sp_crecimiento;
     private EditText et_obs_growth;
     private Spinner sp_malezas;
@@ -89,37 +86,36 @@ public class FragmentVisitasAlmacigos extends Fragment {
     private EditText et_uniformidad;
     private Spinner sp_estado_general;
     private EditText et_obs_estado_general;
-    private TextInputLayout obs_general;
     private EditText et_obs_general;
 
-    //    CUBIERTA
-    private TextView lbl_op, op;
-    private TextView lbl_cobertura_raices;
     private EditText et_cobertura_raices;
-    private TextView lbl_dureza;
     private Spinner sp_dureza;
-    private TextInputLayout obs_dureza;
     private EditText et_obs_dureza;
-    private TextView lbl_emergencia_preliminar;
     private EditText et_emergencia_preliminar;
+    private Button btn_tomar_foto;
 
 
-    //    DESNUDA
-    private TextView lbl_nom_fantasia, nom_fantasia;
-    private TextView lbl_diametro;
     private EditText et_diametro;
 
 
     private RecyclerView rv_listado_fotos;
-    private Button btn_guardar, btn_volver, btn_tomar_foto;
+    private Button btn_guardar;
 
-    private List<FotoVisitaModel> fotosTomadas = new ArrayList<>();
+    final List<FotoVisitaModel> fotosTomadas = new ArrayList<>();
 
     private static final int REQUEST_TOMAR_FOTO = 101;
     private Uri uriFotoTemporal;
     private File archivoFotoTemporal;
 
     private FotosAlmacigosAdapter fotosAdapter;
+
+    final private ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+    private String currentPhotoPath;
+    private int tipoFoto;
+    private Uri currentPhotoUri;
+    private ActivityResultLauncher<Uri> cameraLauncher;
 
     private ProgressDialog progressDialog;
 
@@ -140,13 +136,96 @@ public class FragmentVisitasAlmacigos extends Fragment {
         fragment.setActivity(activity);
         fragment.setAlmacigo(almacigo);
         fragment.setVisitasAlmacigos(visitasAlmacigos);
+        Bundle args = new Bundle();
+        if (almacigo != null) {
+            args.putInt("arg_id_op_almacigo", almacigo.getId_v_post_siembra());
+        }
+        if (visitasAlmacigos != null) {
+            args.putString("arg_id_visita_almacigo", visitasAlmacigos.getUid_visita());
+        }
+        fragment.setArguments(args);
         return fragment;
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+        } else {
+            throw new RuntimeException(context + " must be MainActivity");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (ioExecutor != null && !ioExecutor.isShutdown()) {
+            ioExecutor.shutdown();
+        }
+
+        if (!fotosTomadas.isEmpty()) {
+            fotosTomadas.clear();
+        }
+
+        uriFotoTemporal = null;
+        archivoFotoTemporal = null;
+
     }
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            int idOpAlmacigo = args.getInt("arg_id_op_almacigo", 0);
+            String UidVisitaAlmacigo = args.getString("arg_id_visita_almacigo", "");
+
+            OpAlmacigos opAL = MainActivity.myAppDB.DaoOPAlmacigos().getOpAlmacigoById(idOpAlmacigo);
+            this.setAlmacigo(opAL);
+
+            VisitasAlmacigos visAl = MainActivity.myAppDB.VisitasFotosAlmacigos().getVisitaByUid(UidVisitaAlmacigo);
+            this.setVisitasAlmacigos(visAl);
+        }
+        if (savedInstanceState != null) {
+
+            ArrayList<String> paths = savedInstanceState.getStringArrayList("foto_paths");
+            ArrayList<Integer> favs = savedInstanceState.getIntegerArrayList("foto_favs");
+            if (paths != null) {
+                fotosTomadas.clear();
+                for (int i = 0; i < paths.size(); i++) {
+                    String p = paths.get(i);
+                    File f = new File(p);
+                    boolean fav = (favs != null && i < favs.size() && favs.get(i) == 1);
+                    fotosTomadas.add(new FotoVisitaModel(f, fav));
+                }
+            }
+
+        }
+
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(),
+                (Boolean success) -> {
+                    if (success) {
+                        procesarFotoTomada();
+                    } else {
+                        Toasty.info(activity, "Captura de foto cancelada", Toast.LENGTH_LONG, true).show();
+                    }
+                });
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ArrayList<String> paths = new ArrayList<>();
+        ArrayList<Integer> favs = new ArrayList<>();
+        for (FotoVisitaModel fvm : fotosTomadas) {
+            paths.add(fvm.getArchivo().getAbsolutePath());
+            favs.add(fvm.isFavorita() ? 1 : 0);
+        }
+        outState.putStringArrayList("foto_paths", paths);
+        outState.putIntegerArrayList("foto_favs", favs);
     }
 
     @Nullable
@@ -154,6 +233,7 @@ public class FragmentVisitasAlmacigos extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_visita_almacigo, container, false);
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -179,86 +259,115 @@ public class FragmentVisitasAlmacigos extends Fragment {
         rv_listado_fotos.setAdapter(fotosAdapter);
 
 
-    }
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
 
-    private void tomarFoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
-//        if (intent.resolveActivity(activity.getPackageManager()) != null) {
-        try {
-            archivoFotoTemporal = File.createTempFile(
-                    "foto_almacigo_", ".jpg",
-                    activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            );
+        String subt = (visitasAlmacigos == null) ? "Nueva visita" : "Ver visita";
+        Utilidades.setToolbar(activity, view, "Almacigos", subt);
 
-            uriFotoTemporal = FileProvider.getUriForFile(
-                    activity,
-                    activity.getPackageName() + ".provider",
-                    archivoFotoTemporal
-            );
-
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uriFotoTemporal);
-            startActivityForResult(intent, REQUEST_TOMAR_FOTO);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Utilidades.avisoListo(activity, "Error", "No se pudo crear el archivo", "OK");
-        }
-//        }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onResume() {
+        super.onResume();
+    }
 
-        if (requestCode == REQUEST_TOMAR_FOTO && resultCode == Activity.RESULT_OK) {
-            if (uriFotoTemporal != null) {
-                Bitmap bitmapReducido = null;
-                try {
-                    bitmapReducido = Utilidades.decodeSampledBitmapFromFile(
-                            archivoFotoTemporal.getAbsolutePath(), 800, 800);
-                    File archivoReducido = comprimirYGuardarBitmap(bitmapReducido, activity);
-                    fotosTomadas.add(new FotoVisitaModel(archivoReducido));
-                    fotosAdapter.notifyItemInserted(fotosTomadas.size() - 1);
-                } catch (OutOfMemoryError e) {
-                    Toast.makeText(activity, "Memoria insuficiente al procesar la foto", Toast.LENGTH_LONG).show();
-                } catch (IOException e) {
-                    Toast.makeText(activity, "No se pudo guardar la foto", Toast.LENGTH_SHORT).show();
-                } finally {
-                    if (bitmapReducido != null && !bitmapReducido.isRecycled()) {
-                        bitmapReducido.recycle();
-                    }
-                    // Eliminar archivo temporal después de usarlo
-                    if (archivoFotoTemporal != null && archivoFotoTemporal.exists()) {
-                        archivoFotoTemporal.delete();
-                    }
+    private void tomarFoto() {
+
+        File photoFile = null;
+        String uid = UUID.randomUUID().toString();
+        String nombre = uid + "_foto_almacigo_";
+
+        try {
+            photoFile = Utilidades.createImageFile(requireActivity(), nombre);
+            currentPhotoPath = photoFile.getAbsolutePath();
+        } catch (IOException e) {
+            Toasty.error(requireActivity(), "No se pudo crear la imagen " + e.getMessage(), Toast.LENGTH_LONG, true).show();
+        }
+
+        if (photoFile == null) {
+            Toasty.error(requireActivity(), "No se pudo crear la imagen (nula)", Toast.LENGTH_LONG, true).show();
+            return;
+        }
+
+        currentPhotoUri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID + ".provider", photoFile);
+        cameraLauncher.launch(currentPhotoUri);
+    }
+
+
+    public void procesarFotoTomada() {
+        Bitmap originalBtm = BitmapFactory.decodeFile(currentPhotoPath);
+        try {
+            btn_tomar_foto.setEnabled(false);
+
+            if (originalBtm == null) {
+                Toasty.error(requireActivity(), "No se pudo decodificar la imagen.", Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
+            Bitmap nuevaFoto = CameraUtils.escribirFechaImg(originalBtm, activity);
+
+            File file = new File(currentPhotoPath);
+            FileOutputStream fos = new FileOutputStream(file);
+
+            nuevaFoto.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+
+            long favoritas = 0;
+            for (FotoVisitaModel foto : fotosTomadas) {
+                if (foto.isFavorita()) {
+                    favoritas++;
                 }
             }
+            boolean esFavorita = (favoritas < 4); // Marca como favorita si hay menos de 4 favoritas
+            fotosTomadas.add(new FotoVisitaModel(file, esFavorita));
+
+            fotosAdapter.notifyItemInserted(fotosTomadas.size() - 1);
+
+        } catch (Exception e) {
+            Toasty.error(requireActivity(), "Error al procesar la foto: " + e.getMessage(), Toast.LENGTH_LONG, true).show();
+        } catch (OutOfMemoryError e) {
+            Toast.makeText(activity, "Memoria insuficiente al procesar la foto", Toast.LENGTH_LONG).show();
+        } finally {
+            btn_tomar_foto.setEnabled(true);
+            if (originalBtm != null && !originalBtm.isRecycled()) {
+                originalBtm.recycle();
+                originalBtm = null;
+            }
+
+            System.gc();
+            if (archivoFotoTemporal != null && archivoFotoTemporal.exists()) {
+                archivoFotoTemporal.delete();
+            }
+
         }
     }
 
-    private File comprimirYGuardarBitmap(Bitmap bitmap, Context context) throws IOException {
-        File archivoComprimido = File.createTempFile("foto_reducida_", ".jpg", context.getCacheDir());
-        FileOutputStream fos = new FileOutputStream(archivoComprimido);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, fos); // calidad 70%
-        fos.flush();
-        fos.close();
-        return archivoComprimido;
-    }
 
     private void bind(View view) {
-        nombre_parental = view.findViewById(R.id.nombre_parental);
-        cliente = view.findViewById(R.id.cliente);
-        especie = view.findViewById(R.id.especie);
-        variedad = view.findViewById(R.id.variedad);
-        fecha_siembra = view.findViewById(R.id.fecha_siembra);
-        fecha_estimada_despacho = view.findViewById(R.id.fecha_estimada_despacho);
-        lbl_op = view.findViewById(R.id.lbl_op);
-        op = view.findViewById(R.id.op);
-        tipo_lc = view.findViewById(R.id.tipo_lc);
-        lbl_nom_fantasia = view.findViewById(R.id.lbl_nom_fantasia);
-        nom_fantasia = view.findViewById(R.id.nom_fantasia);
-        dias_cultivo = view.findViewById(R.id.dias_cultivo);
+        //    general
+        TextView nombre_parental = view.findViewById(R.id.nombre_parental);
+        TextView cliente = view.findViewById(R.id.cliente);
+        TextView especie = view.findViewById(R.id.especie);
+        TextView variedad = view.findViewById(R.id.variedad);
+        TextView fecha_siembra = view.findViewById(R.id.fecha_siembra);
+        TextView fecha_estimada_despacho = view.findViewById(R.id.fecha_estimada_despacho);
+        //    CUBIERTA
+        TextView lbl_op = view.findViewById(R.id.lbl_op);
+        TextView op = view.findViewById(R.id.op);
+        TextView tipo_lc = view.findViewById(R.id.tipo_lc);
+        //    DESNUDA
+        TextView dias_cultivo = view.findViewById(R.id.dias_cultivo);
         sp_crecimiento = view.findViewById(R.id.sp_crecimiento);
         et_obs_growth = view.findViewById(R.id.et_obs_growth);
         sp_malezas = view.findViewById(R.id.sp_malezas);
@@ -272,22 +381,28 @@ public class FragmentVisitasAlmacigos extends Fragment {
         et_uniformidad = view.findViewById(R.id.et_uniformidad);
         sp_estado_general = view.findViewById(R.id.sp_estado_general);
         et_obs_estado_general = view.findViewById(R.id.et_obs_estado_general);
-        obs_dureza = view.findViewById(R.id.obs_dureza);
+        sp_dureza = view.findViewById(R.id.sp_dureza);
+        TextInputLayout obs_dureza = view.findViewById(R.id.obs_dureza);
         et_obs_dureza = view.findViewById(R.id.et_obs_dureza);
-        lbl_emergencia_preliminar = view.findViewById(R.id.lbl_emergencia_preliminar);
+        TextView lbl_emergencia_preliminar = view.findViewById(R.id.lbl_emergencia_preliminar);
         et_emergencia_preliminar = view.findViewById(R.id.et_emergencia_preliminar);
 
+        et_obs_general = view.findViewById(R.id.et_obs_general);
+
+        TextView lbl_cobertura_raices = view.findViewById(R.id.lbl_cobertura_raices);
+        et_cobertura_raices = view.findViewById(R.id.et_cobertura_raices);
+        TextView lbl_dureza = view.findViewById(R.id.lbl_dureza);
 
         //    DESNUDA
-        lbl_nom_fantasia = view.findViewById(R.id.lbl_nom_fantasia);
-        nom_fantasia = view.findViewById(R.id.nom_fantasia);
-        lbl_diametro = view.findViewById(R.id.lbl_diametro);
+        TextView lbl_nom_fantasia = view.findViewById(R.id.lbl_nom_fantasia);
+        TextView nom_fantasia = view.findViewById(R.id.nom_fantasia);
+        TextView lbl_diametro = view.findViewById(R.id.lbl_diametro);
         et_diametro = view.findViewById(R.id.et_diametro);
 
 
         rv_listado_fotos = view.findViewById(R.id.rv_listado_fotos);
         btn_guardar = view.findViewById(R.id.btn_guardar);
-        btn_volver = view.findViewById(R.id.btn_volver);
+        Button btn_volver = view.findViewById(R.id.btn_volver);
         btn_tomar_foto = view.findViewById(R.id.btn_tomar_foto);
 
 
@@ -305,45 +420,45 @@ public class FragmentVisitasAlmacigos extends Fragment {
         btn_volver.setOnClickListener(v -> activity.onBackPressed());
 
 
-        nombre_parental.setText(almacigo.getNombre_parental());
-        cliente.setText(almacigo.getNombre_cliente());
-        especie.setText(almacigo.getNombre_especie());
-        variedad.setText(almacigo.getNombre_variedad());
+        if (almacigo != null) {
+            nombre_parental.setText(almacigo.getNombre_parental());
+            cliente.setText(almacigo.getNombre_cliente());
+            especie.setText(almacigo.getNombre_especie());
+            variedad.setText(almacigo.getNombre_variedad());
+            String fechaSiembra = (almacigo.getFecha_siembra() != null && !almacigo.getFecha_siembra().isEmpty()) ? Utilidades.voltearFechaVista(almacigo.getFecha_siembra()) : "sin fecha";
+            String fechaDespacho = (almacigo.getFecha_estimada_despacho() != null && !almacigo.getFecha_estimada_despacho().isEmpty()) ? Utilidades.voltearFechaVista(almacigo.getFecha_estimada_despacho()) : "sin fecha";
 
-        String fechaSiembra = (almacigo.getFecha_siembra() != null && !almacigo.getFecha_siembra().isEmpty()) ? Utilidades.voltearFechaVista(almacigo.getFecha_siembra()) : "sin fecha";
-        String fechaDespacho = (almacigo.getFecha_estimada_despacho() != null && !almacigo.getFecha_estimada_despacho().isEmpty()) ? Utilidades.voltearFechaVista(almacigo.getFecha_estimada_despacho()) : "sin fecha";
+            fecha_siembra.setText(fechaSiembra);
+            fecha_estimada_despacho.setText(fechaDespacho);
+            tipo_lc.setText(almacigo.getDescripcion_tipo_raiz());
+            if (almacigo.getFecha_siembra() != null && !almacigo.getFecha_siembra().isEmpty()) {
+                long dias = Utilidades.diferenciaDiasEntreFechas(almacigo.getFecha_siembra(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                dias_cultivo.setText(String.valueOf(Math.abs(dias)));
+            }
 
-        fecha_siembra.setText(fechaSiembra);
-        fecha_estimada_despacho.setText(fechaDespacho);
-        tipo_lc.setText(almacigo.getDescripcion_tipo_raiz());
+            if (almacigo.getId_tipo_lc() == Utilidades.RAIZ_CUBIERTA) {
+                lbl_nom_fantasia.setVisibility(View.GONE);
+                nom_fantasia.setVisibility(View.GONE);
+                lbl_diametro.setVisibility(View.GONE);
+                et_diametro.setVisibility(View.GONE);
 
-        if (almacigo.getFecha_siembra() != null && !almacigo.getFecha_siembra().isEmpty()) {
-            long dias = Utilidades.diferenciaDiasEntreFechas(almacigo.getFecha_siembra(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            dias_cultivo.setText(String.valueOf(Math.abs(dias)));
-        }
+                op.setText(almacigo.getOp());
 
+            } else {
+                //desnuda
+                lbl_op.setVisibility(View.GONE);
+                op.setVisibility(View.GONE);
+                lbl_cobertura_raices.setVisibility(View.GONE);
+                et_cobertura_raices.setVisibility(View.GONE);
+                lbl_dureza.setVisibility(View.GONE);
+                sp_dureza.setVisibility(View.GONE);
+                obs_dureza.setVisibility(View.GONE);
+                et_obs_dureza.setVisibility(View.GONE);
+                lbl_emergencia_preliminar.setVisibility(View.GONE);
+                et_emergencia_preliminar.setVisibility(View.GONE);
+                nom_fantasia.setText(almacigo.getNombre_fantasia());
+            }
 
-        if (almacigo.getId_tipo_lc() == Utilidades.RAIZ_CUBIERTA) {
-            lbl_nom_fantasia.setVisibility(View.GONE);
-            nom_fantasia.setVisibility(View.GONE);
-            lbl_diametro.setVisibility(View.GONE);
-            et_diametro.setVisibility(View.GONE);
-
-            op.setText(almacigo.getOp());
-
-        } else {
-            //desnuda
-            lbl_op.setVisibility(View.GONE);
-            op.setVisibility(View.GONE);
-            lbl_cobertura_raices.setVisibility(View.GONE);
-            et_cobertura_raices.setVisibility(View.GONE);
-            lbl_dureza.setVisibility(View.GONE);
-            sp_dureza.setVisibility(View.GONE);
-            obs_dureza.setVisibility(View.GONE);
-            et_obs_dureza.setVisibility(View.GONE);
-            lbl_emergencia_preliminar.setVisibility(View.GONE);
-            et_emergencia_preliminar.setVisibility(View.GONE);
-            nom_fantasia.setText(almacigo.getNombre_fantasia());
         }
 
 
@@ -406,15 +521,17 @@ public class FragmentVisitasAlmacigos extends Fragment {
             sp_estado_general.setEnabled(false);
             btn_tomar_foto.setEnabled(false);
             btn_guardar.setEnabled(false);
-
-
         }
 
     }
 
 
     public void prepararGuardar() {
-
+        // Validación de null para evitar crash
+        if (sp_crecimiento == null || sp_malezas == null || sp_fito == null || sp_humedad_suelo == null || sp_estado_general == null || sp_dureza == null) {
+            Utilidades.avisoListo(activity, "Error", "Hay campos obligatorios que no están inicializados. Por favor, reinicie la pantalla.", "OK");
+            return;
+        }
 
         if (sp_crecimiento.getSelectedItemPosition() <= 0 ||
                 sp_malezas.getSelectedItemPosition() <= 0 ||
@@ -456,9 +573,7 @@ public class FragmentVisitasAlmacigos extends Fragment {
 
     public void guardar() {
 
-
-        ExecutorService io = Executors.newSingleThreadExecutor();
-        io.execute(() -> {
+        ioExecutor.execute(() -> {
             try {
                 Config config = MainActivity.myAppDB.myDao().getConfig();
 
@@ -470,7 +585,7 @@ public class FragmentVisitasAlmacigos extends Fragment {
 
                 if (almacigo.getFecha_siembra() != null && !almacigo.getFecha_siembra().isEmpty()) {
                     long dias = Utilidades.diferenciaDiasEntreFechas(almacigo.getFecha_siembra(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                    visita.setDias_cultivo_a_visita((int) dias);
+                    visita.setDias_cultivo_a_visita((int) Math.abs(dias));
                 }
 
                 visita.setEstado_crecimiento(sp_crecimiento.getSelectedItem().toString());
@@ -478,7 +593,7 @@ public class FragmentVisitasAlmacigos extends Fragment {
                 visita.setEstado_fito(sp_fito.getSelectedItem().toString());
                 visita.setHumedad_suelo(sp_humedad_suelo.getSelectedItem().toString());
                 if (!et_n_hojas.getText().toString().isEmpty()) {
-                    visita.setN_hoja(Integer.parseInt(et_n_hojas.getText().toString()));
+                    visita.setN_hoja(Double.parseDouble(et_n_hojas.getText().toString()));
                 }
                 if (!et_altura.getText().toString().isEmpty()) {
                     visita.setAltura(Double.parseDouble(et_altura.getText().toString()));
@@ -521,6 +636,7 @@ public class FragmentVisitasAlmacigos extends Fragment {
                 MainActivity.myAppDB.VisitasFotosAlmacigos().insertarVisitasAlmacigos(visita);
 
                 for (FotoVisitaModel fotoVisitaModel : fotosTomadas) {
+
 
                     File archivoTemporal = fotoVisitaModel.getArchivo();
                     String nombreArchivo = archivoTemporal.getName();  // o genera uno nuevo con timestamp
@@ -590,16 +706,6 @@ public class FragmentVisitasAlmacigos extends Fragment {
         }
     }
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (activity != null) {
-            activity.updateView(
-                    "Almacigos", (visitasAlmacigos == null) ? "Nueva visita" : "Ver visita");
-        }
-    }
 
     private void mostrarDialogoGuardando() {
         if (progressDialog == null) {

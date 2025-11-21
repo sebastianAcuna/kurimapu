@@ -4,8 +4,13 @@ package cl.smapdev.curimapu.fragments.checklist;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,8 +23,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -67,10 +74,15 @@ public class FragmentChecklistAplicacionHormonas extends Fragment {
     private final ArrayList<String> chk_aplicacion = new ArrayList<>();
     private final ArrayList<String> chk_n_aplicacion = new ArrayList<>();
 
+    // Executor reutilizable para operaciones DB rápidas (evita crear/shutdown por click)
+    private final ExecutorService singleDbExecutor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
 
     public void setChecklist(CheckListAplicacionHormonas checklist) {
         this.checklist = checklist;
     }
+
 
     public static FragmentChecklistAplicacionHormonas newInstance(CheckListAplicacionHormonas clApHormonas) {
         FragmentChecklistAplicacionHormonas fragment = new FragmentChecklistAplicacionHormonas();
@@ -78,12 +90,30 @@ public class FragmentChecklistAplicacionHormonas extends Fragment {
         return fragment;
     }
 
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context + " must be MainActivity");
+        }
+    }
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity a = (MainActivity) getActivity();
-        if (a != null) activity = a;
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (singleDbExecutor != null && !singleDbExecutor.isShutdown()) {
+            singleDbExecutor.shutdown();
+        }
     }
 
     @Nullable
@@ -154,15 +184,21 @@ public class FragmentChecklistAplicacionHormonas extends Fragment {
         if (checklist != null) {
             levantarDatos();
         }
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "CHECKLIST APLICACIÓN HORMONAS");
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (activity != null) {
-            activity.updateView(getResources().getString(R.string.app_name), "CHECKLIST APLICACIÓN HORMONAS");
-        }
-    }
 
     @Override
     public void onStart() {

@@ -444,7 +444,7 @@
             android:id="@+id/et_n_hojas"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="number|numberDecimal"
             app:layout_constraintTop_toBottomOf="@id/lbl_et_n_hojas"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

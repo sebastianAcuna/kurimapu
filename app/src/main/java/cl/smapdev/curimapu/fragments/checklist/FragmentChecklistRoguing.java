@@ -1,18 +1,18 @@
 package cl.smapdev.curimapu.fragments.checklist;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,12 +21,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -82,11 +86,15 @@ public class FragmentChecklistRoguing extends Fragment {
     private FotosCheckListRoguingCabAdapter adapter_cabecera_macho;
 
 
-    private String currentPhotoPath;
     private static final int COD_FOTO_CAB_H = 005;
     private static final int COD_FOTO_CAB_M = 006;
     private static final int COD_FOTO_DET = 007;
     private File fileImagen;
+
+    private String currentPhotoPath;
+    private int tipoFoto;
+    private Uri currentPhotoUri;
+    private ActivityResultLauncher<Uri> cameraLauncher;
 
 
     private TextView tv_responsable, tv_agricultor, tv_ha, tv_poblacion_hembra,
@@ -99,6 +107,10 @@ public class FragmentChecklistRoguing extends Fragment {
     private Button btn_foto_hembra, btn_foto_macho, btn_guardar, btn_cancelar, btn_nuevo_roguing;
 
 
+    // Executor reutilizable para operaciones DB rápidas (evita crear/shutdown por click)
+    private final ExecutorService singleDbExecutor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
     public void setChecklist(CheckListRoguing checklist) {
         this.checklist = checklist;
     }
@@ -109,12 +121,38 @@ public class FragmentChecklistRoguing extends Fragment {
         return fragment;
     }
 
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context + " must be MainActivity");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (singleDbExecutor != null && !singleDbExecutor.isShutdown()) {
+            singleDbExecutor.shutdown();
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity a = (MainActivity) getActivity();
-        if (a != null) activity = a;
-        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(),
+                (Boolean success) -> {
+                    if (success) {
+                        procesarFotoTomada();
+                    } else {
+                        Toasty.info(activity, "Captura de foto cancelada", Toast.LENGTH_LONG, true).show();
+                    }
+                });
     }
 
     @Nullable
@@ -156,47 +194,45 @@ public class FragmentChecklistRoguing extends Fragment {
         listadoDetalles();
         listadoDetallesAnteriores();
         listadoDetallesResumen();
+
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "CHECKLIST ROGUING");
     }
 
-
-    /* IMAGENES */
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = UUID.randomUUID().toString();
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
 
     private void abrirCamara(int codigo) {
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
+        String uid = UUID.randomUUID().toString();
+        tipoFoto = codigo;
+        String nombre = uid + "_";
+
         try {
-            photoFile = createImageFile();
+            photoFile = Utilidades.createImageFile(requireActivity(), nombre);
+            currentPhotoPath = photoFile.getAbsolutePath();
         } catch (IOException e) {
-            Log.e("ERROR IMAGEN", e.getLocalizedMessage());
-            Toasty.error(requireActivity(), "No se pudo crear la imagen 2", Toast.LENGTH_LONG, true).show();
+            Toasty.error(requireActivity(), "No se pudo crear la imagen " + e.getMessage(), Toast.LENGTH_LONG, true).show();
         }
 
         if (photoFile == null) {
-            Toasty.error(requireActivity(), "No se pudo crear la imagen 3", Toast.LENGTH_LONG, true).show();
+            Toasty.error(requireActivity(), "No se pudo crear la imagen (nula)", Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        Uri photoUri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID + ".provider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-        startActivityForResult(intent, codigo);
+        currentPhotoUri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID + ".provider", photoFile);
+        cameraLauncher.launch(currentPhotoUri);
     }
-
 
     private void listadoDetallesAnteriores() {
 
@@ -214,11 +250,6 @@ public class FragmentChecklistRoguing extends Fragment {
 
 
         List<CheckListRoguingDetalleFechas> myImageLis = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinal(clave);
-
-        if (myImageLis.size() >= 4) {
-            btn_nuevo_roguing.setEnabled(false);
-        }
-
         List<CheckListRoguingDetalleFechas> myImageActual = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadre(null);
 
         boolean tieneActual = !myImageActual.isEmpty();
@@ -321,7 +352,7 @@ public class FragmentChecklistRoguing extends Fragment {
         List<CheckListRoguingDetalleFechas> myImageLis = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadre(null);
         List<CheckListRoguingDetalleFechas> detallesAnteriores = MainActivity.myAppDB.DaoCLRoguing().obtenerDetalleFechaRoguingPorClaveUnicaPadreFinal(clave);
 
-        if (myImageLis.isEmpty() && detallesAnteriores.size() < 4) {
+        if (myImageLis.isEmpty()) {
             btn_nuevo_roguing.setEnabled(true);
             return;
         }
@@ -359,34 +390,31 @@ public class FragmentChecklistRoguing extends Fragment {
         rv_roguing_actual.setAdapter(fechasAdapter);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode != RESULT_OK) return;
-
-
+    public void procesarFotoTomada() {
         try {
             Bitmap originalBtm = BitmapFactory.decodeFile(currentPhotoPath);
+            if (originalBtm == null) {
+                Toasty.error(requireActivity(), "No se pudo decodificar la imagen.", Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
             Bitmap nuevaFoto = CameraUtils.escribirFechaImg(originalBtm, activity);
 
-            currentPhotoPath = currentPhotoPath.replaceAll("Pictures/", "");
-
             File file = new File(currentPhotoPath);
-
             FileOutputStream fos = new FileOutputStream(file);
-            nuevaFoto.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
-            if (requestCode == COD_FOTO_CAB_H) guardarBDCabecera("H");
-            if (requestCode == COD_FOTO_CAB_M) guardarBDCabecera("M");
-//            if (requestCode == COD_FOTO_DET) guardarBD();
+            nuevaFoto.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+
+            if (tipoFoto == COD_FOTO_CAB_H) guardarBDCabecera("H");
+            if (tipoFoto == COD_FOTO_CAB_M) guardarBDCabecera("M");
 
         } catch (Exception e) {
-            Log.e("FOTOS", e.getLocalizedMessage());
-            System.out.println(e);
+            Toasty.error(requireActivity(), "Error al procesar la foto: " + e.getMessage(), Toast.LENGTH_LONG, true).show();
         }
-
     }
-
 
     private void guardarBDCabecera(String tipo) {
 
@@ -525,15 +553,12 @@ public class FragmentChecklistRoguing extends Fragment {
         tv_responsable.setText(usuario.getNombre() + " " + usuario.getApellido_p());
         tv_especie.setText(anexoCompleto.getEspecie().getDesc_especie());
 
-
-//
         tv_poblacion_hembra.setText(anexoCompleto.getAnexoContrato().getPoblacion_hembra());
         tv_poblacion_macho_uno.setText(anexoCompleto.getAnexoContrato().getPoblacion_macho_1());
         tv_poblacion_macho_dos.setText(anexoCompleto.getAnexoContrato().getPoblacion_macho_2());
         tv_poblacion_macho_tres.setText(anexoCompleto.getAnexoContrato().getPoblacion_macho_3());
         tv_ratio_m.setText(String.valueOf(anexoCompleto.getAnexoContrato().getRatio_m()));
         tv_ratio_f.setText(String.valueOf(anexoCompleto.getAnexoContrato().getRatio_f()));
-//
     }
 
 
@@ -657,13 +682,6 @@ public class FragmentChecklistRoguing extends Fragment {
         cargarDatosPrevios();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (activity != null) {
-            activity.updateView(getResources().getString(R.string.app_name), "CHECKLIST ROGUING");
-        }
-    }
 
     private void cancelar() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();

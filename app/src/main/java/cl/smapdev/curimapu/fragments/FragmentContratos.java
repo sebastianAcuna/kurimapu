@@ -1,46 +1,77 @@
 package cl.smapdev.curimapu.fragments;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.TabsAdapters;
+import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
+import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 import es.dmoral.toasty.Toasty;
 
 public class FragmentContratos extends Fragment {
 
     private ViewPager viewPager;
-    private  MainActivity activity;
+    private MainActivity activity;
+    private SharedPreferences prefs;
 
+    private final ExecutorService singleDbExecutor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context + " must be MainActivity");
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        MainActivity a = (MainActivity) getActivity();
-        if(a != null) activity = a;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        return  inflater.inflate(R.layout.fragment_contrato, container, false);
+        return inflater.inflate(R.layout.fragment_contrato, container, false);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (singleDbExecutor != null && !singleDbExecutor.isShutdown()) {
+            singleDbExecutor.shutdown();
+        }
     }
 
 
@@ -53,63 +84,39 @@ public class FragmentContratos extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        viewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        cargarTabs();
 
-        viewPager  = (ViewPager) view.findViewById(R.id.view_pager);
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.menu_visitas, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
 
 
-            cargarTabs();
-//        new LazyLoad().execute();
+        singleDbExecutor.execute(() -> {
+            AnexoCompleto anexoCompleto = MainActivity.myAppDB.myDao().getAnexoCompletoById(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
+
+            if (anexoCompleto != null) {
+                handler.post(() -> {
+                    Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), "Anexo " + anexoCompleto.getAnexoContrato().getAnexo_contrato());
+                });
+            }
+        });
 
     }
 
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (activity != null){
-               // activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fotos_resumen, FragmentFotosResumen.getInstance(0), Utilidades.FRAGMENT_FOTOS_RESUMEN).commit();
-            }
-        }
-    }
+    private void cargarTabs() {
 
-    private class LazyLoad extends AsyncTask<Void, Void, Void>{
-
-        private ProgressDialog progressBar;
-
-        @Override
-        protected void onPreExecute() {
-            progressBar = new ProgressDialog(activity);
-            progressBar.setTitle(getResources().getString(R.string.espere));
-            progressBar.show();
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            if (progressBar != null && progressBar.isShowing()){
-                progressBar.dismiss();
-            }
-            cargarTabs();
-        }
-    }
-
-
-    private void cargarTabs(){
-
-        try{
+        try {
             viewPager.setAdapter(new TabsAdapters(getChildFragmentManager(),
                     Objects.requireNonNull(getContext())));
 
@@ -118,26 +125,12 @@ public class FragmentContratos extends Fragment {
             tabLayout.setupWithViewPager(viewPager);
             tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
-        }catch(Exception e){
-            Toasty.warning(activity, "Error capturado"+e.getLocalizedMessage(), Toast.LENGTH_SHORT, true).show();
+        } catch (Exception e) {
+            Toasty.warning(activity, "Error capturado" + e.getLocalizedMessage(), Toast.LENGTH_SHORT, true).show();
             //new LazyLoad().execute();
         }
 
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (activity != null){
-            activity.updateView(getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_visit));
-        }
-    }
-
-
-
-
-
 
 
 }

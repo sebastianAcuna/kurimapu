@@ -1,15 +1,19 @@
 package cl.smapdev.curimapu.clases.utilidades;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -20,7 +24,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.exifinterface.media.ExifInterface;
 
 import java.io.ByteArrayOutputStream;
@@ -40,14 +48,16 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 
 public class Utilidades {
 
-    public static final String APPLICATION_VERSION = "4.3.0609";
+    public static final String APPLICATION_VERSION = "4.4.0611";
 
     public static final String FRAGMENT_INICIO = "fragment_inicio";
     public static final String FRAGMENT_FICHAS = "fragment_fichas";
@@ -73,6 +83,7 @@ public class Utilidades {
     public static final String FRAGMENT_CHECKLIST_ROGUING = "fragment_checklist_roguing";
     public static final String FRAGMENT_CHECKLIST_REVISION_FRUTOS = "fragment_checklist_revision_frutos";
     public static final String FRAGMENT_CHECKLIST_GUIA_INTERNA = "fragment_checklist_guia_interna";
+    public static final String FRAGMENT_CHECKLIST_RECEPCION_PLANTINERA = "fragment_checklist_recepcion_plantinera";
 
     public static final String affiliate_id = "vb7jbic553ts";
 
@@ -81,6 +92,7 @@ public class Utilidades {
     public static final int TIPO_DOCUMENTO_CHECKLIST_REVISION_FRUTOS = 3;
     public static final int TIPO_DOCUMENTO_CHECKLIST_ROGUING = 4;
     public static final int TIPO_DOCUMENTO_CHECKLIST_GUIA_INTERNA = 5;
+    public static final int TIPO_DOCUMENTO_CHECKLIST_RECEPCION_PLANTINERA = 6;
 
 
     public static final int RAIZ_CUBIERTA = 1;
@@ -131,6 +143,8 @@ public class Utilidades {
     public static final String DIALOG_TAG_FOTO_CHECKLIST_SIEMBRA_SEMILLA = "DIALOG_TAG_FOTO_CHECKLIST_SIEMBRA_SEMILLA";
     public static final String DIALOG_TAG_FIRMA_RESPONSABLE_AP_HORMONA = "CAPACITACION_FIRMA_RESPONSABLE_AP_HORMONA";
     public static final String DIALOG_TAG_FIRMA_PRESTADOR_SERVICIO_AP_HORMONA = "CAPACITACION_FIRMA_PRESTADOR_SERVICIO_AP_HORMONA";
+    public static final String DIALOG_TAG_FIRMA_AGRICULTOR_PLANTIN = "DIALOG_TAG_FIRMA_AGRICULTOR_PLANTIN";
+    public static final String DIALOG_TAG_FIRMA_ENCARGADO_PLANTIN = "DIALOG_TAG_FIRMA_ENCARGADO_PLANTIN";
     public static final String DIALOG_TAG_FIRMA_AGRICULTOR_REVISION_FRUTOS = "DIALOG_TAG_FIRMA_AGRICULTOR_REVISION_FRUTOS";
     public static final String DIALOG_TAG_ROGUING_DETALLE = "DIALOG_TAG_ROGUING_DETALLE";
     public static final String DIALOG_TAG_ROGUING_DETALLE_FECHA = "DIALOG_TAG_ROGUING_DETALLE_FECHA";
@@ -146,6 +160,7 @@ public class Utilidades {
     public static final String DIALOG_TAG_RESPONSABLE_OPERARIO_INGRESO = "RESPONSABLE_OPERARIO_INGRESO";
     public static final String DIALOG_TAG_RESPONSABLE_OPERARIO_TERMINO = "RESPONSABLE_OPERARIO_TERMINO";
     public static final String DIALOG_TAG_RESPONSABLE_CAMPO_TERMINO = "RESPONSABLE_CAMPO_TERMINO";
+    public static final String DIALOG_TAG_RECEPCION_PLANTIN = "DIALOG_TAG_RECEPCION_PLANTIN";
 
 
     public static boolean isNumeric(String texto) {
@@ -160,50 +175,25 @@ public class Utilidades {
     public static final String VISTA_FOTOS = "vista";
 
     public static boolean exportDatabse(String databaseName, String packageName) {
-
         return true;
-
-//        boolean respuesta = true;
-//        try {
-//            File sd = Environment.getExternalStorageDirectory();
-//            File data = Environment.getDataDirectory();
-//
-//
-//            /* CREAR CARPETA curimapu_respaldo_bd */
-//            File miFile = new File(Environment.getExternalStorageDirectory(), Utilidades.DIRECTORIO_RESPALDO);
-//            boolean isCreada = miFile.exists();
-//
-//            if (!isCreada){
-//                isCreada=miFile.mkdirs();
-//            }
-//
-//            if(isCreada) {
-//                if (sd.canWrite()) {
-//                    String currentDBPath = "//data//"+packageName+"//databases//"+databaseName+"";
-//                    String backupDBPath = Utilidades.DIRECTORIO_RESPALDO+"/"+Utilidades.fechaActualSinHoraNombre()+"_backup_curimapu.db";
-//                    File currentDB = new File(data, currentDBPath);
-//                    File backupDB = new File(sd, backupDBPath);
-//
-//                    if (currentDB.exists()) {
-//                        FileChannel src = new FileInputStream(currentDB).getChannel();
-//                        FileChannel dst = new FileOutputStream(backupDB).getChannel();
-//                        dst.transferFrom(src, 0, src.size());
-//                        src.close();
-//                        dst.close();
-//                    }
-//                }
-//            }else{
-//                respuesta = false;
-//            }
-//
-//
-//
-//            return respuesta;
-//        } catch (Exception e) {
-//            return false;
-//        }
     }
 
+
+    public static File createImageFile(Activity activity, String nombre) throws IOException {
+
+        String name = (nombre != null) ? nombre : "";
+
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + name + "_" + timeStamp + "_";
+        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        return image;
+    }
 
     public static long compararFechas(String inputString2) {
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -699,6 +689,87 @@ public class Utilidades {
         simbolos.setGroupingSeparator('.');
         NumberFormat formatoEntero = new DecimalFormat("#,##0", simbolos);
         return formatoEntero.format(obj);
+    }
+
+
+    public static boolean checkPermission(Context context) {
+        // Permisos comunes para todas las versiones
+        int cameraPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA);
+        int fineLocationPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
+        int coarseLocationPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        boolean commonPermissionsGranted = cameraPermission == PackageManager.PERMISSION_GRANTED &&
+                fineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                coarseLocationPermission == PackageManager.PERMISSION_GRANTED;
+
+        // A partir de Android 13 (TIRAMISU), se usan los permisos de medios granulares
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            int readImagesPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES);
+            return commonPermissionsGranted && readImagesPermission == PackageManager.PERMISSION_GRANTED;
+        }
+        // Para versiones anteriores a Android 10, WRITE_EXTERNAL_STORAGE sigue siendo relevante
+        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            int storagePermission = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            return commonPermissionsGranted && storagePermission == PackageManager.PERMISSION_GRANTED;
+        }
+
+        // Entre Android 10 y 12, las apps no necesitan permisos para escribir en su propio directorio,
+        // por lo que solo verificamos los permisos comunes.
+        return commonPermissionsGranted;
+    }
+
+    public static void requestPermission(Activity activity) {
+        List<String> permissionsToRequest = new ArrayList<>();
+
+        // Permisos comunes que siempre se solicitan
+        permissionsToRequest.add(Manifest.permission.CAMERA);
+        permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        permissionsToRequest.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        // Lógica de permisos de almacenamiento basada en la versión de Android
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Para Android 13 y superior, solicitar READ_MEDIA_IMAGES si es necesario
+            permissionsToRequest.add(Manifest.permission.READ_MEDIA_IMAGES);
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            // Para versiones anteriores a Android 10, solicitar el permiso de escritura antiguo
+            permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        // No se añade ningún permiso de almacenamiento para Android 10, 11 y 12,
+        // ya que el Scoped Storage permite a la app escribir en su directorio específico sin permisos.
+
+        ActivityCompat.requestPermissions(activity, permissionsToRequest.toArray(new String[0]), 100);
+    }
+
+
+    public static void setToolbar(MainActivity activity, View view, String title, String subTitle) {
+
+        androidx.appcompat.widget.Toolbar toolbar = view.findViewById(R.id.toolbar);
+        activity.setSupportActionBar(toolbar);
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            // 4. Muestra el botón de "hacia atrás" o el ícono de hamburguesa.
+            //    Esto le indica al usuario que puede navegar hacia arriba/atrás.
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+
+            // 5. Establece el título que desees para esta pantalla.
+            actionBar.setTitle(title);
+            if (!subTitle.isEmpty()) {
+                actionBar.setSubtitle(subTitle);
+            }
+
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    activity,
+                    activity.drawerLayout, // Accede al drawerLayout de MainActivity
+                    toolbar,
+                    R.string.open_drawer,
+                    R.string.close_drawer
+            );
+
+            activity.drawerLayout.addDrawerListener(toggle);
+            toggle.syncState();
+        }
+
     }
 
 }

@@ -56,7 +56,7 @@ public class VisitasAlmacigos {
 
     @SerializedName("n_hoja")
     @Expose
-    private int n_hoja;
+    private double n_hoja;
 
     @SerializedName("altura")
     @Expose
@@ -245,11 +245,11 @@ public class VisitasAlmacigos {
         this.humedad_suelo = humedad_suelo;
     }
 
-    public int getN_hoja() {
+    public double getN_hoja() {
         return n_hoja;
     }
 
-    public void setN_hoja(int n_hoja) {
+    public void setN_hoja(double n_hoja) {
         this.n_hoja = n_hoja;
     }
 

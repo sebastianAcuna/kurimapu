@@ -41,6 +41,18 @@ public class CheckListRequest {
     private List<CheckListRevisionFrutosCompleto> checkListRevisionFrutos;
 
 
+    @SerializedName("checkListRecepcionPlantineras")
+    private List<CheckListRecepcionPlantineraCompleto> checkListRecepcionPlantineraCompletos;
+
+
+    public List<CheckListRecepcionPlantineraCompleto> getCheckListRecepcionPlantineraCompletos() {
+        return checkListRecepcionPlantineraCompletos;
+    }
+
+    public void setCheckListRecepcionPlantineraCompletos(List<CheckListRecepcionPlantineraCompleto> checkListRecepcionPlantineraCompletos) {
+        this.checkListRecepcionPlantineraCompletos = checkListRecepcionPlantineraCompletos;
+    }
+
     public List<CheckListRevisionFrutosCompleto> getCheckListRevisionFrutos() {
         return checkListRevisionFrutos;
     }

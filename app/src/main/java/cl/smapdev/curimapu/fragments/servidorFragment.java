@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,7 +16,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
@@ -23,7 +28,6 @@ import java.util.List;
 import cl.smapdev.curimapu.MainActivity;
 import cl.smapdev.curimapu.R;
 import cl.smapdev.curimapu.clases.adapters.UsuariosAdapter;
-import cl.smapdev.curimapu.clases.adapters.VisitasListAdapter;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Usuario;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
@@ -40,16 +44,22 @@ public class servidorFragment extends Fragment {
     private TextView titulo_servidor;
 
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            shared = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context.toString() + " must be MainActivity");
+        }
+    }
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        activity = (MainActivity) getActivity();
-
-
-
     }
 
 
@@ -86,13 +96,13 @@ public class servidorFragment extends Fragment {
 //            titulo_servidor.setVisibility(View.VISIBLE);
 //            rbPruebas.setVisibility(View.VISIBLE);
 //        }else{
-            rbDesarrollo.setVisibility(View.GONE);
-            rbProduccion.setVisibility(View.GONE);
-            titulo_servidor.setVisibility(View.GONE);
-            rbPruebas.setVisibility(View.GONE);
+        rbDesarrollo.setVisibility(View.GONE);
+        rbProduccion.setVisibility(View.GONE);
+        titulo_servidor.setVisibility(View.GONE);
+        rbPruebas.setVisibility(View.GONE);
 //        }
 
-        if (String.valueOf(cnf.getId_usuario()).equals(shared.getString(Utilidades.SHARED_SERVER_ID_USER, ""))){
+        if (String.valueOf(cnf.getId_usuario()).equals(shared.getString(Utilidades.SHARED_SERVER_ID_USER, ""))) {
             card_admin.setBackgroundColor(activity.getColor(R.color.colorSelected));
         }
 
@@ -101,46 +111,42 @@ public class servidorFragment extends Fragment {
             public void onClick(View v) {
                 Config cnf = MainActivity.myAppDB.myDao().getConfig();
                 shared.edit().remove(Utilidades.SHARED_SERVER_ID_USER).apply();
-                shared.edit().putString(Utilidades.SHARED_SERVER_ID_USER,String.valueOf(cnf.getId_usuario())).apply();
+                shared.edit().putString(Utilidades.SHARED_SERVER_ID_USER, String.valueOf(cnf.getId_usuario())).apply();
                 card_admin.setBackgroundColor(activity.getColor(R.color.colorSelected));
                 adapter.notifyDataSetChanged();
             }
         });
 
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(TextUtils.isEmpty(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, ""))){
-                    shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API).apply();
+        button.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, ""))) {
+                shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API).apply();
+            }
+
+            if (!TextUtils.isEmpty(shared.getString(Utilidades.SHARED_SERVER_ID_USER, "")) &&
+                    !TextUtils.isEmpty(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, ""))) {
+                if (activity != null) {
+
+                    Config cnf1 = MainActivity.myAppDB.myDao().getConfig();
+
+                    cnf1.setId_usuario_suplandato(Integer.parseInt(shared.getString(Utilidades.SHARED_SERVER_ID_USER, String.valueOf(cnf1.getId_usuario()))));
+                    cnf1.setServidorSeleccionado(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API));
+
+                    MainActivity.myAppDB.myDao().updateConfig(cnf1);
+
+
+                    activity.cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
                 }
-
-                if (!TextUtils.isEmpty(shared.getString(Utilidades.SHARED_SERVER_ID_USER, "")) &&
-                    !TextUtils.isEmpty(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, ""))){
-                    if (activity != null){
-
-                        Config cnf = MainActivity.myAppDB.myDao().getConfig();
-
-                        cnf.setId_usuario_suplandato(Integer.parseInt(shared.getString(Utilidades.SHARED_SERVER_ID_USER, String.valueOf(cnf.getId_usuario()))));
-                        cnf.setServidorSeleccionado(shared.getString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API));
-
-                        MainActivity.myAppDB.myDao().updateConfig(cnf);
-
-
-
-                        activity.cambiarFragment(new FragmentPrincipal(), Utilidades.FRAGMENT_INICIO, R.anim.slide_in_left, R.anim.slide_out_left);
-                    }
-                }else{
-                    Utilidades.avisoListo(activity,"Atencion", "Debes completar las selecciones antes de seguir.","Entiendo");
-                }
+            } else {
+                Utilidades.avisoListo(activity, "Atencion", "Debes completar las selecciones antes de seguir.", "Entiendo");
             }
         });
 
-        if (cnf.getServidorSeleccionado().equals(Utilidades.URL_SERVER_API)){
+        if (cnf.getServidorSeleccionado().equals(Utilidades.URL_SERVER_API)) {
             rbProduccion.setChecked(true);
-        }else if (cnf.getServidorSeleccionado().equals(Utilidades.IP_DESARROLLO)){
+        } else if (cnf.getServidorSeleccionado().equals(Utilidades.IP_DESARROLLO)) {
             rbDesarrollo.setChecked(true);
-        }else if(cnf.getServidorSeleccionado().equals(Utilidades.IP_PRUEBAS)){
+        } else if (cnf.getServidorSeleccionado().equals(Utilidades.IP_PRUEBAS)) {
             rbPruebas.setChecked(true);
         }
 
@@ -159,15 +165,29 @@ public class servidorFragment extends Fragment {
             shared.edit().putString(Utilidades.SHARED_SERVER_ID_SERVER, Utilidades.URL_SERVER_API).apply();
         });
 
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
+
+
     }
 
 
-    private void cargarAdapter(List<Usuario> listUser){
+    private void cargarAdapter(List<Usuario> listUser) {
         adapter = new UsuariosAdapter(listUser, new UsuariosAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Usuario user) {
                 shared.edit().remove(Utilidades.SHARED_SERVER_ID_USER).apply();
-                shared.edit().putString(Utilidades.SHARED_SERVER_ID_USER,String.valueOf(user.getId_usuario())).apply();
+                shared.edit().putString(Utilidades.SHARED_SERVER_ID_USER, String.valueOf(user.getId_usuario())).apply();
 
                 card_admin.setBackgroundColor(activity.getColor(R.color.colorSurface));
                 adapter.notifyDataSetChanged();

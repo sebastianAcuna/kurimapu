@@ -389,6 +389,8 @@ public interface MyDao {
     @Query("DELETE FROM detalle_visita_prop WHERE id_visita_detalle = 0")
     void deleteDetalleVacios();
 
+    @Query("SELECT * FROM visita WHERE id_anexo_visita  = :idAc AND estado_visita = :estado ")
+    Visitas getVisitasByACAndEstado(String idAc, String estado);
 
     @Query("SELECT * FROM visita WHERE id_visita  = :idVisita")
     Visitas getVisitas(int idVisita);
@@ -823,13 +825,14 @@ public interface MyDao {
 
     /* ANEXOS*/
 
-    @Query("SELECT  * " +
+    @Query("SELECT  *, C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna  " +
             "FROM anexo_contrato " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN materiales ON (materiales.id_variedad = anexo_contrato.id_variedad_anexo) " +
             "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
             "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
+            "LEFT JOIN comuna C ON (C.id_comuna = F.id_comuna_new )" +
             "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
             "")
     List<AnexoCompleto> getAnexos();
@@ -838,7 +841,7 @@ public interface MyDao {
     @Query("SELECT * FROM anexo_contrato WHERE id_anexo_contrato = :idAnexo")
     AnexoContrato getAnexos(String idAnexo);
 
-    @Query("SELECT * " +
+    @Query("SELECT * , C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna " +
             "FROM anexo_contrato " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
@@ -846,17 +849,20 @@ public interface MyDao {
             "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
             "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
             "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
+            "LEFT JOIN comuna C ON (C.id_comuna = F.id_comuna_new )" +
             "WHERE F.id_tempo_new = :year")
     List<AnexoCompleto> getAnexosByYear(String year);
 
 
-    @Query("SELECT * " +
+    @Query("SELECT * , C.desc_comuna as c_desc_comuna, C.id_comuna AS c_id_comuna, C.id_api AS c_id_api, C.id_provincia_comuna AS c_id_provincia_comuna " +
             "FROM anexo_contrato " +
             "INNER JOIN agricultor ON (agricultor.id_agricultor = anexo_contrato.id_agricultor_anexo) " +
             "INNER JOIN especie ON (especie.id_especie = anexo_contrato.id_especie_anexo) " +
             "INNER JOIN materiales ON (materiales.id_variedad = anexo_contrato.id_variedad_anexo) " +
             "LEFT JOIN ficha_new F ON (F.id_ficha_new = anexo_contrato.id_ficha_contrato) " +
             "LEFT JOIN predio P ON (P.id_pred = F.id_pred_new) " +
+            "LEFT JOIN comuna C ON (C.id_comuna = F.id_comuna_new )" +
+
             "LEFT JOIN lote ON (lote.lote = F.id_lote_new) " +
             "WHERE id_anexo_contrato = :idAnexo ")
     AnexoCompleto getAnexoCompletoById(String idAnexo);

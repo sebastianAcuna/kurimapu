@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,7 +26,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +49,7 @@ import cl.smapdev.curimapu.clases.adapters.SitiosNoVisitadosAdapter;
 import cl.smapdev.curimapu.clases.adapters.SpinnerToolbarAdapter;
 import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.modelo.RecomendacionesSync;
+import cl.smapdev.curimapu.clases.relaciones.CheckListRecepcionPlantineraCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRevisionFrutosCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRoguingCompleto;
@@ -58,6 +62,7 @@ import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
 import cl.smapdev.curimapu.clases.tablas.CheckListAplicacionHormonas;
+import cl.smapdev.curimapu.clases.tablas.CheckListRecepcionPlantinera;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutos;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListRevisionFrutosFotos;
@@ -110,6 +115,7 @@ public class FragmentPrincipal extends Fragment {
     private Button btn_preparar;
     private Button btn_sube_marcadas;
     private Button btn_subir_almacigos;
+    private Button btn_genera_visitas_prueba;
 
     private TextView visitas_titulo, visitas_marca;
 
@@ -136,15 +142,30 @@ public class FragmentPrincipal extends Fragment {
 
     private View view;
 
+    // Dialogo de progreso único para subida de almacigos
+    private ProgressDialog progressDialogAlmacigos;
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        } else {
+            throw new RuntimeException(context.toString() + " must be MainActivity");
+        }
+    }
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (MainActivity) getActivity();
 
-        if (activity != null) {
-            prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
-            progressDialogGeneral = new ProgressDialog(activity);
-        }
+        prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
+        progressDialogGeneral = new ProgressDialog(activity);
+
 
         handlerGrafico = new Handler(Looper.getMainLooper());
 
@@ -187,6 +208,7 @@ public class FragmentPrincipal extends Fragment {
         visitas_marca = (TextView) view.findViewById(R.id.visitas_marca);
         titulo_sitios_no_visitados = (TextView) view.findViewById(R.id.titulo_sitios_no_visitados);
         titulo_primera_prioridad = (TextView) view.findViewById(R.id.titulo_primera_prioridad);
+        btn_genera_visitas_prueba = (Button) view.findViewById(R.id.btn_genera_visitas_prueba);
 
         progressBar1 = (ProgressBar) view.findViewById(R.id.progressBar1);
         progressBar2 = (ProgressBar) view.findViewById(R.id.progressBar2);
@@ -197,6 +219,8 @@ public class FragmentPrincipal extends Fragment {
 
         lista_sitios_no_visitados = (RecyclerView) view.findViewById(R.id.lista_sitios_no_visitados);
         lista_primera_prioridad = (RecyclerView) view.findViewById(R.id.lista_primera_prioridad);
+
+        btn_genera_visitas_prueba.setOnClickListener(v -> poblarVisitasYFotosDummy());
 
         Button btn_calcula_datos_primera_prio = view.findViewById(R.id.btn_calcula_datos_primera_prio);
         Button btn_calcula_datos_sitio_visita = view.findViewById(R.id.btn_calcula_datos_sitio_visita);
@@ -298,47 +322,172 @@ public class FragmentPrincipal extends Fragment {
         });
 
 
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.menu_inicio, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
+
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), getResources().getString(R.string.subtitles_start));
+
+
     }
 
+    public void prepararSubirFotosAlmacigos() {
+        ExecutorService io = Executors.newSingleThreadExecutor();
+        final int BATCH_SIZE = 30;
+        io.execute(() -> {
+            List<FotosAlmacigos> fotosPendientes = MainActivity.myAppDB.VisitasFotosAlmacigos().getFotosAlmacigosPorSync();
+            Config config = MainActivity.myAppDB.myDao().getConfig();
+            if (fotosPendientes.isEmpty()) {
+                activity.runOnUiThread(() -> {
+                    if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                        progressDialogAlmacigos.dismiss();
+                    Utilidades.avisoListo(activity, "ATENCION", "NO HAY FOTOS PENDIENTES POR SUBIR", "ENTIENDO");
+                });
+                return;
+            }
+            activity.runOnUiThread(() -> {
+                if (progressDialogAlmacigos == null) {
+                    progressDialogAlmacigos = new ProgressDialog(activity);
+                    progressDialogAlmacigos.setCancelable(false);
+                }
+                progressDialogAlmacigos.setMessage("Subiendo fotos 0 de " + fotosPendientes.size());
+                progressDialogAlmacigos.show();
+            });
+            subirFotosAlmacigosEnLotes(fotosPendientes, config, 0, BATCH_SIZE);
+        });
+    }
+
+    private void subirFotosAlmacigosEnLotes(List<FotosAlmacigos> fotosPendientes, Config config, int startIndex, int BATCH_SIZE) {
+        int total = fotosPendientes.size();
+        int endIndex = Math.min(startIndex + BATCH_SIZE, total);
+        List<FotosAlmacigos> lote = new ArrayList<>();
+        for (int i = startIndex; i < endIndex; i++) {
+            FotosAlmacigos foto = fotosPendientes.get(i);
+            String base = Utilidades.convertirAStringBase64(foto.getRuta_foto());
+            if (base == null) continue;
+            foto.setImagen_base64(base);
+            lote.add(foto);
+        }
+        if (lote.isEmpty()) {
+            // Si el lote está vacío, continuar con el siguiente lote
+            if (endIndex < total) {
+                subirFotosAlmacigosEnLotes(fotosPendientes, config, endIndex, BATCH_SIZE);
+            } else {
+                activity.runOnUiThread(() -> {
+                    if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                        progressDialogAlmacigos.dismiss();
+                    Utilidades.avisoListo(activity, "ATENCION", "Todas las fotos han sido subidas", "Entiendo");
+                });
+            }
+            return;
+        }
+
+        SubirAlmacigos subirAlmacigos = new SubirAlmacigos();
+        subirAlmacigos.setFotos(lote);
+        subirAlmacigos.setId_usuario(config.getId_usuario());
+        subirAlmacigos.setVersion(Utilidades.APPLICATION_VERSION);
+        subirAlmacigos.setIdDispo(config.getId());
+
+        activity.runOnUiThread(() -> {
+            if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing()) {
+                progressDialogAlmacigos.setMessage("Subiendo fotos " + (endIndex) + " de " + total);
+            }
+            ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
+            Call<Respuesta> call = apiService.enviarAlmacigos(subirAlmacigos);
+
+            call.enqueue(new Callback<Respuesta>() {
+                @Override
+                public void onResponse(@NonNull Call<Respuesta> call, @NonNull Response<Respuesta> response) {
+                    if (!response.isSuccessful()) {
+                        if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                            progressDialogAlmacigos.dismiss();
+                        Utilidades.avisoListo(activity, "ATENCION", "No se pudieron subir las fotos, vuelva a intentar", "Entiendo");
+                        return;
+                    }
+                    Respuesta resp = response.body();
+                    if (resp == null || resp.getCodigoRespuesta() != 1) {
+                        if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                            progressDialogAlmacigos.dismiss();
+                        Utilidades.avisoListo(activity, "ATENCION", "Servidor tuvo problemas para guardar los datos, vuelva a intentar", "Entiendo");
+                        return;
+                    }
+                    // Marcar las fotos del lote como sincronizadas
+                    ExecutorService io = Executors.newSingleThreadExecutor();
+                    io.execute(() -> {
+                        for (FotosAlmacigos foto : lote) {
+                            MainActivity.myAppDB.VisitasFotosAlmacigos().marcarFotosSincronizadadasByUid(foto.getUid_visita());
+                        }
+                        io.shutdown();
+                    });
+                    // Continuar con el siguiente lote
+                    if (endIndex < total) {
+                        subirFotosAlmacigosEnLotes(fotosPendientes, config, endIndex, BATCH_SIZE);
+                    } else {
+                        if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                            progressDialogAlmacigos.dismiss();
+                        Utilidades.avisoListo(activity, "ATENCION", "Todas las fotos han sido subidas", "Entiendo");
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<Respuesta> call, @NonNull Throwable t) {
+                    if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                        progressDialogAlmacigos.dismiss();
+                    Utilidades.avisoListo(activity, "ATENCION", "No se pudo completar la comunicacion con el servidor [ " + t.getMessage() + " ]", "Entiendo");
+                }
+            });
+        });
+    }
 
     public void prepararSubirVisitasAlmacigos() {
-
         ExecutorService io = Executors.newSingleThreadExecutor();
         io.execute(() -> {
-
             List<VisitasAlmacigos> visitasPendientes = MainActivity.myAppDB.VisitasFotosAlmacigos().getVisitasAlmacigosPorSync();
             List<FotosAlmacigos> fotosPendientes = MainActivity.myAppDB.VisitasFotosAlmacigos().getFotosAlmacigosPorSync();
             Config config = MainActivity.myAppDB.myDao().getConfig();
-
             if (fotosPendientes.isEmpty() && visitasPendientes.isEmpty()) {
                 activity.runOnUiThread(() -> {
+                    if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                        progressDialogAlmacigos.dismiss();
                     Utilidades.avisoListo(activity, "ATENCION", "NO HAY VISITAS PENDIENTES POR SINCRONIZAR", "ENTIENDO");
                 });
                 return;
             }
+            activity.runOnUiThread(() -> {
+                if (progressDialogAlmacigos == null) {
+                    progressDialogAlmacigos = new ProgressDialog(activity);
+                    progressDialogAlmacigos.setCancelable(false);
+                }
+                progressDialogAlmacigos.setMessage("Subiendo las visitas de almacigos...");
+                progressDialogAlmacigos.show();
+            });
 
-            ArrayList<FotosAlmacigos> fotosBase64 = new ArrayList<>();
-            for (FotosAlmacigos foto : fotosPendientes) {
-                String base = Utilidades.convertirAStringBase64(foto.getRuta_foto());
-                if (base == null) continue;
-                foto.setImagen_base64(base);
-                fotosBase64.add(foto);
+            if (visitasPendientes.isEmpty()) {
+                activity.runOnUiThread(() -> {
+                    progressDialogAlmacigos.setMessage("Subiendo fotos de almacigos...");
+                    prepararSubirFotosAlmacigos();
+                });
+                return;
             }
 
+
+            // Procesar en bloques para evitar picos de memoria
             SubirAlmacigos subirAlmacigos = new SubirAlmacigos();
-            subirAlmacigos.setFotos(fotosBase64);
             subirAlmacigos.setVisitas(visitasPendientes);
             subirAlmacigos.setId_usuario(config.getId_usuario());
             subirAlmacigos.setVersion(Utilidades.APPLICATION_VERSION);
             subirAlmacigos.setIdDispo(config.getId());
 
-
             activity.runOnUiThread(() -> {
-                ProgressDialog pd = new ProgressDialog(activity);
-                pd.setMessage("Subiendo las visitas");
-                pd.show();
-
-
                 ApiService apiService = RetrofitClient.getClient(config.getServidorSeleccionado()).create(ApiService.class);
                 Call<Respuesta> call = apiService.enviarAlmacigos(subirAlmacigos);
 
@@ -346,37 +495,38 @@ public class FragmentPrincipal extends Fragment {
                     @Override
                     public void onResponse(@NonNull Call<Respuesta> call, @NonNull Response<Respuesta> response) {
                         if (!response.isSuccessful()) {
-                            pd.dismiss();
+                            if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                                progressDialogAlmacigos.dismiss();
                             Utilidades.avisoListo(activity, "ATENCION", "No se pudieron subir los almacigos, vuelva a intentar", "Entiendo");
                             return;
                         }
-
                         Respuesta resp = response.body();
                         if (resp == null) {
-                            pd.dismiss();
+                            if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                                progressDialogAlmacigos.dismiss();
                             Utilidades.avisoListo(activity, "ATENCION", "Servidor no pudo responder de manera correcta, vuelva a intentar", "Entiendo");
                             return;
                         }
-
                         if (resp.getCodigoRespuesta() != 1) {
-                            pd.dismiss();
+                            if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                                progressDialogAlmacigos.dismiss();
                             Utilidades.avisoListo(activity, "ATENCION", "Servidor tuvo problemas para guardar los datos, vuelva a intentar [ " + resp.getMensajeRespuesta() + " ]", "Entiendo");
                             return;
                         }
-                        pd.dismiss();
                         MainActivity.myAppDB.VisitasFotosAlmacigos().marcarVisitasSincronizadadas();
-                        MainActivity.myAppDB.VisitasFotosAlmacigos().marcarFotosSincronizadadas();
-                        Utilidades.avisoListo(activity, "ATENCION", resp.getMensajeRespuesta(), "Entiendo");
+                        progressDialogAlmacigos.setMessage("Subiendo fotos de almacigos...");
+                        prepararSubirFotosAlmacigos();
+                        // El dialogo se cierra en prepararSubirFotosAlmacigos cuando termina
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<Respuesta> call, @NonNull Throwable t) {
-                        pd.dismiss();
+                        if (progressDialogAlmacigos != null && progressDialogAlmacigos.isShowing())
+                            progressDialogAlmacigos.dismiss();
                         Utilidades.avisoListo(activity, "ATENCION", "No se pudo completar la comunicacion con el servidor [ " + t.getMessage() + " ]", "Entiendo");
                     }
                 });
             });
-
         });
     }
 
@@ -394,14 +544,18 @@ public class FragmentPrincipal extends Fragment {
 
         Future<List<CheckListRevisionFrutos>> chkRevisionFrutos = executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRevisionFrutos().getClrevisionFrutosToSync());
 
+        Future<List<CheckListRecepcionPlantinera>> RPF =
+                executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().getClRPToSync());
+
         try {
 
             List<CheckListSiembra> chk = chkF.get();
             List<CheckListAplicacionHormonas> chkA = chkApHor.get();
             List<CheckListRoguing> chkR = chkRoguing.get();
             List<CheckListRevisionFrutos> chRF = chkRevisionFrutos.get();
+            List<CheckListRecepcionPlantinera> RP = RPF.get();
 
-            if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty() && chRF.isEmpty()) {
+            if (chk.isEmpty() && chkA.isEmpty() && chkR.isEmpty() && chRF.isEmpty() && RP.isEmpty()) {
                 executorService.shutdown();
                 Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 return;
@@ -409,6 +563,20 @@ public class FragmentPrincipal extends Fragment {
 
             CheckListRequest chkS = new CheckListRequest();
 
+            if (!RP.isEmpty()) {
+                List<CheckListRecepcionPlantineraCompleto> lista = new ArrayList<>();
+                for (CheckListRecepcionPlantinera cl : RP) {
+                    CheckListRecepcionPlantineraCompleto completo = new CheckListRecepcionPlantineraCompleto();
+
+                    completo.setClCabecera(cl);
+                    completo.setClDetalle(executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().obtenerRPDetallePorClaveCabeceraToSynk(cl.getClave_unica())).get());
+                    completo.setClDetalleFoto(executorService.submit(() -> MainActivity.myAppDB.DaoCheckListRecepcionPlantineras().obtenerRPDetalleFotoPorClaveCabeceraToSynk(cl.getClave_unica())).get());
+                    lista.add(completo);
+                }
+
+                chkS.setCheckListRecepcionPlantineraCompletos(lista);
+
+            }
             if (!chkA.isEmpty()) {
                 chkS.setCheckListAplicacionHormonas(chkA);
             }
@@ -524,12 +692,6 @@ public class FragmentPrincipal extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_inicio, menu);
-    }
 
     public void preparaSubirRecomendaciones() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -1213,5 +1375,95 @@ public class FragmentPrincipal extends Fragment {
             Config config = MainActivity.myAppDB.myDao().getConfig();
             activity.cambiarNombreUser(config.getId_usuario());
         }
+    }
+
+    // Utilidad para poblar la BD con visitas e imágenes dummy para pruebas
+    public void poblarVisitasYFotosDummy() {
+        ExecutorService io = Executors.newSingleThreadExecutor();
+        io.execute(() -> {
+            // Obtener una visita de ejemplo
+            List<VisitasAlmacigos> ejemplo = MainActivity.myAppDB.VisitasFotosAlmacigos().getVisitas();
+            if (ejemplo == null || ejemplo.isEmpty()) return;
+            VisitasAlmacigos base = ejemplo.get(0);
+            List<VisitasAlmacigos> nuevasVisitas = new ArrayList<>();
+            List<FotosAlmacigos> nuevasFotos = new ArrayList<>();
+            for (int i = 1; i <= 100; i++) {
+                VisitasAlmacigos nueva = new VisitasAlmacigos();
+                // Copiar campos relevantes
+                nueva.setId_visita(0); // o dejar en 0 para autoincremental
+                nueva.setUid_visita(java.util.UUID.randomUUID().toString());
+                nueva.setId_valor_post_siembra(base.getId_valor_post_siembra());
+                nueva.setDias_cultivo_a_visita(base.getDias_cultivo_a_visita());
+                nueva.setEstado_crecimiento(base.getEstado_crecimiento());
+                nueva.setEstado_maleza(base.getEstado_maleza());
+                nueva.setEstado_fito(base.getEstado_fito());
+                nueva.setHumedad_suelo(base.getHumedad_suelo());
+                nueva.setN_hoja(base.getN_hoja());
+                nueva.setAltura(base.getAltura());
+                nueva.setCobertura_raices(base.getCobertura_raices());
+                nueva.setDureza(base.getDureza());
+                nueva.setUniformidad(base.getUniformidad());
+                nueva.setEstado_general(base.getEstado_general());
+                nueva.setComentario((base.getComentario() != null ? base.getComentario() : "") + " visita " + i);
+                nueva.setEstado_sincronizacion(0); // pendiente
+                // ... copiar otros campos si es necesario ...
+                nuevasVisitas.add(nueva);
+            }
+            // Insertar todas las visitas
+            MainActivity.myAppDB.VisitasFotosAlmacigos().insertarVisitasAlmacigos(nuevasVisitas);
+            // Usar una foto de ejemplo real para las fotos dummy
+            File dir = activity.getExternalFilesDir(android.os.Environment.DIRECTORY_PICTURES);
+            // Ruta de la foto de ejemplo (puedes cambiar el nombre si tienes otra imagen de ejemplo)
+            File ejemploFoto = new File(dir, "ejemplo_foto.png");
+            if (!ejemploFoto.exists()) {
+                // Si no existe, crea una imagen PNG simple válida
+                try {
+                    java.io.FileOutputStream fos = new java.io.FileOutputStream(ejemploFoto);
+                    // PNG de 1x1 px blanco
+                    byte[] png = new byte[]{
+                            (byte) 0x89, (byte) 0x50, (byte) 0x4E, (byte) 0x47, (byte) 0x0D, (byte) 0x0A, (byte) 0x1A, (byte) 0x0A,
+                            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x0D, (byte) 0x49, (byte) 0x48, (byte) 0x44, (byte) 0x52, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x01, (byte) 0x08, (byte) 0x06, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x1F, (byte) 0x15, (byte) 0xC4, (byte) 0x89,
+                            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x0A, (byte) 0x49, (byte) 0x44, (byte) 0x41, (byte) 0x54, (byte) 0x78, (byte) 0x9C, (byte) 0x63, (byte) 0x60, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x02, (byte) 0x00, (byte) 0x01, (byte) 0xE2, (byte) 0x21, (byte) 0xBC, (byte) 0x33,
+                            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x49, (byte) 0x45, (byte) 0x4E, (byte) 0x44, (byte) 0xAE, (byte) 0x42, (byte) 0x60, (byte) 0x82
+                    };
+                    fos.write(png);
+                    fos.close();
+                } catch (Exception e) {
+                }
+            }
+            for (VisitasAlmacigos visita : nuevasVisitas) {
+                for (int j = 1; j <= 5; j++) {
+                    String uidFoto = java.util.UUID.randomUUID().toString();
+                    String nombre = "dummy_" + visita.getUid_visita() + "_" + j + ".png";
+                    File imgFile = new File(dir, nombre);
+                    try {
+                        // Copiar la foto de ejemplo a la nueva ruta
+                        java.nio.file.Files.copy(
+                                ejemploFoto.toPath(),
+                                imgFile.toPath(),
+                                java.nio.file.StandardCopyOption.REPLACE_EXISTING
+                        );
+                    } catch (Exception e) {
+                    }
+                    FotosAlmacigos foto = new FotosAlmacigos();
+                    foto.setUid_foto(uidFoto);
+                    foto.setUid_visita(visita.getUid_visita());
+                    foto.setNombre_foto(nombre);
+                    foto.setRuta_foto(imgFile.getAbsolutePath());
+                    foto.setFecha("2025-08-25");
+                    foto.setHora("12:00:00");
+                    foto.setFecha_hora("2025-08-25 12:00:00");
+                    foto.setFavorita(0);
+                    foto.setId_user_tx("test");
+                    foto.setEstado_sincronizacion("0");
+                    nuevasFotos.add(foto);
+                }
+            }
+            // Insertar todas las fotos
+            for (FotosAlmacigos f : nuevasFotos) {
+                MainActivity.myAppDB.VisitasFotosAlmacigos().insertarFotoAlmacigos(f);
+            }
+            activity.runOnUiThread(() -> Toast.makeText(activity, "Datos dummy generados", Toast.LENGTH_LONG).show());
+        });
     }
 }

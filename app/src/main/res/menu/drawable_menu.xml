@@ -7,61 +7,47 @@
             android:id="@+id/nv_inicio"
             android:title="@string/subtitles_start"
             android:checked="true"
-            android:icon="@drawable/ic_home"
-            />
+            android:icon="@drawable/ic_home" />
 
 
         <item
             android:id="@+id/nv_fichas"
             android:title="@string/subtitles_records"
             android:checked="true"
-            android:icon="@drawable/ic_archive"
-            />
+            android:icon="@drawable/ic_archive" />
 
         <item
             android:id="@+id/nv_visitas"
             android:title="@string/subtitles_visit"
             android:checked="true"
-            android:icon="@drawable/ic_date_range"
-            />
+            android:icon="@drawable/ic_date_range" />
 
         <item
             android:id="@+id/nv_anexo_fecha"
             android:title="@string/subtitle_anexo_fecha"
             android:checked="true"
             android:visible="false"
-            android:icon="@drawable/ic_baseline_perm_contact_calendar_24"
-            />
+            android:icon="@drawable/ic_baseline_perm_contact_calendar_24" />
 
         <item
             android:id="@+id/nv_almacigos"
             android:title="@string/almacigos"
             android:checked="true"
             android:visible="false"
-            android:icon="@drawable/baseline_grass_24"
-            />
-
-        <item
-            android:id="@+id/nv_configs"
-            android:title="@string/subtitles_config"
-            android:checked="true"
-            android:icon="@drawable/ic_settings"
-            />
+            android:icon="@drawable/baseline_grass_24" />
 
 
         <item
             android:id="@+id/nv_curiweb"
             android:title="@string/curiweb"
             android:checked="true"
-            android:icon="@drawable/curiweb"
-            />
+            android:icon="@drawable/curiweb" />
 
         <item
             android:id="@+id/nv_salir"
             android:title="@string/subtitles_salir"
             android:checked="true"
-            android:icon="@drawable/ic_keyboard_return"
-            />
+            android:icon="@drawable/ic_keyboard_return" />
 
     </group>
 

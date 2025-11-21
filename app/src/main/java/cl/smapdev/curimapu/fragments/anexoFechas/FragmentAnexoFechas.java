@@ -71,13 +71,12 @@ public class FragmentAnexoFechas extends Fragment {
     private SearchView search_anexo_fecha;
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         activity = (MainActivity) getActivity();
-        if (activity != null){
+        if (activity != null) {
             prefs = activity.getSharedPreferences(Utilidades.SHARED_NAME, Context.MODE_PRIVATE);
         }
     }
@@ -86,7 +85,7 @@ public class FragmentAnexoFechas extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view  =  inflater.inflate(R.layout.fragment_anexo_fecha, container, false);
+        view = inflater.inflate(R.layout.fragment_anexo_fecha, container, false);
         return view;
     }
 
@@ -99,18 +98,18 @@ public class FragmentAnexoFechas extends Fragment {
 
         rv_anexo_fecha = view.findViewById(R.id.rv_anexo_fecha);
         LinearLayoutManager lManager = null;
-        if (activity != null){
-            lManager  = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
+        if (activity != null) {
+            lManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
         }
         rv_anexo_fecha.setHasFixedSize(true);
         rv_anexo_fecha.setLayoutManager(lManager);
 
         temporadaList = MainActivity.myAppDB.myDao().getTemporada();
-        if (temporadaList.size() > 0){
-            for (Temporada t : temporadaList){
+        if (temporadaList.size() > 0) {
+            for (Temporada t : temporadaList) {
                 id_temporadas.add(t.getId_tempo_tempo());
                 desc_temporadas.add(t.getNombre_tempo());
-                if(t.getEspecial_temporada() > 0){
+                if (t.getEspecial_temporada() > 0) {
                     marca_especial_temporada = t.getId_tempo_tempo();
                 }
             }
@@ -118,11 +117,10 @@ public class FragmentAnexoFechas extends Fragment {
 
         setHasOptionsMenu(true);
 
-        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity,R.layout.spinner_template_toolbar_view, temporadaList));
+        spinner_toolbar.setAdapter(new SpinnerToolbarAdapter(activity, R.layout.spinner_template_toolbar_view, temporadaList));
 
 
-
-        if(marca_especial_temporada != null && !marca_especial_temporada.isEmpty() && spinner_toolbar != null){
+        if (marca_especial_temporada != null && !marca_especial_temporada.isEmpty() && spinner_toolbar != null) {
             spinner_toolbar.setSelection(id_temporadas.indexOf(marca_especial_temporada));
         }
 
@@ -130,7 +128,7 @@ public class FragmentAnexoFechas extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                if(spinner_toolbar.getTag() == null){
+                if (spinner_toolbar.getTag() == null) {
                     prefs.edit().putString(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                     prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
 
@@ -139,13 +137,13 @@ public class FragmentAnexoFechas extends Fragment {
                     return;
                 }
 
-                if(Integer.parseInt(spinner_toolbar.getTag().toString()) == i){
+                if (Integer.parseInt(spinner_toolbar.getTag().toString()) == i) {
                     spinner_toolbar.setTag(null);
                     return;
                 }
 
 
-                prefs.edit().putString(Utilidades.SELECTED_ANO,id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
+                prefs.edit().putString(Utilidades.SELECTED_ANO, id_temporadas.get(spinner_toolbar.getSelectedItemPosition())).apply();
                 prefs.edit().putInt(Utilidades.SHARED_FILTER_VISITAS_YEAR, i).apply();
 
                 cargarLista(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()), search_anexo_fecha.getQuery().toString());
@@ -159,12 +157,9 @@ public class FragmentAnexoFechas extends Fragment {
         });
 
 
-
-
-        if (temporadaList.size() > 0){
+        if (temporadaList.size() > 0) {
             cargarLista(prefs.getString(Utilidades.SELECTED_ANO, temporadaList.get(temporadaList.size() - 1).getId_tempo_tempo()), search_anexo_fecha.getQuery().toString());
         }
-
 
 
         search_anexo_fecha.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -185,13 +180,13 @@ public class FragmentAnexoFechas extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
+//        menu.clear();
         inflater.inflate(R.menu.menu_sube_fechas, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_upload_files:
                 prepararSubirFechas();
                 return true;
@@ -202,14 +197,14 @@ public class FragmentAnexoFechas extends Fragment {
     }
 
 
-    public void cargarLista( String fecha, String query ){
+    public void cargarLista(String fecha, String query) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<List<AnexoWithDates>> anexoCompleto;
 
-        if(query.isEmpty()){
-            anexoCompleto = executor.submit( () -> MainActivity.myAppDB.DaoAnexosFechas().getFechasSag( fecha ));
-        }else{
-            anexoCompleto = executor.submit( () -> MainActivity.myAppDB.DaoAnexosFechas().getFechasSag( fecha , "%"+query+"%"));
+        if (query.isEmpty()) {
+            anexoCompleto = executor.submit(() -> MainActivity.myAppDB.DaoAnexosFechas().getFechasSag(fecha));
+        } else {
+            anexoCompleto = executor.submit(() -> MainActivity.myAppDB.DaoAnexosFechas().getFechasSag(fecha, "%" + query + "%"));
         }
         try {
             crearAdaptador(anexoCompleto.get());
@@ -219,16 +214,16 @@ public class FragmentAnexoFechas extends Fragment {
         }
     }
 
-    public void crearAdaptador( List<AnexoWithDates> anexo ) {
-        anexosFechasAdapter =  new AnexosFechasAdapter( anexo,
+    public void crearAdaptador(List<AnexoWithDates> anexo) {
+        anexosFechasAdapter = new AnexosFechasAdapter(anexo,
                 (view1, anexos) -> {
                     FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
                     Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EDICION_ANEXO_FECHA");
-                    if(prev != null){
+                    if (prev != null) {
                         ft.remove(prev);
                     }
 
-                    DialogAnexoFecha dialogo = DialogAnexoFecha.newInstance(anexos,(saved, query) -> {
+                    DialogAnexoFecha dialogo = DialogAnexoFecha.newInstance(anexos, (saved, query) -> {
                         search_anexo_fecha.setQuery(query, true);
                     }, search_anexo_fecha.getQuery().toString());
                     dialogo.show(ft, "EDICION_ANEXO_FECHA");
@@ -240,10 +235,10 @@ public class FragmentAnexoFechas extends Fragment {
     }
 
 
-    private void prepararSubirFechas(){
+    private void prepararSubirFechas() {
 
         InternetStateClass mm = new InternetStateClass(activity, result -> {
-            if(!result){
+            if (!result) {
                 Toasty.error(activity, activity.getResources().getString(R.string.sync_not_internet), Toast.LENGTH_SHORT, true).show();
                 return;
             }
@@ -255,22 +250,22 @@ public class FragmentAnexoFechas extends Fragment {
 
             List<AnexoCorreoFechas> fechas = MainActivity.myAppDB.DaoAnexosFechas().getAnexoCorreosFechasSincro();
 
-            if(fechas == null || fechas.size() <= 0){
-                if(pd.isShowing()) pd.dismiss();
+            if (fechas == null || fechas.size() <= 0) {
+                if (pd.isShowing()) pd.dismiss();
                 Toasty.success(activity, activity.getResources().getString(R.string.sync_all_ok), Toast.LENGTH_SHORT, true).show();
                 return;
             }
 
-            if(pd.isShowing()){
+            if (pd.isShowing()) {
                 pd.dismiss();
             }
 
 
             new AnexoCorreoFechaSync(fechas, requireActivity(), (state, message) -> {
-                if(state){
+                if (state) {
                     Toasty.success(requireActivity(), message, Toast.LENGTH_LONG, true).show();
                     cargarLista(id_temporadas.get(spinner_toolbar.getSelectedItemPosition()), search_anexo_fecha.getQuery().toString());
-                }else{
+                } else {
                     Toasty.error(requireActivity(), message, Toast.LENGTH_LONG, true).show();
                 }
             });
@@ -282,7 +277,7 @@ public class FragmentAnexoFechas extends Fragment {
     }
 
 
-    public void  subirFechas(List<AnexoCorreoFechas> fechas){
+    public void subirFechas(List<AnexoCorreoFechas> fechas) {
 
         final ProgressDialog progressDialog = new ProgressDialog(activity);
         progressDialog.setTitle("Preparando datos para subir...");
@@ -304,19 +299,19 @@ public class FragmentAnexoFechas extends Fragment {
 
                 resFecha res = response.body();
 
-                if (res != null){
+                if (res != null) {
 
-                    switch (res.getCodigoRespuesta()){
+                    switch (res.getCodigoRespuesta()) {
                         case 0:
-                            if (res.getRespuestaFechas() != null && res.getRespuestaFechas().size() > 0){
+                            if (res.getRespuestaFechas() != null && res.getRespuestaFechas().size() > 0) {
 
                                 boolean problema = false;
                                 StringBuilder msg = new StringBuilder();
 
-                                for (RespuestaFecha fc : res.getRespuestaFechas()){
+                                for (RespuestaFecha fc : res.getRespuestaFechas()) {
 
                                     AnexoCorreoFechas acf = MainActivity.myAppDB.DaoAnexosFechas().getAnexoCorreoFechasByAnexo(Integer.parseInt(fc.getAnexo()));
-                                    if (acf != null){
+                                    if (acf != null) {
                                         acf.setCorreo_termino_labores_post_cosechas(fc.getCorreo_termino_labores());
                                         acf.setCorreo_termino_cosecha(fc.getCorreo_termino_cosecha());
                                         acf.setCorreo_inicio_despano(fc.getCorreo_inicio_despano());
@@ -325,9 +320,9 @@ public class FragmentAnexoFechas extends Fragment {
                                         acf.setCorreo_cinco_porciento_floracion(fc.getCorreo_cinco_porciento());
                                         acf.setDetalle_labores(fc.getDetalle());
 
-                                        try{
+                                        try {
                                             MainActivity.myAppDB.DaoAnexosFechas().UpdateFechasAnexos(acf);
-                                        }catch (Exception e){
+                                        } catch (Exception e) {
                                             problema = true;
                                             msg.append(e.getLocalizedMessage());
                                         }
@@ -335,9 +330,9 @@ public class FragmentAnexoFechas extends Fragment {
                                 }
 
 
-                                if(problema){
+                                if (problema) {
                                     Toasty.error(activity, msg, Toast.LENGTH_LONG, true).show();
-                                }else{
+                                } else {
                                     Toasty.success(activity, "correos enviados con exito", Toast.LENGTH_LONG, true).show();
                                 }
 
@@ -352,7 +347,7 @@ public class FragmentAnexoFechas extends Fragment {
                             break;
                     }
 
-                }else{
+                } else {
                     Toasty.error(activity, "Resupuesta nula del servidor", Toast.LENGTH_SHORT, true).show();
                     progressDialog.dismiss();
                 }
@@ -373,7 +368,7 @@ public class FragmentAnexoFechas extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         MainActivity activity = (MainActivity) getActivity();
-        if (activity != null){
+        if (activity != null) {
             activity.updateView(getResources().getString(R.string.app_name), "Anexos Fechas");
         }
     }

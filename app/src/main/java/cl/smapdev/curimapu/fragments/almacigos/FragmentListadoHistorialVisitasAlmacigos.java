@@ -1,14 +1,22 @@
 package cl.smapdev.curimapu.fragments.almacigos;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +39,9 @@ public class FragmentListadoHistorialVisitasAlmacigos extends Fragment {
     private OpAlmacigos almacigos;
     private VisitasAlmacigoAdapter almacigoAdapter;
 
+    // Executor reutilizable para operaciones DB rápidas (evita crear/shutdown por click)
+    private final ExecutorService singleDbExecutor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     public void setActivity(MainActivity activity) {
         this.activity = activity;
@@ -45,6 +56,24 @@ public class FragmentListadoHistorialVisitasAlmacigos extends Fragment {
         fragment.setActivity(activity);
         fragment.setAlmacigos(almacigos);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+        } else {
+            throw new RuntimeException(context + " must be MainActivity");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (singleDbExecutor != null && !singleDbExecutor.isShutdown()) {
+            singleDbExecutor.shutdown();
+        }
     }
 
 
@@ -66,6 +95,19 @@ public class FragmentListadoHistorialVisitasAlmacigos extends Fragment {
 
         rv_listado_op = view.findViewById(R.id.rv_listado_op);
         cargarListadoOP();
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        Utilidades.setToolbar(activity, view, "Almacigos", "listado de visitas realizadas");
     }
 
 
@@ -75,11 +117,11 @@ public class FragmentListadoHistorialVisitasAlmacigos extends Fragment {
         rv_listado_op.setHasFixedSize(true);
         rv_listado_op.setLayoutManager(lManager);
 
-        ExecutorService io = Executors.newSingleThreadExecutor();
-        io.execute(() -> {
+
+        singleDbExecutor.execute(() -> {
             List<VisitaAlmacigoCompleto> almacigosList = MainActivity.myAppDB.VisitasFotosAlmacigos().getVisitasAlmacigosPoridOP(almacigos.getId_v_post_siembra());
 
-            activity.runOnUiThread(() -> {
+            handler.post(() -> {
                 almacigoAdapter = new VisitasAlmacigoAdapter(almacigosList, (view, op) -> {
 
                     activity.cambiarFragment(
@@ -97,14 +139,5 @@ public class FragmentListadoHistorialVisitasAlmacigos extends Fragment {
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (activity != null) {
-            activity.updateView(
-                    "Almacigos", "listado de visitas realizadas");
-        }
-    }
 
 }

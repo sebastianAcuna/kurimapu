@@ -1,18 +1,13 @@
 package cl.smapdev.curimapu.fragments.dialogos;
 
 
-import static android.app.Activity.RESULT_OK;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
@@ -75,9 +72,13 @@ public class DialogRoguingDetail extends DialogFragment {
 
     private Usuario usuario;
 
-    private String currentPhotoPath;
     private static final int COD_FOTO = 005;
     private File fileImagen;
+
+    private String currentPhotoPath;
+    private int tipoFoto;
+    private Uri currentPhotoUri;
+    private ActivityResultLauncher<Uri> cameraLauncher;
 
     public interface IOnSave {
         void onSave(boolean saved);
@@ -138,8 +139,18 @@ public class DialogRoguingDetail extends DialogFragment {
         bind(view);
 
         listadoImagenesCabecera();
+
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(),
+                (Boolean success) -> {
+                    if (success) {
+                        procesarFotoTomada();
+                    } else {
+                        Toasty.info(activity, "Captura de foto cancelada", Toast.LENGTH_LONG, true).show();
+                    }
+                });
         return builder.create();
     }
+
 
     @Override
     public void onResume() {
@@ -164,53 +175,53 @@ public class DialogRoguingDetail extends DialogFragment {
         return image;
     }
 
+
     private void abrirCamara() {
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
+        String uid = UUID.randomUUID().toString();
+        String nombre = uid + "_";
+
         try {
-            photoFile = createImageFile();
+            photoFile = Utilidades.createImageFile(requireActivity(), nombre);
+            currentPhotoPath = photoFile.getAbsolutePath();
         } catch (IOException e) {
-            Log.e("ERROR IMAGEN", e.getLocalizedMessage());
-            Toasty.error(requireActivity(), "No se pudo crear la imagen 2", Toast.LENGTH_LONG, true).show();
+            Toasty.error(requireActivity(), "No se pudo crear la imagen " + e.getMessage(), Toast.LENGTH_LONG, true).show();
         }
 
         if (photoFile == null) {
-            Toasty.error(requireActivity(), "No se pudo crear la imagen 3", Toast.LENGTH_LONG, true).show();
+            Toasty.error(requireActivity(), "No se pudo crear la imagen (nula)", Toast.LENGTH_LONG, true).show();
             return;
         }
 
-        Uri photoUri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID + ".provider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-        startActivityForResult(intent, COD_FOTO);
+        currentPhotoUri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID + ".provider", photoFile);
+        cameraLauncher.launch(currentPhotoUri);
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode != RESULT_OK) return;
-
-
+    public void procesarFotoTomada() {
         try {
             Bitmap originalBtm = BitmapFactory.decodeFile(currentPhotoPath);
+            if (originalBtm == null) {
+                Toasty.error(requireActivity(), "No se pudo decodificar la imagen.", Toast.LENGTH_LONG, true).show();
+                return;
+            }
+
             Bitmap nuevaFoto = CameraUtils.escribirFechaImg(originalBtm, activity);
 
-            currentPhotoPath = currentPhotoPath.replaceAll("Pictures/", "");
-
             File file = new File(currentPhotoPath);
-
             FileOutputStream fos = new FileOutputStream(file);
-            nuevaFoto.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
-            if (requestCode == COD_FOTO) guardarFoto();
+            nuevaFoto.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+
+            guardarFoto();
 
         } catch (Exception e) {
-            Log.e("FOTOS", e.getLocalizedMessage());
-            System.out.println(e);
+            Toasty.error(requireActivity(), "Error al procesar la foto: " + e.getMessage(), Toast.LENGTH_LONG, true).show();
         }
-
     }
+
 
     private void guardarFoto() {
         ApplicationExecutors exec = new ApplicationExecutors();

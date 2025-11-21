@@ -2,11 +2,15 @@ package cl.smapdev.curimapu.fragments.contratos;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,7 +21,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,6 +74,10 @@ public class FragmentListVisits extends Fragment {
     private List<VisitasCompletas> visitasCompletas = Collections.emptyList();
 
 
+    private final ExecutorService executors = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +109,14 @@ public class FragmentListVisits extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+        if (executors != null && !executors.isShutdown()) {
+            executors.shutdown();
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
     }
@@ -108,31 +126,6 @@ public class FragmentListVisits extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_lista_visitas, container, false);
     }
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        menu.clear();
-//        inflater.inflate(R.menu.menu_visitas, menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.menu_visitas_recom:
-//                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-//                Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("EVALUACION_RECOMENDACION");
-//                if(prev != null){
-//                    ft.remove(prev);
-//                }
-//
-//                DialogObservationTodo dialogo = DialogObservationTodo.newInstance(anexoContrato, null, null , (TempVisitas tm)->{});
-//                dialogo.show(ft, "EVALUACION_RECOMENDACION");
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 
 
     @Override
@@ -147,8 +140,6 @@ public class FragmentListVisits extends Fragment {
         weather_list = view.findViewById(R.id.weather_list);
         lbl_titulo_comuna = view.findViewById(R.id.lbl_titulo_comuna);
 
-
-//        setHasOptionsMenu(true);
 
         cargarListaGrande();
 
@@ -202,63 +193,126 @@ public class FragmentListVisits extends Fragment {
         weather_list.setLayoutManager(lManagerVisitas);
 
 
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+//                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+
+        }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
+
+        String subt = (anexoContrato != null) ? " Resumen Anexo " + anexoContrato.getAnexo_contrato() : getResources().getString(R.string.subtitles_visit);
+        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), subt);
+
+        executors.execute(() -> {
+            AnexoCompleto anexoCompleto = MainActivity
+                    .myAppDB
+                    .myDao()
+                    .getAnexoCompletoById(anexoContrato.getId_anexo_contrato());
+
+            if (anexoCompleto != null && anexoCompleto.getComuna() != null && anexoCompleto.getComuna().getId_api() != null) {
+
+                handler.post(() -> {
+                    lbl_titulo_comuna.setText(anexoCompleto.getComuna().getDesc_comuna());
+
+                    WeatherApiRequest weatherApiRequest = new WeatherApiRequest(anexoCompleto.getComuna().getId_api());
+                    Call<WeatherApiStatus> call = weatherApiRequest.obtenerData();
+                    call.enqueue(new Callback<WeatherApiStatus>() {
+                        @Override
+                        public void onResponse(@NonNull Call<WeatherApiStatus> call, @NonNull Response<WeatherApiStatus> response) {
+                            if (response.errorBody() != null) {
+                                Toasty.error(requireActivity(),
+                                        "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
+                                return;
+                            }
+                            if (response.code() == 200 && response.isSuccessful()) {
+                                WeatherApiStatus status = response.body();
+                                if (status == null) {
+                                    Toasty.error(requireActivity(),
+                                            "Respuesta nula", Toast.LENGTH_LONG, true).show();
+                                    return;
+                                }
+                                if (status.getStatus() != 0) {
+                                    Toasty.error(requireActivity(),
+                                            "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
+                                    return;
+                                }
+                                List<WeatherApi> weatherApiList = new ArrayList<>();
+                                weatherApiList.add(status.getDay().getDayOne());
+                                weatherApiList.add(status.getDay().getDayTwo());
+                                weatherApiList.add(status.getDay().getDayThree());
+                                weatherApiList.add(status.getDay().getDayFour());
+                                weatherApiList.add(status.getDay().getDayFive());
+                                weatherAdapter = new WeatherAdapter(weatherApiList);
+                                weather_list.setAdapter(weatherAdapter);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<WeatherApiStatus> call, @NonNull Throwable t) {
+                            Toasty.error(requireActivity(),
+                                    "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
+                        }
+                    });
+                });
+            }
+
+        });
+
     }
 
 
     private void cargarListaGrande() {
-        LinearLayoutManager lManagerVisitas = null;
-        if (activity != null) {
-            lManagerVisitas = new LinearLayoutManager(
-                    activity,
-                    LinearLayoutManager.VERTICAL,
-                    false
-            );
-        }
+
+        LinearLayoutManager lManagerVisitas = new LinearLayoutManager(
+                activity,
+                LinearLayoutManager.VERTICAL,
+                false
+        );
         lista_visitas.setHasFixedSize(true);
         lista_visitas.setLayoutManager(lManagerVisitas);
 
+        executors.execute(() -> {
 
-        VisitasListAdapter visitasListAdapter = new VisitasListAdapter(
-                visitasCompletas,
-                (view, fichas) ->
-                        showAlertForEdit(fichas), (view, fichas) ->
-                avisoActivaFicha(
-                        "Esta a punto de eliminar esta visita para el anexo " +
-                                fichas.getAnexoCompleto()
-                                        .getAnexoContrato()
-                                        .getAnexo_contrato(),
-                        "esta visita realizada el dia " +
-                                fichas.getVisitas().getFecha_visita() +
-                                " se eliminara completamente de la tableta, no se subira a servidor tampoco",
-                        fichas
-                ),
-                activity
-        );
-        lista_visitas.setAdapter(visitasListAdapter);
-    }
+            visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+            handler.post(() -> {
 
-        if (activity != null) {
-            activity.updateView(getResources().getString(R.string.app_name), (anexoContrato != null) ? " Resumen Anexo " + anexoContrato.getAnexo_contrato() : getResources().getString(R.string.subtitles_visit));
-        }
+                VisitasListAdapter visitasListAdapter = new VisitasListAdapter(
+                        visitasCompletas,
+                        (view, fichas) ->
+                                showAlertForEdit(fichas), (view, fichas) ->
+                        avisoActivaFicha(
+                                "Esta a punto de eliminar esta visita para el anexo " +
+                                        fichas.getAnexoCompleto()
+                                                .getAnexoContrato()
+                                                .getAnexo_contrato(),
+                                "esta visita realizada el dia " +
+                                        fichas.getVisitas().getFecha_visita() +
+                                        " se eliminara completamente de la tableta, no se subira a servidor tampoco",
+                                fichas
+                        ),
+                        activity
+                );
+                lista_visitas.setAdapter(visitasListAdapter);
 
-
+            });
+        });
     }
 
 
     public void nuevaVisita(AnexoContrato anexo) {
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            /* eliminara detalles de las propiedades (todas)*/
+        executors.execute(() -> {
             MainActivity.myAppDB.myDao().deleteTempVisitas();
             MainActivity.myAppDB.myDao().deleteDetalleVacios();
-
             List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
-            if (fotos.size() > 0) {
+            if (!fotos.isEmpty()) {
                 for (Fotos fts : fotos) {
                     try {
                         File file = new File(fts.getRuta());
@@ -273,102 +327,26 @@ public class FragmentListVisits extends Fragment {
                     }
                 }
             }
+
+            handler.post(() -> {
+
+                if (prefs != null) {
+                    prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, anexo.getId_ficha_contrato()).apply();
+                    prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, anexo.getId_especie_anexo()).apply();
+                    prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, anexo.getId_anexo_contrato()).apply();
+                    prefs.edit().putString(Utilidades.SHARED_VISIT_TEMPORADA, anexo.getTemporada_anexo()).apply();
+                    prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
+                }
+
+                activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
+            });
         });
-
-        if (prefs != null) {
-            prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, anexo.getId_ficha_contrato()).apply();
-            prefs.edit().putString(Utilidades.SHARED_VISIT_MATERIAL_ID, anexo.getId_especie_anexo()).apply();
-            prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, anexo.getId_anexo_contrato()).apply();
-            prefs.edit().putString(Utilidades.SHARED_VISIT_TEMPORADA, anexo.getTemporada_anexo()).apply();
-            prefs.edit().putInt(Utilidades.SHARED_VISIT_VISITA_ID, 0).apply();
-        }
-
-        activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
-
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-
-        if (anexoContrato != null) {
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-
-            Future<AnexoCompleto> anexoCompletoFuture = executor.submit(() ->
-                    MainActivity
-                            .myAppDB
-                            .myDao()
-                            .getAnexoCompletoById(anexoContrato.getId_anexo_contrato()));
-
-
-            try {
-                AnexoCompleto anexoCompleto = anexoCompletoFuture.get();
-                if (anexoCompleto != null && anexoCompleto.getComuna() != null && anexoCompleto.getComuna().getId_api() != null) {
-
-                    lbl_titulo_comuna.setText(anexoCompleto.getComuna().getDesc_comuna());
-
-                    WeatherApiRequest weatherApiRequest = new WeatherApiRequest(anexoCompleto.getComuna().getId_api());
-                    Call<WeatherApiStatus> call = weatherApiRequest.obtenerData();
-                    call.enqueue(new Callback<WeatherApiStatus>() {
-                        @Override
-                        public void onResponse(@NonNull Call<WeatherApiStatus> call, @NonNull Response<WeatherApiStatus> response) {
-
-                            if (response.errorBody() != null) {
-                                Toasty.error(requireActivity(),
-                                        "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
-                                return;
-                            }
-
-                            if (response.code() == 200 && response.isSuccessful()) {
-
-                                WeatherApiStatus status = response.body();
-
-                                if (status == null) {
-                                    Toasty.error(requireActivity(),
-                                            "Respuesta nula", Toast.LENGTH_LONG, true).show();
-                                    return;
-                                }
-
-                                if (status.getStatus() != 0) {
-                                    Toasty.error(requireActivity(),
-                                            "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
-                                    return;
-                                }
-
-                                List<WeatherApi> weatherApiList = new ArrayList<>();
-
-                                weatherApiList.add(status.getDay().getDayOne());
-                                weatherApiList.add(status.getDay().getDayTwo());
-                                weatherApiList.add(status.getDay().getDayThree());
-                                weatherApiList.add(status.getDay().getDayFour());
-                                weatherApiList.add(status.getDay().getDayFive());
-
-
-                                weatherAdapter = new WeatherAdapter(weatherApiList);
-
-                                weather_list.setAdapter(weatherAdapter);
-                            }
-
-
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Call<WeatherApiStatus> call, @NonNull Throwable t) {
-                            Toasty.error(requireActivity(),
-                                    "No se pudo obtener clima", Toast.LENGTH_LONG, true).show();
-                        }
-                    });
-
-                }
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            executor.shutdown();
-
-        }
-
     }
 
     @Override
@@ -397,9 +375,10 @@ public class FragmentListVisits extends Fragment {
             Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
             b.setOnClickListener(v -> AsyncTask.execute(() -> {
 
-                try {
-                    MainActivity.myAppDB.myDao().deleteTempVisitas();
 
+                executors.execute(() -> {
+
+                    MainActivity.myAppDB.myDao().deleteTempVisitas();
                     MainActivity.myAppDB.myDao().deleteDetalleVacios();
 
                     TempVisitas tempVisitas = new TempVisitas();
@@ -416,9 +395,7 @@ public class FragmentListVisits extends Fragment {
                     tempVisitas.setPhenological_state_temp_visita(visitasCompletas.getVisitas().getPhenological_state_visita());
                     tempVisitas.setId_temp_visita(visitasCompletas.getVisitas().getId_visita());
                     tempVisitas.setAction_temp_visita(visitasCompletas.getVisitas().getEstado_visita());
-
                     tempVisitas.setPercent_humedad(visitasCompletas.getVisitas().getPercent_humedad());
-
                     tempVisitas.setObs_cosecha(visitasCompletas.getVisitas().getObs_cosecha());
                     tempVisitas.setObs_creci(visitasCompletas.getVisitas().getObs_creci());
                     tempVisitas.setObs_fito(visitasCompletas.getVisitas().getObs_fito());
@@ -427,15 +404,13 @@ public class FragmentListVisits extends Fragment {
                     tempVisitas.setObs_overall(visitasCompletas.getVisitas().getObs_overall());
                     tempVisitas.setFecha_estimada_arranca(visitasCompletas.getVisitas().getFecha_estimada_arranca());
                     tempVisitas.setFecha_estimada_cosecha(visitasCompletas.getVisitas().getFecha_estimada_cosecha());
-
                     tempVisitas.setId_visita_local(visitasCompletas.getVisitas().getId_visita_local());
                     tempVisitas.setId_dispo(visitasCompletas.getVisitas().getId_dispo());
 
                     MainActivity.myAppDB.myDao().setTempVisitas(tempVisitas);
 
-
                     List<Fotos> fotos = MainActivity.myAppDB.myDao().getFotosByIdVisita(0);
-                    if (fotos.size() > 0) {
+                    if (!fotos.isEmpty()) {
                         for (Fotos fts : fotos) {
                             try {
                                 File file = new File(fts.getRuta());
@@ -451,8 +426,8 @@ public class FragmentListVisits extends Fragment {
                         }
                     }
 
-                    activity.runOnUiThread(() -> {
 
+                    handler.post(() -> {
                         if (prefs != null) {
                             prefs.edit().putInt(Utilidades.SHARED_VISIT_FICHA_ID, visitasCompletas.getAnexoCompleto().getAnexoContrato().getId_ficha_contrato()).apply();
                             prefs.edit().putString(Utilidades.SHARED_VISIT_ANEXO_ID, visitasCompletas.getVisitas().getId_anexo_visita()).apply();
@@ -462,11 +437,7 @@ public class FragmentListVisits extends Fragment {
                         activity.cambiarFragment(new FragmentContratos(), Utilidades.FRAGMENT_CONTRATOS, R.anim.slide_in_left, R.anim.slide_out_left);
                         builder.dismiss();
                     });
-
-                } catch (SQLiteException e) {
-                    Log.e("BD PROBLEM", e.getMessage());
-
-                }
+                });
             }));
             c.setOnClickListener(view -> builder.dismiss());
         });
@@ -494,12 +465,6 @@ public class FragmentListVisits extends Fragment {
             Button c = builder.getButton(AlertDialog.BUTTON_NEGATIVE);
 
             b.setOnClickListener(v -> {
-
-//                MainActivity.myAppDB.myDao().deleteDetallesByVisita(completas.getVisitas().getId_visita());
-//                MainActivity.myAppDB.myDao().deleteFotosByVisita(completas.getVisitas().getId_visita());
-//                MainActivity.myAppDB.myDao().deleteVisita(completas.getVisitas().getId_visita());
-
-                visitasCompletas = MainActivity.myAppDB.myDao().getVisitasCompletasWithFotos(prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                 cargarListaGrande();
                 builder.dismiss();
             });
