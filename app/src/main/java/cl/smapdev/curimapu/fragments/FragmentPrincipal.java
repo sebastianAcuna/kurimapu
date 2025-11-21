@@ -55,6 +55,7 @@ import cl.smapdev.curimapu.clases.modelo.CheckListSync;
 import cl.smapdev.curimapu.clases.modelo.EstacionFloracionSync;
 import cl.smapdev.curimapu.clases.modelo.MuestraHumedadSync;
 import cl.smapdev.curimapu.clases.modelo.RecomendacionesSync;
+import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListCapCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListLimpiezaCamionesCompleto;
 import cl.smapdev.curimapu.clases.relaciones.CheckListRequest;
@@ -70,7 +71,6 @@ import cl.smapdev.curimapu.clases.relaciones.SubidaDatos;
 import cl.smapdev.curimapu.clases.retrofit.ApiService;
 import cl.smapdev.curimapu.clases.retrofit.RetrofitClient;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
-import cl.smapdev.curimapu.clases.tablas.AnexoVilab;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembra;
 import cl.smapdev.curimapu.clases.tablas.CheckListCapacitacionSiembraDetalle;
 import cl.smapdev.curimapu.clases.tablas.CheckListCosecha;
@@ -88,8 +88,6 @@ import cl.smapdev.curimapu.clases.tablas.Fichas;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.FotosFichas;
 import cl.smapdev.curimapu.clases.tablas.MuestraHumedad;
-import cl.smapdev.curimapu.clases.tablas.PrimeraPrioridad;
-import cl.smapdev.curimapu.clases.tablas.SitiosNoVisitados;
 import cl.smapdev.curimapu.clases.tablas.Temporada;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import cl.smapdev.curimapu.clases.tablas.detalle_visita_prop;
@@ -1199,16 +1197,16 @@ public class FragmentPrincipal extends Fragment {
                 }
             });
 
-            List<AnexoVilab> vilabList = MainActivity.myAppDB.DaoVilab().getVilab();
+            List<AnexoCompleto> vilabList = MainActivity.myAppDB.DaoVilab().getVilab();
 
             if (vilabList.isEmpty() && dialogFiles.isShowing()) {
                 dialogFiles.dismiss();
             }
 
             List<String> GraficosADescargar = new ArrayList<>();
-            for (AnexoVilab avilab : vilabList) {
-                if (avilab.getRuta_img_vilab() != null && !avilab.getRuta_img_vilab().isEmpty()) {
-                    GraficosADescargar.add(avilab.getRuta_img_vilab());
+            for (AnexoCompleto avilab : vilabList) {
+                if (avilab.getAnexoContrato().getRuta_img_vilab() != null && !avilab.getAnexoContrato().getRuta_img_vilab().isEmpty()) {
+                    GraficosADescargar.add(avilab.getAnexoContrato().getRuta_img_vilab());
                 }
             }
 
@@ -1248,18 +1246,16 @@ public class FragmentPrincipal extends Fragment {
             if (i >= totalTemporadas) {
 
                 handlerGrafico.post(() -> {
-                            ocultarProgreso();
-                            Toasty.success(activity, "Datos descargados con éxito", Toast.LENGTH_LONG, true).show();
-                            setSpecialSeason(temporadaList);
-                            revisarAnexosPendienteFecha();
-                            activity.cambiarNombreUser(cnf.getId_usuario());
-                            descargarGraficos();
-                            descargarVilab();
-                            sitiosNoVisitados(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
-                            primeraPrioridad(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
-                        }
-
-                );
+                    ocultarProgreso();
+                    Toasty.success(activity, "Datos descargados con éxito", Toast.LENGTH_LONG, true).show();
+                    setSpecialSeason(temporadaList);
+                    revisarAnexosPendienteFecha();
+                    activity.cambiarNombreUser(cnf.getId_usuario());
+                    descargarGraficos();
+                    descargarVilab();
+                    sitiosNoVisitados(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
+                    primeraPrioridad(Integer.parseInt(id_temporadas.get(spinner_toolbar.getSelectedItemPosition())));
+                });
 
                 return;
 
@@ -1285,10 +1281,12 @@ public class FragmentPrincipal extends Fragment {
                     GsonDescargas data = response.body();
 
                     if (data == null) {
-                        handlerGrafico.post(() ->
-                                Toasty.error(activity, "Error: respuesta nula en temporada " + descTempActual + "(" + temporadaActual + ")", Toast.LENGTH_LONG, true).show()
-                        );
-                        descargarSiguiente[0].run();
+
+                        handlerGrafico.post(() -> {
+                            ocultarProgreso();
+                            Toasty.error(activity, "Error: respuesta nula en temporada " + descTempActual + "(" + temporadaActual + ")", Toast.LENGTH_LONG, true).show();
+                        });
+//                        descargarSiguiente[0].run();
                         return;
                     }
 
@@ -1301,6 +1299,7 @@ public class FragmentPrincipal extends Fragment {
 
                         handlerGrafico.post(() -> {
                             if (problema[0] || problema[1]) {
+                                ocultarProgreso();
                                 Toasty.error(activity, "Error guardando datos de temporada " + temporadaActual, Toast.LENGTH_LONG, true).show();
                                 return;
                             }
@@ -1311,9 +1310,10 @@ public class FragmentPrincipal extends Fragment {
 
                 @Override
                 public void onFailure(@NonNull Call<GsonDescargas> call, @NonNull Throwable t) {
-                    handlerGrafico.post(() ->
-                            Toasty.error(activity, "Error conectando en temporada " + temporadaActual + ": " + t.getMessage(), Toast.LENGTH_LONG, true).show()
-                    );
+                    handlerGrafico.post(() -> {
+                        ocultarProgreso();
+                        Toasty.error(activity, "Error conectando en temporada " + temporadaActual + ": " + t.getMessage(), Toast.LENGTH_LONG, true).show();
+                    });
 //                    descargarSiguiente[0].run();
                 }
             });
@@ -1439,7 +1439,7 @@ public class FragmentPrincipal extends Fragment {
         mostrarProgresoPP();
         lista_primera_prioridad.setVisibility(View.GONE);
         ejecutarSeguro(() -> {
-            List<PrimeraPrioridad> prioridades = MainActivity.myAppDB.DaoPrimeraPrioridad().getPPByTemporada(tempo);
+            List<AnexoCompleto> prioridades = MainActivity.myAppDB.DaoPrimeraPrioridad().getPPByTemporada(tempo);
             handler.post(() -> {
                 ocultarProgresoPP();
                 if (prioridades != null && !prioridades.isEmpty()) {
@@ -1461,7 +1461,7 @@ public class FragmentPrincipal extends Fragment {
         mostrarProgresoSitiosNoVisitados();
         lista_sitios_no_visitados.setVisibility(View.GONE);
         ejecutarSeguro(() -> {
-            List<SitiosNoVisitados> sitiosNoVisitados = MainActivity.myAppDB.DaoSitiosNoVisitados().getSNVByTemporada(tempo);
+            List<AnexoCompleto> sitiosNoVisitados = MainActivity.myAppDB.DaoSitiosNoVisitados().getSNVByTemporada(tempo);
             handler.post(() -> {
                 ocultarProgresoSitiosNoVisitados();
                 if (sitiosNoVisitados != null && !sitiosNoVisitados.isEmpty()) {

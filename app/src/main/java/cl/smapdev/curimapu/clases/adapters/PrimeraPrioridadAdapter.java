@@ -19,15 +19,15 @@ import java.util.List;
 import java.util.Map;
 
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.tablas.PrimeraPrioridad;
+import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.utilidades.Utilidades;
 
 public class PrimeraPrioridadAdapter extends RecyclerView.Adapter<PrimeraPrioridadViewHolder> {
 
-    private final List<PrimeraPrioridad> list;
+    private final List<AnexoCompleto> list;
     private final Context context;
 
-    public PrimeraPrioridadAdapter(List<PrimeraPrioridad> list, Context context) {
+    public PrimeraPrioridadAdapter(List<AnexoCompleto> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -104,88 +104,90 @@ class PrimeraPrioridadViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    void bind(PrimeraPrioridad pp, Context context) {
+    void bind(AnexoCompleto pp, Context context) {
 
-        anexo_nov.setText(pp.getNumAnexo());
-        especie_nov.setText(pp.getNombreEspecie());
-        lote_nov.setText(pp.getNombreAgricultor());
-        fecha_ultima_visita.setText((pp.getFechaUltimaVisita() != null) ? Utilidades.voltearFechaVista(pp.getFechaUltimaVisita()) : "Sin fecha.");
+        anexo_nov.setText(pp.getAnexoContrato().getAnexo_contrato());
+        especie_nov.setText(pp.getEspecie().getDesc_especie());
+        lote_nov.setText(pp.getLotes().getNombre_lote());
+        fecha_ultima_visita.setText((pp.getAnexoContrato() != null && pp.getAnexoContrato().getFechaUltimaVisitaPP() != null) ?
+                Utilidades.voltearFechaVista(pp.getAnexoContrato().getFechaUltimaVisitaPP()) :
+                "Sin fecha.");
 
 
-        if (pp.getColorFitosanitario() != null) {
+        if (pp.getAnexoContrato() != null && pp.getAnexoContrato().getColorFitosanitarioPP() != null) {
             Drawable fitoDrawer = ResourcesCompat.getDrawable(circle_fito.getResources(), R.drawable.circle_bg, context.getTheme());
-            if (fitoDrawer != null && circlesBackground.get(pp.getColorFitosanitario()) != null) {
-                fitoDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorFitosanitario()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+            if (fitoDrawer != null && circlesBackground.get(pp.getAnexoContrato().getColorFitosanitarioPP()) != null) {
+                fitoDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getAnexoContrato().getColorFitosanitarioPP()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
                 circle_fito.setBackground(fitoDrawer);
-                valor_fito.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorFitosanitario())));
+                valor_fito.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getAnexoContrato().getColorFitosanitarioPP())));
             }
         }
 
-        if (pp.getColorCrecimiento() != null) {
+        if (pp.getAnexoContrato() != null && pp.getAnexoContrato().getColorCrecimientoPP() != null) {
             Drawable crecDrawer = ResourcesCompat.getDrawable(circle_crecimiento.getResources(), R.drawable.circle_bg, context.getTheme());
-            if (crecDrawer != null && circlesBackground.get(pp.getColorCrecimiento()) != null) {
-                crecDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorCrecimiento()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+            if (crecDrawer != null && circlesBackground.get(pp.getAnexoContrato().getColorCrecimientoPP()) != null) {
+                crecDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getAnexoContrato().getColorCrecimientoPP()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
                 circle_crecimiento.setBackground(crecDrawer);
-                valor_crecimiento.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorCrecimiento())));
+                valor_crecimiento.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getAnexoContrato().getColorCrecimientoPP())));
             }
         }
 
-        if (pp.getColorGeneral() != null) {
+        if (pp.getAnexoContrato() != null && pp.getAnexoContrato().getColorGeneralPP() != null) {
             Drawable genDrawer = ResourcesCompat.getDrawable(circle_general.getResources(), R.drawable.circle_bg, context.getTheme());
-            if (genDrawer != null && circlesBackground.get(pp.getColorGeneral()) != null) {
-                genDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorGeneral()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+            if (genDrawer != null && circlesBackground.get(pp.getAnexoContrato().getColorGeneralPP()) != null) {
+                genDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getAnexoContrato().getColorGeneralPP()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
                 circle_general.setBackground(genDrawer);
 
-                valor_general.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorGeneral())));
+                valor_general.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getAnexoContrato().getColorGeneralPP())));
             }
         }
-        if (pp.getColorNdvi() != null) {
+        if (pp.getAnexoContrato() != null && pp.getAnexoContrato().getColorNdviPP() != null) {
             Drawable ndviDrawer = ResourcesCompat.getDrawable(circle_ndvi.getResources(), R.drawable.circle_bg, context.getTheme());
-            if (ndviDrawer != null && circlesBackground.get(pp.getColorNdvi()) != null) {
-                ndviDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorNdvi()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+            if (ndviDrawer != null && circlesBackground.get(pp.getAnexoContrato().getColorNdviPP()) != null) {
+                ndviDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getAnexoContrato().getColorNdviPP()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
                 circle_ndvi.setBackground(ndviDrawer);
 
-                valor_ndvi.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorNdvi())));
+                valor_ndvi.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getAnexoContrato().getColorNdviPP())));
             }
         }
 
-        if (pp.getColorMi() != null) {
+        if (pp.getAnexoContrato() != null && pp.getAnexoContrato().getColorMiPP() != null) {
             Drawable miDrawer = ResourcesCompat.getDrawable(circle_mi.getResources(), R.drawable.circle_bg, context.getTheme());
-            if (miDrawer != null && circlesBackground.get(pp.getColorMi()) != null) {
-                miDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorMi()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+            if (miDrawer != null && circlesBackground.get(pp.getAnexoContrato().getColorMiPP()) != null) {
+                miDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getAnexoContrato().getColorMiPP()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
                 circle_mi.setBackground(miDrawer);
 
-                valor_mi.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorMi())));
+                valor_mi.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getAnexoContrato().getColorMiPP())));
             }
         }
 
-        if (pp.getColormaleza() != null) {
+        if (pp.getAnexoContrato() != null && pp.getAnexoContrato().getColormalezaPP() != null) {
             Drawable malezaDrawer = ResourcesCompat.getDrawable(circle_maleza.getResources(), R.drawable.circle_bg, context.getTheme());
-            if (malezaDrawer != null && circlesBackground.get(pp.getColormaleza()) != null) {
-                malezaDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColormaleza()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+            if (malezaDrawer != null && circlesBackground.get(pp.getAnexoContrato().getColormalezaPP()) != null) {
+                malezaDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getAnexoContrato().getColormalezaPP()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
                 circle_maleza.setBackground(malezaDrawer);
-                valor_maleza.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColormaleza())));
+                valor_maleza.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getAnexoContrato().getColormalezaPP())));
 
             }
         }
 
-        if (pp.getColorCosecha() != null) {
+        if (pp.getAnexoContrato() != null && pp.getAnexoContrato().getColorCosechaPP() != null) {
             Drawable cosechaDrawer = ResourcesCompat.getDrawable(circle_cosecha.getResources(), R.drawable.circle_bg, context.getTheme());
-            if (cosechaDrawer != null && circlesBackground.get(pp.getColorCosecha()) != null) {
-                cosechaDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getColorCosecha()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
+            if (cosechaDrawer != null && circlesBackground.get(pp.getAnexoContrato().getColorCosechaPP()) != null) {
+                cosechaDrawer.setColorFilter(new PorterDuffColorFilter(context.getResources().getColor(circlesBackground.get(pp.getAnexoContrato().getColorCosechaPP()), context.getTheme()), PorterDuff.Mode.MULTIPLY));
                 circle_cosecha.setBackground(cosechaDrawer);
-                valor_cosecha.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getColorCosecha())));
+                valor_cosecha.setTextColor(context.getResources().getColor(circlesTextColor.get(pp.getAnexoContrato().getColorCosechaPP())));
             }
         }
 
 
-        valor_crecimiento.setText(Utilidades.transformarValorPP(pp.getValorCrecimiento()));
-        valor_fito.setText(Utilidades.transformarValorPP(pp.getValorFitosanitario()));
-        valor_general.setText(Utilidades.transformarValorPP(pp.getValorGeneral()));
-        valor_ndvi.setText(pp.getValorNdvi());
-        valor_mi.setText(Utilidades.transformarValorPP(pp.getValorMi()));
-        valor_maleza.setText(Utilidades.transformarValorPP(pp.getValormaleza()));
-        valor_cosecha.setText(Utilidades.transformarValorPP(pp.getValorCosecha()));
+        valor_crecimiento.setText(Utilidades.transformarValorPP(pp.getAnexoContrato().getValorCrecimientoPP()));
+        valor_fito.setText(Utilidades.transformarValorPP(pp.getAnexoContrato().getValorFitosanitarioPP()));
+        valor_general.setText(Utilidades.transformarValorPP(pp.getAnexoContrato().getValorGeneralPP()));
+        valor_ndvi.setText(pp.getAnexoContrato().getValorNdviPP());
+        valor_mi.setText(Utilidades.transformarValorPP(pp.getAnexoContrato().getValorMiPP()));
+        valor_maleza.setText(Utilidades.transformarValorPP(pp.getAnexoContrato().getValormalezaPP()));
+        valor_cosecha.setText(Utilidades.transformarValorPP(pp.getAnexoContrato().getValorCosechaPP()));
 
 
     }
