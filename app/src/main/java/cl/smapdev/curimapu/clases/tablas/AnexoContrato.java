@@ -285,9 +285,14 @@ public class AnexoContrato {
     @SerializedName("imagen_grafico")
     public String imagen_grafico;
 
-
+    @SerializedName("entra_sitio_no_visitado")
+    public String entra_sitio_no_visitado;
     @SerializedName("entra_primera_prioridad")
     public String entra_primera_prioridad;
+    @SerializedName("tiene_datos_vilab")
+    public String tiene_datos_vilab;
+    @SerializedName("fechaUltimaVisitaPP")
+    public String fechaUltimaVisitaPP;
     @SerializedName("colorCrecimientoPP")
     public String colorCrecimientoPP;
     @SerializedName("valorCrecimientoPP")
@@ -322,9 +327,24 @@ public class AnexoContrato {
     public String fechaUltimaVisitaNoVisitado;
     @SerializedName("nombreUsuarioNoVisitado")
     public String nombreUsuarioNoVisitado;
-    @SerializedName("entra_sitio_no_visitado")
-    public String entra_sitio_no_visitado;
+    @SerializedName("fecha_imagen_ndvi_vilab")
+    public String fecha_imagen_ndvi_vilab;
+    @SerializedName("promedio_vilab")
+    public String promedio_vilab;
+    @SerializedName("ruta_img_vilab")
+    public String ruta_img_vilab;
+    @SerializedName("nombre_imagen_vilab")
+    public String nombre_imagen_vilab;
+    @SerializedName("id_vilab")
+    public String id_vilab;
 
+    public String getEntra_sitio_no_visitado() {
+        return entra_sitio_no_visitado;
+    }
+
+    public void setEntra_sitio_no_visitado(String entra_sitio_no_visitado) {
+        this.entra_sitio_no_visitado = entra_sitio_no_visitado;
+    }
 
     public String getEntra_primera_prioridad() {
         return entra_primera_prioridad;
@@ -332,6 +352,22 @@ public class AnexoContrato {
 
     public void setEntra_primera_prioridad(String entra_primera_prioridad) {
         this.entra_primera_prioridad = entra_primera_prioridad;
+    }
+
+    public String getTiene_datos_vilab() {
+        return tiene_datos_vilab;
+    }
+
+    public void setTiene_datos_vilab(String tiene_datos_vilab) {
+        this.tiene_datos_vilab = tiene_datos_vilab;
+    }
+
+    public String getFechaUltimaVisitaPP() {
+        return fechaUltimaVisitaPP;
+    }
+
+    public void setFechaUltimaVisitaPP(String fechaUltimaVisitaPP) {
+        this.fechaUltimaVisitaPP = fechaUltimaVisitaPP;
     }
 
     public String getColorCrecimientoPP() {
@@ -470,12 +506,44 @@ public class AnexoContrato {
         this.nombreUsuarioNoVisitado = nombreUsuarioNoVisitado;
     }
 
-    public String getEntra_sitio_no_visitado() {
-        return entra_sitio_no_visitado;
+    public String getFecha_imagen_ndvi_vilab() {
+        return fecha_imagen_ndvi_vilab;
     }
 
-    public void setEntra_sitio_no_visitado(String entra_sitio_no_visitado) {
-        this.entra_sitio_no_visitado = entra_sitio_no_visitado;
+    public void setFecha_imagen_ndvi_vilab(String fecha_imagen_ndvi_vilab) {
+        this.fecha_imagen_ndvi_vilab = fecha_imagen_ndvi_vilab;
+    }
+
+    public String getPromedio_vilab() {
+        return promedio_vilab;
+    }
+
+    public void setPromedio_vilab(String promedio_vilab) {
+        this.promedio_vilab = promedio_vilab;
+    }
+
+    public String getRuta_img_vilab() {
+        return ruta_img_vilab;
+    }
+
+    public void setRuta_img_vilab(String ruta_img_vilab) {
+        this.ruta_img_vilab = ruta_img_vilab;
+    }
+
+    public String getNombre_imagen_vilab() {
+        return nombre_imagen_vilab;
+    }
+
+    public void setNombre_imagen_vilab(String nombre_imagen_vilab) {
+        this.nombre_imagen_vilab = nombre_imagen_vilab;
+    }
+
+    public String getId_vilab() {
+        return id_vilab;
+    }
+
+    public void setId_vilab(String id_vilab) {
+        this.id_vilab = id_vilab;
     }
 
     public void setBase_agricultor(String base_agricultor) {

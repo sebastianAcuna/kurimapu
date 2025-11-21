@@ -49,7 +49,6 @@ import cl.smapdev.curimapu.clases.modelo.WeatherApiRequest;
 import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 import cl.smapdev.curimapu.clases.relaciones.VisitasCompletas;
 import cl.smapdev.curimapu.clases.tablas.AnexoContrato;
-import cl.smapdev.curimapu.clases.tablas.AnexoVilab;
 import cl.smapdev.curimapu.clases.tablas.Fotos;
 import cl.smapdev.curimapu.clases.tablas.WeatherApi;
 import cl.smapdev.curimapu.clases.tablas.WeatherApiStatus;
@@ -235,9 +234,6 @@ public class FragmentListVisits extends Fragment {
         }, getViewLifecycleOwner(), Lifecycle.State.CREATED);
 
 
-        Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), (anexoContrato != null) ? " Resumen Anexo " + anexoContrato.getAnexo_contrato() : getResources().getString(R.string.subtitles_visit));
-
-
         ejecutarSeguro(() -> {
             AnexoCompleto anexoCompleto = MainActivity
                     .myAppDB
@@ -247,8 +243,8 @@ public class FragmentListVisits extends Fragment {
             if (anexoCompleto == null) {
                 return;
             }
-
             handler.post(() -> {
+                Utilidades.setToolbar(activity, view, getResources().getString(R.string.app_name), (anexoContrato != null) ? " Resumen Anexo " + anexoContrato.getAnexo_contrato() : getResources().getString(R.string.subtitles_visit));
                 if (anexoCompleto.getComuna() != null && anexoCompleto.getComuna().getId_api() != null) {
 
                     lbl_titulo_comuna.setText(anexoCompleto.getComuna().getDesc_comuna());
@@ -300,13 +296,13 @@ public class FragmentListVisits extends Fragment {
                     });
                 }
 
-                AnexoVilab vilab = MainActivity.myAppDB.DaoVilab().getVilabByAc(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
-                if (vilab != null) {
-                    String ndvi = (vilab.promedio_vilab == null) ? "n/a" : vilab.promedio_vilab;
+//                AnexoCompleto vilab = MainActivity.myAppDB.DaoVilab().getVilabByAc(Integer.parseInt(anexoCompleto.getAnexoContrato().getId_anexo_contrato()));
+                if (anexoCompleto.getAnexoContrato() != null && anexoCompleto.getAnexoContrato().getTiene_datos_vilab().equals("1")) {
+                    String ndvi = (anexoCompleto.getAnexoContrato().getPromedio_vilab() == null) ? "n/a" : anexoCompleto.getAnexoContrato().getPromedio_vilab();
                     contenedor_vilab.setVisibility(View.VISIBLE);
-                    Picasso.get().load("file://" + requireActivity().getFilesDir() + "/imagenes_vilab/" + vilab.nombre_imagen).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_vilab);
-                    indicador_ndvi.setText("NDVI: " + ndvi);
-                    fecha_ndvi.setText("Fecha: " + vilab.fecha_imagen_ndvi);
+                    Picasso.get().load("file://" + requireActivity().getFilesDir() + "/imagenes_vilab/" + anexoCompleto.getAnexoContrato().getNombre_imagen_vilab()).memoryPolicy(MemoryPolicy.NO_CACHE).into(img_vilab);
+                    indicador_ndvi.setText(String.format("NDVI: %s", ndvi));
+                    fecha_ndvi.setText(String.format("Fecha: %s", anexoCompleto.getAnexoContrato().getFecha_imagen_ndvi_vilab()));
                 }
 
                 Picasso.get().load("file://" + requireActivity().getFilesDir() + "/imagenes_grafico/" + anexoCompleto.getAnexoContrato().getAnexo_contrato() + ".jpg").memoryPolicy(MemoryPolicy.NO_CACHE).into(img_grafico);

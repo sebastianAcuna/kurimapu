@@ -82,6 +82,9 @@ public interface MyDao {
     List<SitiosNoVisitadosAnexos> getSitiosNoVisitados(int id_tempo);
 
 
+    @Query("SELECT * FROM visita WHERE clave_unica_visita = :clave LIMIT 1;")
+    Visitas getVisitaByClaveUnica(String clave);
+
     @Query("SELECT * FROM visita V " +
             "LEFT JOIN detalle_visita_prop DVP ON (DVP.id_visita_detalle = V.id_visita) " +
             "LEFT JOIN pro_cli_mat PCM ON (PCM.id_prop_mat_cli = DVP.id_prop_mat_cli_detalle) " +
@@ -399,6 +402,13 @@ public interface MyDao {
 
     @Query("SELECT * FROM visita WHERE clave_unica_visita = :clave LIMIT 1; ")
     Visitas getVisitasByClaveUnica(String clave);
+
+    @Query("SELECT * FROM visita WHERE id_visita = :id_visita AND clave_unica_visita != :clave_unica LIMIT 1;")
+    Visitas getVisitaById(int id_visita, String clave_unica);
+
+    @Delete
+    void deleteVisitaDescarga(Visitas visita);
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> setVisita(List<Visitas> visitas);

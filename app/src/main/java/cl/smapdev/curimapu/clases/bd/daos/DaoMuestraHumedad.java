@@ -1,6 +1,7 @@
 package cl.smapdev.curimapu.clases.bd.daos;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -29,6 +30,9 @@ public interface DaoMuestraHumedad {
 
     @Query("DELETE FROM muestra_humedad WHERE estado_sincronizacion_muestrao = 1; ")
     void deleteSyncedSamples();
+
+    @Delete
+    void deleteMuestraHumedad(MuestraHumedad muestraHumedad);
 
     @Update
     void updateMuestraHumedad(MuestraHumedad muestraHumedad);

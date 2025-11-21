@@ -27,6 +27,7 @@ import cl.smapdev.curimapu.clases.tablas.ChecklistLimpiezaCamionesDetalle;
 import cl.smapdev.curimapu.clases.tablas.Config;
 import cl.smapdev.curimapu.clases.tablas.Evaluaciones;
 import cl.smapdev.curimapu.clases.tablas.FichasNew;
+import cl.smapdev.curimapu.clases.tablas.MuestraHumedad;
 import cl.smapdev.curimapu.clases.tablas.Visitas;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -387,11 +388,15 @@ public class Descargas {
 //        MainActivity.myAppDB.myDao().deleteVisitas();
         if (gsonDescargas.getVisitasList() != null && !gsonDescargas.getVisitasList().isEmpty()) {
             try {
-
-                MainActivity.myAppDB.myDao().setVisita(gsonDescargas.getVisitasList());
                 for (Visitas ln : gsonDescargas.getVisitasList()) {
+                    Visitas viCU = MainActivity.myAppDB.myDao().getVisitasByClaveUnica(ln.getClave_unica_visita());
+                    Visitas viId = MainActivity.myAppDB.myDao().getVisitaById(ln.getId_visita(), ln.getClave_unica_visita());
+                    if (viId == null && viCU != null) {
+                        MainActivity.myAppDB.myDao().deleteVisitaDescarga(viCU);
+                    }
                     MainActivity.myAppDB.myDao().updateFotos(ln.getId_visita(), ln.getId_visita_local(), ln.getId_dispo());
                 }
+                MainActivity.myAppDB.myDao().setVisita(gsonDescargas.getVisitasList());
             } catch (SQLiteException e) {
                 Log.e("SQLITE", e.getMessage());
                 problema[0] = true;
@@ -429,7 +434,6 @@ public class Descargas {
             }
         }
 
-
 //        MainActivity.myAppDB.myDao().deleteFichas();
         if (gsonDescargas.getFichasList() != null && !gsonDescargas.getFichasList().isEmpty()) {
             try {
@@ -461,132 +465,98 @@ public class Descargas {
 
         try {
 
-//            MainActivity.myAppDB.myDao().deleteAgriPredTemp();
             if (gsonDescargas.getPred_agr_temp() != null && !gsonDescargas.getPred_agr_temp().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertAgriPredTemp(gsonDescargas.getPred_agr_temp());
             }
 
-//            MainActivity.myAppDB.myDao().deleteUsuario();
             if (gsonDescargas.getUsuarios() != null && !gsonDescargas.getUsuarios().isEmpty()) {
                 MainActivity.myAppDB.myDao().setUsuarios(gsonDescargas.getUsuarios());
             }
 
 
-            if (gsonDescargas.getAnexoVilabList() != null && !gsonDescargas.getAnexoVilabList().isEmpty()) {
-//                MainActivity.myAppDB.DaoVilab().clearVilabTable();
-                MainActivity.myAppDB.DaoVilab().insertVilab(gsonDescargas.getAnexoVilabList());
-            }
-
-
             if (gsonDescargas.getArray_muestra_humedad() != null && !gsonDescargas.getArray_muestra_humedad().isEmpty()) {
-//                MainActivity.myAppDB.DaoMuestraHumedad().deleteSyncedSamples();
+                for (MuestraHumedad mh : gsonDescargas.getArray_muestra_humedad()) {
+                    MuestraHumedad m = MainActivity.myAppDB.DaoMuestraHumedad().getMuestraByClaveUnica(mh.clave_unica_muestra);
+                    if (m != null) {
+                        MainActivity.myAppDB.DaoMuestraHumedad().deleteMuestraHumedad(m);
+                    }
+                }
                 MainActivity.myAppDB.DaoMuestraHumedad().insertMuestraHumedad(gsonDescargas.getArray_muestra_humedad());
             }
 
 
-//            MainActivity.myAppDB.DaoPrimeraPrioridad().limpiarPPs();
-            if (gsonDescargas.getArray_primera_prioridad() != null && !gsonDescargas.getArray_primera_prioridad().isEmpty()) {
-                MainActivity.myAppDB.DaoPrimeraPrioridad().insertarPPs(gsonDescargas.getArray_primera_prioridad());
-            }
-
-//            MainActivity.myAppDB.DaoSitiosNoVisitados().limpiarSNVs();
-            if (gsonDescargas.getArray_sitios_no_visitados() != null && !gsonDescargas.getArray_sitios_no_visitados().isEmpty()) {
-                MainActivity.myAppDB.DaoSitiosNoVisitados().insertarSNVs(gsonDescargas.getArray_sitios_no_visitados());
-            }
-
-
             if (gsonDescargas.getTemporadas() != null && !gsonDescargas.getTemporadas().isEmpty()) {
-//                MainActivity.myAppDB.myDao().deleteTemporadas();
-
                 MainActivity.myAppDB.myDao().insertTemporada(gsonDescargas.getTemporadas());
             }
 
-//            MainActivity.myAppDB.myDao().deleteCrops();
             if (gsonDescargas.getCropRotations() != null && !gsonDescargas.getCropRotations().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertCrop(gsonDescargas.getCropRotations());
             }
 
-//            MainActivity.myAppDB.myDao().deleteAgricultores();
             if (gsonDescargas.getAgricultorList() != null && !gsonDescargas.getAgricultorList().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertAgricultor(gsonDescargas.getAgricultorList());
             }
 
 
-//            MainActivity.myAppDB.myDao().deleteRegiones();
             if (gsonDescargas.getRegionList() != null && !gsonDescargas.getRegionList().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertRegiones(gsonDescargas.getRegionList());
             }
 
-
-//            MainActivity.myAppDB.myDao().deleteEspecie();
             if (gsonDescargas.getEspecieList() != null && !gsonDescargas.getEspecieList().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertEspecie(gsonDescargas.getEspecieList());
             }
 
 
-//            MainActivity.myAppDB.myDao().deleteClientes();
             if (gsonDescargas.getClientes() != null && !gsonDescargas.getClientes().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertClientes(gsonDescargas.getClientes());
             }
 
-//            MainActivity.myAppDB.myDao().deleteFichaMaquinaria();
             if (gsonDescargas.getFichaMaquinarias() != null && !gsonDescargas.getFichaMaquinarias().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertFichaMaquinaria(gsonDescargas.getFichaMaquinarias());
             }
 
-//            MainActivity.myAppDB.myDao().deleteTipoTenenciaTerreno();
             if (gsonDescargas.getTipoTenenciaTerrenos() != null && !gsonDescargas.getTipoTenenciaTerrenos().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertTipoTenenciaTerreno(gsonDescargas.getTipoTenenciaTerrenos());
             }
 
-//            MainActivity.myAppDB.myDao().deleteTipoTenenciaMaquinaria();
             if (gsonDescargas.getTipoTenenciaMaquinarias() != null && !gsonDescargas.getTipoTenenciaMaquinarias().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertTipoTenenciaMaquinaria(gsonDescargas.getTipoTenenciaMaquinarias());
             }
 
-//            MainActivity.myAppDB.myDao().deleteMaquinaria();
             if (gsonDescargas.getMaquinarias() != null && !gsonDescargas.getMaquinarias().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertMaquinara(gsonDescargas.getMaquinarias());
             }
 
-//            MainActivity.myAppDB.myDao().deleteTipoSuelo();
             if (gsonDescargas.getTipoSuelos() != null && !gsonDescargas.getTipoSuelos().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertTipoSuelo(gsonDescargas.getTipoSuelos());
             }
 
-//            MainActivity.myAppDB.myDao().deleteTipoRiego();
             if (gsonDescargas.getTipoRiegos() != null && !gsonDescargas.getTipoRiegos().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertTipoRiego(gsonDescargas.getTipoRiegos());
             }
 
-//            MainActivity.myAppDB.myDao().deleteLotes();
-            if (gsonDescargas.getLotes() != null && !gsonDescargas.getLotes().isEmpty()) {
-                MainActivity.myAppDB.myDao().insertLotes(gsonDescargas.getLotes());
-            }
-
-//            MainActivity.myAppDB.myDao().deletePredios();
-            if (gsonDescargas.getPredios() != null && !gsonDescargas.getPredios().isEmpty()) {
-                MainActivity.myAppDB.myDao().insertPredios(gsonDescargas.getPredios());
-            }
-
-//            MainActivity.myAppDB.myDao().deleteUM();
             if (gsonDescargas.getUnidadMedidas() != null && !gsonDescargas.getUnidadMedidas().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertUM(gsonDescargas.getUnidadMedidas());
             }
 
-//            MainActivity.myAppDB.myDao().deleteVariedad();
-            if (gsonDescargas.getVariedadList() != null && !gsonDescargas.getVariedadList().isEmpty()) {
-                MainActivity.myAppDB.myDao().insertVariedad(gsonDescargas.getVariedadList());
-            }
-
-//            MainActivity.myAppDB.myDao().deleteComuna();
             if (gsonDescargas.getComunaList() != null && !gsonDescargas.getComunaList().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertComunas(gsonDescargas.getComunaList());
             }
 
-//            MainActivity.myAppDB.myDao().deleteProvincia();
             if (gsonDescargas.getProvinciaList() != null && !gsonDescargas.getProvinciaList().isEmpty()) {
                 MainActivity.myAppDB.myDao().insertProvincias(gsonDescargas.getProvinciaList());
+            }
+
+            if (gsonDescargas.getLotes() != null && !gsonDescargas.getLotes().isEmpty()) {
+                MainActivity.myAppDB.myDao().insertLotes(gsonDescargas.getLotes());
+            }
+
+            if (gsonDescargas.getPredios() != null && !gsonDescargas.getPredios().isEmpty()) {
+                MainActivity.myAppDB.myDao().insertPredios(gsonDescargas.getPredios());
+            }
+
+            if (gsonDescargas.getVariedadList() != null && !gsonDescargas.getVariedadList().isEmpty()) {
+                MainActivity.myAppDB.myDao().insertVariedad(gsonDescargas.getVariedadList());
             }
 
 

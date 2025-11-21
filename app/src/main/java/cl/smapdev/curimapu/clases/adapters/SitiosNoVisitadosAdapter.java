@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cl.smapdev.curimapu.R;
-import cl.smapdev.curimapu.clases.tablas.SitiosNoVisitados;
+import cl.smapdev.curimapu.clases.relaciones.AnexoCompleto;
 
 public class SitiosNoVisitadosAdapter extends RecyclerView.Adapter<SitiosNoVisitadosViewHolder> {
 
-    List<SitiosNoVisitados> list;
+    List<AnexoCompleto> list;
 
-    public SitiosNoVisitadosAdapter(List<SitiosNoVisitados> list) {
+    public SitiosNoVisitadosAdapter(List<AnexoCompleto> list) {
         this.list = list;
     }
 
@@ -44,15 +44,15 @@ class SitiosNoVisitadosViewHolder extends RecyclerView.ViewHolder {
     TextView anexo_nov, especie_nov, lote_nov, dias_nov, agricultor_nov, fecha_ultima_visita, usuario_nov;
 
 
-    public void bind(SitiosNoVisitados vis) {
+    public void bind(AnexoCompleto vis) {
 
-        anexo_nov.setText((vis.getNumAnexo() != null) ? vis.getNumAnexo() : "--");
-        especie_nov.setText((vis.getNombreEspecie() != null) ? vis.getNombreEspecie() : "--");
-        lote_nov.setText((vis.getNombreLote() != null) ? vis.getNombreLote() : "--");
-        dias_nov.setText((vis.getDias() != null) ? vis.getDias() : "--");
-        agricultor_nov.setText((vis.getNombreAgricultor() != null) ? vis.getNombreAgricultor() : "--");
-        fecha_ultima_visita.setText((vis.getFechaUltimaVisita() != null) ? vis.getFechaUltimaVisita() : "Sin fecha.");
-        usuario_nov.setText((vis.getNombreUsuario() != null) ? vis.getNombreUsuario() : "--");
+        anexo_nov.setText((vis.getAnexoContrato() != null && vis.getAnexoContrato().getAnexo_contrato() != null) ? vis.getAnexoContrato().getAnexo_contrato() : "--");
+        especie_nov.setText((vis.getEspecie() != null && vis.getEspecie().getDesc_especie() != null) ? vis.getEspecie().getDesc_especie() : "--");
+        lote_nov.setText((vis.getLotes() != null && vis.getLotes().getNombre_lote() != null) ? vis.getLotes().getNombre_lote() : "--");
+        dias_nov.setText((vis.getAnexoContrato() != null && vis.getAnexoContrato().getDiasNoVisitado() != null) ? vis.getAnexoContrato().getDiasNoVisitado() : "--");
+        agricultor_nov.setText((vis.getAgricultor() != null && vis.getAgricultor().getNombre_agricultor() != null) ? vis.getAgricultor().getNombre_agricultor() : "--");
+        fecha_ultima_visita.setText((vis.getAnexoContrato() != null && vis.getAnexoContrato().getFechaUltimaVisitaNoVisitado() != null) ? vis.getAnexoContrato().getFechaUltimaVisitaNoVisitado() : "Sin fecha.");
+        usuario_nov.setText((vis.getAnexoContrato() != null && vis.getAnexoContrato().getNombreUsuarioNoVisitado() != null) ? vis.getAnexoContrato().getNombreUsuarioNoVisitado() : "--");
 
     }
 
