@@ -99,11 +99,11 @@ public class Utilidades {
     public static final int RAIZ_DESNUDA = 2;
 
 
-    //    public static final String IP_PRODUCCION = "192.168.1.42";
-    //    public static final String IP_PRODUCCION = "curivegetables.zcloud.cl";
-    public static final String IP_PRODUCCION = "curivegetables.zpruebas.cl";
-    public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
-//    public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu_vegetables";
+    public static final String IP_PRODUCCION = "192.168.1.42";
+    //        public static final String IP_PRODUCCION = "curivegetables.zcloud.cl";
+//    public static final String IP_PRODUCCION = "curivegetables.zpruebas.cl";
+//    public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
+    public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu_vegetables";
 
     public static final String IP_DESARROLLO = "www.zcloud16.cl";
     public static final String IP_PRUEBAS = "190.13.170.26";
