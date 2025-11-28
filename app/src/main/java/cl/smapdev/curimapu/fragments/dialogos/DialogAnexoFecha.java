@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -540,6 +541,7 @@ public class DialogAnexoFecha extends DialogFragment {
         et_termino_labores_post_cosecha = view.findViewById(R.id.et_termino_labores_post_cosecha);
         et_detalle_labores = view.findViewById(R.id.et_detalle_labores);
 
+
         btn_guardar_anexo_fecha = view.findViewById(R.id.btn_guardar_anexo_fecha);
         btn_posponer_anexo_fecha = view.findViewById(R.id.btn_posponer_anexo_fecha);
 
@@ -559,6 +561,34 @@ public class DialogAnexoFecha extends DialogFragment {
 
 
         cont_detalle_destruccion = view.findViewById(R.id.cont_detalle_destruccion);
+
+
+        et_hora_fin_destruccion.setKeyListener(null);
+        et_hora_fin_destruccion.setInputType(InputType.TYPE_NULL);
+        et_hora_destruccion.setKeyListener(null);
+        et_hora_destruccion.setInputType(InputType.TYPE_NULL);
+        et_inicio_cosecha_hora.setKeyListener(null);
+        et_inicio_cosecha_hora.setInputType(InputType.TYPE_NULL);
+        et_fecha_fin_destruccion.setKeyListener(null);
+        et_fecha_fin_destruccion.setInputType(InputType.TYPE_NULL);
+        et_fecha_destruccion.setKeyListener(null);
+        et_fecha_destruccion.setInputType(InputType.TYPE_NULL);
+        et_fecha_siembra_temprada.setKeyListener(null);
+        et_fecha_siembra_temprada.setInputType(InputType.TYPE_NULL);
+        et_termino_labores_post_cosecha.setKeyListener(null);
+        et_termino_labores_post_cosecha.setInputType(InputType.TYPE_NULL);
+        et_termino_cosecha.setKeyListener(null);
+        et_termino_cosecha.setInputType(InputType.TYPE_NULL);
+        et_inicio_cosecha.setKeyListener(null);
+        et_inicio_cosecha.setInputType(InputType.TYPE_NULL);
+        et_cinco_porc_floracion.setKeyListener(null);
+        et_cinco_porc_floracion.setInputType(InputType.TYPE_NULL);
+        et_inicio_despano.setKeyListener(null);
+        et_inicio_despano.setInputType(InputType.TYPE_NULL);
+        et_inicio_siembra.setKeyListener(null);
+        et_inicio_siembra.setInputType(InputType.TYPE_NULL);
+        et_inicio_corte_seda.setKeyListener(null);
+        et_inicio_corte_seda.setInputType(InputType.TYPE_NULL);
 
 
     }
