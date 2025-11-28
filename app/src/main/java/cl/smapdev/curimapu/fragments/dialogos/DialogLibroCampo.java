@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -64,6 +65,7 @@ public class DialogLibroCampo extends DialogFragment {
     private ArrayList<ImageView> imageViews = null;
     private ArrayList<Spinner> spinners = null;
     private ArrayList<CheckBox> check = null;
+    private ArrayList<Button> buttons = null;
 
 
     private IOnSave IOnSave;
@@ -556,6 +558,10 @@ public class DialogLibroCampo extends DialogFragment {
                         datoDetalle = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                         if (!TextUtils.isEmpty(datoDetalle)) {
                             editTexts.get(i).setEnabled(false);
+                            if (buttons.get(i) != null) {
+                                buttons.get(i).setEnabled(false);
+                            }
+
                         }
                     }
                     editTexts.get(i).setText(datoDetalle);
@@ -570,6 +576,9 @@ public class DialogLibroCampo extends DialogFragment {
                         datoDetalleFecha = MainActivity.myAppDB.myDao().getDatoDetalle(id_importante.get(index), prefs.getString(Utilidades.SHARED_VISIT_ANEXO_ID, ""));
                         if (!TextUtils.isEmpty(datoDetalleFecha)) {
                             editTexts.get(i).setEnabled(false);
+                            if (buttons.get(i) != null) {
+                                buttons.get(i).setEnabled(false);
+                            }
                         }
                     }
                     String nuevaFecha = Utilidades.voltearFechaVista(datoDetalleFecha);
@@ -577,7 +586,12 @@ public class DialogLibroCampo extends DialogFragment {
                     editTexts.get(i).setText(nuevaFecha);
                     final int finalI1 = i;
                     if (editTexts.get(i).isEnabled()) {
-                        editTexts.get(i).setOnClickListener(v -> Utilidades.levantarFecha(editTexts.get(finalI1), activity));
+                        editTexts.get(i).setOnClickListener(v -> {
+                            Utilidades.hideKeyboard(activity);
+                            editTexts.get(finalI1).setKeyListener(null);
+                            editTexts.get(finalI1).setInputType(InputType.TYPE_NULL);
+                            Utilidades.levantarFecha(editTexts.get(finalI1), activity);
+                        });
                     }
 
                     break;
@@ -631,14 +645,19 @@ public class DialogLibroCampo extends DialogFragment {
                         }
                         break;
                     case InputType.TYPE_CLASS_DATETIME:
+                    case InputType.TYPE_NULL:
                         if (b) {
+                            Utilidades.hideKeyboard(activity);
+                            editTexts.get(finalI).setKeyListener(null);
+                            editTexts.get(finalI).setInputType(InputType.TYPE_NULL);
                             Utilidades.levantarFecha(editTexts.get(finalI), activity);
                         } else {
                             if (!TextUtils.isEmpty(editTexts.get(finalI).getText().toString())) {
                                 detalle_visita_prop temp = new detalle_visita_prop();
 
                                 String prevValue = editTexts.get(finalI).getText().toString();
-                                String fe = Utilidades.voltearFechaBD(prevValue);
+
+                                String fe = (prevValue.equals("NO APLICA")) ? prevValue : Utilidades.voltearFechaBD(prevValue);
 
                                 fe = (fe.isEmpty()) ? prevValue : fe;
 
@@ -695,9 +714,9 @@ public class DialogLibroCampo extends DialogFragment {
 
 
                 String[] tipos = ls.getTipo_cambio().split("_");
-                if (tipos[1].equals("UNO")) {
+                if (tipos.length == 4 && tipos[3].equals("UNO")) {
                     List<CropRotation> l = MainActivity.myAppDB.myDao().getCropRotation(prefs.getInt(Utilidades.SHARED_VISIT_FICHA_ID, 0));
-                    if (l.size() > 0) {
+                    if (!l.isEmpty()) {
                         CropRotationAdapter cropRotationAdapter = new CropRotationAdapter(l, activity);
                         recyclerViews.get(i).setAdapter(cropRotationAdapter);
                     }
@@ -773,6 +792,7 @@ public class DialogLibroCampo extends DialogFragment {
             imageViews = (ArrayList<ImageView>) globalResumen.get(5);
             spinners = (ArrayList<Spinner>) globalResumen.get(6);
             check = (ArrayList<CheckBox>) globalResumen.get(7);
+            buttons = (ArrayList<Button>) globalResumen.get(8);
 
             setearTextViews(idClienteFinal);
             setearImageViews();

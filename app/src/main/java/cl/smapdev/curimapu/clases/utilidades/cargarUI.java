@@ -50,6 +50,7 @@ public class cargarUI {
         ArrayList<ArrayList> genn = new ArrayList<>();
         ArrayList<Spinner> spinners = new ArrayList<>();
         ArrayList<CheckBox> check = new ArrayList<>();
+        ArrayList<Button> buttons = new ArrayList<>();
 
 
         List<pro_cli_mat> list = MainActivity.myAppDB.myDao().getProCliMatByMateriales(idMaterial, idEtapa, cliente, temporada);
@@ -64,6 +65,7 @@ public class cargarUI {
             genn.add(images);
             genn.add(spinners);
             genn.add(check);
+            genn.add(buttons);
 
             return genn;
         }
@@ -88,6 +90,7 @@ public class cargarUI {
             images = (ArrayList<ImageView>) all.get(5);
             spinners = (ArrayList<Spinner>) all.get(6);
             check = (ArrayList<CheckBox>) all.get(7);
+            buttons = (ArrayList<Button>) all.get(8);
 
             genn.add(id_generica);
             genn.add(id_importante);
@@ -97,6 +100,7 @@ public class cargarUI {
             genn.add(images);
             genn.add(spinners);
             genn.add(check);
+            genn.add(buttons);
 
             return genn;
         }
@@ -584,6 +588,7 @@ public class cargarUI {
                             constraintSet.connect(button.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, 1);
 
                             editTexts.add(finalEt);
+                            buttons.add(button);
                         }
                     }
 
@@ -603,6 +608,7 @@ public class cargarUI {
         genn.add(images);
         genn.add(spinners);
         genn.add(check);
+        genn.add(buttons);
 
         return genn;
     }

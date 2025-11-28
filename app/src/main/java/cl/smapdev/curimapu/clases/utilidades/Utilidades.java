@@ -100,11 +100,11 @@ public class Utilidades {
 
 
     public static final String KEY_EXPORT = "9aB4c5D7eF";
-    public static final String IP_PRODUCCION = "192.168.1.42";
-    //    public static final String IP_PRODUCCION = "curiexport.zpruebas.cl";
-//    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
-//    public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
-    public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu";
+    //    public static final String IP_PRODUCCION = "192.168.1.42";
+    public static final String IP_PRODUCCION = "curiexport.zpruebas.cl";
+    //    public static final String IP_PRODUCCION = "curiexport.zcloud.cl";
+    public static final String URL_SERVER_API = "https://" + IP_PRODUCCION;
+//    public static final String URL_SERVER_API = "http://" + IP_PRODUCCION + "/curimapu";
 
 
     public static final String FILTRO_TEMPORADA = "filtro_temporada";
@@ -364,7 +364,7 @@ public class Utilidades {
 
     public static String voltearFechaBD(String fecha) {
         try {
-            if (fecha != null && fecha.length() > 0) {
+            if (fecha != null && !fecha.isEmpty()) {
                 String[] date = fecha.split("-");
                 return date[2] + "-" + date[1] + "-" + date[0];
             } else {
@@ -425,7 +425,7 @@ public class Utilidades {
         String fecha = Utilidades.fechaActualSinHora();
         String[] fechaRota;
 
-        if (!TextUtils.isEmpty(edit.getText())) {
+        if (!TextUtils.isEmpty(edit.getText()) && !edit.getText().toString().equals("NO APLICA")) {
             try {
                 fechaRota = Utilidades.voltearFechaBD(edit.getText().toString()).split("-");
             } catch (Exception e) {
@@ -434,6 +434,11 @@ public class Utilidades {
         } else {
             fechaRota = fecha.split("-");
         }
+
+        if (fechaRota.length == 0) {
+            fechaRota = fecha.split("-");
+        }
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, (datePicker, year, month, dayOfMonth) -> {
 
             month = month + 1;
@@ -677,12 +682,13 @@ public class Utilidades {
         permissionsToRequest.add(Manifest.permission.CAMERA);
         permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissionsToRequest.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         // Lógica de permisos de almacenamiento basada en la versión de Android
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Para Android 13 y superior, solicitar READ_MEDIA_IMAGES si es necesario
             permissionsToRequest.add(Manifest.permission.READ_MEDIA_IMAGES);
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
             // Para versiones anteriores a Android 10, solicitar el permiso de escritura antiguo
             permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
